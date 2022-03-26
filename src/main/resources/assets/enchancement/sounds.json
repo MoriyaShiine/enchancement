@@ -1,0 +1,46 @@
+{
+  "entity.ice_shard.shatter": {
+	"sounds": [
+	  "random/glass1",
+	  "random/glass2",
+	  "random/glass3"
+	],
+	"subtitle": "subtitles.enchancement.entity.ice_shard.shatter"
+  },
+  "entity.generic.air_jump": {
+	"sounds": [
+	  "dig/sand1",
+	  "dig/sand2",
+	  "dig/sand3",
+	  "dig/sand4"
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.air_jump"
+  },
+  "entity.generic.teleport": {
+	"sounds": [
+	  "mob/endermen/portal",
+	  "mob/endermen/portal2"
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.teleport"
+  },
+  "entity.generic.freeze": {
+	"sounds": [
+	  "entity/player/hurt/freeze_hurt1",
+	  "entity/player/hurt/freeze_hurt2",
+	  "entity/player/hurt/freeze_hurt3",
+	  "entity/player/hurt/freeze_hurt4",
+	  "entity/player/hurt/freeze_hurt5"
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.freeze"
+  },
+  "block.generic.smelt": {
+	"sounds": [
+	  "block/furnace/fire_crackle1",
+	  "block/furnace/fire_crackle2",
+	  "block/furnace/fire_crackle3",
+	  "block/furnace/fire_crackle4",
+	  "block/furnace/fire_crackle5"
+	],
+	"subtitle": "subtitles.enchancement.block.generic.smelt"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "id": "enchancement",
+  "version": "${version}",
+  "name": "Enchancement",
+  "description": "A mod that completely overhauls the vanilla enchanting system",
+  "authors": [
+	"MoriyaShiine"
+  ],
+  "contact": {
+	"homepage": "https://www.curseforge.com/minecraft/mc-mods/enchancement",
+	"sources": "https://github.com/MoriyaShiine/enchancement",
+	"issues": "https://github.com/MoriyaShiine/enchancement/issues"
+  },
+  "license": "All Rights Reserved",
+  "icon": "assets/enchancement/icon.png",
+  "environment": "*",
+  "entrypoints": {
+	"main": [
+	  "moriyashiine.enchancement.common.Enchancement"
+	],
+	"client": [
+	  "moriyashiine.enchancement.client.EnchancementClient"
+	],
+	"cardinal-components-entity": [
+	  "moriyashiine.enchancement.common.registry.ModComponents"
+	],
+	"modmenu": [
+	  "moriyashiine.enchancement.client.integration.ModMenuIntegration"
+	]
+  },
+  "mixins": [
+	"enchancement.mixins.json"
+  ],
+  "accessWidener": "enchancement.accesswidener",
+  "depends": {
+	"fabricloader": ">=0.13.3",
+	"minecraft": "1.18.x",
+	"java": ">=17",
+	"cloth-config2": ">=6.2.57",
+	"fabric": ">=0.47.8"
+  },
+  "custom": {
+	"cardinal-components": [
+	  "enchancement:moving_forward",
+	  "enchancement:acceleration",
+	  "enchancement:frozen",
+	  "enchancement:warp_trident"
+	]
+  }
+}

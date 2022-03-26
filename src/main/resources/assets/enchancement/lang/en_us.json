@@ -1,0 +1,21 @@
+{
+  "entity.enchancement.ice_shard": "Ice Shard",
+  "enchantment.enchancement.assimilation": "Assimilation",
+  "enchantment.enchancement.buffet": "Buffet",
+  "enchantment.enchancement.perception": "Perception",
+  "enchantment.enchancement.amphibious": "Amphibious",
+  "enchantment.enchancement.acceleration": "Acceleration",
+  "enchantment.enchancement.bouncy": "Bouncy",
+  "enchantment.enchancement.gale": "Gale",
+  "enchantment.enchancement.frostbite": "Frostbite",
+  "enchantment.enchancement.chaos": "Chaos",
+  "enchantment.enchancement.warp": "Warp",
+  "enchantment.enchancement.grapple": "Grapple",
+  "enchantment.enchancement.molten": "Molten",
+  "enchantment.enchancement.scooping": "Scooping",
+  "subtitles.enchancement.entity.ice_shard.shatter": "Ice Shard shatters",
+  "subtitles.enchancement.entity.generic.air_jump": "Entity air jumps",
+  "subtitles.enchancement.entity.generic.teleport": "Entity teleports",
+  "subtitles.enchancement.entity.generic.freeze": "Entity freezes",
+  "subtitles.enchancement.block.generic.smelt": "Block smelts"
+}

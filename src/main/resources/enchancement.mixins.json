@@ -1,0 +1,41 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "moriyashiine.enchancement.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+	"AbstractFurnaceBlockEntityAccessor",
+	"acceleration.PlayerEntityMixin",
+	"amphibious.EnchantmentHelperMixin",
+	"assimilation.ServerPlayerEntityMixin",
+	"bouncy.LivingEntityMixin",
+	"buffet.ServerPlayerEntityMixin",
+	"chaos.ArrowItemMixin",
+	"core.EnchantmentHelperMixin",
+	"core.EnchantmentMixin",
+	"core.RegistryMixin",
+	"core.SingleLevelModeMixin",
+	"frostbite.LivingEntityMixin",
+	"gale.LivingEntityMixin",
+	"grapple.FishingBobberEntityMixin",
+	"molten.BlockMixin",
+	"scooping.EnchantmentHelperMixin",
+	"scooping.MiningToolItemMixin",
+	"vanillachanges.EnchantmentHelperMixin",
+	"vanillachanges.FishingRodItemMixin",
+	"vanillachanges.ItemStackMixin",
+	"vanillachanges.TridentEntityMixin",
+	"warp.PersistentProjectileEntityMixin",
+	"warp.TridentEntityMixin"
+  ],
+  "client": [
+	"client.RenderLayerAccessor",
+	"client.RenderPhaseAccessor",
+	"client.frostbite.LivingEntityRendererMixin",
+	"client.perception.LightmapTextureManagerMixin",
+	"client.perception.MinecraftClientMixin"
+  ],
+  "injectors": {
+	"defaultRequire": 1
+  }
+}
