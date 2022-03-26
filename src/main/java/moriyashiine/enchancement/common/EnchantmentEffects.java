@@ -2,7 +2,6 @@ package moriyashiine.enchancement.common;
 
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.FoodComponent;
@@ -18,7 +17,7 @@ public class EnchantmentEffects {
 	}
 
 	public static void tickAssimilation(PlayerEntity player) {
-		if (player.age % 20 == 0 && player.getHungerManager().isNotFull() && EnchantmentHelper.getLevel(ModEnchantments.ASSIMILATION, player.getEquippedStack(EquipmentSlot.HEAD)) > 0) {
+		if (player.age % 20 == 0 && player.getHungerManager().isNotFull() && EnchantmentHelper.getEquipmentLevel(ModEnchantments.ASSIMILATION, player) > 0) {
 			ItemStack food = ItemStack.EMPTY;
 			if (player.getOffHandStack().isFood()) {
 				if (needsFood(player, player.getOffHandStack().getItem().getFoodComponent())) {
@@ -35,7 +34,7 @@ public class EnchantmentEffects {
 
 	public static void tickBuffet(PlayerEntity player, Runnable runnable) {
 		if (player.getActiveItem().isFood() || player.getActiveItem().getUseAction() == UseAction.DRINK) {
-			if (player.getItemUseTime() == player.getActiveItem().getMaxUseTime() / 2 && EnchantmentHelper.getLevel(ModEnchantments.BUFFET, player.getEquippedStack(EquipmentSlot.HEAD)) > 0) {
+			if (player.getItemUseTime() == player.getActiveItem().getMaxUseTime() / 2 && EnchantmentHelper.getEquipmentLevel(ModEnchantments.BUFFET, player) > 0) {
 				runnable.run();
 			}
 		}

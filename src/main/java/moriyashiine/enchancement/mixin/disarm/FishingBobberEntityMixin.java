@@ -30,7 +30,7 @@ public abstract class FishingBobberEntityMixin extends Entity {
 
 	@Inject(method = "<init>(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/world/World;II)V", at = @At("TAIL"))
 	private void enchancment$disarmMarkDisarm(PlayerEntity thrower, World world, int luckOfTheSeaLevel, int lureLevel, CallbackInfo ci) {
-		hasDisarm = EnchantmentHelper.getLevel(ModEnchantments.DISARM, thrower.getMainHandStack()) > 0;
+		hasDisarm = EnchantmentHelper.getEquipmentLevel(ModEnchantments.DISARM, thrower) > 0;
 	}
 
 	@Inject(method = "use", at = @At(value = "RETURN", ordinal = 1), cancellable = true)

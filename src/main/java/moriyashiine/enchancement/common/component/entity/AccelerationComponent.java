@@ -6,7 +6,6 @@ import moriyashiine.enchancement.common.EnchantmentEffects;
 import moriyashiine.enchancement.common.registry.ModComponents;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
@@ -38,7 +37,7 @@ public class AccelerationComponent implements CommonTickingComponent {
 	@Override
 	public void tick() {
 		obj.airStrafingSpeed *= speedMultiplier;
-		boolean hasEnchantment = EnchantmentHelper.getLevel(ModEnchantments.ACCELERATION, obj.getEquippedStack(EquipmentSlot.LEGS)) > 0;
+		boolean hasEnchantment = EnchantmentHelper.getEquipmentLevel(ModEnchantments.ACCELERATION, obj) > 0;
 		if (!obj.world.isClient) {
 			EntityAttributeInstance attribute = obj.getAttributeInstance(StepHeightEntityAttributeMain.STEP_HEIGHT);
 			if (hasEnchantment && !obj.isSneaking()) {

@@ -73,7 +73,7 @@ public abstract class LivingEntityMixin extends Entity {
 	@Inject(method = "onDeath", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;sendEntityStatus(Lnet/minecraft/entity/Entity;B)V"), cancellable = true)
 	private void enchancement$frostbiteFreeze(DamageSource source, CallbackInfo ci) {
 		if (!world.isClient && !getType().isIn(ModEntityTypeTags.UNFREEZABLE)) {
-			if (source.getSource() instanceof IceShardEntity || (source.getSource() instanceof LivingEntity living && EnchantmentHelper.getLevel(ModEnchantments.FROSTBITE, living.getMainHandStack()) > 0)) {
+			if (source.getSource() instanceof IceShardEntity || (source.getSource() instanceof LivingEntity living && EnchantmentHelper.getEquipmentLevel(ModEnchantments.FROSTBITE, living) > 0)) {
 				ModComponents.FROZEN.maybeGet(this).ifPresent(frozenComponent -> {
 					frozenComponent.freeze();
 					causeOfShattering = source.getAttacker();

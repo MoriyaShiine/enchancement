@@ -60,7 +60,7 @@ public abstract class FishingBobberEntityMixin extends Entity {
 
 	@ModifyVariable(method = "<init>(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/world/World;II)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/util/math/Vec3d;multiply(DDD)Lnet/minecraft/util/math/Vec3d;"))
 	private Vec3d enchancement$grappleIncreaseVelocity(Vec3d value, PlayerEntity player) {
-		getDataTracker().set(HAS_GRAPPLE, EnchantmentHelper.getLevel(ModEnchantments.GRAPPLE, player.getMainHandStack()) > 0);
+		getDataTracker().set(HAS_GRAPPLE, EnchantmentHelper.getEquipmentLevel(ModEnchantments.GRAPPLE, player) > 0);
 		if (hasGrapple()) {
 			return value.multiply(2, 1.5, 2);
 		}

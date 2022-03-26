@@ -26,7 +26,6 @@ import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
@@ -57,7 +56,7 @@ public class EnchancementClient implements ClientModInitializer {
 			private void accelerationEffects(MinecraftClient client) {
 				ModComponents.MOVING_FORWARD.maybeGet(client.player).ifPresent(movingForwardComponent -> {
 					if (client.player.forwardSpeed > 0) {
-						if (!movingForwardComponent.isMovingForward() && EnchantmentHelper.getLevel(ModEnchantments.ACCELERATION, client.player.getEquippedStack(EquipmentSlot.LEGS)) > 0) {
+						if (!movingForwardComponent.isMovingForward() && EnchantmentHelper.getEquipmentLevel(ModEnchantments.ACCELERATION, client.player) > 0) {
 							SyncMovingForwardPacket.send(true);
 						}
 					} else if (movingForwardComponent.isMovingForward()) {
@@ -76,7 +75,7 @@ public class EnchancementClient implements ClientModInitializer {
 				}
 				if (jumpCooldown == 0) {
 					if (!onGround) {
-						if (ticksInAir >= 10 && timesJumped < 2 && client.options.jumpKey.isPressed() && EnchantmentEffects.isGroundedOrJumping(client.player) && EnchantmentHelper.getLevel(ModEnchantments.GALE, client.player.getEquippedStack(EquipmentSlot.FEET)) > 0) {
+						if (ticksInAir >= 10 && timesJumped < 2 && client.options.jumpKey.isPressed() && EnchantmentEffects.isGroundedOrJumping(client.player) && EnchantmentHelper.getEquipmentLevel(ModEnchantments.GALE, client.player) > 0) {
 							jumpCooldown = 10;
 							timesJumped++;
 							AttemptGaleJumpPacket.send();

@@ -9,7 +9,6 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -27,7 +26,7 @@ public class AttemptGaleJumpPacket {
 
 	public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
 		server.execute(() -> {
-			if (EnchantmentHelper.getLevel(ModEnchantments.GALE, player.getEquippedStack(EquipmentSlot.FEET)) > 0) {
+			if (EnchantmentHelper.getEquipmentLevel(ModEnchantments.GALE, player) > 0) {
 				PlayerLookup.tracking(player).forEach(foundPlayer -> AddGaleParticlesPacket.send(foundPlayer, player));
 				AddGaleParticlesPacket.send(player, player);
 				player.world.playSoundFromEntity(null, player, ModSoundEvents.ENTITY_GENERIC_AIR_JUMP, SoundCategory.PLAYERS, 1, 1);
