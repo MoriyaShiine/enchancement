@@ -37,7 +37,8 @@ public abstract class FishingBobberEntityMixin extends Entity {
 	private BlockState grappleState = null;
 
 	@Shadow
-	public abstract @Nullable PlayerEntity getPlayerOwner();
+	public abstract @Nullable
+	PlayerEntity getPlayerOwner();
 
 	public FishingBobberEntityMixin(EntityType<?> type, World world) {
 		super(type, world);

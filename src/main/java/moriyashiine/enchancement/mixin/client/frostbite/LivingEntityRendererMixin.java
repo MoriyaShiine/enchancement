@@ -40,7 +40,8 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
 	}
 
 	@Shadow
-	protected abstract @Nullable RenderLayer getRenderLayer(T entity, boolean showBody, boolean translucent, boolean showOutline);
+	protected abstract @Nullable
+	RenderLayer getRenderLayer(T entity, boolean showBody, boolean translucent, boolean showOutline);
 
 	@Shadow
 	protected abstract boolean isVisible(T entity);
