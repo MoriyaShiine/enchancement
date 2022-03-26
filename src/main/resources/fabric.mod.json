@@ -45,7 +45,8 @@
 	  "enchancement:moving_forward",
 	  "enchancement:acceleration",
 	  "enchancement:frozen",
-	  "enchancement:warp_trident"
+	  "enchancement:delay",
+	  "enchancement:warp"
 	]
   }
 }

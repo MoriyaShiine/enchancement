@@ -7,11 +7,11 @@ import net.minecraft.entity.projectile.TridentEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 
-public class WarpTridentComponent implements AutoSyncedComponent, ClientTickingComponent {
+public class WarpComponent implements AutoSyncedComponent, ClientTickingComponent {
 	private final TridentEntity obj;
 	private boolean shouldSpawnParticles = false;
 
-	public WarpTridentComponent(TridentEntity obj) {
+	public WarpComponent(TridentEntity obj) {
 		this.obj = obj;
 	}
 
@@ -40,6 +40,6 @@ public class WarpTridentComponent implements AutoSyncedComponent, ClientTickingC
 
 	public void setShouldSpawnParticles(boolean shouldSpawnParticles) {
 		this.shouldSpawnParticles = shouldSpawnParticles;
-		ModComponents.WARP_TRIDENT.sync(obj);
+		ModComponents.WARP.sync(obj);
 	}
 }
