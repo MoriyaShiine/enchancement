@@ -31,6 +31,7 @@ public class ModEnchantments {
 
 	public static final Enchantment WARP = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.TRIDENT, EquipmentSlot.MAINHAND);
 
+	public static final Enchantment DISARM = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.FISHING_ROD, EquipmentSlot.MAINHAND);
 	public static final Enchantment GRAPPLE = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.FISHING_ROD, EquipmentSlot.MAINHAND);
 
 	public static final Enchantment MOLTEN = new MoltenEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.DIGGER, EquipmentSlot.MAINHAND);
@@ -56,6 +57,7 @@ public class ModEnchantments {
 
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "warp"), WARP);
 
+		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "disarm"), DISARM);
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "grapple"), GRAPPLE);
 
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "molten"), MOLTEN);

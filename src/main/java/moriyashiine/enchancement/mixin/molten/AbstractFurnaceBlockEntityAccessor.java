@@ -1,4 +1,4 @@
-package moriyashiine.enchancement.mixin;
+package moriyashiine.enchancement.mixin.molten;
 
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.server.world.ServerWorld;

@@ -4,7 +4,6 @@
   "package": "moriyashiine.enchancement.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-	"AbstractFurnaceBlockEntityAccessor",
 	"acceleration.PlayerEntityMixin",
 	"amphibious.EnchantmentHelperMixin",
 	"assimilation.ServerPlayerEntityMixin",
@@ -15,9 +14,11 @@
 	"core.EnchantmentMixin",
 	"core.RegistryMixin",
 	"core.SingleLevelModeMixin",
+	"disarm.FishingBobberEntityMixin",
 	"frostbite.LivingEntityMixin",
 	"gale.LivingEntityMixin",
 	"grapple.FishingBobberEntityMixin",
+	"molten.AbstractFurnaceBlockEntityAccessor",
 	"molten.BlockMixin",
 	"scooping.EnchantmentHelperMixin",
 	"scooping.MiningToolItemMixin",
@@ -31,6 +32,7 @@
   "client": [
 	"client.RenderLayerAccessor",
 	"client.RenderPhaseAccessor",
+	"client.disarm.MinecraftClientMixin",
 	"client.frostbite.LivingEntityRendererMixin",
 	"client.perception.LightmapTextureManagerMixin",
 	"client.perception.MinecraftClientMixin"

@@ -19,7 +19,7 @@ public class ModConfig implements ConfigData {
 			"minecraft:fire_aspect", "enchancement:frostbite",
 			"enchancement:chaos",
 			"minecraft:riptide", "enchancement:warp",
-			"enchancement:grapple", "minecraft:luck_of_the_sea",
+			"enchancement:disarm", "enchancement:grapple", "minecraft:luck_of_the_sea",
 			"enchancement:molten",
 			"enchancement:scooping",
 			"minecraft:efficiency", "minecraft:silk_touch", "minecraft:unbreaking").map(Identifier::tryParse).toList();
