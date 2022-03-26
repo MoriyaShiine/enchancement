@@ -83,7 +83,6 @@ public abstract class FishingBobberEntityMixin extends Entity {
 				PlayerEntity player = getPlayerOwner();
 				if (player != null) {
 					player.setVelocity(player.getVelocity().add(new Vec3d(Math.min(10, getX() - player.getX()), Math.min(10, getY() - player.getY()), Math.min(10, getZ() - player.getZ())).multiply(0.2)));
-					System.out.println(player.getVelocity().length());
 					player.velocityModified = true;
 					value = 1;
 				}
