@@ -8,7 +8,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -44,20 +43,16 @@ public abstract class LivingEntityMixin extends Entity {
 		return value;
 	}
 
-	@Inject(method = "getFallSound", at = @At("HEAD"), cancellable = true)
-	private void enchancement$bouncy(int distance, CallbackInfoReturnable<SoundEvent> cir) {
-		if (EnchantmentHelper.getEquipmentLevel(ModEnchantments.BOUNCY, LivingEntity.class.cast(this)) > 0) {
-			cir.setReturnValue(SoundEvents.BLOCK_SLIME_BLOCK_FALL);
-		}
-	}
-
 	@Inject(method = "handleFallDamage", at = @At("HEAD"), cancellable = true)
 	private void enchancement$bouncy(float fallDistance, float damageMultiplier, DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
-		if (!world.isClient && fallDistance > getSafeFallDistance() && EnchantmentHelper.getEquipmentLevel(ModEnchantments.BOUNCY, LivingEntity.class.cast(this)) > 0) {
-			if (!bypassesLandingEffects()) {
-				setVelocity(getVelocity().getX(), -prevVelocity.getY() * 0.99, getVelocity().getZ());
-				scheduleVelocityUpdate();
-				velocityDirty = true;
+		if (fallDistance > getSafeFallDistance() && EnchantmentHelper.getEquipmentLevel(ModEnchantments.BOUNCY, LivingEntity.class.cast(this)) > 0) {
+			if (!world.isClient) {
+				world.playSoundFromEntity(null, this, SoundEvents.BLOCK_SLIME_BLOCK_FALL, getSoundCategory(), 1, 1);
+				if (!bypassesLandingEffects()) {
+					setVelocity(getVelocity().getX(), -prevVelocity.getY() * 0.99, getVelocity().getZ());
+					scheduleVelocityUpdate();
+					velocityDirty = true;
+				}
 			}
 			cir.setReturnValue(false);
 		}
