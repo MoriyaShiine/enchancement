@@ -24,6 +24,8 @@
 	"molten.BlockMixin",
 	"scooping.EnchantmentHelperMixin",
 	"scooping.MiningToolItemMixin",
+	"slide.LivingEntityMixin",
+	"slide.PlayerEntityMixin",
 	"vanillachanges.EnchantmentHelperMixin",
 	"vanillachanges.FishingRodItemMixin",
 	"vanillachanges.ItemStackMixin",
@@ -37,7 +39,8 @@
 	"client.disarm.MinecraftClientMixin",
 	"client.frostbite.LivingEntityRendererMixin",
 	"client.perception.LightmapTextureManagerMixin",
-	"client.perception.MinecraftClientMixin"
+	"client.perception.MinecraftClientMixin",
+	"slide.client.PlayerEntityRendererMixin"
   ],
   "injectors": {
 	"defaultRequire": 1
