@@ -41,32 +41,28 @@ public class EnchancementClient implements ClientModInitializer {
 		initEvents();
 	}
 
+	@SuppressWarnings("ConstantConditions")
 	private void initEvents() {
+		//acceleration
+		ClientTickEvents.START_WORLD_TICK.register(world -> {
+			MinecraftClient client = MinecraftClient.getInstance();
+			ModComponents.MOVING_FORWARD.maybeGet(client.player).ifPresent(movingForwardComponent -> {
+				if (client.player.forwardSpeed > 0) {
+					if (!movingForwardComponent.isMovingForward() && EnchantmentHelper.getEquipmentLevel(ModEnchantments.ACCELERATION, client.player) > 0) {
+						SyncMovingForwardPacket.send(true);
+					}
+				} else if (movingForwardComponent.isMovingForward()) {
+					SyncMovingForwardPacket.send(false);
+				}
+			});
+		});
+		//gale
 		ClientTickEvents.START_WORLD_TICK.register(new ClientTickEvents.StartWorldTick() {
 			private int jumpCooldown = 0, timesJumped = 0, ticksInAir = 0;
 
 			@Override
 			public void onStartTick(ClientWorld world) {
 				MinecraftClient client = MinecraftClient.getInstance();
-				accelerationEffects(client);
-				galeEffects(client);
-			}
-
-			@SuppressWarnings("ConstantConditions")
-			private void accelerationEffects(MinecraftClient client) {
-				ModComponents.MOVING_FORWARD.maybeGet(client.player).ifPresent(movingForwardComponent -> {
-					if (client.player.forwardSpeed > 0) {
-						if (!movingForwardComponent.isMovingForward() && EnchantmentHelper.getEquipmentLevel(ModEnchantments.ACCELERATION, client.player) > 0) {
-							SyncMovingForwardPacket.send(true);
-						}
-					} else if (movingForwardComponent.isMovingForward()) {
-						SyncMovingForwardPacket.send(false);
-					}
-				});
-			}
-
-			@SuppressWarnings("ConstantConditions")
-			private void galeEffects(MinecraftClient client) {
 				boolean onGround = client.player.isOnGround();
 				if (!onGround) {
 					ticksInAir++;
