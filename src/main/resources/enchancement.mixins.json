@@ -6,9 +6,8 @@
   "mixins": [
 	"acceleration.PlayerEntityMixin",
 	"amphibious.EnchantmentHelperMixin",
-	"assimilation.ServerPlayerEntityMixin",
 	"bouncy.LivingEntityMixin",
-	"buffet.ServerPlayerEntityMixin",
+	"buffet.LivingEntityAccessor",
 	"chaos.ArrowItemMixin",
 	"core.EnchantmentHelperMixin",
 	"core.EnchantmentMixin",
@@ -36,10 +35,10 @@
   "client": [
 	"client.RenderLayerAccessor",
 	"client.RenderPhaseAccessor",
-	"client.disarm.MinecraftClientMixin",
 	"client.frostbite.LivingEntityRendererMixin",
-	"client.perception.LightmapTextureManagerMixin",
-	"client.perception.MinecraftClientMixin",
+	"disarm.client.MinecraftClientMixin",
+	"perception.client.LightmapTextureManagerMixin",
+	"perception.client.MinecraftClientMixin",
 	"slide.client.PlayerEntityRendererMixin"
   ],
   "injectors": {

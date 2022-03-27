@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(MiningToolItem.class)
 public class MiningToolItemMixin {
 	@Inject(method = "postHit", at = @At("HEAD"), cancellable = true)
-	private void enchancement$scoopingDurabilityCost(ItemStack stack, LivingEntity target, LivingEntity attacker, CallbackInfoReturnable<Boolean> cir) {
+	private void enchancement$scooping(ItemStack stack, LivingEntity target, LivingEntity attacker, CallbackInfoReturnable<Boolean> cir) {
 		if (EnchantmentHelper.getLevel(ModEnchantments.SCOOPING, stack) > 0) {
 			stack.damage(1, attacker, user -> user.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
 			cir.setReturnValue(true);

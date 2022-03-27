@@ -1,4 +1,4 @@
-package moriyashiine.enchancement.mixin.client.perception;
+package moriyashiine.enchancement.mixin.perception.client;
 
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import net.fabricmc.api.EnvType;
@@ -23,7 +23,7 @@ public class MinecraftClientMixin {
 	public ClientPlayerEntity player;
 
 	@Inject(method = "hasOutline", at = @At("HEAD"), cancellable = true)
-	private void enchancement$perceptionXray(Entity entity, CallbackInfoReturnable<Boolean> cir) {
+	private void enchancement$perception(Entity entity, CallbackInfoReturnable<Boolean> cir) {
 		if (player != null && entity instanceof LivingEntity living && !living.isSneaking() && !living.isInvisible() && entity.distanceTo(player) < 16 && EnchantmentHelper.getEquipmentLevel(ModEnchantments.PERCEPTION, player) > 0 && !living.canSee(player)) {
 			cir.setReturnValue(true);
 		}

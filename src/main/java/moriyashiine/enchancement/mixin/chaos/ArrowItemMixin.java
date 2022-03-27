@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ArrowItem.class)
 public class ArrowItemMixin {
 	@Inject(method = "createArrow", at = @At("HEAD"), cancellable = true)
-	private void enchancement$chaosModifyArrow(World world, ItemStack stack, LivingEntity shooter, CallbackInfoReturnable<PersistentProjectileEntity> cir) {
+	private void enchancement$chaos(World world, ItemStack stack, LivingEntity shooter, CallbackInfoReturnable<PersistentProjectileEntity> cir) {
 		if (stack.getItem() == Items.ARROW && EnchantmentHelper.getEquipmentLevel(ModEnchantments.CHAOS, shooter) > 0) {
 			ArrowEntity arrow = new ArrowEntity(world, shooter);
 			arrow.initFromStack(PotionUtil.setPotion(new ItemStack(Items.TIPPED_ARROW), Registry.POTION.get(shooter.getRandom().nextInt(Registry.POTION.size()))));

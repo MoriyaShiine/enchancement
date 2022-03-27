@@ -45,7 +45,7 @@ public abstract class FishingBobberEntityMixin extends Entity {
 	}
 
 	@Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/FishingBobberEntity;checkForCollision()V", shift = At.Shift.BEFORE), cancellable = true)
-	private void enchancement$grappleUpdateStates(CallbackInfo ci) {
+	private void enchancement$grapple(CallbackInfo ci) {
 		if (hasGrapple()) {
 			if (grappleState != null) {
 				if (age % 10 == 0 && world.getBlockState(grapplePos) != grappleState) {
@@ -59,7 +59,7 @@ public abstract class FishingBobberEntityMixin extends Entity {
 	}
 
 	@ModifyVariable(method = "<init>(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/world/World;II)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/util/math/Vec3d;multiply(DDD)Lnet/minecraft/util/math/Vec3d;"))
-	private Vec3d enchancement$grappleIncreaseVelocity(Vec3d value, PlayerEntity player) {
+	private Vec3d enchancement$grapple(Vec3d value, PlayerEntity player) {
 		getDataTracker().set(HAS_GRAPPLE, EnchantmentHelper.getEquipmentLevel(ModEnchantments.GRAPPLE, player) > 0);
 		if (hasGrapple()) {
 			return value.multiply(2, 1.5, 2);
@@ -68,7 +68,7 @@ public abstract class FishingBobberEntityMixin extends Entity {
 	}
 
 	@ModifyArg(method = "pullHookedEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Vec3d;add(Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/util/math/Vec3d;"))
-	private Vec3d enchancement$grappleIncreasePull(Vec3d value) {
+	private Vec3d enchancement$grapple(Vec3d value) {
 		if (hasGrapple()) {
 			return value.multiply(2);
 		}
@@ -76,7 +76,7 @@ public abstract class FishingBobberEntityMixin extends Entity {
 	}
 
 	@Inject(method = "use", at = @At(value = "RETURN", ordinal = 1), cancellable = true)
-	private void enchancement$grappleDurabilityAndLaunchPlayer(ItemStack usedItem, CallbackInfoReturnable<Integer> cir) {
+	private void enchancement$grapple(ItemStack usedItem, CallbackInfoReturnable<Integer> cir) {
 		if (hasGrapple()) {
 			int value = cir.getReturnValueI();
 			if (grappleState != null) {
@@ -94,7 +94,7 @@ public abstract class FishingBobberEntityMixin extends Entity {
 	}
 
 	@Inject(method = "onBlockHit", at = @At("TAIL"))
-	private void enchancement$grappleHookOntoBlock(BlockHitResult blockHitResult, CallbackInfo ci) {
+	private void enchancement$grapple(BlockHitResult blockHitResult, CallbackInfo ci) {
 		if (hasGrapple()) {
 			grapplePos = blockHitResult.getBlockPos();
 			grappleState = world.getBlockState(grapplePos);

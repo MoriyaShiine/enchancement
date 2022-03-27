@@ -2,7 +2,7 @@ package moriyashiine.enchancement.common.component.entity;
 
 import dev.emi.stepheightentityattribute.StepHeightEntityAttributeMain;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
-import moriyashiine.enchancement.common.EnchantmentEffects;
+import moriyashiine.enchancement.common.EnchancementUtil;
 import moriyashiine.enchancement.common.registry.ModComponents;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -49,7 +49,7 @@ public class AccelerationComponent implements CommonTickingComponent {
 			}
 		}
 		if (hasEnchantment) {
-			if (!obj.horizontalCollision && obj.isSprinting() && EnchantmentEffects.isGroundedOrJumping(obj) && ModComponents.MOVING_FORWARD.get(obj).isMovingForward()) {
+			if (!obj.horizontalCollision && obj.isSprinting() && EnchancementUtil.isGroundedOrJumping(obj) && ModComponents.MOVING_FORWARD.get(obj).isMovingForward()) {
 				if (speedMultiplier < 2) {
 					speedMultiplier = Math.min(2, speedMultiplier + 1 / 256F);
 				}

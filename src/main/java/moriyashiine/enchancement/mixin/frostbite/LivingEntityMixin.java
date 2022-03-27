@@ -29,7 +29,7 @@ public abstract class LivingEntityMixin extends Entity {
 	}
 
 	@Inject(method = "damage", at = @At("HEAD"), cancellable = true)
-	private void enchancement$frostbiteShatter(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+	private void enchancement$frostbite(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
 		if (!world.isClient) {
 			ModComponents.FROZEN.maybeGet(this).ifPresent(frozenComponent -> {
 				if (frozenComponent.isFrozen()) {
@@ -62,7 +62,7 @@ public abstract class LivingEntityMixin extends Entity {
 	}
 
 	@Inject(method = "pushAwayFrom", at = @At("HEAD"))
-	private void enchancement$frostbite$markPushedEntity(Entity entity, CallbackInfo ci) {
+	private void enchancement$frostbite(Entity entity, CallbackInfo ci) {
 		ModComponents.FROZEN.maybeGet(this).ifPresent(frozenComponent -> {
 			if (frozenComponent.isFrozen() && causeOfShattering == null) {
 				causeOfShattering = entity;
@@ -71,7 +71,7 @@ public abstract class LivingEntityMixin extends Entity {
 	}
 
 	@Inject(method = "onDeath", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;sendEntityStatus(Lnet/minecraft/entity/Entity;B)V"), cancellable = true)
-	private void enchancement$frostbiteFreeze(DamageSource source, CallbackInfo ci) {
+	private void enchancement$frostbite(DamageSource source, CallbackInfo ci) {
 		if (!world.isClient && !getType().isIn(ModEntityTypeTags.UNFREEZABLE)) {
 			if (source.getSource() instanceof IceShardEntity || (source.getSource() instanceof LivingEntity living && EnchantmentHelper.getEquipmentLevel(ModEnchantments.FROSTBITE, living) > 0)) {
 				ModComponents.FROZEN.maybeGet(this).ifPresent(frozenComponent -> {

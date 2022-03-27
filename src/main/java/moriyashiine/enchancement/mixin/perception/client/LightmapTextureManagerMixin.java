@@ -1,4 +1,4 @@
-package moriyashiine.enchancement.mixin.client.perception;
+package moriyashiine.enchancement.mixin.perception.client;
 
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import net.fabricmc.api.EnvType;
@@ -20,7 +20,7 @@ public class LightmapTextureManagerMixin {
 	private MinecraftClient client;
 
 	@ModifyVariable(method = "update", at = @At("STORE"), ordinal = 3)
-	private float enchancement$perceptionNightVision(float value) {
+	private float enchancement$perception(float value) {
 		if (client.player != null && EnchantmentHelper.getEquipmentLevel(ModEnchantments.PERCEPTION, client.player) > 0) {
 			return Math.max(1, value);
 		}

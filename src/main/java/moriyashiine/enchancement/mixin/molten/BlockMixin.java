@@ -30,7 +30,7 @@ import java.util.List;
 @Mixin(Block.class)
 public class BlockMixin {
 	@Inject(method = "getDroppedStacks(Lnet/minecraft/block/BlockState;Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/entity/BlockEntity;Lnet/minecraft/entity/Entity;Lnet/minecraft/item/ItemStack;)Ljava/util/List;", at = @At("RETURN"), cancellable = true)
-	private static void enchancement$moltenSmeltDrops(BlockState state, ServerWorld world, BlockPos pos, @Nullable BlockEntity blockEntity, @Nullable Entity entity, ItemStack stack, CallbackInfoReturnable<List<ItemStack>> cir) {
+	private static void enchancement$molten(BlockState state, ServerWorld world, BlockPos pos, @Nullable BlockEntity blockEntity, @Nullable Entity entity, ItemStack stack, CallbackInfoReturnable<List<ItemStack>> cir) {
 		if (EnchantmentHelper.getLevel(ModEnchantments.MOLTEN, stack) > 0) {
 			List<ItemStack> drops = cir.getReturnValue();
 			if (!drops.isEmpty()) {

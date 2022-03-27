@@ -1,4 +1,4 @@
-package moriyashiine.enchancement.mixin.client.disarm;
+package moriyashiine.enchancement.mixin.disarm.client;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -20,14 +20,14 @@ public class MinecraftClientMixin {
 	public ClientPlayerEntity player;
 
 	@Inject(method = "doAttack", at = @At("HEAD"), cancellable = true)
-	private void enchancement$disarmDisableAttacking(CallbackInfoReturnable<Boolean> cir) {
+	private void enchancement$disarm(CallbackInfoReturnable<Boolean> cir) {
 		if (player != null && player.getItemCooldownManager().isCoolingDown(player.getMainHandStack().getItem())) {
 			cir.setReturnValue(false);
 		}
 	}
 
 	@Inject(method = "handleBlockBreaking", at = @At("HEAD"), cancellable = true)
-	private void enchancement$disarmDisableAttacking(boolean bl, CallbackInfo ci) {
+	private void enchancement$disarm(boolean bl, CallbackInfo ci) {
 		if (player != null && player.getItemCooldownManager().isCoolingDown(player.getMainHandStack().getItem())) {
 			ci.cancel();
 		}

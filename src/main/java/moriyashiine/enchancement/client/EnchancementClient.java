@@ -5,7 +5,7 @@ import moriyashiine.enchancement.client.packet.AddIceShardParticlesPacket;
 import moriyashiine.enchancement.client.packet.AddMoltenParticlesPacket;
 import moriyashiine.enchancement.client.render.entity.IceShardEntityRenderer;
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.EnchantmentEffects;
+import moriyashiine.enchancement.common.EnchancementUtil;
 import moriyashiine.enchancement.common.packet.AttemptGaleJumpPacket;
 import moriyashiine.enchancement.common.packet.SyncMovingForwardPacket;
 import moriyashiine.enchancement.common.registry.ModComponents;
@@ -75,7 +75,7 @@ public class EnchancementClient implements ClientModInitializer {
 				}
 				if (jumpCooldown == 0) {
 					if (!onGround) {
-						if (ticksInAir >= 10 && timesJumped < 2 && client.options.jumpKey.isPressed() && EnchantmentEffects.isGroundedOrJumping(client.player) && EnchantmentHelper.getEquipmentLevel(ModEnchantments.GALE, client.player) > 0) {
+						if (ticksInAir >= 10 && timesJumped < 2 && client.options.jumpKey.isPressed() && EnchancementUtil.isGroundedOrJumping(client.player) && EnchantmentHelper.getEquipmentLevel(ModEnchantments.GALE, client.player) > 0) {
 							jumpCooldown = 10;
 							timesJumped++;
 							AttemptGaleJumpPacket.send();

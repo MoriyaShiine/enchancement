@@ -20,7 +20,7 @@ public abstract class ArrowEntityMixin extends PersistentProjectileEntity {
 	}
 
 	@Inject(method = "<init>(Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;)V", at = @At("TAIL"))
-	private void enchancement$delayMarkDelay(World world, LivingEntity owner, CallbackInfo ci) {
+	private void enchancement$delay(World world, LivingEntity owner, CallbackInfo ci) {
 		boolean offHand = EnchantmentHelper.getLevel(ModEnchantments.DELAY, owner.getOffHandStack()) > 0;
 		if (offHand || EnchantmentHelper.getLevel(ModEnchantments.DELAY, owner.getMainHandStack()) > 0) {
 			ModComponents.DELAY.maybeGet(this).ifPresent(delayComponent -> {

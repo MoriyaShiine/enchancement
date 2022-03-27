@@ -22,7 +22,7 @@ public abstract class PersistentProjectileEntityMixin {
 	protected abstract ItemStack asItemStack();
 
 	@Inject(method = "onBlockHit", at = @At("TAIL"))
-	private void enchancement$warpTrident(BlockHitResult blockHitResult, CallbackInfo ci) {
+	private void enchancement$warp(BlockHitResult blockHitResult, CallbackInfo ci) {
 		if (PersistentProjectileEntity.class.cast(this) instanceof TridentEntity entity && EnchantmentHelper.getLevel(ModEnchantments.WARP, asItemStack()) > 0) {
 			Entity owner = entity.getOwner();
 			if (owner instanceof LivingEntity living) {

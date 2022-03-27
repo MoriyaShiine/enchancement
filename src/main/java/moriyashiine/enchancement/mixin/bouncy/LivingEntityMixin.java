@@ -30,14 +30,14 @@ public abstract class LivingEntityMixin extends Entity {
 	}
 
 	@Inject(method = "tick", at = @At("HEAD"))
-	private void enchancement$bouncyStorePreviousVelocity(CallbackInfo ci) {
+	private void enchancement$bouncy(CallbackInfo ci) {
 		if (!world.isClient) {
 			prevVelocity = getVelocity();
 		}
 	}
 
 	@ModifyArg(method = "fall", at = @At(value = "INVOKE", target = "Lnet/minecraft/particle/BlockStateParticleEffect;<init>(Lnet/minecraft/particle/ParticleType;Lnet/minecraft/block/BlockState;)V"))
-	private BlockState enchancement$bouncySlimeParticle(BlockState value) {
+	private BlockState enchancement$bouncy(BlockState value) {
 		if (EnchantmentHelper.getEquipmentLevel(ModEnchantments.BOUNCY, LivingEntity.class.cast(this)) > 0) {
 			return Blocks.SLIME_BLOCK.getDefaultState();
 		}
@@ -45,14 +45,14 @@ public abstract class LivingEntityMixin extends Entity {
 	}
 
 	@Inject(method = "getFallSound", at = @At("HEAD"), cancellable = true)
-	private void enchancement$bouncyFallSound(int distance, CallbackInfoReturnable<SoundEvent> cir) {
+	private void enchancement$bouncy(int distance, CallbackInfoReturnable<SoundEvent> cir) {
 		if (EnchantmentHelper.getEquipmentLevel(ModEnchantments.BOUNCY, LivingEntity.class.cast(this)) > 0) {
 			cir.setReturnValue(SoundEvents.BLOCK_SLIME_BLOCK_FALL);
 		}
 	}
 
 	@Inject(method = "handleFallDamage", at = @At("HEAD"), cancellable = true)
-	private void enchancement$bouncyBounceOnFall(float fallDistance, float damageMultiplier, DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
+	private void enchancement$bouncy(float fallDistance, float damageMultiplier, DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
 		if (!world.isClient && fallDistance > getSafeFallDistance() && EnchantmentHelper.getEquipmentLevel(ModEnchantments.BOUNCY, LivingEntity.class.cast(this)) > 0) {
 			if (!bypassesLandingEffects()) {
 				setVelocity(getVelocity().getX(), -prevVelocity.getY() * 0.99, getVelocity().getZ());

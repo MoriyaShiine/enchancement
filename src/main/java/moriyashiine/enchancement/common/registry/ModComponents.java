@@ -15,6 +15,9 @@ import net.minecraft.util.Identifier;
 public class ModComponents implements EntityComponentInitializer {
 	public static final ComponentKey<MovingForwardComponent> MOVING_FORWARD = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "moving_forward"), MovingForwardComponent.class);
 
+	public static final ComponentKey<AssimilationComponent> ASSIMILATION = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "assimilation"), AssimilationComponent.class);
+	public static final ComponentKey<BuffetComponent> BUFFET = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "buffet"), BuffetComponent.class);
+
 	public static final ComponentKey<AccelerationComponent> ACCELERATION = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "acceleration"), AccelerationComponent.class);
 	public static final ComponentKey<SlideComponent> SLIDE = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "slide"), SlideComponent.class);
 
@@ -27,6 +30,8 @@ public class ModComponents implements EntityComponentInitializer {
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
 		registry.registerForPlayers(MOVING_FORWARD, MovingForwardComponent::new, RespawnCopyStrategy.NEVER_COPY);
+		registry.registerForPlayers(ASSIMILATION, AssimilationComponent::new, RespawnCopyStrategy.NEVER_COPY);
+		registry.registerForPlayers(BUFFET, BuffetComponent::new, RespawnCopyStrategy.NEVER_COPY);
 		registry.registerForPlayers(ACCELERATION, AccelerationComponent::new, RespawnCopyStrategy.NEVER_COPY);
 		registry.registerForPlayers(SLIDE, SlideComponent::new, RespawnCopyStrategy.NEVER_COPY);
 		registry.registerFor(MobEntity.class, FROZEN, FrozenComponent::new);

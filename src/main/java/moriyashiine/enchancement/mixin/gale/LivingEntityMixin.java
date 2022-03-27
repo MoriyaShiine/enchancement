@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
 	@ModifyVariable(method = "handleFallDamage", at = @At("HEAD"), ordinal = 0, argsOnly = true)
-	private float enchancement$galeSafeFall(float value) {
+	private float enchancement$gale(float value) {
 		if (EnchantmentHelper.getEquipmentLevel(ModEnchantments.GALE, LivingEntity.class.cast(this)) > 0) {
 			value = Math.max(0, value - 2);
 		}
@@ -18,7 +18,7 @@ public class LivingEntityMixin {
 	}
 
 	@ModifyVariable(method = "jump", at = @At("STORE"))
-	private double enchancement$galeBoostJumpHeight(double value) {
+	private double enchancement$gale(double value) {
 		if (EnchantmentHelper.getEquipmentLevel(ModEnchantments.GALE, LivingEntity.class.cast(this)) > 0) {
 			value *= 1.5;
 		}

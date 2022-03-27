@@ -1,7 +1,7 @@
 package moriyashiine.enchancement.common.component.entity;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
+import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
 import moriyashiine.enchancement.common.registry.ModComponents;
 import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import net.minecraft.entity.MovementType;
@@ -9,7 +9,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.nbt.NbtCompound;
 
-public class FrozenComponent implements AutoSyncedComponent, CommonTickingComponent {
+public class FrozenComponent implements AutoSyncedComponent, ServerTickingComponent {
 	private final MobEntity obj;
 	private boolean frozen = false;
 	private int ticksFrozen = 0;
@@ -42,27 +42,25 @@ public class FrozenComponent implements AutoSyncedComponent, CommonTickingCompon
 	}
 
 	@Override
-	public void tick() {
-		if (!obj.world.isClient) {
-			if (isFrozen()) {
-				if (!obj.isAiDisabled()) {
-					obj.setAiDisabled(true);
-				}
-				ticksFrozen++;
-				if (ticksFrozen > 200 && obj.getRandom().nextFloat() < 1 / 64F && !obj.hasCustomName()) {
-					obj.damage(DamageSource.GENERIC, 2);
-				}
-				if (obj.horizontalCollision && obj.getVelocity().length() >= 0.05) {
-					obj.damage(DamageSource.FLY_INTO_WALL, 2);
-				}
-				if (ticksFrozen <= 10) {
-					obj.setVelocity(obj.getVelocity().multiply(0.25));
-				}
-				if (!obj.hasNoGravity()) {
-					obj.setVelocity(obj.getVelocity().add(0, -0.02, 0));
-				}
-				obj.move(MovementType.SELF, obj.getVelocity());
+	public void serverTick() {
+		if (frozen) {
+			if (!obj.isAiDisabled()) {
+				obj.setAiDisabled(true);
 			}
+			ticksFrozen++;
+			if (ticksFrozen > 200 && obj.getRandom().nextFloat() < 1 / 64F && !obj.hasCustomName()) {
+				obj.damage(DamageSource.GENERIC, 2);
+			}
+			if (obj.horizontalCollision && obj.getVelocity().length() >= 0.05) {
+				obj.damage(DamageSource.FLY_INTO_WALL, 2);
+			}
+			if (ticksFrozen <= 10) {
+				obj.setVelocity(obj.getVelocity().multiply(0.25));
+			}
+			if (!obj.hasNoGravity()) {
+				obj.setVelocity(obj.getVelocity().add(0, -0.02, 0));
+			}
+			obj.move(MovementType.SELF, obj.getVelocity());
 		}
 	}
 

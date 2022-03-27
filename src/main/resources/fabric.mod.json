@@ -43,6 +43,8 @@
   "custom": {
 	"cardinal-components": [
 	  "enchancement:moving_forward",
+	  "enchancement:assimilation",
+	  "enchancement:buffet",
 	  "enchancement:acceleration",
 	  "enchancement:slide",
 	  "enchancement:frozen",
