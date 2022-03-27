@@ -17,7 +17,7 @@ public class ModConfig implements ConfigData {
 			"enchancement:acceleration",
 			"enchancement:bouncy", "enchancement:gale",
 			"minecraft:fire_aspect", "enchancement:frostbite",
-			"enchancement:chaos",
+			"enchancement:chaos", "enchancement:delay",
 			"minecraft:riptide", "enchancement:warp",
 			"enchancement:disarm", "enchancement:grapple", "minecraft:luck_of_the_sea",
 			"enchancement:molten",

@@ -27,15 +27,11 @@ public class WarpComponent implements AutoSyncedComponent, ClientTickingComponen
 
 	@Override
 	public void clientTick() {
-		if (getShouldSpawnParticles()) {
+		if (shouldSpawnParticles) {
 			for (int i = 0; i < 8; i++) {
 				obj.world.addParticle(ParticleTypes.REVERSE_PORTAL, obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 0, 0);
 			}
 		}
-	}
-
-	public boolean getShouldSpawnParticles() {
-		return shouldSpawnParticles;
 	}
 
 	public void setShouldSpawnParticles(boolean shouldSpawnParticles) {

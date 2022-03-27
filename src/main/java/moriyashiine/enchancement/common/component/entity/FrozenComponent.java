@@ -48,14 +48,14 @@ public class FrozenComponent implements AutoSyncedComponent, CommonTickingCompon
 				if (!obj.isAiDisabled()) {
 					obj.setAiDisabled(true);
 				}
-				setTicksFrozen(getTicksFrozen() + 1);
-				if (getTicksFrozen() > 200 && obj.getRandom().nextFloat() < 1 / 64F && !obj.hasCustomName()) {
+				ticksFrozen++;
+				if (ticksFrozen > 200 && obj.getRandom().nextFloat() < 1 / 64F && !obj.hasCustomName()) {
 					obj.damage(DamageSource.GENERIC, 2);
 				}
 				if (obj.horizontalCollision && obj.getVelocity().length() >= 0.05) {
 					obj.damage(DamageSource.FLY_INTO_WALL, 2);
 				}
-				if (getTicksFrozen() <= 10) {
+				if (ticksFrozen <= 10) {
 					obj.setVelocity(obj.getVelocity().multiply(0.25));
 				}
 				if (!obj.hasNoGravity()) {
@@ -75,60 +75,32 @@ public class FrozenComponent implements AutoSyncedComponent, CommonTickingCompon
 		ModComponents.FROZEN.sync(obj);
 	}
 
-	public int getTicksFrozen() {
-		return ticksFrozen;
-	}
-
-	public void setTicksFrozen(int ticksFrozen) {
-		this.ticksFrozen = ticksFrozen;
-	}
-
 	public float getForcedHeadYaw() {
 		return forcedHeadYaw;
-	}
-
-	public void setForcedHeadYaw(float forcedHeadYaw) {
-		this.forcedHeadYaw = forcedHeadYaw;
 	}
 
 	public float getForcedBodyYaw() {
 		return forcedBodyYaw;
 	}
 
-	public void setForcedBodyYaw(float forcedBodyYaw) {
-		this.forcedBodyYaw = forcedBodyYaw;
-	}
-
 	public float getForcedPitch() {
 		return forcedPitch;
-	}
-
-	public void setForcedPitch(float forcedPitch) {
-		this.forcedPitch = forcedPitch;
 	}
 
 	public float getForcedLimbDistance() {
 		return forcedLimbDistance;
 	}
 
-	public void setForcedLimbDistance(float forcedLimbDistance) {
-		this.forcedLimbDistance = forcedLimbDistance;
-	}
-
 	public float getForcedLimbAngle() {
 		return forcedLimbAngle;
 	}
 
-	public void setForcedLimbAngle(float forcedLimbAngle) {
-		this.forcedLimbAngle = forcedLimbAngle;
-	}
-
 	public void freeze() {
-		setForcedHeadYaw(obj.headYaw);
-		setForcedBodyYaw(obj.bodyYaw);
-		setForcedPitch(obj.getPitch());
-		setForcedLimbDistance(obj.limbDistance);
-		setForcedLimbAngle(obj.limbAngle);
+		forcedHeadYaw = obj.headYaw;
+		forcedBodyYaw = obj.bodyYaw;
+		forcedPitch = obj.getPitch();
+		forcedLimbDistance = obj.limbDistance;
+		forcedLimbAngle = obj.limbAngle;
 		setFrozen(true);
 		obj.playSound(ModSoundEvents.ENTITY_GENERIC_FREEZE, 1, 1);
 		obj.setSilent(true);

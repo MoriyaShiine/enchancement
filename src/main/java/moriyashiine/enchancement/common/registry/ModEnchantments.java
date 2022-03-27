@@ -27,12 +27,13 @@ public class ModEnchantments {
 
 	public static final Enchantment FROSTBITE = new FrostbiteEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.WEAPON, EquipmentSlot.MAINHAND);
 
-	public static final Enchantment CHAOS = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.BOW, EquipmentSlot.MAINHAND);
+	public static final Enchantment CHAOS = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.BOW, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
+	public static final Enchantment DELAY = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.BOW, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
 
-	public static final Enchantment WARP = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.TRIDENT, EquipmentSlot.MAINHAND);
+	public static final Enchantment WARP = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.TRIDENT, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
 
-	public static final Enchantment DISARM = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.FISHING_ROD, EquipmentSlot.MAINHAND);
-	public static final Enchantment GRAPPLE = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.FISHING_ROD, EquipmentSlot.MAINHAND);
+	public static final Enchantment DISARM = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.FISHING_ROD, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
+	public static final Enchantment GRAPPLE = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.FISHING_ROD, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
 
 	public static final Enchantment MOLTEN = new MoltenEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.DIGGER, EquipmentSlot.MAINHAND);
 
@@ -54,6 +55,7 @@ public class ModEnchantments {
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "frostbite"), FROSTBITE);
 
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "chaos"), CHAOS);
+		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "delay"), DELAY);
 
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "warp"), WARP);
 

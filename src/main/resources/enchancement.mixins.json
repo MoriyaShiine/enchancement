@@ -14,6 +14,8 @@
 	"core.EnchantmentMixin",
 	"core.RegistryMixin",
 	"core.SingleLevelModeMixin",
+	"delay.ArrowEntityMixin",
+	"delay.PersistentProjectileEntityMixin",
 	"disarm.FishingBobberEntityMixin",
 	"frostbite.LivingEntityMixin",
 	"gale.LivingEntityMixin",
