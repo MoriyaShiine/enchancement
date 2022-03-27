@@ -3,6 +3,7 @@ package moriyashiine.enchancement.common.component.entity;
 import dev.emi.stepheightentityattribute.StepHeightEntityAttributeMain;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.common.EnchancementUtil;
+import moriyashiine.enchancement.common.packet.SyncMovingForwardPacket;
 import moriyashiine.enchancement.common.registry.ModComponents;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -38,16 +39,6 @@ public class AccelerationComponent implements CommonTickingComponent {
 	public void tick() {
 		obj.airStrafingSpeed *= speedMultiplier;
 		boolean hasEnchantment = EnchantmentHelper.getEquipmentLevel(ModEnchantments.ACCELERATION, obj) > 0;
-		if (!obj.world.isClient) {
-			EntityAttributeInstance attribute = obj.getAttributeInstance(StepHeightEntityAttributeMain.STEP_HEIGHT);
-			if (hasEnchantment && !obj.isSneaking()) {
-				if (!attribute.hasModifier(STEP_HEIGHT_INCREASE)) {
-					attribute.addPersistentModifier(STEP_HEIGHT_INCREASE);
-				}
-			} else if (attribute.hasModifier(STEP_HEIGHT_INCREASE)) {
-				attribute.removeModifier(STEP_HEIGHT_INCREASE);
-			}
-		}
 		if (hasEnchantment) {
 			if (!obj.horizontalCollision && obj.isSprinting() && EnchancementUtil.isGroundedOrJumping(obj) && ModComponents.MOVING_FORWARD.get(obj).isMovingForward()) {
 				if (speedMultiplier < 2) {
@@ -58,6 +49,26 @@ public class AccelerationComponent implements CommonTickingComponent {
 			}
 		} else if (speedMultiplier != 1) {
 			speedMultiplier = 1;
+		}
+		if (!obj.world.isClient) {
+			EntityAttributeInstance attribute = obj.getAttributeInstance(StepHeightEntityAttributeMain.STEP_HEIGHT);
+			if (hasEnchantment && !obj.isSneaking()) {
+				if (!attribute.hasModifier(STEP_HEIGHT_INCREASE)) {
+					attribute.addPersistentModifier(STEP_HEIGHT_INCREASE);
+				}
+			} else if (attribute.hasModifier(STEP_HEIGHT_INCREASE)) {
+				attribute.removeModifier(STEP_HEIGHT_INCREASE);
+			}
+		} else {
+			ModComponents.MOVING_FORWARD.maybeGet(obj).ifPresent(movingForwardComponent -> {
+				if (obj.forwardSpeed > 0) {
+					if (!movingForwardComponent.isMovingForward() && EnchantmentHelper.getEquipmentLevel(ModEnchantments.ACCELERATION, obj) > 0) {
+						SyncMovingForwardPacket.send(true);
+					}
+				} else if (movingForwardComponent.isMovingForward()) {
+					SyncMovingForwardPacket.send(false);
+				}
+			});
 		}
 	}
 
