@@ -3,6 +3,8 @@ package moriyashiine.enchancement.mixin.disarm;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
+import net.minecraft.entity.mob.EndermanEntity;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.ItemStack;
@@ -44,8 +46,11 @@ public abstract class FishingBobberEntityMixin extends Entity {
 	private void enchancment$disarm(Entity entity, CallbackInfo ci) {
 		if (!world.isClient && hasDisarm && entity instanceof LivingEntity living) {
 			ItemStack stack = living.getMainHandStack();
+			if (entity instanceof EndermanEntity enderman && enderman.getCarriedBlock() != null) {
+				stack = new ItemStack(enderman.getCarriedBlock().getBlock());
+			}
 			if (!stack.isEmpty()) {
-				if (living instanceof PlayerEntity player) {
+				if (entity instanceof PlayerEntity player) {
 					if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
 						player.getItemCooldownManager().set(stack.getItem(), 100);
 						player.stopUsingItem();
@@ -53,13 +58,21 @@ public abstract class FishingBobberEntityMixin extends Entity {
 				} else {
 					PlayerEntity owner = getPlayerOwner();
 					if (owner != null) {
-						ItemEntity itemEntity = new ItemEntity(world, getX(), getY(), getZ(), stack);
+						ItemEntity itemEntity = dropStack(stack);
 						double deltaX = owner.getX() - getX();
 						double deltaY = owner.getY() - getY();
 						double deltaZ = owner.getZ() - getZ();
 						itemEntity.setVelocity(deltaX * 0.1, deltaY * 0.1 + Math.sqrt(Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ)) * 0.08, deltaZ * 0.1);
 						world.spawnEntity(itemEntity);
 						living.equipStack(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+						if (entity instanceof MobEntity mob) {
+							if (!owner.isCreative()) {
+								mob.setTarget(owner);
+							}
+							if (entity instanceof EndermanEntity enderman) {
+								enderman.setCarriedBlock(null);
+							}
+						}
 					}
 				}
 				ci.cancel();
