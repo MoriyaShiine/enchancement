@@ -7,6 +7,15 @@
 	],
 	"subtitle": "subtitles.enchancement.entity.ice_shard.shatter"
   },
+  "entity.generic.dash": {
+	"sounds": [
+	  "dig/sand1",
+	  "dig/sand2",
+	  "dig/sand3",
+	  "dig/sand4"
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.dash"
+  },
   "entity.generic.air_jump": {
 	"sounds": [
 	  "dig/sand1",

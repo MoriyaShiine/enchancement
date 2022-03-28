@@ -21,6 +21,7 @@ public class ModEnchantments {
 	public static final Enchantment AMPHIBIOUS = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_CHEST, EquipmentSlot.CHEST);
 
 	public static final Enchantment ACCELERATION = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_LEGS, EquipmentSlot.LEGS);
+	public static final Enchantment DASH = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_LEGS, EquipmentSlot.LEGS);
 	public static final Enchantment SLIDE = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_LEGS, EquipmentSlot.LEGS);
 
 	public static final Enchantment BOUNCY = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_FEET, EquipmentSlot.FEET);
@@ -49,6 +50,7 @@ public class ModEnchantments {
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "amphibious"), AMPHIBIOUS);
 
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "acceleration"), ACCELERATION);
+		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "dash"), DASH);
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "slide"), SLIDE);
 
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "bouncy"), BOUNCY);

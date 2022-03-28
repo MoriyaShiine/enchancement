@@ -1,5 +1,6 @@
 package moriyashiine.enchancement.client;
 
+import moriyashiine.enchancement.client.packet.AddDashParticlesPacket;
 import moriyashiine.enchancement.client.packet.AddGaleParticlesPacket;
 import moriyashiine.enchancement.client.packet.AddIceShardParticlesPacket;
 import moriyashiine.enchancement.client.packet.AddMoltenParticlesPacket;
@@ -26,6 +27,7 @@ public class EnchancementClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		ClientPlayNetworking.registerGlobalReceiver(AddIceShardParticlesPacket.ID, AddIceShardParticlesPacket::receive);
+		ClientPlayNetworking.registerGlobalReceiver(AddDashParticlesPacket.ID, AddDashParticlesPacket::receive);
 		ClientPlayNetworking.registerGlobalReceiver(AddGaleParticlesPacket.ID, AddGaleParticlesPacket::receive);
 		ClientPlayNetworking.registerGlobalReceiver(AddMoltenParticlesPacket.ID, AddMoltenParticlesPacket::receive);
 		EntityRendererRegistry.register(ModEntityTypes.ICE_SHARD, IceShardEntityRenderer::new);

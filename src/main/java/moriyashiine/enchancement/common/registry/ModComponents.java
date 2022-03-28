@@ -19,6 +19,7 @@ public class ModComponents implements EntityComponentInitializer {
 	public static final ComponentKey<BuffetComponent> BUFFET = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "buffet"), BuffetComponent.class);
 
 	public static final ComponentKey<AccelerationComponent> ACCELERATION = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "acceleration"), AccelerationComponent.class);
+	public static final ComponentKey<DashComponent> DASH = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "dash"), DashComponent.class);
 	public static final ComponentKey<SlideComponent> SLIDE = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "slide"), SlideComponent.class);
 
 	public static final ComponentKey<GaleComponent> GALE = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "gale"), GaleComponent.class);
@@ -35,6 +36,7 @@ public class ModComponents implements EntityComponentInitializer {
 		registry.registerForPlayers(ASSIMILATION, AssimilationComponent::new, RespawnCopyStrategy.NEVER_COPY);
 		registry.registerForPlayers(BUFFET, BuffetComponent::new, RespawnCopyStrategy.NEVER_COPY);
 		registry.registerForPlayers(ACCELERATION, AccelerationComponent::new, RespawnCopyStrategy.NEVER_COPY);
+		registry.registerForPlayers(DASH, DashComponent::new, RespawnCopyStrategy.NEVER_COPY);
 		registry.registerForPlayers(SLIDE, SlideComponent::new, RespawnCopyStrategy.NEVER_COPY);
 		registry.registerForPlayers(GALE, GaleComponent::new, RespawnCopyStrategy.NEVER_COPY);
 		registry.registerFor(MobEntity.class, FROZEN, FrozenComponent::new);
