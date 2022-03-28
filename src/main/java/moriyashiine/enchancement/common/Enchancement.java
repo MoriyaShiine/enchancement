@@ -7,7 +7,6 @@ import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import moriyashiine.enchancement.common.config.IdentifierTypeAdapter;
 import moriyashiine.enchancement.common.config.ModConfig;
 import moriyashiine.enchancement.common.packet.AttemptGaleJumpPacket;
-import moriyashiine.enchancement.common.packet.SyncDashPacket;
 import moriyashiine.enchancement.common.packet.SyncMovingForwardPacket;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModEntityTypes;
@@ -36,7 +35,6 @@ public class Enchancement implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		ServerPlayNetworking.registerGlobalReceiver(SyncMovingForwardPacket.ID, SyncMovingForwardPacket::receive);
-		ServerPlayNetworking.registerGlobalReceiver(SyncDashPacket.ID, SyncDashPacket::receive);
 		ServerPlayNetworking.registerGlobalReceiver(AttemptGaleJumpPacket.ID, AttemptGaleJumpPacket::receive);
 		ModEntityTypes.init();
 		ModEnchantments.init();

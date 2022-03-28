@@ -1,14 +1,16 @@
 package moriyashiine.enchancement.common.component.entity;
 
-import dev.onyxstudios.cca.api.v3.component.tick.ClientTickingComponent;
+import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.common.EnchancementUtil;
-import moriyashiine.enchancement.common.packet.SyncDashPacket;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
+import moriyashiine.enchancement.common.registry.ModSoundEvents;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleTypes;
 
-public class DashComponent implements ClientTickingComponent {
+public class DashComponent implements CommonTickingComponent {
 	private final PlayerEntity obj;
 	private boolean shouldRefreshDash = false;
 	private int dashCooldown = 0, wavedashTimer = 0;
@@ -34,7 +36,7 @@ public class DashComponent implements ClientTickingComponent {
 	}
 
 	@Override
-	public void clientTick() {
+	public void tick() {
 		if (EnchantmentHelper.getEquipmentLevel(ModEnchantments.DASH, obj) > 0) {
 			boolean onGround = obj.isOnGround();
 			boolean sneaking = obj.isSneaking();
@@ -54,11 +56,19 @@ public class DashComponent implements ClientTickingComponent {
 				wavedashTimer = 3;
 				obj.setVelocity(obj.getRotationVector().normalize());
 				obj.fallDistance = 0;
-				SyncDashPacket.send(true, obj.getVelocity());
+				if (!obj.world.isClient) {
+					obj.world.playSoundFromEntity(null, obj, ModSoundEvents.ENTITY_GENERIC_DASH, obj.getSoundCategory(), 1, 1);
+				} else {
+					MinecraftClient client = MinecraftClient.getInstance();
+					if (client.gameRenderer.getCamera().isThirdPerson() || obj != client.cameraEntity) {
+						for (int i = 0; i < 8; i++) {
+							obj.world.addParticle(ParticleTypes.CLOUD, obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 0, 0);
+						}
+					}
+				}
 			}
 			wasSneaking = sneaking;
-		}
-		else {
+		} else {
 			shouldRefreshDash = false;
 			dashCooldown = 0;
 			wavedashTimer = 0;
