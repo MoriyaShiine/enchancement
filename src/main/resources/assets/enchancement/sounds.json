@@ -25,13 +25,6 @@
 	],
 	"subtitle": "subtitles.enchancement.entity.generic.air_jump"
   },
-  "entity.generic.teleport": {
-	"sounds": [
-	  "mob/endermen/portal",
-	  "mob/endermen/portal2"
-	],
-	"subtitle": "subtitles.enchancement.entity.generic.teleport"
-  },
   "entity.generic.freeze": {
 	"sounds": [
 	  "entity/player/hurt/freeze_hurt1",
@@ -41,6 +34,13 @@
 	  "entity/player/hurt/freeze_hurt5"
 	],
 	"subtitle": "subtitles.enchancement.entity.generic.freeze"
+  },
+  "entity.generic.teleport": {
+	"sounds": [
+	  "mob/endermen/portal",
+	  "mob/endermen/portal2"
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.teleport"
   },
   "block.generic.smelt": {
 	"sounds": [
