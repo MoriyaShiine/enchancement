@@ -1,6 +1,7 @@
 package moriyashiine.enchancement.common.component.entity;
 
 import dev.onyxstudios.cca.api.v3.component.tick.ClientTickingComponent;
+import moriyashiine.enchancement.common.EnchancementUtil;
 import moriyashiine.enchancement.common.packet.SyncDashPacket;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -47,7 +48,7 @@ public class DashComponent implements ClientTickingComponent {
 			if (wavedashTimer > 0) {
 				wavedashTimer--;
 			}
-			if (!onGround && dashCooldown == 0 && sneaking && !wasSneaking) {
+			if (!onGround && dashCooldown == 0 && sneaking && !wasSneaking && EnchancementUtil.isGroundedOrJumping(obj)) {
 				shouldRefreshDash = false;
 				dashCooldown = 20;
 				wavedashTimer = 3;
@@ -56,6 +57,12 @@ public class DashComponent implements ClientTickingComponent {
 				SyncDashPacket.send(true, obj.getVelocity());
 			}
 			wasSneaking = sneaking;
+		}
+		else {
+			shouldRefreshDash = false;
+			dashCooldown = 0;
+			wavedashTimer = 0;
+			wasSneaking = false;
 		}
 	}
 
