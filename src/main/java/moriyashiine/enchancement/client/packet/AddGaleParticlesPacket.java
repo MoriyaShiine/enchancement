@@ -28,7 +28,7 @@ public class AddGaleParticlesPacket {
 			ClientWorld world = client.world;
 			if (world != null) {
 				Entity entity = world.getEntityById(id);
-				if (entity != null) {
+				if (entity != null && (client.gameRenderer.getCamera().isThirdPerson() || entity != client.cameraEntity)) {
 					for (int i = 0; i < 8; i++) {
 						world.addParticle(ParticleTypes.CLOUD, entity.getParticleX(1), entity.getY(), entity.getParticleZ(1), 0, 0, 0);
 					}
