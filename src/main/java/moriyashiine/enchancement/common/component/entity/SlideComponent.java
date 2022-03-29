@@ -39,8 +39,7 @@ public class SlideComponent implements CommonTickingComponent {
 					if (ticksSliding <= 40) {
 						if (onGround) {
 							((EntityAccessor) obj).enchancement$spawnSprintingParticles();
-						}
-						else {
+						} else {
 							obj.airStrafingSpeed *= 10;
 						}
 					}

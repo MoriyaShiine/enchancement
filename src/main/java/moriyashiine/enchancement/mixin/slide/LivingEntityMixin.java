@@ -38,4 +38,13 @@ public class LivingEntityMixin {
 		}
 		return value;
 	}
+
+	@ModifyVariable(method = "handleFallDamage", at = @At("HEAD"), ordinal = 0, argsOnly = true)
+	private float enchancement$slideFall(float value) {
+		SlideComponent slideComponent = ModComponents.SLIDE.getNullable(this);
+		if (slideComponent != null && slideComponent.shouldSlide()) {
+			return Math.max(0, value - 4);
+		}
+		return value;
+	}
 }
