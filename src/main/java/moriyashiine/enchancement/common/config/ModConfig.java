@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 public class ModConfig implements ConfigData {
 	@ConfigEntry.Gui.RequiresRestart
 	public List<Identifier> allowedEnchantments = Stream.of("enchancement:assimilation", "enchancement:buffet", "enchancement:perception",
-			"enchancement:amphibious",
+			"enchancement:amphibious", "enchancement:wardenspine",
 			"enchancement:dash", "enchancement:slide",
 			"enchancement:acceleration", "enchancement:bouncy", "enchancement:gale",
 			"minecraft:fire_aspect", "enchancement:frostbite",

@@ -19,6 +19,7 @@ public class ModEnchantments {
 	public static final Enchantment PERCEPTION = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_HEAD, EquipmentSlot.HEAD);
 
 	public static final Enchantment AMPHIBIOUS = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_CHEST, EquipmentSlot.CHEST);
+	public static final Enchantment WARDENSPINE = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_CHEST, EquipmentSlot.CHEST);
 
 	public static final Enchantment DASH = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_LEGS, EquipmentSlot.LEGS);
 	public static final Enchantment SLIDE = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_LEGS, EquipmentSlot.LEGS);
@@ -49,6 +50,7 @@ public class ModEnchantments {
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "perception"), PERCEPTION);
 
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "amphibious"), AMPHIBIOUS);
+		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "wardenspine"), WARDENSPINE);
 
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "dash"), DASH);
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "slide"), SLIDE);

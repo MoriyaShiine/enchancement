@@ -32,6 +32,7 @@
 	"vanillachanges.FishingRodItemMixin",
 	"vanillachanges.ItemStackMixin",
 	"vanillachanges.TridentEntityMixin",
+	"wardenspine.LivingEntityMixin",
 	"warp.PersistentProjectileEntityMixin",
 	"warp.TridentEntityMixin"
   ],
