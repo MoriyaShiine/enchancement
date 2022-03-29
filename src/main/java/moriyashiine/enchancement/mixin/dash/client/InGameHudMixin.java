@@ -38,8 +38,8 @@ public abstract class InGameHudMixin extends DrawableHelper {
 			if (dashComponent.getDashCooldown() > 0) {
 				matrices.push();
 				RenderSystem.setShaderTexture(0, DASH_TEXTURE);
-				drawTexture(matrices, (int) (scaledWidth / 2F) - 8, (int) (scaledHeight / 2F) + 16, 0, 3, 16, 3, 16, 6);
-				drawTexture(matrices, (int) (scaledWidth / 2F) - 8, (int) (scaledHeight / 2F) + 16, 0, 0, (int) (16 - (dashComponent.getDashCooldown() / 20F) * 16), 3, 16, 6);
+				drawTexture(matrices, (int) (scaledWidth / 2F) - 8, (int) (scaledHeight / 2F) + 16, 0, 4, 16, 4, 16, 8);
+				drawTexture(matrices, (int) (scaledWidth / 2F) - 8, (int) (scaledHeight / 2F) + 16, 0, 0, (int) (16 - (dashComponent.getDashCooldown() / 20F) * 16), 4, 16, 8);
 				RenderSystem.setShaderTexture(0, GUI_ICONS_TEXTURE);
 				matrices.pop();
 			}
