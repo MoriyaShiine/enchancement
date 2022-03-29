@@ -17,7 +17,7 @@ public class LivingEntityMixin {
 		if (LivingEntity.class.cast(this) instanceof PlayerEntity player && player.isSneaking()) {
 			SlideComponent slideComponent = ModComponents.SLIDE.get(player);
 			if (slideComponent.shouldSlide()) {
-				return slipperiness * MathHelper.lerp(slideComponent.getTicksSliding() / 60F, 0.45F, 1);
+				return slipperiness * MathHelper.lerp(slideComponent.getTicksSliding() / 60F, 0.45F, 0.8F);
 			}
 		}
 		return slipperiness;
