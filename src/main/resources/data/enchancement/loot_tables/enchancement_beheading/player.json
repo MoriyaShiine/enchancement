@@ -1,0 +1,5 @@
+{
+  "entity_type": "minecraft:player",
+  "drop": "minecraft:player_head",
+  "chance": 1
+}

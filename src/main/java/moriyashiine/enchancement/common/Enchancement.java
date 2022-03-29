@@ -10,6 +10,7 @@ import moriyashiine.enchancement.common.config.ModConfig;
 import moriyashiine.enchancement.common.packet.AttemptGaleJumpPacket;
 import moriyashiine.enchancement.common.packet.SyncMovingForwardPacket;
 import moriyashiine.enchancement.common.registry.*;
+import moriyashiine.enchancement.common.util.BeheadingEntry;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
@@ -67,6 +68,7 @@ public class Enchancement implements ModInitializer {
 			}
 			return ActionResult.PASS;
 		});
+		BeheadingEntry.initEvent();
 		UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
 			if (!entity.getType().isIn(ModTags.EntityTypes.CANNOT_BURY) && entity instanceof LivingEntity living) {
 				ItemStack stack = player.getStackInHand(hand);

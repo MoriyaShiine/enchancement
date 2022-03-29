@@ -1,4 +1,4 @@
-package moriyashiine.enchancement.common;
+package moriyashiine.enchancement.common.util;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;

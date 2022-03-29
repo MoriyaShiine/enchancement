@@ -1,0 +1,5 @@
+{
+  "entity_type": "minecraft:drowned",
+  "drop": "minecraft:zombie_head",
+  "chance": 0.2
+}

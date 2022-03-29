@@ -6,6 +6,8 @@
   "mixins": [
 	"acceleration.PlayerEntityMixin",
 	"amphibious.EnchantmentHelperMixin",
+	"beheading.LivingEntityMixin",
+	"beheading.LootManagerMixin",
 	"bouncy.LivingEntityMixin",
 	"buffet.LivingEntityAccessor",
 	"bury.AbstractBlockMixin",

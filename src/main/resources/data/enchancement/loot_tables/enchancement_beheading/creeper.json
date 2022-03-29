@@ -1,0 +1,5 @@
+{
+  "entity_type": "minecraft:creeper",
+  "drop": "minecraft:creeper_head",
+  "chance": 0.2
+}
