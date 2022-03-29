@@ -3,6 +3,7 @@ package moriyashiine.enchancement.client;
 import moriyashiine.enchancement.client.packet.AddGaleParticlesPacket;
 import moriyashiine.enchancement.client.packet.AddIceShardParticlesPacket;
 import moriyashiine.enchancement.client.packet.AddMoltenParticlesPacket;
+import moriyashiine.enchancement.client.render.FrozenTextureManager;
 import moriyashiine.enchancement.client.render.entity.IceShardEntityRenderer;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.EnchantmentEffects;
@@ -19,6 +20,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
@@ -27,6 +29,7 @@ import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
@@ -39,6 +42,7 @@ public class EnchancementClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(AddGaleParticlesPacket.ID, AddGaleParticlesPacket::receive);
 		ClientPlayNetworking.registerGlobalReceiver(AddMoltenParticlesPacket.ID, AddMoltenParticlesPacket::receive);
 		EntityRendererRegistry.register(ModEntityTypes.ICE_SHARD, IceShardEntityRenderer::new);
+		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(FrozenTextureManager.getInstance());
 		initEvents();
 	}
 
