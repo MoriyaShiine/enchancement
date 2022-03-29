@@ -30,7 +30,9 @@ public class LivingEntityMixin {
 			if (slideComponent.shouldSlide()) {
 				int ticksSliding = slideComponent.getTicksSliding();
 				if (ticksSliding > 0) {
-					return value.multiply(MathHelper.lerp(MathHelper.clamp((ticksSliding - 20) / 20F, 0, 1), 5, 1));
+					slideComponent.setShouldSlide(false);
+					slideComponent.setTicksSliding(60);
+					return value.multiply(MathHelper.lerp(MathHelper.clamp((ticksSliding - 20) / 20F, 0, 1), 8, 1));
 				}
 			}
 		}

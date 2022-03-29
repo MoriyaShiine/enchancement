@@ -6,6 +6,7 @@ import moriyashiine.enchancement.mixin.slide.EntityAccessor;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
 
 public class SlideComponent implements CommonTickingComponent {
@@ -34,12 +35,16 @@ public class SlideComponent implements CommonTickingComponent {
 					obj.setSprinting(false);
 				}
 				if (shouldSlide) {
-					if (ticksSliding < 60) {
-						if (ticksSliding <= 40) {
+					boolean onGround = obj.isOnGround();
+					if (ticksSliding <= 40) {
+						if (onGround) {
 							((EntityAccessor) obj).enchancement$spawnSprintingParticles();
 						}
-						ticksSliding++;
+						else {
+							obj.airStrafingSpeed *= 10;
+						}
 					}
+					ticksSliding = MathHelper.clamp(ticksSliding + (onGround ? 1 : -4), 0, 60);
 				}
 			} else {
 				shouldSlide = false;
@@ -57,7 +62,15 @@ public class SlideComponent implements CommonTickingComponent {
 		return shouldSlide;
 	}
 
+	public void setShouldSlide(boolean shouldSlide) {
+		this.shouldSlide = shouldSlide;
+	}
+
 	public int getTicksSliding() {
 		return ticksSliding;
+	}
+
+	public void setTicksSliding(int ticksSliding) {
+		this.ticksSliding = ticksSliding;
 	}
 }
