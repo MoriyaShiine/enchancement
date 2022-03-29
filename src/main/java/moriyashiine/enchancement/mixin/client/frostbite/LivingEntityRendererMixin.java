@@ -1,5 +1,6 @@
 package moriyashiine.enchancement.mixin.client.frostbite;
 
+import moriyashiine.enchancement.client.render.FrozenTextureManager;
 import moriyashiine.enchancement.common.registry.ModComponents;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -14,12 +15,14 @@ import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -114,27 +117,11 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
 		}
 	}
 
-//	@Inject(method = "getRenderLayer", at = @At("HEAD"), cancellable = true)
-//	private void enchancement$frostbiteTexture(T entity, boolean showBody, boolean translucent, boolean showOutline, CallbackInfoReturnable<@Nullable RenderLayer> cir) {
-//		ModComponents.FROZEN.maybeGet(entity).ifPresent(frozenComponent -> {
-//			if (frozenComponent.isFrozen()) {
-//				if (frozenTexture == null) {
-//					frozenTexture = new Identifier(Enchancement.MOD_ID, "textures/entity/living/frozen.png");
-//				}
-//				cir.setReturnValue(EnchancementClient.FROZEN);
-//			}
-//		});
-//	}
-
-//	@ModifyVariable(method = "getRenderLayer", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/render/entity/LivingEntityRenderer;getTexture(Lnet/minecraft/entity/Entity;)Lnet/minecraft/util/Identifier;"))
-//	private Identifier enchancement$frostbiteTexture(Identifier value, LivingEntity living) {
-//		if (living instanceof MobEntity && ModComponents.FROZEN.get(living).isFrozen()) {
-//			if (frozenTexture == null) {
-////				String size = "64x64";
-//				frozenTexture = new Identifier(Enchancement.MOD_ID, "textures/entity/living/frozen.png");
-//			}
-//			return frozenTexture;
-//		}
-//		return value;
-//	}
+	@ModifyVariable(method = "getRenderLayer", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/render/entity/LivingEntityRenderer;getTexture(Lnet/minecraft/entity/Entity;)Lnet/minecraft/util/Identifier;"))
+	private Identifier enchancement$frostbiteTexture(Identifier value, LivingEntity living) {
+		if (living instanceof MobEntity && ModComponents.FROZEN.get(living).isFrozen()) {
+			return FrozenTextureManager.getInstance().getTexture(value);
+		}
+		return value;
+	}
 }
