@@ -24,6 +24,9 @@ public abstract class LivingEntityMixin extends Entity {
 		if (LivingEntity.class.cast(this) instanceof PlayerEntity player && player.isSneaking()) {
 			SlideComponent slideComponent = ModComponents.SLIDE.get(player);
 			if (slideComponent.shouldSlide()) {
+				if (slideComponent.getTicksSliding() <= 40) {
+					spawnSprintingParticles();
+				}
 				return slipperiness * MathHelper.lerp(slideComponent.getTicksSliding() / 60F, 0.45F, 1);
 			}
 		}
