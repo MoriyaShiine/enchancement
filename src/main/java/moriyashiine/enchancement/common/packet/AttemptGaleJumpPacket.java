@@ -31,6 +31,7 @@ public class AttemptGaleJumpPacket {
 				AddGaleParticlesPacket.send(player, player);
 				player.world.playSoundFromEntity(null, player, ModSoundEvents.ENTITY_GENERIC_AIR_JUMP, SoundCategory.PLAYERS, 1, 1);
 				player.jump();
+				player.setVelocity(player.getVelocity().getX(), player.getVelocity().getY() * 1.5, player.getVelocity().getZ());
 				player.velocityModified = true;
 			}
 		});

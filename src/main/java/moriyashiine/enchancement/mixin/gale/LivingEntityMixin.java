@@ -16,12 +16,4 @@ public class LivingEntityMixin {
 		}
 		return value;
 	}
-
-	@ModifyVariable(method = "jump", at = @At("STORE"))
-	private double enchancement$gale(double value) {
-		if (EnchantmentHelper.getEquipmentLevel(ModEnchantments.GALE, LivingEntity.class.cast(this)) > 0) {
-			value *= 1.5;
-		}
-		return value;
-	}
 }
