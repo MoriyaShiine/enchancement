@@ -35,6 +35,15 @@
 	],
 	"subtitle": "subtitles.enchancement.entity.generic.freeze"
   },
+  "entity.generic.bury": {
+	"sounds": [
+	  "item/shovel/flatten1",
+	  "item/shovel/flatten2",
+	  "item/shovel/flatten3",
+	  "item/shovel/flatten4"
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.bury"
+  },
   "entity.generic.teleport": {
 	"sounds": [
 	  "mob/endermen/portal",

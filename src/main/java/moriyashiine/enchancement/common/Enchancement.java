@@ -4,23 +4,29 @@ import com.google.gson.GsonBuilder;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
+import moriyashiine.enchancement.common.component.entity.BuryComponent;
 import moriyashiine.enchancement.common.config.IdentifierTypeAdapter;
 import moriyashiine.enchancement.common.config.ModConfig;
 import moriyashiine.enchancement.common.packet.AttemptGaleJumpPacket;
 import moriyashiine.enchancement.common.packet.SyncMovingForwardPacket;
-import moriyashiine.enchancement.common.registry.ModEnchantments;
-import moriyashiine.enchancement.common.registry.ModEntityTypes;
-import moriyashiine.enchancement.common.registry.ModSoundEvents;
+import moriyashiine.enchancement.common.registry.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.Items;
+import net.minecraft.particle.BlockStateParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,6 +63,32 @@ public class Enchancement implements ModInitializer {
 				ActionResult result = Items.FLINT_AND_STEEL.useOnBlock(new ItemUsageContext(player, hand, hitResult));
 				if (result != ActionResult.FAIL) {
 					return result;
+				}
+			}
+			return ActionResult.PASS;
+		});
+		UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+			if (!entity.getType().isIn(ModTags.EntityTypes.CANNOT_BURY) && entity instanceof LivingEntity living) {
+				ItemStack stack = player.getStackInHand(hand);
+				if (EnchantmentHelper.getLevel(ModEnchantments.BURY, stack) > 0) {
+					BuryComponent buryComponent = ModComponents.BURY.get(living);
+					if (buryComponent.getBuryPos() == null) {
+						BlockPos down = entity.getBlockPos().down();
+						BlockState state = world.getBlockState(down);
+						if (state.isIn(ModTags.Blocks.BURIABLE) && state.isFullCube(world, down)) {
+							if (!world.isClient) {
+								buryComponent.setBuryPos(down);
+								world.playSoundFromEntity(null, entity, ModSoundEvents.ENTITY_GENERIC_BURY, entity.getSoundCategory(), 1, 1);
+								stack.damage(1, player, stackUser -> stackUser.sendToolBreakStatus(hand));
+							} else {
+								BlockStateParticleEffect particle = new BlockStateParticleEffect(ParticleTypes.BLOCK, state);
+								for (int i = 0; i < 24; i++) {
+									world.addParticle(particle, entity.getParticleX(1), entity.getRandomBodyY(), entity.getParticleZ(1), 0, 0, 0);
+								}
+							}
+							return ActionResult.success(world.isClient);
+						}
+					}
 				}
 			}
 			return ActionResult.PASS;

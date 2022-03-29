@@ -2,6 +2,7 @@ package moriyashiine.enchancement.common.component.entity;
 
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
+import moriyashiine.enchancement.mixin.slide.EntityAccessor;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -34,6 +35,9 @@ public class SlideComponent implements CommonTickingComponent {
 				}
 				if (shouldSlide) {
 					if (ticksSliding < 60) {
+						if (ticksSliding <= 40) {
+							((EntityAccessor) obj).enchancement$spawnSprintingParticles();
+						}
 						ticksSliding++;
 					}
 				}

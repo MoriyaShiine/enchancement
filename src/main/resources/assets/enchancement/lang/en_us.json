@@ -16,11 +16,13 @@
   "enchantment.enchancement.disarm": "Disarm",
   "enchantment.enchancement.grapple": "Grapple",
   "enchantment.enchancement.molten": "Molten",
+  "enchantment.enchancement.bury": "Bury",
   "enchantment.enchancement.scooping": "Scooping",
   "subtitles.enchancement.entity.ice_shard.shatter": "Ice Shard shatters",
   "subtitles.enchancement.entity.generic.dash": "Entity dashes",
   "subtitles.enchancement.entity.generic.air_jump": "Entity air jumps",
   "subtitles.enchancement.entity.generic.freeze": "Entity freezes",
   "subtitles.enchancement.entity.generic.teleport": "Entity teleports",
+  "subtitles.enchancement.entity.generic.bury": "Entity buried",
   "subtitles.enchancement.block.generic.smelt": "Block smelts"
 }

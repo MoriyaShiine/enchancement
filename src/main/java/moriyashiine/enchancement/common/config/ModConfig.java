@@ -21,7 +21,7 @@ public class ModConfig implements ConfigData {
 			"minecraft:riptide", "enchancement:warp",
 			"enchancement:disarm", "enchancement:grapple", "minecraft:luck_of_the_sea",
 			"enchancement:molten",
-			"enchancement:scooping",
+			"enchancement:bury", "enchancement:scooping",
 			"minecraft:efficiency", "minecraft:silk_touch", "minecraft:unbreaking").map(Identifier::tryParse).toList();
 
 	@ConfigEntry.Gui.RequiresRestart

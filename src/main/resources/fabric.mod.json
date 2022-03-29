@@ -51,7 +51,8 @@
 	  "enchancement:gale",
 	  "enchancement:frozen",
 	  "enchancement:delay",
-	  "enchancement:warp"
+	  "enchancement:warp",
+	  "enchancement:bury"
 	]
   }
 }
