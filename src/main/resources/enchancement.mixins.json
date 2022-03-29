@@ -34,11 +34,9 @@
 	"warp.TridentEntityMixin"
   ],
   "client": [
-	"client.RenderLayerAccessor",
-	"client.RenderPhaseAccessor",
-	"client.frostbite.LivingEntityRendererMixin",
 	"dash.client.InGameHudMixin",
 	"disarm.client.MinecraftClientMixin",
+	"frostbite.client.LivingEntityRendererMixin",
 	"perception.client.LightmapTextureManagerMixin",
 	"perception.client.MinecraftClientMixin",
 	"slide.client.PlayerEntityRendererMixin"

@@ -1,4 +1,4 @@
-package moriyashiine.enchancement.mixin.client.frostbite;
+package moriyashiine.enchancement.mixin.frostbite.client;
 
 import moriyashiine.enchancement.client.render.FrozenTextureManager;
 import moriyashiine.enchancement.common.registry.ModComponents;
