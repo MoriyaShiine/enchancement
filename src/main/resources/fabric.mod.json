@@ -45,12 +45,12 @@
   },
   "custom": {
 	"cardinal-components": [
-	  "enchancement:moving_forward",
 	  "enchancement:assimilation",
 	  "enchancement:buffet",
 	  "enchancement:dash",
 	  "enchancement:slide",
 	  "enchancement:acceleration",
+	  "enchancement:moving_forward",
 	  "enchancement:gale",
 	  "enchancement:frozen",
 	  "enchancement:delay",

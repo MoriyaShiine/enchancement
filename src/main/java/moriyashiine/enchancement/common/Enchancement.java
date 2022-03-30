@@ -67,6 +67,7 @@ public class Enchancement implements ModInitializer {
 	}
 
 	private void initEvents() {
+		//fire aspect
 		UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
 			int fireIgnitionLevel = getConfig().fireAspectIgnitionLevel;
 			if (fireIgnitionLevel >= 0 && player.isSneaking() && EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, player.getStackInHand(hand)) >= fireIgnitionLevel) {
@@ -77,7 +78,9 @@ public class Enchancement implements ModInitializer {
 			}
 			return ActionResult.PASS;
 		});
+		//beheading
 		BeheadingEntry.initEvent();
+		//lumberjack
 		PlayerBlockBreakEvents.BEFORE.register(new PlayerBlockBreakEvents.Before() {
 			@Override
 			public boolean beforeBlockBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity blockEntity) {
@@ -121,6 +124,7 @@ public class Enchancement implements ModInitializer {
 				return tree;
 			}
 		});
+		//bury
 		UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
 			if (!entity.getType().isIn(ModTags.EntityTypes.CANNOT_BURY) && entity instanceof LivingEntity living) {
 				ItemStack stack = player.getStackInHand(hand);

@@ -19,10 +19,10 @@ public class ModConfig implements ConfigData {
 			"minecraft:fire_aspect", "enchancement:frostbite",
 			"enchancement:chaos", "enchancement:delay",
 			"minecraft:riptide", "enchancement:warp",
-			"enchancement:disarm", "enchancement:grapple", "minecraft:luck_of_the_sea",
 			"enchancement:molten",
 			"enchancement:beheading", "enchancement:lumberjack",
 			"enchancement:bury", "enchancement:scooping",
+			"enchancement:disarm", "enchancement:grapple", "minecraft:luck_of_the_sea",
 			"minecraft:efficiency", "minecraft:silk_touch", "minecraft:unbreaking").map(Identifier::tryParse).toList();
 
 	@ConfigEntry.Gui.RequiresRestart
@@ -33,10 +33,9 @@ public class ModConfig implements ConfigData {
 	public boolean allTridentsHaveLoyalty = true;
 	public boolean luckOfTheSeaHasLure = true;
 
+	public int fireAspectIgnitionLevel = 1;
+	public int maxLumberjackBlocks = 1024;
 	@ConfigEntry.Gui.RequiresRestart
 	public int fishingRodDurability = 256;
-	public int fireAspectIgnitionLevel = 1;
 	public int unbreakableUnbreakingLevel = 1;
-
-	public int maxLumberjackBlocks = 1024;
 }
