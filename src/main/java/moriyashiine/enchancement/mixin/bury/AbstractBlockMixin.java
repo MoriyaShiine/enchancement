@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class AbstractBlockMixin {
 	@Inject(method = "onStateReplaced", at = @At("HEAD"))
 	private void enchancement$bury(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved, CallbackInfo ci) {
-		world.getEntitiesByClass(LivingEntity.class, new Box(pos), entity -> !entity.isDead()).forEach(foundEntity -> ModComponents.BURY.maybeGet(foundEntity).ifPresent(buryComponent -> {
+		world.getEntitiesByClass(LivingEntity.class, new Box(pos), entity -> !entity.isDead()).forEach(foundEntity -> ModComponents.Entity.BURY.maybeGet(foundEntity).ifPresent(buryComponent -> {
 			if (buryComponent.getBuryPos() != null && buryComponent.getBuryPos().equals(pos)) {
 				buryComponent.setBuryPos(null);
 				foundEntity.teleport(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);

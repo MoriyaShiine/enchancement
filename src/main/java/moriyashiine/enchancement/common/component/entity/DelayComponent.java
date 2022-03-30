@@ -58,7 +58,7 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 					storedVelocity = obj.getVelocity();
 					forcedYaw = obj.getYaw();
 					forcedPitch = obj.getPitch();
-					ModComponents.DELAY.sync(obj);
+					ModComponents.Entity.DELAY.sync(obj);
 				}
 				if (ticksFloating > 300 || (obj.getOwner() instanceof LivingEntity living && living.handSwinging && (living.getMainHandStack() == stackShotFrom || living.getOffHandStack() == stackShotFrom))) {
 					setHasDelay(false);
@@ -84,6 +84,6 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 
 	public void setHasDelay(boolean hasDelay) {
 		this.hasDelay = hasDelay;
-		ModComponents.DELAY.sync(obj);
+		ModComponents.Entity.DELAY.sync(obj);
 	}
 }

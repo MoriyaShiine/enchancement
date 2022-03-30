@@ -11,6 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class PlayerEntityMixin {
 	@Inject(method = "getMovementSpeed", at = @At("RETURN"), cancellable = true)
 	private void enchancement$acceleration(CallbackInfoReturnable<Float> cir) {
-		cir.setReturnValue(cir.getReturnValueF() * ModComponents.ACCELERATION.get(this).getSpeedMultiplier());
+		cir.setReturnValue(cir.getReturnValueF() * ModComponents.Entity.ACCELERATION.get(this).getSpeedMultiplier());
 	}
 }

@@ -23,7 +23,10 @@
 	  "moriyashiine.enchancement.client.EnchancementClient"
 	],
 	"cardinal-components-entity": [
-	  "moriyashiine.enchancement.common.registry.ModComponents"
+	  "moriyashiine.enchancement.common.registry.ModComponents$Entity"
+	],
+	"cardinal-components-world": [
+	  "moriyashiine.enchancement.common.registry.ModComponents$World"
 	],
 	"modmenu": [
 	  "moriyashiine.enchancement.client.integration.ModMenuIntegration"
@@ -52,7 +55,8 @@
 	  "enchancement:frozen",
 	  "enchancement:delay",
 	  "enchancement:warp",
-	  "enchancement:bury"
+	  "enchancement:bury",
+	  "enchancement:lumberjack"
 	]
   }
 }

@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 public class PersistentProjectileEntityMixin {
 	@ModifyArg(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;addParticle(Lnet/minecraft/particle/ParticleEffect;DDDDDD)V", ordinal = 0))
 	private ParticleEffect enchancement$delay(ParticleEffect value) {
-		if (PersistentProjectileEntity.class.cast(this) instanceof ArrowEntity arrow && ModComponents.DELAY.get(arrow).shouldChangeParticles()) {
+		if (PersistentProjectileEntity.class.cast(this) instanceof ArrowEntity arrow && ModComponents.Entity.DELAY.get(arrow).shouldChangeParticles()) {
 			return ParticleTypes.ENCHANTED_HIT;
 		}
 		return value;

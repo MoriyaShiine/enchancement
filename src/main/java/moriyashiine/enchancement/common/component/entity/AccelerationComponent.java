@@ -40,7 +40,7 @@ public class AccelerationComponent implements CommonTickingComponent {
 		obj.airStrafingSpeed *= speedMultiplier;
 		boolean hasEnchantment = EnchantmentHelper.getEquipmentLevel(ModEnchantments.ACCELERATION, obj) > 0;
 		if (hasEnchantment) {
-			if (!obj.horizontalCollision && obj.isSprinting() && EnchancementUtil.isGroundedOrJumping(obj) && ModComponents.MOVING_FORWARD.get(obj).isMovingForward()) {
+			if (!obj.horizontalCollision && obj.isSprinting() && EnchancementUtil.isGroundedOrJumping(obj) && ModComponents.Entity.MOVING_FORWARD.get(obj).isMovingForward()) {
 				if (speedMultiplier < 2) {
 					speedMultiplier = Math.min(2, speedMultiplier + 1 / 256F);
 				}
@@ -60,7 +60,7 @@ public class AccelerationComponent implements CommonTickingComponent {
 				attribute.removeModifier(STEP_HEIGHT_INCREASE);
 			}
 		} else {
-			ModComponents.MOVING_FORWARD.maybeGet(obj).ifPresent(movingForwardComponent -> {
+			ModComponents.Entity.MOVING_FORWARD.maybeGet(obj).ifPresent(movingForwardComponent -> {
 				if (obj.forwardSpeed > 0) {
 					if (!movingForwardComponent.isMovingForward() && EnchantmentHelper.getEquipmentLevel(ModEnchantments.ACCELERATION, obj) > 0) {
 						SyncMovingForwardPacket.send(true);

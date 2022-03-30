@@ -38,6 +38,7 @@ public class ModEnchantments {
 	public static final Enchantment MOLTEN = new MoltenEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.DIGGER, EquipmentSlot.MAINHAND);
 
 	public static final Enchantment BEHEADING = new AxeEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.DIGGER, EquipmentSlot.MAINHAND);
+	public static final Enchantment LUMBERJACK = new AxeEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.DIGGER, EquipmentSlot.MAINHAND);
 
 	public static final Enchantment BURY = new ShovelEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.DIGGER, EquipmentSlot.MAINHAND);
 	public static final Enchantment SCOOPING = new ShovelEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.DIGGER, EquipmentSlot.MAINHAND);
@@ -71,6 +72,7 @@ public class ModEnchantments {
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "molten"), MOLTEN);
 
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "beheading"), BEHEADING);
+		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "lumberjack"), LUMBERJACK);
 
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "bury"), BURY);
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "scooping"), SCOOPING);

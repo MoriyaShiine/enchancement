@@ -22,6 +22,6 @@ public class SyncMovingForwardPacket {
 
 	public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
 		boolean movingForward = buf.readBoolean();
-		server.execute(() -> ModComponents.MOVING_FORWARD.get(player).setMovingForward(movingForward));
+		server.execute(() -> ModComponents.Entity.MOVING_FORWARD.get(player).setMovingForward(movingForward));
 	}
 }

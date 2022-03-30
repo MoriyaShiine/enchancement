@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class LivingEntityMixin {
 	@ModifyVariable(method = "jump", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/LivingEntity;getVelocity()Lnet/minecraft/util/math/Vec3d;", ordinal = 0))
 	private Vec3d enchancement$dash(Vec3d value) {
-		DashComponent dashComponent = ModComponents.DASH.getNullable(this);
+		DashComponent dashComponent = ModComponents.Entity.DASH.getNullable(this);
 		if (dashComponent != null && dashComponent.shouldWavedash()) {
 			dashComponent.setDashCooldown(0);
 			return value.multiply(2.5);

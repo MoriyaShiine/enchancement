@@ -70,7 +70,7 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 
 	public void setFrozen(boolean frozen) {
 		this.frozen = frozen;
-		ModComponents.FROZEN.sync(obj);
+		ModComponents.Entity.FROZEN.sync(obj);
 	}
 
 	public float getForcedHeadYaw() {

@@ -23,6 +23,7 @@
 	"frostbite.LivingEntityMixin",
 	"gale.LivingEntityMixin",
 	"grapple.FishingBobberEntityMixin",
+	"lumberjack.ItemEntityAccessor",
 	"molten.AbstractFurnaceBlockEntityAccessor",
 	"molten.BlockMixin",
 	"scooping.EnchantmentHelperMixin",

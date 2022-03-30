@@ -23,7 +23,7 @@ public abstract class ArrowEntityMixin extends PersistentProjectileEntity {
 	private void enchancement$delay(World world, LivingEntity owner, CallbackInfo ci) {
 		boolean offHand = EnchantmentHelper.getLevel(ModEnchantments.DELAY, owner.getOffHandStack()) > 0;
 		if (offHand || EnchantmentHelper.getLevel(ModEnchantments.DELAY, owner.getMainHandStack()) > 0) {
-			ModComponents.DELAY.maybeGet(this).ifPresent(delayComponent -> {
+			ModComponents.Entity.DELAY.maybeGet(this).ifPresent(delayComponent -> {
 				delayComponent.setHasDelay(true);
 				delayComponent.setStackShotFrom(offHand ? owner.getOffHandStack() : owner.getMainHandStack());
 				setCritical(true);

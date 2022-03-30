@@ -29,6 +29,6 @@ public class MovingForwardComponent implements AutoSyncedComponent {
 
 	public void setMovingForward(boolean movingForward) {
 		this.movingForward = movingForward;
-		ModComponents.MOVING_FORWARD.sync(obj);
+		ModComponents.Entity.MOVING_FORWARD.sync(obj);
 	}
 }

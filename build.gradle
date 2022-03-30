@@ -42,6 +42,8 @@ dependencies {
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_version}"
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}"
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}"
+    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-world:${cardinal_components_version}"
+    include "dev.onyxstudios.cardinal-components-api:cardinal-components-world:${cardinal_components_version}"
     modImplementation "com.github.emilyploszaj:step-height-entity-attribute:${step_height_entity_attribute_version}"
     include "com.github.emilyploszaj:step-height-entity-attribute:${step_height_entity_attribute_version}"
 
