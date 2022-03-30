@@ -37,4 +37,6 @@ public class ModConfig implements ConfigData {
 	public int fishingRodDurability = 256;
 	public int fireAspectIgnitionLevel = 1;
 	public int unbreakableUnbreakingLevel = 1;
+
+	public int maxLumberjackBlocks = 1024;
 }

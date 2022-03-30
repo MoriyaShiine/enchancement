@@ -84,8 +84,8 @@ public class Enchancement implements ModInitializer {
 				if (!player.isSneaking()) {
 					ItemStack stack = player.getMainHandStack();
 					if (EnchantmentHelper.getLevel(ModEnchantments.LUMBERJACK, player.getMainHandStack()) > 0 && state.isIn(BlockTags.LOGS)) {
-						List<BlockPos> tree = gatherTree(new ArrayList<>(), world, pos, state.getBlock());
-						if (tree.size() > 1 && tree.size() <= 256) {
+						List<BlockPos> tree = gatherTree(new ArrayList<>(), world, new BlockPos.Mutable().set(pos), state.getBlock());
+						if (tree.size() > 1 && tree.size() <= Enchancement.getConfig().maxLumberjackBlocks) {
 							ItemStack copy = stack.copy();
 							AtomicBoolean broken = new AtomicBoolean(false);
 							player.getMainHandStack().damage(tree.size(), player, stackUser -> {
@@ -103,16 +103,16 @@ public class Enchancement implements ModInitializer {
 				return true;
 			}
 
-			private List<BlockPos> gatherTree(List<BlockPos> tree, World world, BlockPos pos, Block original) {
-				if (tree.size() < 256) {
-					BlockPos.Mutable mutable = new BlockPos.Mutable();
+			private List<BlockPos> gatherTree(List<BlockPos> tree, World world, BlockPos.Mutable pos, Block original) {
+				if (tree.size() < Enchancement.getConfig().maxLumberjackBlocks) {
+					int originalX = pos.getX(), originalY = pos.getY(), originalZ = pos.getZ();
 					for (int x = -1; x <= 1; x++) {
 						for (int y = -1; y <= 1; y++) {
 							for (int z = -1; z <= 1; z++) {
-								BlockState state = world.getBlockState(mutable.set(pos.getX() + x, pos.getY() + y, pos.getZ() + z));
-								if (state.isIn(BlockTags.LOGS) && !tree.contains(mutable) && state.getBlock() == original) {
-									tree.add(mutable.toImmutable());
-									gatherTree(tree, world, mutable, original);
+								BlockState state = world.getBlockState(pos.set(originalX + x, originalY + y, originalZ + z));
+								if (state.isIn(BlockTags.LOGS) && !tree.contains(pos) && state.getBlock() == original) {
+									tree.add(pos.toImmutable());
+									gatherTree(tree, world, pos, original);
 								}
 							}
 						}
