@@ -1,4 +1,4 @@
-package moriyashiine.enchancement.mixin.lumberjack;
+package moriyashiine.enchancement.mixin.util;
 
 import net.minecraft.entity.ItemEntity;
 import org.spongepowered.asm.mixin.Mixin;

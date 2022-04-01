@@ -33,6 +33,7 @@ public class ModEnchantments {
 	//trident
 	public static final Enchantment WARP = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.TRIDENT, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
 	//pickaxe
+	public static final Enchantment EXTRACTING = new PickaxeEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.DIGGER, EquipmentSlot.MAINHAND);
 	public static final Enchantment MOLTEN = new MoltenEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.DIGGER, EquipmentSlot.MAINHAND);
 	//axe
 	public static final Enchantment BEHEADING = new AxeEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.DIGGER, EquipmentSlot.MAINHAND);
@@ -67,6 +68,7 @@ public class ModEnchantments {
 		//trident
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "warp"), WARP);
 		//pickaxe
+		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "extracting"), EXTRACTING);
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "molten"), MOLTEN);
 		//axe
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "beheading"), BEHEADING);

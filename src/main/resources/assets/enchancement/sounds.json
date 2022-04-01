@@ -51,6 +51,12 @@
 	],
 	"subtitle": "subtitles.enchancement.entity.generic.teleport"
   },
+  "block.ore.extract": {
+	"sounds": [
+	  "mob/zombie/woodbreak"
+	],
+	"subtitle": "subtitles.enchancement.block.ore.extract"
+  },
   "block.generic.smelt": {
 	"sounds": [
 	  "block/furnace/fire_crackle1",

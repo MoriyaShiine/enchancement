@@ -19,7 +19,7 @@ public class ModConfig implements ConfigData {
 			"minecraft:fire_aspect", "enchancement:frostbite",
 			"enchancement:chaos", "enchancement:delay",
 			"minecraft:riptide", "enchancement:warp",
-			"enchancement:molten",
+			"enchancement:extracting", "enchancement:molten",
 			"enchancement:beheading", "enchancement:lumberjack",
 			"enchancement:bury", "enchancement:scooping",
 			"enchancement:disarm", "enchancement:grapple", "minecraft:luck_of_the_sea",
@@ -34,6 +34,7 @@ public class ModConfig implements ConfigData {
 	public boolean luckOfTheSeaHasLure = true;
 
 	public int fireAspectIgnitionLevel = 1;
+	public int maxExtractingBlocks = 64;
 	public int maxLumberjackBlocks = 1024;
 	@ConfigEntry.Gui.RequiresRestart
 	public int fishingRodDurability = 256;

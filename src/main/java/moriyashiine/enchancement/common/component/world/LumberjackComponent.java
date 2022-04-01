@@ -1,7 +1,7 @@
 package moriyashiine.enchancement.common.component.world;
 
 import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
-import moriyashiine.enchancement.mixin.lumberjack.ItemEntityAccessor;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
@@ -48,22 +48,7 @@ public class LumberjackComponent implements ServerTickingComponent {
 			tree.drops.addAll(Block.getDroppedStacks(obj.getBlockState(pos), (ServerWorld) obj, pos, obj.getBlockEntity(pos)));
 			obj.breakBlock(pos, false);
 			if (tree.logs.isEmpty()) {
-				List<ItemEntity> drops = new ArrayList<>();
-				tree.drops.forEach(stack -> drops.add(new ItemEntity(obj, tree.originalPos.getX() + 0.5, tree.originalPos.getY() + 0.5, tree.originalPos.getZ() + 0.5, stack)));
-				for (int j = drops.size() - 1; j >= 0; j--) {
-					if (j < drops.size() - 1) {
-						ItemEntity itemEntity = drops.get(j);
-						ItemEntity other = drops.get(j + 1);
-						((ItemEntityAccessor) itemEntity).enchancement$tryMerge(other);
-						if (itemEntity.getStack().isEmpty()) {
-							drops.remove(j);
-						}
-						if (other.getStack().isEmpty()) {
-							drops.remove(j + 1);
-						}
-					}
-				}
-				drops.forEach(obj::spawnEntity);
+				EnchancementUtil.mergeItemEntities(tree.drops.stream().map(drop -> new ItemEntity(obj, tree.originalPos.getX() + 0.5, tree.originalPos.getY() + 0.5, tree.originalPos.getZ() + 0.5, drop)).collect(Collectors.toList())).forEach(obj::spawnEntity);
 				treesToCut.remove(i);
 			}
 		}
