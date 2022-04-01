@@ -3,8 +3,8 @@ package moriyashiine.enchancement.common.component.entity;
 import dev.emi.stepheightentityattribute.StepHeightEntityAttributeMain;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.common.packet.SyncMovingForwardPacket;
-import moriyashiine.enchancement.common.registry.ModComponents;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
+import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
@@ -40,7 +40,7 @@ public class AccelerationComponent implements CommonTickingComponent {
 		obj.airStrafingSpeed *= speedMultiplier;
 		boolean hasEnchantment = EnchantmentHelper.getEquipmentLevel(ModEnchantments.ACCELERATION, obj) > 0;
 		if (hasEnchantment) {
-			if (!obj.horizontalCollision && obj.isSprinting() && EnchancementUtil.isGroundedOrJumping(obj) && ModComponents.Entity.MOVING_FORWARD.get(obj).isMovingForward()) {
+			if (!obj.horizontalCollision && obj.isSprinting() && EnchancementUtil.isGroundedOrJumping(obj) && ModEntityComponents.MOVING_FORWARD.get(obj).isMovingForward()) {
 				if (speedMultiplier < 2) {
 					speedMultiplier = Math.min(2, speedMultiplier + 1 / 256F);
 				}
@@ -60,7 +60,7 @@ public class AccelerationComponent implements CommonTickingComponent {
 				attribute.removeModifier(STEP_HEIGHT_INCREASE);
 			}
 		} else {
-			ModComponents.Entity.MOVING_FORWARD.maybeGet(obj).ifPresent(movingForwardComponent -> {
+			ModEntityComponents.MOVING_FORWARD.maybeGet(obj).ifPresent(movingForwardComponent -> {
 				if (obj.forwardSpeed > 0) {
 					if (!movingForwardComponent.isMovingForward() && EnchantmentHelper.getEquipmentLevel(ModEnchantments.ACCELERATION, obj) > 0) {
 						SyncMovingForwardPacket.send(true);

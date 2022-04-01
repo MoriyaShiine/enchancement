@@ -1,8 +1,8 @@
 package moriyashiine.enchancement.mixin.frostbite;
 
 import moriyashiine.enchancement.common.entity.projectile.IceShardEntity;
-import moriyashiine.enchancement.common.registry.ModComponents;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
+import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import moriyashiine.enchancement.common.registry.ModTags;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -31,7 +31,7 @@ public abstract class LivingEntityMixin extends Entity {
 	@Inject(method = "damage", at = @At("HEAD"), cancellable = true)
 	private void enchancement$frostbite(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
 		if (!world.isClient) {
-			ModComponents.Entity.FROZEN.maybeGet(this).ifPresent(frozenComponent -> {
+			ModEntityComponents.FROZEN.maybeGet(this).ifPresent(frozenComponent -> {
 				if (frozenComponent.isFrozen()) {
 					if (source == DamageSource.FREEZE) {
 						cir.setReturnValue(false);
@@ -63,7 +63,7 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@Inject(method = "pushAwayFrom", at = @At("HEAD"))
 	private void enchancement$frostbite(Entity entity, CallbackInfo ci) {
-		ModComponents.Entity.FROZEN.maybeGet(this).ifPresent(frozenComponent -> {
+		ModEntityComponents.FROZEN.maybeGet(this).ifPresent(frozenComponent -> {
 			if (frozenComponent.isFrozen() && causeOfShattering == null) {
 				causeOfShattering = entity;
 			}
@@ -74,7 +74,7 @@ public abstract class LivingEntityMixin extends Entity {
 	private void enchancement$frostbite(DamageSource source, CallbackInfo ci) {
 		if (!world.isClient && !getType().isIn(ModTags.EntityTypes.CANNOT_FREEZE)) {
 			if (source.getSource() instanceof IceShardEntity || (source.getSource() instanceof LivingEntity living && EnchantmentHelper.getEquipmentLevel(ModEnchantments.FROSTBITE, living) > 0)) {
-				ModComponents.Entity.FROZEN.maybeGet(this).ifPresent(frozenComponent -> {
+				ModEntityComponents.FROZEN.maybeGet(this).ifPresent(frozenComponent -> {
 					frozenComponent.freeze();
 					causeOfShattering = source.getAttacker();
 					ci.cancel();

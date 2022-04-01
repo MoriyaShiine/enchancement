@@ -2,7 +2,7 @@ package moriyashiine.enchancement.common.component.entity;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
-import moriyashiine.enchancement.common.registry.ModComponents;
+import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.damage.DamageSource;
@@ -70,7 +70,7 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 
 	public void setFrozen(boolean frozen) {
 		this.frozen = frozen;
-		ModComponents.Entity.FROZEN.sync(obj);
+		ModEntityComponents.FROZEN.sync(obj);
 	}
 
 	public float getForcedHeadYaw() {

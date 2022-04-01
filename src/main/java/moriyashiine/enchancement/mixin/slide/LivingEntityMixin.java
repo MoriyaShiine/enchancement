@@ -1,7 +1,7 @@
 package moriyashiine.enchancement.mixin.slide;
 
 import moriyashiine.enchancement.common.component.entity.SlideComponent;
-import moriyashiine.enchancement.common.registry.ModComponents;
+import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.MathHelper;
@@ -15,7 +15,7 @@ public class LivingEntityMixin {
 	@ModifyVariable(method = "applyMovementInput", at = @At("HEAD"), argsOnly = true)
 	private float enchancement$slide(float slipperiness) {
 		if (LivingEntity.class.cast(this) instanceof PlayerEntity player && player.isSneaking()) {
-			SlideComponent slideComponent = ModComponents.Entity.SLIDE.get(player);
+			SlideComponent slideComponent = ModEntityComponents.SLIDE.get(player);
 			if (slideComponent.shouldSlide()) {
 				return slipperiness * MathHelper.lerp(slideComponent.getTicksSliding() / 60F, 0.45F, 0.8F);
 			}
@@ -26,7 +26,7 @@ public class LivingEntityMixin {
 	@ModifyVariable(method = "jump", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/LivingEntity;getVelocity()Lnet/minecraft/util/math/Vec3d;", ordinal = 0))
 	private Vec3d enchancement$slide(Vec3d value) {
 		if (LivingEntity.class.cast(this) instanceof PlayerEntity player) {
-			SlideComponent slideComponent = ModComponents.Entity.SLIDE.get(player);
+			SlideComponent slideComponent = ModEntityComponents.SLIDE.get(player);
 			if (slideComponent.shouldSlide()) {
 				int ticksSliding = slideComponent.getTicksSliding();
 				if (ticksSliding > 0) {
@@ -41,7 +41,7 @@ public class LivingEntityMixin {
 
 	@ModifyVariable(method = "handleFallDamage", at = @At("HEAD"), ordinal = 0, argsOnly = true)
 	private float enchancement$slideFall(float value) {
-		SlideComponent slideComponent = ModComponents.Entity.SLIDE.getNullable(this);
+		SlideComponent slideComponent = ModEntityComponents.SLIDE.getNullable(this);
 		if (slideComponent != null && slideComponent.shouldSlide()) {
 			return Math.max(0, value - 4);
 		}

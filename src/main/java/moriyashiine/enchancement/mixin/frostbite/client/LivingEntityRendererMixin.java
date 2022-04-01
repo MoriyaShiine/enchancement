@@ -1,7 +1,7 @@
 package moriyashiine.enchancement.mixin.frostbite.client;
 
 import moriyashiine.enchancement.client.render.FrozenTextureManager;
-import moriyashiine.enchancement.common.registry.ModComponents;
+import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -66,7 +66,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
 
 	@Inject(method = "render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("HEAD"), cancellable = true)
 	private void enchancement$frostbiteFreezeAnimations(T livingEntity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-		ModComponents.Entity.FROZEN.maybeGet(livingEntity).ifPresent(frozenComponent -> {
+		ModEntityComponents.FROZEN.maybeGet(livingEntity).ifPresent(frozenComponent -> {
 			if (frozenComponent.isFrozen()) {
 				MinecraftClient client = MinecraftClient.getInstance();
 				matrices.push();
@@ -112,14 +112,14 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
 
 	@Inject(method = "isShaking", at = @At("HEAD"), cancellable = true)
 	private void enchancement$frostbiteStopShaking(T entity, CallbackInfoReturnable<Boolean> cir) {
-		if (entity instanceof MobEntity && ModComponents.Entity.FROZEN.get(entity).isFrozen()) {
+		if (entity instanceof MobEntity && ModEntityComponents.FROZEN.get(entity).isFrozen()) {
 			cir.setReturnValue(false);
 		}
 	}
 
 	@ModifyVariable(method = "getRenderLayer", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/render/entity/LivingEntityRenderer;getTexture(Lnet/minecraft/entity/Entity;)Lnet/minecraft/util/Identifier;"))
 	private Identifier enchancement$frostbiteTexture(Identifier value, LivingEntity living) {
-		if (living instanceof MobEntity && ModComponents.Entity.FROZEN.get(living).isFrozen()) {
+		if (living instanceof MobEntity && ModEntityComponents.FROZEN.get(living).isFrozen()) {
 			return FrozenTextureManager.getInstance().getTexture(value);
 		}
 		return value;

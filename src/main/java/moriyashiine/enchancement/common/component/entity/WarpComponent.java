@@ -2,7 +2,7 @@ package moriyashiine.enchancement.common.component.entity;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.ClientTickingComponent;
-import moriyashiine.enchancement.common.registry.ModComponents;
+import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import net.minecraft.entity.projectile.TridentEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
@@ -36,6 +36,6 @@ public class WarpComponent implements AutoSyncedComponent, ClientTickingComponen
 
 	public void setShouldSpawnParticles(boolean shouldSpawnParticles) {
 		this.shouldSpawnParticles = shouldSpawnParticles;
-		ModComponents.Entity.WARP.sync(obj);
+		ModEntityComponents.WARP.sync(obj);
 	}
 }

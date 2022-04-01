@@ -1,6 +1,6 @@
 package moriyashiine.enchancement.mixin.slide;
 
-import moriyashiine.enchancement.common.registry.ModComponents;
+import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class PlayerEntityMixin {
 	@ModifyArg(method = "updatePose", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setPose(Lnet/minecraft/entity/EntityPose;)V"))
 	private EntityPose enchancement$slide(EntityPose value) {
-		if (value == EntityPose.CROUCHING && ModComponents.Entity.SLIDE.get(this).shouldSlide()) {
+		if (value == EntityPose.CROUCHING && ModEntityComponents.SLIDE.get(this).shouldSlide()) {
 			return EntityPose.SWIMMING;
 		}
 		return value;
@@ -21,7 +21,7 @@ public class PlayerEntityMixin {
 
 	@Inject(method = "clipAtLedge", at = @At("HEAD"), cancellable = true)
 	private void enchancement$slide(CallbackInfoReturnable<Boolean> cir) {
-		if (ModComponents.Entity.SLIDE.get(this).shouldSlide()) {
+		if (ModEntityComponents.SLIDE.get(this).shouldSlide()) {
 			cir.setReturnValue(false);
 		}
 	}

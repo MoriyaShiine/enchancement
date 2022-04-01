@@ -23,10 +23,10 @@
 	  "moriyashiine.enchancement.client.EnchancementClient"
 	],
 	"cardinal-components-entity": [
-	  "moriyashiine.enchancement.common.registry.ModComponents$Entity"
+	  "moriyashiine.enchancement.common.registry.ModEntityComponents"
 	],
 	"cardinal-components-world": [
-	  "moriyashiine.enchancement.common.registry.ModComponents$World"
+	  "moriyashiine.enchancement.common.registry.ModWorldComponents"
 	],
 	"modmenu": [
 	  "moriyashiine.enchancement.client.integration.ModMenuIntegration"

@@ -2,7 +2,7 @@ package moriyashiine.enchancement.common.component.entity;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
-import moriyashiine.enchancement.common.registry.ModComponents;
+import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.item.ItemStack;
@@ -58,7 +58,7 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 					storedVelocity = obj.getVelocity();
 					forcedYaw = obj.getYaw();
 					forcedPitch = obj.getPitch();
-					ModComponents.Entity.DELAY.sync(obj);
+					ModEntityComponents.DELAY.sync(obj);
 				}
 				if (ticksFloating > 300 || (obj.getOwner() instanceof LivingEntity living && living.handSwinging && (living.getMainHandStack() == stackShotFrom || living.getOffHandStack() == stackShotFrom))) {
 					setHasDelay(false);
@@ -84,6 +84,6 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 
 	public void setHasDelay(boolean hasDelay) {
 		this.hasDelay = hasDelay;
-		ModComponents.Entity.DELAY.sync(obj);
+		ModEntityComponents.DELAY.sync(obj);
 	}
 }

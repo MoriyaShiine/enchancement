@@ -2,7 +2,7 @@ package moriyashiine.enchancement.common.component.entity;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
-import moriyashiine.enchancement.common.registry.ModComponents;
+import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
@@ -46,6 +46,6 @@ public class BuryComponent implements AutoSyncedComponent, CommonTickingComponen
 
 	public void setBuryPos(BlockPos buryPos) {
 		this.buryPos = buryPos;
-		ModComponents.Entity.BURY.sync(obj);
+		ModEntityComponents.BURY.sync(obj);
 	}
 }

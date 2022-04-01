@@ -156,7 +156,7 @@ public class Enchancement implements ModInitializer {
 							});
 							if (!broken.get()) {
 								tree.sort(Comparator.comparingInt(Vec3i::getY).reversed());
-								ModComponents.World.LUMBERJACK.get(world).addTree(new LumberjackComponent.Tree(tree, pos));
+								ModWorldComponents.LUMBERJACK.get(world).addTree(new LumberjackComponent.Tree(tree, pos));
 								return false;
 							}
 						}
@@ -188,7 +188,7 @@ public class Enchancement implements ModInitializer {
 			if (!entity.getType().isIn(ModTags.EntityTypes.CANNOT_BURY) && entity instanceof LivingEntity living) {
 				ItemStack stack = player.getStackInHand(hand);
 				if (EnchantmentHelper.getLevel(ModEnchantments.BURY, stack) > 0) {
-					BuryComponent buryComponent = ModComponents.Entity.BURY.get(living);
+					BuryComponent buryComponent = ModEntityComponents.BURY.get(living);
 					if (buryComponent.getBuryPos() == null) {
 						BlockPos down = entity.getBlockPos().down();
 						BlockState state = world.getBlockState(down);

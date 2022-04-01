@@ -2,7 +2,7 @@ package moriyashiine.enchancement.mixin.dash.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.registry.ModComponents;
+import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawableHelper;
@@ -34,7 +34,7 @@ public abstract class InGameHudMixin extends DrawableHelper {
 
 	@Inject(method = "renderCrosshair", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;blendFuncSeparate(Lcom/mojang/blaze3d/platform/GlStateManager$SrcFactor;Lcom/mojang/blaze3d/platform/GlStateManager$DstFactor;Lcom/mojang/blaze3d/platform/GlStateManager$SrcFactor;Lcom/mojang/blaze3d/platform/GlStateManager$DstFactor;)V", shift = At.Shift.BEFORE))
 	private void enchancement$dash(MatrixStack matrices, CallbackInfo ci) {
-		ModComponents.Entity.DASH.maybeGet(getCameraPlayer()).ifPresent(dashComponent -> {
+		ModEntityComponents.DASH.maybeGet(getCameraPlayer()).ifPresent(dashComponent -> {
 			if (dashComponent.getDashCooldown() > 0) {
 				matrices.push();
 				RenderSystem.setShaderTexture(0, DASH_TEXTURE);

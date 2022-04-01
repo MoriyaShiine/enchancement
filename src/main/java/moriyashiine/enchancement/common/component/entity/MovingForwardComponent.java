@@ -1,7 +1,7 @@
 package moriyashiine.enchancement.common.component.entity;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import moriyashiine.enchancement.common.registry.ModComponents;
+import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 
@@ -29,6 +29,6 @@ public class MovingForwardComponent implements AutoSyncedComponent {
 
 	public void setMovingForward(boolean movingForward) {
 		this.movingForward = movingForward;
-		ModComponents.Entity.MOVING_FORWARD.sync(obj);
+		ModEntityComponents.MOVING_FORWARD.sync(obj);
 	}
 }
