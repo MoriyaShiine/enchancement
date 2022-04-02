@@ -1,18 +1,19 @@
-package moriyashiine.enchancement.common.config;
+package moriyashiine.enchancement.common;
 
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
-import moriyashiine.enchancement.common.Enchancement;
 import net.minecraft.util.Identifier;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 @Config(name = Enchancement.MOD_ID)
 public class ModConfig implements ConfigData {
+	@ConfigEntry.Gui.Excluded
+	public List<Identifier> allowedEnchantmentIdentifiers;
+
 	@ConfigEntry.Gui.RequiresRestart
-	public List<Identifier> allowedEnchantments = Stream.of("enchancement:assimilation", "enchancement:buffet", "enchancement:perception",
+	public List<String> allowedEnchantments = List.of("enchancement:assimilation", "enchancement:buffet", "enchancement:perception",
 			"enchancement:amphibious", "enchancement:wardenspine",
 			"enchancement:dash", "enchancement:slide",
 			"enchancement:acceleration", "enchancement:bouncy", "enchancement:gale",
@@ -23,7 +24,7 @@ public class ModConfig implements ConfigData {
 			"enchancement:beheading", "enchancement:lumberjack",
 			"enchancement:bury", "enchancement:scooping",
 			"enchancement:disarm", "enchancement:grapple", "minecraft:luck_of_the_sea",
-			"minecraft:efficiency", "minecraft:silk_touch", "minecraft:unbreaking").map(Identifier::tryParse).toList();
+			"minecraft:efficiency", "minecraft:silk_touch", "minecraft:unbreaking");
 
 	@ConfigEntry.Gui.RequiresRestart
 	public boolean singleEnchantmentMode = true;
@@ -37,6 +38,10 @@ public class ModConfig implements ConfigData {
 	public int maxExtractingBlocks = 64;
 	public int maxLumberjackBlocks = 1024;
 	@ConfigEntry.Gui.RequiresRestart
-	public int fishingRodDurability = 256;
+	public float armorDurabilityMultiplier = 2;
+	@ConfigEntry.Gui.RequiresRestart
+	public float toolDurabilityMultiplier = 2;
+	@ConfigEntry.Gui.RequiresRestart
+	public int fishingRodDurability = 128;
 	public int unbreakableUnbreakingLevel = 1;
 }

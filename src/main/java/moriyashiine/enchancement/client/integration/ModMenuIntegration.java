@@ -3,7 +3,7 @@ package moriyashiine.enchancement.client.integration;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import me.shedaniel.autoconfig.AutoConfig;
-import moriyashiine.enchancement.common.config.ModConfig;
+import moriyashiine.enchancement.common.ModConfig;
 
 public class ModMenuIntegration implements ModMenuApi {
 	@Override

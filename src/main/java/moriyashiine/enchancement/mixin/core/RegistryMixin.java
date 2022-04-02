@@ -26,7 +26,7 @@ public class RegistryMixin {
 	private static <V, T extends V> void enchancement$disableDisallowedEnchantments(Registry<V> registry, RegistryKey<V> key, T entry, CallbackInfoReturnable<T> cir) {
 		if (registry == ENCHANTMENT) {
 			Enchancement.CACHED_MAX_LEVELS.put((Enchantment) entry, ((Enchantment) entry).getMaxLevel());
-			if (!Enchancement.getConfig().allowedEnchantments.isEmpty() && !Enchancement.getConfig().allowedEnchantments.contains(key.getValue())) {
+			if (!Enchancement.getConfig().allowedEnchantmentIdentifiers.isEmpty() && !Enchancement.getConfig().allowedEnchantmentIdentifiers.contains(key.getValue())) {
 				cir.setReturnValue(entry);
 			}
 		}
@@ -35,7 +35,7 @@ public class RegistryMixin {
 	@SuppressWarnings({"ConstantConditions", "unchecked"})
 	@Inject(method = "getOrEmpty(Lnet/minecraft/util/Identifier;)Ljava/util/Optional;", at = @At("HEAD"), cancellable = true)
 	private <T> void enchancement$ignoreDisallowedEnchantments(@Nullable Identifier id, CallbackInfoReturnable<Optional<T>> cir) {
-		if (Registry.class.cast(this) == ENCHANTMENT && !Enchancement.getConfig().allowedEnchantments.isEmpty() && !Enchancement.getConfig().allowedEnchantments.contains(id)) {
+		if (Registry.class.cast(this) == ENCHANTMENT && !Enchancement.getConfig().allowedEnchantmentIdentifiers.isEmpty() && !Enchancement.getConfig().allowedEnchantmentIdentifiers.contains(id)) {
 			cir.setReturnValue(Optional.of((T) ModEnchantments.EMPTY));
 		}
 	}

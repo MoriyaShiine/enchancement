@@ -32,7 +32,7 @@
 	"slide.PlayerEntityMixin",
 	"util.ItemEntityAccessor",
 	"vanillachanges.EnchantmentHelperMixin",
-	"vanillachanges.FishingRodItemMixin",
+	"vanillachanges.ItemMixin",
 	"vanillachanges.ItemStackMixin",
 	"vanillachanges.TridentEntityMixin",
 	"wardenspine.LivingEntityMixin",

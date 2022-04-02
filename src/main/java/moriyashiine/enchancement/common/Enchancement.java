@@ -1,13 +1,10 @@
 package moriyashiine.enchancement.common;
 
-import com.google.gson.GsonBuilder;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import moriyashiine.enchancement.common.component.entity.BuryComponent;
 import moriyashiine.enchancement.common.component.world.LumberjackComponent;
-import moriyashiine.enchancement.common.config.IdentifierTypeAdapter;
-import moriyashiine.enchancement.common.config.ModConfig;
 import moriyashiine.enchancement.common.packet.AttemptGaleJumpPacket;
 import moriyashiine.enchancement.common.packet.SyncMovingForwardPacket;
 import moriyashiine.enchancement.common.registry.*;
@@ -67,10 +64,14 @@ public class Enchancement implements ModInitializer {
 
 	public static ModConfig getConfig() {
 		if (config == null) {
-			AutoConfig.register(ModConfig.class, (config1, aClass) -> new GsonConfigSerializer<>(config1, aClass, new GsonBuilder().setPrettyPrinting().registerTypeAdapter(Identifier.class, new IdentifierTypeAdapter()).create()));
+			AutoConfig.register(ModConfig.class, GsonConfigSerializer::new);
 			config = AutoConfig.getConfigHolder(ModConfig.class);
 		}
-		return config.getConfig();
+		ModConfig modConfig = config.getConfig();
+		if (modConfig.allowedEnchantmentIdentifiers == null) {
+			modConfig.allowedEnchantmentIdentifiers = modConfig.allowedEnchantments.stream().map(Identifier::tryParse).toList();
+		}
+		return modConfig;
 	}
 
 	private void initEvents() {
