@@ -16,8 +16,8 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 	private ItemStack stackShotFrom = null;
 	private Vec3d storedVelocity = null;
 	private boolean hasDelay = false;
-	private float forcedYaw = 0, forcedPitch = 0;
-	private int ticksFloating = 1;
+	private float forcedPitch = 0, forcedYaw = 0;
+	private int ticksFloating = 0;
 
 	public DelayComponent(ArrowEntity obj) {
 		this.obj = obj;
@@ -30,8 +30,8 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 			this.storedVelocity = new Vec3d(storedVelocity.getDouble("X"), storedVelocity.getDouble("Y"), storedVelocity.getDouble("Z"));
 			hasDelay = tag.getBoolean("HasDelay");
 			ticksFloating = tag.getInt("TicksFloating");
-			forcedYaw = tag.getFloat("ForcedYaw");
 			forcedPitch = tag.getFloat("ForcedPitch");
+			forcedYaw = tag.getFloat("ForcedYaw");
 		}
 	}
 
@@ -45,8 +45,8 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 			tag.put("StoredVelocity", storedVelocity);
 			tag.putBoolean("HasDelay", hasDelay);
 			tag.putInt("TicksFloating", ticksFloating);
-			tag.putFloat("ForcedYaw", forcedYaw);
 			tag.putFloat("ForcedPitch", forcedPitch);
+			tag.putFloat("ForcedYaw", forcedYaw);
 		}
 	}
 
@@ -56,8 +56,8 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 			if (!obj.world.isClient) {
 				if (storedVelocity == null) {
 					storedVelocity = obj.getVelocity();
-					forcedYaw = obj.getYaw();
 					forcedPitch = obj.getPitch();
+					forcedYaw = obj.getYaw();
 					ModEntityComponents.DELAY.sync(obj);
 				}
 				if (ticksFloating > 300 || (obj.getOwner() instanceof LivingEntity living && living.handSwinging && (living.getMainHandStack() == stackShotFrom || living.getOffHandStack() == stackShotFrom))) {
@@ -69,8 +69,8 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 			}
 			ticksFloating++;
 			obj.setVelocity(Vec3d.ZERO);
-			obj.setYaw(forcedYaw);
 			obj.setPitch(forcedPitch);
+			obj.setYaw(forcedYaw);
 		}
 	}
 
