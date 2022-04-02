@@ -94,7 +94,7 @@ public class Enchancement implements ModInitializer {
 					ItemStack stack = player.getMainHandStack();
 					if (EnchantmentHelper.getLevel(ModEnchantments.EXTRACTING, stack) > 0 && state.isIn(ModTags.Blocks.ORES)) {
 						Set<BlockPos> ores = gatherOres(new HashSet<>(), world, new BlockPos.Mutable().set(pos), state.getBlock());
-						if (ores.size() > 1 && ores.size() <= Enchancement.getConfig().maxExtractingBlocks) {
+						if (!ores.isEmpty() && ores.size() <= Enchancement.getConfig().maxExtractingBlocks) {
 							ItemStack copy = stack.copy();
 							AtomicBoolean broken = new AtomicBoolean(false);
 							stack.damage(ores.size(), player, stackUser -> {
@@ -106,10 +106,11 @@ public class Enchancement implements ModInitializer {
 								List<ItemStack> drops = new ArrayList<>();
 								ores.forEach(ore -> {
 									drops.addAll(Block.getDroppedStacks(world.getBlockState(ore), (ServerWorld) world, ore, world.getBlockEntity(ore)));
+									world.breakBlock(ore, false);
 									world.setBlockState(ore, replace);
 								});
+								world.playSound(null, pos, ModSoundEvents.BLOCK_ORE_EXTRACT, SoundCategory.BLOCKS, 1, 1);
 								if (!drops.isEmpty()) {
-									world.playSound(null, pos, ModSoundEvents.BLOCK_ORE_EXTRACT, SoundCategory.BLOCKS, 1, 1);
 									EnchancementUtil.mergeItemEntities(drops.stream().map(drop -> new ItemEntity(world, player.getX(), player.getY() + 0.5, player.getZ(), drop)).collect(Collectors.toList())).forEach(world::spawnEntity);
 								}
 								return false;
