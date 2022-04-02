@@ -15,7 +15,7 @@ public class EnchantmentHelperMixin {
 	@Inject(method = "getLoyalty", at = @At("HEAD"), cancellable = true)
 	private static void enchancement$giveAllTridentsLoyalty(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
 		if (Enchancement.getConfig().allTridentsHaveLoyalty && stack.getItem() instanceof TridentItem) {
-			cir.setReturnValue(Enchancement.CACHED_MAX_LEVELS.get(Enchantments.LOYALTY));
+			cir.setReturnValue(Enchantments.LOYALTY.getMaxLevel());
 		}
 	}
 
@@ -24,7 +24,7 @@ public class EnchantmentHelperMixin {
 		if (Enchancement.getConfig().luckOfTheSeaHasLure) {
 			int level = EnchantmentHelper.getLuckOfTheSea(stack);
 			if (level > 0) {
-				cir.setReturnValue(Enchancement.CACHED_MAX_LEVELS.get(Enchantments.LURE));
+				cir.setReturnValue(Enchantments.LURE.getMaxLevel());
 			}
 		}
 	}

@@ -25,7 +25,6 @@ public class RegistryMixin {
 	@Inject(method = "register(Lnet/minecraft/util/registry/Registry;Lnet/minecraft/util/registry/RegistryKey;Ljava/lang/Object;)Ljava/lang/Object;", at = @At("HEAD"), cancellable = true)
 	private static <V, T extends V> void enchancement$disableDisallowedEnchantments(Registry<V> registry, RegistryKey<V> key, T entry, CallbackInfoReturnable<T> cir) {
 		if (registry == ENCHANTMENT) {
-			Enchancement.CACHED_MAX_LEVELS.put((Enchantment) entry, ((Enchantment) entry).getMaxLevel());
 			if (!Enchancement.getConfig().allowedEnchantmentIdentifiers.isEmpty() && !Enchancement.getConfig().allowedEnchantmentIdentifiers.contains(key.getValue())) {
 				cir.setReturnValue(entry);
 			}

@@ -1,6 +1,5 @@
 package moriyashiine.enchancement.mixin.scooping;
 
-import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -18,7 +17,7 @@ public class EnchantmentHelperMixin {
 	private static void enchancement$scooping(LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
 		int level = EnchantmentHelper.getEquipmentLevel(ModEnchantments.SCOOPING, entity);
 		if (level > 0) {
-			cir.setReturnValue(Enchancement.CACHED_MAX_LEVELS.get(Enchantments.LOOTING) + 2);
+			cir.setReturnValue(Enchantments.LOOTING.getMaxLevel() + 2);
 		}
 	}
 

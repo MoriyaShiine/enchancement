@@ -1,6 +1,5 @@
 package moriyashiine.enchancement.mixin.amphibious;
 
-import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -23,7 +22,7 @@ public class EnchantmentHelperMixin {
 	private static void enchancement$amphibiousDepthStrider(LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
 		int level = EnchantmentHelper.getEquipmentLevel(ModEnchantments.AMPHIBIOUS, entity);
 		if (level > 0) {
-			cir.setReturnValue(Enchancement.CACHED_MAX_LEVELS.get(Enchantments.DEPTH_STRIDER));
+			cir.setReturnValue(Enchantments.DEPTH_STRIDER.getMaxLevel());
 		}
 	}
 
@@ -31,7 +30,7 @@ public class EnchantmentHelperMixin {
 	private static void enchancement$amphibiousRespiration(LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
 		int level = EnchantmentHelper.getEquipmentLevel(ModEnchantments.AMPHIBIOUS, entity);
 		if (level > 0) {
-			cir.setReturnValue(Enchancement.CACHED_MAX_LEVELS.get(Enchantments.RESPIRATION));
+			cir.setReturnValue(Enchantments.RESPIRATION.getMaxLevel());
 		}
 	}
 }

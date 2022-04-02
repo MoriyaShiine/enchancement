@@ -19,7 +19,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.ItemEntity;
@@ -49,8 +48,6 @@ public class Enchancement implements ModInitializer {
 	public static final String MOD_ID = "enchancement";
 
 	private static ConfigHolder<ModConfig> config;
-
-	public static final Map<Enchantment, Integer> CACHED_MAX_LEVELS = new HashMap<>();
 
 	@Override
 	public void onInitialize() {
