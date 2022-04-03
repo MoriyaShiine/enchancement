@@ -1,5 +1,6 @@
 package moriyashiine.enchancement.mixin.vanillachanges;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import moriyashiine.enchancement.common.Enchancement;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,6 +29,14 @@ public abstract class TridentEntityMixin extends PersistentProjectileEntity {
 	private int enchancement$ageNonPlayerTridents(int value) {
 		if (Enchancement.getConfig().allTridentsHaveLoyalty && !(getOwner() instanceof PlayerEntity)) {
 			return 0;
+		}
+		return value;
+	}
+
+	@ModifyExpressionValue(method = "onEntityHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;isThundering()Z"))
+	private boolean enchancement$channelingWorksWhenNotThundering(boolean value) {
+		if (Enchancement.getConfig().channelingWorksWhenNotThundering) {
+			return true;
 		}
 		return value;
 	}

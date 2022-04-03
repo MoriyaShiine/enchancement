@@ -19,7 +19,7 @@ public class ModConfig implements ConfigData {
 			"enchancement:acceleration", "enchancement:bouncy", "enchancement:gale",
 			"minecraft:fire_aspect", "enchancement:frostbite",
 			"enchancement:chaos", "enchancement:delay",
-			"minecraft:riptide", "enchancement:warp",
+			"minecraft:channeling", "minecraft:riptide", "enchancement:warp",
 			"enchancement:extracting", "enchancement:molten",
 			"enchancement:beheading", "enchancement:lumberjack",
 			"enchancement:bury", "enchancement:scooping",
@@ -32,6 +32,7 @@ public class ModConfig implements ConfigData {
 	public boolean singleLevelMode = true;
 
 	public boolean allTridentsHaveLoyalty = true;
+	public boolean channelingWorksWhenNotThundering = true;
 	public boolean luckOfTheSeaHasLure = true;
 
 	public int fireAspectIgnitionLevel = 1;
