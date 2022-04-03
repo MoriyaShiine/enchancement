@@ -38,6 +38,9 @@ dependencies {
     mappings "net.fabricmc:yarn:${yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${loader_version}"
 
+    implementation "com.github.LlamaLad7:MixinExtras:${mixin_extras_version}"
+    annotationProcessor "com.github.LlamaLad7:MixinExtras:${mixin_extras_version}"
+    include "com.github.LlamaLad7:MixinExtras:${mixin_extras_version}"
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_version}"
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_version}"
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}"

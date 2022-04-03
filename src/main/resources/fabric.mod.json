@@ -16,6 +16,9 @@
   "icon": "assets/enchancement/icon.png",
   "environment": "*",
   "entrypoints": {
+	"preLaunch": [
+	  "moriyashiine.enchancement.common.ModPreLaunchEntrypoint"
+	],
 	"main": [
 	  "moriyashiine.enchancement.common.Enchancement"
 	],
