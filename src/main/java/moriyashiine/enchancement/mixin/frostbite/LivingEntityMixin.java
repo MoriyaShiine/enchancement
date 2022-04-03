@@ -61,15 +61,6 @@ public abstract class LivingEntityMixin extends Entity {
 		}
 	}
 
-	@Inject(method = "pushAwayFrom", at = @At("HEAD"))
-	private void enchancement$frostbite(Entity entity, CallbackInfo ci) {
-		ModEntityComponents.FROZEN.maybeGet(this).ifPresent(frozenComponent -> {
-			if (frozenComponent.isFrozen() && causeOfShattering == null) {
-				causeOfShattering = entity;
-			}
-		});
-	}
-
 	@Inject(method = "onDeath", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;sendEntityStatus(Lnet/minecraft/entity/Entity;B)V"), cancellable = true)
 	private void enchancement$frostbite(DamageSource source, CallbackInfo ci) {
 		if (!world.isClient && !getType().isIn(ModTags.EntityTypes.CANNOT_FREEZE)) {
@@ -81,5 +72,14 @@ public abstract class LivingEntityMixin extends Entity {
 				});
 			}
 		}
+	}
+
+	@Inject(method = "pushAwayFrom", at = @At("HEAD"))
+	private void enchancement$frostbite(Entity entity, CallbackInfo ci) {
+		ModEntityComponents.FROZEN.maybeGet(this).ifPresent(frozenComponent -> {
+			if (frozenComponent.isFrozen() && causeOfShattering == null) {
+				causeOfShattering = entity;
+			}
+		});
 	}
 }

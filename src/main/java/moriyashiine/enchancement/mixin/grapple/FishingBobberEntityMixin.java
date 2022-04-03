@@ -44,6 +44,15 @@ public abstract class FishingBobberEntityMixin extends Entity {
 		super(type, world);
 	}
 
+	@ModifyVariable(method = "<init>(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/world/World;II)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/util/math/Vec3d;multiply(DDD)Lnet/minecraft/util/math/Vec3d;"))
+	private Vec3d enchancement$grapple(Vec3d value, PlayerEntity player) {
+		getDataTracker().set(HAS_GRAPPLE, EnchantmentHelper.getEquipmentLevel(ModEnchantments.GRAPPLE, player) > 0);
+		if (hasGrapple()) {
+			return value.multiply(2, 1.5, 2);
+		}
+		return value;
+	}
+
 	@Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/FishingBobberEntity;checkForCollision()V", shift = At.Shift.BEFORE), cancellable = true)
 	private void enchancement$grapple(CallbackInfo ci) {
 		if (hasGrapple()) {
@@ -58,13 +67,12 @@ public abstract class FishingBobberEntityMixin extends Entity {
 		}
 	}
 
-	@ModifyVariable(method = "<init>(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/world/World;II)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/util/math/Vec3d;multiply(DDD)Lnet/minecraft/util/math/Vec3d;"))
-	private Vec3d enchancement$grapple(Vec3d value, PlayerEntity player) {
-		getDataTracker().set(HAS_GRAPPLE, EnchantmentHelper.getEquipmentLevel(ModEnchantments.GRAPPLE, player) > 0);
+	@Inject(method = "onBlockHit", at = @At("TAIL"))
+	private void enchancement$grapple(BlockHitResult blockHitResult, CallbackInfo ci) {
 		if (hasGrapple()) {
-			return value.multiply(2, 1.5, 2);
+			grapplePos = blockHitResult.getBlockPos();
+			grappleState = world.getBlockState(grapplePos);
 		}
-		return value;
 	}
 
 	@ModifyArg(method = "pullHookedEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Vec3d;add(Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/util/math/Vec3d;"))
@@ -90,14 +98,6 @@ public abstract class FishingBobberEntityMixin extends Entity {
 			if (value > 0) {
 				cir.setReturnValue(1);
 			}
-		}
-	}
-
-	@Inject(method = "onBlockHit", at = @At("TAIL"))
-	private void enchancement$grapple(BlockHitResult blockHitResult, CallbackInfo ci) {
-		if (hasGrapple()) {
-			grapplePos = blockHitResult.getBlockPos();
-			grappleState = world.getBlockState(grapplePos);
 		}
 	}
 

@@ -11,18 +11,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {
+	@Inject(method = "clipAtLedge", at = @At("HEAD"), cancellable = true)
+	private void enchancement$slide(CallbackInfoReturnable<Boolean> cir) {
+		if (ModEntityComponents.SLIDE.get(this).shouldSlide()) {
+			cir.setReturnValue(false);
+		}
+	}
+
 	@ModifyArg(method = "updatePose", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setPose(Lnet/minecraft/entity/EntityPose;)V"))
 	private EntityPose enchancement$slide(EntityPose value) {
 		if (value == EntityPose.CROUCHING && ModEntityComponents.SLIDE.get(this).shouldSlide()) {
 			return EntityPose.SWIMMING;
 		}
 		return value;
-	}
-
-	@Inject(method = "clipAtLedge", at = @At("HEAD"), cancellable = true)
-	private void enchancement$slide(CallbackInfoReturnable<Boolean> cir) {
-		if (ModEntityComponents.SLIDE.get(this).shouldSlide()) {
-			cir.setReturnValue(false);
-		}
 	}
 }

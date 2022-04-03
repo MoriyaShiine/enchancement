@@ -36,13 +36,6 @@ public abstract class FishingBobberEntityMixin extends Entity {
 		hasDisarm = EnchantmentHelper.getEquipmentLevel(ModEnchantments.DISARM, thrower) > 0;
 	}
 
-	@Inject(method = "use", at = @At(value = "RETURN", ordinal = 1), cancellable = true)
-	private void enchancment$disarm(ItemStack usedItem, CallbackInfoReturnable<Integer> cir) {
-		if (hasDisarm && cir.getReturnValueI() > 0) {
-			cir.setReturnValue(1);
-		}
-	}
-
 	@Inject(method = "pullHookedEntity", at = @At("HEAD"), cancellable = true)
 	private void enchancment$disarm(Entity entity, CallbackInfo ci) {
 		if (!world.isClient && hasDisarm && entity instanceof LivingEntity living) {
@@ -82,6 +75,13 @@ public abstract class FishingBobberEntityMixin extends Entity {
 				}
 				ci.cancel();
 			}
+		}
+	}
+
+	@Inject(method = "use", at = @At(value = "RETURN", ordinal = 1), cancellable = true)
+	private void enchancment$disarm(ItemStack usedItem, CallbackInfoReturnable<Integer> cir) {
+		if (hasDisarm && cir.getReturnValueI() > 0) {
+			cir.setReturnValue(1);
 		}
 	}
 }

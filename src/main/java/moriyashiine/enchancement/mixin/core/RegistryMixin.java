@@ -22,20 +22,20 @@ public class RegistryMixin {
 	@Final
 	public static Registry<Enchantment> ENCHANTMENT;
 
+	@SuppressWarnings({"ConstantConditions", "unchecked"})
+	@Inject(method = "getOrEmpty(Lnet/minecraft/util/Identifier;)Ljava/util/Optional;", at = @At("HEAD"), cancellable = true)
+	private <T> void enchancement$ignoreDisallowedEnchantments(@Nullable Identifier id, CallbackInfoReturnable<Optional<T>> cir) {
+		if (Registry.class.cast(this) == ENCHANTMENT && !Enchancement.getConfig().allowedEnchantmentIdentifiers.isEmpty() && !Enchancement.getConfig().allowedEnchantmentIdentifiers.contains(id)) {
+			cir.setReturnValue(Optional.of((T) ModEnchantments.EMPTY));
+		}
+	}
+
 	@Inject(method = "register(Lnet/minecraft/util/registry/Registry;Lnet/minecraft/util/registry/RegistryKey;Ljava/lang/Object;)Ljava/lang/Object;", at = @At("HEAD"), cancellable = true)
 	private static <V, T extends V> void enchancement$disableDisallowedEnchantments(Registry<V> registry, RegistryKey<V> key, T entry, CallbackInfoReturnable<T> cir) {
 		if (registry == ENCHANTMENT) {
 			if (!Enchancement.getConfig().allowedEnchantmentIdentifiers.isEmpty() && !Enchancement.getConfig().allowedEnchantmentIdentifiers.contains(key.getValue())) {
 				cir.setReturnValue(entry);
 			}
-		}
-	}
-
-	@SuppressWarnings({"ConstantConditions", "unchecked"})
-	@Inject(method = "getOrEmpty(Lnet/minecraft/util/Identifier;)Ljava/util/Optional;", at = @At("HEAD"), cancellable = true)
-	private <T> void enchancement$ignoreDisallowedEnchantments(@Nullable Identifier id, CallbackInfoReturnable<Optional<T>> cir) {
-		if (Registry.class.cast(this) == ENCHANTMENT && !Enchancement.getConfig().allowedEnchantmentIdentifiers.isEmpty() && !Enchancement.getConfig().allowedEnchantmentIdentifiers.contains(id)) {
-			cir.setReturnValue(Optional.of((T) ModEnchantments.EMPTY));
 		}
 	}
 }
