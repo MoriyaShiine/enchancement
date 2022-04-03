@@ -7,6 +7,7 @@ import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
 import dev.onyxstudios.cca.api.v3.entity.RespawnCopyStrategy;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.component.entity.*;
+import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
@@ -29,6 +30,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	//bow
 	public static final ComponentKey<DelayComponent> DELAY = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "delay"), DelayComponent.class);
 	//trident
+	public static final ComponentKey<ChanellingComponent> CHANNELING = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "channeling"), ChanellingComponent.class);
 	public static final ComponentKey<WarpComponent> WARP = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "warp"), WarpComponent.class);
 	//shovel
 	public static final ComponentKey<BuryComponent> BURY = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "bury"), BuryComponent.class);
@@ -44,6 +46,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerForPlayers(GALE, GaleComponent::new, RespawnCopyStrategy.NEVER_COPY);
 		registry.registerFor(MobEntity.class, FROZEN, FrozenComponent::new);
 		registry.registerFor(ArrowEntity.class, DELAY, DelayComponent::new);
+		registry.registerFor(LightningEntity.class, CHANNELING, lightningEntity -> new ChanellingComponent());
 		registry.registerFor(TridentEntity.class, WARP, WarpComponent::new);
 		registry.registerFor(LivingEntity.class, BURY, BuryComponent::new);
 	}

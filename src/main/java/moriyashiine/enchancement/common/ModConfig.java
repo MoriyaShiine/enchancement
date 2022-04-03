@@ -33,6 +33,7 @@ public class ModConfig implements ConfigData {
 
 	public boolean allTridentsHaveLoyalty = true;
 	public boolean channelingWorksWhenNotThundering = true;
+	public boolean disableChannelingFire = true;
 	public boolean luckOfTheSeaHasLure = true;
 
 	public int fireAspectIgnitionLevel = 1;

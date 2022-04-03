@@ -38,6 +38,7 @@
 	"vanillachanges.EnchantmentHelperMixin",
 	"vanillachanges.ItemMixin",
 	"vanillachanges.ItemStackMixin",
+	"vanillachanges.LightningEntityMixin",
 	"vanillachanges.TridentEntityMixin",
 	"wardenspine.LivingEntityMixin",
 	"warp.PersistentProjectileEntityMixin",
