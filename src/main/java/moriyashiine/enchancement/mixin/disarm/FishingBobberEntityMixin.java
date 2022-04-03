@@ -8,6 +8,7 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -58,7 +59,11 @@ public abstract class FishingBobberEntityMixin extends Entity {
 				} else {
 					PlayerEntity owner = getPlayerOwner();
 					if (owner != null) {
-						ItemEntity itemEntity = dropStack(stack);
+						if (stack.isDamageable()) {
+							stack.setDamage(MathHelper.nextInt(living.getRandom(), stack.getDamage(), (int) (stack.getMaxDamage() - (stack.getMaxDamage() * 0.05F))));
+						}
+						ItemEntity itemEntity = new ItemEntity(world, entity.getX(), entity.getBodyY(0.5), entity.getZ(), stack);
+						itemEntity.setToDefaultPickupDelay();
 						double deltaX = owner.getX() - getX();
 						double deltaY = owner.getY() - getY();
 						double deltaZ = owner.getZ() - getZ();
