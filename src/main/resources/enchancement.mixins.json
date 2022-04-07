@@ -24,6 +24,7 @@
 	"delay.ArrowEntityMixin",
 	"delay.PersistentProjectileEntityMixin",
 	"disarm.FishingBobberEntityMixin",
+	"frostbite.EntityMixin",
 	"frostbite.LivingEntityMixin",
 	"gale.LivingEntityMixin",
 	"grapple.FishingBobberEntityMixin",

@@ -21,9 +21,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
-	@Unique
-	private Entity causeOfShattering = null;
-
 	public LivingEntityMixin(EntityType<?> type, World world) {
 		super(type, world);
 	}
@@ -32,22 +29,21 @@ public abstract class LivingEntityMixin extends Entity {
 	private void enchancement$frostbite(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
 		if (!world.isClient) {
 			ModEntityComponents.FROZEN.maybeGet(this).ifPresent(frozenComponent -> {
+				if (isSourceFreezingEntity(source)) {
+					frozenComponent.setLastFreezingAttacker(source.getAttacker());
+				}
 				if (frozenComponent.isFrozen()) {
 					if (source == DamageSource.FREEZE) {
 						cir.setReturnValue(false);
 					} else {
 						Entity entitySource = source.getSource();
-						Entity attacker = source.getAttacker();
-						if (attacker != null) {
-							causeOfShattering = attacker;
-						}
 						if (entitySource != null && amount <= 1) {
 							setVelocity(getVelocity().add(-(entitySource.getX() - getX()), 0, -(entitySource.getZ() - getZ())).normalize().multiply(0.5));
 							cir.setReturnValue(true);
 						} else {
 							for (int i = 0; i < MathHelper.nextInt(random, 24, 32); i++) {
 								IceShardEntity entity = new IceShardEntity(world, LivingEntity.class.cast(this));
-								entity.setOwner(causeOfShattering);
+								entity.setOwner(frozenComponent.getLastFreezingAttacker());
 								entity.teleport(getX(), getEyeY(), getZ());
 								entity.setVelocity(new Vec3d(random.nextGaussian(), random.nextGaussian() / 2, random.nextGaussian()).normalize().multiply(0.75));
 								world.spawnEntity(entity);
@@ -64,22 +60,19 @@ public abstract class LivingEntityMixin extends Entity {
 	@Inject(method = "onDeath", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;sendEntityStatus(Lnet/minecraft/entity/Entity;B)V"), cancellable = true)
 	private void enchancement$frostbite(DamageSource source, CallbackInfo ci) {
 		if (!world.isClient && !getType().isIn(ModTags.EntityTypes.CANNOT_FREEZE)) {
-			if (source.getSource() instanceof IceShardEntity || (source.getSource() instanceof LivingEntity living && EnchantmentHelper.getEquipmentLevel(ModEnchantments.FROSTBITE, living) > 0)) {
-				ModEntityComponents.FROZEN.maybeGet(this).ifPresent(frozenComponent -> {
-					frozenComponent.freeze();
-					causeOfShattering = source.getAttacker();
-					ci.cancel();
-				});
-			}
+			ModEntityComponents.FROZEN.maybeGet(this).ifPresent(frozenComponent -> {
+				if (frozenComponent.getLastFreezingAttacker() != null) {
+					if (isSourceFreezingEntity(source) || source == DamageSource.FREEZE) {
+						frozenComponent.freeze();
+						ci.cancel();
+					}
+				}
+			});
 		}
 	}
 
-	@Inject(method = "pushAwayFrom", at = @At("HEAD"))
-	private void enchancement$frostbite(Entity entity, CallbackInfo ci) {
-		ModEntityComponents.FROZEN.maybeGet(this).ifPresent(frozenComponent -> {
-			if (frozenComponent.isFrozen() && causeOfShattering == null) {
-				causeOfShattering = entity;
-			}
-		});
+	@Unique
+	private static boolean isSourceFreezingEntity(DamageSource source) {
+		return source.getSource() instanceof IceShardEntity || (source.getSource() instanceof LivingEntity living && EnchantmentHelper.getEquipmentLevel(ModEnchantments.FROSTBITE, living) > 0);
 	}
 }

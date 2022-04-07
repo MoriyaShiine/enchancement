@@ -4,6 +4,7 @@ import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import moriyashiine.enchancement.common.registry.ModSoundEvents;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
@@ -11,6 +12,7 @@ import net.minecraft.nbt.NbtCompound;
 
 public class FrozenComponent implements AutoSyncedComponent, ServerTickingComponent {
 	private final MobEntity obj;
+	private Entity lastFreezingAttacker = null;
 	private boolean frozen = false;
 	private int ticksFrozen = 0;
 	private float forcedHeadYaw, forcedBodyYaw, forcedPitch, forcedLimbDistance, forcedLimbAngle;
@@ -62,6 +64,14 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 			}
 			obj.move(MovementType.SELF, obj.getVelocity());
 		}
+	}
+
+	public Entity getLastFreezingAttacker() {
+		return lastFreezingAttacker;
+	}
+
+	public void setLastFreezingAttacker(Entity lastFreezingAttacker) {
+		this.lastFreezingAttacker = lastFreezingAttacker;
 	}
 
 	public boolean isFrozen() {
