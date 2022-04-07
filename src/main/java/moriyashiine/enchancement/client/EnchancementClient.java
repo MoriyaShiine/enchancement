@@ -1,7 +1,6 @@
 package moriyashiine.enchancement.client;
 
 import moriyashiine.enchancement.client.packet.AddGaleParticlesPacket;
-import moriyashiine.enchancement.client.packet.AddIceShardParticlesPacket;
 import moriyashiine.enchancement.client.packet.AddMoltenParticlesPacket;
 import moriyashiine.enchancement.client.render.FrozenTextureManager;
 import moriyashiine.enchancement.client.render.entity.IceShardEntityRenderer;
@@ -19,7 +18,6 @@ public class EnchancementClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		ClientPlayNetworking.registerGlobalReceiver(AddGaleParticlesPacket.ID, AddGaleParticlesPacket::receive);
-		ClientPlayNetworking.registerGlobalReceiver(AddIceShardParticlesPacket.ID, AddIceShardParticlesPacket::receive);
 		ClientPlayNetworking.registerGlobalReceiver(AddMoltenParticlesPacket.ID, AddMoltenParticlesPacket::receive);
 		EntityRendererRegistry.register(ModEntityTypes.ICE_SHARD, IceShardEntityRenderer::new);
 		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(FrozenTextureManager.getInstance());

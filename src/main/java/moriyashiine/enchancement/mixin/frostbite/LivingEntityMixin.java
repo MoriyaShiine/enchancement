@@ -45,11 +45,11 @@ public abstract class LivingEntityMixin extends Entity {
 							setVelocity(getVelocity().add(-(entitySource.getX() - getX()), 0, -(entitySource.getZ() - getZ())).normalize().multiply(0.5));
 							cir.setReturnValue(true);
 						} else {
-							for (int i = 0; i < MathHelper.nextInt(random, 16, 24); i++) {
+							for (int i = 0; i < MathHelper.nextInt(random, 24, 32); i++) {
 								IceShardEntity entity = new IceShardEntity(world, LivingEntity.class.cast(this));
 								entity.setOwner(causeOfShattering);
 								entity.teleport(getX(), getEyeY(), getZ());
-								entity.setVelocity(new Vec3d(random.nextGaussian(), random.nextGaussian(), random.nextGaussian()).normalize().multiply(0.75));
+								entity.setVelocity(new Vec3d(random.nextGaussian(), random.nextGaussian() / 2, random.nextGaussian()).normalize().multiply(0.75));
 								world.spawnEntity(entity);
 							}
 							discard();
