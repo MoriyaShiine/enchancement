@@ -3,7 +3,6 @@ package moriyashiine.enchancement.common.component.entity;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
-import moriyashiine.enchancement.mixin.phasing.ArrowEntityAccessor;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.nbt.NbtCompound;
 import org.jetbrains.annotations.NotNull;
@@ -32,8 +31,8 @@ public class PhasingComponent implements AutoSyncedComponent, ServerTickingCompo
 	@Override
 	public void serverTick() {
 		if (shouldPhase && ticksInAir++ >= 200) {
-			obj.dropStack(((ArrowEntityAccessor) obj).enchancement$asItemStack());
-			obj.discard();
+			shouldPhase = false;
+			obj.setNoGravity(false);
 		}
 	}
 

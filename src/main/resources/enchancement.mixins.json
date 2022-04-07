@@ -30,7 +30,6 @@
 	"grapple.FishingBobberEntityMixin",
 	"molten.AbstractFurnaceBlockEntityAccessor",
 	"molten.BlockMixin",
-	"phasing.ArrowEntityAccessor",
 	"phasing.ArrowItemMixin",
 	"phasing.PersistentProjectileEntityMixin",
 	"scooping.EnchantmentHelperMixin",
