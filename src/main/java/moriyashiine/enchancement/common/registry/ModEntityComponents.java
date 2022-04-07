@@ -29,6 +29,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<FrozenComponent> FROZEN = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "frozen"), FrozenComponent.class);
 	//bow
 	public static final ComponentKey<DelayComponent> DELAY = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "delay"), DelayComponent.class);
+	public static final ComponentKey<PhasingComponent> PHASHING = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "phasing"), PhasingComponent.class);
 	//trident
 	public static final ComponentKey<ChanellingComponent> CHANNELING = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "channeling"), ChanellingComponent.class);
 	public static final ComponentKey<WarpComponent> WARP = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "warp"), WarpComponent.class);
@@ -46,6 +47,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerForPlayers(GALE, GaleComponent::new, RespawnCopyStrategy.NEVER_COPY);
 		registry.registerFor(MobEntity.class, FROZEN, FrozenComponent::new);
 		registry.registerFor(ArrowEntity.class, DELAY, DelayComponent::new);
+		registry.registerFor(ArrowEntity.class, PHASHING, PhasingComponent::new);
 		registry.registerFor(LightningEntity.class, CHANNELING, lightningEntity -> new ChanellingComponent());
 		registry.registerFor(TridentEntity.class, WARP, WarpComponent::new);
 		registry.registerFor(LivingEntity.class, BURY, BuryComponent::new);

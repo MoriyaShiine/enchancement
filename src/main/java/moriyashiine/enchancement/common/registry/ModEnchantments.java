@@ -30,6 +30,7 @@ public class ModEnchantments {
 	//bow
 	public static final Enchantment CHAOS = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.BOW, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
 	public static final Enchantment DELAY = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.BOW, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
+	public static final Enchantment PHASING = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.BOW, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
 	//trident
 	public static final Enchantment WARP = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.TRIDENT, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
 	//pickaxe
@@ -65,6 +66,7 @@ public class ModEnchantments {
 		//bow
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "chaos"), CHAOS);
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "delay"), DELAY);
+		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "phasing"), PHASING);
 		//trident
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "warp"), WARP);
 		//pickaxe
