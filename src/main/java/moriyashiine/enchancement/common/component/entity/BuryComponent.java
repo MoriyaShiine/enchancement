@@ -48,4 +48,9 @@ public class BuryComponent implements AutoSyncedComponent, CommonTickingComponen
 		this.buryPos = buryPos;
 		ModEntityComponents.BURY.sync(obj);
 	}
+
+	public void unbury() {
+		obj.teleport(buryPos.getX() + 0.5, buryPos.getY() + 1, buryPos.getZ() + 0.5);
+		setBuryPos(null);
+	}
 }

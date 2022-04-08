@@ -18,8 +18,7 @@ public class AbstractBlockMixin {
 	private void enchancement$bury(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved, CallbackInfo ci) {
 		world.getEntitiesByClass(LivingEntity.class, new Box(pos), entity -> !entity.isDead()).forEach(foundEntity -> ModEntityComponents.BURY.maybeGet(foundEntity).ifPresent(buryComponent -> {
 			if (buryComponent.getBuryPos() != null && buryComponent.getBuryPos().equals(pos)) {
-				buryComponent.setBuryPos(null);
-				foundEntity.teleport(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
+				buryComponent.unbury();
 			}
 		}));
 	}
