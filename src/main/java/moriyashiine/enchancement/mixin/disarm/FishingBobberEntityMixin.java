@@ -54,7 +54,7 @@ public abstract class FishingBobberEntityMixin extends Entity {
 			if (!stack.isEmpty()) {
 				if (entity instanceof PlayerEntity player) {
 					if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
-						player.getItemCooldownManager().set(stack.getItem(), 100);
+						player.getItemCooldownManager().set(stack.getItem(), 60);
 						player.stopUsingItem();
 					}
 				} else {
