@@ -45,7 +45,7 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@Inject(method = "handleFallDamage", at = @At("HEAD"), cancellable = true)
 	private void enchancement$bouncy(float fallDistance, float damageMultiplier, DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
-		if (fallDistance > getSafeFallDistance() && EnchantmentHelper.getEquipmentLevel(ModEnchantments.BOUNCY, LivingEntity.class.cast(this)) > 0) {
+		if (damageSource != DamageSource.STALAGMITE && fallDistance > getSafeFallDistance() && EnchantmentHelper.getEquipmentLevel(ModEnchantments.BOUNCY, LivingEntity.class.cast(this)) > 0) {
 			if (!world.isClient) {
 				world.playSoundFromEntity(null, this, SoundEvents.BLOCK_SLIME_BLOCK_FALL, getSoundCategory(), 1, 1);
 				if (!bypassesLandingEffects()) {
