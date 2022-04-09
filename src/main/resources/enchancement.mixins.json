@@ -8,6 +8,9 @@
 	"amphibious.EnchantmentHelperMixin",
 	"beheading.LivingEntityMixin",
 	"beheading.LootManagerMixin",
+	"berserk.ItemMixin",
+	"berserk.LivingEntityMixin",
+	"berserk.PlayerEntityMixin",
 	"bouncy.LivingEntityMixin",
 	"buffet.LivingEntityAccessor",
 	"bury.AbstractBlockMixin",
@@ -50,6 +53,8 @@
 	"warp.TridentEntityMixin"
   ],
   "client": [
+	"berserk.client.ItemColorsMixin",
+	"berserk.client.ItemStackMixin",
 	"dash.client.InGameHudMixin",
 	"disarm.client.MinecraftClientMixin",
 	"frostbite.client.LivingEntityRendererMixin",

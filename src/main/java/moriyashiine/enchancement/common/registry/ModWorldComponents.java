@@ -9,6 +9,7 @@ import moriyashiine.enchancement.common.component.world.LumberjackComponent;
 import net.minecraft.util.Identifier;
 
 public class ModWorldComponents implements WorldComponentInitializer {
+	//axe
 	public static final ComponentKey<LumberjackComponent> LUMBERJACK = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "lumberjack"), LumberjackComponent.class);
 
 	@Override

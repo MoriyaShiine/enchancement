@@ -26,6 +26,7 @@ public class ModEnchantments {
 	public static final Enchantment BOUNCY = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_FEET, EquipmentSlot.FEET);
 	public static final Enchantment GALE = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_FEET, EquipmentSlot.FEET);
 	//sword
+	public static final Enchantment BERSERK = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.WEAPON, EquipmentSlot.MAINHAND);
 	public static final Enchantment FROSTBITE = new FrostbiteEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.WEAPON, EquipmentSlot.MAINHAND);
 	//bow
 	public static final Enchantment CHAOS = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.BOW, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
@@ -62,6 +63,7 @@ public class ModEnchantments {
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "bouncy"), BOUNCY);
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "gale"), GALE);
 		//sword
+		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "berserk"), BERSERK);
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "frostbite"), FROSTBITE);
 		//bow
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "chaos"), CHAOS);

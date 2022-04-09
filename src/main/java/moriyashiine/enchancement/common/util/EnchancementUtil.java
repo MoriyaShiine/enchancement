@@ -1,9 +1,16 @@
 package moriyashiine.enchancement.common.util;
 
+import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.mixin.util.ItemEntityAccessor;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
 
@@ -30,5 +37,20 @@ public class EnchancementUtil {
 			return false;
 		}
 		return !living.isTouchingWater() && !living.isSwimming();
+	}
+
+	public static float getMaxBonusBerserkDamage(ItemStack stack) {
+		float maxBonus = 1;
+		for (EntityAttributeModifier modifier : stack.getAttributeModifiers(EquipmentSlot.MAINHAND).get(EntityAttributes.GENERIC_ATTACK_DAMAGE)) {
+			maxBonus += modifier.getValue();
+		}
+		return maxBonus;
+	}
+
+	public static float getBonusBerserkDamage(LivingEntity living, ItemStack stack) {
+		if (living != null && EnchantmentHelper.getLevel(ModEnchantments.BERSERK, stack) > 0) {
+			return MathHelper.clamp((living.getMaxHealth() - living.getHealth()) / 2, 0, getMaxBonusBerserkDamage(stack));
+		}
+		return 0;
 	}
 }
