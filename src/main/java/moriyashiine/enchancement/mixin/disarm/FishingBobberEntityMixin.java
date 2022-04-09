@@ -1,13 +1,18 @@
 package moriyashiine.enchancement.mixin.disarm;
 
 import moriyashiine.enchancement.common.registry.ModEnchantments;
+import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.mob.EndermanEntity;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.mob.WitchEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionUtil;
+import net.minecraft.potion.Potions;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -40,6 +45,9 @@ public abstract class FishingBobberEntityMixin extends Entity {
 	private void enchancment$disarm(Entity entity, CallbackInfo ci) {
 		if (!world.isClient && hasDisarm && entity instanceof LivingEntity living) {
 			ItemStack stack = living.getMainHandStack();
+			if (stack.isEmpty()) {
+				stack = living.getOffHandStack();
+			}
 			if (entity instanceof EndermanEntity enderman && enderman.getCarriedBlock() != null) {
 				stack = new ItemStack(enderman.getCarriedBlock().getBlock());
 			}
@@ -69,6 +77,12 @@ public abstract class FishingBobberEntityMixin extends Entity {
 							}
 							if (entity instanceof EndermanEntity enderman) {
 								enderman.setCarriedBlock(null);
+							}
+							if (entity instanceof WitchEntity) {
+								Potion potion = PotionUtil.getPotion(stack);
+								if (potion != Potions.EMPTY) {
+									ModEntityComponents.WITCH_DISARM.get(entity).disablePotion(potion);
+								}
 							}
 						}
 					}

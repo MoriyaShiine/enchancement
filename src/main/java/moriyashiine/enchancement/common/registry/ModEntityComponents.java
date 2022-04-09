@@ -10,6 +10,7 @@ import moriyashiine.enchancement.common.component.entity.*;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.mob.WitchEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.TridentEntity;
 import net.minecraft.util.Identifier;
@@ -35,6 +36,8 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<WarpComponent> WARP = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "warp"), WarpComponent.class);
 	//shovel
 	public static final ComponentKey<BuryComponent> BURY = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "bury"), BuryComponent.class);
+	//fishing rod
+	public static final ComponentKey<WitchDisarmComponent> WITCH_DISARM = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "witch_disarm"), WitchDisarmComponent.class);
 
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
@@ -48,8 +51,9 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerFor(MobEntity.class, FROZEN, FrozenComponent::new);
 		registry.registerFor(ArrowEntity.class, DELAY, DelayComponent::new);
 		registry.registerFor(ArrowEntity.class, PHASHING, PhasingComponent::new);
-		registry.registerFor(LightningEntity.class, CHANNELING, lightningEntity -> new ChanellingComponent());
+		registry.registerFor(LightningEntity.class, CHANNELING, lightning -> new ChanellingComponent());
 		registry.registerFor(TridentEntity.class, WARP, WarpComponent::new);
 		registry.registerFor(LivingEntity.class, BURY, BuryComponent::new);
+		registry.registerFor(WitchEntity.class, WITCH_DISARM, witch -> new WitchDisarmComponent());
 	}
 }
