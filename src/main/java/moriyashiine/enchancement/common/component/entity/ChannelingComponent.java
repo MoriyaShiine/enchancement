@@ -3,7 +3,7 @@ package moriyashiine.enchancement.common.component.entity;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import net.minecraft.nbt.NbtCompound;
 
-public class ChanellingComponent implements Component {
+public class ChannelingComponent implements Component {
 	private boolean disableFire = false;
 
 	@Override

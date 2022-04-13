@@ -17,7 +17,10 @@ public class TridentEntityMixin {
 	@Inject(method = "<init>(Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;)V", at = @At("TAIL"))
 	private void enchancement$warp(World world, LivingEntity owner, ItemStack stack, CallbackInfo ci) {
 		if (EnchantmentHelper.getLevel(ModEnchantments.WARP, stack) > 0) {
-			ModEntityComponents.WARP.get(this).setShouldSpawnParticles(true);
+			ModEntityComponents.WARP.maybeGet(this).ifPresent(warpComponent -> {
+				warpComponent.setShouldSpawnParticles(true);
+				warpComponent.sync();
+			});
 		}
 	}
 }

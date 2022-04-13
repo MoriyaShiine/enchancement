@@ -8,22 +8,27 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import org.jetbrains.annotations.NotNull;
 
 public class GaleComponent implements ClientTickingComponent {
 	private final PlayerEntity obj;
-	private int jumpCooldown = 0, timesJumped = 0, ticksInAir = 0;
+	private int jumpCooldown = 0, ticksInAir = 0, timesJumped = 0;
 
 	public GaleComponent(PlayerEntity obj) {
 		this.obj = obj;
 	}
 
 	@Override
-	public void readFromNbt(@NotNull NbtCompound tag) {
+	public void readFromNbt(NbtCompound tag) {
+		jumpCooldown = tag.getInt("JumpCooldown");
+		timesJumped = tag.getInt("TimesJumped");
+		ticksInAir = tag.getInt("TicksInAir");
 	}
 
 	@Override
-	public void writeToNbt(@NotNull NbtCompound tag) {
+	public void writeToNbt(NbtCompound tag) {
+		tag.putInt("JumpCooldown", jumpCooldown);
+		tag.putInt("TicksInAir", ticksInAir);
+		tag.putInt("TimesJumped", timesJumped);
 	}
 
 	@Override

@@ -80,7 +80,6 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 
 	public void setFrozen(boolean frozen) {
 		this.frozen = frozen;
-		ModEntityComponents.FROZEN.sync(obj);
 	}
 
 	public float getForcedHeadYaw() {
@@ -104,14 +103,19 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 	}
 
 	public void freeze() {
+		obj.playSound(ModSoundEvents.ENTITY_GENERIC_FREEZE, 1, 1);
+		obj.setSilent(true);
+		obj.setHealth(1);
 		forcedHeadYaw = obj.headYaw;
 		forcedBodyYaw = obj.bodyYaw;
 		forcedPitch = obj.getPitch();
 		forcedLimbDistance = obj.limbDistance;
 		forcedLimbAngle = obj.limbAngle;
 		setFrozen(true);
-		obj.playSound(ModSoundEvents.ENTITY_GENERIC_FREEZE, 1, 1);
-		obj.setSilent(true);
-		obj.setHealth(1);
+		sync();
+	}
+
+	public void sync() {
+		ModEntityComponents.FROZEN.sync(obj);
 	}
 }

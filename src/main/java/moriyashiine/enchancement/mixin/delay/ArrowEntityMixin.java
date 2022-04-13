@@ -26,6 +26,7 @@ public abstract class ArrowEntityMixin extends PersistentProjectileEntity {
 			ModEntityComponents.DELAY.maybeGet(this).ifPresent(delayComponent -> {
 				delayComponent.setHasDelay(true);
 				delayComponent.setStackShotFrom(offHand ? owner.getOffHandStack() : owner.getMainHandStack());
+				delayComponent.sync();
 				setCritical(true);
 			});
 		}

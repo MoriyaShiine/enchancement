@@ -37,7 +37,7 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 
 	@Override
 	public void writeToNbt(@NotNull NbtCompound tag) {
-		if (this.storedVelocity != null) {
+		if (storedVelocity != null) {
 			NbtCompound storedVelocity = new NbtCompound();
 			storedVelocity.putDouble("X", this.storedVelocity.getX());
 			storedVelocity.putDouble("Y", this.storedVelocity.getY());
@@ -61,9 +61,11 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 					ModEntityComponents.DELAY.sync(obj);
 				}
 				if (ticksFloating > 300 || (obj.getOwner() instanceof LivingEntity living && living.handSwinging && (living.getMainHandStack() == stackShotFrom || living.getOffHandStack() == stackShotFrom))) {
-					setHasDelay(false);
 					obj.setDamage(obj.getDamage() * MathHelper.lerp(Math.min(1, ticksFloating / 100F), 1, 2.5));
 					obj.setVelocity(storedVelocity);
+					storedVelocity = null;
+					setHasDelay(false);
+					sync();
 					return;
 				}
 			}
@@ -84,6 +86,9 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 
 	public void setHasDelay(boolean hasDelay) {
 		this.hasDelay = hasDelay;
+	}
+
+	public void sync() {
 		ModEntityComponents.DELAY.sync(obj);
 	}
 }

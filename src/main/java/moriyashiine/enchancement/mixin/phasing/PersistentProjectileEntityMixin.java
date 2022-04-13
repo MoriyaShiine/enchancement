@@ -42,11 +42,12 @@ public abstract class PersistentProjectileEntityMixin extends Entity {
 					if (entityHitResult != null) {
 						onEntityHit(entityHitResult);
 					}
-					phasingComponent.setShouldPhase(false);
 					setNoGravity(false);
 					((ServerWorld) world).spawnParticles(ParticleTypes.REVERSE_PORTAL, blockHitResult.getPos().getX(), blockHitResult.getPos().getY(), blockHitResult.getPos().getZ(), 6, getWidth() / 2, getHeight() / 2, getWidth() / 2, 0);
 					((ServerWorld) world).spawnParticles(ParticleTypes.REVERSE_PORTAL, target.getX(), target.getY(), target.getZ(), 6, getWidth() / 2, getHeight() / 2, getWidth() / 2, 0);
 					teleport(target.getX(), target.getY(), target.getZ());
+					phasingComponent.setShouldPhase(false);
+					phasingComponent.sync();
 				}
 				ci.cancel();
 			}

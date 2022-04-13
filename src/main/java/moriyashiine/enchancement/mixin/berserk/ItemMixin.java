@@ -47,7 +47,7 @@ public class ItemMixin {
 		if (EnchantmentHelper.getLevel(ModEnchantments.BERSERK, stack) > 0) {
 			user.damage(DamageSource.WITHER, 2);
 			if (user.isSneaking()) {
-				ModEntityComponents.BERSERK.get(user).setPreventRegenerationTicks(100);
+				ModEntityComponents.BERSERK.maybeGet(user).ifPresent(berserkComponent -> berserkComponent.setPreventRegenerationTicks(100));
 			}
 		}
 	}

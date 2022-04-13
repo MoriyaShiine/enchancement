@@ -48,8 +48,6 @@
   },
   "custom": {
 	"cardinal-components": [
-	  "enchancement:assimilation",
-	  "enchancement:buffet",
 	  "enchancement:dash",
 	  "enchancement:slide",
 	  "enchancement:acceleration",

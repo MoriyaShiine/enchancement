@@ -19,7 +19,10 @@ public class ArrowItemMixin {
 	private void enchancement$phasing(World world, ItemStack stack, LivingEntity shooter, CallbackInfoReturnable<PersistentProjectileEntity> cir) {
 		if (EnchantmentHelper.getEquipmentLevel(ModEnchantments.PHASING, shooter) > 0) {
 			PersistentProjectileEntity arrow = cir.getReturnValue();
-			ModEntityComponents.PHASHING.get(arrow).setShouldPhase(true);
+			ModEntityComponents.PHASHING.maybeGet(arrow).ifPresent(phasingComponent -> {
+				phasingComponent.setShouldPhase(true);
+				phasingComponent.sync();
+			});
 			arrow.setNoGravity(true);
 		}
 	}

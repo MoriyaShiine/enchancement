@@ -16,9 +16,6 @@ import net.minecraft.entity.projectile.TridentEntity;
 import net.minecraft.util.Identifier;
 
 public class ModEntityComponents implements EntityComponentInitializer {
-	//helmet
-	public static final ComponentKey<AssimilationComponent> ASSIMILATION = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "assimilation"), AssimilationComponent.class);
-	public static final ComponentKey<BuffetComponent> BUFFET = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "buffet"), BuffetComponent.class);
 	//leggings
 	public static final ComponentKey<DashComponent> DASH = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "dash"), DashComponent.class);
 	public static final ComponentKey<SlideComponent> SLIDE = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "slide"), SlideComponent.class);
@@ -33,7 +30,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<DelayComponent> DELAY = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "delay"), DelayComponent.class);
 	public static final ComponentKey<PhasingComponent> PHASHING = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "phasing"), PhasingComponent.class);
 	//trident
-	public static final ComponentKey<ChanellingComponent> CHANNELING = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "channeling"), ChanellingComponent.class);
+	public static final ComponentKey<ChannelingComponent> CHANNELING = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "channeling"), ChannelingComponent.class);
 	public static final ComponentKey<WarpComponent> WARP = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "warp"), WarpComponent.class);
 	//shovel
 	public static final ComponentKey<BuryComponent> BURY = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "bury"), BuryComponent.class);
@@ -42,18 +39,16 @@ public class ModEntityComponents implements EntityComponentInitializer {
 
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
-		registry.registerForPlayers(ASSIMILATION, AssimilationComponent::new, RespawnCopyStrategy.NEVER_COPY);
-		registry.registerForPlayers(BUFFET, BuffetComponent::new, RespawnCopyStrategy.NEVER_COPY);
-		registry.registerForPlayers(DASH, DashComponent::new, RespawnCopyStrategy.NEVER_COPY);
-		registry.registerForPlayers(SLIDE, SlideComponent::new, RespawnCopyStrategy.NEVER_COPY);
-		registry.registerForPlayers(ACCELERATION, AccelerationComponent::new, RespawnCopyStrategy.NEVER_COPY);
-		registry.registerForPlayers(MOVING_FORWARD, MovingForwardComponent::new, RespawnCopyStrategy.NEVER_COPY);
-		registry.registerForPlayers(GALE, GaleComponent::new, RespawnCopyStrategy.NEVER_COPY);
-		registry.registerFor(LivingEntity.class, BERSERK, living -> new BerserkComponent());
+		registry.registerForPlayers(DASH, DashComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+		registry.registerForPlayers(SLIDE, SlideComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+		registry.registerForPlayers(ACCELERATION, AccelerationComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+		registry.registerForPlayers(MOVING_FORWARD, MovingForwardComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+		registry.registerForPlayers(GALE, GaleComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+		registry.registerForPlayers(BERSERK, player -> new BerserkComponent(), RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(MobEntity.class, FROZEN, FrozenComponent::new);
 		registry.registerFor(ArrowEntity.class, DELAY, DelayComponent::new);
 		registry.registerFor(ArrowEntity.class, PHASHING, PhasingComponent::new);
-		registry.registerFor(LightningEntity.class, CHANNELING, lightning -> new ChanellingComponent());
+		registry.registerFor(LightningEntity.class, CHANNELING, lightning -> new ChannelingComponent());
 		registry.registerFor(TridentEntity.class, WARP, WarpComponent::new);
 		registry.registerFor(LivingEntity.class, BURY, BuryComponent::new);
 		registry.registerFor(WitchEntity.class, WITCH_DISARM, witch -> new WitchDisarmComponent());
