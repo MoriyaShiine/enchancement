@@ -14,6 +14,7 @@
 	"bouncy.LivingEntityMixin",
 	"buffet.LivingEntityAccessor",
 	"bury.AbstractBlockMixin",
+	"bury.EntityMixin",
 	"bury.LivingEntityMixin",
 	"chaos.ArrowItemMixin",
 	"core.AnvilScreenHandlerMixin",
@@ -56,6 +57,7 @@
   "client": [
 	"berserk.client.ItemColorsMixin",
 	"berserk.client.ItemStackMixin",
+	"bury.client.KeyboardInputMixin",
 	"dash.client.InGameHudMixin",
 	"disarm.client.MinecraftClientMixin",
 	"frostbite.client.LivingEntityRendererMixin",
