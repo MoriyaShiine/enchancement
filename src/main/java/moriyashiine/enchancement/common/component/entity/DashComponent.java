@@ -1,19 +1,22 @@
 package moriyashiine.enchancement.common.component.entity;
 
-import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
+import dev.onyxstudios.cca.api.v3.component.tick.ClientTickingComponent;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import moriyashiine.enchancement.common.packet.DashPacket;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
-import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.particle.ParticleTypes;
 
-public class DashComponent implements CommonTickingComponent {
+public class DashComponent implements ClientTickingComponent {
+	public static final Object2IntMap<PlayerEntity> PACKET_IMMUNITIES = new Object2IntOpenHashMap<>();
+
 	private final PlayerEntity obj;
 	private boolean shouldRefreshDash = false;
-	private int dashCooldown = 0, wavedashTimer = 0;
+	private int dashCooldown = 0, ticksPressingJump = 0, wavedashTicks = 0;
 
 	private boolean wasSneaking = false;
 
@@ -25,18 +28,20 @@ public class DashComponent implements CommonTickingComponent {
 	public void readFromNbt(NbtCompound tag) {
 		shouldRefreshDash = tag.getBoolean("ShouldRefreshDash");
 		dashCooldown = tag.getInt("DashCooldown");
-		wavedashTimer = tag.getInt("WavedashTimer");
+		ticksPressingJump = tag.getInt("TicksPressingJump");
+		wavedashTicks = tag.getInt("WavedashTicks");
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag) {
 		tag.putBoolean("ShouldRefreshDash", shouldRefreshDash);
 		tag.putInt("DashCooldown", dashCooldown);
-		tag.putInt("WavedashTimer", wavedashTimer);
+		tag.putInt("TicksPressingJump", ticksPressingJump);
+		tag.putInt("WavedashTicks", wavedashTicks);
 	}
 
 	@Override
-	public void tick() {
+	public void clientTick() {
 		if (EnchantmentHelper.getEquipmentLevel(ModEnchantments.DASH, obj) > 0) {
 			boolean onGround = obj.isOnGround();
 			boolean sneaking = obj.isSneaking();
@@ -47,37 +52,32 @@ public class DashComponent implements CommonTickingComponent {
 			} else if (dashCooldown > 0) {
 				dashCooldown--;
 			}
-			if (wavedashTimer > 0) {
-				wavedashTimer--;
+			if (MinecraftClient.getInstance().options.jumpKey.isPressed()) {
+				ticksPressingJump = Math.min(2, ++ticksPressingJump);
+			} else {
+				ticksPressingJump = 0;
+			}
+			if (wavedashTicks > 0) {
+				wavedashTicks--;
 			}
 			if (!onGround && dashCooldown == 0 && sneaking && !wasSneaking && EnchancementUtil.isGroundedOrJumping(obj)) {
 				shouldRefreshDash = false;
 				dashCooldown = 20;
-				wavedashTimer = 3;
-				obj.setVelocity(obj.getRotationVector().normalize());
-				obj.fallDistance = 0;
-				if (!obj.world.isClient) {
-					obj.world.playSoundFromEntity(null, obj, ModSoundEvents.ENTITY_GENERIC_DASH, obj.getSoundCategory(), 1, 1);
-				} else {
-					MinecraftClient client = MinecraftClient.getInstance();
-					if (client.gameRenderer.getCamera().isThirdPerson() || obj != client.cameraEntity) {
-						for (int i = 0; i < 8; i++) {
-							obj.world.addParticle(ParticleTypes.CLOUD, obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 0, 0);
-						}
-					}
-				}
+				wavedashTicks = 3;
+				DashPacket.send(obj.getRotationVector().normalize());
 			}
 			wasSneaking = sneaking;
 		} else {
 			shouldRefreshDash = false;
 			dashCooldown = 0;
-			wavedashTimer = 0;
+			ticksPressingJump = 0;
+			wavedashTicks = 0;
 			wasSneaking = false;
 		}
 	}
 
 	public boolean shouldWavedash() {
-		return wavedashTimer > 0;
+		return ticksPressingJump < 2 && wavedashTicks > 0;
 	}
 
 	public int getDashCooldown() {
@@ -86,5 +86,13 @@ public class DashComponent implements CommonTickingComponent {
 
 	public void setDashCooldown(int dashCooldown) {
 		this.dashCooldown = dashCooldown;
+	}
+
+	public static void tickPacketImmunities() {
+		for (PlayerEntity player : PACKET_IMMUNITIES.keySet()) {
+			if (PACKET_IMMUNITIES.put(player, PACKET_IMMUNITIES.getInt(player) - 1) < 0) {
+				PACKET_IMMUNITIES.removeInt(player);
+			}
+		}
 	}
 }

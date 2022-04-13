@@ -4,13 +4,16 @@ import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import moriyashiine.enchancement.common.component.entity.BuryComponent;
+import moriyashiine.enchancement.common.component.entity.DashComponent;
 import moriyashiine.enchancement.common.component.world.LumberjackComponent;
-import moriyashiine.enchancement.common.packet.AttemptGaleJumpPacket;
+import moriyashiine.enchancement.common.packet.DashPacket;
+import moriyashiine.enchancement.common.packet.GaleJumpPacket;
 import moriyashiine.enchancement.common.packet.SyncMovingForwardPacket;
 import moriyashiine.enchancement.common.registry.*;
 import moriyashiine.enchancement.common.util.BeheadingEntry;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
@@ -51,8 +54,9 @@ public class Enchancement implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		ServerPlayNetworking.registerGlobalReceiver(DashPacket.ID, DashPacket::receive);
 		ServerPlayNetworking.registerGlobalReceiver(SyncMovingForwardPacket.ID, SyncMovingForwardPacket::receive);
-		ServerPlayNetworking.registerGlobalReceiver(AttemptGaleJumpPacket.ID, AttemptGaleJumpPacket::receive);
+		ServerPlayNetworking.registerGlobalReceiver(GaleJumpPacket.ID, GaleJumpPacket::receive);
 		ModEntityTypes.init();
 		ModEnchantments.init();
 		ModSoundEvents.init();
@@ -72,6 +76,8 @@ public class Enchancement implements ModInitializer {
 	}
 
 	private void initEvents() {
+		//dash
+		ServerTickEvents.END_SERVER_TICK.register(server -> DashComponent.tickPacketImmunities());
 		//fire aspect
 		UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
 			int fireIgnitionLevel = getConfig().fireAspectIgnitionLevel;

@@ -25,6 +25,7 @@
 	"core.RegistryMixin",
 	"core.TradeOffersEnchantBookFactoryMixin",
 	"dash.LivingEntityMixin",
+	"dash.ServerPlayNetworkHandlerMixin",
 	"delay.ArrowEntityMixin",
 	"delay.PersistentProjectileEntityMixin",
 	"disarm.FishingBobberEntityMixin",

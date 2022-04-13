@@ -1,7 +1,7 @@
 package moriyashiine.enchancement.common.component.entity;
 
 import dev.onyxstudios.cca.api.v3.component.tick.ClientTickingComponent;
-import moriyashiine.enchancement.common.packet.AttemptGaleJumpPacket;
+import moriyashiine.enchancement.common.packet.GaleJumpPacket;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.client.MinecraftClient;
@@ -39,7 +39,7 @@ public class GaleComponent implements ClientTickingComponent {
 				if (ticksInAir >= 10 && timesJumped < 2 && MinecraftClient.getInstance().options.jumpKey.isPressed() && EnchancementUtil.isGroundedOrJumping(obj) && EnchantmentHelper.getEquipmentLevel(ModEnchantments.GALE, obj) > 0) {
 					jumpCooldown = 10;
 					timesJumped++;
-					AttemptGaleJumpPacket.send();
+					GaleJumpPacket.send();
 				}
 			} else {
 				timesJumped = 0;
