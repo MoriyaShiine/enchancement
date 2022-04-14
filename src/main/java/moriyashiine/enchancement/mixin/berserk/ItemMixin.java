@@ -19,19 +19,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Item.class)
 public class ItemMixin {
-	@Inject(method = "use", at = @At("HEAD"), cancellable = true)
-	private void enchancement$berserk(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
-		ItemStack stack = user.getStackInHand(hand);
+	@Inject(method = "finishUsing", at = @At("HEAD"))
+	private void enchancement$berserk(ItemStack stack, World world, LivingEntity user, CallbackInfoReturnable<ItemStack> cir) {
 		if (EnchantmentHelper.getLevel(ModEnchantments.BERSERK, stack) > 0) {
-			user.setCurrentHand(hand);
-			cir.setReturnValue(TypedActionResult.consume(stack));
-		}
-	}
-
-	@Inject(method = "getUseAction", at = @At("HEAD"), cancellable = true)
-	private void enchancement$berserkUseAction(ItemStack stack, CallbackInfoReturnable<UseAction> cir) {
-		if (EnchantmentHelper.getLevel(ModEnchantments.BERSERK, stack) > 0) {
-			cir.setReturnValue(UseAction.BOW);
+			user.damage(DamageSource.WITHER, 2);
+			if (user.isSneaking()) {
+				ModEntityComponents.BERSERK.maybeGet(user).ifPresent(berserkComponent -> berserkComponent.setPreventRegenerationTicks(100));
+			}
 		}
 	}
 
@@ -42,13 +36,19 @@ public class ItemMixin {
 		}
 	}
 
-	@Inject(method = "finishUsing", at = @At("HEAD"))
-	private void enchancement$berserk(ItemStack stack, World world, LivingEntity user, CallbackInfoReturnable<ItemStack> cir) {
+	@Inject(method = "getUseAction", at = @At("HEAD"), cancellable = true)
+	private void enchancement$berserkUseAction(ItemStack stack, CallbackInfoReturnable<UseAction> cir) {
 		if (EnchantmentHelper.getLevel(ModEnchantments.BERSERK, stack) > 0) {
-			user.damage(DamageSource.WITHER, 2);
-			if (user.isSneaking()) {
-				ModEntityComponents.BERSERK.maybeGet(user).ifPresent(berserkComponent -> berserkComponent.setPreventRegenerationTicks(100));
-			}
+			cir.setReturnValue(UseAction.BOW);
+		}
+	}
+
+	@Inject(method = "use", at = @At("HEAD"), cancellable = true)
+	private void enchancement$berserk(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
+		ItemStack stack = user.getStackInHand(hand);
+		if (EnchantmentHelper.getLevel(ModEnchantments.BERSERK, stack) > 0) {
+			user.setCurrentHand(hand);
+			cir.setReturnValue(TypedActionResult.consume(stack));
 		}
 	}
 }

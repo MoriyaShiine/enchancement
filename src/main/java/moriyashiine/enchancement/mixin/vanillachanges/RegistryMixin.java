@@ -1,4 +1,4 @@
-package moriyashiine.enchancement.mixin.core;
+package moriyashiine.enchancement.mixin.vanillachanges;
 
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
