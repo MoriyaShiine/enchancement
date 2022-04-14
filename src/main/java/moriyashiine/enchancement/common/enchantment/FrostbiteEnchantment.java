@@ -19,9 +19,11 @@ public class FrostbiteEnchantment extends Enchantment {
 
 	@Override
 	public void onTargetDamaged(LivingEntity user, Entity target, int level) {
-		int frozenTicks = target.getFrozenTicks();
-		if (frozenTicks < 600) {
-			target.setFrozenTicks(Math.min(600, frozenTicks + 200));
+		if (!user.world.isClient) {
+			int frozenTicks = target.getFrozenTicks();
+			if (frozenTicks < 600) {
+				target.setFrozenTicks(Math.min(600, frozenTicks + 200));
+			}
 		}
 	}
 }

@@ -9,7 +9,6 @@ import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.component.entity.*;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.WitchEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.TridentEntity;
@@ -47,7 +46,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerForPlayers(ACCELERATION, AccelerationComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(GALE, GaleComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(BERSERK, player -> new BerserkComponent(), RespawnCopyStrategy.LOSSLESS_ONLY);
-		registry.registerFor(MobEntity.class, FROZEN, FrozenComponent::new);
+		registry.registerFor(LivingEntity.class, FROZEN, FrozenComponent::new);
 		registry.registerFor(ArrowEntity.class, DELAY, DelayComponent::new);
 		registry.registerFor(ArrowEntity.class, PHASHING, PhasingComponent::new);
 		registry.registerFor(LightningEntity.class, CHANNELING, lightning -> new ChannelingComponent());

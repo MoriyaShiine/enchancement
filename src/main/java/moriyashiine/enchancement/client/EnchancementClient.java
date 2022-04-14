@@ -5,6 +5,7 @@ import moriyashiine.enchancement.client.packet.AddGaleParticlesPacket;
 import moriyashiine.enchancement.client.packet.AddMoltenParticlesPacket;
 import moriyashiine.enchancement.client.render.FrozenTextureManager;
 import moriyashiine.enchancement.client.render.entity.IceShardEntityRenderer;
+import moriyashiine.enchancement.client.render.entity.mob.FrozenPlayerEntityRenderer;
 import moriyashiine.enchancement.common.registry.ModEntityTypes;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -21,6 +22,7 @@ public class EnchancementClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(AddDashParticlesPacket.ID, AddDashParticlesPacket::receive);
 		ClientPlayNetworking.registerGlobalReceiver(AddGaleParticlesPacket.ID, AddGaleParticlesPacket::receive);
 		ClientPlayNetworking.registerGlobalReceiver(AddMoltenParticlesPacket.ID, AddMoltenParticlesPacket::receive);
+		EntityRendererRegistry.register(ModEntityTypes.FROZEN_PLAYER, FrozenPlayerEntityRenderer::new);
 		EntityRendererRegistry.register(ModEntityTypes.ICE_SHARD, IceShardEntityRenderer::new);
 		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(FrozenTextureManager.getInstance());
 	}
