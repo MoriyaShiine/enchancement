@@ -10,7 +10,6 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
 
@@ -49,7 +48,13 @@ public class EnchancementUtil {
 
 	public static float getBonusBerserkDamage(LivingEntity living, ItemStack stack) {
 		if (living != null && EnchantmentHelper.getLevel(ModEnchantments.BERSERK, stack) > 0) {
-			return MathHelper.clamp((living.getMaxHealth() - living.getHealth()) / 2, 0, getMaxBonusBerserkDamage(stack));
+			float health = living.getMaxHealth();
+			float bonus = 0;
+			while (health > (int) living.getHealth()) {
+				health -= 1;
+				bonus += 0.5F;
+			}
+			return Math.min(bonus, getMaxBonusBerserkDamage(stack));
 		}
 		return 0;
 	}
