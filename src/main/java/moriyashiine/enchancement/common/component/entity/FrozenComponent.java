@@ -8,6 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 
 public class FrozenComponent implements AutoSyncedComponent, ServerTickingComponent {
@@ -117,5 +118,19 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 
 	public void sync() {
 		ModEntityComponents.FROZEN.sync(obj);
+	}
+
+	public static boolean shouldHurt(Entity attacker, Entity hitEntity) {
+		if (attacker == null) {
+			return true;
+		}
+		if (attacker == hitEntity) {
+			return false;
+		}
+		if (attacker instanceof PlayerEntity attackingPlayer && hitEntity instanceof PlayerEntity hitPlayer && !attackingPlayer.shouldDamagePlayer(hitPlayer)) {
+			return false;
+		}
+		NbtCompound tag = hitEntity.writeNbt(new NbtCompound());
+		return !tag.contains("Owner") || !tag.getUuid("Owner").equals(attacker.getUuid());
 	}
 }

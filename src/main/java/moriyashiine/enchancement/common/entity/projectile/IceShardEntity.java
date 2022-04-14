@@ -1,12 +1,12 @@
 package moriyashiine.enchancement.common.entity.projectile;
 
+import moriyashiine.enchancement.common.component.entity.FrozenComponent;
 import moriyashiine.enchancement.common.registry.ModEntityTypes;
 import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.ProjectileDamageSource;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -42,16 +42,16 @@ public class IceShardEntity extends PersistentProjectileEntity {
 
 	@Override
 	protected void onEntityHit(EntityHitResult entityHitResult) {
-		Entity entity = entityHitResult.getEntity();
-		if (entity == getOwner() || (entity instanceof PlayerEntity hitPlayer && getOwner() instanceof PlayerEntity ownerPlayer && !ownerPlayer.shouldDamagePlayer(hitPlayer))) {
-			return;
-		}
 		if (!world.isClient) {
-			entity.damage(new ProjectileDamageSource("freeze", this, getOwner()), 4);
-			entity.setFrozenTicks(400);
-			playSound(getHitSound(), 1, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
-			addIceShardParticles();
-			discard();
+			Entity entity = entityHitResult.getEntity();
+			Entity owner = getOwner();
+			if (FrozenComponent.shouldHurt(owner, entity)) {
+				entity.damage(new ProjectileDamageSource("freeze", this, owner), 4);
+				entity.setFrozenTicks(400);
+				playSound(getHitSound(), 1, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
+				addIceShardParticles();
+				discard();
+			}
 		}
 	}
 
