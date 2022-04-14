@@ -87,7 +87,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
 			if (frozenPlayer.getDataTracker().get(FrozenPlayerEntity.SLIM)) {
 				model = (M) frozenPlayerEntityRenderer.slimModel;
 			} else {
-				model = (M) frozenPlayerEntityRenderer.getModel();
+				model = (M) frozenPlayerEntityRenderer.defaultModel;
 			}
 		}
 		ModEntityComponents.FROZEN.maybeGet(livingEntity).ifPresent(frozenComponent -> {

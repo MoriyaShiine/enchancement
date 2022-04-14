@@ -1,6 +1,7 @@
 package moriyashiine.enchancement.mixin.frostbite;
 
 import com.mojang.authlib.GameProfile;
+import moriyashiine.enchancement.client.packet.SyncFrozenPlayerSlimStatusS2C;
 import moriyashiine.enchancement.common.entity.mob.FrozenPlayerEntity;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import moriyashiine.enchancement.common.registry.ModEntityTypes;
@@ -32,9 +33,9 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 				frozenPlayer.setPitch(getPitch());
 				frozenPlayer.limbDistance = limbDistance;
 				frozenPlayer.limbAngle = limbAngle;
-				frozenPlayer.getDataTracker().set(FrozenPlayerEntity.SLIM, (getUuid().hashCode() & 1) == 1);
 				frozenPlayer.teleport(getX(), getY(), getZ());
 				ModEntityComponents.FROZEN.get(frozenPlayer).freeze();
+				SyncFrozenPlayerSlimStatusS2C.send(ServerPlayerEntity.class.cast(this), frozenPlayer.getUuid());
 				world.spawnEntity(frozenPlayer);
 			}
 		}
