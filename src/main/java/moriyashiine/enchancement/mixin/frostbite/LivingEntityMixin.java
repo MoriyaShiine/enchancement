@@ -7,6 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -74,11 +75,9 @@ public abstract class LivingEntityMixin extends Entity {
 			ModEntityComponents.FROZEN.maybeGet(this).ifPresent(frozenComponent -> {
 				if (frozenComponent.isFrozen()) {
 					Entity lastFreezingAttacker = frozenComponent.getLastFreezingAttacker();
-					if (FrozenComponent.shouldHurt(lastFreezingAttacker, entity)) {
+					if (FrozenComponent.shouldHurt(lastFreezingAttacker, entity) && entity.damage(new EntityDamageSource("freeze", lastFreezingAttacker == null ? this : lastFreezingAttacker), 8)) {
 						damage(DamageSource.GENERIC, 2);
-						entity.damage(DamageSource.FREEZE, 8);
 						entity.setFrozenTicks(800);
-						ModEntityComponents.FROZEN.maybeGet(entity).ifPresent(hitFrozenComponent -> hitFrozenComponent.setLastFreezingAttacker(lastFreezingAttacker == null ? this : lastFreezingAttacker));
 					}
 				}
 			});
@@ -89,7 +88,11 @@ public abstract class LivingEntityMixin extends Entity {
 	private void enchancement$frostbite(CallbackInfo ci) {
 		int frozenTicks = getFrozenTicks();
 		if (frozenTicks > 0 && frozenTicks - 2 <= 0) {
-			ModEntityComponents.FROZEN.get(this).setLastFreezingAttacker(null);
+			ModEntityComponents.FROZEN.maybeGet(this).ifPresent(frozenComponent -> {
+				if (!frozenComponent.isFrozen()) {
+					frozenComponent.setLastFreezingAttacker(null);
+				}
+			});
 		}
 	}
 }
