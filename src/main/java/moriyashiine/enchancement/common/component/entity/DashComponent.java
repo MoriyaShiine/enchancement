@@ -24,7 +24,7 @@ public class DashComponent implements CommonTickingComponent {
 	private boolean shouldRefreshDash = false;
 	private int dashCooldown = 20, ticksPressingJump = 0, wavedashTicks = 0;
 
-	private boolean wasSneaking = false;
+	private boolean hasDash = false, wasSneaking = false;
 
 	public DashComponent(PlayerEntity obj) {
 		this.obj = obj;
@@ -48,7 +48,7 @@ public class DashComponent implements CommonTickingComponent {
 
 	@Override
 	public void tick() {
-		boolean hasDash = EnchantmentHelper.getEquipmentLevel(ModEnchantments.DASH, obj) > 0;
+		hasDash = EnchantmentHelper.getEquipmentLevel(ModEnchantments.DASH, obj) > 0;
 		if (obj.world.isClient) {
 			ModEntityComponents.JUMPING.maybeGet(obj).ifPresent(jumpingComponent -> {
 				if (((LivingEntityAccessor) obj).enchancement$jumping()) {
@@ -103,16 +103,16 @@ public class DashComponent implements CommonTickingComponent {
 		}
 	}
 
-	public boolean shouldRefreshDash() {
-		return shouldRefreshDash;
-	}
-
 	public int getDashCooldown() {
 		return dashCooldown;
 	}
 
 	public void setDashCooldown(int dashCooldown) {
 		this.dashCooldown = dashCooldown;
+	}
+
+	public boolean hasDash() {
+		return hasDash;
 	}
 
 	public boolean shouldWavedash() {
