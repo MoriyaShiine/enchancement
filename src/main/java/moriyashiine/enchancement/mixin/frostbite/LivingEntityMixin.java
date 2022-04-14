@@ -13,6 +13,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -21,6 +22,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
+	@Shadow
+	public abstract boolean damage(DamageSource source, float amount);
+
 	public LivingEntityMixin(EntityType<?> type, World world) {
 		super(type, world);
 	}
@@ -65,6 +69,23 @@ public abstract class LivingEntityMixin extends Entity {
 					if (isSourceFreezingEntity(source) || source == DamageSource.FREEZE) {
 						frozenComponent.freeze();
 						ci.cancel();
+					}
+				}
+			});
+		}
+	}
+
+	@Inject(method = "pushAwayFrom", at = @At("HEAD"))
+	private void enchancement$frostbite(Entity entity, CallbackInfo ci) {
+		if (!world.isClient) {
+			ModEntityComponents.FROZEN.maybeGet(this).ifPresent(frozenComponent -> {
+				if (frozenComponent.isFrozen()) {
+					Entity lastFreezingAttacker = frozenComponent.getLastFreezingAttacker();
+					if (lastFreezingAttacker != entity) {
+						damage(DamageSource.GENERIC, 2);
+						entity.damage(DamageSource.FREEZE, 8);
+						entity.setFrozenTicks(800);
+						ModEntityComponents.FROZEN.maybeGet(entity).ifPresent(hitFrozenComponent -> hitFrozenComponent.setLastFreezingAttacker(lastFreezingAttacker == null ? this : lastFreezingAttacker));
 					}
 				}
 			});
