@@ -23,15 +23,15 @@ public class MovingForwardComponent implements AutoSyncedComponent {
 		tag.putBoolean("MovingForward", movingForward);
 	}
 
+	public void sync() {
+		ModEntityComponents.MOVING_FORWARD.sync(obj);
+	}
+
 	public boolean isMovingForward() {
 		return movingForward;
 	}
 
 	public void setMovingForward(boolean movingForward) {
 		this.movingForward = movingForward;
-	}
-
-	public void sync() {
-		ModEntityComponents.MOVING_FORWARD.sync(obj);
 	}
 }

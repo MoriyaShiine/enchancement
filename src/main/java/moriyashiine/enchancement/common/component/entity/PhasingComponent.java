@@ -36,15 +36,15 @@ public class PhasingComponent implements AutoSyncedComponent, ServerTickingCompo
 		}
 	}
 
+	public void sync() {
+		ModEntityComponents.PHASHING.sync(obj);
+	}
+
 	public void setShouldPhase(boolean shouldPhase) {
 		this.shouldPhase = shouldPhase;
 	}
 
 	public boolean shouldPhase() {
 		return shouldPhase;
-	}
-
-	public void sync() {
-		ModEntityComponents.PHASHING.sync(obj);
 	}
 }

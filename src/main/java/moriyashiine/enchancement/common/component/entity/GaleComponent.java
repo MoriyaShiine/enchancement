@@ -7,7 +7,7 @@ import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import moriyashiine.enchancement.mixin.gale.LivingEntityAccessor;
+import moriyashiine.enchancement.mixin.util.LivingEntityAccessor;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
@@ -39,10 +39,11 @@ public class GaleComponent implements CommonTickingComponent {
 
 	@Override
 	public void tick() {
+		boolean hasGale = EnchantmentHelper.getEquipmentLevel(ModEnchantments.GALE, obj) > 0;
 		if (obj.world.isClient) {
 			ModEntityComponents.JUMPING.maybeGet(obj).ifPresent(jumpingComponent -> {
 				if (((LivingEntityAccessor) obj).enchancement$jumping()) {
-					if (!jumpingComponent.isJumping() && EnchantmentHelper.getEquipmentLevel(ModEnchantments.GALE, obj) > 0) {
+					if (!jumpingComponent.isJumping() && hasGale) {
 						SyncJumpingPacket.send(true);
 					}
 				} else if (jumpingComponent.isJumping()) {
@@ -58,7 +59,7 @@ public class GaleComponent implements CommonTickingComponent {
 			}
 			if (jumpCooldown == 0) {
 				if (!onGround) {
-					if (ticksInAir >= 10 && timesJumped < 2 && ModEntityComponents.JUMPING.get(obj).isJumping() && EnchancementUtil.isGroundedOrJumping(obj) && EnchantmentHelper.getEquipmentLevel(ModEnchantments.GALE, obj) > 0) {
+					if (hasGale && ticksInAir >= 10 && timesJumped < 2 && ModEntityComponents.JUMPING.get(obj).isJumping() && EnchancementUtil.isGroundedOrJumping(obj)) {
 						jumpCooldown = 10;
 						timesJumped++;
 						PlayerLookup.tracking(obj).forEach(foundPlayer -> AddGaleParticlesPacket.send(foundPlayer, obj));

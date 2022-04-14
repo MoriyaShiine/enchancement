@@ -1,22 +1,28 @@
 package moriyashiine.enchancement.common.component.entity;
 
-import dev.onyxstudios.cca.api.v3.component.tick.ClientTickingComponent;
+import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import moriyashiine.enchancement.common.packet.DashPacket;
+import moriyashiine.enchancement.client.packet.AddDashParticlesPacket;
+import moriyashiine.enchancement.common.packet.SyncJumpingPacket;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
+import moriyashiine.enchancement.common.registry.ModEntityComponents;
+import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import net.minecraft.client.MinecraftClient;
+import moriyashiine.enchancement.mixin.util.LivingEntityAccessor;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.Vec3d;
 
-public class DashComponent implements ClientTickingComponent {
+public class DashComponent implements CommonTickingComponent {
 	public static final Object2IntMap<PlayerEntity> PACKET_IMMUNITIES = new Object2IntOpenHashMap<>();
 
 	private final PlayerEntity obj;
 	private boolean shouldRefreshDash = false;
-	private int dashCooldown = 0, ticksPressingJump = 0, wavedashTicks = 0;
+	private int dashCooldown = 20, ticksPressingJump = 0, wavedashTicks = 0;
 
 	private boolean wasSneaking = false;
 
@@ -41,8 +47,20 @@ public class DashComponent implements ClientTickingComponent {
 	}
 
 	@Override
-	public void clientTick() {
-		if (EnchantmentHelper.getEquipmentLevel(ModEnchantments.DASH, obj) > 0) {
+	public void tick() {
+		boolean hasDash = EnchantmentHelper.getEquipmentLevel(ModEnchantments.DASH, obj) > 0;
+		if (obj.world.isClient) {
+			ModEntityComponents.JUMPING.maybeGet(obj).ifPresent(jumpingComponent -> {
+				if (((LivingEntityAccessor) obj).enchancement$jumping()) {
+					if (!jumpingComponent.isJumping() && hasDash) {
+						SyncJumpingPacket.send(true);
+					}
+				} else if (jumpingComponent.isJumping()) {
+					SyncJumpingPacket.send(false);
+				}
+			});
+		}
+		if (hasDash) {
 			boolean onGround = obj.isOnGround();
 			boolean sneaking = obj.isSneaking();
 			if (!shouldRefreshDash) {
@@ -52,7 +70,7 @@ public class DashComponent implements ClientTickingComponent {
 			} else if (dashCooldown > 0) {
 				dashCooldown--;
 			}
-			if (MinecraftClient.getInstance().options.jumpKey.isPressed()) {
+			if (ModEntityComponents.JUMPING.get(obj).isJumping()) {
 				ticksPressingJump = Math.min(2, ++ticksPressingJump);
 			} else {
 				ticksPressingJump = 0;
@@ -64,20 +82,29 @@ public class DashComponent implements ClientTickingComponent {
 				shouldRefreshDash = false;
 				dashCooldown = 20;
 				wavedashTicks = 3;
-				DashPacket.send(obj.getRotationVector().normalize());
+				if (!obj.world.isClient) {
+					PlayerLookup.tracking(obj).forEach(foundPlayer -> AddDashParticlesPacket.send(foundPlayer, obj));
+					AddDashParticlesPacket.send((ServerPlayerEntity) obj, obj);
+					obj.world.playSoundFromEntity(null, obj, ModSoundEvents.ENTITY_GENERIC_DASH, obj.getSoundCategory(), 1, 1);
+					Vec3d velocity = obj.getRotationVector().normalize();
+					obj.setVelocity(velocity.getX(), velocity.getY(), velocity.getZ());
+					obj.velocityModified = true;
+					obj.fallDistance = 0;
+					PACKET_IMMUNITIES.put(obj, 5);
+				}
 			}
 			wasSneaking = sneaking;
 		} else {
 			shouldRefreshDash = false;
-			dashCooldown = 0;
+			dashCooldown = 20;
 			ticksPressingJump = 0;
 			wavedashTicks = 0;
 			wasSneaking = false;
 		}
 	}
 
-	public boolean shouldWavedash() {
-		return ticksPressingJump < 2 && wavedashTicks > 0;
+	public boolean shouldRefreshDash() {
+		return shouldRefreshDash;
 	}
 
 	public int getDashCooldown() {
@@ -86,6 +113,10 @@ public class DashComponent implements ClientTickingComponent {
 
 	public void setDashCooldown(int dashCooldown) {
 		this.dashCooldown = dashCooldown;
+	}
+
+	public boolean shouldWavedash() {
+		return ticksPressingJump < 2 && wavedashTicks > 0;
 	}
 
 	public static void tickPacketImmunities() {

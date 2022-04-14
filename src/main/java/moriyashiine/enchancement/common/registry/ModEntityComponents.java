@@ -17,12 +17,12 @@ import net.minecraft.util.Identifier;
 
 public class ModEntityComponents implements EntityComponentInitializer {
 	//leggings
+	public static final ComponentKey<JumpingComponent> JUMPING = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "jumping"), JumpingComponent.class);
 	public static final ComponentKey<DashComponent> DASH = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "dash"), DashComponent.class);
 	public static final ComponentKey<SlideComponent> SLIDE = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "slide"), SlideComponent.class);
 	//boots
 	public static final ComponentKey<MovingForwardComponent> MOVING_FORWARD = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "moving_forward"), MovingForwardComponent.class);
 	public static final ComponentKey<AccelerationComponent> ACCELERATION = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "acceleration"), AccelerationComponent.class);
-	public static final ComponentKey<JumpingComponent> JUMPING = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "jumping"), JumpingComponent.class);
 	public static final ComponentKey<GaleComponent> GALE = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "gale"), GaleComponent.class);
 	//sword
 	public static final ComponentKey<BerserkComponent> BERSERK = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "berserk"), BerserkComponent.class);
@@ -40,11 +40,11 @@ public class ModEntityComponents implements EntityComponentInitializer {
 
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
+		registry.registerForPlayers(JUMPING, JumpingComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(DASH, DashComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(SLIDE, SlideComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(MOVING_FORWARD, MovingForwardComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(ACCELERATION, AccelerationComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
-		registry.registerForPlayers(JUMPING, JumpingComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(GALE, GaleComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(BERSERK, player -> new BerserkComponent(), RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(MobEntity.class, FROZEN, FrozenComponent::new);

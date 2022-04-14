@@ -76,8 +76,8 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 		}
 	}
 
-	public boolean shouldChangeParticles() {
-		return ticksFloating >= 100;
+	public void sync() {
+		ModEntityComponents.DELAY.sync(obj);
 	}
 
 	public void setStackShotFrom(ItemStack stackShotFrom) {
@@ -88,7 +88,7 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 		this.hasDelay = hasDelay;
 	}
 
-	public void sync() {
-		ModEntityComponents.DELAY.sync(obj);
+	public boolean shouldChangeParticles() {
+		return ticksFloating >= 100;
 	}
 }

@@ -23,15 +23,15 @@ public class JumpingComponent implements AutoSyncedComponent {
 		tag.putBoolean("Jumping", jumping);
 	}
 
+	public void sync() {
+		ModEntityComponents.JUMPING.sync(obj);
+	}
+
 	public boolean isJumping() {
 		return jumping;
 	}
 
 	public void setJumping(boolean jumping) {
 		this.jumping = jumping;
-	}
-
-	public void sync() {
-		ModEntityComponents.JUMPING.sync(obj);
 	}
 }

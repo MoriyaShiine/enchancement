@@ -48,11 +48,11 @@
   },
   "custom": {
 	"cardinal-components": [
+	  "enchancement:jumping",
 	  "enchancement:dash",
 	  "enchancement:slide",
 	  "enchancement:moving_forward",
 	  "enchancement:acceleration",
-	  "enchancement:jumping",
 	  "enchancement:gale",
 	  "enchancement:berserk",
 	  "enchancement:frozen",

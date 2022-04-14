@@ -1,4 +1,4 @@
-package moriyashiine.enchancement.mixin.gale;
+package moriyashiine.enchancement.mixin.util;
 
 import net.minecraft.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;

@@ -67,6 +67,10 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 		}
 	}
 
+	public void sync() {
+		ModEntityComponents.FROZEN.sync(obj);
+	}
+
 	public Entity getLastFreezingAttacker() {
 		return lastFreezingAttacker;
 	}
@@ -114,10 +118,6 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 		forcedLimbAngle = obj.limbAngle;
 		setFrozen(true);
 		sync();
-	}
-
-	public void sync() {
-		ModEntityComponents.FROZEN.sync(obj);
 	}
 
 	public static boolean shouldHurt(Entity attacker, Entity hitEntity) {

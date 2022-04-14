@@ -46,6 +46,10 @@ public class BuryComponent implements AutoSyncedComponent, ServerTickingComponen
 		}
 	}
 
+	public void sync() {
+		ModEntityComponents.BURY.sync(obj);
+	}
+
 	public BlockPos getBuryPos() {
 		return buryPos;
 	}
@@ -57,9 +61,5 @@ public class BuryComponent implements AutoSyncedComponent, ServerTickingComponen
 	public void unbury() {
 		setBuryPos(null);
 		sync();
-	}
-
-	public void sync() {
-		ModEntityComponents.BURY.sync(obj);
 	}
 }

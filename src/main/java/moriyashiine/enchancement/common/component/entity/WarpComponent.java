@@ -34,11 +34,11 @@ public class WarpComponent implements AutoSyncedComponent, ClientTickingComponen
 		}
 	}
 
-	public void setShouldSpawnParticles(boolean shouldSpawnParticles) {
-		this.shouldSpawnParticles = shouldSpawnParticles;
-	}
-
 	public void sync() {
 		ModEntityComponents.WARP.sync(obj);
+	}
+
+	public void setShouldSpawnParticles(boolean shouldSpawnParticles) {
+		this.shouldSpawnParticles = shouldSpawnParticles;
 	}
 }

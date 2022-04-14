@@ -37,9 +37,29 @@ public class AccelerationComponent implements CommonTickingComponent {
 	@SuppressWarnings("ConstantConditions")
 	@Override
 	public void tick() {
+		boolean hasAcceleration = EnchantmentHelper.getEquipmentLevel(ModEnchantments.ACCELERATION, obj) > 0;
+		if (obj.world.isClient) {
+			ModEntityComponents.MOVING_FORWARD.maybeGet(obj).ifPresent(movingForwardComponent -> {
+				if (obj.forwardSpeed > 0) {
+					if (!movingForwardComponent.isMovingForward() && hasAcceleration) {
+						SyncMovingForwardPacket.send(true);
+					}
+				} else if (movingForwardComponent.isMovingForward()) {
+					SyncMovingForwardPacket.send(false);
+				}
+			});
+		} else {
+			EntityAttributeInstance attribute = obj.getAttributeInstance(StepHeightEntityAttributeMain.STEP_HEIGHT);
+			if (hasAcceleration && !obj.isSneaking()) {
+				if (!attribute.hasModifier(STEP_HEIGHT_INCREASE)) {
+					attribute.addPersistentModifier(STEP_HEIGHT_INCREASE);
+				}
+			} else if (attribute.hasModifier(STEP_HEIGHT_INCREASE)) {
+				attribute.removeModifier(STEP_HEIGHT_INCREASE);
+			}
+		}
 		obj.airStrafingSpeed *= speedMultiplier;
-		boolean hasEnchantment = EnchantmentHelper.getEquipmentLevel(ModEnchantments.ACCELERATION, obj) > 0;
-		if (hasEnchantment) {
+		if (hasAcceleration) {
 			if (!obj.horizontalCollision && obj.isSprinting() && EnchancementUtil.isGroundedOrJumping(obj) && ModEntityComponents.MOVING_FORWARD.get(obj).isMovingForward()) {
 				if (speedMultiplier < 2) {
 					speedMultiplier = Math.min(2, speedMultiplier + 1 / 256F);
@@ -47,28 +67,8 @@ public class AccelerationComponent implements CommonTickingComponent {
 			} else if (speedMultiplier > 1) {
 				speedMultiplier = Math.max(1, speedMultiplier - 1 / 64F);
 			}
-		} else if (speedMultiplier != 1) {
-			speedMultiplier = 1;
-		}
-		if (!obj.world.isClient) {
-			EntityAttributeInstance attribute = obj.getAttributeInstance(StepHeightEntityAttributeMain.STEP_HEIGHT);
-			if (hasEnchantment && !obj.isSneaking()) {
-				if (!attribute.hasModifier(STEP_HEIGHT_INCREASE)) {
-					attribute.addPersistentModifier(STEP_HEIGHT_INCREASE);
-				}
-			} else if (attribute.hasModifier(STEP_HEIGHT_INCREASE)) {
-				attribute.removeModifier(STEP_HEIGHT_INCREASE);
-			}
 		} else {
-			ModEntityComponents.MOVING_FORWARD.maybeGet(obj).ifPresent(movingForwardComponent -> {
-				if (obj.forwardSpeed > 0) {
-					if (!movingForwardComponent.isMovingForward() && EnchantmentHelper.getEquipmentLevel(ModEnchantments.ACCELERATION, obj) > 0) {
-						SyncMovingForwardPacket.send(true);
-					}
-				} else if (movingForwardComponent.isMovingForward()) {
-					SyncMovingForwardPacket.send(false);
-				}
-			});
+			speedMultiplier = 1;
 		}
 	}
 
