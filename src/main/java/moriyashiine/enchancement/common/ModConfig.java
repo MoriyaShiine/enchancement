@@ -44,6 +44,6 @@ public class ModConfig implements ConfigData {
 	@ConfigEntry.Gui.RequiresRestart
 	public float toolDurabilityMultiplier = 2;
 	@ConfigEntry.Gui.RequiresRestart
-	public int fishingRodDurability = 128;
+	public int fishingRodDurability = 256;
 	public int unbreakableUnbreakingLevel = 1;
 }

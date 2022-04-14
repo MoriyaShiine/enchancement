@@ -1,9 +1,7 @@
 package moriyashiine.enchancement.mixin.vanillachanges;
 
 import moriyashiine.enchancement.common.Enchancement;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.FishingRodItem;
-import net.minecraft.item.Item;
+import net.minecraft.item.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,19 +13,19 @@ public class ItemMixin {
 	@Shadow
 	private int maxDamage;
 
-	@SuppressWarnings("ConstantConditions")
 	@Inject(method = "<init>", at = @At("TAIL"))
 	private void enchancement$durablityChanges(Item.Settings settings, CallbackInfo ci) {
-		if (Item.class.cast(this) instanceof FishingRodItem) {
+		Item item = Item.class.cast(this);
+		if (item instanceof FishingRodItem) {
 			maxDamage = Enchancement.getConfig().fishingRodDurability;
 		}
-		float multiplier;
-		if (Item.class.cast(this) instanceof ArmorItem) {
+		float multiplier = 1;
+		if (item instanceof ArmorItem) {
 			multiplier = Enchancement.getConfig().armorDurabilityMultiplier;
 			if (multiplier <= 0) {
 				throw new IllegalArgumentException("Armor durability multiplier cannot be less than or equal to 0");
 			}
-		} else {
+		} else if (item instanceof ToolItem || item instanceof RangedWeaponItem || item instanceof TridentItem || item instanceof FlintAndSteelItem || item instanceof ShearsItem || item instanceof ShieldItem) {
 			multiplier = Enchancement.getConfig().toolDurabilityMultiplier;
 			if (multiplier <= 0) {
 				throw new IllegalArgumentException("Tool durability multiplier cannot be less than or equal to 0");
