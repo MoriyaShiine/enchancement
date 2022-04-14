@@ -25,6 +25,7 @@
 	"disarm.WitchEntityMixin",
 	"frostbite.EntityMixin",
 	"frostbite.LivingEntityMixin",
+	"gale.LivingEntityAccessor",
 	"gale.LivingEntityMixin",
 	"grapple.FishingBobberEntityMixin",
 	"molten.AbstractFurnaceBlockEntityAccessor",

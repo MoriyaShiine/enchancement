@@ -50,8 +50,9 @@
 	"cardinal-components": [
 	  "enchancement:dash",
 	  "enchancement:slide",
-	  "enchancement:acceleration",
 	  "enchancement:moving_forward",
+	  "enchancement:acceleration",
+	  "enchancement:jumping",
 	  "enchancement:gale",
 	  "enchancement:berserk",
 	  "enchancement:frozen",

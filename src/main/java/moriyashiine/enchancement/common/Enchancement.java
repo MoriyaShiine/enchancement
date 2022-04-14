@@ -6,7 +6,7 @@ import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import moriyashiine.enchancement.common.component.entity.DashComponent;
 import moriyashiine.enchancement.common.event.*;
 import moriyashiine.enchancement.common.packet.DashPacket;
-import moriyashiine.enchancement.common.packet.GaleJumpPacket;
+import moriyashiine.enchancement.common.packet.SyncJumpingPacket;
 import moriyashiine.enchancement.common.packet.SyncMovingForwardPacket;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModEntityTypes;
@@ -29,7 +29,7 @@ public class Enchancement implements ModInitializer {
 	public void onInitialize() {
 		ServerPlayNetworking.registerGlobalReceiver(DashPacket.ID, DashPacket::receive);
 		ServerPlayNetworking.registerGlobalReceiver(SyncMovingForwardPacket.ID, SyncMovingForwardPacket::receive);
-		ServerPlayNetworking.registerGlobalReceiver(GaleJumpPacket.ID, GaleJumpPacket::receive);
+		ServerPlayNetworking.registerGlobalReceiver(SyncJumpingPacket.ID, SyncJumpingPacket::receive);
 		ModEntityTypes.init();
 		ModEnchantments.init();
 		ModSoundEvents.init();
