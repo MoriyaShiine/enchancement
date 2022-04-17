@@ -31,6 +31,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<PhasingComponent> PHASHING = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "phasing"), PhasingComponent.class);
 	//trident
 	public static final ComponentKey<ChannelingComponent> CHANNELING = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "channeling"), ChannelingComponent.class);
+	public static final ComponentKey<LeechComponent> LEECH = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "leech"), LeechComponent.class);
 	public static final ComponentKey<WarpComponent> WARP = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "warp"), WarpComponent.class);
 	//shovel
 	public static final ComponentKey<BuryComponent> BURY = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "bury"), BuryComponent.class);
@@ -50,6 +51,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerFor(ArrowEntity.class, DELAY, DelayComponent::new);
 		registry.registerFor(ArrowEntity.class, PHASHING, PhasingComponent::new);
 		registry.registerFor(LightningEntity.class, CHANNELING, lightning -> new ChannelingComponent());
+		registry.registerFor(TridentEntity.class, LEECH, LeechComponent::new);
 		registry.registerFor(TridentEntity.class, WARP, WarpComponent::new);
 		registry.registerFor(LivingEntity.class, BURY, BuryComponent::new);
 		registry.registerFor(WitchEntity.class, WITCH_DISARM, witch -> new WitchDisarmComponent());

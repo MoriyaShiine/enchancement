@@ -27,6 +27,8 @@
 	"frostbite.ServerPlayerEntityMixin",
 	"gale.LivingEntityMixin",
 	"grapple.FishingBobberEntityMixin",
+	"leech.LivingEntityMixin",
+	"leech.TridentEntityMixin",
 	"molten.AbstractFurnaceBlockEntityAccessor",
 	"molten.BlockMixin",
 	"phasing.ArrowItemMixin",
@@ -63,6 +65,7 @@
 	"dash.client.InGameHudMixin",
 	"disarm.client.MinecraftClientMixin",
 	"frostbite.client.LivingEntityRendererMixin",
+	"leech.client.TridentEntityRendererMixin",
 	"perception.client.LightmapTextureManagerMixin",
 	"perception.client.MinecraftClientMixin",
 	"slide.client.PlayerEntityRendererMixin"
