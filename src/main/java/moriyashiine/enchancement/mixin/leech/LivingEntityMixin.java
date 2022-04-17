@@ -26,6 +26,16 @@ public abstract class LivingEntityMixin extends Entity {
 		super(type, world);
 	}
 
+	@Inject(method = "applyEnchantmentsToDamage", at = @At("RETURN"))
+	private void enchancement$leech(DamageSource source, float amount, CallbackInfoReturnable<Float> cir) {
+		if (source.getSource() instanceof LivingEntity living && EnchantmentHelper.getEquipmentLevel(ModEnchantments.LEECH, living) > 0) {
+			living.heal(Math.min(2, cir.getReturnValueF()));
+			if (world instanceof ServerWorld serverWorld) {
+				serverWorld.spawnParticles(ParticleTypes.DAMAGE_INDICATOR, getX(), getBodyY(0.5), getZ(), 6, getWidth() / 2, 0, getWidth() / 2, 0);
+			}
+		}
+	}
+
 	@Inject(method = "damage", at = @At("HEAD"))
 	private void enchancement$leechStuckEntity(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
 		if (!isInvulnerableTo(source) && !isDead() && source.getSource() instanceof TridentEntity trident) {
@@ -42,16 +52,6 @@ public abstract class LivingEntityMixin extends Entity {
 					leechComponent.sync();
 				}
 			});
-		}
-	}
-
-	@Inject(method = "applyEnchantmentsToDamage", at = @At("RETURN"))
-	private void enchancement$leech(DamageSource source, float amount, CallbackInfoReturnable<Float> cir) {
-		if (source.getSource() instanceof LivingEntity living && EnchantmentHelper.getEquipmentLevel(ModEnchantments.LEECH, living) > 0) {
-			living.heal(Math.min(2, cir.getReturnValueF()));
-			if (world instanceof ServerWorld serverWorld) {
-				serverWorld.spawnParticles(ParticleTypes.DAMAGE_INDICATOR, getX(), getBodyY(0.5), getZ(), 6, getWidth() / 2, 0, getWidth() / 2, 0);
-			}
 		}
 	}
 }

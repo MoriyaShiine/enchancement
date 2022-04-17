@@ -9,7 +9,7 @@ import net.minecraft.particle.ParticleTypes;
 
 public class WarpComponent implements AutoSyncedComponent, ClientTickingComponent {
 	private final TridentEntity obj;
-	private boolean shouldSpawnParticles = false;
+	private boolean hasWarp = false;
 
 	public WarpComponent(TridentEntity obj) {
 		this.obj = obj;
@@ -17,17 +17,17 @@ public class WarpComponent implements AutoSyncedComponent, ClientTickingComponen
 
 	@Override
 	public void readFromNbt(NbtCompound tag) {
-		shouldSpawnParticles = tag.getBoolean("ShouldSpawnParticles");
+		hasWarp = tag.getBoolean("HasWarp");
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag) {
-		tag.putBoolean("ShouldSpawnParticles", shouldSpawnParticles);
+		tag.putBoolean("HasWarp", hasWarp);
 	}
 
 	@Override
 	public void clientTick() {
-		if (shouldSpawnParticles) {
+		if (hasWarp) {
 			for (int i = 0; i < 8; i++) {
 				obj.world.addParticle(ParticleTypes.REVERSE_PORTAL, obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 0, 0);
 			}
@@ -38,7 +38,11 @@ public class WarpComponent implements AutoSyncedComponent, ClientTickingComponen
 		ModEntityComponents.WARP.sync(obj);
 	}
 
-	public void setShouldSpawnParticles(boolean shouldSpawnParticles) {
-		this.shouldSpawnParticles = shouldSpawnParticles;
+	public void setHasWarp(boolean hasWarp) {
+		this.hasWarp = hasWarp;
+	}
+
+	public boolean hasWarp() {
+		return hasWarp;
 	}
 }
