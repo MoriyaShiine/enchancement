@@ -18,7 +18,7 @@ public class ModConfig implements ConfigData {
 			"enchancement:dash", "enchancement:slide",
 			"enchancement:acceleration", "enchancement:bouncy", "enchancement:gale",
 			"enchancement:berserk", "minecraft:fire_aspect", "enchancement:frostbite",
-			"enchancement:chaos", "enchancement:delay", "enchancement:phasing",
+			"enchancement:chaos", "enchancement:delay", "minecraft:infinity", "enchancement:phasing",
 			"minecraft:channeling", "enchancement:leech", "minecraft:riptide", "enchancement:warp",
 			"enchancement:extracting", "enchancement:molten",
 			"enchancement:beheading", "enchancement:lumberjack",
