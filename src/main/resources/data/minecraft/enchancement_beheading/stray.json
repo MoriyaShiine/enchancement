@@ -1,5 +1,4 @@
 {
-  "entity_type": "minecraft:skeleton",
   "drop": "minecraft:skeleton_skull",
   "chance": 0.2
 }

@@ -1,5 +1,4 @@
 {
-  "entity_type": "minecraft:zombie",
   "drop": "minecraft:zombie_head",
   "chance": 0.2
 }

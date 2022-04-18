@@ -1,5 +1,4 @@
 {
-  "entity_type": "minecraft:wither",
   "drop": "minecraft:wither_skeleton_skull",
   "chance": 1
 }

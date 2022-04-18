@@ -7,7 +7,6 @@
 	"acceleration.PlayerEntityMixin",
 	"amphibious.EnchantmentHelperMixin",
 	"beheading.LivingEntityMixin",
-	"beheading.LootManagerMixin",
 	"berserk.ItemMixin",
 	"berserk.LivingEntityMixin",
 	"berserk.PlayerEntityMixin",
