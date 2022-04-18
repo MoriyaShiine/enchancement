@@ -15,7 +15,9 @@ import net.minecraft.particle.ParticleTypes;
 
 public class GaleComponent implements CommonTickingComponent {
 	private final PlayerEntity obj;
-	private int jumpCooldown = 0, ticksInAir = 0, timesJumped = 0;
+	private int jumpCooldown = 0, jumpsLeft = 0, ticksInAir = 0;
+
+	private boolean hasGale = false, shouldJump = false;
 
 	public GaleComponent(PlayerEntity obj) {
 		this.obj = obj;
@@ -24,59 +26,64 @@ public class GaleComponent implements CommonTickingComponent {
 	@Override
 	public void readFromNbt(NbtCompound tag) {
 		jumpCooldown = tag.getInt("JumpCooldown");
-		timesJumped = tag.getInt("TimesJumped");
+		jumpsLeft = tag.getInt("JumpsLeft");
 		ticksInAir = tag.getInt("TicksInAir");
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag) {
 		tag.putInt("JumpCooldown", jumpCooldown);
+		tag.putInt("JumpsLeft", jumpsLeft);
 		tag.putInt("TicksInAir", ticksInAir);
-		tag.putInt("TimesJumped", timesJumped);
 	}
 
 	@Override
 	public void tick() {
-		boolean client = obj.world.isClient;
-		boolean hasGale = EnchantmentHelper.getEquipmentLevel(ModEnchantments.GALE, obj) > 0;
-		if (client) {
-			ModEntityComponents.JUMPING.maybeGet(obj).ifPresent(jumpingComponent -> {
-				if (((LivingEntityAccessor) obj).enchancement$jumping()) {
-					if (!jumpingComponent.isJumping() && hasGale) {
-						SyncJumpingPacket.send(true);
-					}
-				} else if (jumpingComponent.isJumping()) {
-					SyncJumpingPacket.send(false);
-				}
-			});
-		}
 		boolean onGround = obj.isOnGround();
-		if (!onGround) {
-			ticksInAir++;
+		hasGale = EnchantmentHelper.getEquipmentLevel(ModEnchantments.GALE, obj) > 0;
+		shouldJump = !onGround && hasGale && jumpCooldown == 0 && jumpsLeft > 0 && ticksInAir >= 10 && ModEntityComponents.JUMPING.get(obj).isJumping() && EnchancementUtil.isGroundedOrJumping(obj);
+		if (hasGale) {
+			if (jumpCooldown > 0) {
+				jumpCooldown--;
+			}
+			if (onGround) {
+				ticksInAir = 0;
+				jumpsLeft = 2;
+			} else {
+				ticksInAir++;
+			}
+			if (shouldJump) {
+				obj.playSound(ModSoundEvents.ENTITY_GENERIC_AIR_JUMP, 1, 1);
+				obj.jump();
+				obj.setVelocity(obj.getVelocity().getX(), obj.getVelocity().getY() * 1.5, obj.getVelocity().getZ());
+				jumpCooldown = 10;
+				jumpsLeft--;
+			}
 		} else {
+			jumpCooldown = 0;
+			jumpsLeft = 0;
 			ticksInAir = 0;
 		}
-		if (jumpCooldown == 0) {
-			if (!onGround) {
-				if (hasGale && ticksInAir >= 10 && timesJumped < 2 && ModEntityComponents.JUMPING.get(obj).isJumping() && EnchancementUtil.isGroundedOrJumping(obj)) {
-					if (client) {
-						if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || obj != MinecraftClient.getInstance().cameraEntity) {
-							for (int i = 0; i < 8; i++) {
-								obj.world.addParticle(ParticleTypes.CLOUD, obj.getParticleX(1), obj.getY(), obj.getParticleZ(1), 0, 0, 0);
-							}
-						}
-					}
-					obj.playSound(ModSoundEvents.ENTITY_GENERIC_AIR_JUMP, 1, 1);
-					obj.jump();
-					obj.setVelocity(obj.getVelocity().getX(), obj.getVelocity().getY() * 1.5, obj.getVelocity().getZ());
-					jumpCooldown = 10;
-					timesJumped++;
+	}
+
+	@Override
+	public void clientTick() {
+		tick();
+		ModEntityComponents.JUMPING.maybeGet(obj).ifPresent(jumpingComponent -> {
+			if (((LivingEntityAccessor) obj).enchancement$jumping()) {
+				if (!jumpingComponent.isJumping() && hasGale) {
+					SyncJumpingPacket.send(true);
 				}
-			} else {
-				timesJumped = 0;
+			} else if (jumpingComponent.isJumping()) {
+				SyncJumpingPacket.send(false);
 			}
-		} else if (jumpCooldown > 0) {
-			jumpCooldown--;
+		});
+		if (shouldJump) {
+			if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || obj != MinecraftClient.getInstance().cameraEntity) {
+				for (int i = 0; i < 8; i++) {
+					obj.world.addParticle(ParticleTypes.CLOUD, obj.getParticleX(1), obj.getY(), obj.getParticleZ(1), 0, 0, 0);
+				}
+			}
 		}
 	}
 }

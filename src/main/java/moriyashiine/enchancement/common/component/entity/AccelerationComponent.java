@@ -20,6 +20,8 @@ public class AccelerationComponent implements CommonTickingComponent {
 	private final PlayerEntity obj;
 	private float speedMultiplier = 1;
 
+	private boolean hasAcceleration = false;
+
 	public AccelerationComponent(PlayerEntity obj) {
 		this.obj = obj;
 	}
@@ -34,30 +36,9 @@ public class AccelerationComponent implements CommonTickingComponent {
 		tag.putFloat("SpeedMultiplier", speedMultiplier);
 	}
 
-	@SuppressWarnings("ConstantConditions")
 	@Override
 	public void tick() {
-		boolean hasAcceleration = EnchantmentHelper.getEquipmentLevel(ModEnchantments.ACCELERATION, obj) > 0;
-		if (obj.world.isClient) {
-			ModEntityComponents.MOVING_FORWARD.maybeGet(obj).ifPresent(movingForwardComponent -> {
-				if (obj.forwardSpeed > 0) {
-					if (!movingForwardComponent.isMovingForward() && hasAcceleration) {
-						SyncMovingForwardPacket.send(true);
-					}
-				} else if (movingForwardComponent.isMovingForward()) {
-					SyncMovingForwardPacket.send(false);
-				}
-			});
-		} else {
-			EntityAttributeInstance attribute = obj.getAttributeInstance(StepHeightEntityAttributeMain.STEP_HEIGHT);
-			if (hasAcceleration && !obj.isSneaking()) {
-				if (!attribute.hasModifier(STEP_HEIGHT_INCREASE)) {
-					attribute.addPersistentModifier(STEP_HEIGHT_INCREASE);
-				}
-			} else if (attribute.hasModifier(STEP_HEIGHT_INCREASE)) {
-				attribute.removeModifier(STEP_HEIGHT_INCREASE);
-			}
-		}
+		hasAcceleration = EnchantmentHelper.getEquipmentLevel(ModEnchantments.ACCELERATION, obj) > 0;
 		obj.airStrafingSpeed *= speedMultiplier;
 		if (hasAcceleration) {
 			if (!obj.horizontalCollision && obj.isSprinting() && EnchancementUtil.isGroundedOrJumping(obj) && ModEntityComponents.MOVING_FORWARD.get(obj).isMovingForward()) {
@@ -70,6 +51,34 @@ public class AccelerationComponent implements CommonTickingComponent {
 		} else {
 			speedMultiplier = 1;
 		}
+	}
+
+	@SuppressWarnings("ConstantConditions")
+	@Override
+	public void serverTick() {
+		tick();
+		EntityAttributeInstance attribute = obj.getAttributeInstance(StepHeightEntityAttributeMain.STEP_HEIGHT);
+		if (hasAcceleration && !obj.isSneaking()) {
+			if (!attribute.hasModifier(STEP_HEIGHT_INCREASE)) {
+				attribute.addPersistentModifier(STEP_HEIGHT_INCREASE);
+			}
+		} else if (attribute.hasModifier(STEP_HEIGHT_INCREASE)) {
+			attribute.removeModifier(STEP_HEIGHT_INCREASE);
+		}
+	}
+
+	@Override
+	public void clientTick() {
+		tick();
+		ModEntityComponents.MOVING_FORWARD.maybeGet(obj).ifPresent(movingForwardComponent -> {
+			if (obj.forwardSpeed > 0) {
+				if (!movingForwardComponent.isMovingForward() && hasAcceleration) {
+					SyncMovingForwardPacket.send(true);
+				}
+			} else if (movingForwardComponent.isMovingForward()) {
+				SyncMovingForwardPacket.send(false);
+			}
+		});
 	}
 
 	public float getSpeedMultiplier() {

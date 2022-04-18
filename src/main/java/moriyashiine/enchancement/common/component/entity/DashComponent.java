@@ -23,7 +23,7 @@ public class DashComponent implements CommonTickingComponent {
 	private boolean shouldRefreshDash = false;
 	private int dashCooldown = 20, ticksPressingJump = 0, wavedashTicks = 0;
 
-	private boolean hasDash = false, wasSneaking = false;
+	private boolean hasDash = false, wasSneaking = false, shouldDash = false;
 
 	public DashComponent(PlayerEntity obj) {
 		this.obj = obj;
@@ -47,19 +47,7 @@ public class DashComponent implements CommonTickingComponent {
 
 	@Override
 	public void tick() {
-		boolean client = obj.world.isClient;
 		hasDash = EnchantmentHelper.getEquipmentLevel(ModEnchantments.DASH, obj) > 0;
-		if (client) {
-			ModEntityComponents.JUMPING.maybeGet(obj).ifPresent(jumpingComponent -> {
-				if (((LivingEntityAccessor) obj).enchancement$jumping()) {
-					if (!jumpingComponent.isJumping() && hasDash) {
-						SyncJumpingPacket.send(true);
-					}
-				} else if (jumpingComponent.isJumping()) {
-					SyncJumpingPacket.send(false);
-				}
-			});
-		}
 		if (hasDash) {
 			boolean onGround = obj.isOnGround();
 			boolean sneaking = obj.isSneaking();
@@ -78,16 +66,8 @@ public class DashComponent implements CommonTickingComponent {
 			if (wavedashTicks > 0) {
 				wavedashTicks--;
 			}
-			if (!onGround && dashCooldown == 0 && sneaking && !wasSneaking && EnchancementUtil.isGroundedOrJumping(obj)) {
-				if (client) {
-					if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || obj != MinecraftClient.getInstance().cameraEntity) {
-						for (int i = 0; i < 8; i++) {
-							obj.world.addParticle(ParticleTypes.CLOUD, obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 0, 0);
-						}
-					}
-				} else {
-					PACKET_IMMUNITIES.put(obj, 5);
-				}
+			shouldDash = !onGround && dashCooldown == 0 && sneaking && !wasSneaking && EnchancementUtil.isGroundedOrJumping(obj);
+			if (shouldDash) {
 				obj.playSound(ModSoundEvents.ENTITY_GENERIC_DASH, 1, 1);
 				Vec3d velocity = obj.getRotationVector().normalize();
 				obj.setVelocity(velocity.getX(), velocity.getY(), velocity.getZ());
@@ -103,6 +83,36 @@ public class DashComponent implements CommonTickingComponent {
 			ticksPressingJump = 0;
 			wavedashTicks = 0;
 			wasSneaking = false;
+			shouldDash = false;
+		}
+	}
+
+	@Override
+	public void serverTick() {
+		tick();
+		if (shouldDash) {
+			PACKET_IMMUNITIES.put(obj, 5);
+		}
+	}
+
+	@Override
+	public void clientTick() {
+		tick();
+		ModEntityComponents.JUMPING.maybeGet(obj).ifPresent(jumpingComponent -> {
+			if (((LivingEntityAccessor) obj).enchancement$jumping()) {
+				if (!jumpingComponent.isJumping() && hasDash) {
+					SyncJumpingPacket.send(true);
+				}
+			} else if (jumpingComponent.isJumping()) {
+				SyncJumpingPacket.send(false);
+			}
+		});
+		if (shouldDash) {
+			if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || obj != MinecraftClient.getInstance().cameraEntity) {
+				for (int i = 0; i < 8; i++) {
+					obj.world.addParticle(ParticleTypes.CLOUD, obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 0, 0);
+				}
+			}
 		}
 	}
 

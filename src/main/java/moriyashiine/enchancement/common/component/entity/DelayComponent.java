@@ -53,27 +53,31 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 	@Override
 	public void tick() {
 		if (hasDelay) {
-			if (!obj.world.isClient) {
-				if (storedVelocity == null) {
-					storedVelocity = obj.getVelocity();
-					forcedPitch = obj.getPitch();
-					forcedYaw = obj.getYaw();
-					ModEntityComponents.DELAY.sync(obj);
-				}
-				if (ticksFloating > 300 || (obj.getOwner() instanceof LivingEntity living && living.handSwinging && (living.getMainHandStack() == stackShotFrom || living.getOffHandStack() == stackShotFrom))) {
-					obj.setDamage(obj.getDamage() * MathHelper.lerp(Math.min(1, ticksFloating / 100F), 1, 2.5));
-					obj.setVelocity(storedVelocity);
-					storedVelocity = null;
-					setHasDelay(false);
-					sync();
-					return;
-				}
-			}
-			ticksFloating++;
 			obj.setVelocity(Vec3d.ZERO);
 			obj.setPitch(forcedPitch);
 			obj.setYaw(forcedYaw);
+			ticksFloating++;
 		}
+	}
+
+	@Override
+	public void serverTick() {
+		if (hasDelay) {
+			if (storedVelocity == null) {
+				storedVelocity = obj.getVelocity();
+				forcedPitch = obj.getPitch();
+				forcedYaw = obj.getYaw();
+				sync();
+			}
+			if (ticksFloating > 300 || (obj.getOwner() instanceof LivingEntity living && living.handSwinging && (living.getMainHandStack() == stackShotFrom || living.getOffHandStack() == stackShotFrom))) {
+				obj.setDamage(obj.getDamage() * MathHelper.lerp(Math.min(1, ticksFloating / 100F), 1, 2.5));
+				obj.setVelocity(storedVelocity);
+				storedVelocity = null;
+				setHasDelay(false);
+				sync();
+			}
+		}
+		tick();
 	}
 
 	public void sync() {
