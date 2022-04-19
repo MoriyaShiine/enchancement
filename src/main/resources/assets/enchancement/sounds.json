@@ -16,6 +16,12 @@
 	],
 	"subtitle": "subtitles.enchancement.entity.generic.dash"
   },
+  "entity.generic.impact": {
+	"sounds": [
+	  "mob/zombie/woodbreak"
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.impact"
+  },
   "entity.generic.air_jump": {
 	"sounds": [
 	  "dig/sand1",

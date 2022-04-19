@@ -23,7 +23,7 @@ public class DashComponent implements CommonTickingComponent {
 	private boolean shouldRefreshDash = false;
 	private int dashCooldown = 20, ticksPressingJump = 0, wavedashTicks = 0;
 
-	private boolean hasDash = false, wasSneaking = false, shouldDash = false;
+	private boolean hasDash = false, shouldDash = false, wasSneaking = false;
 
 	public DashComponent(PlayerEntity obj) {
 		this.obj = obj;

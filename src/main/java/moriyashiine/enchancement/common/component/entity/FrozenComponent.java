@@ -14,7 +14,6 @@ import net.minecraft.entity.MovementType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import org.jetbrains.annotations.NotNull;
 
@@ -144,20 +143,6 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 		forcedLimbAngle = obj.limbAngle;
 		setFrozen(true);
 		sync();
-	}
-
-	public static boolean shouldHurt(Entity attacker, Entity hitEntity) {
-		if (attacker == null) {
-			return true;
-		}
-		if (attacker == hitEntity) {
-			return false;
-		}
-		if (attacker instanceof PlayerEntity attackingPlayer && hitEntity instanceof PlayerEntity hitPlayer && !attackingPlayer.shouldDamagePlayer(hitPlayer)) {
-			return false;
-		}
-		NbtCompound tag = hitEntity.writeNbt(new NbtCompound());
-		return !tag.contains("Owner") || !tag.getUuid("Owner").equals(attacker.getUuid());
 	}
 
 	public static boolean isSourceFreezingEntity(DamageSource source) {

@@ -3,6 +3,7 @@ package moriyashiine.enchancement.common.util;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.mixin.util.ItemEntityAccessor;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
@@ -10,8 +11,11 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.world.ServerWorld;
 
 import java.util.List;
+import java.util.UUID;
 
 public class EnchancementUtil {
 	public static List<ItemEntity> mergeItemEntities(List<ItemEntity> drops) {
@@ -36,6 +40,28 @@ public class EnchancementUtil {
 			return false;
 		}
 		return !living.isTouchingWater() && !living.isSwimming();
+	}
+
+	public static boolean shouldHurt(Entity attacker, Entity hitEntity) {
+		if (attacker == null || hitEntity == null) {
+			return true;
+		}
+		if (attacker == hitEntity) {
+			return false;
+		}
+		if (hitEntity instanceof PlayerEntity hitPlayer) {
+			return !(attacker instanceof PlayerEntity attackingPlayer && attackingPlayer.shouldDamagePlayer(hitPlayer));
+		} else {
+			NbtCompound tag = hitEntity.writeNbt(new NbtCompound());
+			if (tag.contains("Owner")) {
+				UUID owner = tag.getUuid("Owner");
+				if (owner.equals(attacker.getUuid())) {
+					return false;
+				}
+				return shouldHurt(attacker, ((ServerWorld) attacker.world).getEntity(owner));
+			}
+		}
+		return true;
 	}
 
 	public static float getMaxBonusBerserkDamage(ItemStack stack) {

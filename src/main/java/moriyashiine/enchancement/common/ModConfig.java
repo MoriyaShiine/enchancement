@@ -15,7 +15,7 @@ public class ModConfig implements ConfigData {
 	@ConfigEntry.Gui.RequiresRestart
 	public List<String> allowedEnchantments = List.of("enchancement:assimilation", "enchancement:buffet", "enchancement:perception",
 			"enchancement:amphibious", "enchancement:wardenspine",
-			"enchancement:dash", "enchancement:slide",
+			"enchancement:dash", "enchancement:impact", "enchancement:slide",
 			"enchancement:acceleration", "enchancement:bouncy", "enchancement:gale",
 			"enchancement:berserk", "minecraft:fire_aspect", "enchancement:frostbite",
 			"enchancement:chaos", "enchancement:delay", "minecraft:infinity", "enchancement:phasing",

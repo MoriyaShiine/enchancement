@@ -50,6 +50,7 @@
 	"cardinal-components": [
 	  "enchancement:jumping",
 	  "enchancement:dash",
+	  "enchancement:impact",
 	  "enchancement:slide",
 	  "enchancement:moving_forward",
 	  "enchancement:acceleration",

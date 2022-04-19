@@ -3,6 +3,7 @@ package moriyashiine.enchancement.mixin.frostbite;
 import moriyashiine.enchancement.common.component.entity.FrozenComponent;
 import moriyashiine.enchancement.common.entity.projectile.IceShardEntity;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -75,7 +76,7 @@ public abstract class LivingEntityMixin extends Entity {
 			ModEntityComponents.FROZEN.maybeGet(this).ifPresent(frozenComponent -> {
 				if (frozenComponent.isFrozen()) {
 					Entity lastFreezingAttacker = frozenComponent.getLastFreezingAttacker();
-					if (FrozenComponent.shouldHurt(lastFreezingAttacker, entity) && entity.damage(new EntityDamageSource("freeze", lastFreezingAttacker == null ? this : lastFreezingAttacker), 8)) {
+					if (EnchancementUtil.shouldHurt(lastFreezingAttacker, entity) && entity.damage(new EntityDamageSource("freeze", lastFreezingAttacker == null ? this : lastFreezingAttacker), 8)) {
 						damage(DamageSource.GENERIC, 2);
 						entity.setFrozenTicks(800);
 					}

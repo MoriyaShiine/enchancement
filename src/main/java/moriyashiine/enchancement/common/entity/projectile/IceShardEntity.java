@@ -1,8 +1,8 @@
 package moriyashiine.enchancement.common.entity.projectile;
 
-import moriyashiine.enchancement.common.component.entity.FrozenComponent;
 import moriyashiine.enchancement.common.registry.ModEntityTypes;
 import moriyashiine.enchancement.common.registry.ModSoundEvents;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -45,7 +45,7 @@ public class IceShardEntity extends PersistentProjectileEntity {
 		if (!world.isClient) {
 			Entity entity = entityHitResult.getEntity();
 			Entity owner = getOwner();
-			if (FrozenComponent.shouldHurt(owner, entity) && entity.damage(new ProjectileDamageSource("freeze", this, owner), 4)) {
+			if (EnchancementUtil.shouldHurt(owner, entity) && entity.damage(new ProjectileDamageSource("freeze", this, owner), 4)) {
 				entity.setFrozenTicks(400);
 				playSound(getHitSound(), 1, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
 				addIceShardParticles();
