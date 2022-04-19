@@ -26,7 +26,6 @@ public class ModConfig implements ConfigData {
 			"enchancement:disarm", "enchancement:grapple", "minecraft:luck_of_the_sea",
 			"minecraft:efficiency", "minecraft:silk_touch", "minecraft:unbreaking");
 
-	@ConfigEntry.Gui.RequiresRestart
 	public boolean singleEnchantmentMode = true;
 	@ConfigEntry.Gui.RequiresRestart
 	public boolean singleLevelMode = true;

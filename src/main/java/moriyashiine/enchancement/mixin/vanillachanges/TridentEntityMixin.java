@@ -46,9 +46,6 @@ public abstract class TridentEntityMixin extends PersistentProjectileEntity {
 
 	@ModifyExpressionValue(method = "onEntityHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;isThundering()Z"))
 	private boolean enchancement$channelingWorksWhenNotThundering(boolean value) {
-		if (Enchancement.getConfig().channelingWorksWhenNotThundering) {
-			return true;
-		}
-		return value;
+		return value || Enchancement.getConfig().channelingWorksWhenNotThundering;
 	}
 }
