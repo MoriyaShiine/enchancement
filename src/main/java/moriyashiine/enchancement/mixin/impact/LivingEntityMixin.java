@@ -1,6 +1,7 @@
 package moriyashiine.enchancement.mixin.impact;
 
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -25,7 +26,7 @@ public abstract class LivingEntityMixin extends Entity {
 	private void enchancement$frostbite(Entity entity, CallbackInfo ci) {
 		if (!world.isClient) {
 			ModEntityComponents.IMPACT.maybeGet(entity).ifPresent(impactComponent -> {
-				if (impactComponent.shouldDamage()) {
+				if (impactComponent.shouldDamage() && EnchancementUtil.shouldHurt(entity, this)) {
 					damage(DamageSource.ANVIL, 8);
 				}
 			});

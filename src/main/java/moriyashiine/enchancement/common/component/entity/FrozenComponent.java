@@ -31,30 +31,26 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 
 	@Override
 	public void readFromNbt(NbtCompound tag) {
-		if (tag.contains("Frozen")) {
-			frozen = tag.getBoolean("Frozen");
-			ticksFrozen = tag.getInt("TicksFrozen");
-			forcedPose = EntityPose.valueOf(tag.getString("ForcedPose"));
-			forcedHeadYaw = tag.getFloat("ForcedHeadYaw");
-			forcedBodyYaw = tag.getFloat("ForcedBodyYaw");
-			forcedPitch = tag.getFloat("ForcedPitch");
-			forcedLimbDistance = tag.getFloat("ForceLimbDistance");
-			forcedLimbAngle = tag.getFloat("ForcedLimbAngle");
-		}
+		frozen = tag.getBoolean("Frozen");
+		ticksFrozen = tag.getInt("TicksFrozen");
+		forcedPose = EntityPose.valueOf(tag.getString("ForcedPose"));
+		forcedHeadYaw = tag.getFloat("ForcedHeadYaw");
+		forcedBodyYaw = tag.getFloat("ForcedBodyYaw");
+		forcedPitch = tag.getFloat("ForcedPitch");
+		forcedLimbDistance = tag.getFloat("ForceLimbDistance");
+		forcedLimbAngle = tag.getFloat("ForcedLimbAngle");
 	}
 
 	@Override
 	public void writeToNbt(@NotNull NbtCompound tag) {
-		if (frozen) {
-			tag.putBoolean("Frozen", frozen);
-			tag.putInt("TicksFrozen", ticksFrozen);
-			tag.putString("ForcedPose", forcedPose.toString());
-			tag.putFloat("ForcedHeadYaw", forcedHeadYaw);
-			tag.putFloat("ForcedBodyYaw", forcedBodyYaw);
-			tag.putFloat("ForcedPitch", forcedPitch);
-			tag.putFloat("ForceLimbDistance", forcedLimbDistance);
-			tag.putFloat("ForcedLimbAngle", forcedLimbAngle);
-		}
+		tag.putBoolean("Frozen", frozen);
+		tag.putInt("TicksFrozen", ticksFrozen);
+		tag.putString("ForcedPose", forcedPose.toString());
+		tag.putFloat("ForcedHeadYaw", forcedHeadYaw);
+		tag.putFloat("ForcedBodyYaw", forcedBodyYaw);
+		tag.putFloat("ForcedPitch", forcedPitch);
+		tag.putFloat("ForceLimbDistance", forcedLimbDistance);
+		tag.putFloat("ForcedLimbAngle", forcedLimbAngle);
 	}
 
 	@Override
@@ -146,6 +142,10 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 	}
 
 	public static boolean isSourceFreezingEntity(DamageSource source) {
-		return (source instanceof EntityDamageSource && source.name.equals("freeze")) || (source.getSource() instanceof LivingEntity living && EnchantmentHelper.getEquipmentLevel(ModEnchantments.FROSTBITE, living) > 0);
+		return (source instanceof EntityDamageSource && source.name.equals("freeze")) || isSourceFrostbite(source);
+	}
+
+	public static boolean isSourceFrostbite(DamageSource source) {
+		return source.getSource() instanceof LivingEntity living && EnchantmentHelper.getEquipmentLevel(ModEnchantments.FROSTBITE, living) > 0;
 	}
 }

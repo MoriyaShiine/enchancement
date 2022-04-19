@@ -1,5 +1,6 @@
 package moriyashiine.enchancement.common.component.entity;
 
+import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.common.packet.SyncJumpingPacket;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
@@ -13,7 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 
-public class GaleComponent implements CommonTickingComponent {
+public class GaleComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private final PlayerEntity obj;
 	private int jumpCooldown = 0, jumpsLeft = 0, ticksInAir = 0;
 

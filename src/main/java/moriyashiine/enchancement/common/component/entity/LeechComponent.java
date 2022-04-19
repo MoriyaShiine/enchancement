@@ -26,23 +26,19 @@ public class LeechComponent implements AutoSyncedComponent, CommonTickingCompone
 	@Override
 	public void readFromNbt(NbtCompound tag) {
 		hasLeech = tag.getBoolean("HasLeech");
-		if (tag.contains("StuckEntityId")) {
-			stuckEntityId = tag.getInt("StuckEntityId");
-			ticksLeeching = tag.getInt("TicksLeeching");
-			renderTicks = tag.getFloat("RenderTicks");
-			stabTicks = tag.getFloat("StabTicks");
-		}
+		stuckEntityId = tag.getInt("StuckEntityId");
+		ticksLeeching = tag.getInt("TicksLeeching");
+		renderTicks = tag.getFloat("RenderTicks");
+		stabTicks = tag.getFloat("StabTicks");
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag) {
 		tag.putBoolean("HasLeech", hasLeech);
-		if (stuckEntityId >= 0) {
-			tag.putInt("StuckEntityId", stuckEntityId);
-			tag.putInt("TicksLeeching", ticksLeeching);
-			tag.putFloat("RenderTicks", renderTicks);
-			tag.putFloat("StabTicks", stabTicks);
-		}
+		tag.putInt("StuckEntityId", stuckEntityId);
+		tag.putInt("TicksLeeching", ticksLeeching);
+		tag.putFloat("RenderTicks", renderTicks);
+		tag.putFloat("StabTicks", stabTicks);
 	}
 
 	@Override

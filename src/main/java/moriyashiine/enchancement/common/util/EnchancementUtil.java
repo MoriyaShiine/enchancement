@@ -50,7 +50,7 @@ public class EnchancementUtil {
 			return false;
 		}
 		if (hitEntity instanceof PlayerEntity hitPlayer) {
-			return !(attacker instanceof PlayerEntity attackingPlayer && attackingPlayer.shouldDamagePlayer(hitPlayer));
+			return attacker instanceof PlayerEntity attackingPlayer && attackingPlayer.shouldDamagePlayer(hitPlayer);
 		} else {
 			NbtCompound tag = hitEntity.writeNbt(new NbtCompound());
 			if (tag.contains("Owner")) {

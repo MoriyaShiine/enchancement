@@ -1,6 +1,7 @@
 package moriyashiine.enchancement.common.component.entity;
 
 import dev.emi.stepheightentityattribute.StepHeightEntityAttributeMain;
+import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.common.packet.SyncMovingForwardPacket;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
@@ -14,7 +15,7 @@ import net.minecraft.nbt.NbtCompound;
 
 import java.util.UUID;
 
-public class AccelerationComponent implements CommonTickingComponent {
+public class AccelerationComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private static final EntityAttributeModifier STEP_HEIGHT_INCREASE = new EntityAttributeModifier(UUID.fromString("fb7d190e-ebaa-485b-8ded-a57cab9b7a5a"), "Enchantment modifier", 1, EntityAttributeModifier.Operation.ADDITION);
 
 	private final PlayerEntity obj;

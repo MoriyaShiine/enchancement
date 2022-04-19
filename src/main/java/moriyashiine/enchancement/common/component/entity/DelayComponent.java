@@ -28,11 +28,13 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 		if (tag.contains("StoredVelocity")) {
 			NbtCompound storedVelocity = tag.getCompound("StoredVelocity");
 			this.storedVelocity = new Vec3d(storedVelocity.getDouble("X"), storedVelocity.getDouble("Y"), storedVelocity.getDouble("Z"));
-			hasDelay = tag.getBoolean("HasDelay");
-			ticksFloating = tag.getInt("TicksFloating");
-			forcedPitch = tag.getFloat("ForcedPitch");
-			forcedYaw = tag.getFloat("ForcedYaw");
+		} else {
+			storedVelocity = null;
 		}
+		hasDelay = tag.getBoolean("HasDelay");
+		ticksFloating = tag.getInt("TicksFloating");
+		forcedPitch = tag.getFloat("ForcedPitch");
+		forcedYaw = tag.getFloat("ForcedYaw");
 	}
 
 	@Override
@@ -43,11 +45,11 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 			storedVelocity.putDouble("Y", this.storedVelocity.getY());
 			storedVelocity.putDouble("Z", this.storedVelocity.getZ());
 			tag.put("StoredVelocity", storedVelocity);
-			tag.putBoolean("HasDelay", hasDelay);
-			tag.putInt("TicksFloating", ticksFloating);
-			tag.putFloat("ForcedPitch", forcedPitch);
-			tag.putFloat("ForcedYaw", forcedYaw);
 		}
+		tag.putBoolean("HasDelay", hasDelay);
+		tag.putInt("TicksFloating", ticksFloating);
+		tag.putFloat("ForcedPitch", forcedPitch);
+		tag.putFloat("ForcedYaw", forcedYaw);
 	}
 
 	@Override

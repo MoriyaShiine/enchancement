@@ -31,16 +31,12 @@ public class ImpactComponent implements AutoSyncedComponent, CommonTickingCompon
 
 	@Override
 	public void readFromNbt(NbtCompound tag) {
-		if (tag.contains("ImpactTicks")) {
-			impactTicks = tag.getInt("ImpactTicks");
-		}
+		impactTicks = tag.getInt("ImpactTicks");
 	}
 
 	@Override
 	public void writeToNbt(@NotNull NbtCompound tag) {
-		if (impactTicks > 0) {
-			tag.putInt("ImpactTicks", impactTicks);
-		}
+		tag.putInt("ImpactTicks", impactTicks);
 	}
 
 	@Override
