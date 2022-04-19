@@ -1,6 +1,8 @@
-package moriyashiine.enchancement.client.render;
+package moriyashiine.enchancement.client.reloadlisteners;
 
 import moriyashiine.enchancement.common.Enchancement;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceReloadListenerKeys;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
@@ -23,15 +25,32 @@ import java.util.Map;
 /**
  * @author UpcraftLP (https://github.com/UpcraftLP)
  */
-public class FrozenTextureManager implements IdentifiableResourceReloadListener, SimpleSynchronousResourceReloadListener {
-	public static final Identifier RELOADER_ID = new Identifier(Enchancement.MOD_ID, "frozen_textures");
-	private static final Identifier ICE_TEXTURE = new Identifier("textures/block/packed_ice.png");
+@Environment(EnvType.CLIENT)
+public class FrozenReloadListener implements IdentifiableResourceReloadListener, SimpleSynchronousResourceReloadListener {
+	public static final FrozenReloadListener INSTANCE = new FrozenReloadListener();
+
+	private static final Identifier ID = new Identifier(Enchancement.MOD_ID, "frozen");
+
+	private static final Identifier PACKED_ICE_TEXTURE = new Identifier("textures/block/packed_ice.png");
 	private static final boolean DEBUG_TEXTURES = Boolean.getBoolean(Enchancement.MOD_ID + ".debug_frozen_textures");
-	private static final FrozenTextureManager INSTANCE = new FrozenTextureManager();
 
 	private final Map<Identifier, Identifier> TEXTURE_CACHE = new HashMap<>();
 
-	private FrozenTextureManager() {
+	@Override
+	public Identifier getFabricId() {
+		return ID;
+	}
+
+	@Override
+	public void reload(ResourceManager manager) {
+		// make sure resourcepack changes affect frozen entities
+		TEXTURE_CACHE.clear();
+	}
+
+	@Override
+	public Collection<Identifier> getFabricDependencies() {
+		// make sure textures are fully reloaded before we regenerate our cached textures
+		return Collections.singleton(ResourceReloadListenerKeys.TEXTURES);
 	}
 
 	public Identifier getTexture(Identifier original) {
@@ -50,9 +69,9 @@ public class FrozenTextureManager implements IdentifiableResourceReloadListener,
 	 * create a new texture of width x height by repeating the source texture in a grid-like fashion
 	 */
 	private static Identifier generateTexture(ResourceManager resourceManager, int texWidth, int texHeight) throws IOException {
-		try (NativeImage srcTex = loadNative(resourceManager, ICE_TEXTURE)) {
+		try (NativeImage srcTex = loadNative(resourceManager, PACKED_ICE_TEXTURE)) {
 			if (srcTex.getWidth() == 0 || srcTex.getHeight() == 0) {
-				throw new IllegalStateException(String.format("bad resourcepack, texture for %s was %sx%s, this is not allowed!", ICE_TEXTURE, srcTex.getWidth(), srcTex.getHeight()));
+				throw new IllegalStateException(String.format("bad resourcepack, texture for %s was %sx%s, this is not allowed!", PACKED_ICE_TEXTURE, srcTex.getWidth(), srcTex.getHeight()));
 			}
 			int width = texWidth;
 			int height = texHeight;
@@ -95,26 +114,5 @@ public class FrozenTextureManager implements IdentifiableResourceReloadListener,
 	 */
 	private static NativeImage loadNative(ResourceManager resourceManager, Identifier identifier) throws IOException {
 		return ResourceTexture.TextureData.load(resourceManager, identifier).getImage();
-	}
-
-	@Override
-	public Identifier getFabricId() {
-		return RELOADER_ID;
-	}
-
-	@Override
-	public void reload(ResourceManager manager) {
-		// make sure resourcepack changes affect frozen entities
-		TEXTURE_CACHE.clear();
-	}
-
-	@Override
-	public Collection<Identifier> getFabricDependencies() {
-		// make sure textures are fully reloaded before we regenerate our cached textures
-		return Collections.singleton(ResourceReloadListenerKeys.TEXTURES);
-	}
-
-	public static FrozenTextureManager getInstance() {
-		return INSTANCE;
 	}
 }

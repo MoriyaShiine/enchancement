@@ -1,6 +1,6 @@
 package moriyashiine.enchancement.mixin.frostbite.client;
 
-import moriyashiine.enchancement.client.render.FrozenTextureManager;
+import moriyashiine.enchancement.client.reloadlisteners.FrozenReloadListener;
 import moriyashiine.enchancement.client.render.entity.mob.FrozenPlayerEntityRenderer;
 import moriyashiine.enchancement.common.entity.mob.FrozenPlayerEntity;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
@@ -68,7 +68,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
 	@ModifyVariable(method = "getRenderLayer", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/render/entity/LivingEntityRenderer;getTexture(Lnet/minecraft/entity/Entity;)Lnet/minecraft/util/Identifier;"))
 	private Identifier enchancement$frostbiteTexture(Identifier value, LivingEntity living) {
 		if (ModEntityComponents.FROZEN.get(living).isFrozen()) {
-			return FrozenTextureManager.getInstance().getTexture(value);
+			return FrozenReloadListener.INSTANCE.getTexture(value);
 		}
 		return value;
 	}
