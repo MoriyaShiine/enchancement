@@ -57,6 +57,8 @@ dependencies {
 
     modCompileOnly "com.terraformersmc:modmenu:${mod_menu_version}"
     modRuntimeOnly "com.terraformersmc:modmenu:${mod_menu_version}"
+    modCompileOnly "com.github.CaffeineMC:sodium-fabric:${sodium_version}"
+    modRuntimeOnly "com.github.CaffeineMC:sodium-fabric:${sodium_version}"
 }
 
 processResources {
