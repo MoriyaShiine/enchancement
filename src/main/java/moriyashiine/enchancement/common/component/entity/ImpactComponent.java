@@ -13,10 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import org.jetbrains.annotations.NotNull;
 
 public class ImpactComponent implements AutoSyncedComponent, CommonTickingComponent {
@@ -85,8 +82,8 @@ public class ImpactComponent implements AutoSyncedComponent, CommonTickingCompon
 			for (int i = 0; i < 360; i += 15) {
 				for (int j = 1; j < 10; j++) {
 					double x = obj.getX() + MathHelper.sin(i) * j / 2, z = obj.getZ() + MathHelper.cos(i) * j / 2;
-					BlockState state = obj.world.getBlockState(mutable.set(x, Math.round(obj.getY()), z));
-					if (!state.isAir()) {
+					BlockState state = obj.world.getBlockState(mutable.set(x, Math.round(obj.getY() - 1), z));
+					if (!state.getMaterial().isReplaceable() && obj.world.getBlockState(mutable.move(Direction.UP)).getMaterial().isReplaceable()) {
 						obj.world.addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, state), x, mutable.getY(), z, 0, 0, 0);
 					}
 				}
