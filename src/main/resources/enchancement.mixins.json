@@ -23,6 +23,7 @@
 	"disarm.FishingBobberEntityMixin",
 	"disarm.WitchEntityMixin",
 	"frostbite.LivingEntityMixin",
+	"frostbite.PlayerEntityMixin",
 	"frostbite.ServerPlayerEntityMixin",
 	"gale.LivingEntityMixin",
 	"grapple.FishingBobberEntityMixin",

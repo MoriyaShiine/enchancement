@@ -1,6 +1,7 @@
 package moriyashiine.enchancement.client;
 
 import moriyashiine.enchancement.client.packet.AddMoltenParticlesPacket;
+import moriyashiine.enchancement.client.packet.ResetFrozenTicksPacket;
 import moriyashiine.enchancement.client.packet.SyncFrozenPlayerSlimStatusS2C;
 import moriyashiine.enchancement.client.reloadlisteners.FrozenReloadListener;
 import moriyashiine.enchancement.client.render.entity.IceShardEntityRenderer;
@@ -18,6 +19,7 @@ import net.minecraft.resource.ResourceType;
 public class EnchancementClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
+		ClientPlayNetworking.registerGlobalReceiver(ResetFrozenTicksPacket.ID, ResetFrozenTicksPacket::receive);
 		ClientPlayNetworking.registerGlobalReceiver(SyncFrozenPlayerSlimStatusS2C.ID, SyncFrozenPlayerSlimStatusS2C::receive);
 		ClientPlayNetworking.registerGlobalReceiver(AddMoltenParticlesPacket.ID, AddMoltenParticlesPacket::receive);
 		EntityRendererRegistry.register(ModEntityTypes.FROZEN_PLAYER, FrozenPlayerEntityRenderer::new);
