@@ -23,7 +23,7 @@ public class ImpactComponent implements AutoSyncedComponent, CommonTickingCompon
 	private final PlayerEntity obj;
 	private int impactTicks = 0;
 
-	private boolean hasImpact = false, wasSneaking;
+	private boolean hasImpact = false, wasSneaking = false;
 
 	public ImpactComponent(PlayerEntity obj) {
 		this.obj = obj;
