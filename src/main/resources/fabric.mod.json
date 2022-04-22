@@ -41,10 +41,10 @@
   "accessWidener": "enchancement.accesswidener",
   "depends": {
 	"fabricloader": ">=0.13.3",
-	"minecraft": "1.18.x",
+	"minecraft": "~1.18.2",
 	"java": ">=17",
 	"cloth-config2": ">=6.2.57",
-	"fabric": ">=0.47.8"
+	"fabric": ">=0.48.0"
   },
   "custom": {
 	"cardinal-components": [
