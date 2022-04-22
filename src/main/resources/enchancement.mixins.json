@@ -39,6 +39,8 @@
 	"slide.EntityAccessor",
 	"slide.LivingEntityMixin",
 	"slide.PlayerEntityMixin",
+	"torch.CrossbowItemMixin",
+	"torch.TorchCrossbowMixin",
 	"util.ItemEntityAccessor",
 	"util.LivingEntityAccessor",
 	"vanillachanges.AnvilScreenHandlerMixin",
@@ -73,7 +75,8 @@
 	"leech.client.TridentEntityRendererMixin",
 	"perception.client.LightmapTextureManagerMixin",
 	"perception.client.MinecraftClientMixin",
-	"slide.client.PlayerEntityRendererMixin"
+	"slide.client.PlayerEntityRendererMixin",
+	"torch.client.ModelLoaderMixin"
   ],
   "injectors": {
 	"defaultRequire": 1

@@ -3,6 +3,7 @@ package moriyashiine.enchancement.common.entity.projectile;
 import moriyashiine.enchancement.common.registry.ModEntityTypes;
 import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -56,8 +57,10 @@ public class IceShardEntity extends PersistentProjectileEntity {
 
 	@Override
 	protected void onBlockHit(BlockHitResult blockHitResult) {
-		super.onBlockHit(blockHitResult);
+		BlockState state = world.getBlockState(blockHitResult.getBlockPos());
+		state.onProjectileHit(world, state, blockHitResult, this);
 		if (!world.isClient) {
+			playSound(getHitSound(), 1, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
 			addIceShardParticles();
 			discard();
 		}

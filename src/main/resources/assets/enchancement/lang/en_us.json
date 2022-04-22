@@ -1,6 +1,7 @@
 {
   "entity.enchancement.frozen_player": "Frozen Player",
   "entity.enchancement.ice_shard": "Ice Shard",
+  "entity.enchancement.torch": "Torch",
   "enchantment.enchancement.assimilation": "Assimilation",
   "enchantment.enchancement.buffet": "Buffet",
   "enchantment.enchancement.perception": "Perception",
@@ -17,6 +18,7 @@
   "enchantment.enchancement.chaos": "Chaos",
   "enchantment.enchancement.delay": "Delay",
   "enchantment.enchancement.phasing": "Phasing",
+  "enchantment.enchancement.torch": "Torch",
   "enchantment.enchancement.leech": "Leech",
   "enchantment.enchancement.warp": "Warp",
   "enchantment.enchancement.extracting": "Extracting",
