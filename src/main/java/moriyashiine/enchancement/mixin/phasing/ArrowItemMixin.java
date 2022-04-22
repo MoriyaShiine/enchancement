@@ -2,7 +2,7 @@ package moriyashiine.enchancement.mixin.phasing;
 
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
-import net.minecraft.enchantment.EnchantmentHelper;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ArrowItem;
@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class ArrowItemMixin {
 	@Inject(method = "createArrow", at = @At("RETURN"))
 	private void enchancement$phasing(World world, ItemStack stack, LivingEntity shooter, CallbackInfoReturnable<PersistentProjectileEntity> cir) {
-		if (EnchantmentHelper.getEquipmentLevel(ModEnchantments.PHASING, shooter) > 0) {
+		if (EnchancementUtil.hasEnchantment(ModEnchantments.PHASING, shooter)) {
 			PersistentProjectileEntity arrow = cir.getReturnValue();
 			ModEntityComponents.PHASHING.maybeGet(arrow).ifPresent(phasingComponent -> {
 				phasingComponent.setShouldPhase(true);

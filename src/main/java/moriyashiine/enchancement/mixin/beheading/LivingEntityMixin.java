@@ -2,6 +2,7 @@ package moriyashiine.enchancement.mixin.beheading;
 
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.util.BeheadingEntry;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -24,13 +25,13 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@Inject(method = "dropLoot", at = @At("HEAD"))
 	private void enchancement$beheading(DamageSource source, boolean causedByPlayer, CallbackInfo ci) {
-		if (source.getSource() instanceof LivingEntity living && EnchantmentHelper.getEquipmentLevel(ModEnchantments.BEHEADING, living) > 0) {
+		if (source.getSource() instanceof LivingEntity living && EnchancementUtil.hasEnchantment(ModEnchantments.BEHEADING, living)) {
 			int looting = EnchantmentHelper.getLooting(living);
 			for (EntityType<?> entityType : BeheadingEntry.DROP_MAP.keySet()) {
 				if (getType() == entityType) {
 					BeheadingEntry entry = BeheadingEntry.DROP_MAP.get(entityType);
-					if (random.nextFloat() < entry.chance + (looting * 0.15F)) {
-						ItemStack stack = new ItemStack(entry.drop);
+					if (random.nextFloat() < entry.chance() + (looting * 0.15F)) {
+						ItemStack stack = new ItemStack(entry.drop());
 						if (stack.getItem() == Items.PLAYER_HEAD && getType() == EntityType.PLAYER) {
 							stack.getOrCreateNbt().putString("SkullOwner", getName().getString());
 						}

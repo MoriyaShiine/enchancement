@@ -1,7 +1,7 @@
 package moriyashiine.enchancement.mixin.gale;
 
-import moriyashiine.enchancement.common.registry.ModEnchantments;
-import net.minecraft.enchantment.EnchantmentHelper;
+import moriyashiine.enchancement.common.component.entity.GaleComponent;
+import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import net.minecraft.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -11,7 +11,8 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class LivingEntityMixin {
 	@ModifyVariable(method = "handleFallDamage", at = @At("HEAD"), ordinal = 0, argsOnly = true)
 	private float enchancement$gale(float value) {
-		if (EnchantmentHelper.getEquipmentLevel(ModEnchantments.GALE, LivingEntity.class.cast(this)) > 0) {
+		GaleComponent galeComponent = ModEntityComponents.GALE.getNullable(this);
+		if (galeComponent != null && galeComponent.hasGale()) {
 			value = Math.max(0, value - 2);
 		}
 		return value;

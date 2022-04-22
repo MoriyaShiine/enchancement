@@ -2,6 +2,7 @@ package moriyashiine.enchancement.common.util;
 
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.mixin.util.ItemEntityAccessor;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
@@ -35,11 +36,23 @@ public class EnchancementUtil {
 		return drops;
 	}
 
+	public static boolean hasEnchantment(Enchantment enchantment, ItemStack stack) {
+		return EnchantmentHelper.getLevel(enchantment, stack) > 0;
+	}
+
+	public static boolean hasEnchantment(Enchantment enchantment, LivingEntity living) {
+		return EnchantmentHelper.getEquipmentLevel(enchantment, living) > 0;
+	}
+
 	public static boolean isGroundedOrJumping(LivingEntity living) {
 		if (living instanceof PlayerEntity player && player.getAbilities().flying) {
 			return false;
 		}
 		return !living.isTouchingWater() && !living.isSwimming();
+	}
+
+	public static boolean shouldReduceDurabilityTaken(ItemStack stack) {
+		return hasEnchantment(ModEnchantments.SCOOPING, stack);
 	}
 
 	public static boolean shouldHurt(Entity attacker, Entity hitEntity) {
@@ -73,7 +86,7 @@ public class EnchancementUtil {
 	}
 
 	public static float getBonusBerserkDamage(LivingEntity living, ItemStack stack) {
-		if (living != null && EnchantmentHelper.getLevel(ModEnchantments.BERSERK, stack) > 0) {
+		if (living != null && hasEnchantment(ModEnchantments.BERSERK, stack)) {
 			float health = living.getMaxHealth();
 			float bonus = 0;
 			while (health > (int) living.getHealth()) {

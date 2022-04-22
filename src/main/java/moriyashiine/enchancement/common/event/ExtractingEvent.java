@@ -10,7 +10,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -33,7 +32,7 @@ public class ExtractingEvent implements PlayerBlockBreakEvents.Before {
 	public boolean beforeBlockBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity blockEntity) {
 		if (!player.isSneaking()) {
 			ItemStack stack = player.getMainHandStack();
-			if (EnchantmentHelper.getLevel(ModEnchantments.EXTRACTING, stack) > 0 && state.isIn(ModTags.Blocks.ORES)) {
+			if (EnchancementUtil.hasEnchantment(ModEnchantments.EXTRACTING, stack) && state.isIn(ModTags.Blocks.ORES)) {
 				Set<BlockPos> ores = gatherOres(new HashSet<>(), world, new BlockPos.Mutable().set(pos), state.getBlock());
 				if (!ores.isEmpty() && ores.size() <= Enchancement.getConfig().maxExtractingBlocks) {
 					ItemStack copy = stack.copy();

@@ -1,9 +1,9 @@
 package moriyashiine.enchancement.mixin.bouncy;
 
 import moriyashiine.enchancement.common.registry.ModEnchantments;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -37,7 +37,7 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@ModifyArg(method = "fall", at = @At(value = "INVOKE", target = "Lnet/minecraft/particle/BlockStateParticleEffect;<init>(Lnet/minecraft/particle/ParticleType;Lnet/minecraft/block/BlockState;)V"))
 	private BlockState enchancement$bouncy(BlockState value) {
-		if (EnchantmentHelper.getEquipmentLevel(ModEnchantments.BOUNCY, LivingEntity.class.cast(this)) > 0) {
+		if (EnchancementUtil.hasEnchantment(ModEnchantments.BOUNCY, LivingEntity.class.cast(this))) {
 			return Blocks.SLIME_BLOCK.getDefaultState();
 		}
 		return value;
@@ -45,7 +45,7 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@Inject(method = "handleFallDamage", at = @At("HEAD"), cancellable = true)
 	private void enchancement$bouncy(float fallDistance, float damageMultiplier, DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
-		if (damageSource != DamageSource.STALAGMITE && fallDistance > getSafeFallDistance() && EnchantmentHelper.getEquipmentLevel(ModEnchantments.BOUNCY, LivingEntity.class.cast(this)) > 0) {
+		if (damageSource != DamageSource.STALAGMITE && fallDistance > getSafeFallDistance() && EnchancementUtil.hasEnchantment(ModEnchantments.BOUNCY, LivingEntity.class.cast(this))) {
 			if (!world.isClient) {
 				world.playSoundFromEntity(null, this, SoundEvents.BLOCK_SLIME_BLOCK_FALL, getSoundCategory(), 1, 1);
 				if (!bypassesLandingEffects()) {

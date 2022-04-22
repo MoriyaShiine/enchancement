@@ -6,7 +6,7 @@ import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import moriyashiine.enchancement.common.registry.ModTags;
-import net.minecraft.enchantment.EnchantmentHelper;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.LivingEntity;
@@ -146,6 +146,6 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 	}
 
 	public static boolean isSourceFrostbite(DamageSource source) {
-		return source.getSource() instanceof LivingEntity living && EnchantmentHelper.getEquipmentLevel(ModEnchantments.FROSTBITE, living) > 0;
+		return source.getSource() instanceof LivingEntity living && EnchancementUtil.hasEnchantment(ModEnchantments.FROSTBITE, living);
 	}
 }

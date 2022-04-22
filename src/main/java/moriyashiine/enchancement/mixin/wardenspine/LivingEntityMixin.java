@@ -1,7 +1,7 @@
 package moriyashiine.enchancement.mixin.wardenspine;
 
 import moriyashiine.enchancement.common.registry.ModEnchantments;
-import net.minecraft.enchantment.EnchantmentHelper;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -27,7 +27,7 @@ public abstract class LivingEntityMixin extends Entity {
 	private float enchancement$wardenspine(float value, DamageSource source) {
 		if (!world.isClient && !(source instanceof EntityDamageSource entityDamageSource && entityDamageSource.isThorns())) {
 			if (source.getSource() instanceof LivingEntity living && Math.abs(MathHelper.subtractAngles(getHeadYaw(), living.getHeadYaw())) <= 75) {
-				if (EnchantmentHelper.getEquipmentLevel(ModEnchantments.WARDENSPINE, LivingEntity.class.cast(this)) > 0) {
+				if (EnchancementUtil.hasEnchantment(ModEnchantments.WARDENSPINE, LivingEntity.class.cast(this))) {
 					living.damage(DamageSource.thorns(this), 4);
 					return value / 2;
 				}

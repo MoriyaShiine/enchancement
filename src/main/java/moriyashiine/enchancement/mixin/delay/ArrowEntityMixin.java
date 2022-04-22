@@ -2,7 +2,7 @@ package moriyashiine.enchancement.mixin.delay;
 
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
-import net.minecraft.enchantment.EnchantmentHelper;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
@@ -21,8 +21,8 @@ public abstract class ArrowEntityMixin extends PersistentProjectileEntity {
 
 	@Inject(method = "<init>(Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;)V", at = @At("TAIL"))
 	private void enchancement$delay(World world, LivingEntity owner, CallbackInfo ci) {
-		boolean offHand = EnchantmentHelper.getLevel(ModEnchantments.DELAY, owner.getOffHandStack()) > 0;
-		if (offHand || EnchantmentHelper.getLevel(ModEnchantments.DELAY, owner.getMainHandStack()) > 0) {
+		boolean offHand = EnchancementUtil.hasEnchantment(ModEnchantments.DELAY, owner.getOffHandStack());
+		if (offHand || EnchancementUtil.hasEnchantment(ModEnchantments.DELAY, owner.getMainHandStack())) {
 			ModEntityComponents.DELAY.maybeGet(this).ifPresent(delayComponent -> {
 				delayComponent.setHasDelay(true);
 				delayComponent.setStackShotFrom(offHand ? owner.getOffHandStack() : owner.getMainHandStack());

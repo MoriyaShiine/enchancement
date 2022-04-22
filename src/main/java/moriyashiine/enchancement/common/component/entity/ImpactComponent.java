@@ -6,7 +6,6 @@ import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.block.BlockState;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
@@ -38,7 +37,7 @@ public class ImpactComponent implements AutoSyncedComponent, CommonTickingCompon
 
 	@Override
 	public void tick() {
-		hasImpact = EnchantmentHelper.getEquipmentLevel(ModEnchantments.IMPACT, obj) > 0;
+		hasImpact = EnchancementUtil.hasEnchantment(ModEnchantments.IMPACT, obj);
 		if (hasImpact) {
 			boolean sneaking = obj.isSneaking();
 			if (obj.isOnGround()) {

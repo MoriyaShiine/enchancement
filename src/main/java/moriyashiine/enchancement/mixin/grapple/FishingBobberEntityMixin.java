@@ -1,8 +1,8 @@
 package moriyashiine.enchancement.mixin.grapple;
 
 import moriyashiine.enchancement.common.registry.ModEnchantments;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.block.BlockState;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
@@ -46,7 +46,7 @@ public abstract class FishingBobberEntityMixin extends Entity {
 
 	@ModifyVariable(method = "<init>(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/world/World;II)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/util/math/Vec3d;multiply(DDD)Lnet/minecraft/util/math/Vec3d;"))
 	private Vec3d enchancement$grapple(Vec3d value, PlayerEntity player) {
-		getDataTracker().set(HAS_GRAPPLE, EnchantmentHelper.getEquipmentLevel(ModEnchantments.GRAPPLE, player) > 0);
+		getDataTracker().set(HAS_GRAPPLE, EnchancementUtil.hasEnchantment(ModEnchantments.GRAPPLE, player));
 		if (hasGrapple()) {
 			return value.multiply(2, 1.5, 2);
 		}

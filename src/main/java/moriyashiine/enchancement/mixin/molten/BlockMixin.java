@@ -3,11 +3,11 @@ package moriyashiine.enchancement.mixin.molten;
 import moriyashiine.enchancement.client.packet.AddMoltenParticlesPacket;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModSoundEvents;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
@@ -29,12 +29,12 @@ import java.util.List;
 
 @Mixin(Block.class)
 public class BlockMixin {
-	@Inject(method = "getDroppedStacks(Lnet/minecraft/block/BlockState;Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/entity/BlockEntity;Lnet/minecraft/entity/Entity;Lnet/minecraft/item/ItemStack;)Ljava/util/List;", at = @At("RETURN"), cancellable = true)
+	@Inject(method = "getDroppedStacks(Lnet/minecraft/block/BlockState;Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/entity/BlockEntity;Lnet/minecraft/entity/Entity;Lnet/minecraft/item/ItemStack;)Ljava/util/List;", at = @At("RETURN"))
 	private static void enchancement$molten(BlockState state, ServerWorld world, BlockPos pos, @Nullable BlockEntity blockEntity, @Nullable Entity entity, ItemStack stack, CallbackInfoReturnable<List<ItemStack>> cir) {
 		if (entity != null && entity.isSneaking()) {
 			return;
 		}
-		if (EnchantmentHelper.getLevel(ModEnchantments.MOLTEN, stack) > 0) {
+		if (EnchancementUtil.hasEnchantment(ModEnchantments.MOLTEN, stack)) {
 			List<ItemStack> drops = cir.getReturnValue();
 			if (!drops.isEmpty()) {
 				for (int i = 0; i < drops.size(); i++) {

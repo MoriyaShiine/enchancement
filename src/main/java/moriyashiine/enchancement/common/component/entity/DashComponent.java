@@ -11,7 +11,6 @@ import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.util.LivingEntityAccessor;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
@@ -48,7 +47,7 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 
 	@Override
 	public void tick() {
-		hasDash = EnchantmentHelper.getEquipmentLevel(ModEnchantments.DASH, obj) > 0;
+		hasDash = EnchancementUtil.hasEnchantment(ModEnchantments.DASH, obj);
 		if (hasDash) {
 			boolean onGround = obj.isOnGround();
 			boolean sneaking = obj.isSneaking();

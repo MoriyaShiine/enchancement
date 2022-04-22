@@ -6,14 +6,16 @@ import net.minecraft.item.Item;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BeheadingEntry {
+public record BeheadingEntry(Item drop, float chance) {
 	public static final Map<EntityType<?>, BeheadingEntry> DROP_MAP = new HashMap<>();
 
-	public final Item drop;
-	public final float chance;
+	@Override
+	public Item drop() {
+		return drop;
+	}
 
-	public BeheadingEntry(Item drop, float chance) {
-		this.drop = drop;
-		this.chance = chance;
+	@Override
+	public float chance() {
+		return chance;
 	}
 }

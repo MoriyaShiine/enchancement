@@ -7,7 +7,6 @@ import moriyashiine.enchancement.common.packet.SyncMovingForwardPacket;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
@@ -39,7 +38,7 @@ public class AccelerationComponent implements AutoSyncedComponent, CommonTicking
 
 	@Override
 	public void tick() {
-		hasAcceleration = EnchantmentHelper.getEquipmentLevel(ModEnchantments.ACCELERATION, obj) > 0;
+		hasAcceleration = EnchancementUtil.hasEnchantment(ModEnchantments.ACCELERATION, obj);
 		obj.airStrafingSpeed *= speedMultiplier;
 		if (hasAcceleration) {
 			if (!obj.horizontalCollision && obj.isSprinting() && EnchancementUtil.isGroundedOrJumping(obj) && ModEntityComponents.MOVING_FORWARD.get(obj).isMovingForward()) {

@@ -2,7 +2,7 @@ package moriyashiine.enchancement.mixin.leech;
 
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
-import net.minecraft.enchantment.EnchantmentHelper;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.DrownedEntity;
 import net.minecraft.entity.projectile.TridentEntity;
@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class TridentEntityMixin {
 	@Inject(method = "<init>(Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;)V", at = @At("TAIL"))
 	private void enchancement$leech(World world, LivingEntity owner, ItemStack stack, CallbackInfo ci) {
-		if (EnchantmentHelper.getLevel(ModEnchantments.LEECH, stack) > 0 || (owner instanceof DrownedEntity && EnchantmentHelper.getEquipmentLevel(ModEnchantments.LEECH, owner) > 0)) {
+		if (EnchancementUtil.hasEnchantment(ModEnchantments.LEECH, stack) || (owner instanceof DrownedEntity && EnchancementUtil.hasEnchantment(ModEnchantments.LEECH, owner))) {
 			ModEntityComponents.LEECH.maybeGet(this).ifPresent(leechComponent -> {
 				leechComponent.setHasLeech(true);
 				leechComponent.sync();

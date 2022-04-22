@@ -2,7 +2,7 @@ package moriyashiine.enchancement.mixin.leech;
 
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
-import net.minecraft.enchantment.EnchantmentHelper;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -28,7 +28,7 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@Inject(method = "applyEnchantmentsToDamage", at = @At("RETURN"))
 	private void enchancement$leech(DamageSource source, float amount, CallbackInfoReturnable<Float> cir) {
-		if (source.getSource() instanceof LivingEntity living && EnchantmentHelper.getEquipmentLevel(ModEnchantments.LEECH, living) > 0) {
+		if (source.getSource() instanceof LivingEntity living && EnchancementUtil.hasEnchantment(ModEnchantments.LEECH, living)) {
 			living.heal(Math.min(2, cir.getReturnValueF()));
 			if (world instanceof ServerWorld serverWorld) {
 				serverWorld.spawnParticles(ParticleTypes.DAMAGE_INDICATOR, getX(), getBodyY(0.5), getZ(), 6, getWidth() / 2, 0, getWidth() / 2, 0);

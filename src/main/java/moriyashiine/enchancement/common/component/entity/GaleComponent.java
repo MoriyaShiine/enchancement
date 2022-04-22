@@ -9,7 +9,6 @@ import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.util.LivingEntityAccessor;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
@@ -41,7 +40,7 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 	@Override
 	public void tick() {
 		boolean onGround = obj.isOnGround();
-		hasGale = EnchantmentHelper.getEquipmentLevel(ModEnchantments.GALE, obj) > 0;
+		hasGale = EnchancementUtil.hasEnchantment(ModEnchantments.GALE, obj);
 		shouldJump = !onGround && hasGale && jumpCooldown == 0 && jumpsLeft > 0 && ticksInAir >= 10 && ModEntityComponents.JUMPING.get(obj).isJumping() && EnchancementUtil.isGroundedOrJumping(obj);
 		if (hasGale) {
 			if (jumpCooldown > 0) {
@@ -86,5 +85,9 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 				}
 			}
 		}
+	}
+
+	public boolean hasGale() {
+		return hasGale;
 	}
 }

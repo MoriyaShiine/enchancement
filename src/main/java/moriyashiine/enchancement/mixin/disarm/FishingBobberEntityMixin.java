@@ -2,7 +2,7 @@ package moriyashiine.enchancement.mixin.disarm;
 
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
-import net.minecraft.enchantment.EnchantmentHelper;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.*;
 import net.minecraft.entity.mob.EndermanEntity;
 import net.minecraft.entity.mob.MobEntity;
@@ -38,7 +38,7 @@ public abstract class FishingBobberEntityMixin extends Entity {
 
 	@Inject(method = "<init>(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/world/World;II)V", at = @At("TAIL"))
 	private void enchancment$disarm(PlayerEntity thrower, World world, int luckOfTheSeaLevel, int lureLevel, CallbackInfo ci) {
-		hasDisarm = EnchantmentHelper.getEquipmentLevel(ModEnchantments.DISARM, thrower) > 0;
+		hasDisarm = EnchancementUtil.hasEnchantment(ModEnchantments.DISARM, thrower);
 	}
 
 	@Inject(method = "pullHookedEntity", at = @At("HEAD"), cancellable = true)

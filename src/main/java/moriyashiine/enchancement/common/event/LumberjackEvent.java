@@ -4,11 +4,11 @@ import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.component.world.LumberjackComponent;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModWorldComponents;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tag.BlockTags;
@@ -27,7 +27,7 @@ public class LumberjackEvent implements PlayerBlockBreakEvents.Before {
 	public boolean beforeBlockBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity blockEntity) {
 		if (!player.isSneaking()) {
 			ItemStack stack = player.getMainHandStack();
-			if (EnchantmentHelper.getLevel(ModEnchantments.LUMBERJACK, stack) > 0 && state.isIn(BlockTags.LOGS)) {
+			if (EnchancementUtil.hasEnchantment(ModEnchantments.LUMBERJACK, stack) && state.isIn(BlockTags.LOGS)) {
 				List<BlockPos> tree = gatherTree(new ArrayList<>(), world, new BlockPos.Mutable().set(pos), state.getBlock());
 				if (tree.size() > 1 && tree.size() <= Enchancement.getConfig().maxLumberjackBlocks) {
 					ItemStack copy = stack.copy();

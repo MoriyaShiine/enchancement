@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author UpcraftLP (https://github.com/UpcraftLP)
+ * @author UpcraftLP (<a href="https://github.com/UpcraftLP">https://github.com/UpcraftLP</a>)
  */
 @Environment(EnvType.CLIENT)
 public class FrozenReloadListener implements IdentifiableResourceReloadListener, SimpleSynchronousResourceReloadListener {

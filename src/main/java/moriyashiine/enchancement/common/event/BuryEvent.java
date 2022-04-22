@@ -5,9 +5,9 @@ import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import moriyashiine.enchancement.common.registry.ModTags;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.block.BlockState;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -29,7 +29,7 @@ public class BuryEvent implements UseEntityCallback {
 				return ActionResult.PASS;
 			}
 			ItemStack stack = player.getStackInHand(hand);
-			if (EnchantmentHelper.getLevel(ModEnchantments.BURY, stack) > 0) {
+			if (EnchancementUtil.hasEnchantment(ModEnchantments.BURY, stack)) {
 				BuryComponent buryComponent = ModEntityComponents.BURY.getNullable(entity);
 				if (buryComponent != null && buryComponent.getBuryPos() == null) {
 					BlockPos down = entity.getBlockPos().down();
