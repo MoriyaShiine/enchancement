@@ -27,7 +27,7 @@ public class TridentEntityMixin {
 	}
 
 	@ModifyVariable(method = "tick", at = @At("STORE"))
-	private int enchancement$disableLoyaltyOnNonPlayerTridents(int value) {
+	private int enchancement$leech(int value) {
 		if (ModEntityComponents.LEECH.get(this).getStuckEntity() != null) {
 			return 0;
 		}
