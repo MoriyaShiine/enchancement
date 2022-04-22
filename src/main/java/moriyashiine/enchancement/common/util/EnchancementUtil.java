@@ -1,5 +1,6 @@
 package moriyashiine.enchancement.common.util;
 
+import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.mixin.util.ItemEntityAccessor;
 import net.minecraft.enchantment.Enchantment;
@@ -11,6 +12,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
@@ -52,6 +54,9 @@ public class EnchancementUtil {
 	}
 
 	public static boolean shouldReduceDurabilityTaken(ItemStack stack) {
+		if (stack.getItem() instanceof AxeItem && stack.hasEnchantments() && Enchancement.getConfig().capDurabilityTakenOnEnchantedAxes) {
+			return true;
+		}
 		return hasEnchantment(ModEnchantments.SCOOPING, stack);
 	}
 

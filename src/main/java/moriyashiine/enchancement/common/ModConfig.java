@@ -31,18 +31,19 @@ public class ModConfig implements ConfigData {
 	public boolean singleLevelMode = true;
 
 	public boolean allTridentsHaveLoyalty = true;
+	public boolean capDurabilityTakenOnEnchantedAxes = true;
 	public boolean channelingWorksWhenNotThundering = true;
 	public boolean disableChannelingFire = true;
 	public boolean luckOfTheSeaHasLure = true;
 
-	public int fireAspectIgnitionLevel = 1;
-	public int maxExtractingBlocks = 64;
-	public int maxLumberjackBlocks = 1024;
 	@ConfigEntry.Gui.RequiresRestart
 	public float armorDurabilityMultiplier = 2;
 	@ConfigEntry.Gui.RequiresRestart
 	public float toolDurabilityMultiplier = 2;
 	@ConfigEntry.Gui.RequiresRestart
 	public int fishingRodDurability = 256;
+	public int fireAspectIgnitionLevel = 1;
+	public int maxExtractingBlocks = 64;
+	public int maxLumberjackBlocks = 1024;
 	public int unbreakableUnbreakingLevel = 1;
 }
