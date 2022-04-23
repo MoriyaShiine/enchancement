@@ -15,6 +15,8 @@ import net.minecraft.entity.projectile.TridentEntity;
 import net.minecraft.util.Identifier;
 
 public class ModEntityComponents implements EntityComponentInitializer {
+	//chestplate
+	public static final ComponentKey<StrafeComponent> STRAFE = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "strafe"), StrafeComponent.class);
 	//leggings
 	public static final ComponentKey<JumpingComponent> JUMPING = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "jumping"), JumpingComponent.class);
 	public static final ComponentKey<DashComponent> DASH = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "dash"), DashComponent.class);
@@ -41,6 +43,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
+		registry.registerForPlayers(STRAFE, StrafeComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(JUMPING, JumpingComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(DASH, DashComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(IMPACT, ImpactComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);

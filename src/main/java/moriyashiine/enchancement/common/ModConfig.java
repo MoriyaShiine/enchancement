@@ -13,8 +13,9 @@ public class ModConfig implements ConfigData {
 	public List<Identifier> allowedEnchantmentIdentifiers;
 
 	@ConfigEntry.Gui.Excluded
-	public List<String> allowedEnchantments = List.of("enchancement:assimilation", "enchancement:buffet", "enchancement:perception",
-			"enchancement:amphibious", "enchancement:wardenspine",
+	public List<String> allowedEnchantments = List.of(
+			"enchancement:assimilation", "enchancement:buffet", "enchancement:perception",
+			"enchancement:amphibious", "enchancement:strafe", "enchancement:wardenspine",
 			"enchancement:dash", "enchancement:impact", "enchancement:slide",
 			"enchancement:acceleration", "enchancement:bouncy", "enchancement:gale",
 			"enchancement:berserk", "minecraft:fire_aspect", "enchancement:frostbite",
