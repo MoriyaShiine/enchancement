@@ -2,9 +2,11 @@ package moriyashiine.enchancement.common.util;
 
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
+import moriyashiine.enchancement.common.registry.ModTags;
 import moriyashiine.enchancement.mixin.util.ItemEntityAccessor;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.ItemEntity;
@@ -12,7 +14,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
@@ -53,11 +54,15 @@ public class EnchancementUtil {
 		return !living.isTouchingWater() && !living.isSwimming();
 	}
 
-	public static boolean shouldReduceDurabilityTaken(ItemStack stack) {
-		if (stack.getItem() instanceof AxeItem && stack.hasEnchantments() && Enchancement.getConfig().capDurabilityTakenOnEnchantedAxes) {
-			return true;
+	public static boolean shouldBeUnbreakable(ItemStack stack) {
+		int flag = Enchancement.getConfig().unbreakingChangesFlag;
+		if (flag == 0) {
+			if (!stack.isEmpty() && stack.getMaxDamage() > 0) {
+				return true;
+			}
+			return !stack.isIn(ModTags.Items.RETAINS_DURABILITY);
 		}
-		return hasEnchantment(ModEnchantments.SCOOPING, stack);
+		return EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) >= flag;
 	}
 
 	public static boolean shouldHurt(Entity attacker, Entity hitEntity) {

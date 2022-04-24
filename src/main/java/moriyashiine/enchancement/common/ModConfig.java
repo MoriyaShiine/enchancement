@@ -26,26 +26,19 @@ public class ModConfig implements ConfigData {
 			"enchancement:beheading", "enchancement:lumberjack",
 			"enchancement:bury", "enchancement:scooping",
 			"enchancement:disarm", "enchancement:grapple", "minecraft:luck_of_the_sea",
-			"minecraft:efficiency", "minecraft:silk_touch", "minecraft:unbreaking");
+			"minecraft:efficiency", "minecraft:silk_touch");
 
 	public boolean singleEnchantmentMode = true;
 	@ConfigEntry.Gui.RequiresRestart
 	public boolean singleLevelMode = true;
 
 	public boolean allTridentsHaveLoyalty = true;
-	public boolean capDurabilityTakenOnEnchantedAxes = true;
 	public boolean channelingWorksWhenNotThundering = true;
 	public boolean disableChannelingFire = true;
 	public boolean luckOfTheSeaHasLure = true;
 
-	@ConfigEntry.Gui.RequiresRestart
-	public float armorDurabilityMultiplier = 2;
-	@ConfigEntry.Gui.RequiresRestart
-	public float toolDurabilityMultiplier = 2;
-	@ConfigEntry.Gui.RequiresRestart
-	public int fishingRodDurability = 256;
 	public int fireAspectIgnitionLevel = 1;
 	public int maxExtractingBlocks = 64;
 	public int maxLumberjackBlocks = 1024;
-	public int unbreakableUnbreakingLevel = 1;
+	public int unbreakingChangesFlag = 0;
 }

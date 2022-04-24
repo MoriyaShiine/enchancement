@@ -1,4 +1,3 @@
 accessWidener v1 named
 accessible class net/minecraft/client/texture/ResourceTexture$TextureData
 accessible class net/minecraft/village/TradeOffers$EnchantBookFactory
-mutable field net/minecraft/item/Item maxDamage I
