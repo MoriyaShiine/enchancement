@@ -48,7 +48,7 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 			}
 			if (obj.isOnGround()) {
 				ticksInAir = 0;
-			} else {
+			} else if (!obj.getAbilities().flying) {
 				ticksInAir++;
 			}
 			if (ticksInAir > 10) {
