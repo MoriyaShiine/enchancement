@@ -91,7 +91,7 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 	public void serverTick() {
 		tick();
 		if (shouldDash) {
-			PACKET_IMMUNITIES.put(obj, 5);
+			PACKET_IMMUNITIES.put(obj, 20);
 		}
 	}
 
