@@ -28,6 +28,8 @@
 	"frostbite.ServerPlayerEntityMixin",
 	"gale.LivingEntityMixin",
 	"grapple.FishingBobberEntityMixin",
+	"homing.FireworkRocketEntityMixin",
+	"homing.ProjectileEntityAccessor",
 	"impact.LivingEntityMixin",
 	"leech.LivingEntityMixin",
 	"leech.TridentEntityMixin",
