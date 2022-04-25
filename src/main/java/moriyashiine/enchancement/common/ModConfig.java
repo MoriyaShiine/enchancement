@@ -19,7 +19,8 @@ public class ModConfig implements ConfigData {
 			"enchancement:dash", "enchancement:impact", "enchancement:slide",
 			"enchancement:acceleration", "enchancement:bouncy", "enchancement:gale",
 			"enchancement:berserk", "minecraft:fire_aspect", "enchancement:frostbite",
-			"enchancement:chaos", "enchancement:delay", "minecraft:infinity", "enchancement:phasing",
+			"minecraft:infinity",
+			"enchancement:chaos", "enchancement:delay", "enchancement:phasing",
 			"enchancement:homing", "enchancement:torch",
 			"minecraft:channeling", "enchancement:leech", "minecraft:riptide", "enchancement:warp",
 			"enchancement:extracting", "enchancement:molten",
@@ -32,6 +33,7 @@ public class ModConfig implements ConfigData {
 	@ConfigEntry.Gui.RequiresRestart
 	public boolean singleLevelMode = true;
 
+	public boolean allowInfinityOnCrossbows = true;
 	public boolean allTridentsHaveLoyalty = true;
 	public boolean channelingWorksWhenNotThundering = true;
 	public boolean disableChannelingFire = true;

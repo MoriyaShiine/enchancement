@@ -46,6 +46,7 @@
 	"util.ItemEntityAccessor",
 	"util.LivingEntityAccessor",
 	"vanillachanges.AnvilScreenHandlerMixin",
+	"vanillachanges.CrossbowItemMixin",
 	"vanillachanges.EnchantCommandMixin",
 	"vanillachanges.EnchantedBookItemMixin",
 	"vanillachanges.EnchantmentHelperMixin",
