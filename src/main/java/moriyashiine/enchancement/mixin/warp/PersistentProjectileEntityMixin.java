@@ -3,6 +3,7 @@ package moriyashiine.enchancement.mixin.warp;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.TridentEntity;
 import net.minecraft.util.hit.BlockHitResult;
@@ -21,7 +22,11 @@ public class PersistentProjectileEntityMixin {
 				if (warpComponent.hasWarp()) {
 					living.world.playSoundFromEntity(null, living, ModSoundEvents.ENTITY_GENERIC_TELEPORT, living.getSoundCategory(), 1, 1);
 					BlockPos pos = blockHitResult.getBlockPos().offset(blockHitResult.getSide());
-					living.teleport(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, true);
+					living.requestTeleport(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+					living.world.sendEntityStatus(living, (byte) 46);
+					if (living instanceof PathAwareEntity pathAware) {
+						pathAware.getNavigation().stop();
+					}
 					warpComponent.setHasWarp(false);
 				}
 			});
