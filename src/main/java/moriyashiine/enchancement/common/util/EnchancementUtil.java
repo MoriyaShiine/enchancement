@@ -62,7 +62,7 @@ public class EnchancementUtil {
 			}
 			return !stack.isIn(ModTags.Items.RETAINS_DURABILITY);
 		}
-		return EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) >= flag;
+		return flag > 0 && EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) >= flag;
 	}
 
 	public static boolean shouldHurt(Entity attacker, Entity hitEntity) {
