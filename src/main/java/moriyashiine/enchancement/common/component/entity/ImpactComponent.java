@@ -13,7 +13,10 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.RaycastContext;
 import org.jetbrains.annotations.NotNull;
 
@@ -49,12 +52,8 @@ public class ImpactComponent implements AutoSyncedComponent, CommonTickingCompon
 				impactTicks = 0;
 			} else if (impactTicks > 0 || (sneaking && !wasSneaking && EnchancementUtil.isGroundedOrJumping(obj) && obj.world.raycast(new RaycastContext(obj.getPos(), obj.getPos().add(0, -2, 0), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, obj)).getType() == HitResult.Type.MISS)) {
 				impactTicks++;
-				if (impactTicks < 15) {
-					obj.setVelocity(Vec3d.ZERO);
-				} else {
-					obj.setVelocity(obj.getVelocity().getX(), -1.5, obj.getVelocity().getZ());
-					obj.fallDistance = 0;
-				}
+				obj.setVelocity(obj.getVelocity().getX(), -1.5, obj.getVelocity().getZ());
+				obj.fallDistance = 0;
 			}
 			wasSneaking = sneaking;
 		} else {
@@ -68,8 +67,9 @@ public class ImpactComponent implements AutoSyncedComponent, CommonTickingCompon
 		if (hasImpact && obj.isOnGround() && impactTicks > 0) {
 			obj.getWorld().getOtherEntities(obj, new Box(obj.getBlockPos()).expand(5, 1, 5), foundEntity -> foundEntity.isAlive() && foundEntity.distanceTo(obj) < 5).forEach(entity -> {
 				if (entity instanceof LivingEntity living && EnchancementUtil.shouldHurt(obj, living)) {
-					living.damage(DamageSource.player(obj), 2);
-					living.takeKnockback(0.75, obj.getX() - living.getX(), obj.getZ() - living.getZ());
+					float delta = MathHelper.clamp(impactTicks / 40F, 0, 1);
+					living.damage(DamageSource.player(obj), MathHelper.lerp(delta, 2, 20));
+					living.takeKnockback(MathHelper.lerp(delta, 0.5, 5), obj.getX() - living.getX(), obj.getZ() - living.getZ());
 				}
 			});
 		}
