@@ -4,23 +4,23 @@ import dev.onyxstudios.cca.api.v3.component.Component;
 import net.minecraft.nbt.NbtCompound;
 
 public class ChannelingComponent implements Component {
-	private boolean disableFire = false;
+	private boolean safe = false;
 
 	@Override
 	public void readFromNbt(NbtCompound tag) {
-		disableFire = tag.getBoolean("DisableFire");
+		safe = tag.getBoolean("Safe");
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag) {
-		tag.putBoolean("DisableFire", disableFire);
+		tag.putBoolean("Safe", safe);
 	}
 
-	public boolean shouldDisableFire() {
-		return disableFire;
+	public boolean isSafe() {
+		return safe;
 	}
 
-	public void setDisableFire(boolean disableFire) {
-		this.disableFire = disableFire;
+	public void setSafe(boolean safe) {
+		this.safe = safe;
 	}
 }

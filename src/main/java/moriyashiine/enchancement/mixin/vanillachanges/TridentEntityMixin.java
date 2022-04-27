@@ -37,9 +37,9 @@ public abstract class TridentEntityMixin extends PersistentProjectileEntity {
 	}
 
 	@ModifyArg(method = "onEntityHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z"))
-	private Entity enchancement$disableChannelingFire(Entity value) {
-		if (Enchancement.getConfig().disableChannelingFire) {
-			ModEntityComponents.CHANNELING.get(value).setDisableFire(true);
+	private Entity enchancement$safeChanneling(Entity value) {
+		if (Enchancement.getConfig().safeChanneling) {
+			ModEntityComponents.CHANNELING.get(value).setSafe(true);
 		}
 		return value;
 	}

@@ -36,8 +36,8 @@ public class ModConfig implements ConfigData {
 	public boolean allowInfinityOnCrossbows = true;
 	public boolean allTridentsHaveLoyalty = true;
 	public boolean channelingWorksWhenNotThundering = true;
-	public boolean disableChannelingFire = true;
 	public boolean luckOfTheSeaHasLure = true;
+	public boolean safeChanneling = true;
 
 	public int fireAspectIgnitionLevel = 1;
 	public int maxExtractingBlocks = 64;
