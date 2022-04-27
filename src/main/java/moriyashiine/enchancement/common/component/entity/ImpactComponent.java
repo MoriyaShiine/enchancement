@@ -12,7 +12,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
+import net.minecraft.world.RaycastContext;
 import org.jetbrains.annotations.NotNull;
 
 public class ImpactComponent implements AutoSyncedComponent, CommonTickingComponent {
@@ -45,7 +47,7 @@ public class ImpactComponent implements AutoSyncedComponent, CommonTickingCompon
 					obj.playSound(ModSoundEvents.ENTITY_GENERIC_IMPACT, 1, 1);
 				}
 				impactTicks = 0;
-			} else if (impactTicks > 0 || (sneaking && !wasSneaking && EnchancementUtil.isGroundedOrJumping(obj))) {
+			} else if (impactTicks > 0 || (sneaking && !wasSneaking && EnchancementUtil.isGroundedOrJumping(obj) && obj.world.raycast(new RaycastContext(obj.getPos(), obj.getPos().add(0, -2, 0), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, obj)).getType() == HitResult.Type.MISS)) {
 				impactTicks++;
 				if (impactTicks < 15) {
 					obj.setVelocity(Vec3d.ZERO);
