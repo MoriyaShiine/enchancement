@@ -20,10 +20,14 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@ModifyVariable(method = "applyMovementInput", at = @At("HEAD"), argsOnly = true)
 	private float enchancement$slide(float slipperiness) {
-		if (isSneaking()) {
+		if (isSneaking() || isInSwimmingPose()) {
 			SlideComponent slideComponent = ModEntityComponents.SLIDE.getNullable(this);
-			if (slideComponent != null && slideComponent.shouldSlide()) {
-				return slipperiness * MathHelper.lerp(slideComponent.getTicksSliding() / 60F, 0.45F, 0.8F);
+			if (slideComponent != null) {
+				if (slideComponent.shouldSlide()) {
+					return slipperiness * MathHelper.lerp(slideComponent.getTicksSliding() / 60F, 0.45F, 0.8F);
+				} else if (slideComponent.hasSlide()) {
+					return slipperiness * 0.8F;
+				}
 			}
 		}
 		return slipperiness;

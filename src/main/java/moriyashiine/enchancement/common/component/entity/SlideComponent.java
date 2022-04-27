@@ -14,6 +14,8 @@ public class SlideComponent implements CommonTickingComponent {
 	private boolean shouldSlide = false;
 	private int ticksSliding = 0;
 
+	private boolean hasSlide = false;
+
 	public SlideComponent(PlayerEntity obj) {
 		this.obj = obj;
 	}
@@ -28,7 +30,8 @@ public class SlideComponent implements CommonTickingComponent {
 
 	@Override
 	public void tick() {
-		if (EnchancementUtil.hasEnchantment(ModEnchantments.SLIDE, obj)) {
+		hasSlide = EnchancementUtil.hasEnchantment(ModEnchantments.SLIDE, obj);
+		if (hasSlide) {
 			if (obj.isSneaking()) {
 				if (obj.isSprinting()) {
 					shouldSlide = true;
@@ -79,5 +82,9 @@ public class SlideComponent implements CommonTickingComponent {
 
 	public void setTicksSliding(int ticksSliding) {
 		this.ticksSliding = ticksSliding;
+	}
+
+	public boolean hasSlide() {
+		return hasSlide;
 	}
 }
