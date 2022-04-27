@@ -5,10 +5,7 @@ import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import moriyashiine.enchancement.common.event.*;
-import moriyashiine.enchancement.common.packet.StrafePacket;
-import moriyashiine.enchancement.common.packet.SyncFrozenPlayerSlimStatusC2S;
-import moriyashiine.enchancement.common.packet.SyncJumpingPacket;
-import moriyashiine.enchancement.common.packet.SyncMovingForwardPacket;
+import moriyashiine.enchancement.common.packet.*;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModEntityTypes;
 import moriyashiine.enchancement.common.registry.ModSoundEvents;
@@ -33,6 +30,7 @@ public class Enchancement implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		ServerPlayNetworking.registerGlobalReceiver(StrafePacket.ID, StrafePacket::receive);
+		ServerPlayNetworking.registerGlobalReceiver(GaleJumpPacket.ID, GaleJumpPacket::receive);
 		ServerPlayNetworking.registerGlobalReceiver(SyncFrozenPlayerSlimStatusC2S.ID, SyncFrozenPlayerSlimStatusC2S::receive);
 		ServerPlayNetworking.registerGlobalReceiver(SyncMovingForwardPacket.ID, SyncMovingForwardPacket::receive);
 		ServerPlayNetworking.registerGlobalReceiver(SyncJumpingPacket.ID, SyncJumpingPacket::receive);

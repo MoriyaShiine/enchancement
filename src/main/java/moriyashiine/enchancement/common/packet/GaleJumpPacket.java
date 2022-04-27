@@ -1,7 +1,7 @@
 package moriyashiine.enchancement.common.packet;
 
 import io.netty.buffer.Unpooled;
-import moriyashiine.enchancement.client.packet.AddStrafeParticlesPacket;
+import moriyashiine.enchancement.client.packet.AddGaleParticlesPacket;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import moriyashiine.enchancement.common.registry.ModSoundEvents;
@@ -13,27 +13,23 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Vec2f;
 
-public class StrafePacket {
-	public static final Identifier ID = new Identifier(Enchancement.MOD_ID, "strafe");
+public class GaleJumpPacket {
+	public static final Identifier ID = new Identifier(Enchancement.MOD_ID, "gale_jump");
 
-	public static void send(Vec2f boost) {
-		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
-		buf.writeFloat(boost.x);
-		buf.writeFloat(boost.y);
-		ClientPlayNetworking.send(ID, buf);
+	public static void send() {
+		ClientPlayNetworking.send(ID, new PacketByteBuf(Unpooled.buffer()));
 	}
 
 	public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-		float boostX = buf.readFloat();
-		float boostZ = buf.readFloat();
-		server.execute(() -> ModEntityComponents.STRAFE.maybeGet(player).ifPresent(strafeComponent -> {
-			if (strafeComponent.hasStrafe()) {
-				player.addVelocity(boostX, 0, boostZ);
-				player.playSound(ModSoundEvents.ENTITY_GENERIC_STRAFE, 1, 1);
-				strafeComponent.setStrafeCooldown(20);
-				PlayerLookup.tracking(player).forEach(foundPlayer -> AddStrafeParticlesPacket.send(foundPlayer, player.getId()));
+		server.execute(() -> ModEntityComponents.GALE.maybeGet(player).ifPresent(galeComponent -> {
+			if (galeComponent.hasGale()) {
+				player.jump();
+				player.setVelocity(player.getVelocity().getX(), player.getVelocity().getY() * 1.5, player.getVelocity().getZ());
+				player.playSound(ModSoundEvents.ENTITY_GENERIC_AIR_JUMP, 1, 1);
+				galeComponent.setJumpCooldown(10);
+				galeComponent.setJumpsLeft(galeComponent.getJumpsLeft() - 1);
+				PlayerLookup.tracking(player).forEach(foundPlayer -> AddGaleParticlesPacket.send(foundPlayer, player.getId()));
 			}
 		}));
 	}

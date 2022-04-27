@@ -2,13 +2,13 @@ package moriyashiine.enchancement.common.component.entity;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
-import moriyashiine.enchancement.common.packet.SyncJumpingPacket;
+import moriyashiine.enchancement.common.packet.GaleJumpPacket;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
-import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.util.LivingEntityAccessor;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
@@ -17,7 +17,7 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 	private final PlayerEntity obj;
 	private int jumpCooldown = 0, jumpsLeft = 0, ticksInAir = 0;
 
-	private boolean hasGale = false, shouldJump = false;
+	private boolean hasGale = false;
 
 	public GaleComponent(PlayerEntity obj) {
 		this.obj = obj;
@@ -39,25 +39,16 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 
 	@Override
 	public void tick() {
-		boolean onGround = obj.isOnGround();
 		hasGale = EnchancementUtil.hasEnchantment(ModEnchantments.GALE, obj);
-		shouldJump = !onGround && hasGale && jumpCooldown == 0 && jumpsLeft > 0 && ticksInAir >= 10 && ModEntityComponents.JUMPING.get(obj).isJumping() && EnchancementUtil.isGroundedOrJumping(obj);
 		if (hasGale) {
 			if (jumpCooldown > 0) {
 				jumpCooldown--;
 			}
-			if (onGround) {
+			if (obj.isOnGround()) {
 				ticksInAir = 0;
 				jumpsLeft = 2;
 			} else {
 				ticksInAir++;
-			}
-			if (shouldJump) {
-				obj.playSound(ModSoundEvents.ENTITY_GENERIC_AIR_JUMP, 1, 1);
-				obj.jump();
-				obj.setVelocity(obj.getVelocity().getX(), obj.getVelocity().getY() * 1.5, obj.getVelocity().getZ());
-				jumpCooldown = 10;
-				jumpsLeft--;
 			}
 		} else {
 			jumpCooldown = 0;
@@ -69,25 +60,38 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 	@Override
 	public void clientTick() {
 		tick();
-		ModEntityComponents.JUMPING.maybeGet(obj).ifPresent(jumpingComponent -> {
-			if (((LivingEntityAccessor) obj).enchancement$jumping()) {
-				if (!jumpingComponent.isJumping() && hasGale) {
-					SyncJumpingPacket.send(true);
-				}
-			} else if (jumpingComponent.isJumping()) {
-				SyncJumpingPacket.send(false);
-			}
-		});
-		if (shouldJump) {
-			if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || obj != MinecraftClient.getInstance().cameraEntity) {
-				for (int i = 0; i < 8; i++) {
-					obj.world.addParticle(ParticleTypes.CLOUD, obj.getParticleX(1), obj.getY(), obj.getParticleZ(1), 0, 0, 0);
-				}
-			}
+		if (!obj.isOnGround() && hasGale && jumpCooldown == 0 && jumpsLeft > 0 && ticksInAir >= 10 && EnchancementUtil.isGroundedOrJumping(obj) && ((LivingEntityAccessor) obj).enchancement$jumping()) {
+			obj.jump();
+			obj.setVelocity(obj.getVelocity().getX(), obj.getVelocity().getY() * 1.5, obj.getVelocity().getZ());
+			obj.playSound(ModSoundEvents.ENTITY_GENERIC_AIR_JUMP, 1, 1);
+			addGaleParticles(obj);
+			jumpCooldown = 10;
+			jumpsLeft--;
+			GaleJumpPacket.send();
 		}
+	}
+
+	public void setJumpCooldown(int jumpCooldown) {
+		this.jumpCooldown = jumpCooldown;
+	}
+
+	public int getJumpsLeft() {
+		return jumpsLeft;
+	}
+
+	public void setJumpsLeft(int jumpsLeft) {
+		this.jumpsLeft = jumpsLeft;
 	}
 
 	public boolean hasGale() {
 		return hasGale;
+	}
+
+	public static void addGaleParticles(Entity entity) {
+		if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || entity != MinecraftClient.getInstance().cameraEntity) {
+			for (int i = 0; i < 8; i++) {
+				entity.world.addParticle(ParticleTypes.CLOUD, entity.getParticleX(1), entity.getY(), entity.getParticleZ(1), 0, 0, 0);
+			}
+		}
 	}
 }
