@@ -1,5 +1,7 @@
 package moriyashiine.enchancement.common.util;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModTags;
@@ -23,6 +25,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class EnchancementUtil {
+	public static final Object2IntMap<PlayerEntity> PACKET_IMMUNITIES = new Object2IntOpenHashMap<>();
+
 	public static final ItemStack BRIMSTONE_STACK;
 
 	static {
@@ -114,5 +118,13 @@ public class EnchancementUtil {
 			return Math.min(bonus, getMaxBonusBerserkDamage(stack));
 		}
 		return 0;
+	}
+
+	public static void tickPacketImmunities() {
+		for (PlayerEntity player : PACKET_IMMUNITIES.keySet()) {
+			if (PACKET_IMMUNITIES.put(player, PACKET_IMMUNITIES.getInt(player) - 1) < 0) {
+				PACKET_IMMUNITIES.removeInt(player);
+			}
+		}
 	}
 }

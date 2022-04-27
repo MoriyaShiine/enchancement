@@ -57,6 +57,14 @@ public class SlideComponent implements CommonTickingComponent {
 		}
 	}
 
+	@Override
+	public void serverTick() {
+		tick();
+		if (shouldSlide && ticksSliding <= 40) {
+			EnchancementUtil.PACKET_IMMUNITIES.put(obj, 20);
+		}
+	}
+
 	public boolean shouldSlide() {
 		return shouldSlide;
 	}

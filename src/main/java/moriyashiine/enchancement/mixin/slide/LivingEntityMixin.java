@@ -33,7 +33,7 @@ public abstract class LivingEntityMixin extends Entity {
 	private float enchancement$slideFall(float value) {
 		SlideComponent slideComponent = ModEntityComponents.SLIDE.getNullable(this);
 		if (slideComponent != null && slideComponent.shouldSlide()) {
-			return Math.max(0, value - 4);
+			return Math.max(0, value - 6);
 		}
 		return value;
 	}

@@ -2,8 +2,6 @@ package moriyashiine.enchancement.common.component.entity;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import moriyashiine.enchancement.common.packet.SyncJumpingPacket;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
@@ -17,8 +15,6 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.Vec3d;
 
 public class DashComponent implements AutoSyncedComponent, CommonTickingComponent {
-	public static final Object2IntMap<PlayerEntity> PACKET_IMMUNITIES = new Object2IntOpenHashMap<>();
-
 	private final PlayerEntity obj;
 	private boolean shouldRefreshDash = false;
 	private int dashCooldown = 20, ticksPressingJump = 0, wavedashTicks = 0;
@@ -91,7 +87,7 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 	public void serverTick() {
 		tick();
 		if (shouldDash) {
-			PACKET_IMMUNITIES.put(obj, 20);
+			EnchancementUtil.PACKET_IMMUNITIES.put(obj, 20);
 		}
 	}
 
@@ -130,13 +126,5 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 
 	public boolean shouldWavedash() {
 		return ticksPressingJump < 2 && wavedashTicks > 0;
-	}
-
-	public static void tickPacketImmunities() {
-		for (PlayerEntity player : PACKET_IMMUNITIES.keySet()) {
-			if (PACKET_IMMUNITIES.put(player, PACKET_IMMUNITIES.getInt(player) - 1) < 0) {
-				PACKET_IMMUNITIES.removeInt(player);
-			}
-		}
 	}
 }
