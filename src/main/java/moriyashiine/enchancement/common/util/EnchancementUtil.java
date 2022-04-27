@@ -63,7 +63,7 @@ public class EnchancementUtil {
 		if (living instanceof PlayerEntity player && player.getAbilities().flying) {
 			return false;
 		}
-		return !living.isTouchingWater() && !living.isSwimming();
+		return !living.isTouchingWater() && !living.isSwimming() && !living.isClimbing();
 	}
 
 	public static boolean shouldBeUnbreakable(ItemStack stack) {

@@ -49,7 +49,6 @@
   "custom": {
 	"cardinal-components": [
 	  "enchancement:strafe",
-	  "enchancement:jumping",
 	  "enchancement:dash",
 	  "enchancement:impact",
 	  "enchancement:slide",

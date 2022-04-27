@@ -11,9 +11,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec2f;
+import net.minecraft.world.RaycastContext;
 
 public class StrafeComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private final PlayerEntity obj;
@@ -48,7 +50,7 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 			}
 			if (obj.isOnGround()) {
 				ticksInAir = 0;
-			} else if (!obj.getAbilities().flying) {
+			} else if (EnchancementUtil.isGroundedOrJumping(obj) && obj.world.raycast(new RaycastContext(obj.getPos(), obj.getPos().add(0, -1, 0), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.ANY, obj)).getType() == HitResult.Type.MISS) {
 				ticksInAir++;
 			}
 			if (ticksInAir > 10) {
@@ -76,17 +78,11 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 				float boostX = (float) (-Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)));
 				float boostZ = (float) (Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)));
 				Vec2f boost = new Vec2f(boostX, boostZ).normalize().multiply(0.75F);
-				obj.addVelocity(boost.x, 0, boost.y);
-				obj.playSound(ModSoundEvents.ENTITY_GENERIC_STRAFE, 1, 1);
+				handle(obj, this, boost.x, boost.y);
 				addStrafeParticles(obj);
-				strafeCooldown = 20;
 				StrafePacket.send(boost);
 			}
 		}
-	}
-
-	public void setStrafeCooldown(int strafeCooldown) {
-		this.strafeCooldown = strafeCooldown;
 	}
 
 	public boolean hasStrafe() {
@@ -145,6 +141,12 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 		wasPressingLeft = pressingLeft;
 		wasPressingRight = pressingRight;
 		return direction;
+	}
+
+	public static void handle(Entity entity, StrafeComponent strafeComponent, float boostX, float boostZ) {
+		entity.addVelocity(boostX, 0, boostZ);
+		entity.playSound(ModSoundEvents.ENTITY_GENERIC_STRAFE, 1, 1);
+		strafeComponent.strafeCooldown = 20;
 	}
 
 	public static void addStrafeParticles(Entity entity) {

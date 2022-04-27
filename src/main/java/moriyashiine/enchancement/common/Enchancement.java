@@ -30,10 +30,10 @@ public class Enchancement implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		ServerPlayNetworking.registerGlobalReceiver(StrafePacket.ID, StrafePacket::receive);
+		ServerPlayNetworking.registerGlobalReceiver(DashPacket.ID, DashPacket::receive);
+		ServerPlayNetworking.registerGlobalReceiver(SyncMovingForwardPacket.ID, SyncMovingForwardPacket::receive);
 		ServerPlayNetworking.registerGlobalReceiver(GaleJumpPacket.ID, GaleJumpPacket::receive);
 		ServerPlayNetworking.registerGlobalReceiver(SyncFrozenPlayerSlimStatusC2S.ID, SyncFrozenPlayerSlimStatusC2S::receive);
-		ServerPlayNetworking.registerGlobalReceiver(SyncMovingForwardPacket.ID, SyncMovingForwardPacket::receive);
-		ServerPlayNetworking.registerGlobalReceiver(SyncJumpingPacket.ID, SyncJumpingPacket::receive);
 		ModEntityTypes.init();
 		ModEnchantments.init();
 		ModSoundEvents.init();
