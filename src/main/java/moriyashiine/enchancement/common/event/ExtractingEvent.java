@@ -42,7 +42,7 @@ public class ExtractingEvent implements PlayerBlockBreakEvents.Before {
 						broken.set(true);
 					});
 					if (!broken.get()) {
-						BlockState replace = Registry.BLOCK.getId(state.getBlock()).getPath().contains("deepslate") ? Blocks.DEEPSLATE.getDefaultState() : Blocks.STONE.getDefaultState();
+						BlockState replace = getBaseBlock(state).getDefaultState();
 						List<ItemStack> drops = new ArrayList<>();
 						ores.forEach(ore -> {
 							drops.addAll(Block.getDroppedStacks(world.getBlockState(ore), (ServerWorld) world, ore, world.getBlockEntity(ore)));
@@ -77,5 +77,14 @@ public class ExtractingEvent implements PlayerBlockBreakEvents.Before {
 			}
 		}
 		return ores;
+	}
+
+	private static Block getBaseBlock(BlockState state) {
+		if (state.isIn(ModTags.Blocks.NETHER_ORES)) {
+			return Blocks.NETHERRACK;
+		} else if (state.isIn(ModTags.Blocks.END_ORES)) {
+			return Blocks.END_STONE;
+		}
+		return Registry.BLOCK.getId(state.getBlock()).getPath().startsWith("deepslate") ? Blocks.DEEPSLATE : Blocks.STONE;
 	}
 }
