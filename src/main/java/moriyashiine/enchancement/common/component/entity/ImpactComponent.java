@@ -45,7 +45,7 @@ public class ImpactComponent implements AutoSyncedComponent, CommonTickingCompon
 					obj.playSound(ModSoundEvents.ENTITY_GENERIC_IMPACT, 1, 1);
 				}
 				impactTicks = 0;
-			} else if (impactTicks > 0 || (sneaking && !wasSneaking && !obj.getAbilities().flying)) {
+			} else if (impactTicks > 0 || (sneaking && !wasSneaking && EnchancementUtil.isGroundedOrJumping(obj))) {
 				impactTicks++;
 				if (impactTicks < 15) {
 					obj.setVelocity(Vec3d.ZERO);
