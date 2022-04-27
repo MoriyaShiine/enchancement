@@ -51,7 +51,6 @@ public abstract class FireworkRocketEntityMixin extends Entity {
 			if (!shotFromStack.isEmpty()) {
 				getDataTracker().set(STACK_SHOT_FROM, shotFromStack);
 				getDataTracker().set(HAS_HOMING, true);
-				lifeTime *= 5;
 			}
 		}
 	}
