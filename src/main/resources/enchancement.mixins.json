@@ -7,7 +7,6 @@
   "mixins": [
 	"acceleration.PlayerEntityMixin",
 	"amphibious.EnchantmentHelperMixin",
-	"beheading.LivingEntityMixin",
 	"berserk.ItemMixin",
 	"berserk.LivingEntityMixin",
 	"berserk.PlayerEntityMixin",
@@ -73,7 +72,6 @@
 	"brimstone.client.CrossbowItemMixin",
 	"brimstone.client.ModelLoaderMixin",
 	"bury.client.KeyboardInputMixin",
-	"dash.client.InGameHudMixin",
 	"disarm.client.MinecraftClientMixin",
 	"frostbite.client.LivingEntityRendererMixin",
 	"impact.client.KeyboardInputMixin",
