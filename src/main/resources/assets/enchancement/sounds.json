@@ -7,6 +7,16 @@
 	],
 	"subtitle": "subtitles.enchancement.entity.ice_shard.shatter"
   },
+  "entity.brimstone.fire": {
+	"sounds": [
+	  {
+		"name": "block/bubble_column/upwards_inside",
+		"volume": 0.7,
+		"pitch": 0.9
+	  }
+	],
+	"subtitle": "subtitles.enchancement.entity.brimstone.fire"
+  },
   "entity.generic.strafe": {
 	"sounds": [
 	  "dig/sand1",

@@ -35,6 +35,7 @@ public class ModEnchantments {
 	public static final Enchantment DELAY = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.BOW, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
 	public static final Enchantment PHASING = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.BOW, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
 	//crossbow
+	public static final Enchantment BRIMSTONE = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.CROSSBOW, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
 	public static final Enchantment HOMING = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.CROSSBOW, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
 	public static final Enchantment TORCH = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.CROSSBOW, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
 	//trident
@@ -78,6 +79,7 @@ public class ModEnchantments {
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "delay"), DELAY);
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "phasing"), PHASING);
 		//crossbow
+		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "brimstone"), BRIMSTONE);
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "homing"), HOMING);
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "torch"), TORCH);
 		//trident

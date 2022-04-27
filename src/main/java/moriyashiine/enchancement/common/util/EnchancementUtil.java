@@ -15,6 +15,7 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 
@@ -22,6 +23,13 @@ import java.util.List;
 import java.util.UUID;
 
 public class EnchancementUtil {
+	public static final ItemStack BRIMSTONE_STACK;
+
+	static {
+		BRIMSTONE_STACK = new ItemStack(Items.LAVA_BUCKET);
+		BRIMSTONE_STACK.getOrCreateNbt().putBoolean("Brimstone", true);
+	}
+
 	public static List<ItemEntity> mergeItemEntities(List<ItemEntity> drops) {
 		for (int i = drops.size() - 1; i >= 0; i--) {
 			if (i < drops.size() - 1) {

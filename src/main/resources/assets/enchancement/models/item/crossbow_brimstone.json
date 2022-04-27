@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/crossbow",
+  "textures": {
+	"layer0": "enchancement:item/crossbow_torch"
+  }
+}
