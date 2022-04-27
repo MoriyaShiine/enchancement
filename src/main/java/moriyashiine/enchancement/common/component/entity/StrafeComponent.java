@@ -52,7 +52,7 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 				ticksInAir++;
 			}
 			if (ticksInAir > 10) {
-				obj.airStrafingSpeed *= MathHelper.lerp(MathHelper.clamp((ticksInAir - 10) / 100F, 0, 1), 0, 10);
+				obj.airStrafingSpeed *= MathHelper.lerp(MathHelper.clamp((ticksInAir - 10) / 20F, 0, 1), 0, 10);
 			}
 		} else {
 			strafeCooldown = 0;
