@@ -51,6 +51,7 @@ public abstract class FireworkRocketEntityMixin extends Entity {
 			if (!shotFromStack.isEmpty()) {
 				getDataTracker().set(STACK_SHOT_FROM, shotFromStack);
 				getDataTracker().set(HAS_HOMING, true);
+				lifeTime *= 5;
 			}
 		}
 	}
@@ -68,7 +69,7 @@ public abstract class FireworkRocketEntityMixin extends Entity {
 					}
 					Vec3d target = raycast.getPos();
 					lookAt(EntityAnchorArgumentType.EntityAnchor.EYES, target);
-					return target.subtract(getPos()).normalize().multiply(2 / 3F);
+					return value.lerp(target.subtract(getPos()).normalize(), age % 90 / 90F);
 				}
 			}
 		}
