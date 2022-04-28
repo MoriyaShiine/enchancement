@@ -24,7 +24,7 @@ public class ItemMixin {
 		if (EnchancementUtil.hasEnchantment(ModEnchantments.BERSERK, stack)) {
 			user.damage(ModDamageSources.LIFE_DRAIN, 2);
 			if (user.isSneaking()) {
-				ModEntityComponents.BERSERK.maybeGet(user).ifPresent(berserkComponent -> berserkComponent.setPreventRegenerationTicks(100));
+				ModEntityComponents.BERSERK.maybeGet(user).ifPresent(berserkComponent -> berserkComponent.setPreventRegenerationTicks(60));
 			}
 		}
 	}
