@@ -36,6 +36,14 @@ public abstract class TridentEntityMixin extends PersistentProjectileEntity {
 		return value;
 	}
 
+	@ModifyExpressionValue(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/TridentEntity;isNoClip()Z"))
+	private boolean enchancement$disableLoyaltyOnNonPlayerTridents(boolean value) {
+		if (Enchancement.getConfig().tridentsReturnInVoid && getY() <= world.getBottomY()) {
+			return true;
+		}
+		return value;
+	}
+
 	@ModifyArg(method = "onEntityHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z"))
 	private Entity enchancement$safeChanneling(Entity value) {
 		if (Enchancement.getConfig().safeChanneling) {

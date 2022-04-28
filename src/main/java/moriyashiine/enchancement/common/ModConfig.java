@@ -38,6 +38,7 @@ public class ModConfig implements ConfigData {
 	public boolean channelingWorksWhenNotThundering = true;
 	public boolean luckOfTheSeaHasLure = true;
 	public boolean safeChanneling = true;
+	public boolean tridentsReturnInVoid = true;
 
 	public int fireAspectIgnitionLevel = 1;
 	public int maxExtractingBlocks = 64;
