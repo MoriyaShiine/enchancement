@@ -33,6 +33,8 @@
   "enchantment.enchancement.scooping": "Scooping",
   "enchantment.enchancement.disarm": "Disarm",
   "enchantment.enchancement.grapple": "Grapple",
+  "death.attack.enchancement.life_drain": "%1$s had their life drained",
+  "death.attack.enchancement.life_drain.player": "%1$s had their life drained whilst fighting %2$s",
   "subtitles.enchancement.entity.ice_shard.shatter": "Ice Shard shatters",
   "subtitles.enchancement.entity.brimstone.fire": "Brimstone fires",
   "subtitles.enchancement.entity.generic.strafe": "Entity strafes",

@@ -1,10 +1,10 @@
 package moriyashiine.enchancement.mixin.berserk;
 
+import moriyashiine.enchancement.common.registry.ModDamageSources;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,7 +22,7 @@ public class ItemMixin {
 	@Inject(method = "finishUsing", at = @At("HEAD"))
 	private void enchancement$berserk(ItemStack stack, World world, LivingEntity user, CallbackInfoReturnable<ItemStack> cir) {
 		if (EnchancementUtil.hasEnchantment(ModEnchantments.BERSERK, stack)) {
-			user.damage(DamageSource.WITHER, 2);
+			user.damage(ModDamageSources.LIFE_DRAIN, 2);
 			if (user.isSneaking()) {
 				ModEntityComponents.BERSERK.maybeGet(user).ifPresent(berserkComponent -> berserkComponent.setPreventRegenerationTicks(100));
 			}

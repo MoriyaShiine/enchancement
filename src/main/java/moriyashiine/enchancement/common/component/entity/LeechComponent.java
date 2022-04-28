@@ -2,10 +2,10 @@ package moriyashiine.enchancement.common.component.entity;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
+import moriyashiine.enchancement.common.registry.ModDamageSources;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.TridentEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
@@ -71,7 +71,7 @@ public class LeechComponent implements AutoSyncedComponent, CommonTickingCompone
 		if (stuckEntity != null && stuckEntity.isAlive()) {
 			if (obj.getOwner() instanceof LivingEntity living && living.isAlive()) {
 				obj.teleport(stuckEntity.getX(), stuckEntity.getEyeY(), stuckEntity.getZ());
-				if (ticksLeeching % 20 == 0 && stuckEntity.damage(DamageSource.WITHER, 1)) {
+				if (ticksLeeching % 20 == 0 && stuckEntity.damage(ModDamageSources.LIFE_DRAIN, 1)) {
 					living.heal(1);
 					stuckEntity.timeUntilRegen = 0;
 					stabTicks = 1;
