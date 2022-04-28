@@ -51,6 +51,7 @@
 	"vanillachanges.CrossbowItemMixin",
 	"vanillachanges.EnchantCommandMixin",
 	"vanillachanges.EnchantedBookItemMixin",
+	"vanillachanges.EnchantmentArgumentTypeMixin",
 	"vanillachanges.EnchantmentHelperMixin",
 	"vanillachanges.EnchantmentMixin",
 	"vanillachanges.EnchantRandomlyLootFunctionMixin",
