@@ -39,7 +39,7 @@ public class ModEnchantments {
 	public static final Enchantment HOMING = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.CROSSBOW, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
 	public static final Enchantment TORCH = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.CROSSBOW, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
 	//trident
-	public static final Enchantment LEECH = new NoRiptideEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.TRIDENT, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
+	public static final Enchantment LEECH = new LeechEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.TRIDENT, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
 	public static final Enchantment WARP = new NoRiptideEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.TRIDENT, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
 	//pickaxe
 	public static final Enchantment EXTRACTING = new NoSilkTouchEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.DIGGER, EquipmentSlot.MAINHAND);

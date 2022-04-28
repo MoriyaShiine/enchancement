@@ -20,14 +20,14 @@ public class FrostbiteEnchantment extends EmptyEnchantment {
 		return super.canAccept(other) && other != Enchantments.FIRE_ASPECT;
 	}
 
-	public static void applyEffect(LivingEntity living, DamageSource source, float amount) {
-		if (!living.world.isClient && FrozenComponent.isSourceFrostbite(source)) {
-			if (living.getHealth() - amount > 0) {
-				int frozenTicks = living.getFrozenTicks();
+	public static void applyEffect(LivingEntity target, DamageSource source, float amount) {
+		if (!target.world.isClient && FrozenComponent.isSourceFrostbite(source)) {
+			if (target.getHealth() - amount > 0) {
+				int frozenTicks = target.getFrozenTicks();
 				if (frozenTicks < 300) {
-					living.setFrozenTicks(300);
+					target.setFrozenTicks(300);
 				}
-			} else if (living instanceof ServerPlayerEntity player) {
+			} else if (target instanceof ServerPlayerEntity player) {
 				ResetFrozenTicksPacket.send(player);
 			}
 		}

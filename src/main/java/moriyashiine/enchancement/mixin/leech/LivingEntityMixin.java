@@ -1,15 +1,11 @@
 package moriyashiine.enchancement.mixin.leech;
 
-import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.TridentEntity;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -26,18 +22,8 @@ public abstract class LivingEntityMixin extends Entity {
 		super(type, world);
 	}
 
-	@Inject(method = "applyEnchantmentsToDamage", at = @At("RETURN"))
-	private void enchancement$leech(DamageSource source, float amount, CallbackInfoReturnable<Float> cir) {
-		if (source.getSource() instanceof LivingEntity living && EnchancementUtil.hasEnchantment(ModEnchantments.LEECH, living)) {
-			living.heal(Math.min(2, cir.getReturnValueF()));
-			if (world instanceof ServerWorld serverWorld) {
-				serverWorld.spawnParticles(ParticleTypes.DAMAGE_INDICATOR, getX(), getBodyY(0.5), getZ(), 6, getWidth() / 2, 0, getWidth() / 2, 0);
-			}
-		}
-	}
-
 	@Inject(method = "damage", at = @At("HEAD"))
-	private void enchancement$leechStuckEntity(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+	private void enchancement$leech(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
 		if (!isInvulnerableTo(source) && !isDead() && source.getSource() instanceof TridentEntity trident) {
 			ModEntityComponents.LEECH.maybeGet(trident).ifPresent(leechComponent -> {
 				if (leechComponent.hasLeech() && leechComponent.getStuckEntity() == null) {
@@ -48,7 +34,7 @@ public abstract class LivingEntityMixin extends Entity {
 							otherLeech.sync();
 						}
 					}));
-					leechComponent.setStuckEntityId(living.getId());
+					leechComponent.setStuckEntityId(getId());
 					leechComponent.sync();
 				}
 			});

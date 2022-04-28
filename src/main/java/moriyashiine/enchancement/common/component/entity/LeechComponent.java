@@ -51,7 +51,7 @@ public class LeechComponent implements AutoSyncedComponent, CommonTickingCompone
 		} else {
 			if (stuckEntity != null && stuckEntity.isAlive()) {
 				obj.setVelocity(Vec3d.ZERO);
-				if (++ticksLeeching > 200) {
+				if (++ticksLeeching > 120) {
 					stuckEntityId = -2;
 				}
 				renderTicks += 1 / 20F;
