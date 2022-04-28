@@ -23,7 +23,7 @@ public class ModelLoaderMixin {
 	private static final Identifier CROSSBOW = new Identifier("item/crossbow");
 
 	@Inject(method = "loadModelFromJson", at = @At("RETURN"))
-	private void enchancement$torch(Identifier id, CallbackInfoReturnable<JsonUnbakedModel> cir) {
+	private void enchancement$brimstone(Identifier id, CallbackInfoReturnable<JsonUnbakedModel> cir) {
 		if (id.equals(CROSSBOW)) {
 			List<ModelOverride.Condition> conditions = new LinkedList<>();
 			conditions.add(new ModelOverride.Condition(new Identifier(Enchancement.MOD_ID, "crossbow_brimstone"), 1));

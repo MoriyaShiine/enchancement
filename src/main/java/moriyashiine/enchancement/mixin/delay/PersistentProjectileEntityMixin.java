@@ -1,7 +1,7 @@
 package moriyashiine.enchancement.mixin.delay;
 
+import moriyashiine.enchancement.common.component.entity.DelayComponent;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
-import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -13,7 +13,8 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 public class PersistentProjectileEntityMixin {
 	@ModifyArg(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;addParticle(Lnet/minecraft/particle/ParticleEffect;DDDDDD)V", ordinal = 0))
 	private ParticleEffect enchancement$delay(ParticleEffect value) {
-		if (PersistentProjectileEntity.class.cast(this) instanceof ArrowEntity arrow && ModEntityComponents.DELAY.get(arrow).shouldChangeParticles()) {
+		DelayComponent delayComponent = ModEntityComponents.DELAY.getNullable(this);
+		if (delayComponent != null && delayComponent.shouldChangeParticles()) {
 			return ParticleTypes.ENCHANTED_HIT;
 		}
 		return value;

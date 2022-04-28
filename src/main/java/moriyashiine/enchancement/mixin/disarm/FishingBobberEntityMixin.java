@@ -43,7 +43,7 @@ public abstract class FishingBobberEntityMixin extends Entity {
 
 	@Inject(method = "pullHookedEntity", at = @At("HEAD"), cancellable = true)
 	private void enchancment$disarm(Entity entity, CallbackInfo ci) {
-		if (!world.isClient && hasDisarm && entity instanceof LivingEntity living) {
+		if (hasDisarm && !world.isClient && entity instanceof LivingEntity living) {
 			ItemStack stack = living.getMainHandStack();
 			if (stack.isEmpty()) {
 				stack = living.getOffHandStack();
@@ -77,8 +77,7 @@ public abstract class FishingBobberEntityMixin extends Entity {
 							}
 							if (entity instanceof EndermanEntity enderman) {
 								enderman.setCarriedBlock(null);
-							}
-							if (entity instanceof WitchEntity) {
+							} else if (entity instanceof WitchEntity) {
 								Potion potion = PotionUtil.getPotion(stack);
 								if (potion != Potions.EMPTY) {
 									ModEntityComponents.WITCH_DISARM.get(entity).disablePotion(potion);

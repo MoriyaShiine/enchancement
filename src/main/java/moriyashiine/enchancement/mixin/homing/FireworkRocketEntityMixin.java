@@ -10,7 +10,6 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.FireworkRocketEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -57,7 +56,7 @@ public abstract class FireworkRocketEntityMixin extends Entity {
 
 	@ModifyVariable(method = "tick", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/projectile/FireworkRocketEntity;getVelocity()Lnet/minecraft/util/math/Vec3d;", ordinal = 1), ordinal = 0)
 	private Vec3d enchancement$homing(Vec3d value) {
-		if (age % 3 == 0 && getDataTracker().get(HAS_HOMING) && ((ProjectileEntityAccessor) ProjectileEntity.class.cast(this)).enchancement$getOwner() instanceof LivingEntity living) {
+		if (age % 3 == 0 && getDataTracker().get(HAS_HOMING) && ((ProjectileEntityAccessor) this).enchancement$getOwner() instanceof LivingEntity living) {
 			ItemStack stackShotFrom = getDataTracker().get(STACK_SHOT_FROM);
 			if (living.getMainHandStack() == stackShotFrom || living.getOffHandStack() == stackShotFrom) {
 				Vec3d eyePos = living.getEyePos();

@@ -66,7 +66,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
 	protected abstract void setupTransforms(T entity, MatrixStack matrices, float animationProgress, float bodyYaw, float tickDelta);
 
 	@ModifyVariable(method = "getRenderLayer", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/render/entity/LivingEntityRenderer;getTexture(Lnet/minecraft/entity/Entity;)Lnet/minecraft/util/Identifier;"))
-	private Identifier enchancement$frostbiteTexture(Identifier value, LivingEntity living) {
+	private Identifier enchancement$frostbite(Identifier value, LivingEntity living) {
 		if (ModEntityComponents.FROZEN.get(living).isFrozen()) {
 			return FrozenReloadListener.INSTANCE.getTexture(value);
 		}
@@ -74,7 +74,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
 	}
 
 	@Inject(method = "isShaking", at = @At("HEAD"), cancellable = true)
-	private void enchancement$frostbiteStopShaking(T entity, CallbackInfoReturnable<Boolean> cir) {
+	private void enchancement$frostbite(T entity, CallbackInfoReturnable<Boolean> cir) {
 		if (ModEntityComponents.FROZEN.get(entity).isFrozen()) {
 			cir.setReturnValue(false);
 		}
@@ -82,7 +82,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
 
 	@SuppressWarnings("unchecked")
 	@Inject(method = "render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("HEAD"), cancellable = true)
-	private void enchancement$frostbiteFreezeAnimations(T livingEntity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
+	private void enchancement$frostbite(T livingEntity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
 		if (LivingEntityRenderer.class.cast(this) instanceof FrozenPlayerEntityRenderer frozenPlayerEntityRenderer && livingEntity instanceof FrozenPlayerEntity frozenPlayer) {
 			if (frozenPlayer.getDataTracker().get(FrozenPlayerEntity.SLIM)) {
 				model = (M) frozenPlayerEntityRenderer.slimModel;

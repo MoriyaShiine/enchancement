@@ -55,8 +55,8 @@ public class EnchancementUtil {
 		return EnchantmentHelper.getLevel(enchantment, stack) > 0;
 	}
 
-	public static boolean hasEnchantment(Enchantment enchantment, LivingEntity living) {
-		return EnchantmentHelper.getEquipmentLevel(enchantment, living) > 0;
+	public static boolean hasEnchantment(Enchantment enchantment, Entity entity) {
+		return entity instanceof LivingEntity living && EnchantmentHelper.getEquipmentLevel(enchantment, living) > 0;
 	}
 
 	public static boolean isGroundedOrJumping(LivingEntity living) {

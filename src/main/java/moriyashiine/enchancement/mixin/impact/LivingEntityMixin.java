@@ -23,11 +23,11 @@ public abstract class LivingEntityMixin extends Entity {
 	}
 
 	@Inject(method = "pushAwayFrom", at = @At("HEAD"))
-	private void enchancement$frostbite(Entity entity, CallbackInfo ci) {
+	private void enchancement$impact(Entity entity, CallbackInfo ci) {
 		if (!world.isClient) {
 			ModEntityComponents.IMPACT.maybeGet(entity).ifPresent(impactComponent -> {
 				if (impactComponent.shouldDamage() && EnchancementUtil.shouldHurt(entity, this)) {
-					damage(DamageSource.ANVIL, 8);
+					damage(DamageSource.ANVIL, 10);
 				}
 			});
 		}

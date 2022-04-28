@@ -27,7 +27,7 @@ public abstract class LivingEntityMixin extends Entity {
 	private float enchancement$wardenspine(float value, DamageSource source) {
 		if (!world.isClient && !(source instanceof EntityDamageSource entityDamageSource && entityDamageSource.isThorns())) {
 			if (source.getSource() instanceof LivingEntity living && Math.abs(MathHelper.subtractAngles(getHeadYaw(), living.getHeadYaw())) <= 75) {
-				if (EnchancementUtil.hasEnchantment(ModEnchantments.WARDENSPINE, LivingEntity.class.cast(this))) {
+				if (EnchancementUtil.hasEnchantment(ModEnchantments.WARDENSPINE, this)) {
 					living.damage(DamageSource.thorns(this), 4);
 					return value / 2;
 				}

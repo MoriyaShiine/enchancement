@@ -28,6 +28,14 @@ public abstract class TridentEntityMixin extends PersistentProjectileEntity {
 		return value;
 	}
 
+	@ModifyExpressionValue(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/TridentEntity;isNoClip()Z"))
+	private boolean enchancement$tridentsReturnInVoid(boolean value) {
+		if (Enchancement.getConfig().tridentsReturnInVoid && getY() <= world.getBottomY()) {
+			return true;
+		}
+		return value;
+	}
+
 	@ModifyVariable(method = "age", at = @At("STORE"))
 	private int enchancement$ageNonPlayerTridents(int value) {
 		if (Enchancement.getConfig().allTridentsHaveLoyalty && !(getOwner() instanceof PlayerEntity)) {
@@ -36,12 +44,9 @@ public abstract class TridentEntityMixin extends PersistentProjectileEntity {
 		return value;
 	}
 
-	@ModifyExpressionValue(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/TridentEntity;isNoClip()Z"))
-	private boolean enchancement$disableLoyaltyOnNonPlayerTridents(boolean value) {
-		if (Enchancement.getConfig().tridentsReturnInVoid && getY() <= world.getBottomY()) {
-			return true;
-		}
-		return value;
+	@ModifyExpressionValue(method = "onEntityHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;isThundering()Z"))
+	private boolean enchancement$channelingWorksWhenNotThundering(boolean value) {
+		return value || Enchancement.getConfig().channelingWorksWhenNotThundering;
 	}
 
 	@ModifyArg(method = "onEntityHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z"))
@@ -50,10 +55,5 @@ public abstract class TridentEntityMixin extends PersistentProjectileEntity {
 			ModEntityComponents.CHANNELING.get(value).setSafe(true);
 		}
 		return value;
-	}
-
-	@ModifyExpressionValue(method = "onEntityHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;isThundering()Z"))
-	private boolean enchancement$channelingWorksWhenNotThundering(boolean value) {
-		return value || Enchancement.getConfig().channelingWorksWhenNotThundering;
 	}
 }

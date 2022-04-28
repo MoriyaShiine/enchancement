@@ -55,15 +55,13 @@ public abstract class FishingBobberEntityMixin extends Entity {
 
 	@Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/FishingBobberEntity;checkForCollision()V", shift = At.Shift.BEFORE), cancellable = true)
 	private void enchancement$grapple(CallbackInfo ci) {
-		if (hasGrapple()) {
-			if (grappleState != null) {
-				if (age % 10 == 0 && world.getBlockState(grapplePos) != grappleState) {
-					grapplePos = null;
-					grappleState = null;
-				}
-				setVelocity(Vec3d.ZERO);
-				ci.cancel();
+		if (hasGrapple() && grappleState != null) {
+			if (age % 10 == 0 && world.getBlockState(grapplePos) != grappleState) {
+				grapplePos = null;
+				grappleState = null;
 			}
+			setVelocity(Vec3d.ZERO);
+			ci.cancel();
 		}
 	}
 

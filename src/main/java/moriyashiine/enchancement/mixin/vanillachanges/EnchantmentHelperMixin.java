@@ -36,13 +36,6 @@ public abstract class EnchantmentHelperMixin {
 		throw new UnsupportedOperationException();
 	}
 
-	@Inject(method = "getLevel", at = @At("RETURN"), cancellable = true)
-	private static void enchancement$singleLevelMode(Enchantment enchantment, ItemStack stack, CallbackInfoReturnable<Integer> cir) {
-		if (cir.getReturnValueI() > 0 && Enchancement.getConfig().singleLevelMode) {
-			cir.setReturnValue(enchantment.getMaxLevel());
-		}
-	}
-
 	@Inject(method = "getAttackDamage", at = @At("HEAD"), cancellable = true)
 	private static void enchancement$singleLevelModeAttackDamage(ItemStack stack, EntityGroup group, CallbackInfoReturnable<Float> cir) {
 		if (Enchancement.getConfig().singleLevelMode) {
@@ -50,6 +43,38 @@ public abstract class EnchantmentHelperMixin {
 			forEachEnchantment((Enchantment enchantment, int level) -> mutableFloat.add(enchantment.getAttackDamage(enchantment.getMaxLevel(), group)), stack);
 			cir.setReturnValue(mutableFloat.floatValue());
 		}
+	}
+
+	@Inject(method = "getLevel", at = @At("RETURN"), cancellable = true)
+	private static void enchancement$singleLevelMode(Enchantment enchantment, ItemStack stack, CallbackInfoReturnable<Integer> cir) {
+		if (cir.getReturnValueI() > 0 && Enchancement.getConfig().singleLevelMode) {
+			cir.setReturnValue(enchantment.getMaxLevel());
+		}
+	}
+
+	@Inject(method = "getLoyalty", at = @At("HEAD"), cancellable = true)
+	private static void enchancement$giveAllTridentsLoyalty(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
+		if (Enchancement.getConfig().allTridentsHaveLoyalty && stack.getItem() instanceof TridentItem) {
+			cir.setReturnValue(Enchantments.LOYALTY.getMaxLevel());
+		}
+	}
+
+	@Inject(method = "getLure", at = @At("HEAD"), cancellable = true)
+	private static void enchancement$luckOfTheSeaWithLure(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
+		if (Enchancement.getConfig().luckOfTheSeaHasLure) {
+			int level = EnchantmentHelper.getLuckOfTheSea(stack);
+			if (level > 0) {
+				cir.setReturnValue(Enchantments.LURE.getMaxLevel());
+			}
+		}
+	}
+
+	@ModifyExpressionValue(method = "getPossibleEntries", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/Enchantment;getMaxLevel()I"))
+	private static int enchancement$singleLevelMode(int value) {
+		if (Enchancement.getConfig().singleLevelMode) {
+			return 1;
+		}
+		return value;
 	}
 
 	@Inject(method = "getProtectionAmount", at = @At("HEAD"), cancellable = true)
@@ -89,31 +114,6 @@ public abstract class EnchantmentHelperMixin {
 			}
 			ci.cancel();
 		}
-	}
-
-	@Inject(method = "getLoyalty", at = @At("HEAD"), cancellable = true)
-	private static void enchancement$giveAllTridentsLoyalty(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
-		if (Enchancement.getConfig().allTridentsHaveLoyalty && stack.getItem() instanceof TridentItem) {
-			cir.setReturnValue(Enchantments.LOYALTY.getMaxLevel());
-		}
-	}
-
-	@Inject(method = "getLure", at = @At("HEAD"), cancellable = true)
-	private static void enchancement$luckOfTheSeaWithLure(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
-		if (Enchancement.getConfig().luckOfTheSeaHasLure) {
-			int level = EnchantmentHelper.getLuckOfTheSea(stack);
-			if (level > 0) {
-				cir.setReturnValue(Enchantments.LURE.getMaxLevel());
-			}
-		}
-	}
-
-	@ModifyExpressionValue(method = "getPossibleEntries", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/Enchantment;getMaxLevel()I"))
-	private static int enchancement$singleLevelMode(int value) {
-		if (Enchancement.getConfig().singleLevelMode) {
-			return 1;
-		}
-		return value;
 	}
 
 	@Inject(method = "set", at = @At("HEAD"), cancellable = true)

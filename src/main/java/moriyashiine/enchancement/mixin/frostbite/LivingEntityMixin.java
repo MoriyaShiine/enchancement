@@ -31,7 +31,7 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@Inject(method = "applyDamage", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/LivingEntity;getHealth()F"))
 	private void enchancement$frostbite(DamageSource source, float amount, CallbackInfo ci) {
-		FrostbiteEnchantment.applyEffect(LivingEntity.class.cast(this), source, amount);
+		FrostbiteEnchantment.applyEffect(this, source, amount);
 	}
 
 	@Inject(method = "damage", at = @At("HEAD"), cancellable = true)
@@ -50,8 +50,9 @@ public abstract class LivingEntityMixin extends Entity {
 							setVelocity(getVelocity().add(-(entitySource.getX() - getX()), 0, -(entitySource.getZ() - getZ())).normalize().multiply(0.5));
 							cir.setReturnValue(true);
 						} else {
+							LivingEntity living = LivingEntity.class.cast(this);
 							for (int i = 0; i < MathHelper.nextInt(random, 24, 32); i++) {
-								IceShardEntity entity = new IceShardEntity(world, LivingEntity.class.cast(this));
+								IceShardEntity entity = new IceShardEntity(world, living);
 								entity.setOwner(frozenComponent.getLastFreezingAttacker());
 								entity.teleport(getX(), getEyeY(), getZ());
 								entity.setVelocity(new Vec3d(random.nextGaussian(), random.nextGaussian() / 2, random.nextGaussian()).normalize().multiply(0.75));
