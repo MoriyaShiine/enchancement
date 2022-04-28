@@ -102,7 +102,7 @@ public class EnchancementUtil {
 	public static float getMaxBonusBerserkDamage(ItemStack stack) {
 		float maxBonus = 1;
 		for (EntityAttributeModifier modifier : stack.getAttributeModifiers(EquipmentSlot.MAINHAND).get(EntityAttributes.GENERIC_ATTACK_DAMAGE)) {
-			maxBonus += modifier.getValue();
+			maxBonus += modifier.getValue() / 2;
 		}
 		return maxBonus;
 	}
