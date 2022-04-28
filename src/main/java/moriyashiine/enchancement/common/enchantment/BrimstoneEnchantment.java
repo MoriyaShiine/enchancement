@@ -5,13 +5,13 @@ import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EquipmentSlot;
 
-public class MoltenEnchantment extends PickaxeEnchantment {
-	public MoltenEnchantment(Rarity weight, EnchantmentTarget type, EquipmentSlot... slotTypes) {
+public class BrimstoneEnchantment extends EmptyEnchantment {
+	public BrimstoneEnchantment(Rarity weight, EnchantmentTarget type, EquipmentSlot... slotTypes) {
 		super(weight, type, slotTypes);
 	}
 
 	@Override
 	protected boolean canAccept(Enchantment other) {
-		return super.canAccept(other) && other != Enchantments.SILK_TOUCH;
+		return super.canAccept(other) && other != Enchantments.PIERCING;
 	}
 }

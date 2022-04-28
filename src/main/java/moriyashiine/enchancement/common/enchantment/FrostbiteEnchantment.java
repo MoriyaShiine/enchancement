@@ -10,7 +10,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-public class FrostbiteEnchantment extends Enchantment {
+public class FrostbiteEnchantment extends EmptyEnchantment {
 	public FrostbiteEnchantment(Rarity weight, EnchantmentTarget type, EquipmentSlot... slotTypes) {
 		super(weight, type, slotTypes);
 	}
