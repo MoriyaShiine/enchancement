@@ -37,7 +37,7 @@ public class ArrowItemMixin {
 					effect = Registry.STATUS_EFFECT.get(shooter.getRandom().nextInt(Registry.STATUS_EFFECT.size()));
 				}
 			}
-			arrow.initFromStack(PotionUtil.setCustomPotionEffects(new ItemStack(Items.TIPPED_ARROW), Collections.singleton(new StatusEffectInstance(effect, effect.isInstant() ? 1 : 200, shooter.getRandom().nextInt(3) == 0 ? 1 : 0))));
+			arrow.initFromStack(PotionUtil.setCustomPotionEffects(new ItemStack(Items.TIPPED_ARROW), Collections.singleton(new StatusEffectInstance(effect, effect.isInstant() ? 1 : 200))));
 			arrow.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
 			cir.setReturnValue(arrow);
 		}
