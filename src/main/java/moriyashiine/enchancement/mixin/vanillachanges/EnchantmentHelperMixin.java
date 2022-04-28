@@ -7,10 +7,14 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.TridentItem;
+import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.Map;
 
 @Mixin(EnchantmentHelper.class)
 public class EnchantmentHelperMixin {
@@ -44,5 +48,17 @@ public class EnchantmentHelperMixin {
 			return 1;
 		}
 		return value;
+	}
+
+	@Inject(method = "set", at = @At("HEAD"), cancellable = true)
+	private static void enchancement$singleEnchantmentMode(Map<Enchantment, Integer> enchantments, ItemStack stack, CallbackInfo ci) {
+		for (Enchantment enchantment : enchantments.keySet()) {
+			if (Registry.ENCHANTMENT.getId(enchantment) == null) {
+				enchantments.remove(enchantment);
+			}
+		}
+		if (Enchancement.getConfig().singleEnchantmentMode && stack.hasEnchantments()) {
+			ci.cancel();
+		}
 	}
 }
