@@ -68,7 +68,7 @@ public abstract class FireworkRocketEntityMixin extends Entity {
 					}
 					Vec3d target = raycast.getPos();
 					lookAt(EntityAnchorArgumentType.EntityAnchor.EYES, target);
-					return value.lerp(target.subtract(getPos()).normalize(), age % 90 / 90F);
+					return value.lerp(target.subtract(getPos()).normalize(), age % 60 / 60F);
 				}
 			}
 		}
