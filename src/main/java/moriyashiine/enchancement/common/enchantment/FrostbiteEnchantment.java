@@ -24,12 +24,8 @@ public class FrostbiteEnchantment extends Enchantment {
 		if (!living.world.isClient && FrozenComponent.isSourceFrostbite(source)) {
 			if (living.getHealth() - amount > 0) {
 				int frozenTicks = living.getFrozenTicks();
-				if (frozenTicks < 600) {
-					living.setFrozenTicks(0);
-					int targetFrozenTicks = Math.min(600, frozenTicks + 200);
-					if (frozenTicks != targetFrozenTicks) {
-						living.setFrozenTicks(targetFrozenTicks);
-					}
+				if (frozenTicks < 300) {
+					living.setFrozenTicks(300);
 				}
 			} else if (living instanceof ServerPlayerEntity player) {
 				ResetFrozenTicksPacket.send(player);
