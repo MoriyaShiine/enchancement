@@ -29,6 +29,7 @@ public class ModConfig implements ConfigData {
 			"enchancement:disarm", "enchancement:grapple", "minecraft:luck_of_the_sea",
 			"minecraft:efficiency", "minecraft:silk_touch");
 
+	public boolean overhaulEnchantingTable = true;
 	public boolean singleEnchantmentMode = true;
 	@ConfigEntry.Gui.RequiresRestart
 	public boolean singleLevelMode = true;
@@ -36,11 +37,11 @@ public class ModConfig implements ConfigData {
 	public boolean allowInfinityOnCrossbows = true;
 	public boolean allTridentsHaveLoyalty = true;
 	public boolean channelingWorksWhenNotThundering = true;
+	public boolean fireAspectWorksAsFlintAndSteel = true;
 	public boolean luckOfTheSeaHasLure = true;
 	public boolean safeChanneling = true;
 	public boolean tridentsReturnInVoid = true;
 
-	public int fireAspectIgnitionLevel = 1;
 	public int maxExtractingBlocks = 64;
 	public int maxLumberjackBlocks = 1024;
 	public int unbreakingChangesFlag = 0;

@@ -8,6 +8,7 @@ import moriyashiine.enchancement.common.event.*;
 import moriyashiine.enchancement.common.packet.*;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModEntityTypes;
+import moriyashiine.enchancement.common.registry.ModScreenHandlerTypes;
 import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import moriyashiine.enchancement.common.reloadlisteners.BeheadingReloadListener;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
@@ -38,6 +39,7 @@ public class Enchancement implements ModInitializer {
 		ModEntityTypes.init();
 		ModEnchantments.init();
 		ModSoundEvents.init();
+		ModScreenHandlerTypes.init();
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new BeheadingReloadListener(new Gson(), MOD_ID + "_beheading"));
 		initEvents();
 	}
