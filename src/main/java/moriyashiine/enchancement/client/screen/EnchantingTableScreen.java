@@ -71,15 +71,17 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 		RenderSystem.setShaderTexture(0, TEXTURE);
 		drawTexture(matrices, posX, posY, 0, 0, backgroundWidth, backgroundHeight);
 		if (client != null && client.player != null && handler.canEnchant(client.player, true)) {
-			if (isInUpButtonBounds(posX, posY, mouseX, mouseY)) {
-				drawTexture(matrices, posX + 154, posY + 12, 192, 0, 16, 16);
-			} else {
-				drawTexture(matrices, posX + 154, posY + 12, 176, 0, 16, 16);
-			}
-			if (isInDownButtonBounds(posX, posY, mouseX, mouseY)) {
-				drawTexture(matrices, posX + 154, posY + 29, 192, 16, 16, 16);
-			} else {
-				drawTexture(matrices, posX + 154, posY + 29, 176, 16, 16, 16);
+			if (handler.validEnchantments.size() > 3) {
+				if (isInUpButtonBounds(posX, posY, mouseX, mouseY)) {
+					drawTexture(matrices, posX + 154, posY + 12, 192, 0, 16, 16);
+				} else {
+					drawTexture(matrices, posX + 154, posY + 12, 176, 0, 16, 16);
+				}
+				if (isInDownButtonBounds(posX, posY, mouseX, mouseY)) {
+					drawTexture(matrices, posX + 154, posY + 29, 192, 16, 16, 16);
+				} else {
+					drawTexture(matrices, posX + 154, posY + 29, 176, 16, 16, 16);
+				}
 			}
 			if (isInEnchantButtonBounds(posX, posY, mouseX, mouseY)) {
 				drawTexture(matrices, posX + 154, posY + 50, 192, 32, 16, 16);
@@ -148,17 +150,22 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 		if (handler.canEnchant(client.player, client.player.isCreative()) && isInEnchantButtonBounds(posX, posY, (int) mouseX, (int) mouseY) && !handler.selectedEnchantments.isEmpty() && handler.onButtonClick(client.player, 0)) {
 			client.interactionManager.clickButton(handler.syncId, 0);
 			return true;
-		} else if (isInUpButtonBounds(posX, posY, (int) mouseX, (int) mouseY) && handler.onButtonClick(client.player, 1)) {
-			client.interactionManager.clickButton(handler.syncId, 1);
-			client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1));
-			nextPageAngle += 1;
-			return true;
-		} else if (isInDownButtonBounds(posX, posY, (int) mouseX, (int) mouseY) && handler.onButtonClick(client.player, 2)) {
-			client.interactionManager.clickButton(handler.syncId, 2);
-			client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1));
-			nextPageAngle -= 1;
-			return true;
-		} else if (highlightedEnchantmentIndex >= 0 && handler.onButtonClick(client.player, highlightedEnchantmentIndex + 3)) {
+		}
+		if (handler.validEnchantments.size() > 3) {
+			if (isInUpButtonBounds(posX, posY, (int) mouseX, (int) mouseY) && handler.onButtonClick(client.player, 1)) {
+				client.interactionManager.clickButton(handler.syncId, 1);
+				client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1));
+				nextPageAngle += 1;
+				return true;
+			}
+			if (isInDownButtonBounds(posX, posY, (int) mouseX, (int) mouseY) && handler.onButtonClick(client.player, 2)) {
+				client.interactionManager.clickButton(handler.syncId, 2);
+				client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1));
+				nextPageAngle -= 1;
+				return true;
+			}
+		}
+		if (highlightedEnchantmentIndex >= 0 && handler.onButtonClick(client.player, highlightedEnchantmentIndex + 3)) {
 			client.interactionManager.clickButton(handler.syncId, highlightedEnchantmentIndex + 3);
 			client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1));
 			return true;
