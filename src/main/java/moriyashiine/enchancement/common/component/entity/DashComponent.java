@@ -73,7 +73,11 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 			boolean sneaking = obj.isSneaking();
 			if (!obj.isOnGround() && dashCooldown == 0 && sneaking && !wasSneaking && EnchancementUtil.isGroundedOrJumping(obj)) {
 				handle(obj, this);
-				addDashParticles(obj);
+				if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || obj != MinecraftClient.getInstance().cameraEntity) {
+					for (int i = 0; i < 8; i++) {
+						obj.world.addParticle(ParticleTypes.CLOUD, obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 0, 0);
+					}
+				}
 				DashPacket.send();
 			}
 			wasSneaking = sneaking;
@@ -107,13 +111,5 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 		dashComponent.shouldRefreshDash = false;
 		dashComponent.dashCooldown = 20;
 		dashComponent.wavedashTicks = 3;
-	}
-
-	public static void addDashParticles(Entity entity) {
-		if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || entity != MinecraftClient.getInstance().cameraEntity) {
-			for (int i = 0; i < 8; i++) {
-				entity.world.addParticle(ParticleTypes.CLOUD, entity.getParticleX(1), entity.getRandomBodyY(), entity.getParticleZ(1), 0, 0, 0);
-			}
-		}
 	}
 }
