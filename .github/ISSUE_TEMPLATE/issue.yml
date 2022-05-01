@@ -1,0 +1,18 @@
+name: Issue
+description: File a bug report
+body:
+  - type: input
+    attributes:
+      label: Mod version
+      description: Please note that unless this bug still exists on the latest version, it will not be fixed.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: A description of the issue
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Log or crash report
+      description: Please use [gist](https://gist.github.com/).
