@@ -15,7 +15,7 @@
   "enchantment.enchancement.perception": "Perception",
   "enchantment.enchancement.perception.desc": "Grants increased dark visibility and allows entities to be seen through walls within 16 blocks.",
   "enchantment.enchancement.amphibious": "Amphibious",
-  "enchantment.enchancement.amphibious.desc": "Increases movement speed and mining speed while under water, extends the amount of time the player can spend under water, and improves vision while under water.",
+  "enchantment.enchancement.amphibious.desc": "Increases movement speed and mining speed while under water, and extends the amount of time the player can spend under water.",
   "enchantment.enchancement.strafe": "Strafe",
   "enchantment.enchancement.strafe.desc": "Double tapping a direction key will push you in that direction. Also increases air mobility.",
   "enchantment.enchancement.wardenspine": "Wardenspine",
