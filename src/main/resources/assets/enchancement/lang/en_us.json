@@ -63,7 +63,7 @@
   "enchantment.enchancement.bury": "Bury",
   "enchantment.enchancement.bury.desc": "Interacting with an entity will bury it in the ground if the block below is soft enough.",
   "enchantment.enchancement.scooping": "Scooping",
-  "enchantment.enchancement.scooping.desc": "The shovel will deal 1 more heart of damage and will cause mobs to drop more loot when killed.",
+  "enchantment.enchancement.scooping.desc": "The shovel will deal 1 extra heart of damage and will cause mobs to drop more loot when killed.",
   "enchantment.enchancement.disarm": "Disarm",
   "enchantment.enchancement.disarm.desc": "Steals or disables a latched entity's held item.",
   "enchantment.enchancement.grapple": "Grapple",
