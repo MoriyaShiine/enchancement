@@ -24,8 +24,7 @@ public class FrostbiteEnchantment extends EmptyEnchantment {
 	public static void applyEffect(Entity target, DamageSource source, float amount) {
 		if (!target.world.isClient && target instanceof LivingEntity living && FrozenComponent.isSourceFrostbite(source)) {
 			if (living.getHealth() - amount > 0) {
-				int frozenTicks = target.getFrozenTicks();
-				if (frozenTicks < 300) {
+				if (target.getFrozenTicks() < 300) {
 					target.setFrozenTicks(300);
 				}
 			} else if (target instanceof ServerPlayerEntity player) {
