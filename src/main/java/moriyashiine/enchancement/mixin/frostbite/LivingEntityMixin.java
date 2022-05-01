@@ -67,6 +67,15 @@ public abstract class LivingEntityMixin extends Entity {
 		}
 	}
 
+	@Inject(method = "isAlive", at = @At("HEAD"), cancellable = true)
+	private void enchancement$frostbite(CallbackInfoReturnable<Boolean> cir) {
+		ModEntityComponents.FROZEN.maybeGet(this).ifPresent(frozenComponent -> {
+			if (frozenComponent.isFrozen()) {
+				cir.setReturnValue(false);
+			}
+		});
+	}
+
 	@Inject(method = "onDeath", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;sendEntityStatus(Lnet/minecraft/entity/Entity;B)V"), cancellable = true)
 	private void enchancement$frostbite(DamageSource source, CallbackInfo ci) {
 		ModEntityComponents.FROZEN.maybeGet(this).ifPresent(frozenComponent -> {
