@@ -193,6 +193,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 		matrices.scale(5, 5, 5);
 		matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180));
 		matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(20));
+		matrices.translate((1 - deltaTurningSpeed) * 0.2F, (1 - deltaTurningSpeed) * 0.1F, (1 - deltaTurningSpeed) * 0.25F);
 		matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-(1 - deltaTurningSpeed) * 90 - 90));
 		matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(180));
 		bookModel.setPageAngles(0, MathHelper.clamp((leftFlipAmount - (float) MathHelper.fastFloor(leftFlipAmount)) * 1.6F - 0.3F, 0, 1), MathHelper.clamp((rightFlipAmount - (float) MathHelper.fastFloor(rightFlipAmount)) * 1.6F - 0.3F, 0, 1), deltaTurningSpeed);
