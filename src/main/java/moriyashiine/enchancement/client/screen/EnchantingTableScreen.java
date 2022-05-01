@@ -34,8 +34,9 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 	private static final Identifier TEXTURE = new Identifier(Enchancement.MOD_ID, "textures/gui/container/enchanting_table.png");
 	private static final Identifier BOOK_TEXTURE = new Identifier("textures/entity/enchanting_table_book.png");
 
-	private List<Text> infoTexts = null;
 	private BookModel bookModel;
+
+	private List<Text> infoTexts = null;
 	private ItemStack stack = ItemStack.EMPTY;
 	private float pageAngle;
 	private float nextPageAngle;
