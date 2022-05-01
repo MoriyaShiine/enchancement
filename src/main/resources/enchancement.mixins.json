@@ -60,6 +60,7 @@
 	"vanillachanges.EnchantRandomlyLootFunctionMixin",
 	"vanillachanges.ItemStackMixin",
 	"vanillachanges.LightningEntityMixin",
+	"vanillachanges.LightningRodBlockMixin",
 	"vanillachanges.RegistryMixin",
 	"vanillachanges.TradeOffersEnchantBookFactoryMixin",
 	"vanillachanges.TranslatableTextMixin",
