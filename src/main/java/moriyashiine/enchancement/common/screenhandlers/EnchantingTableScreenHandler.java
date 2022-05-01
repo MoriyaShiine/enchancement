@@ -28,6 +28,8 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 	public List<Enchantment> validEnchantments = null, selectedEnchantments = null;
 	public int viewIndex = 0;
 
+	private ItemStack enchantingStack = null;
+
 	private final Inventory inventory = new SimpleInventory(2) {
 		@Override
 		public void markDirty() {
@@ -65,16 +67,11 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 			}
 
 			@Override
-			public ItemStack insertStack(ItemStack stack, int count) {
-				populateEnchantmentList(stack);
-				return super.insertStack(stack, count);
-			}
-
-			@Override
 			public void onTakeItem(PlayerEntity player, ItemStack stack) {
 				validEnchantments = null;
 				selectedEnchantments = null;
 				viewIndex = 0;
+				enchantingStack = null;
 				super.onTakeItem(player, stack);
 			}
 		});
@@ -120,7 +117,6 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 					return ItemStack.EMPTY;
 				}
 			} else if (!slots.get(0).hasStack() && slots.get(0).canInsert(stackInSlot)) {
-				populateEnchantmentList(stackInSlot);
 				slots.get(0).setStack(stackInSlot.split(1));
 			} else {
 				return ItemStack.EMPTY;
@@ -192,6 +188,25 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		return false;
 	}
 
+	@Override
+	public void onContentChanged(Inventory inventory) {
+		if (inventory == this.inventory) {
+			ItemStack stack = slots.get(0).getStack();
+			if (enchantingStack != stack) {
+				validEnchantments = new ArrayList<>();
+				selectedEnchantments = new ArrayList<>();
+				viewIndex = 0;
+				enchantingStack = stack;
+				for (Enchantment enchantment : Registry.ENCHANTMENT) {
+					if (stack.isOf(Items.BOOK) || enchantment.isAcceptableItem(stack)) {
+						validEnchantments.add(enchantment);
+					}
+				}
+				super.onContentChanged(inventory);
+			}
+		}
+	}
+
 	public Enchantment getEnchantmentFromViewIndex(int index) {
 		if (validEnchantments.size() <= 3) {
 			return validEnchantments.get(index);
@@ -220,17 +235,6 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		viewIndex = (viewIndex + (up ? -1 : 1)) % validEnchantments.size();
 		if (viewIndex < 0) {
 			viewIndex += validEnchantments.size();
-		}
-	}
-
-	private void populateEnchantmentList(ItemStack stack) {
-		validEnchantments = new ArrayList<>();
-		selectedEnchantments = new ArrayList<>();
-		viewIndex = 0;
-		for (Enchantment enchantment : Registry.ENCHANTMENT) {
-			if (stack.isOf(Items.BOOK) || enchantment.isAcceptableItem(stack)) {
-				validEnchantments.add(enchantment);
-			}
 		}
 	}
 }
