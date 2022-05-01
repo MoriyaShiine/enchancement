@@ -107,13 +107,13 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 						break;
 					}
 				}
-				textRenderer.draw(matrices, enchantmentName, posX + 66, posY + 16 + (i * 19), handler.selectedEnchantments.contains(enchantment) ? 0x00AA00 : isAllowed ? 0x3C3C3C : 0xF00000);
+				textRenderer.draw(matrices, handler.selectedEnchantments.contains(enchantment) ? enchantmentName.formatted(Formatting.DARK_GREEN) : isAllowed ? enchantmentName.formatted(Formatting.BLACK) : enchantmentName.formatted(Formatting.DARK_RED, Formatting.STRIKETHROUGH), posX + 66, posY + 16 + (i * 19), 0xFFFFFF);
 				if (isInBounds(posX, posY + 16 + (i * 19), mouseX, mouseY, 64, 67 + textRenderer.getWidth(enchantmentName), 0, 8)) {
 					if (isAllowed || handler.selectedEnchantments.contains(enchantment)) {
 						highlightedEnchantmentIndex = i;
 					}
 					if (infoTexts == null) {
-						infoTexts = Helper.doFix(List.of(enchantmentName, new TranslatableText(enchantment.getTranslationKey() + ".desc").formatted(Formatting.DARK_GRAY)), textRenderer);
+						infoTexts = Helper.doFix(List.of(new TranslatableText(enchantment.getTranslationKey()).formatted(Formatting.GRAY), new TranslatableText(enchantment.getTranslationKey() + ".desc").formatted(Formatting.DARK_GRAY)), textRenderer);
 					}
 					client.currentScreen.renderTooltip(matrices, infoTexts, mouseX, mouseY);
 				} else {
