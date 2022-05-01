@@ -83,5 +83,18 @@
   "subtitles.enchancement.block.generic.smelt": "Block smelts",
   "tooltip.enchancement.brimstone": "Brimstone",
   "tooltip.enchancement.experience_cost": "Experience Cost: %d levels",
-  "tooltip.enchancement.lapis_lazuli_cost": "Lapis Lazuli Cost: %d Lapis Lazuli"
+  "tooltip.enchancement.lapis_lazuli_cost": "Lapis Lazuli Cost: %d Lapis Lazuli",
+  "text.autoconfig.enchancement.option.overhaulEnchantingTable": "Overhaul Enchanting Table",
+  "text.autoconfig.enchancement.option.singleEnchantmentMode": "Single Enchantment Mode",
+  "text.autoconfig.enchancement.option.singleLevelMode": "Single Level Mode",
+  "text.autoconfig.enchancement.option.allowInfinityOnCrossbows": "Allow Infinity On Crossbows",
+  "text.autoconfig.enchancement.option.allTridentsHaveLoyalty": "All Tridents Have Loyalty",
+  "text.autoconfig.enchancement.option.channelingWorksWhenNotThundering": "Channeling Works When Not Thundering",
+  "text.autoconfig.enchancement.option.fireAspectWorksAsFlintAndSteel": "Fire Aspect Works As Flint And Steel",
+  "text.autoconfig.enchancement.option.luckOfTheSeaHasLure": "Luck Of The Sea Has Lure",
+  "text.autoconfig.enchancement.option.safeChanneling": "Safe Channeling",
+  "text.autoconfig.enchancement.option.tridentsReturnFromVoid": "Tridents Return From Void",
+  "text.autoconfig.enchancement.option.maxExtractingBlocks": "Max Extracting Blocks",
+  "text.autoconfig.enchancement.option.maxLumberjackBlocks": "Max Lumberjack Blocks",
+  "text.autoconfig.enchancement.option.unbreakingChangesFlag": "Unbreaking Changes Flag"
 }

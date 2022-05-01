@@ -40,7 +40,7 @@ public class ModConfig implements ConfigData {
 	public boolean fireAspectWorksAsFlintAndSteel = true;
 	public boolean luckOfTheSeaHasLure = true;
 	public boolean safeChanneling = true;
-	public boolean tridentsReturnInVoid = true;
+	public boolean tridentsReturnFromVoid = true;
 
 	public int maxExtractingBlocks = 64;
 	public int maxLumberjackBlocks = 1024;

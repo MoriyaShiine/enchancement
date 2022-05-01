@@ -29,8 +29,8 @@ public abstract class TridentEntityMixin extends PersistentProjectileEntity {
 	}
 
 	@ModifyExpressionValue(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/TridentEntity;isNoClip()Z"))
-	private boolean enchancement$tridentsReturnInVoid(boolean value) {
-		if (Enchancement.getConfig().tridentsReturnInVoid && getY() <= world.getBottomY()) {
+	private boolean enchancement$tridentsReturnFromVoid(boolean value) {
+		if (Enchancement.getConfig().tridentsReturnFromVoid && getY() <= world.getBottomY()) {
 			return true;
 		}
 		return value;
