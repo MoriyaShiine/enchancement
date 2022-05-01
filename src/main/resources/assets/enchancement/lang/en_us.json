@@ -33,7 +33,7 @@
   "enchantment.enchancement.gale": "Gale",
   "enchantment.enchancement.gale.desc": "Allows you to jump two more times in the air.",
   "enchantment.enchancement.berserk": "Berserk",
-  "enchantment.enchancement.berserk.desc": "Deals up to 50% more damage at a rate of 0.5 damage per heart missing.",
+  "enchantment.enchancement.berserk.desc": "Deals up to 50% more damage at a rate of 0.5 damage per heart missing. Charging the sword will damage you for 1 heart, and sneaking will also prevent you from regenerating health for 3 seconds.",
   "enchantment.enchancement.frostbite": "Frostbite",
   "enchantment.enchancement.frostbite.desc": "Slows hit entities and freezes them on death. Frozen entities can be moved or shattered, launching ice shards that can damage and freeze other entities.",
   "enchantment.enchancement.chaos": "Chaos",
