@@ -15,11 +15,12 @@ import net.minecraft.client.render.entity.model.BookModel;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -42,6 +43,8 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 	private float pageTurningSpeed;
 	private float nextPageTurningSpeed;
 	private float pageRotationSpeed;
+
+	private int highlightedEnchantmentIndex = -1;
 
 	public EnchantingTableScreen(EnchantingTableScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
@@ -66,45 +69,56 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 		int posY = (height - backgroundHeight) / 2;
 		RenderSystem.setShaderTexture(0, TEXTURE);
 		drawTexture(matrices, posX, posY, 0, 0, backgroundWidth, backgroundHeight);
-		if (client != null && client.player != null && handler.canEnchant(client.player, client.player.isCreative())) {
+		if (client != null && client.player != null && handler.canEnchant(client.player, true)) {
+			if (isInUpButtonBounds(posX, posY, mouseX, mouseY)) {
+				drawTexture(matrices, posX + 154, posY + 12, 192, 0, 16, 16);
+			} else {
+				drawTexture(matrices, posX + 154, posY + 12, 176, 0, 16, 16);
+			}
+			if (isInDownButtonBounds(posX, posY, mouseX, mouseY)) {
+				drawTexture(matrices, posX + 154, posY + 29, 192, 16, 16, 16);
+			} else {
+				drawTexture(matrices, posX + 154, posY + 29, 176, 16, 16, 16);
+			}
 			if (isInEnchantButtonBounds(posX, posY, mouseX, mouseY)) {
-				drawTexture(matrices, posX + 78, posY + 14, 0, 204, 90, 19);
-				drawTexture(matrices, posX + 59, posY + 14, 90, 204, 19, 19);
+				drawTexture(matrices, posX + 154, posY + 50, 192, 32, 16, 16);
+				if (infoTexts == null) {
+					infoTexts = Helper.doFix(List.of(new TranslatableText("tooltip." + Enchancement.MOD_ID + ".experience_cost", handler.getCost()).formatted(Formatting.DARK_GREEN), new TranslatableText("tooltip." + Enchancement.MOD_ID + ".lapis_lazuli_cost", handler.getCost()).formatted(Formatting.BLUE)), textRenderer);
+				}
+				client.currentScreen.renderTooltip(matrices, infoTexts, mouseX, mouseY);
 			} else {
-				drawTexture(matrices, posX + 78, posY + 14, 0, 166, 90, 19);
-				drawTexture(matrices, posX + 59, posY + 14, 90, 166, 19, 19);
+				drawTexture(matrices, posX + 154, posY + 50, 176, 32, 16, 16);
+				infoTexts = null;
 			}
-			drawTexture(matrices, posX + 61, posY + 15, 0, 223, 16, 16);
-			textRenderer.draw(matrices, handler.enchantmentName, posX + 82, posY + 19, 0xFFFFFF);
-		} else {
-			drawTexture(matrices, posX + 78, posY + 14, 0, 185, 90, 19);
-			if (!handler.enchantmentName.isEmpty()) {
-				drawTexture(matrices, posX + 61, posY + 15, 0, 239, 16, 16);
-				textRenderer.draw(matrices, handler.enchantmentName, posX + 82, posY + 19, 0x7F7F7F);
+			highlightedEnchantmentIndex = -1;
+			for (int i = 0; i < handler.validEnchantments.size() && i < 3; i++) {
+				Enchantment enchantment;
+				if (handler.validEnchantments.size() <= 3) {
+					enchantment = handler.validEnchantments.get(i);
+				} else {
+					enchantment = handler.getEnchantmentFromViewIndex(i);
+				}
+				TranslatableText enchantmentName = new TranslatableText(enchantment.getTranslationKey());
+				boolean isAllowed = true;
+				for (Enchantment foundEnchantment : handler.selectedEnchantments) {
+					if (!foundEnchantment.canCombine(enchantment)) {
+						isAllowed = false;
+						break;
+					}
+				}
+				textRenderer.draw(matrices, enchantmentName, posX + 66, posY + 16 + (i * 19), handler.selectedEnchantments.contains(enchantment) ? 0x00AA00 : isAllowed ? 0x3C3C3C : 0xF00000);
+				if (isInBounds(posX, posY + 16 + (i * 19), mouseX, mouseY, 64, 67 + textRenderer.getWidth(enchantmentName), 0, 8)) {
+					if (isAllowed || handler.selectedEnchantments.contains(enchantment)) {
+						highlightedEnchantmentIndex = i;
+					}
+					if (infoTexts == null) {
+						infoTexts = Helper.doFix(List.of(enchantmentName, new TranslatableText(enchantment.getTranslationKey() + ".desc").formatted(Formatting.DARK_GRAY)), textRenderer);
+					}
+					client.currentScreen.renderTooltip(matrices, infoTexts, mouseX, mouseY);
+				} else {
+					infoTexts = null;
+				}
 			}
-		}
-		if (handler.slots.get(0).hasStack() && handler.slots.get(0).getStack().isEnchantable()) {
-			RenderSystem.setShaderTexture(0, TEXTURE);
-			if (isInLeftButtonBounds(posX, posY, mouseX, mouseY)) {
-				drawTexture(matrices, posX + 68, posY + 45, 90, 204, 19, 19);
-			} else {
-				drawTexture(matrices, posX + 68, posY + 45, 90, 166, 19, 19);
-			}
-			if (isInRightButtonBounds(posX, posY, mouseX, mouseY)) {
-				drawTexture(matrices, posX + 140, posY + 45, 90, 204, 19, 19);
-			} else {
-				drawTexture(matrices, posX + 140, posY + 45, 90, 166, 19, 19);
-			}
-			textRenderer.draw(matrices, "<", posX + 75, posY + 51, 0xFFFFFF);
-			textRenderer.draw(matrices, ">", posX + 148, posY + 51, 0xFFFFFF);
-		}
-		if (client.currentScreen != null && handler.enchantmentDescription != null && mouseX >= posX + 78 && mouseX <= posX + 168 && mouseY >= posY + 14 && mouseY <= posY + 33) {
-			if (infoTexts == null) {
-				infoTexts = Helper.doFix(List.of(new LiteralText(handler.enchantmentName).formatted(Formatting.GRAY), handler.enchantmentDescription.formatted(Formatting.DARK_GRAY)), textRenderer);
-			}
-			client.currentScreen.renderTooltip(matrices, infoTexts, mouseX, mouseY);
-		} else {
-			infoTexts = null;
 		}
 		renderBook(matrices, client.getTickDelta());
 	}
@@ -130,21 +144,37 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		int posX = (width - backgroundWidth) / 2;
 		int posY = (height - backgroundHeight) / 2;
-		if (isInEnchantButtonBounds(posX, posY, (int) mouseX, (int) mouseY) && handler.onButtonClick(client.player, 0)) {
+		if (handler.canEnchant(client.player, client.player.isCreative()) && isInEnchantButtonBounds(posX, posY, (int) mouseX, (int) mouseY) && !handler.selectedEnchantments.isEmpty() && handler.onButtonClick(client.player, 0)) {
 			client.interactionManager.clickButton(handler.syncId, 0);
 			return true;
-		} else if (handler.canEnchant(client.player, true) && isInLeftButtonBounds(posX, posY, (int) mouseX, (int) mouseY) && handler.onButtonClick(client.player, 1)) {
+		} else if (isInUpButtonBounds(posX, posY, (int) mouseX, (int) mouseY) && handler.onButtonClick(client.player, 1)) {
 			client.interactionManager.clickButton(handler.syncId, 1);
-			client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1));
-			nextPageAngle -= 1;
-			return true;
-		} else if (handler.canEnchant(client.player, true) && isInRightButtonBounds(posX, posY, (int) mouseX, (int) mouseY) && handler.onButtonClick(client.player, 2)) {
-			client.interactionManager.clickButton(handler.syncId, 2);
 			client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1));
 			nextPageAngle += 1;
 			return true;
+		} else if (isInDownButtonBounds(posX, posY, (int) mouseX, (int) mouseY) && handler.onButtonClick(client.player, 2)) {
+			client.interactionManager.clickButton(handler.syncId, 2);
+			client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1));
+			nextPageAngle -= 1;
+			return true;
+		} else if (highlightedEnchantmentIndex >= 0 && handler.onButtonClick(client.player, highlightedEnchantmentIndex + 3)) {
+			client.interactionManager.clickButton(handler.syncId, highlightedEnchantmentIndex + 3);
+			client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1));
+			return true;
 		}
 		return super.mouseClicked(mouseX, mouseY, button);
+	}
+
+	@Override
+	public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+		if (handler.validEnchantments.size() > 3) {
+			int delta = (amount > 0 ? -1 : 1);
+			handler.updateViewIndex(amount > 0);
+			client.interactionManager.clickButton(handler.syncId, amount > 0 ? 1 : 2);
+			nextPageAngle += delta;
+			return true;
+		}
+		return super.mouseScrolled(mouseX, mouseY, amount);
 	}
 
 	private void renderBook(MatrixStack matrices, float delta) {
@@ -175,15 +205,19 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 		DiffuseLighting.enableGuiDepthLighting();
 	}
 
+	private static boolean isInBounds(int posX, int posY, int mouseX, int mouseY, int startX, int endX, int startY, int endY) {
+		return mouseX >= posX + startX && mouseX <= posX + endX && mouseY >= posY + startY && mouseY <= posY + endY;
+	}
+
+	private static boolean isInUpButtonBounds(int posX, int posY, int mouseX, int mouseY) {
+		return isInBounds(posX, posY, mouseX, mouseY, 154, 170, 12, 28);
+	}
+
+	private static boolean isInDownButtonBounds(int posX, int posY, int mouseX, int mouseY) {
+		return isInBounds(posX, posY, mouseX, mouseY, 154, 170, 29, 45);
+	}
+
 	private static boolean isInEnchantButtonBounds(int posX, int posY, int mouseX, int mouseY) {
-		return mouseX >= posX + 59 && mouseX <= posX + 168 && mouseY >= posY + 14 && mouseY <= posY + 33;
-	}
-
-	private static boolean isInLeftButtonBounds(int posX, int posY, int mouseX, int mouseY) {
-		return mouseX >= posX + 68 && mouseX <= posX + 87 && mouseY >= posY + 45 && mouseY <= posY + 64;
-	}
-
-	private static boolean isInRightButtonBounds(int posX, int posY, int mouseX, int mouseY) {
-		return mouseX >= posX + 140 && mouseX <= posX + 159 && mouseY >= posY + 45 && mouseY <= posY + 64;
+		return isInBounds(posX, posY, mouseX, mouseY, 154, 170, 50, 66);
 	}
 }

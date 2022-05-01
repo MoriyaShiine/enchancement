@@ -19,8 +19,8 @@ public abstract class ItemStackMixin {
 	public abstract boolean hasEnchantments();
 
 	@ModifyVariable(method = "addEnchantment", at = @At("HEAD"), argsOnly = true)
-	private int enchancement$singleEnchantmentMode(int value) {
-		if (Enchancement.getConfig().singleEnchantmentMode) {
+	private int enchancement$singleLevelMode(int value) {
+		if (Enchancement.getConfig().singleLevelMode) {
 			return 1;
 		}
 		return value;

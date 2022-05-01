@@ -19,13 +19,14 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.registry.Registry;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EnchantingTableScreenHandler extends ScreenHandler {
-	public Enchantment enchantment = null;
-	public String enchantmentName = "";
-	public TranslatableText enchantmentDescription = null;
+	public List<Enchantment> validEnchantments = null, selectedEnchantments = null;
+	public int viewIndex = 0;
 
 	private final Inventory inventory = new SimpleInventory(2) {
 		@Override
@@ -46,7 +47,14 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		addSlot(new Slot(inventory, 0, 15, 47) {
 			@Override
 			public boolean canInsert(ItemStack stack) {
-				return stack.isEnchantable() || stack.getItem() == Items.BOOK;
+				if (stack.isEnchantable() || stack.getItem() == Items.BOOK) {
+					for (Enchantment enchantment : Registry.ENCHANTMENT) {
+						if (enchantment.isAcceptableItem(stack)) {
+							return true;
+						}
+					}
+				}
+				return false;
 			}
 
 			@Override
@@ -56,15 +64,15 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 
 			@Override
 			public ItemStack insertStack(ItemStack stack, int count) {
-				setAsFirstValidEnchantment(stack);
+				populateEnchantmentList(stack);
 				return super.insertStack(stack, count);
 			}
 
 			@Override
 			public void onTakeItem(PlayerEntity player, ItemStack stack) {
-				enchantment = null;
-				enchantmentName = "";
-				enchantmentDescription = null;
+				validEnchantments = null;
+				selectedEnchantments = null;
+				viewIndex = 0;
 				super.onTakeItem(player, stack);
 			}
 		});
@@ -110,7 +118,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 					return ItemStack.EMPTY;
 				}
 			} else if (!slots.get(0).hasStack() && slots.get(0).canInsert(stackInSlot)) {
-				setAsFirstValidEnchantment(stackInSlot);
+				populateEnchantmentList(stackInSlot);
 				slots.get(0).setStack(stackInSlot.split(1));
 			} else {
 				return ItemStack.EMPTY;
@@ -142,32 +150,51 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 					ItemStack stack = slots.get(0).getStack();
 					if (stack.isOf(Items.BOOK)) {
 						stack = new ItemStack(Items.ENCHANTED_BOOK);
-						EnchantedBookItem.addEnchantment(stack, new EnchantmentLevelEntry(enchantment, enchantment.getMaxLevel()));
+						for (Enchantment enchantment : selectedEnchantments) {
+							EnchantedBookItem.addEnchantment(stack, new EnchantmentLevelEntry(enchantment, enchantment.getMaxLevel()));
+						}
 						slots.get(0).setStack(stack);
 					} else {
-						stack.addEnchantment(enchantment, enchantment.getMaxLevel());
+						for (Enchantment enchantment : selectedEnchantments) {
+							stack.addEnchantment(enchantment, enchantment.getMaxLevel());
+						}
 					}
-					player.addExperience(-55);
+					player.addExperience(-55 * selectedEnchantments.size());
 					player.incrementStat(Stats.ENCHANT_ITEM);
 					if (player instanceof ServerPlayerEntity serverPlayer) {
-						Criteria.ENCHANTED_ITEM.trigger(serverPlayer, stack, 5);
+						Criteria.ENCHANTED_ITEM.trigger(serverPlayer, stack, getCost());
 					}
 					world.playSound(null, pos, SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, SoundCategory.BLOCKS, 1, world.random.nextFloat() * 0.1F + 0.9F);
 					if (!player.isCreative()) {
-						slots.get(1).getStack().decrement(5);
+						slots.get(1).getStack().decrement(getCost());
 					}
 					inventory.markDirty();
 				});
 				return true;
 			}
 		} else if (id == 1) {
-			setAsNextValidEnchantment(slots.get(0).getStack(), true);
+			updateViewIndex(true);
 			return true;
 		} else if (id == 2) {
-			setAsNextValidEnchantment(slots.get(0).getStack(), false);
+			updateViewIndex(false);
+			return true;
+		} else if (id > 2 && id < 6) {
+			Enchantment enchantment = getEnchantmentFromViewIndex(id - 3);
+			if (selectedEnchantments.contains(enchantment)) {
+				selectedEnchantments.remove(enchantment);
+			} else {
+				selectedEnchantments.add(enchantment);
+			}
 			return true;
 		}
 		return false;
+	}
+
+	public Enchantment getEnchantmentFromViewIndex(int index) {
+		if (validEnchantments.size() <= 3) {
+			return validEnchantments.get(index);
+		}
+		return validEnchantments.get((index + viewIndex) % validEnchantments.size());
 	}
 
 	public boolean canEnchant(PlayerEntity player, boolean simulate) {
@@ -178,47 +205,30 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 			if (simulate) {
 				return true;
 			}
-			return player.experienceLevel >= 5 && slots.get(1).getStack().getCount() >= 5;
+			return player.experienceLevel >= getCost() && slots.get(1).getStack().getCount() >= getCost();
 		}
 		return false;
 	}
 
-	private void setAsFirstValidEnchantment(ItemStack stack) {
-		int i = 0;
-		if (stack.isOf(Items.BOOK)) {
-			enchantment = Registry.ENCHANTMENT.get(0);
-		} else {
-			while (enchantment == null || !enchantment.isAcceptableItem(stack)) {
-				if (i >= Registry.ENCHANTMENT.size()) {
-					return;
-				}
-				enchantment = Registry.ENCHANTMENT.get(i);
-				i++;
+	public int getCost() {
+		return selectedEnchantments.size() * 5;
+	}
+
+	public void updateViewIndex(boolean up) {
+		viewIndex = (viewIndex + (up ? -1 : 1)) % validEnchantments.size();
+		if (viewIndex < 0) {
+			viewIndex += validEnchantments.size();
+		}
+	}
+
+	private void populateEnchantmentList(ItemStack stack) {
+		validEnchantments = new ArrayList<>();
+		selectedEnchantments = new ArrayList<>();
+		viewIndex = 0;
+		for (Enchantment enchantment : Registry.ENCHANTMENT) {
+			if (stack.isOf(Items.BOOK) || enchantment.isAcceptableItem(stack)) {
+				validEnchantments.add(enchantment);
 			}
 		}
-		populateEnchantmentInfo();
-	}
-
-	private void setAsNextValidEnchantment(ItemStack stack, boolean left) {
-		enchantment = Registry.ENCHANTMENT.get(nextIndex(left));
-		if (!stack.isOf(Items.BOOK)) {
-			while (enchantment == null || !enchantment.isAcceptableItem(stack)) {
-				enchantment = Registry.ENCHANTMENT.get(nextIndex(left));
-			}
-		}
-		populateEnchantmentInfo();
-	}
-
-	private void populateEnchantmentInfo() {
-		enchantmentName = new TranslatableText(enchantment.getTranslationKey()).getString();
-		enchantmentDescription = new TranslatableText(enchantment.getTranslationKey() + ".desc");
-	}
-
-	private int nextIndex(boolean left) {
-		int i = (Registry.ENCHANTMENT.getRawId(enchantment) + (left ? -1 : 1)) % Registry.ENCHANTMENT.size();
-		if (i < 0) {
-			i += Registry.ENCHANTMENT.size();
-		}
-		return i;
 	}
 }
