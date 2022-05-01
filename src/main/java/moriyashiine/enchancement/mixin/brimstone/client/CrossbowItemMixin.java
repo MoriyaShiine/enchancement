@@ -1,13 +1,12 @@
 package moriyashiine.enchancement.mixin.brimstone.client;
 
-import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.Texts;
 import net.minecraft.text.TranslatableText;
@@ -26,12 +25,15 @@ import java.util.List;
 @Mixin(CrossbowItem.class)
 public class CrossbowItemMixin {
 	@Unique
-	private static final MutableText BRIMSTONE_TEXT = Texts.bracketed(new TranslatableText("tooltip." + Enchancement.MOD_ID + ".brimstone"));
+	private static Text BRIMSTONE_TEXT;
 
 	@Inject(method = "appendTooltip", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
 	private void enchancement$brimstone(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context, CallbackInfo ci, List<ItemStack> list, ItemStack projectile) {
 		if (ItemStack.areEqual(projectile, EnchancementUtil.BRIMSTONE_STACK)) {
-			tooltip.add(new TranslatableText("item.minecraft.crossbow.projectile").append(" ").append(BRIMSTONE_TEXT));
+			if (BRIMSTONE_TEXT == null) {
+				BRIMSTONE_TEXT = new TranslatableText("item.minecraft.crossbow.projectile").append(" ").append(Texts.bracketed(new TranslatableText(ModEnchantments.BRIMSTONE.getTranslationKey())));
+			}
+			tooltip.add(BRIMSTONE_TEXT);
 			ci.cancel();
 		}
 	}
