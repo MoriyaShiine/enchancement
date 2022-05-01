@@ -47,7 +47,9 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		addSlot(new Slot(inventory, 0, 15, 47) {
 			@Override
 			public boolean canInsert(ItemStack stack) {
-				if (stack.isEnchantable() || stack.getItem() == Items.BOOK) {
+				if (stack.getItem() == Items.BOOK) {
+					return true;
+				} else if (stack.isEnchantable()) {
 					for (Enchantment enchantment : Registry.ENCHANTMENT) {
 						if (enchantment.isAcceptableItem(stack)) {
 							return true;
