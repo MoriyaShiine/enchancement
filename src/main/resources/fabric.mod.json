@@ -3,9 +3,14 @@
   "id": "enchancement",
   "version": "${version}",
   "name": "Enchancement",
-  "description": "A mod that completely overhauls the vanilla enchanting system",
+  "description": "A mod that completely overhauls the vanilla enchanting system and some adjacent features",
   "authors": [
 	"MoriyaShiine"
+  ],
+  "contributors": [
+	"cybercat5555",
+	"doctor4t",
+	"UpcraftLP"
   ],
   "contact": {
 	"homepage": "https://www.curseforge.com/minecraft/mc-mods/enchancement",
