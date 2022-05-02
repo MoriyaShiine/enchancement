@@ -47,7 +47,7 @@ public class EnchancementClient implements ClientModInitializer {
 		ModelPredicateProviderRegistry.register(Items.CROSSBOW, new Identifier(Enchancement.MOD_ID, "crossbow_torch"), (stack, world, entity, seed) -> CrossbowItem.hasProjectile(stack, Items.TORCH) ? 1 : 0);
 		HandledScreens.register(ModScreenHandlerTypes.ENCHANTING_TABLE, EnchantingTableScreen::new);
 		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(FrozenReloadListener.INSTANCE);
-		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(Enchancement.MOD_ID, "inverted_dash"), modContainer, ResourcePackActivationType.NORMAL));
+		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(Enchancement.MOD_ID, "alternate_dash"), modContainer, ResourcePackActivationType.NORMAL));
 		initEvents();
 	}
 

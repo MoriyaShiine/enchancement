@@ -23,8 +23,10 @@ public class DashRenderEvent implements HudRenderCallback {
 				int scaledWidth = minecraft.getWindow().getScaledWidth(), scaledHeight = minecraft.getWindow().getScaledHeight();
 				matrices.push();
 				RenderSystem.setShaderTexture(0, DASH_TEXTURE);
-				DrawableHelper.drawTexture(matrices, (int) (scaledWidth / 2F) - 8, (int) (scaledHeight / 2F) + 16, 0, 4, 16, 4, 16, 8);
-				DrawableHelper.drawTexture(matrices, (int) (scaledWidth / 2F) - 8, (int) (scaledHeight / 2F) + 16, 0, 0, (int) (16 - (dashComponent.getDashCooldown() / 20F) * 16), 4, 16, 8);
+				DrawableHelper.drawTexture(matrices, (int) (scaledWidth / 2F) - 5, (int) (scaledHeight / 2F) + 10, 0, 4, 10, 4, 10, 8);
+				if (dashComponent.getDashCooldown() < 20) {
+					DrawableHelper.drawTexture(matrices, (int) (scaledWidth / 2F) - 5, (int) (scaledHeight / 2F) + 10, 0, 0, (int) (11 - (dashComponent.getDashCooldown() / 20F) * 10), 4, 10, 8);
+				}
 				matrices.pop();
 			}
 		});
