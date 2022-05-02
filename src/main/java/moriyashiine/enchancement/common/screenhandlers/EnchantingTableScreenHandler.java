@@ -1,5 +1,6 @@
 package moriyashiine.enchancement.common.screenhandlers;
 
+import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.registry.ModScreenHandlerTypes;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.Blocks;
@@ -53,7 +54,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 					return true;
 				} else if (stack.isEnchantable()) {
 					for (Enchantment enchantment : Registry.ENCHANTMENT) {
-						if (enchantment.isAcceptableItem(stack)) {
+						if (enchantment.isAcceptableItem(stack) && !Enchancement.getConfig().isEnchantmentDisallowed(enchantment)) {
 							return true;
 						}
 					}
@@ -199,7 +200,9 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 				enchantingStack = stack;
 				for (Enchantment enchantment : Registry.ENCHANTMENT) {
 					if (stack.isOf(Items.BOOK) || enchantment.isAcceptableItem(stack)) {
-						validEnchantments.add(enchantment);
+						if (!Enchancement.getConfig().isEnchantmentDisallowed(enchantment)) {
+							validEnchantments.add(enchantment);
+						}
 					}
 				}
 				super.onContentChanged(inventory);

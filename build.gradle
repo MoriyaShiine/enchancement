@@ -54,7 +54,6 @@ dependencies {
     modImplementation "com.github.emilyploszaj:step-height-entity-attribute:${step_height_entity_attribute_version}"
     include "com.github.emilyploszaj:step-height-entity-attribute:${step_height_entity_attribute_version}"
 
-    modImplementation "curse.maven:bookshelf-228525:${bookshelf_version}"
     modImplementation("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
