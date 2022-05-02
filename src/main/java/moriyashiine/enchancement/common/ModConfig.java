@@ -12,7 +12,7 @@ import java.util.List;
 @Config(name = Enchancement.MOD_ID)
 public class ModConfig implements ConfigData {
 	@ConfigEntry.Gui.Excluded
-	public List<Identifier> allowedEnchantmentIdentifiers;
+	List<Identifier> allowedEnchantmentIdentifiers;
 
 	@ConfigEntry.Gui.Excluded
 	List<String> allowedEnchantments = List.of(

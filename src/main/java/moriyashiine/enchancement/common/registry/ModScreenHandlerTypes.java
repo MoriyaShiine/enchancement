@@ -2,14 +2,14 @@ package moriyashiine.enchancement.common.registry;
 
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.screenhandlers.EnchantingTableScreenHandler;
-import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 public class ModScreenHandlerTypes {
-	public static ScreenHandlerType<EnchantingTableScreenHandler> ENCHANTING_TABLE;
+	public static final ScreenHandlerType<EnchantingTableScreenHandler> ENCHANTING_TABLE = new ScreenHandlerType<>(EnchantingTableScreenHandler::new);
 
 	public static void init() {
-		ENCHANTING_TABLE = ScreenHandlerRegistry.registerSimple(new Identifier(Enchancement.MOD_ID, "enchanting_table"), EnchantingTableScreenHandler::new);
+		Registry.register(Registry.SCREEN_HANDLER, new Identifier(Enchancement.MOD_ID, "enchanting_table"), ENCHANTING_TABLE);
 	}
 }

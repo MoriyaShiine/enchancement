@@ -91,10 +91,10 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 
 	private Direction updatePressing() {
 		Direction direction = null;
-		boolean pressingForward = MinecraftClient.getInstance().options.keyForward.isPressed();
-		boolean pressingBackward = MinecraftClient.getInstance().options.keyBack.isPressed();
-		boolean pressingLeft = MinecraftClient.getInstance().options.keyLeft.isPressed();
-		boolean pressingRight = MinecraftClient.getInstance().options.keyRight.isPressed();
+		boolean pressingForward = MinecraftClient.getInstance().options.forwardKey.isPressed();
+		boolean pressingBackward = MinecraftClient.getInstance().options.backKey.isPressed();
+		boolean pressingLeft = MinecraftClient.getInstance().options.leftKey.isPressed();
+		boolean pressingRight = MinecraftClient.getInstance().options.rightKey.isPressed();
 		if (ticksLeftToPressForward > 0) {
 			ticksLeftToPressForward--;
 		}

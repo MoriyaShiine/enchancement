@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Environment(EnvType.CLIENT)
 @Mixin(MinecraftClient.class)
@@ -19,9 +20,9 @@ public class MinecraftClientMixin {
 	public ClientPlayerEntity player;
 
 	@Inject(method = "doAttack", at = @At("HEAD"), cancellable = true)
-	private void enchancement$disarm(CallbackInfo ci) {
+	private void enchancement$disarm(CallbackInfoReturnable<Boolean> cir) {
 		if (player != null && player.getItemCooldownManager().isCoolingDown(player.getMainHandStack().getItem())) {
-			ci.cancel();
+			cir.setReturnValue(false);
 		}
 	}
 

@@ -6,6 +6,7 @@ import moriyashiine.enchancement.common.util.RemovedRegistryEntry;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.util.registry.SimpleRegistry;
 import org.jetbrains.annotations.Nullable;
@@ -14,15 +15,18 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@SuppressWarnings({"ConstantConditions", "unchecked"})
+@SuppressWarnings("unchecked")
 @Mixin(SimpleRegistry.class)
-public abstract class SimpleRegistryMixin<T> {
-	@SuppressWarnings("ConstantConditions")
-	@Inject(method = "set(ILnet/minecraft/util/registry/RegistryKey;Ljava/lang/Object;Lcom/mojang/serialization/Lifecycle;Z)Ljava/lang/Object;", at = @At("HEAD"), cancellable = true)
-	private <V extends T> void enchancement$disableDisallowedEnchantments(int rawId, RegistryKey<T> key, V entry, Lifecycle lifecycle, boolean checkDuplicateKeys, CallbackInfoReturnable<V> cir) {
+public abstract class SimpleRegistryMixin<T> extends Registry<T> {
+	protected SimpleRegistryMixin(RegistryKey<? extends Registry<T>> key, Lifecycle lifecycle) {
+		super(key, lifecycle);
+	}
+
+	@Inject(method = "set(ILnet/minecraft/util/registry/RegistryKey;Ljava/lang/Object;Lcom/mojang/serialization/Lifecycle;Z)Lnet/minecraft/util/registry/RegistryEntry;", at = @At("HEAD"), cancellable = true)
+	private void enchancement$disableDisallowedEnchantments(int rawId, RegistryKey<T> key, T value, Lifecycle lifecycle, boolean checkDuplicateKeys, CallbackInfoReturnable<RegistryEntry<T>> cir) {
 		if (SimpleRegistry.class.cast(this) == Registry.ENCHANTMENT && Enchancement.getConfig().isEnchantmentDisallowed(key.getValue())) {
-			RemovedRegistryEntry.REMOVED_ENTRIES.add(new RemovedRegistryEntry((Enchantment) entry, key.getValue(), rawId));
-			cir.setReturnValue(entry);
+			RemovedRegistryEntry.REMOVED_ENTRIES.add(new RemovedRegistryEntry((Enchantment) value, key.getValue(), rawId));
+			cir.setReturnValue(RegistryEntry.Reference.standAlone(this, key));
 		}
 	}
 
@@ -47,9 +51,9 @@ public abstract class SimpleRegistryMixin<T> {
 	}
 
 	@Inject(method = "getId", at = @At("HEAD"), cancellable = true)
-	private void enchancement$disableDisallowedEnchantments(T entry, CallbackInfoReturnable<@Nullable Identifier> cir) {
+	private void enchancement$disableDisallowedEnchantments(T value, CallbackInfoReturnable<@Nullable Identifier> cir) {
 		if (SimpleRegistry.class.cast(this) == Registry.ENCHANTMENT) {
-			RemovedRegistryEntry removedEntry = RemovedRegistryEntry.getFromEnchantment((Enchantment) entry);
+			RemovedRegistryEntry removedEntry = RemovedRegistryEntry.getFromEnchantment((Enchantment) value);
 			if (removedEntry != null) {
 				cir.setReturnValue(removedEntry.identifier());
 			}
@@ -57,9 +61,9 @@ public abstract class SimpleRegistryMixin<T> {
 	}
 
 	@Inject(method = "getRawId", at = @At("HEAD"), cancellable = true)
-	private void enchancement$disableDisallowedEnchantmentsRawid(@Nullable T entry, CallbackInfoReturnable<Integer> cir) {
-		if (entry != null && SimpleRegistry.class.cast(this) == Registry.ENCHANTMENT) {
-			RemovedRegistryEntry removedEntry = RemovedRegistryEntry.getFromEnchantment((Enchantment) entry);
+	private void enchancement$disableDisallowedEnchantmentsRawid(@Nullable T value, CallbackInfoReturnable<Integer> cir) {
+		if (value != null && SimpleRegistry.class.cast(this) == Registry.ENCHANTMENT) {
+			RemovedRegistryEntry removedEntry = RemovedRegistryEntry.getFromEnchantment((Enchantment) value);
 			if (removedEntry != null) {
 				cir.setReturnValue(removedEntry.rawId());
 			}
