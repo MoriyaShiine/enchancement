@@ -32,7 +32,7 @@ public abstract class ImpaledTridentEntityRendererMixin extends EntityRenderer<I
 		super(ctx);
 	}
 
-	@Inject(method = "render(Lladysnake/impaled/common/entity/ImpaledTridentEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "render*", at = @At("HEAD"), cancellable = true)
 	private void enchancement$leech(ImpaledTridentEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
 		EnchancementClientUtil.renderLeechTrident(entity, matrices, vertexConsumers, model, getTexture(entity), light, () -> super.render(entity, yaw, tickDelta, matrices, vertexConsumers, light), ci);
 	}
