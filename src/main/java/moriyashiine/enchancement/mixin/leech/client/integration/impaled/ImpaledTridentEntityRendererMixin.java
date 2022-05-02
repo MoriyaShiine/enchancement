@@ -1,3 +1,7 @@
+/*
+ * All Rights Reserved (c) 2022 MoriyaShiine
+ */
+
 package moriyashiine.enchancement.mixin.leech.client.integration.impaled;
 
 import ladysnake.impaled.client.render.entity.ImpaledTridentEntityRenderer;

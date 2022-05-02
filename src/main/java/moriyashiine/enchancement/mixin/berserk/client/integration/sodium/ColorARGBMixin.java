@@ -1,3 +1,7 @@
+/*
+ * All Rights Reserved (c) 2022 MoriyaShiine
+ */
+
 package moriyashiine.enchancement.mixin.berserk.client.integration.sodium;
 
 import me.jellysquid.mods.sodium.client.util.color.ColorARGB;

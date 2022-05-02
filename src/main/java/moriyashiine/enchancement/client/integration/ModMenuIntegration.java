@@ -1,3 +1,7 @@
+/*
+ * All Rights Reserved (c) 2022 MoriyaShiine
+ */
+
 package moriyashiine.enchancement.client.integration;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;

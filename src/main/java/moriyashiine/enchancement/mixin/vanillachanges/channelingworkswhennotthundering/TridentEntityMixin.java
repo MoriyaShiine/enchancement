@@ -1,3 +1,7 @@
+/*
+ * All Rights Reserved (c) 2022 MoriyaShiine
+ */
+
 package moriyashiine.enchancement.mixin.vanillachanges.channelingworkswhennotthundering;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;

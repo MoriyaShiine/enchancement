@@ -1,3 +1,7 @@
+/*
+ * All Rights Reserved (c) 2022 MoriyaShiine
+ */
+
 package moriyashiine.enchancement.common.util;
 
 import net.minecraft.entity.EntityType;
@@ -8,14 +12,4 @@ import java.util.Map;
 
 public record BeheadingEntry(Item drop, float chance) {
 	public static final Map<EntityType<?>, BeheadingEntry> DROP_MAP = new HashMap<>();
-
-	@Override
-	public Item drop() {
-		return drop;
-	}
-
-	@Override
-	public float chance() {
-		return chance;
-	}
 }

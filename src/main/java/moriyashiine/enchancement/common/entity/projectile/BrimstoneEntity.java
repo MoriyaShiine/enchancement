@@ -1,3 +1,7 @@
+/*
+ * All Rights Reserved (c) 2022 MoriyaShiine
+ */
+
 package moriyashiine.enchancement.common.entity.projectile;
 
 import moriyashiine.enchancement.common.registry.ModEntityTypes;

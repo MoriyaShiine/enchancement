@@ -1,3 +1,7 @@
+/*
+ * All Rights Reserved (c) 2022 MoriyaShiine
+ */
+
 package moriyashiine.enchancement.client.reloadlisteners;
 
 import moriyashiine.enchancement.common.Enchancement;

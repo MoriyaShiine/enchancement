@@ -1,3 +1,7 @@
+/*
+ * All Rights Reserved (c) 2022 MoriyaShiine
+ */
+
 package moriyashiine.enchancement.common.registry;
 
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
