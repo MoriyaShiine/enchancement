@@ -62,6 +62,7 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     modImplementation "curse.maven:tooltipfix-411557:${tooltipfix_version}"
 
+    modCompileOnly "curse.maven:impaled-478843:${impaled_version}"
     modCompileOnly "com.terraformersmc:modmenu:${mod_menu_version}"
     modRuntimeOnly "com.terraformersmc:modmenu:${mod_menu_version}"
     modCompileOnly "com.github.CaffeineMC:sodium-fabric:${sodium_version}"

@@ -36,6 +36,7 @@
 	"leech.LivingEntityMixin",
 	"leech.PlayerEntityMixin",
 	"leech.TridentEntityMixin",
+	"leech.integration.impaled.ImpaledTridentItemMixin",
 	"molten.AbstractFurnaceBlockEntityAccessor",
 	"molten.BlockMixin",
 	"phasing.ArrowItemMixin",
@@ -86,7 +87,8 @@
 	"vanillachanges.unbreakingchanges.ItemStackMixin",
 	"wardenspine.LivingEntityMixin",
 	"warp.PersistentProjectileEntityMixin",
-	"warp.TridentEntityMixin"
+	"warp.TridentEntityMixin",
+	"warp.integration.impaled.ImpaledTridentItemMixin"
   ],
   "client": [
 	"berserk.client.ItemColorsMixin",
@@ -102,6 +104,7 @@
 	"impact.client.KeyboardInputMixin",
 	"impact.client.PlayerEntityRendererMixin",
 	"leech.client.TridentEntityRendererMixin",
+	"leech.client.integration.impaled.ImpaledTridentEntityRendererMixin",
 	"perception.client.LightmapTextureManagerMixin",
 	"perception.client.MinecraftClientMixin",
 	"slide.client.PlayerEntityRendererMixin",
