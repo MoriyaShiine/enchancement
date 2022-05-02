@@ -46,6 +46,7 @@
 	"slide.PlayerEntityMixin",
 	"torch.CrossbowItemMixin",
 	"torch.TorchCrossbowMixin",
+	"util.EnchantmentHelperMixin",
 	"util.ItemEntityAccessor",
 	"util.LivingEntityAccessor",
 	"util.ServerPlayNetworkHandlerMixin",
