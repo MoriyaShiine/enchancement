@@ -78,7 +78,7 @@
   },
   "block.ore.extract": {
 	"sounds": [
-	  "mob/zombie/woodbreak"
+	  "enchancement:block/extract"
 	],
 	"subtitle": "subtitles.enchancement.block.ore.extract"
   },
