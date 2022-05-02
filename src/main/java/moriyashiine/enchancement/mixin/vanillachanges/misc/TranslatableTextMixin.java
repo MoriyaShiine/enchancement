@@ -1,4 +1,4 @@
-package moriyashiine.enchancement.mixin.vanillachanges;
+package moriyashiine.enchancement.mixin.vanillachanges.misc;
 
 import moriyashiine.enchancement.common.Enchancement;
 import net.minecraft.text.TranslatableText;

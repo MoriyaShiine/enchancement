@@ -1,4 +1,4 @@
-package moriyashiine.enchancement.mixin.vanillachanges;
+package moriyashiine.enchancement.mixin.vanillachanges.overhaulenchantingtable;
 
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.screenhandlers.EnchantingTableScreenHandler;

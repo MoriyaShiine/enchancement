@@ -9,8 +9,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class ModEnchantments {
-	public static final Enchantment EMPTY = new EmptyEnchantment(Enchantment.Rarity.VERY_RARE, EnchantmentTarget.ARMOR);
-
 	//helmet
 	public static final Enchantment ASSIMILATION = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_HEAD, EquipmentSlot.HEAD);
 	public static final Enchantment BUFFET = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_HEAD, EquipmentSlot.HEAD);

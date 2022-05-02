@@ -1,18 +1,15 @@
-package moriyashiine.enchancement.mixin.vanillachanges;
+package moriyashiine.enchancement.mixin.vanillachanges.singlelevelmode;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import moriyashiine.enchancement.common.Enchancement;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.TridentItem;
-import net.minecraft.util.registry.Registry;
 import org.apache.commons.lang3.mutable.MutableFloat;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,8 +18,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.Map;
 
 @Mixin(EnchantmentHelper.class)
 public abstract class EnchantmentHelperMixin {
@@ -49,23 +44,6 @@ public abstract class EnchantmentHelperMixin {
 	private static void enchancement$singleLevelMode(Enchantment enchantment, ItemStack stack, CallbackInfoReturnable<Integer> cir) {
 		if (cir.getReturnValueI() > 0 && Enchancement.getConfig().singleLevelMode) {
 			cir.setReturnValue(enchantment.getMaxLevel());
-		}
-	}
-
-	@Inject(method = "getLoyalty", at = @At("HEAD"), cancellable = true)
-	private static void enchancement$giveAllTridentsLoyalty(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
-		if (Enchancement.getConfig().allTridentsHaveLoyalty && stack.getItem() instanceof TridentItem) {
-			cir.setReturnValue(Enchantments.LOYALTY.getMaxLevel());
-		}
-	}
-
-	@Inject(method = "getLure", at = @At("HEAD"), cancellable = true)
-	private static void enchancement$luckOfTheSeaWithLure(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
-		if (Enchancement.getConfig().luckOfTheSeaHasLure) {
-			int level = EnchantmentHelper.getLuckOfTheSea(stack);
-			if (level > 0) {
-				cir.setReturnValue(Enchantments.LURE.getMaxLevel());
-			}
 		}
 	}
 
@@ -112,18 +90,6 @@ public abstract class EnchantmentHelperMixin {
 			if (attacker instanceof PlayerEntity) {
 				forEachEnchantment(consumer, user.getMainHandStack());
 			}
-			ci.cancel();
-		}
-	}
-
-	@Inject(method = "set", at = @At("HEAD"), cancellable = true)
-	private static void enchancement$singleEnchantmentMode(Map<Enchantment, Integer> enchantments, ItemStack stack, CallbackInfo ci) {
-		for (Enchantment enchantment : enchantments.keySet()) {
-			if (Registry.ENCHANTMENT.getId(enchantment) == null) {
-				enchantments.remove(enchantment);
-			}
-		}
-		if (Enchancement.getConfig().singleEnchantmentMode && stack.hasEnchantments()) {
 			ci.cancel();
 		}
 	}

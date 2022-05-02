@@ -3,7 +3,9 @@ package moriyashiine.enchancement.common;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 import java.util.List;
 
@@ -13,7 +15,7 @@ public class ModConfig implements ConfigData {
 	public List<Identifier> allowedEnchantmentIdentifiers;
 
 	@ConfigEntry.Gui.Excluded
-	public List<String> allowedEnchantments = List.of(
+	List<String> allowedEnchantments = List.of(
 			"enchancement:assimilation", "enchancement:buffet", "enchancement:perception",
 			"enchancement:amphibious", "enchancement:strafe", "enchancement:wardenspine",
 			"enchancement:dash", "enchancement:impact", "enchancement:slide",
@@ -45,4 +47,12 @@ public class ModConfig implements ConfigData {
 	public int maxExtractingBlocks = 64;
 	public int maxLumberjackBlocks = 1024;
 	public int unbreakingChangesFlag = 0;
+
+	public boolean isEnchantmentDisallowed(Identifier identifier) {
+		return !allowedEnchantmentIdentifiers.isEmpty() && !allowedEnchantmentIdentifiers.contains(identifier);
+	}
+
+	public boolean isEnchantmentDisallowed(Enchantment enchantment) {
+		return isEnchantmentDisallowed(Registry.ENCHANTMENT.getId(enchantment));
+	}
 }

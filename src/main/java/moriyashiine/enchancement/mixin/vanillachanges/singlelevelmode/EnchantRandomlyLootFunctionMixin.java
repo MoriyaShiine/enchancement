@@ -1,4 +1,4 @@
-package moriyashiine.enchancement.mixin.vanillachanges;
+package moriyashiine.enchancement.mixin.vanillachanges.singlelevelmode;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import moriyashiine.enchancement.common.Enchancement;

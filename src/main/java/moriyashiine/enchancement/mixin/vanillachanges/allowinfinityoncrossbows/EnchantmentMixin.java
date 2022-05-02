@@ -1,6 +1,5 @@
-package moriyashiine.enchancement.mixin.vanillachanges;
+package moriyashiine.enchancement.mixin.vanillachanges.allowinfinityoncrossbows;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import moriyashiine.enchancement.common.Enchancement;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
@@ -13,21 +12,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Enchantment.class)
 public class EnchantmentMixin {
-	@Inject(method = "canCombine", at = @At("HEAD"), cancellable = true)
-	private void enchancement$singleEnchantmentMode(Enchantment other, CallbackInfoReturnable<Boolean> cir) {
-		if (Enchancement.getConfig().singleEnchantmentMode) {
-			cir.setReturnValue(false);
-		}
-	}
-
-	@ModifyExpressionValue(method = "getName", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/Enchantment;getMaxLevel()I"))
-	private int enchancement$singleLevelMode(int value) {
-		if (Enchancement.getConfig().singleLevelMode) {
-			return 1;
-		}
-		return value;
-	}
-
 	@SuppressWarnings("ConstantConditions")
 	@Inject(method = "isAcceptableItem", at = @At("HEAD"), cancellable = true)
 	private void enchancement$allowInfinityOnCrossbows(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {

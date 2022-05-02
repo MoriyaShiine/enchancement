@@ -1,4 +1,4 @@
-package moriyashiine.enchancement.mixin.vanillachanges;
+package moriyashiine.enchancement.mixin.vanillachanges.safechanneling;
 
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import net.minecraft.entity.Entity;
