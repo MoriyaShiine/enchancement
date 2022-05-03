@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.registry;
 
 import moriyashiine.enchancement.common.Enchancement;
 import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.tag.TagKey;
@@ -27,5 +28,9 @@ public class ModTags {
 
 	public static class Items {
 		public static final TagKey<Item> RETAINS_DURABILITY = TagKey.of(Registry.ITEM_KEY, new Identifier(Enchancement.MOD_ID, "retains_durability"));
+	}
+
+	public static class Enchantments {
+		public static final TagKey<Enchantment> UNSELECTABLE = TagKey.of(Registry.ENCHANTMENT_KEY, new Identifier(Enchancement.MOD_ID, "unselectable"));
 	}
 }

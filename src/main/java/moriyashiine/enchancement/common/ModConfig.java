@@ -17,9 +17,6 @@ public class ModConfig implements ConfigData {
 	public List<Identifier> allowedEnchantmentIdentifiers;
 
 	@ConfigEntry.Gui.Excluded
-	public List<Identifier> tableExcludedEnchantmentIdentifiers;
-
-	@ConfigEntry.Gui.Excluded
 	public List<String> allowedEnchantments = List.of(
 			"enchancement:assimilation", "enchancement:buffet", "enchancement:perception",
 			"enchancement:amphibious", "enchancement:strafe", "enchancement:wardenspine",
@@ -35,9 +32,6 @@ public class ModConfig implements ConfigData {
 			"enchancement:bury", "enchancement:scooping",
 			"enchancement:disarm", "enchancement:grapple", "minecraft:luck_of_the_sea",
 			"minecraft:efficiency", "minecraft:silk_touch");
-
-	@ConfigEntry.Gui.Excluded
-	public List<String> tableExcludedEnchantments = List.of();
 
 	public boolean allowTreasureEnchantmentsInEnchantingTable = false;
 	public boolean overhaulEnchantingTable = true;
