@@ -72,13 +72,13 @@ public class EnchancementUtil {
 
 	public static boolean shouldBeUnbreakable(ItemStack stack) {
 		int flag = Enchancement.getConfig().unbreakingChangesFlag;
-		if (flag == 0) {
-			if (!stack.isEmpty() && stack.getMaxDamage() > 0) {
-				return true;
+		if (flag >= 0 && !stack.isIn(ModTags.Items.RETAINS_DURABILITY)) {
+			if (flag == 0) {
+				return !stack.isEmpty() && stack.getMaxDamage() > 0;
 			}
-			return !stack.isIn(ModTags.Items.RETAINS_DURABILITY);
+			return EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) >= flag;
 		}
-		return flag > 0 && EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) >= flag;
+		return false;
 	}
 
 	public static boolean shouldHurt(Entity attacker, Entity hitEntity) {
