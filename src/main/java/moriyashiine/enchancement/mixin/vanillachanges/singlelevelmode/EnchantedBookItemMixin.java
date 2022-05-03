@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class EnchantedBookItemMixin {
 	@ModifyVariable(method = "addEnchantment", at = @At("HEAD"), argsOnly = true)
 	private static EnchantmentLevelEntry enchancement$singleLevelMode(EnchantmentLevelEntry value) {
-		if (Enchancement.getConfig().singleLevelMode) {
+		if (Enchancement.config.singleLevelMode) {
 			return new EnchantmentLevelEntry(value.enchantment, 1);
 		}
 		return value;
@@ -24,7 +24,7 @@ public class EnchantedBookItemMixin {
 
 	@ModifyExpressionValue(method = "appendStacks", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/Enchantment;getMaxLevel()I"))
 	private int enchancement$singleLevelMode(int value) {
-		if (Enchancement.getConfig().singleLevelMode) {
+		if (Enchancement.config.singleLevelMode) {
 			return 1;
 		}
 		return value;

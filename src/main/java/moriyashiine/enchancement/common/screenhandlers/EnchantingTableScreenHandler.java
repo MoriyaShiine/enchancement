@@ -246,7 +246,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 
 	private static boolean isEnchantmentAllowed(Enchantment enchantment, ItemStack stack) {
 		if (enchantment.isAvailableForRandomSelection()) {
-			if (!enchantment.isTreasure() || Enchancement.getConfig().allowTreasureEnchantmentsInEnchantingTable) {
+			if (!enchantment.isTreasure() || Enchancement.config.allowTreasureEnchantmentsInEnchantingTable) {
 				if (stack.isOf(Items.BOOK) || enchantment.isAcceptableItem(stack)) {
 					return !Registry.ENCHANTMENT.entryOf(Registry.ENCHANTMENT.getKey(enchantment).orElse(null)).isIn(ModTags.Enchantments.UNSELECTABLE);
 				}

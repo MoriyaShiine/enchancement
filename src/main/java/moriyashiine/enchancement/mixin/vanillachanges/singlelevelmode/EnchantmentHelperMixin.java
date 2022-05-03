@@ -37,7 +37,7 @@ public abstract class EnchantmentHelperMixin {
 
 	@Inject(method = "getAttackDamage", at = @At("HEAD"), cancellable = true)
 	private static void enchancement$singleLevelModeAttackDamage(ItemStack stack, EntityGroup group, CallbackInfoReturnable<Float> cir) {
-		if (Enchancement.getConfig().singleLevelMode) {
+		if (Enchancement.config.singleLevelMode) {
 			MutableFloat mutableFloat = new MutableFloat();
 			forEachEnchantment((Enchantment enchantment, int level) -> mutableFloat.add(enchantment.getAttackDamage(enchantment.getMaxLevel(), group)), stack);
 			cir.setReturnValue(mutableFloat.floatValue());
@@ -46,14 +46,14 @@ public abstract class EnchantmentHelperMixin {
 
 	@Inject(method = "getLevel", at = @At("RETURN"), cancellable = true)
 	private static void enchancement$singleLevelMode(Enchantment enchantment, ItemStack stack, CallbackInfoReturnable<Integer> cir) {
-		if (cir.getReturnValueI() > 0 && Enchancement.getConfig().singleLevelMode) {
+		if (cir.getReturnValueI() > 0 && Enchancement.config.singleLevelMode) {
 			cir.setReturnValue(enchantment.getMaxLevel());
 		}
 	}
 
 	@ModifyExpressionValue(method = "getPossibleEntries", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/Enchantment;getMaxLevel()I"))
 	private static int enchancement$singleLevelMode(int value) {
-		if (Enchancement.getConfig().singleLevelMode) {
+		if (Enchancement.config.singleLevelMode) {
 			return 1;
 		}
 		return value;
@@ -61,7 +61,7 @@ public abstract class EnchantmentHelperMixin {
 
 	@Inject(method = "getProtectionAmount", at = @At("HEAD"), cancellable = true)
 	private static void enchancement$singleLevelModeProtectionAmount(Iterable<ItemStack> equipment, DamageSource source, CallbackInfoReturnable<Integer> cir) {
-		if (Enchancement.getConfig().singleLevelMode) {
+		if (Enchancement.config.singleLevelMode) {
 			MutableInt mutableInt = new MutableInt();
 			forEachEnchantment((Enchantment enchantment, int level) -> mutableInt.add(enchantment.getProtectionAmount(enchantment.getMaxLevel(), source)), equipment);
 			cir.setReturnValue(mutableInt.intValue());
@@ -71,7 +71,7 @@ public abstract class EnchantmentHelperMixin {
 	@SuppressWarnings("ConstantConditions")
 	@Inject(method = "onTargetDamaged", at = @At("HEAD"), cancellable = true)
 	private static void enchancement$singleLevelModeTargetDamaged(LivingEntity user, Entity target, CallbackInfo ci) {
-		if (Enchancement.getConfig().singleLevelMode) {
+		if (Enchancement.config.singleLevelMode) {
 			EnchantmentHelper.Consumer consumer = (enchantment, level) -> enchantment.onTargetDamaged(user, target, enchantment.getMaxLevel());
 			if (user != null) {
 				forEachEnchantment(consumer, user.getItemsEquipped());
@@ -86,7 +86,7 @@ public abstract class EnchantmentHelperMixin {
 	@SuppressWarnings("ConstantConditions")
 	@Inject(method = "onUserDamaged", at = @At("HEAD"), cancellable = true)
 	private static void enchancement$singleLevelModeUserDamaged(LivingEntity user, Entity attacker, CallbackInfo ci) {
-		if (Enchancement.getConfig().singleLevelMode) {
+		if (Enchancement.config.singleLevelMode) {
 			EnchantmentHelper.Consumer consumer = (enchantment, level) -> enchantment.onUserDamaged(user, attacker, enchantment.getMaxLevel());
 			if (user != null) {
 				forEachEnchantment(consumer, user.getItemsEquipped());

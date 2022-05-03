@@ -6,7 +6,6 @@ package moriyashiine.enchancement.common;
 
 import com.google.gson.Gson;
 import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import moriyashiine.enchancement.common.event.*;
 import moriyashiine.enchancement.common.packet.*;
@@ -26,12 +25,16 @@ import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resource.ResourceType;
-import net.minecraft.util.Identifier;
 
 public class Enchancement implements ModInitializer {
 	public static final String MOD_ID = "enchancement";
 
-	private static ConfigHolder<ModConfig> config;
+	public static final ModConfig config;
+
+	static {
+		AutoConfig.register(ModConfig.class, GsonConfigSerializer::new);
+		config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+	}
 
 	@Override
 	public void onInitialize() {
@@ -46,18 +49,6 @@ public class Enchancement implements ModInitializer {
 		ModScreenHandlerTypes.init();
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new BeheadingReloadListener(new Gson(), MOD_ID + "_beheading"));
 		initEvents();
-	}
-
-	public static ModConfig getConfig() {
-		if (config == null) {
-			AutoConfig.register(ModConfig.class, GsonConfigSerializer::new);
-			config = AutoConfig.getConfigHolder(ModConfig.class);
-		}
-		ModConfig modConfig = config.getConfig();
-		if (modConfig.allowedEnchantmentIdentifiers == null) {
-			modConfig.allowedEnchantmentIdentifiers = modConfig.allowedEnchantments.stream().map(Identifier::new).toList();
-		}
-		return modConfig;
 	}
 
 	private void initEvents() {

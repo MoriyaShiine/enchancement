@@ -19,7 +19,7 @@ import java.util.Map;
 public class EnchantmentHelperMixin {
 	@Inject(method = "set", at = @At("HEAD"), cancellable = true)
 	private static void enchancement$singleEnchantmentMode(Map<Enchantment, Integer> enchantments, ItemStack stack, CallbackInfo ci) {
-		if (Enchancement.getConfig().singleEnchantmentMode && stack.hasEnchantments()) {
+		if (Enchancement.config.singleEnchantmentMode && stack.hasEnchantments()) {
 			ci.cancel();
 		}
 	}

@@ -14,6 +14,6 @@ import org.spongepowered.asm.mixin.injection.At;
 public class LightningRodBlockMixin {
 	@ModifyExpressionValue(method = "onProjectileHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;isThundering()Z"))
 	private boolean enchancement$channelingWorksWhenNotThundering(boolean value) {
-		return value || Enchancement.getConfig().channelingWorksWhenNotThundering;
+		return value || Enchancement.config.channelingWorksWhenNotThundering;
 	}
 }

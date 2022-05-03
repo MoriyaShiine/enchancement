@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class SetEnchantmentsLootFunctionMixin {
 	@ModifyVariable(method = "addEnchantmentToMap", at = @At("HEAD"), argsOnly = true)
 	private static int enchancement$singleLevelMode(int value) {
-		if (Enchancement.getConfig().singleLevelMode) {
+		if (Enchancement.config.singleLevelMode) {
 			return 1;
 		}
 		return value;

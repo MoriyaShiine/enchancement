@@ -33,7 +33,7 @@ public class LumberjackEvent implements PlayerBlockBreakEvents.Before {
 			ItemStack stack = player.getMainHandStack();
 			if (EnchancementUtil.hasEnchantment(ModEnchantments.LUMBERJACK, stack) && state.isIn(BlockTags.LOGS)) {
 				List<BlockPos> tree = gatherTree(new ArrayList<>(), world, new BlockPos.Mutable().set(pos), state.getBlock());
-				if (tree.size() > 1 && tree.size() <= Enchancement.getConfig().maxLumberjackBlocks) {
+				if (tree.size() > 1 && tree.size() <= Enchancement.config.maxLumberjackBlocks) {
 					ItemStack copy = stack.copy();
 					AtomicBoolean broken = new AtomicBoolean(false);
 					stack.damage(tree.size(), player, stackUser -> {
@@ -52,7 +52,7 @@ public class LumberjackEvent implements PlayerBlockBreakEvents.Before {
 	}
 
 	private static List<BlockPos> gatherTree(List<BlockPos> tree, World world, BlockPos.Mutable pos, Block original) {
-		if (tree.size() < Enchancement.getConfig().maxLumberjackBlocks) {
+		if (tree.size() < Enchancement.config.maxLumberjackBlocks) {
 			int originalX = pos.getX(), originalY = pos.getY(), originalZ = pos.getZ();
 			for (int x = -1; x <= 1; x++) {
 				for (int y = -1; y <= 1; y++) {

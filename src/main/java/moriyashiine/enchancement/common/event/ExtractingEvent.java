@@ -38,7 +38,7 @@ public class ExtractingEvent implements PlayerBlockBreakEvents.Before {
 			ItemStack stack = player.getMainHandStack();
 			if (EnchancementUtil.hasEnchantment(ModEnchantments.EXTRACTING, stack) && state.isIn(ModTags.Blocks.ORES)) {
 				Set<BlockPos> ores = gatherOres(new HashSet<>(), world, new BlockPos.Mutable().set(pos), state.getBlock());
-				if (!ores.isEmpty() && ores.size() <= Enchancement.getConfig().maxExtractingBlocks) {
+				if (!ores.isEmpty() && ores.size() <= Enchancement.config.maxExtractingBlocks) {
 					ItemStack copy = stack.copy();
 					AtomicBoolean broken = new AtomicBoolean(false);
 					stack.damage(ores.size(), player, stackUser -> {
@@ -66,7 +66,7 @@ public class ExtractingEvent implements PlayerBlockBreakEvents.Before {
 	}
 
 	private static Set<BlockPos> gatherOres(Set<BlockPos> ores, World world, BlockPos.Mutable pos, Block original) {
-		if (ores.size() < Enchancement.getConfig().maxExtractingBlocks) {
+		if (ores.size() < Enchancement.config.maxExtractingBlocks) {
 			int originalX = pos.getX(), originalY = pos.getY(), originalZ = pos.getZ();
 			for (int x = -1; x <= 1; x++) {
 				for (int y = -1; y <= 1; y++) {

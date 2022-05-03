@@ -13,10 +13,7 @@ import java.util.List;
 
 @Config(name = Enchancement.MOD_ID)
 public class ModConfig implements ConfigData {
-	@ConfigEntry.Gui.Excluded
-	public List<Identifier> allowedEnchantmentIdentifiers;
-
-	@ConfigEntry.Gui.Excluded
+	@ConfigEntry.Gui.RequiresRestart
 	public List<String> allowedEnchantments = List.of(
 			"enchancement:assimilation", "enchancement:buffet", "enchancement:perception",
 			"enchancement:amphibious", "enchancement:strafe", "enchancement:wardenspine",
@@ -32,9 +29,11 @@ public class ModConfig implements ConfigData {
 			"enchancement:bury", "enchancement:scooping",
 			"enchancement:disarm", "enchancement:grapple", "minecraft:luck_of_the_sea",
 			"minecraft:efficiency", "minecraft:silk_touch");
+	@ConfigEntry.Gui.RequiresRestart
+	public boolean invertedList = false;
 
-	public boolean allowTreasureEnchantmentsInEnchantingTable = false;
 	public boolean overhaulEnchantingTable = true;
+	public boolean allowTreasureEnchantmentsInEnchantingTable = false;
 	public boolean singleEnchantmentMode = true;
 	@ConfigEntry.Gui.RequiresRestart
 	public boolean singleLevelMode = true;
@@ -51,7 +50,10 @@ public class ModConfig implements ConfigData {
 	public int maxLumberjackBlocks = 1024;
 	public int unbreakingChangesFlag = 0;
 
-	public boolean isEnchantmentDisallowed(Identifier identifier) {
-		return !allowedEnchantmentIdentifiers.isEmpty() && !allowedEnchantmentIdentifiers.contains(identifier);
+	public boolean isEnchantmentAllowed(Identifier identifier) {
+		if (invertedList) {
+			return !allowedEnchantments.contains(identifier.toString());
+		}
+		return allowedEnchantments.contains(identifier.toString());
 	}
 }

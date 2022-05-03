@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class EnchantmentMixin {
 	@Inject(method = "canCombine", at = @At("HEAD"), cancellable = true)
 	private void enchancement$singleEnchantmentMode(Enchantment other, CallbackInfoReturnable<Boolean> cir) {
-		if (Enchancement.getConfig().singleEnchantmentMode) {
+		if (Enchancement.config.singleEnchantmentMode) {
 			cir.setReturnValue(false);
 		}
 	}

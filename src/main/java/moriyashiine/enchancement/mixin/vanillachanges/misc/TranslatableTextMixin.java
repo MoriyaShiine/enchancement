@@ -24,11 +24,11 @@ public class TranslatableTextMixin {
 	@Unique
 	private static boolean shouldRedirect(String key) {
 		return switch (key) {
-			case "enchantment.minecraft.fire_aspect.desc" -> Enchancement.getConfig().fireAspectWorksAsFlintAndSteel;
-			case "enchantment.minecraft.infinity.desc" -> Enchancement.getConfig().allowInfinityOnCrossbows;
-			case "enchantment.minecraft.channeling.desc" -> Enchancement.getConfig().channelingWorksWhenNotThundering;
-			case "enchantment.minecraft.luck_of_the_sea.desc" -> Enchancement.getConfig().luckOfTheSeaHasLure;
-			case "enchantment.minecraft.unbreaking.desc" -> Enchancement.getConfig().unbreakingChangesFlag > 0;
+			case "enchantment.minecraft.fire_aspect.desc" -> Enchancement.config.fireAspectWorksAsFlintAndSteel;
+			case "enchantment.minecraft.infinity.desc" -> Enchancement.config.allowInfinityOnCrossbows;
+			case "enchantment.minecraft.channeling.desc" -> Enchancement.config.channelingWorksWhenNotThundering;
+			case "enchantment.minecraft.luck_of_the_sea.desc" -> Enchancement.config.luckOfTheSeaHasLure;
+			case "enchantment.minecraft.unbreaking.desc" -> Enchancement.config.unbreakingChangesFlag > 0;
 			default -> false;
 		};
 	}
