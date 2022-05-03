@@ -7,19 +7,20 @@ package moriyashiine.enchancement.common;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 import java.util.List;
 
 @Config(name = Enchancement.MOD_ID)
 public class ModConfig implements ConfigData {
 	@ConfigEntry.Gui.Excluded
-	List<Identifier> allowedEnchantmentIdentifiers;
+	public List<Identifier> allowedEnchantmentIdentifiers;
 
 	@ConfigEntry.Gui.Excluded
-	List<String> allowedEnchantments = List.of(
+	public List<Identifier> tableExcludedEnchantmentIdentifiers;
+
+	@ConfigEntry.Gui.Excluded
+	public List<String> allowedEnchantments = List.of(
 			"enchancement:assimilation", "enchancement:buffet", "enchancement:perception",
 			"enchancement:amphibious", "enchancement:strafe", "enchancement:wardenspine",
 			"enchancement:dash", "enchancement:impact", "enchancement:slide",
@@ -35,6 +36,10 @@ public class ModConfig implements ConfigData {
 			"enchancement:disarm", "enchancement:grapple", "minecraft:luck_of_the_sea",
 			"minecraft:efficiency", "minecraft:silk_touch");
 
+	@ConfigEntry.Gui.Excluded
+	public List<String> tableExcludedEnchantments = List.of();
+
+	public boolean allowTreasureEnchantmentsInEnchantingTable = false;
 	public boolean overhaulEnchantingTable = true;
 	public boolean singleEnchantmentMode = true;
 	@ConfigEntry.Gui.RequiresRestart
@@ -54,9 +59,5 @@ public class ModConfig implements ConfigData {
 
 	public boolean isEnchantmentDisallowed(Identifier identifier) {
 		return !allowedEnchantmentIdentifiers.isEmpty() && !allowedEnchantmentIdentifiers.contains(identifier);
-	}
-
-	public boolean isEnchantmentDisallowed(Enchantment enchantment) {
-		return isEnchantmentDisallowed(Registry.ENCHANTMENT.getId(enchantment));
 	}
 }

@@ -57,6 +57,9 @@ public class Enchancement implements ModInitializer {
 		if (modConfig.allowedEnchantmentIdentifiers == null) {
 			modConfig.allowedEnchantmentIdentifiers = modConfig.allowedEnchantments.stream().map(Identifier::new).toList();
 		}
+		if (modConfig.tableExcludedEnchantmentIdentifiers == null) {
+			modConfig.tableExcludedEnchantmentIdentifiers = modConfig.tableExcludedEnchantments.stream().map(Identifier::new).toList();
+		}
 		return modConfig;
 	}
 

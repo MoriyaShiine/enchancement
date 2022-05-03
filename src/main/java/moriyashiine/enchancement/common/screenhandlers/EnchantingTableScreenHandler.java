@@ -58,7 +58,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 					return true;
 				} else if (stack.isEnchantable()) {
 					for (Enchantment enchantment : Registry.ENCHANTMENT) {
-						if (enchantment.isAcceptableItem(stack) && !Enchancement.getConfig().isEnchantmentDisallowed(enchantment)) {
+						if (isEnchantmentAllowed(enchantment, stack)) {
 							return true;
 						}
 					}
@@ -203,10 +203,8 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 				viewIndex = 0;
 				enchantingStack = stack;
 				for (Enchantment enchantment : Registry.ENCHANTMENT) {
-					if (stack.isOf(Items.BOOK) || enchantment.isAcceptableItem(stack)) {
-						if (!Enchancement.getConfig().isEnchantmentDisallowed(enchantment)) {
-							validEnchantments.add(enchantment);
-						}
+					if (isEnchantmentAllowed(enchantment, stack)) {
+						validEnchantments.add(enchantment);
 					}
 				}
 				super.onContentChanged(inventory);
@@ -243,5 +241,14 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		if (viewIndex < 0) {
 			viewIndex += validEnchantments.size();
 		}
+	}
+
+	private static boolean isEnchantmentAllowed(Enchantment enchantment, ItemStack stack) {
+		if (stack.isOf(Items.BOOK) || enchantment.isAcceptableItem(stack)) {
+			if (!enchantment.isTreasure() || Enchancement.getConfig().allowTreasureEnchantmentsInEnchantingTable) {
+				return !Enchancement.getConfig().tableExcludedEnchantmentIdentifiers.contains(Registry.ENCHANTMENT.getId(enchantment));
+			}
+		}
+		return false;
 	}
 }
