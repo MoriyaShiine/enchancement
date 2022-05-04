@@ -28,7 +28,7 @@ public abstract class SimpleRegistryMixin<T> extends Registry<T> {
 
 	@Inject(method = "set(ILnet/minecraft/util/registry/RegistryKey;Ljava/lang/Object;Lcom/mojang/serialization/Lifecycle;Z)Lnet/minecraft/util/registry/RegistryEntry;", at = @At("HEAD"), cancellable = true)
 	private void enchancement$disableDisallowedEnchantments(int rawId, RegistryKey<T> key, T value, Lifecycle lifecycle, boolean checkDuplicateKeys, CallbackInfoReturnable<RegistryEntry<T>> cir) {
-		if (SimpleRegistry.class.cast(this) == Registry.ENCHANTMENT && !Enchancement.config.isEnchantmentAllowed(key.getValue())) {
+		if (SimpleRegistry.class.cast(this) == Registry.ENCHANTMENT && !Enchancement.getConfig().isEnchantmentAllowed(key.getValue())) {
 			RemovedRegistryEntry.REMOVED_ENTRIES.add(new RemovedRegistryEntry((Enchantment) value, key.getValue(), rawId));
 			cir.setReturnValue(RegistryEntry.Reference.standAlone(this, key));
 		}

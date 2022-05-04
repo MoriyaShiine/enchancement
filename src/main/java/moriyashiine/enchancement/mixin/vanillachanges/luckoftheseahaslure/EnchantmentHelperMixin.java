@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class EnchantmentHelperMixin {
 	@Inject(method = "getLure", at = @At("HEAD"), cancellable = true)
 	private static void enchancement$luckOfTheSeaHasLure(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
-		if (Enchancement.config.luckOfTheSeaHasLure && EnchancementUtil.hasEnchantment(Enchantments.LUCK_OF_THE_SEA, stack)) {
+		if (Enchancement.getConfig().luckOfTheSeaHasLure && EnchancementUtil.hasEnchantment(Enchantments.LUCK_OF_THE_SEA, stack)) {
 			cir.setReturnValue(Enchantments.LURE.getMaxLevel());
 		}
 	}

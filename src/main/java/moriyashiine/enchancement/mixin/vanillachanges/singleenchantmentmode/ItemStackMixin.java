@@ -20,7 +20,7 @@ public abstract class ItemStackMixin {
 
 	@Inject(method = "addEnchantment", at = @At("HEAD"), cancellable = true)
 	private void enchancement$singleEnchantmentMode(Enchantment enchantment, int level, CallbackInfo ci) {
-		if (Enchancement.config.singleEnchantmentMode && hasEnchantments()) {
+		if (Enchancement.getConfig().singleEnchantmentMode && hasEnchantments()) {
 			ci.cancel();
 		}
 	}

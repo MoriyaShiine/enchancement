@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 public class TridentEntityMixin {
 	@ModifyArg(method = "onEntityHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z"))
 	private Entity enchancement$safeChanneling(Entity value) {
-		if (Enchancement.config.safeChanneling) {
+		if (Enchancement.getConfig().safeChanneling) {
 			ModEntityComponents.CHANNELING.get(value).setSafe(true);
 		}
 		return value;

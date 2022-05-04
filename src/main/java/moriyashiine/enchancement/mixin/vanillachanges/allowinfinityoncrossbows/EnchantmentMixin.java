@@ -19,7 +19,7 @@ public class EnchantmentMixin {
 	@SuppressWarnings("ConstantConditions")
 	@Inject(method = "isAcceptableItem", at = @At("HEAD"), cancellable = true)
 	private void enchancement$allowInfinityOnCrossbows(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
-		if (Enchancement.config.allowInfinityOnCrossbows && (Object) this == Enchantments.INFINITY && stack.getItem() instanceof CrossbowItem) {
+		if (Enchancement.getConfig().allowInfinityOnCrossbows && (Object) this == Enchantments.INFINITY && stack.getItem() instanceof CrossbowItem) {
 			cir.setReturnValue(true);
 		}
 	}

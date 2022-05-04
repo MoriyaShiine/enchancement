@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common;
 
 import com.google.gson.Gson;
 import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import moriyashiine.enchancement.common.event.*;
 import moriyashiine.enchancement.common.packet.*;
@@ -29,12 +30,7 @@ import net.minecraft.resource.ResourceType;
 public class Enchancement implements ModInitializer {
 	public static final String MOD_ID = "enchancement";
 
-	public static final ModConfig config;
-
-	static {
-		AutoConfig.register(ModConfig.class, GsonConfigSerializer::new);
-		config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
-	}
+	private static ConfigHolder<ModConfig> config;
 
 	@Override
 	public void onInitialize() {
@@ -49,6 +45,14 @@ public class Enchancement implements ModInitializer {
 		ModScreenHandlerTypes.init();
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new BeheadingReloadListener(new Gson(), MOD_ID + "_beheading"));
 		initEvents();
+	}
+
+	public static ModConfig getConfig() {
+		if (config == null) {
+			AutoConfig.register(ModConfig.class, GsonConfigSerializer::new);
+			config = AutoConfig.getConfigHolder(ModConfig.class);
+		}
+		return config.getConfig();
 	}
 
 	private void initEvents() {

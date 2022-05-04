@@ -25,7 +25,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 public class EnchantingTableBlockMixin {
 	@Inject(method = "createScreenHandlerFactory", at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/SimpleNamedScreenHandlerFactory;<init>(Lnet/minecraft/screen/ScreenHandlerFactory;Lnet/minecraft/text/Text;)V"), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
 	private void enchancement$overhaulEnchantingTable(BlockState state, World world, BlockPos pos, CallbackInfoReturnable<NamedScreenHandlerFactory> cir, BlockEntity blockEntity, Text text) {
-		if (Enchancement.config.overhaulEnchantingTable) {
+		if (Enchancement.getConfig().overhaulEnchantingTable) {
 			cir.setReturnValue(new SimpleNamedScreenHandlerFactory((syncId, inventory, player) -> new EnchantingTableScreenHandler(syncId, inventory, ScreenHandlerContext.create(world, pos)), text));
 		}
 	}

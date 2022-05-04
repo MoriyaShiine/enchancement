@@ -71,7 +71,7 @@ public class EnchancementUtil {
 	}
 
 	public static boolean shouldBeUnbreakable(ItemStack stack) {
-		int flag = Enchancement.config.unbreakingChangesFlag;
+		int flag = Enchancement.getConfig().unbreakingChangesFlag;
 		if (flag >= 0 && !stack.isIn(ModTags.Items.RETAINS_DURABILITY)) {
 			if (flag == 0) {
 				return !stack.isEmpty() && stack.getMaxDamage() > 0;

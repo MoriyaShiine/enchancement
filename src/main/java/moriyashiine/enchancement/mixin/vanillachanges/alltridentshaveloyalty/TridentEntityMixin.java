@@ -22,7 +22,7 @@ public abstract class TridentEntityMixin extends PersistentProjectileEntity {
 
 	@ModifyVariable(method = "tick", at = @At("STORE"))
 	private int enchancement$disableLoyaltyOnNonPlayerTridents(int value) {
-		if (Enchancement.config.allTridentsHaveLoyalty && !(getOwner() instanceof PlayerEntity)) {
+		if (Enchancement.getConfig().allTridentsHaveLoyalty && !(getOwner() instanceof PlayerEntity)) {
 			return 0;
 		}
 		return value;
@@ -30,7 +30,7 @@ public abstract class TridentEntityMixin extends PersistentProjectileEntity {
 
 	@ModifyVariable(method = "age", at = @At("STORE"))
 	private int enchancement$ageNonPlayerTridents(int value) {
-		if (Enchancement.config.allTridentsHaveLoyalty && !(getOwner() instanceof PlayerEntity)) {
+		if (Enchancement.getConfig().allTridentsHaveLoyalty && !(getOwner() instanceof PlayerEntity)) {
 			return 0;
 		}
 		return value;
