@@ -41,9 +41,9 @@ public class BuryEvent implements UseEntityCallback {
 					BlockPos down = entity.getBlockPos().down();
 					BlockState state = world.getBlockState(down);
 					if (state.isIn(ModTags.Blocks.BURIABLE) && state.isFullCube(world, down)) {
-						player.getItemCooldownManager().set(stack.getItem(), 200);
 						if (!world.isClient) {
 							world.playSoundFromEntity(null, entity, ModSoundEvents.ENTITY_GENERIC_BURY, entity.getSoundCategory(), 1, 1);
+							player.getItemCooldownManager().set(stack.getItem(), 200);
 							stack.damage(1, player, stackUser -> stackUser.sendToolBreakStatus(hand));
 							buryComponent.setBuryPos(down);
 							buryComponent.sync();
