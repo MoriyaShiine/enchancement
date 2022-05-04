@@ -31,6 +31,8 @@ public class BuryEvent implements UseEntityCallback {
 		if (!entity.getType().isIn(ModTags.EntityTypes.CANNOT_BURY) && !entity.isSpectator()) {
 			if (entity instanceof LivingEntity living && living.isDead()) {
 				return ActionResult.PASS;
+			} else if (entity instanceof PlayerEntity targetPlayer && targetPlayer.isCreative()) {
+				return ActionResult.PASS;
 			}
 			ItemStack stack = player.getStackInHand(hand);
 			if (EnchancementUtil.hasEnchantment(ModEnchantments.BURY, stack)) {
@@ -39,6 +41,7 @@ public class BuryEvent implements UseEntityCallback {
 					BlockPos down = entity.getBlockPos().down();
 					BlockState state = world.getBlockState(down);
 					if (state.isIn(ModTags.Blocks.BURIABLE) && state.isFullCube(world, down)) {
+						player.getItemCooldownManager().set(stack.getItem(), 200);
 						if (!world.isClient) {
 							world.playSoundFromEntity(null, entity, ModSoundEvents.ENTITY_GENERIC_BURY, entity.getSoundCategory(), 1, 1);
 							stack.damage(1, player, stackUser -> stackUser.sendToolBreakStatus(hand));

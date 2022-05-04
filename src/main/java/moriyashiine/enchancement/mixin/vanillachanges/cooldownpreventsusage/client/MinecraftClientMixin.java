@@ -2,7 +2,7 @@
  * All Rights Reserved (c) 2022 MoriyaShiine
  */
 
-package moriyashiine.enchancement.mixin.disarm.client;
+package moriyashiine.enchancement.mixin.vanillachanges.cooldownpreventsusage.client;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -24,14 +24,21 @@ public class MinecraftClientMixin {
 	public ClientPlayerEntity player;
 
 	@Inject(method = "doAttack", at = @At("HEAD"), cancellable = true)
-	private void enchancement$disarm(CallbackInfoReturnable<Boolean> cir) {
+	private void enchancement$cooldownPreventsUsage(CallbackInfoReturnable<Boolean> cir) {
 		if (player != null && player.getItemCooldownManager().isCoolingDown(player.getMainHandStack().getItem())) {
 			cir.setReturnValue(false);
 		}
 	}
 
+	@Inject(method = "doItemUse", at = @At("HEAD"), cancellable = true)
+	private void enchancement$cooldownPreventsUsage(CallbackInfo ci) {
+		if (player != null && player.getItemCooldownManager().isCoolingDown(player.getMainHandStack().getItem())) {
+			ci.cancel();
+		}
+	}
+
 	@Inject(method = "handleBlockBreaking", at = @At("HEAD"), cancellable = true)
-	private void enchancement$disarm(boolean bl, CallbackInfo ci) {
+	private void enchancement$cooldownPreventsUsage(boolean bl, CallbackInfo ci) {
 		if (player != null && player.getItemCooldownManager().isCoolingDown(player.getMainHandStack().getItem())) {
 			ci.cancel();
 		}

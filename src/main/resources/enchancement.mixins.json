@@ -92,7 +92,6 @@
 	"brimstone.client.CrossbowItemMixin",
 	"brimstone.client.ModelLoaderMixin",
 	"bury.client.KeyboardInputMixin",
-	"disarm.client.MinecraftClientMixin",
 	"frostbite.client.LivingEntityRendererMixin",
 	"impact.client.KeyboardInputMixin",
 	"impact.client.PlayerEntityRendererMixin",
@@ -101,7 +100,8 @@
 	"perception.client.LightmapTextureManagerMixin",
 	"perception.client.MinecraftClientMixin",
 	"slide.client.PlayerEntityRendererMixin",
-	"torch.client.ModelLoaderMixin"
+	"torch.client.ModelLoaderMixin",
+	"vanillachanges.cooldownpreventsusage.client.MinecraftClientMixin"
   ],
   "injectors": {
 	"defaultRequire": 1
