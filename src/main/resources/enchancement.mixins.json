@@ -23,6 +23,7 @@
 	"delay.ArrowEntityMixin",
 	"delay.PersistentProjectileEntityMixin",
 	"disarm.FishingBobberEntityMixin",
+	"disarm.PiglinBrainAccessor",
 	"disarm.WitchEntityMixin",
 	"frostbite.LivingEntityMixin",
 	"frostbite.MobEntityMixin",

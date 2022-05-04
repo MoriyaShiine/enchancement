@@ -10,6 +10,7 @@ import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.*;
 import net.minecraft.entity.mob.EndermanEntity;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.mob.PiglinEntity;
 import net.minecraft.entity.mob.WitchEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
@@ -67,6 +68,25 @@ public abstract class FishingBobberEntityMixin extends Entity {
 						if (stack.isDamageable()) {
 							stack.setDamage(MathHelper.nextInt(living.getRandom(), stack.getDamage(), (int) (stack.getMaxDamage() - (stack.getMaxDamage() * 0.05F))));
 						}
+						if (entity instanceof MobEntity mob) {
+							mob.setTarget(owner);
+							mob.setAttacker(owner);
+							if (entity instanceof InteractionObserver observer) {
+								observer.onInteractionWith(EntityInteraction.VILLAGER_HURT, owner);
+							}
+							if (entity instanceof EndermanEntity enderman) {
+								enderman.setCarriedBlock(null);
+							}
+							if (entity instanceof PiglinEntity piglin) {
+								PiglinBrainAccessor.enchancement$onAttacked(piglin, owner);
+							}
+							if (entity instanceof WitchEntity) {
+								Potion potion = PotionUtil.getPotion(stack);
+								if (potion != Potions.EMPTY) {
+									ModEntityComponents.WITCH_DISARM.get(entity).disablePotion(potion);
+								}
+							}
+						}
 						ItemEntity itemEntity = new ItemEntity(world, entity.getX(), entity.getBodyY(0.5), entity.getZ(), stack);
 						itemEntity.setToDefaultPickupDelay();
 						double deltaX = owner.getX() - getX();
@@ -75,19 +95,6 @@ public abstract class FishingBobberEntityMixin extends Entity {
 						itemEntity.setVelocity(deltaX * 0.1, deltaY * 0.1 + Math.sqrt(Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ)) * 0.08, deltaZ * 0.1);
 						world.spawnEntity(itemEntity);
 						living.equipStack(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
-						if (entity instanceof MobEntity mob) {
-							if (!owner.isCreative()) {
-								mob.setTarget(owner);
-							}
-							if (entity instanceof EndermanEntity enderman) {
-								enderman.setCarriedBlock(null);
-							} else if (entity instanceof WitchEntity) {
-								Potion potion = PotionUtil.getPotion(stack);
-								if (potion != Potions.EMPTY) {
-									ModEntityComponents.WITCH_DISARM.get(entity).disablePotion(potion);
-								}
-							}
-						}
 					}
 				}
 				ci.cancel();
