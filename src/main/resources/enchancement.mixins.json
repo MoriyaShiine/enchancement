@@ -59,6 +59,7 @@
 	"vanillachanges.channelingworkswhennotthundering.LightningRodBlockMixin",
 	"vanillachanges.channelingworkswhennotthundering.TridentEntityMixin",
 	"vanillachanges.disabledisallowedenchantments.SimpleRegistryMixin",
+	"vanillachanges.freeenchantedbookmerging.AnvilScreenHandlerMixin",
 	"vanillachanges.luckoftheseahaslure.EnchantmentHelperMixin",
 	"vanillachanges.misc.TranslatableTextMixin",
 	"vanillachanges.overhaulenchantingtable.EnchantingTableBlockMixin",

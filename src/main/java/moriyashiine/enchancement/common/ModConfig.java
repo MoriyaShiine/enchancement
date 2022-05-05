@@ -42,6 +42,7 @@ public class ModConfig implements ConfigData {
 	public boolean allTridentsHaveLoyalty = true;
 	public boolean channelingWorksWhenNotThundering = true;
 	public boolean fireAspectWorksAsFlintAndSteel = true;
+	public boolean freeEnchantedBookMerging = true;
 	public boolean luckOfTheSeaHasLure = true;
 	public boolean safeChanneling = true;
 	public boolean tridentsReturnFromVoid = true;
