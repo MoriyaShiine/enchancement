@@ -16,7 +16,8 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
@@ -27,16 +28,14 @@ public abstract class LivingEntityMixin extends Entity {
 		super(type, world);
 	}
 
-	@ModifyVariable(method = "damage", at = @At("HEAD"), argsOnly = true)
-	private float enchancement$wardenspine(float value, DamageSource source) {
-		if (!world.isClient && !(source instanceof EntityDamageSource entityDamageSource && entityDamageSource.isThorns())) {
-			if (source.getSource() instanceof LivingEntity living && Math.abs(MathHelper.subtractAngles(getHeadYaw(), living.getHeadYaw())) <= 75) {
-				if (EnchancementUtil.hasEnchantment(ModEnchantments.WARDENSPINE, this)) {
-					living.damage(DamageSource.thorns(this), 4);
-					return value / 2;
-				}
-			}
+	@Inject(method = "applyEnchantmentsToDamage", at = @At(value = "RETURN", ordinal = 2), cancellable = true)
+	private void enchancement$wardenspine(DamageSource source, float amount, CallbackInfoReturnable<Float> cir) {
+		if (source instanceof EntityDamageSource entityDamageSource && entityDamageSource.isThorns()) {
+			return;
 		}
-		return value;
+		if (source.getSource() instanceof LivingEntity living && Math.abs(MathHelper.subtractAngles(getHeadYaw(), living.getHeadYaw())) <= 75 && EnchancementUtil.hasEnchantment(ModEnchantments.WARDENSPINE, this)) {
+			living.damage(DamageSource.thorns(this), 4);
+			cir.setReturnValue(cir.getReturnValueF() / 2);
+		}
 	}
 }
