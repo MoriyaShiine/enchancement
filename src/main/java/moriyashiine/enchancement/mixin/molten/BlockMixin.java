@@ -47,7 +47,7 @@ public class BlockMixin {
 						PlayerLookup.tracking(world, pos).forEach(foundPlayer -> AddMoltenParticlesPacket.send(foundPlayer, pos));
 						world.playSound(null, pos, ModSoundEvents.BLOCK_GENERIC_SMELT, SoundCategory.BLOCKS, 1, 1);
 						drops.set(i, smelted.getLeft());
-						AbstractFurnaceBlockEntityAccessor.enchancement$dropExperience(world, Vec3d.of(pos), 1, smelted.getRight());
+						AbstractFurnaceBlockEntityAccessor.enchancement$dropExperience(world, entity != null && EnchancementUtil.hasEnchantment(ModEnchantments.EXTRACTING, stack) ? entity.getPos() : Vec3d.of(pos), 1, smelted.getRight());
 					}
 				}
 			}
