@@ -28,6 +28,7 @@
 	"frostbite.LivingEntityMixin",
 	"frostbite.MobEntityMixin",
 	"frostbite.PlayerEntityMixin",
+	"frostbite.ProjectileEntityMixin",
 	"frostbite.ServerPlayerEntityMixin",
 	"gale.LivingEntityMixin",
 	"grapple.FishingBobberEntityMixin",
