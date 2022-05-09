@@ -2,7 +2,7 @@
  * All Rights Reserved (c) 2022 MoriyaShiine
  */
 
-package moriyashiine.enchancement.mixin.vanillachanges.misc;
+package moriyashiine.enchancement.mixin.util;
 
 import moriyashiine.enchancement.common.Enchancement;
 import net.minecraft.text.TranslatableText;
