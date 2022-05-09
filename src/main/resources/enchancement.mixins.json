@@ -96,6 +96,8 @@
 	"brimstone.client.ModelLoaderMixin",
 	"bury.client.KeyboardInputMixin",
 	"frostbite.client.LivingEntityRendererMixin",
+	"frostbite.client.integration.geckolib.FrozenGeoModelMixin",
+	"frostbite.client.integration.geckolib.GeoEntityRendererMixin",
 	"impact.client.KeyboardInputMixin",
 	"impact.client.PlayerEntityRendererMixin",
 	"leech.client.TridentEntityRendererMixin",

@@ -6,11 +6,14 @@ package moriyashiine.enchancement.mixin.berserk.client.integration.sodium;
 
 import me.jellysquid.mods.sodium.client.util.color.ColorARGB;
 import moriyashiine.enchancement.client.util.EnchancementClientUtil;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+@Environment(EnvType.CLIENT)
 @Mixin(value = ColorARGB.class, remap = false)
 public class ColorARGBMixin {
 	@Inject(method = "toABGR(II)I", at = @At("HEAD"), cancellable = true)

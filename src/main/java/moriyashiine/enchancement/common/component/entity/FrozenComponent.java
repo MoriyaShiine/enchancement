@@ -27,7 +27,8 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 	private boolean frozen = false;
 	private int ticksFrozen = 0;
 	private EntityPose forcedPose = EntityPose.STANDING;
-	private float forcedHeadYaw, forcedBodyYaw, forcedPitch, forcedLimbDistance, forcedLimbAngle;
+	private float forcedHeadYaw = 0, forcedBodyYaw = 0, forcedPitch = 0, forcedLimbDistance = 0, forcedLimbAngle = 0;
+	private int forcedClientAge = 0;
 
 	public FrozenComponent(LivingEntity obj) {
 		this.obj = obj;
@@ -43,6 +44,7 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 		forcedPitch = tag.getFloat("ForcedPitch");
 		forcedLimbDistance = tag.getFloat("ForceLimbDistance");
 		forcedLimbAngle = tag.getFloat("ForcedLimbAngle");
+		forcedClientAge = tag.getInt("ForcedClientAge");
 	}
 
 	@Override
@@ -55,6 +57,7 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 		tag.putFloat("ForcedPitch", forcedPitch);
 		tag.putFloat("ForceLimbDistance", forcedLimbDistance);
 		tag.putFloat("ForcedLimbAngle", forcedLimbAngle);
+		tag.putInt("ForcedClientAge", forcedClientAge);
 	}
 
 	@Override
@@ -124,6 +127,10 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 		return forcedLimbAngle;
 	}
 
+	public int getForcedClientAge() {
+		return forcedClientAge;
+	}
+
 	public boolean shouldFreezeOnDeath(DamageSource source) {
 		if (!obj.world.isClient && !obj.getType().isIn(ModTags.EntityTypes.CANNOT_FREEZE) && lastFreezingAttacker != null) {
 			return FrozenComponent.isSourceFreezingEntity(source) || source == DamageSource.FREEZE;
@@ -141,6 +148,7 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 		forcedPitch = obj.getPitch();
 		forcedLimbDistance = obj.limbDistance;
 		forcedLimbAngle = obj.limbAngle;
+		forcedClientAge = obj.age;
 		setFrozen(true);
 		sync();
 	}

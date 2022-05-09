@@ -24,6 +24,10 @@ repositories {
         url "https://maven.shedaniel.me"
     }
     maven {
+        name "geckolib"
+        url "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven"
+    }
+    maven {
         name "mod menu"
         url "https://maven.terraformersmc.com"
     }
@@ -62,6 +66,7 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     modImplementation "curse.maven:tooltipfix-411557:${tooltipfix_version}"
 
+    modCompileOnly "software.bernie.geckolib:geckolib-fabric-${geckolib_version}"
     modCompileOnly "curse.maven:impaled-478843:${impaled_version}"
     modCompileOnly "com.terraformersmc:modmenu:${mod_menu_version}"
     modRuntimeOnly "com.terraformersmc:modmenu:${mod_menu_version}"
