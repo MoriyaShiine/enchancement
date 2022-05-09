@@ -1,3 +1,7 @@
+/*
+ * All Rights Reserved (c) 2022 MoriyaShiine
+ */
+
 package moriyashiine.enchancement.mixin.brimstone;
 
 import moriyashiine.enchancement.common.entity.projectile.BrimstoneEntity;
