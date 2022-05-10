@@ -48,6 +48,7 @@ public class ModConfig implements ConfigData {
 	public boolean safeChanneling = true;
 	public boolean tridentsReturnFromVoid = true;
 
+	public float strengthDamageMultiplier = 1 / 3F;
 	public int maxExtractingBlocks = 64;
 	public int maxLumberjackBlocks = 1024;
 	public int maxLumberjackHorizontalLength = 7;

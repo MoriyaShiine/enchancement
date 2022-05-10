@@ -78,6 +78,7 @@
 	"vanillachanges.singlelevelmode.ItemStackMixin",
 	"vanillachanges.singlelevelmode.SetEnchantmentsLootFunctionMixin",
 	"vanillachanges.singlelevelmode.TradeOffersEnchantBookFactoryMixin",
+	"vanillachanges.strengthdamagemultiplier.DamageModifierStatusEffectMixin",
 	"vanillachanges.tridentsreturnfromvoid.TridentEntityMixin",
 	"vanillachanges.unbreakingchanges.ItemStackMixin",
 	"wardenspine.LivingEntityMixin",
