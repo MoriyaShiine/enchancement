@@ -81,6 +81,7 @@
 	"vanillachanges.strengthdamagemultiplier.DamageModifierStatusEffectMixin",
 	"vanillachanges.tridentsreturnfromvoid.TridentEntityMixin",
 	"vanillachanges.unbreakingchanges.ItemStackMixin",
+	"vanillachanges.weaknessdamagemultiplier.DamageModifierStatusEffectMixin",
 	"wardenspine.LivingEntityMixin",
 	"warp.PersistentProjectileEntityMixin",
 	"warp.TridentEntityMixin",
