@@ -47,9 +47,8 @@ public class ModConfig implements ConfigData {
 	public boolean negateEnderPearlDamage = true;
 	public boolean safeChanneling = true;
 	public boolean tridentsReturnFromVoid = true;
+	public boolean weakerPotions = true;
 
-	public float strengthDamageMultiplier = 1 / 3F;
-	public float weaknessDamageMultiplier = 0.25F;
 	public int maxExtractingBlocks = 64;
 	public int maxLumberjackBlocks = 1024;
 	public int maxLumberjackHorizontalLength = 7;
