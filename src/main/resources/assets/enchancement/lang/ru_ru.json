@@ -33,7 +33,7 @@
   "enchantment.enchancement.gale": "Тройной прыжок",
   "enchantment.enchancement.gale.desc": "Позволяет три раза подпрыгнуть.",
   "enchantment.enchancement.berserk": "Берсерк",
-  "enchantment.enchancement.berserk.desc": "Увеличивает наносимый урон за каждую единицу отсутствующего здоровья. Позволяет зарядить мечь, чтобы получить урон.",
+  "enchantment.enchancement.berserk.desc": "Увеличивает наносимый урон за каждую единицу отсутствующего здоровья.",
   "enchantment.enchancement.frostbite": "Обморожение",
   "enchantment.enchancement.frostbite.desc": "Заставляет сущности замерзать. Замерзшие сущности можно передвигать или разбить на осколки.",
   "enchantment.enchancement.chaos": "Хаос",

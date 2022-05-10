@@ -7,9 +7,7 @@
   "mixins": [
 	"acceleration.PlayerEntityMixin",
 	"amphibious.EnchantmentHelperMixin",
-	"berserk.ItemMixin",
 	"berserk.LivingEntityMixin",
-	"berserk.PlayerEntityMixin",
 	"bouncy.LivingEntityMixin",
 	"brimstone.BrimstoneCrossbowMixin",
 	"brimstone.CrossbowItemAccessor",

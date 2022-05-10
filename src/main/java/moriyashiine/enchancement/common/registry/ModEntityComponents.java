@@ -30,7 +30,6 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<AccelerationComponent> ACCELERATION = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "acceleration"), AccelerationComponent.class);
 	public static final ComponentKey<GaleComponent> GALE = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "gale"), GaleComponent.class);
 	//sword
-	public static final ComponentKey<BerserkComponent> BERSERK = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "berserk"), BerserkComponent.class);
 	public static final ComponentKey<FrozenComponent> FROZEN = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "frozen"), FrozenComponent.class);
 	//bow
 	public static final ComponentKey<DelayComponent> DELAY = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "delay"), DelayComponent.class);
@@ -53,7 +52,6 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerForPlayers(MOVING_FORWARD, MovingForwardComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(ACCELERATION, AccelerationComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(GALE, GaleComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
-		registry.registerForPlayers(BERSERK, player -> new BerserkComponent(), RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(LivingEntity.class, FROZEN, FrozenComponent::new);
 		registry.registerFor(ArrowEntity.class, DELAY, DelayComponent::new);
 		registry.registerFor(ArrowEntity.class, PHASHING, PhasingComponent::new);
