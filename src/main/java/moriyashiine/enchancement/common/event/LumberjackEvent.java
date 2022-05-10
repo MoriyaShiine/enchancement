@@ -33,7 +33,7 @@ public class LumberjackEvent implements PlayerBlockBreakEvents.Before {
 			ItemStack stack = player.getMainHandStack();
 			if (EnchancementUtil.hasEnchantment(ModEnchantments.LUMBERJACK, stack) && state.isIn(BlockTags.LOGS)) {
 				List<BlockPos> tree = gatherTree(new ArrayList<>(), world, new BlockPos.Mutable().set(pos), state.getBlock());
-				if (tree.size() > 1 && tree.size() <= Enchancement.getConfig().maxLumberjackBlocks) {
+				if (tree.size() > 1 && tree.size() <= Enchancement.getConfig().maxLumberjackBlocks && isWithinHorizontalBounds(tree)) {
 					ItemStack copy = stack.copy();
 					AtomicBoolean broken = new AtomicBoolean(false);
 					stack.damage(tree.size(), player, stackUser -> {
@@ -67,5 +67,25 @@ public class LumberjackEvent implements PlayerBlockBreakEvents.Before {
 			}
 		}
 		return tree;
+	}
+
+	@SuppressWarnings("ConstantConditions")
+	private static boolean isWithinHorizontalBounds(List<BlockPos> tree) {
+		Integer minX = null, maxX = null, minZ = null, maxZ = null;
+		for (BlockPos pos : tree) {
+			if (minX == null || pos.getX() < minX) {
+				minX = pos.getX();
+			}
+			if (maxX == null || pos.getX() > maxX) {
+				maxX = pos.getX();
+			}
+			if (minZ == null || pos.getZ() < minZ) {
+				minZ = pos.getZ();
+			}
+			if (maxZ == null || pos.getZ() > maxZ) {
+				maxZ = pos.getZ();
+			}
+		}
+		return Math.abs(maxX - minX) < Enchancement.getConfig().maxLumberjackHorizontalLength && Math.abs(maxZ - minZ) < Enchancement.getConfig().maxLumberjackHorizontalLength;
 	}
 }

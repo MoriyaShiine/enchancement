@@ -50,6 +50,7 @@ public class ModConfig implements ConfigData {
 
 	public int maxExtractingBlocks = 64;
 	public int maxLumberjackBlocks = 1024;
+	public int maxLumberjackHorizontalLength = 7;
 	public int unbreakingChangesFlag = 0;
 
 	public boolean isEnchantmentAllowed(Identifier identifier) {

@@ -101,5 +101,6 @@
   "text.autoconfig.enchancement.option.tridentsReturnFromVoid": "Tridents Return From Void",
   "text.autoconfig.enchancement.option.maxExtractingBlocks": "Max Extracting Blocks",
   "text.autoconfig.enchancement.option.maxLumberjackBlocks": "Max Lumberjack Blocks",
+  "text.autoconfig.enchancement.option.maxLumberjackHorizontalLength": "Max Lumberjack Horizontal Length",
   "text.autoconfig.enchancement.option.unbreakingChangesFlag": "Unbreaking Changes Flag"
 }
