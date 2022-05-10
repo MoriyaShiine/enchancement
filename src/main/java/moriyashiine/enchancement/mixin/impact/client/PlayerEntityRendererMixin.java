@@ -26,7 +26,7 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
 
 	@Inject(method = "setModelPose", at = @At("TAIL"))
 	private void enchancement$impact(AbstractClientPlayerEntity player, CallbackInfo ci) {
-		if (ModEntityComponents.IMPACT.get(player).shouldForceSneak()) {
+		if (ModEntityComponents.IMPACT.get(player).isFalling()) {
 			getModel().sneaking = true;
 		}
 	}

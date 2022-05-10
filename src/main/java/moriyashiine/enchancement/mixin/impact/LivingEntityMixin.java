@@ -30,7 +30,7 @@ public abstract class LivingEntityMixin extends Entity {
 	private void enchancement$impact(Entity entity, CallbackInfo ci) {
 		if (!world.isClient) {
 			ModEntityComponents.IMPACT.maybeGet(entity).ifPresent(impactComponent -> {
-				if (impactComponent.shouldDamage() && EnchancementUtil.shouldHurt(entity, this)) {
+				if (impactComponent.isFalling() && EnchancementUtil.shouldHurt(entity, this)) {
 					damage(DamageSource.ANVIL, 10);
 				}
 			});

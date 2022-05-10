@@ -26,7 +26,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class ImpactComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private final PlayerEntity obj;
-	private int impactTicks = 0;
+	private boolean shouldRefreshImpact = false;
+	private int impactCooldown = 60, impactTicks = 0;
 
 	private boolean hasImpact = false, wasSneaking = false;
 
@@ -36,11 +37,15 @@ public class ImpactComponent implements AutoSyncedComponent, CommonTickingCompon
 
 	@Override
 	public void readFromNbt(NbtCompound tag) {
+		shouldRefreshImpact = tag.getBoolean("ShouldRefreshImpact");
+		impactCooldown = tag.getInt("ImpactCooldown");
 		impactTicks = tag.getInt("ImpactTicks");
 	}
 
 	@Override
 	public void writeToNbt(@NotNull NbtCompound tag) {
+		tag.putBoolean("ShouldRefreshImpact", shouldRefreshImpact);
+		tag.putInt("ImpactCooldown", impactCooldown);
 		tag.putInt("ImpactTicks", impactTicks);
 	}
 
@@ -49,18 +54,25 @@ public class ImpactComponent implements AutoSyncedComponent, CommonTickingCompon
 		hasImpact = EnchancementUtil.hasEnchantment(ModEnchantments.IMPACT, obj);
 		if (hasImpact) {
 			boolean sneaking = obj.isSneaking();
+			if (shouldRefreshImpact && impactCooldown > 0) {
+				impactCooldown--;
+			}
 			if (obj.isOnGround()) {
+				shouldRefreshImpact = true;
 				if (impactTicks > 0) {
 					obj.playSound(ModSoundEvents.ENTITY_GENERIC_IMPACT, 1, 1);
 				}
 				impactTicks = 0;
-			} else if (impactTicks > 0 || (sneaking && !wasSneaking && EnchancementUtil.isGroundedOrJumping(obj) && obj.world.raycast(new RaycastContext(obj.getPos(), obj.getPos().add(0, -2, 0), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, obj)).getType() == HitResult.Type.MISS)) {
+			} else if (impactTicks > 0 || (impactCooldown == 0 && sneaking && !wasSneaking && EnchancementUtil.isGroundedOrJumping(obj) && obj.world.raycast(new RaycastContext(obj.getPos(), obj.getPos().add(0, -2, 0), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, obj)).getType() == HitResult.Type.MISS)) {
+				shouldRefreshImpact = false;
+				impactCooldown = 60;
 				impactTicks++;
 				obj.setVelocity(obj.getVelocity().getX(), -1.5, obj.getVelocity().getZ());
 				obj.fallDistance = 0;
 			}
 			wasSneaking = sneaking;
 		} else {
+			impactCooldown = 60;
 			impactTicks = 0;
 			wasSneaking = false;
 		}
@@ -71,9 +83,9 @@ public class ImpactComponent implements AutoSyncedComponent, CommonTickingCompon
 		if (hasImpact && obj.isOnGround() && impactTicks > 0) {
 			obj.getWorld().getOtherEntities(obj, new Box(obj.getBlockPos()).expand(5, 1, 5), foundEntity -> foundEntity.isAlive() && foundEntity.distanceTo(obj) < 5).forEach(entity -> {
 				if (entity instanceof LivingEntity living && EnchancementUtil.shouldHurt(obj, living)) {
-					float delta = MathHelper.clamp(impactTicks / 40F, 0, 1);
-					living.damage(DamageSource.player(obj), MathHelper.lerp(delta, 2, 20));
-					living.takeKnockback(MathHelper.lerp(delta, 0.5, 5), obj.getX() - living.getX(), obj.getZ() - living.getZ());
+					float delta = MathHelper.clamp(impactTicks / 60F, 0, 1);
+					living.damage(DamageSource.player(obj), MathHelper.lerp(delta, 4, 20));
+					living.takeKnockback(MathHelper.lerp(delta, 0.75, 8), obj.getX() - living.getX(), obj.getZ() - living.getZ());
 				}
 			});
 		}
@@ -97,11 +109,7 @@ public class ImpactComponent implements AutoSyncedComponent, CommonTickingCompon
 		tick();
 	}
 
-	public boolean shouldDamage() {
-		return impactTicks >= 15;
-	}
-
-	public boolean shouldForceSneak() {
+	public boolean isFalling() {
 		return impactTicks > 0;
 	}
 }

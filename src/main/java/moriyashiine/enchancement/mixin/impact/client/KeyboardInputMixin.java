@@ -22,7 +22,7 @@ public class KeyboardInputMixin extends Input {
 	@Inject(method = "tick", at = @At("TAIL"))
 	private void enchancement$impact(boolean slowDown, CallbackInfo ci) {
 		PlayerEntity player = MinecraftClient.getInstance().player;
-		if (player != null && ModEntityComponents.IMPACT.get(player).shouldForceSneak()) {
+		if (player != null && ModEntityComponents.IMPACT.get(player).isFalling()) {
 			pressingForward = false;
 			pressingBack = false;
 			pressingLeft = false;
