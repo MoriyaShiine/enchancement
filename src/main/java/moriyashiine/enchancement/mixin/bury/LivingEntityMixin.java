@@ -21,13 +21,14 @@ public abstract class LivingEntityMixin extends Entity {
 		super(type, world);
 	}
 
-	@Inject(method = "damage", at = @At("RETURN"))
+	@Inject(method = "damage", at = @At("HEAD"), cancellable = true)
 	private void enchancement$bury(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-		if (cir.getReturnValueZ()) {
+		if (!world.isClient) {
 			ModEntityComponents.BURY.maybeGet(this).ifPresent(buryComponent -> {
 				if (buryComponent.getBuryPos() != null) {
 					teleport(getX(), getY() + 0.5, getZ());
 					buryComponent.unbury();
+					cir.setReturnValue(false);
 				}
 			});
 		}
