@@ -19,8 +19,7 @@ public abstract class RegistriesImplRegistartImplMixin<T> implements Registrar<T
 	@Inject(method = "contains", at = @At("HEAD"), cancellable = true)
 	private void enchancement$disableDisallowedEnchantments(Identifier id, CallbackInfoReturnable<Boolean> cir) {
 		if (delegate == Registry.ENCHANTMENT) {
-			RemovedRegistryEntry removedEntry = RemovedRegistryEntry.getFromId(id);
-			if (removedEntry != null) {
+			if (RemovedRegistryEntry.getFromId(id) != null) {
 				cir.setReturnValue(true);
 			}
 		}
