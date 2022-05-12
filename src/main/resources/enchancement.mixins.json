@@ -60,6 +60,7 @@
 	"vanillachanges.channelingworkswhennotthundering.LightningRodBlockMixin",
 	"vanillachanges.channelingworkswhennotthundering.TridentEntityMixin",
 	"vanillachanges.disabledisallowedenchantments.SimpleRegistryMixin",
+	"vanillachanges.disabledisallowedenchantments.integration.architectury.RegistriesImplRegistartImplMixin",
 	"vanillachanges.freeenchantedbookmerging.AnvilScreenHandlerMixin",
 	"vanillachanges.luckoftheseahaslure.EnchantmentHelperMixin",
 	"vanillachanges.negateenderpearldamage.EnderPearlEntityMixin",

@@ -20,7 +20,7 @@ repositories {
         url "https://ladysnake.jfrog.io/artifactory/mods"
     }
     maven {
-        name "cloth config"
+        name "cloth config, architectury"
         url "https://maven.shedaniel.me"
     }
     maven {
@@ -66,6 +66,7 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     modImplementation "curse.maven:tooltipfix-411557:${tooltipfix_version}"
 
+    modCompileOnly "dev.architectury:architectury-fabric:${architectury_version}"
     modCompileOnly "software.bernie.geckolib:geckolib-fabric-${geckolib_version}"
     modCompileOnly "curse.maven:impaled-478843:${impaled_version}"
     modCompileOnly "com.terraformersmc:modmenu:${mod_menu_version}"

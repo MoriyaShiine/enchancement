@@ -24,7 +24,9 @@ public class ModMixinPlugin implements IMixinConfigPlugin {
 
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-		if (mixinClassName.contains("integration.geckolib")) {
+		if (mixinClassName.contains("integration.architectury")) {
+			return FabricLoader.getInstance().isModLoaded("architectury");
+		} else if (mixinClassName.contains("integration.geckolib")) {
 			return FabricLoader.getInstance().isModLoaded("geckolib3");
 		} else if (mixinClassName.contains("integration.impaled")) {
 			return FabricLoader.getInstance().isModLoaded("impaled");
