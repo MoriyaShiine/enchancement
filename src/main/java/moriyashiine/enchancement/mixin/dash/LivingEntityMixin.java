@@ -19,7 +19,7 @@ public class LivingEntityMixin {
 		DashComponent dashComponent = ModEntityComponents.DASH.getNullable(this);
 		if (dashComponent != null && dashComponent.shouldWavedash()) {
 			dashComponent.setDashCooldown(0);
-			return value.multiply(2.5);
+			return value.multiply(2);
 		}
 		return value;
 	}
