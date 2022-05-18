@@ -5,6 +5,7 @@
 package moriyashiine.enchancement.mixin.vanillachanges.weaponenchantmentcooldownrequirement;
 
 import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -31,6 +32,13 @@ public class PlayerEntityMixin {
 	@Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;resetLastAttackedTicks()V"), locals = LocalCapture.CAPTURE_FAILHARD)
 	private void enchancement$weaponEnchantmentCooldownRequirement(Entity target, CallbackInfo ci, float attackDamage, float extraDamage, float attackCooldown) {
 		this.attackCooldown = attackCooldown;
+	}
+
+	@Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;onTargetDamaged(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/Entity;)V"), locals = LocalCapture.CAPTURE_FAILHARD)
+	private void enchancement$weaponEnchantmentCooldownRequirementOnTargetDamaged(Entity target, CallbackInfo ci, float attackDamage, float extraDamage, float attackCooldown) {
+		if (attackCooldown < Enchancement.getConfig().weaponEnchantmentCooldownRequirement) {
+			EnchancementUtil.shouldCancelTargetDamagedEnchantments = true;
+		}
 	}
 
 	@Inject(method = "attack", at = @At("TAIL"))

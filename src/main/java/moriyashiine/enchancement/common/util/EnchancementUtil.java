@@ -33,6 +33,8 @@ public class EnchancementUtil {
 
 	public static final ItemStack BRIMSTONE_STACK;
 
+	public static boolean shouldCancelTargetDamagedEnchantments = false;
+
 	static {
 		BRIMSTONE_STACK = new ItemStack(Items.LAVA_BUCKET);
 		BRIMSTONE_STACK.getOrCreateNbt().putBoolean("Brimstone", true);
