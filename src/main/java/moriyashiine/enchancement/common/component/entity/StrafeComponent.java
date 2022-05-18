@@ -17,7 +17,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.world.RaycastContext;
 
@@ -58,7 +57,7 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 				ticksInAir++;
 			}
 			if (ticksInAir > 10) {
-				obj.airStrafingSpeed *= MathHelper.lerp(MathHelper.clamp((ticksInAir - 10) / 30F, 0, 1), 0, 5);
+				obj.airStrafingSpeed *= 3;
 			}
 		} else {
 			strafeCooldown = 0;
