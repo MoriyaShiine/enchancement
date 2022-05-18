@@ -5,7 +5,6 @@
 package moriyashiine.enchancement.mixin.frostbite;
 
 import moriyashiine.enchancement.common.component.entity.FrozenComponent;
-import moriyashiine.enchancement.common.enchantment.FrostbiteEnchantment;
 import moriyashiine.enchancement.common.entity.projectile.IceShardEntity;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
@@ -31,11 +30,6 @@ public abstract class LivingEntityMixin extends Entity {
 
 	public LivingEntityMixin(EntityType<?> type, World world) {
 		super(type, world);
-	}
-
-	@Inject(method = "applyDamage", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/LivingEntity;getHealth()F"))
-	private void enchancement$frostbite(DamageSource source, float amount, CallbackInfo ci) {
-		FrostbiteEnchantment.applyEffect(this, source, amount);
 	}
 
 	@Inject(method = "damage", at = @At("HEAD"), cancellable = true)

@@ -154,10 +154,6 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 	}
 
 	public static boolean isSourceFreezingEntity(DamageSource source) {
-		return (source instanceof EntityDamageSource && source.name.equals("freeze")) || isSourceFrostbite(source);
-	}
-
-	public static boolean isSourceFrostbite(DamageSource source) {
-		return source.getSource() instanceof LivingEntity living && EnchancementUtil.hasEnchantment(ModEnchantments.FROSTBITE, living);
+		return (source instanceof EntityDamageSource && source.name.equals("freeze")) || (source.getSource() instanceof LivingEntity living && EnchancementUtil.hasEnchantment(ModEnchantments.FROSTBITE, living));
 	}
 }

@@ -26,8 +26,8 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
 	@Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;onTargetDamaged(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/Entity;)V"), locals = LocalCapture.CAPTURE_FAILHARD)
 	private void enchancement$leech(Entity target, CallbackInfo ci, float attackDamage, float extraDamage, float attackCooldown) {
-		if (attackCooldown >= 0.7 && EnchancementUtil.hasEnchantment(ModEnchantments.LEECH, this)) {
-			LeechEnchantment.applyEffect(this, target);
+		if (EnchancementUtil.hasEnchantment(ModEnchantments.LEECH, this)) {
+			LeechEnchantment.applyEffect(this, target, attackCooldown);
 		}
 	}
 }

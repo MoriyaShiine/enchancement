@@ -83,6 +83,7 @@
 	"vanillachanges.unbreakingchanges.ItemStackMixin",
 	"vanillachanges.weakerpotions.DamageModifierStatusEffectMixin",
 	"vanillachanges.weakerpotions.StatusEffectMixin",
+	"vanillachanges.weaponenchantmentcooldownrequirement.PlayerEntityMixin",
 	"wardenspine.LivingEntityMixin",
 	"warp.PersistentProjectileEntityMixin",
 	"warp.TridentEntityMixin",

@@ -1,0 +1,40 @@
+/*
+ * All Rights Reserved (c) 2022 MoriyaShiine
+ */
+
+package moriyashiine.enchancement.mixin.vanillachanges.weaponenchantmentcooldownrequirement;
+
+import moriyashiine.enchancement.common.Enchancement;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
+@Mixin(PlayerEntity.class)
+public class PlayerEntityMixin {
+	@Unique
+	private float attackCooldown = 0;
+
+	@ModifyVariable(method = "attack", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getFireAspect(Lnet/minecraft/entity/LivingEntity;)I"), ordinal = 1)
+	private int enchancement$weaponEnchantmentCooldownRequirement(int value) {
+		if (attackCooldown < Enchancement.getConfig().weaponEnchantmentCooldownRequirement) {
+			return 0;
+		}
+		return value;
+	}
+
+	@Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;resetLastAttackedTicks()V"), locals = LocalCapture.CAPTURE_FAILHARD)
+	private void enchancement$weaponEnchantmentCooldownRequirement(Entity target, CallbackInfo ci, float attackDamage, float extraDamage, float attackCooldown) {
+		this.attackCooldown = attackCooldown;
+	}
+
+	@Inject(method = "attack", at = @At("TAIL"))
+	private void enchancement$weaponEnchantmentCooldownRequirement(Entity target, CallbackInfo ci) {
+		attackCooldown = 0;
+	}
+}

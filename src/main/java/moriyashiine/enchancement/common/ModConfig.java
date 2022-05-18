@@ -49,6 +49,8 @@ public class ModConfig implements ConfigData {
 	public boolean tridentsReturnFromVoid = true;
 	public boolean weakerPotions = true;
 
+	public float weaponEnchantmentCooldownRequirement = 0.7F;
+
 	public int maxExtractingBlocks = 64;
 	public int maxLumberjackBlocks = 1024;
 	public int maxLumberjackHorizontalLength = 7;

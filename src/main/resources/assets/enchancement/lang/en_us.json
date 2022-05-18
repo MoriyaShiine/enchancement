@@ -100,6 +100,7 @@
   "text.autoconfig.enchancement.option.safeChanneling": "Safe Channeling",
   "text.autoconfig.enchancement.option.tridentsReturnFromVoid": "Tridents Return From Void",
   "text.autoconfig.enchancement.option.weakerPotions": "Weaker Potions",
+  "text.autoconfig.enchancement.option.weaponEnchantmentCooldownRequirement": "Weapon Enchantment Cooldown Requirement",
   "text.autoconfig.enchancement.option.maxExtractingBlocks": "Max Extracting Blocks",
   "text.autoconfig.enchancement.option.maxLumberjackBlocks": "Max Lumberjack Blocks",
   "text.autoconfig.enchancement.option.maxLumberjackHorizontalLength": "Max Lumberjack Horizontal Length",
