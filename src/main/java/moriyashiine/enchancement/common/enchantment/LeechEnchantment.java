@@ -31,7 +31,7 @@ public class LeechEnchantment extends NoRiptideEnchantment {
 					target.world.addParticle(ParticleTypes.DAMAGE_INDICATOR, target.getParticleX(1), target.getBodyY(0.5), target.getParticleZ(1), 0, 0, 0);
 				}
 			} else {
-				attacker.heal(1);
+				attacker.heal(2);
 			}
 		}
 	}
