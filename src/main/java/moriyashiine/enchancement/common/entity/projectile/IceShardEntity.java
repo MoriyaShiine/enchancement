@@ -41,6 +41,16 @@ public class IceShardEntity extends PersistentProjectileEntity {
 	}
 
 	@Override
+	public void tick() {
+		super.tick();
+		if (!world.isClient && age > 400) {
+			playSound(getHitSound(), 1, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
+			addIceShardParticles();
+			discard();
+		}
+	}
+
+	@Override
 	protected SoundEvent getHitSound() {
 		return ModSoundEvents.ENTITY_ICE_SHARD_SHATTER;
 	}
