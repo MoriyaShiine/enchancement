@@ -49,7 +49,7 @@
   "enchantment.enchancement.torch": "Torch",
   "enchantment.enchancement.torch.desc": "Torches can be loaded into the crossbow via the off hand, and will ignite hit entities for 8 seconds. Shot torches will be placed on the ground if shot while sneaking.",
   "enchantment.enchancement.leech": "Leech",
-  "enchantment.enchancement.leech.desc": "Heals half a heart on melee attack, and latches onto entities on ranged attack for 6 seconds, damaging them and healing you for half a heart per second.",
+  "enchantment.enchancement.leech.desc": "Heals a heart on melee attack, and latches onto entities on ranged attack for 6 seconds, damaging them and healing you for half a heart per second.",
   "enchantment.enchancement.warp": "Warp",
   "enchantment.enchancement.warp.desc": "Teleports you to the location of the trident if it didn't hit an entity.",
   "enchantment.enchancement.extracting": "Extracting",
