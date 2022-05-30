@@ -10,6 +10,7 @@ import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import moriyashiine.enchancement.common.registry.ModTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBlockTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -36,7 +37,7 @@ public class ExtractingEvent implements PlayerBlockBreakEvents.Before {
 	public boolean beforeBlockBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity blockEntity) {
 		if (!player.isSneaking()) {
 			ItemStack stack = player.getMainHandStack();
-			if (EnchancementUtil.hasEnchantment(ModEnchantments.EXTRACTING, stack) && state.isIn(ModTags.Blocks.ORES)) {
+			if (EnchancementUtil.hasEnchantment(ModEnchantments.EXTRACTING, stack) && state.isIn(ConventionalBlockTags.ORES)) {
 				Set<BlockPos> ores = gatherOres(new HashSet<>(), world, new BlockPos.Mutable().set(pos), state.getBlock());
 				if (!ores.isEmpty() && ores.size() <= Enchancement.getConfig().maxExtractingBlocks) {
 					ItemStack copy = stack.copy();
@@ -74,7 +75,7 @@ public class ExtractingEvent implements PlayerBlockBreakEvents.Before {
 				for (int y = -1; y <= 1; y++) {
 					for (int z = -1; z <= 1; z++) {
 						BlockState state = world.getBlockState(pos.set(originalX + x, originalY + y, originalZ + z));
-						if (state.isIn(ModTags.Blocks.ORES) && !ores.contains(pos) && state.getBlock() == original) {
+						if (state.isIn(ConventionalBlockTags.ORES) && !ores.contains(pos) && state.getBlock() == original) {
 							ores.add(pos.toImmutable());
 							gatherOres(ores, world, pos, original);
 						}

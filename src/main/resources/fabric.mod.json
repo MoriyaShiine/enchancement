@@ -51,7 +51,7 @@
 	"bookshelf": ">=13.0.13",
 	"cloth-config2": ">=6.2.57",
 	"enchdesc": ">=10.0.2",
-	"fabric": ">=0.48.0",
+	"fabric": ">=0.53.0",
 	"tooltipfix": ">=1.0.4-1.18"
   },
   "custom": {
