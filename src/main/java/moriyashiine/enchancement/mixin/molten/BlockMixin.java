@@ -7,6 +7,7 @@ package moriyashiine.enchancement.mixin.molten;
 import moriyashiine.enchancement.client.packet.AddMoltenParticlesPacket;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModSoundEvents;
+import moriyashiine.enchancement.common.registry.ModTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.block.Block;
@@ -41,8 +42,9 @@ public class BlockMixin {
 		if (EnchancementUtil.hasEnchantment(ModEnchantments.MOLTEN, stack)) {
 			List<ItemStack> drops = cir.getReturnValue();
 			if (!drops.isEmpty()) {
+				boolean smeltsSelf = state.isIn(ModTags.Blocks.SMELTS_SELF);
 				for (int i = 0; i < drops.size(); i++) {
-					Pair<ItemStack, Float> smelted = getSmeltedStack(world, drops.get(i));
+					Pair<ItemStack, Float> smelted = getSmeltedStack(world, smeltsSelf ? new ItemStack(state.getBlock()) : drops.get(i));
 					if (smelted != null) {
 						PlayerLookup.tracking(world, pos).forEach(foundPlayer -> AddMoltenParticlesPacket.send(foundPlayer, pos));
 						world.playSound(null, pos, ModSoundEvents.BLOCK_GENERIC_SMELT, SoundCategory.BLOCKS, 1, 1);
