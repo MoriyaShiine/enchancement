@@ -32,14 +32,16 @@ public abstract class LivingEntityMixin extends Entity {
 			ModEntityComponents.LEECH.maybeGet(trident).ifPresent(leechComponent -> {
 				if (leechComponent.hasLeech() && leechComponent.getStuckEntity() == null) {
 					LivingEntity living = LivingEntity.class.cast(this);
-					world.getEntitiesByClass(TridentEntity.class, getBoundingBox().expand(1), foundTrident -> true).forEach(otherTrident -> ModEntityComponents.LEECH.maybeGet(otherTrident).ifPresent(otherLeech -> {
-						if (otherLeech.getStuckEntity() == living) {
-							otherLeech.setStuckEntityId(-2);
-							otherLeech.sync();
-						}
-					}));
-					leechComponent.setStuckEntityId(getId());
-					leechComponent.sync();
+					if (trident.getOwner() != living) {
+						world.getEntitiesByClass(TridentEntity.class, getBoundingBox().expand(1), foundTrident -> true).forEach(otherTrident -> ModEntityComponents.LEECH.maybeGet(otherTrident).ifPresent(otherLeech -> {
+							if (otherLeech.getStuckEntity() == living) {
+								otherLeech.setStuckEntityId(-2);
+								otherLeech.sync();
+							}
+						}));
+						leechComponent.setStuckEntityId(getId());
+						leechComponent.sync();
+					}
 				}
 			});
 		}
