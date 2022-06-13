@@ -49,7 +49,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerForPlayers(DASH, DashComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(IMPACT, ImpactComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(SLIDE, SlideComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
-		registry.registerForPlayers(MOVING_FORWARD, MovingForwardComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+		registry.registerForPlayers(MOVING_FORWARD, player -> new MovingForwardComponent(), RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(ACCELERATION, AccelerationComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(GALE, GaleComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(LivingEntity.class, FROZEN, FrozenComponent::new);

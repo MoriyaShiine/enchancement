@@ -76,10 +76,12 @@ public class AccelerationComponent implements AutoSyncedComponent, CommonTicking
 		tick();
 		ModEntityComponents.MOVING_FORWARD.maybeGet(obj).ifPresent(movingForwardComponent -> {
 			if (obj.forwardSpeed > 0) {
-				if (!movingForwardComponent.isMovingForward() && hasAcceleration) {
+				if (!movingForwardComponent.isMovingForward() && hasAcceleration && obj.isSprinting()) {
+					movingForwardComponent.setMovingForward(true);
 					SyncMovingForwardPacket.send(true);
 				}
 			} else if (movingForwardComponent.isMovingForward()) {
+				movingForwardComponent.setMovingForward(false);
 				SyncMovingForwardPacket.send(false);
 			}
 		});
