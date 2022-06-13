@@ -1,3 +1,7 @@
+/*
+ * All Rights Reserved (c) 2022 MoriyaShiine
+ */
+
 package moriyashiine.enchancement.mixin.vanillachanges.disabledisallowedenchantments.integration.architectury;
 
 import dev.architectury.registry.registries.Registrar;
