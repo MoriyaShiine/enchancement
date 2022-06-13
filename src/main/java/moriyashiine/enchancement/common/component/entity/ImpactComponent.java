@@ -84,8 +84,8 @@ public class ImpactComponent implements AutoSyncedComponent, CommonTickingCompon
 			obj.getWorld().getOtherEntities(obj, new Box(obj.getBlockPos()).expand(5, 1, 5), foundEntity -> foundEntity.isAlive() && foundEntity.distanceTo(obj) < 5).forEach(entity -> {
 				if (entity instanceof LivingEntity living && EnchancementUtil.shouldHurt(obj, living)) {
 					float delta = MathHelper.clamp(impactTicks / 60F, 0, 1);
-					living.damage(DamageSource.player(obj), MathHelper.lerp(delta, 4, 20));
-					living.takeKnockback(MathHelper.lerp(delta, 0.75, 8), obj.getX() - living.getX(), obj.getZ() - living.getZ());
+					living.damage(DamageSource.player(obj), MathHelper.lerp(delta, 4, 40));
+					living.takeKnockback(MathHelper.lerp(delta, 1.5, 10), obj.getX() - living.getX(), obj.getZ() - living.getZ());
 				}
 			});
 		}
