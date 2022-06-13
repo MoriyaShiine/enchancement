@@ -47,7 +47,7 @@ public class AccelerationComponent implements AutoSyncedComponent, CommonTicking
 		if (hasAcceleration) {
 			if (!obj.horizontalCollision && obj.isSprinting() && EnchancementUtil.isGroundedOrJumping(obj) && ModEntityComponents.MOVING_FORWARD.get(obj).isMovingForward()) {
 				if (speedMultiplier < 2) {
-					speedMultiplier = Math.min(2, speedMultiplier + 1 / 256F);
+					speedMultiplier = Math.min(2, speedMultiplier + 1 / 128F);
 				}
 			} else if (speedMultiplier > 1) {
 				speedMultiplier = Math.max(1, speedMultiplier - 1 / 64F);
