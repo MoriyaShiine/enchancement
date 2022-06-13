@@ -74,7 +74,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 					if (getOwner() instanceof LivingEntity owner) {
 						world.getOtherEntities(owner, Box.from(hitResult.getPos()).expand(0.5)).forEach(entity -> {
 							if (entity instanceof LivingEntity living && !living.isDead()) {
-								living.damage(DamageSource.arrow(this, owner), (float) (getDamage() * 3));
+								living.damage(DamageSource.arrow(this, owner), (float) (getDamage() * 5));
 								if (living.isDead()) {
 									killedEntities.add(living);
 								}
