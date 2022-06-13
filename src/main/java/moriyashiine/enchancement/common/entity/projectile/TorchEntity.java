@@ -53,7 +53,7 @@ public class TorchEntity extends PersistentProjectileEntity {
 	protected void onEntityHit(EntityHitResult entityHitResult) {
 		int stuckArrows = 0;
 		if (entityHitResult.getEntity() instanceof LivingEntity living) {
-			living.setOnFireFor(8);
+			living.setOnFireFor(10);
 			playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 1, 1);
 			if (!world.isClient) {
 				stuckArrows = living.getStuckArrowCount();
