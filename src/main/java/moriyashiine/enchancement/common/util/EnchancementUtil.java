@@ -127,10 +127,6 @@ public class EnchancementUtil {
 	}
 
 	public static void tickPacketImmunities() {
-		for (PlayerEntity player : PACKET_IMMUNITIES.keySet()) {
-			if (PACKET_IMMUNITIES.put(player, PACKET_IMMUNITIES.getInt(player) - 1) < 0) {
-				PACKET_IMMUNITIES.removeInt(player);
-			}
-		}
+		PACKET_IMMUNITIES.object2IntEntrySet().removeIf(entry -> entry.setValue(entry.getIntValue() - 1) <= 0);
 	}
 }
