@@ -90,4 +90,8 @@ public class AccelerationComponent implements AutoSyncedComponent, CommonTicking
 	public float getSpeedMultiplier() {
 		return speedMultiplier;
 	}
+
+	public boolean hasAcceleration() {
+		return hasAcceleration;
+	}
 }

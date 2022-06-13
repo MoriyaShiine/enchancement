@@ -5,6 +5,7 @@
   "plugin": "moriyashiine.enchancement.common.ModMixinPlugin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+	"acceleration.LivingEntityMixin",
 	"acceleration.PlayerEntityMixin",
 	"amphibious.EnchantmentHelperMixin",
 	"berserk.LivingEntityMixin",
