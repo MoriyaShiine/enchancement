@@ -8,6 +8,7 @@ import moriyashiine.enchancement.common.Enchancement;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
@@ -33,5 +34,9 @@ public class ModTags {
 	public static class Items {
 		public static final TagKey<Item> NO_LOYALTY = TagKey.of(Registry.ITEM_KEY, new Identifier(Enchancement.MOD_ID, "no_loyalty"));
 		public static final TagKey<Item> RETAINS_DURABILITY = TagKey.of(Registry.ITEM_KEY, new Identifier(Enchancement.MOD_ID, "retains_durability"));
+	}
+
+	public static class StatusEffects {
+		public static final TagKey<StatusEffect> CHAOS_UNCHOOSABLE = TagKey.of(Registry.MOB_EFFECT_KEY, new Identifier(Enchancement.MOD_ID, "chaos_unchoosable"));
 	}
 }

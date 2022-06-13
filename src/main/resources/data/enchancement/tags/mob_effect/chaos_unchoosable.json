@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+	{
+	  "id": "bewitchment:mortal_coil",
+	  "required": false
+	},
+	{
+	  "id": "bewitchment:wednesday",
+	  "required": false
+	}
+  ]
+}

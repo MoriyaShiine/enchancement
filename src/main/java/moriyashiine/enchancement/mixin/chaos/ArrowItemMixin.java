@@ -5,6 +5,7 @@
 package moriyashiine.enchancement.mixin.chaos;
 
 import moriyashiine.enchancement.common.registry.ModEnchantments;
+import moriyashiine.enchancement.common.registry.ModTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
@@ -30,17 +31,24 @@ public class ArrowItemMixin {
 	@Inject(method = "createArrow", at = @At("HEAD"), cancellable = true)
 	private void enchancement$chaos(World world, ItemStack stack, LivingEntity shooter, CallbackInfoReturnable<PersistentProjectileEntity> cir) {
 		if (stack.getItem() == Items.ARROW && EnchancementUtil.hasEnchantment(ModEnchantments.CHAOS, shooter)) {
-			ArrowEntity arrow = new ArrowEntity(world, shooter);
 			StatusEffect effect = null;
+			int attempts = 0;
 			if (shooter.isSneaking()) {
-				while (effect == null || effect.getCategory() != StatusEffectCategory.BENEFICIAL) {
+				while (effect == null || effect.getCategory() != StatusEffectCategory.BENEFICIAL || Registry.STATUS_EFFECT.entryOf(Registry.STATUS_EFFECT.getKey(effect).orElse(null)).isIn(ModTags.StatusEffects.CHAOS_UNCHOOSABLE)) {
 					effect = Registry.STATUS_EFFECT.get(shooter.getRandom().nextInt(Registry.STATUS_EFFECT.size()));
+					if (++attempts > 128) {
+						return;
+					}
 				}
 			} else {
-				while (effect == null || effect.getCategory() != StatusEffectCategory.HARMFUL) {
+				while (effect == null || effect.getCategory() != StatusEffectCategory.HARMFUL || Registry.STATUS_EFFECT.entryOf(Registry.STATUS_EFFECT.getKey(effect).orElse(null)).isIn(ModTags.StatusEffects.CHAOS_UNCHOOSABLE)) {
 					effect = Registry.STATUS_EFFECT.get(shooter.getRandom().nextInt(Registry.STATUS_EFFECT.size()));
+					if (++attempts > 128) {
+						return;
+					}
 				}
 			}
+			ArrowEntity arrow = new ArrowEntity(world, shooter);
 			arrow.initFromStack(PotionUtil.setCustomPotionEffects(new ItemStack(Items.TIPPED_ARROW), Collections.singleton(new StatusEffectInstance(effect, effect.isInstant() ? 1 : 200))));
 			arrow.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
 			cir.setReturnValue(arrow);
