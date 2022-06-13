@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+	"enchancement:strafe",
+	"enchancement:dash",
+	"enchancement:slide",
+	"enchancement:acceleration",
+	"enchancement:gale"
+  ]
+}

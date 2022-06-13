@@ -57,9 +57,13 @@ public class ModConfig implements ConfigData {
 	public int unbreakingChangesFlag = 0;
 
 	public boolean isEnchantmentAllowed(Identifier identifier) {
+		return isEnchantmentAllowed(identifier.toString());
+	}
+
+	public boolean isEnchantmentAllowed(String string) {
 		if (invertedList) {
-			return !allowedEnchantments.contains(identifier.toString());
+			return !allowedEnchantments.contains(string);
 		}
-		return allowedEnchantments.contains(identifier.toString());
+		return allowedEnchantments.contains(string);
 	}
 }
