@@ -1,3 +1,7 @@
+/*
+ * All Rights Reserved (c) 2022 MoriyaShiine
+ */
+
 package moriyashiine.enchancement.mixin.vanillachanges.disabledisallowedenchantments;
 
 import moriyashiine.enchancement.common.ModConfig;
