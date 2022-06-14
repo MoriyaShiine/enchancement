@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.vanillachanges.alltridentshaveloyalty;
 
-import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.ModConfig;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -22,7 +22,7 @@ public abstract class TridentEntityMixin extends PersistentProjectileEntity {
 
 	@ModifyVariable(method = "tick", at = @At("STORE"))
 	private int enchancement$disableLoyaltyOnNonPlayerTridents(int value) {
-		if (Enchancement.getConfig().allTridentsHaveLoyalty && !(getOwner() instanceof PlayerEntity)) {
+		if (ModConfig.allTridentsHaveLoyalty && !(getOwner() instanceof PlayerEntity)) {
 			return 0;
 		}
 		return value;
@@ -30,7 +30,7 @@ public abstract class TridentEntityMixin extends PersistentProjectileEntity {
 
 	@ModifyVariable(method = "age", at = @At("STORE"))
 	private int enchancement$ageNonPlayerTridents(int value) {
-		if (Enchancement.getConfig().allTridentsHaveLoyalty && !(getOwner() instanceof PlayerEntity)) {
+		if (ModConfig.allTridentsHaveLoyalty && !(getOwner() instanceof PlayerEntity)) {
 			return 0;
 		}
 		return value;

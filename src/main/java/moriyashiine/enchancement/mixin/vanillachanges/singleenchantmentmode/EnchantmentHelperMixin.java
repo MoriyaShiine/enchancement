@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.vanillachanges.singleenchantmentmode;
 
-import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.ModConfig;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
@@ -19,7 +19,7 @@ import java.util.Map;
 public class EnchantmentHelperMixin {
 	@Inject(method = "set", at = @At("HEAD"), cancellable = true)
 	private static void enchancement$singleEnchantmentMode(Map<Enchantment, Integer> enchantments, ItemStack stack, CallbackInfo ci) {
-		if (Enchancement.getConfig().singleEnchantmentMode && stack.hasEnchantments()) {
+		if (ModConfig.singleEnchantmentMode && stack.hasEnchantments()) {
 			ci.cancel();
 		}
 	}

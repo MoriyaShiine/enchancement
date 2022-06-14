@@ -63,7 +63,7 @@ public abstract class GeoEntityRendererMixin<T extends LivingEntity & IAnimatabl
 		super(ctx);
 	}
 
-	@Inject(method = "getTextureLocation*", at = @At("RETURN"), cancellable = true)
+	@Inject(method = "getTextureResource*", at = @At("RETURN"), cancellable = true)
 	private void enchancement$frostbite(T entity, CallbackInfoReturnable<Identifier> cir) {
 		if (ModEntityComponents.FROZEN.get(entity).isFrozen()) {
 			cir.setReturnValue(FrozenReloadListener.INSTANCE.getTexture(cir.getReturnValue()));
@@ -95,7 +95,7 @@ public abstract class GeoEntityRendererMixin<T extends LivingEntity & IAnimatabl
 				MinecraftClient.getInstance().getTextureManager().bindTexture(getTexture(entity));
 				if (!entity.isInvisibleTo(MinecraftClient.getInstance().player)) {
 					Color renderColor = getRenderColor(entity, tickDelta, matrices, vertexConsumers, null, light);
-					render(modelProvider.getModel(modelProvider.getModelLocation(entity)), entity, tickDelta, getRenderType(entity, tickDelta, matrices, vertexConsumers, null, light, getTexture(entity)), matrices, vertexConsumers, null, light, getPackedOverlay(entity, 0), (float) renderColor.getRed() / 255F, (float) renderColor.getGreen() / 255F, (float) renderColor.getBlue() / 255F, (float) renderColor.getAlpha() / 255F);
+					render(modelProvider.getModel(modelProvider.getModelResource(entity)), entity, tickDelta, getRenderType(entity, tickDelta, matrices, vertexConsumers, null, light, getTexture(entity)), matrices, vertexConsumers, null, light, getPackedOverlay(entity, 0), (float) renderColor.getRed() / 255F, (float) renderColor.getGreen() / 255F, (float) renderColor.getBlue() / 255F, (float) renderColor.getAlpha() / 255F);
 				}
 				if (!entity.isSpectator()) {
 					for (GeoLayerRenderer<T> layerRenderer : layerRenderers) {

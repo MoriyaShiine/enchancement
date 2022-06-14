@@ -35,9 +35,6 @@
 	],
 	"cardinal-components-world": [
 	  "moriyashiine.enchancement.common.registry.ModWorldComponents"
-	],
-	"modmenu": [
-	  "moriyashiine.enchancement.client.integration.ModMenuIntegration"
 	]
   },
   "mixins": [
@@ -45,14 +42,13 @@
   ],
   "accessWidener": "enchancement.accesswidener",
   "depends": {
-	"fabricloader": ">=0.13.3",
-	"minecraft": "~1.18.2",
+	"fabricloader": ">=0.14.6",
+	"minecraft": "1.19.x",
 	"java": ">=17",
-	"bookshelf": ">=13.0.13",
-	"cloth-config2": ">=6.2.57",
-	"enchdesc": ">=10.0.2",
-	"fabric": ">=0.53.0",
-	"tooltipfix": ">=1.0.4-1.18"
+	"bookshelf": ">=14.0.2",
+	"enchdesc": ">=11.0.2",
+	"fabric": ">=0.55.3",
+	"tooltipfix": ">=1.0.5-1.19"
   },
   "custom": {
 	"cardinal-components": [

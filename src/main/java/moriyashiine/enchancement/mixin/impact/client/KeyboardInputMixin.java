@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(KeyboardInput.class)
 public class KeyboardInputMixin extends Input {
 	@Inject(method = "tick", at = @At("TAIL"))
-	private void enchancement$impact(boolean slowDown, CallbackInfo ci) {
+	private void enchancement$impact(boolean slowDown, float f, CallbackInfo ci) {
 		PlayerEntity player = MinecraftClient.getInstance().player;
 		if (player != null && ModEntityComponents.IMPACT.get(player).isFalling()) {
 			pressingForward = false;

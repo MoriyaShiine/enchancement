@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.vanillachanges.allowinfinityoncrossbows;
 
-import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.ModConfig;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.CrossbowItem;
@@ -19,7 +19,7 @@ public class EnchantmentMixin {
 	@SuppressWarnings("ConstantConditions")
 	@Inject(method = "isAcceptableItem", at = @At("HEAD"), cancellable = true)
 	private void enchancement$allowInfinityOnCrossbows(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
-		if (Enchancement.getConfig().allowInfinityOnCrossbows && (Object) this == Enchantments.INFINITY && stack.getItem() instanceof CrossbowItem) {
+		if (ModConfig.allowInfinityOnCrossbows && (Object) this == Enchantments.INFINITY && stack.getItem() instanceof CrossbowItem) {
 			cir.setReturnValue(true);
 		}
 	}

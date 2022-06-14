@@ -4,7 +4,6 @@
 
 package moriyashiine.enchancement.client.util;
 
-import me.shedaniel.math.Color;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.api.EnvType;
@@ -30,7 +29,7 @@ public class EnchancementClientUtil {
 		float damageBonus = EnchancementUtil.getBonusBerserkDamage(living, stack);
 		if (damageBonus > 0) {
 			float other = 1 - damageBonus / EnchancementUtil.getMaxBonusBerserkDamage(stack);
-			return Color.ofRGB(1F, other, other).getColor();
+			return (0xFF << 16) | (((int) (other * 255 + 0.5) & 0xFF) << 8) | ((int) (other * 255 + 0.5) & 0xFF);
 		}
 		return -1;
 	}

@@ -13,7 +13,6 @@ import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.text.Texts;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,7 +34,7 @@ public class CrossbowItemMixin {
 	private void enchancement$brimstone(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context, CallbackInfo ci, List<ItemStack> list, ItemStack projectile) {
 		if (ItemStack.areEqual(projectile, EnchancementUtil.BRIMSTONE_STACK)) {
 			if (BRIMSTONE_TEXT == null) {
-				BRIMSTONE_TEXT = new TranslatableText("item.minecraft.crossbow.projectile").append(" ").append(Texts.bracketed(new TranslatableText(ModEnchantments.BRIMSTONE.getTranslationKey())));
+				BRIMSTONE_TEXT = Text.translatable("item.minecraft.crossbow.projectile").append(" ").append(Texts.bracketed(Text.translatable(ModEnchantments.BRIMSTONE.getTranslationKey())));
 			}
 			tooltip.add(BRIMSTONE_TEXT);
 			ci.cancel();

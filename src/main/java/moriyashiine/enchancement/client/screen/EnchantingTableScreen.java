@@ -23,8 +23,8 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -90,7 +90,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 			if (isInEnchantButtonBounds(posX, posY, mouseX, mouseY)) {
 				drawTexture(matrices, posX + 154, posY + 50, 192, 32, 16, 16);
 				if (infoTexts == null) {
-					infoTexts = Helper.doFix(List.of(new TranslatableText("tooltip." + Enchancement.MOD_ID + ".experience_cost", handler.getCost()).formatted(Formatting.DARK_GREEN), new TranslatableText("tooltip." + Enchancement.MOD_ID + ".lapis_lazuli_cost", handler.getCost()).formatted(Formatting.BLUE)), textRenderer);
+					infoTexts = Helper.doFix(List.of(Text.translatable("tooltip." + Enchancement.MOD_ID + ".experience_cost", handler.getCost()).formatted(Formatting.DARK_GREEN), Text.translatable("tooltip." + Enchancement.MOD_ID + ".lapis_lazuli_cost", handler.getCost()).formatted(Formatting.BLUE)), textRenderer);
 				}
 				client.currentScreen.renderTooltip(matrices, infoTexts, mouseX, mouseY);
 			} else {
@@ -105,7 +105,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 				} else {
 					enchantment = handler.getEnchantmentFromViewIndex(i);
 				}
-				TranslatableText enchantmentName = new TranslatableText(enchantment.getTranslationKey());
+				MutableText enchantmentName = Text.translatable(enchantment.getTranslationKey());
 				boolean isAllowed = true;
 				for (Enchantment foundEnchantment : handler.selectedEnchantments) {
 					if (!foundEnchantment.canCombine(enchantment)) {
@@ -119,7 +119,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 						highlightedEnchantmentIndex = i;
 					}
 					if (infoTexts == null) {
-						infoTexts = Helper.doFix(List.of(new TranslatableText(enchantment.getTranslationKey()).formatted(Formatting.GRAY), new TranslatableText(enchantment.getTranslationKey() + ".desc").formatted(Formatting.DARK_GRAY)), textRenderer);
+						infoTexts = Helper.doFix(List.of(Text.translatable(enchantment.getTranslationKey()).formatted(Formatting.GRAY), Text.translatable(enchantment.getTranslationKey() + ".desc").formatted(Formatting.DARK_GRAY)), textRenderer);
 					}
 					client.currentScreen.renderTooltip(matrices, infoTexts, mouseX, mouseY);
 				} else {

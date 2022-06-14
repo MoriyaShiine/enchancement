@@ -15,22 +15,22 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(WitchEntity.class)
 public class WitchEntityMixin {
-	@ModifyExpressionValue(method = "tickMovement", at = @At(value = "INVOKE", target = "Ljava/util/Random;nextFloat()F", ordinal = 0))
+	@ModifyExpressionValue(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/random/Random;nextFloat()F", ordinal = 0))
 	private float enchancement$disarmWaterBreathing(float value) {
 		return isDisabled(Potions.WATER_BREATHING) ? 2 : value;
 	}
 
-	@ModifyExpressionValue(method = "tickMovement", at = @At(value = "INVOKE", target = "Ljava/util/Random;nextFloat()F", ordinal = 1))
+	@ModifyExpressionValue(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/random/Random;nextFloat()F", ordinal = 1))
 	private float enchancement$disarmFireResistance(float value) {
 		return isDisabled(Potions.FIRE_RESISTANCE) ? 2 : value;
 	}
 
-	@ModifyExpressionValue(method = "tickMovement", at = @At(value = "INVOKE", target = "Ljava/util/Random;nextFloat()F", ordinal = 2))
+	@ModifyExpressionValue(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/random/Random;nextFloat()F", ordinal = 2))
 	private float enchancement$disarmHealing(float value) {
 		return isDisabled(Potions.HEALING) ? 2 : value;
 	}
 
-	@ModifyExpressionValue(method = "tickMovement", at = @At(value = "INVOKE", target = "Ljava/util/Random;nextFloat()F", ordinal = 3))
+	@ModifyExpressionValue(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/random/Random;nextFloat()F", ordinal = 3))
 	private float enchancement$disarmSwiftness(float value) {
 		return isDisabled(Potions.SWIFTNESS) ? 2 : value;
 	}

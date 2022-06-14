@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.vanillachanges.singlelevelmode;
 
-import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.ModConfig;
 import net.minecraft.loot.function.SetEnchantmentsLootFunction;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class SetEnchantmentsLootFunctionMixin {
 	@ModifyVariable(method = "addEnchantmentToMap", at = @At("HEAD"), argsOnly = true)
 	private static int enchancement$singleLevelMode(int value) {
-		if (Enchancement.getConfig().singleLevelMode) {
+		if (ModConfig.singleLevelMode) {
 			return 1;
 		}
 		return value;

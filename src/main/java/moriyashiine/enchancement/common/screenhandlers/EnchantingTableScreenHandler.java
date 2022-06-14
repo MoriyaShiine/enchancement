@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.screenhandlers;
 
-import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.registry.ModScreenHandlerTypes;
 import moriyashiine.enchancement.common.registry.ModTags;
 import net.minecraft.advancement.criterion.Criteria;
@@ -246,7 +246,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 
 	private static boolean isEnchantmentAllowed(Enchantment enchantment, ItemStack stack) {
 		if (enchantment.isAvailableForRandomSelection()) {
-			if (!enchantment.isTreasure() || Enchancement.getConfig().allowTreasureEnchantmentsInEnchantingTable) {
+			if (!enchantment.isTreasure() || ModConfig.allowTreasureEnchantmentsInEnchantingTable) {
 				if (stack.isOf(Items.BOOK) || enchantment.isAcceptableItem(stack)) {
 					return !Registry.ENCHANTMENT.entryOf(Registry.ENCHANTMENT.getKey(enchantment).orElse(null)).isIn(ModTags.Enchantments.UNSELECTABLE);
 				}

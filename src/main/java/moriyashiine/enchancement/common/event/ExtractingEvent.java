@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.event;
 
-import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import moriyashiine.enchancement.common.registry.ModTags;
@@ -39,7 +39,7 @@ public class ExtractingEvent implements PlayerBlockBreakEvents.Before {
 			ItemStack stack = player.getMainHandStack();
 			if (EnchancementUtil.hasEnchantment(ModEnchantments.EXTRACTING, stack) && state.isIn(ConventionalBlockTags.ORES)) {
 				Set<BlockPos> ores = gatherOres(new HashSet<>(), world, new BlockPos.Mutable().set(pos), state.getBlock());
-				if (!ores.isEmpty() && ores.size() <= Enchancement.getConfig().maxExtractingBlocks) {
+				if (!ores.isEmpty() && ores.size() <= ModConfig.maxExtractingBlocks) {
 					ItemStack copy = stack.copy();
 					AtomicBoolean broken = new AtomicBoolean(false);
 					stack.damage(ores.size(), player, stackUser -> {
@@ -52,7 +52,7 @@ public class ExtractingEvent implements PlayerBlockBreakEvents.Before {
 						ores.forEach(ore -> {
 							BlockState oreState = world.getBlockState(ore);
 							drops.addAll(Block.getDroppedStacks(oreState, (ServerWorld) world, ore, world.getBlockEntity(ore), player, stack));
-							oreState.onStacksDropped((ServerWorld) world, player.getBlockPos(), stack);
+							oreState.onStacksDropped((ServerWorld) world, player.getBlockPos(), stack, false);
 							world.breakBlock(ore, false);
 							world.setBlockState(ore, replace);
 						});
@@ -69,7 +69,7 @@ public class ExtractingEvent implements PlayerBlockBreakEvents.Before {
 	}
 
 	private static Set<BlockPos> gatherOres(Set<BlockPos> ores, World world, BlockPos.Mutable pos, Block original) {
-		if (ores.size() < Enchancement.getConfig().maxExtractingBlocks) {
+		if (ores.size() < ModConfig.maxExtractingBlocks) {
 			int originalX = pos.getX(), originalY = pos.getY(), originalZ = pos.getZ();
 			for (int x = -1; x <= 1; x++) {
 				for (int y = -1; y <= 1; y++) {

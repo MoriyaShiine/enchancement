@@ -6,7 +6,7 @@ package moriyashiine.enchancement.common.util;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModTags;
 import moriyashiine.enchancement.mixin.util.ItemEntityAccessor;
@@ -73,7 +73,7 @@ public class EnchancementUtil {
 	}
 
 	public static boolean shouldBeUnbreakable(ItemStack stack) {
-		int flag = Enchancement.getConfig().unbreakingChangesFlag;
+		int flag = ModConfig.unbreakingChangesFlag;
 		if (flag >= 0 && !stack.isIn(ModTags.Items.RETAINS_DURABILITY)) {
 			if (flag == 0) {
 				return !stack.isEmpty() && stack.getMaxDamage() > 0;

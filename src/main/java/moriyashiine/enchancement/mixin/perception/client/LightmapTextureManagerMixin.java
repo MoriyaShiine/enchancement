@@ -23,7 +23,7 @@ public class LightmapTextureManagerMixin {
 	@Final
 	private MinecraftClient client;
 
-	@ModifyVariable(method = "update", at = @At("STORE"), ordinal = 3)
+	@ModifyVariable(method = "update", at = @At("STORE"), ordinal = 6)
 	private float enchancement$perception(float value) {
 		if (EnchancementUtil.hasEnchantment(ModEnchantments.PERCEPTION, client.player)) {
 			return Math.max(1, value);

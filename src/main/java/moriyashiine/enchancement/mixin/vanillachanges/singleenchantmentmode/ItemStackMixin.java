@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.vanillachanges.singleenchantmentmode;
 
-import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.ModConfig;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,7 +20,7 @@ public abstract class ItemStackMixin {
 
 	@Inject(method = "addEnchantment", at = @At("HEAD"), cancellable = true)
 	private void enchancement$singleEnchantmentMode(Enchantment enchantment, int level, CallbackInfo ci) {
-		if (Enchancement.getConfig().singleEnchantmentMode && hasEnchantments()) {
+		if (ModConfig.singleEnchantmentMode && hasEnchantments()) {
 			ci.cancel();
 		}
 	}

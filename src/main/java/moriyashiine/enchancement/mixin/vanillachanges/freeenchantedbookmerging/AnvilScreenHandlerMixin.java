@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.vanillachanges.freeenchantedbookmerging;
 
-import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.ModConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Items;
@@ -30,14 +30,14 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
 
 	@Inject(method = "canTakeOutput", at = @At("HEAD"), cancellable = true)
 	private void enchancement$freeEnchantedBookMerging(PlayerEntity player, boolean present, CallbackInfoReturnable<Boolean> cir) {
-		if (Enchancement.getConfig().freeEnchantedBookMerging && input.getStack(1).isOf(Items.ENCHANTED_BOOK)) {
+		if (ModConfig.freeEnchantedBookMerging && input.getStack(1).isOf(Items.ENCHANTED_BOOK)) {
 			cir.setReturnValue(true);
 		}
 	}
 
 	@Inject(method = "updateResult", at = @At("TAIL"))
 	private void enchancement$freeEnchantedBookMerging(CallbackInfo ci) {
-		if (Enchancement.getConfig().freeEnchantedBookMerging && input.getStack(1).isOf(Items.ENCHANTED_BOOK)) {
+		if (ModConfig.freeEnchantedBookMerging && input.getStack(1).isOf(Items.ENCHANTED_BOOK)) {
 			levelCost.set(0);
 		}
 	}

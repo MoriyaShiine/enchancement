@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.vanillachanges.weaponenchantmentcooldownrequirement;
 
-import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,7 +23,7 @@ public class PlayerEntityMixin {
 
 	@ModifyVariable(method = "attack", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getFireAspect(Lnet/minecraft/entity/LivingEntity;)I"), ordinal = 1)
 	private int enchancement$weaponEnchantmentCooldownRequirement(int value) {
-		if (attackCooldown < Enchancement.getConfig().weaponEnchantmentCooldownRequirement) {
+		if (attackCooldown < ModConfig.weaponEnchantmentCooldownRequirement) {
 			return 0;
 		}
 		return value;
@@ -36,7 +36,7 @@ public class PlayerEntityMixin {
 
 	@Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;onTargetDamaged(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/Entity;)V"), locals = LocalCapture.CAPTURE_FAILHARD)
 	private void enchancement$weaponEnchantmentCooldownRequirementOnTargetDamaged(Entity target, CallbackInfo ci, float attackDamage, float extraDamage, float attackCooldown) {
-		if (attackCooldown < Enchancement.getConfig().weaponEnchantmentCooldownRequirement) {
+		if (attackCooldown < ModConfig.weaponEnchantmentCooldownRequirement) {
 			EnchancementUtil.shouldCancelTargetDamagedEnchantments = true;
 		}
 	}

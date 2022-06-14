@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.vanillachanges.tridentsreturnfromvoid;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.ModConfig;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.TridentEntity;
@@ -21,7 +21,7 @@ public abstract class TridentEntityMixin extends PersistentProjectileEntity {
 
 	@ModifyExpressionValue(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/TridentEntity;isNoClip()Z"))
 	private boolean enchancement$tridentsReturnFromVoid(boolean value) {
-		if (Enchancement.getConfig().tridentsReturnFromVoid && getY() <= world.getBottomY()) {
+		if (ModConfig.tridentsReturnFromVoid && getY() <= world.getBottomY()) {
 			return true;
 		}
 		return value;

@@ -28,7 +28,7 @@ public abstract class LivingEntityMixin extends Entity {
 		super(type, world);
 	}
 
-	@Inject(method = "applyEnchantmentsToDamage", at = @At(value = "RETURN", ordinal = 2), cancellable = true)
+	@Inject(method = "modifyAppliedDamage", at = @At(value = "RETURN", ordinal = 3), cancellable = true)
 	private void enchancement$wardenspine(DamageSource source, float amount, CallbackInfoReturnable<Float> cir) {
 		if (source instanceof EntityDamageSource entityDamageSource && entityDamageSource.isThorns()) {
 			return;
