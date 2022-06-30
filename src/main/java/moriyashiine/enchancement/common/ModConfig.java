@@ -78,4 +78,8 @@ public class ModConfig extends MidnightConfig {
 		}
 		return allowedEnchantments.contains(identifier.toString());
 	}
+
+	static {
+		MidnightConfig.init(Enchancement.MOD_ID, ModConfig.class);
+	}
 }
