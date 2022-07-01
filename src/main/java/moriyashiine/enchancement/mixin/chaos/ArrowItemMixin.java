@@ -30,7 +30,7 @@ import java.util.Collections;
 public class ArrowItemMixin {
 	@Inject(method = "createArrow", at = @At("HEAD"), cancellable = true)
 	private void enchancement$chaos(World world, ItemStack stack, LivingEntity shooter, CallbackInfoReturnable<PersistentProjectileEntity> cir) {
-		if (stack.getItem() == Items.ARROW && EnchancementUtil.hasEnchantment(ModEnchantments.CHAOS, shooter)) {
+		if (stack.getItem() == Items.ARROW && EnchancementUtil.hasEnchantment(ModEnchantments.CHAOS, shooter.getActiveItem())) {
 			StatusEffect effect = null;
 			int attempts = 0;
 			if (shooter.isSneaking()) {
