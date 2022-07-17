@@ -163,14 +163,16 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 							stack.addEnchantment(enchantment, enchantment.getMaxLevel());
 						}
 					}
-					player.addExperience(-55 * selectedEnchantments.size());
+					if (!player.isCreative() && getExperienceLevelCost() > 0) {
+						player.addExperienceLevels(-getExperienceLevelCost());
+					}
 					player.incrementStat(Stats.ENCHANT_ITEM);
 					if (player instanceof ServerPlayerEntity serverPlayer) {
-						Criteria.ENCHANTED_ITEM.trigger(serverPlayer, stack, getCost());
+						Criteria.ENCHANTED_ITEM.trigger(serverPlayer, stack, getExperienceLevelCost());
 					}
 					world.playSound(null, pos, SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, SoundCategory.BLOCKS, 1, world.random.nextFloat() * 0.1F + 0.9F);
-					if (!player.isCreative()) {
-						slots.get(1).getStack().decrement(getCost());
+					if (!player.isCreative() && getLapisLazuliCost() > 0) {
+						slots.get(1).getStack().decrement(getLapisLazuliCost());
 					}
 					inventory.markDirty();
 				});
@@ -228,13 +230,17 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 			if (simulate) {
 				return true;
 			}
-			return player.experienceLevel >= getCost() && slots.get(1).getStack().getCount() >= getCost();
+			return player.experienceLevel >= getExperienceLevelCost() && slots.get(1).getStack().getCount() >= getLapisLazuliCost();
 		}
 		return false;
 	}
 
-	public int getCost() {
-		return selectedEnchantments.size() * 5;
+	public int getExperienceLevelCost() {
+		return selectedEnchantments.size() * ModConfig.experienceLevelCost;
+	}
+
+	public int getLapisLazuliCost() {
+		return selectedEnchantments.size() * ModConfig.lapisLazuliCost;
 	}
 
 	public void updateViewIndex(boolean up) {

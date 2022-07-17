@@ -34,8 +34,12 @@ public class ModConfig extends MidnightConfig {
 	@Entry
 	public static boolean allowTreasureEnchantmentsInEnchantingTable = false;
 	@Entry
-	public static boolean singleEnchantmentMode = true;
+	public static int experienceLevelCost = 5;
+	@Entry
+	public static int lapisLazuliCost = 5;
 
+	@Entry
+	public static boolean singleEnchantmentMode = true;
 	@Entry
 	public static boolean singleLevelMode = true;
 

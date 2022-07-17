@@ -81,7 +81,7 @@
   "subtitles.enchancement.entity.generic.bury": "Существо было закопано",
   "subtitles.enchancement.block.ore.extract": "Руда выкопалась",
   "subtitles.enchancement.block.generic.smelt": "Блок выплавился",
-  "tooltip.enchancement.experience_cost": "Нужно опыта: %d",
+  "tooltip.enchancement.experience_level_cost": "Нужно опыта: %d",
   "tooltip.enchancement.lapis_lazuli_cost": "Нужно лазурита: %d",
   "enchancement.midnightconfig.title": "Enchancement",
   "enchancement.midnightconfig.allowedEnchantments": "Доступные зачарования:",

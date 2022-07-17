@@ -81,7 +81,7 @@
   "subtitles.enchancement.entity.generic.bury": "Varlık Gömülür",
   "subtitles.enchancement.block.ore.extract": "Maden Çıkarılır",
   "subtitles.enchancement.block.generic.smelt": "Blok erir",
-  "tooltip.enchancement.experience_cost": "Deneyim Gereksinimi: %d level",
+  "tooltip.enchancement.experience_level_cost": "Deneyim Gereksinimi: %d level",
   "tooltip.enchancement.lapis_lazuli_cost": "Lapis Lazuli Gereksinimi: %d Lapis Lazuli",
   "enchancement.midnightconfig.title": "Enchancement",
   "enchancement.midnightconfig.allowedEnchantments": "İzin Verilen büyüler",

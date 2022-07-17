@@ -90,7 +90,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 			if (isInEnchantButtonBounds(posX, posY, mouseX, mouseY)) {
 				drawTexture(matrices, posX + 154, posY + 50, 192, 32, 16, 16);
 				if (infoTexts == null) {
-					infoTexts = Helper.doFix(List.of(Text.translatable("tooltip." + Enchancement.MOD_ID + ".experience_cost", handler.getCost()).formatted(Formatting.DARK_GREEN), Text.translatable("tooltip." + Enchancement.MOD_ID + ".lapis_lazuli_cost", handler.getCost()).formatted(Formatting.BLUE)), textRenderer);
+					infoTexts = Helper.doFix(List.of(Text.translatable("tooltip." + Enchancement.MOD_ID + ".experience_level_cost", handler.getExperienceLevelCost()).formatted(Formatting.DARK_GREEN), Text.translatable("tooltip." + Enchancement.MOD_ID + ".lapis_lazuli_cost", handler.getLapisLazuliCost()).formatted(Formatting.BLUE)), textRenderer);
 				}
 				client.currentScreen.renderTooltip(matrices, infoTexts, mouseX, mouseY);
 			} else {
