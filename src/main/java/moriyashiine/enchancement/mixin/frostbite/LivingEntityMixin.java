@@ -13,6 +13,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.EntityDamageSource;
+import net.minecraft.entity.passive.SquidEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -79,6 +80,14 @@ public abstract class LivingEntityMixin extends Entity {
 		ModEntityComponents.FROZEN.maybeGet(this).ifPresent(frozenComponent -> {
 			if (frozenComponent.shouldFreezeOnDeath(source)) {
 				frozenComponent.freeze();
+				if (LivingEntity.class.cast(this) instanceof SquidEntity squid) {
+					ModEntityComponents.FROZEN_SQUID.maybeGet(squid).ifPresent(frozenSquidComponent -> {
+						frozenSquidComponent.setForcedRollAngle(squid.rollAngle);
+						frozenSquidComponent.setForcedTentacleAngle(squid.tentacleAngle);
+						frozenSquidComponent.setForcedTiltAngle(squid.tiltAngle);
+						frozenSquidComponent.sync();
+					});
+				}
 				ci.cancel();
 			}
 		});

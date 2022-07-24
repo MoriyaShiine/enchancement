@@ -149,7 +149,7 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 		forcedLimbDistance = obj.limbDistance;
 		forcedLimbAngle = obj.limbAngle;
 		forcedClientAge = obj.age;
-		setFrozen(true);
+		frozen = true;
 		sync();
 	}
 

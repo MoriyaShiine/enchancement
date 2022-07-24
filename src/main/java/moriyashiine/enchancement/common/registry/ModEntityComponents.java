@@ -14,6 +14,7 @@ import moriyashiine.enchancement.common.component.entity.*;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.WitchEntity;
+import net.minecraft.entity.passive.SquidEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.TridentEntity;
 import net.minecraft.util.Identifier;
@@ -31,6 +32,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<GaleComponent> GALE = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "gale"), GaleComponent.class);
 	//sword
 	public static final ComponentKey<FrozenComponent> FROZEN = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "frozen"), FrozenComponent.class);
+	public static final ComponentKey<FrozenSquidComponent> FROZEN_SQUID = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "frozen_squid"), FrozenSquidComponent.class);
 	//bow
 	public static final ComponentKey<DelayComponent> DELAY = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "delay"), DelayComponent.class);
 	public static final ComponentKey<PhasingComponent> PHASHING = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "phasing"), PhasingComponent.class);
@@ -53,6 +55,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerForPlayers(ACCELERATION, AccelerationComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(GALE, GaleComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(LivingEntity.class, FROZEN, FrozenComponent::new);
+		registry.registerFor(SquidEntity.class, FROZEN_SQUID, FrozenSquidComponent::new);
 		registry.registerFor(ArrowEntity.class, DELAY, DelayComponent::new);
 		registry.registerFor(ArrowEntity.class, PHASHING, PhasingComponent::new);
 		registry.registerFor(LightningEntity.class, CHANNELING, lightning -> new ChannelingComponent());
