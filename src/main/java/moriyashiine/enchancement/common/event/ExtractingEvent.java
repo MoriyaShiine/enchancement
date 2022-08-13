@@ -37,7 +37,7 @@ public class ExtractingEvent implements PlayerBlockBreakEvents.Before {
 	public boolean beforeBlockBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity blockEntity) {
 		if (!player.isSneaking()) {
 			ItemStack stack = player.getMainHandStack();
-			if (EnchancementUtil.hasEnchantment(ModEnchantments.EXTRACTING, stack) && state.isIn(ConventionalBlockTags.ORES)) {
+			if (EnchancementUtil.hasEnchantment(ModEnchantments.EXTRACTING, stack) && state.isIn(ConventionalBlockTags.ORES) && player.canHarvest(state)) {
 				Set<BlockPos> ores = gatherOres(new HashSet<>(), world, new BlockPos.Mutable().set(pos), state.getBlock());
 				if (!ores.isEmpty() && ores.size() <= ModConfig.maxExtractingBlocks) {
 					ItemStack copy = stack.copy();
