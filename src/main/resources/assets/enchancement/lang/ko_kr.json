@@ -106,5 +106,5 @@
   "enchancement.midnightconfig.maxExtractingBlocks": "최대 추출 블록 수",
   "enchancement.midnightconfig.maxLumberjackBlocks": "최대 벌목 횟수",
   "enchancement.midnightconfig.maxLumberjackHorizontalLength": "최대 벌목 수평 길이",
-  "enchancement.midnightconfig.unbreakingChangesFlag": "주요 변경 사항 플래그"
+  "enchancement.midnightconfig.unbreakingChangesFlag": "내구도 무한"
 }
