@@ -49,12 +49,16 @@ public abstract class FishingBobberEntityMixin extends Entity {
 	@Inject(method = "pullHookedEntity", at = @At("HEAD"), cancellable = true)
 	private void enchancment$disarm(Entity entity, CallbackInfo ci) {
 		if (hasDisarm && !world.isClient && entity instanceof LivingEntity living) {
-			ItemStack stack = living.getMainHandStack();
-			if (stack.isEmpty()) {
-				stack = living.getOffHandStack();
-			}
+			boolean offhand = false;
+			ItemStack stack;
 			if (entity instanceof EndermanEntity enderman && enderman.getCarriedBlock() != null) {
 				stack = new ItemStack(enderman.getCarriedBlock().getBlock());
+			} else {
+				stack = living.getMainHandStack();
+				if (stack.isEmpty()) {
+					offhand = true;
+					stack = living.getOffHandStack();
+				}
 			}
 			if (!stack.isEmpty()) {
 				if (entity instanceof PlayerEntity player) {
@@ -94,7 +98,7 @@ public abstract class FishingBobberEntityMixin extends Entity {
 						double deltaZ = owner.getZ() - getZ();
 						itemEntity.setVelocity(deltaX * 0.1, deltaY * 0.1 + Math.sqrt(Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ)) * 0.08, deltaZ * 0.1);
 						world.spawnEntity(itemEntity);
-						living.equipStack(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+						living.equipStack(offhand ? EquipmentSlot.OFFHAND : EquipmentSlot.MAINHAND, ItemStack.EMPTY);
 					}
 				}
 				ci.cancel();
