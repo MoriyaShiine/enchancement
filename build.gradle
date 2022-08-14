@@ -71,7 +71,7 @@ dependencies {
 
     modCompileOnly "dev.architectury:architectury-fabric:${architectury_version}"
     modCompileOnly "software.bernie.geckolib:geckolib-fabric-${geckolib_version}"
-    modCompileOnly "curse.maven:impaled-478843:${impaled_version}"
+    modCompileOnly files("libs/impaled-1.1.4.jar")
     modCompileOnly "maven.modrinth:sodium:${sodium_version}"
     modRuntimeOnly "maven.modrinth:sodium:${sodium_version}"
     implementation "org.joml:joml:1.10.4"

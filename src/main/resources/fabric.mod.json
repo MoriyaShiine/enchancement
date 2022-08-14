@@ -45,8 +45,8 @@
 	"fabricloader": ">=0.14.8",
 	"minecraft": "1.19.x",
 	"java": ">=17",
-	"bookshelf": ">=14.1.7",
-	"enchdesc": ">=11.0.4",
+	"bookshelf": ">=14.2.0",
+	"enchdesc": ">=11.1.9",
 	"fabric": ">=0.58.0",
 	"tooltipfix": ">=1.0.5-1.19"
   },
