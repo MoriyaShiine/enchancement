@@ -59,6 +59,7 @@
 	"vanillachanges.alltridentshaveloyalty.TridentEntityMixin",
 	"vanillachanges.channelingworkswhennotthundering.LightningRodBlockMixin",
 	"vanillachanges.channelingworkswhennotthundering.TridentEntityMixin",
+	"vanillachanges.disabledisallowedenchantments.RegistryEntryReferenceMixin",
 	"vanillachanges.disabledisallowedenchantments.SimpleRegistryMixin",
 	"vanillachanges.disabledisallowedenchantments.TagEntryMixin",
 	"vanillachanges.disabledisallowedenchantments.integration.architectury.RegistriesImplRegistartImplMixin",
