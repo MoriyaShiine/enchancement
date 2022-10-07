@@ -4,6 +4,7 @@
 
 package moriyashiine.enchancement.common.enchantment;
 
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
@@ -17,12 +18,14 @@ public class LeechEnchantment extends NoRiptideEnchantment {
 
 	@Override
 	public void onTargetDamaged(LivingEntity user, Entity target, int level) {
-		if (target.world.isClient) {
-			for (int i = 0; i < 6; i++) {
-				target.world.addParticle(ParticleTypes.DAMAGE_INDICATOR, target.getParticleX(1), target.getBodyY(0.5), target.getParticleZ(1), 0, 0, 0);
+		if (EnchancementUtil.hasEnchantment(this, user.getMainHandStack())) {
+			if (target.world.isClient) {
+				for (int i = 0; i < 6; i++) {
+					target.world.addParticle(ParticleTypes.DAMAGE_INDICATOR, target.getParticleX(1), target.getBodyY(0.5), target.getParticleZ(1), 0, 0, 0);
+				}
+			} else {
+				user.heal(1);
 			}
-		} else {
-			user.heal(1);
 		}
 	}
 }
