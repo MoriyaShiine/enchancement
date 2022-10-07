@@ -23,9 +23,13 @@ import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resource.ResourceType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Enchancement implements ModInitializer {
 	public static final String MOD_ID = "enchancement";
+
+	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	@Override
 	public void onInitialize() {

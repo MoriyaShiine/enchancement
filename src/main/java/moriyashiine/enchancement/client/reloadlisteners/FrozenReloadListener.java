@@ -64,7 +64,8 @@ public class FrozenReloadListener implements IdentifiableResourceReloadListener,
 			try (NativeImage tex = loadNative(resourceManager, id)) {
 				return generateTexture(resourceManager, tex.getWidth(), tex.getHeight());
 			} catch (IOException e) {
-				throw new IllegalStateException("Unable to generate frozen texture for " + original, e);
+				Enchancement.LOGGER.warn("Unable to generate frozen texture for " + original, e);
+				return original;
 			}
 		});
 	}
