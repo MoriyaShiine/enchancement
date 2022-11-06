@@ -9,7 +9,6 @@ import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.screenhandlers.EnchantingTableScreenHandler;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.kyrptonaught.tooltipfix.Helper;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.render.OverlayTexture;
@@ -90,7 +89,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 			if (isInEnchantButtonBounds(posX, posY, mouseX, mouseY)) {
 				drawTexture(matrices, posX + 154, posY + 50, 192, 32, 16, 16);
 				if (infoTexts == null) {
-					infoTexts = Helper.doFix(List.of(Text.translatable("tooltip." + Enchancement.MOD_ID + ".experience_level_cost", handler.getExperienceLevelCost()).formatted(Formatting.DARK_GREEN), Text.translatable("tooltip." + Enchancement.MOD_ID + ".lapis_lazuli_cost", handler.getLapisLazuliCost()).formatted(Formatting.BLUE)), textRenderer);
+					infoTexts = List.of(Text.translatable("tooltip." + Enchancement.MOD_ID + ".experience_level_cost", handler.getExperienceLevelCost()).formatted(Formatting.DARK_GREEN), Text.translatable("tooltip." + Enchancement.MOD_ID + ".lapis_lazuli_cost", handler.getLapisLazuliCost()).formatted(Formatting.BLUE));
 				}
 				client.currentScreen.renderTooltip(matrices, infoTexts, mouseX, mouseY);
 			} else {
@@ -119,7 +118,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 						highlightedEnchantmentIndex = i;
 					}
 					if (infoTexts == null) {
-						infoTexts = Helper.doFix(List.of(Text.translatable(enchantment.getTranslationKey()).formatted(Formatting.GRAY), Text.translatable(enchantment.getTranslationKey() + ".desc").formatted(Formatting.DARK_GRAY)), textRenderer);
+						infoTexts = List.of(Text.translatable(enchantment.getTranslationKey()).formatted(Formatting.GRAY), Text.translatable(enchantment.getTranslationKey() + ".desc").formatted(Formatting.DARK_GRAY));
 					}
 					client.currentScreen.renderTooltip(matrices, infoTexts, mouseX, mouseY);
 				} else {

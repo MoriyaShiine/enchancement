@@ -48,7 +48,7 @@
 	"bookshelf": ">=16.1.11",
 	"enchdesc": ">=13.0.3",
 	"fabric-api": ">=0.64.0",
-	"tooltipfix": ">=1.0.5-1.19"
+	"tooltipfix": ">=1.1.0-1.19"
   },
   "custom": {
 	"cardinal-components": [
