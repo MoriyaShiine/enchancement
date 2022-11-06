@@ -64,10 +64,11 @@ dependencies {
     modImplementation "com.github.emilyploszaj:step-height-entity-attribute:${step_height_entity_attribute_version}"
     include "com.github.emilyploszaj:step-height-entity-attribute:${step_height_entity_attribute_version}"
 
-    modImplementation "curse.maven:bookshelf-228525:${bookshelf_version}"
-    modImplementation "curse.maven:enchantment-descriptions-250419:${enchantment_descriptions_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     modImplementation "curse.maven:tooltipfix-411557:${tooltipfix_version}"
+
+//    modRuntimeOnly "curse.maven:bookshelf-228525:${bookshelf_version}"
+//    modRuntimeOnly "curse.maven:enchantment-descriptions-250419:${enchantment_descriptions_version}"
 
     modCompileOnly "dev.architectury:architectury-fabric:${architectury_version}"
     modCompileOnly "software.bernie.geckolib:geckolib-fabric-${geckolib_version}"
