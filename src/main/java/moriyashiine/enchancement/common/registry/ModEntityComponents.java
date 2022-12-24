@@ -16,6 +16,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.WitchEntity;
 import net.minecraft.entity.passive.SquidEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.entity.projectile.SpectralArrowEntity;
 import net.minecraft.entity.projectile.TridentEntity;
 
 public class ModEntityComponents implements EntityComponentInitializer {
@@ -57,6 +58,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerFor(SquidEntity.class, FROZEN_SQUID, FrozenSquidComponent::new);
 		registry.registerFor(ArrowEntity.class, DELAY, DelayComponent::new);
 		registry.registerFor(ArrowEntity.class, PHASHING, PhasingComponent::new);
+		registry.registerFor(SpectralArrowEntity.class, PHASHING, PhasingComponent::new);
 		registry.registerFor(LightningEntity.class, CHANNELING, lightning -> new ChannelingComponent());
 		registry.registerFor(TridentEntity.class, LEECH, LeechComponent::new);
 		registry.registerFor(TridentEntity.class, WARP, WarpComponent::new);

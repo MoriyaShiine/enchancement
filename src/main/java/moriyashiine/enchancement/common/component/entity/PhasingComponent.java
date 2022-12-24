@@ -7,16 +7,16 @@ package moriyashiine.enchancement.common.component.entity;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
-import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.nbt.NbtCompound;
 import org.jetbrains.annotations.NotNull;
 
 public class PhasingComponent implements AutoSyncedComponent, ServerTickingComponent {
-	private final ArrowEntity obj;
+	private final PersistentProjectileEntity obj;
 	private boolean shouldPhase = false;
 	private int ticksInAir = 0;
 
-	public PhasingComponent(ArrowEntity obj) {
+	public PhasingComponent(PersistentProjectileEntity obj) {
 		this.obj = obj;
 	}
 
