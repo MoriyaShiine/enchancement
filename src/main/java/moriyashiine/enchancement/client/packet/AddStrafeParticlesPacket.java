@@ -17,7 +17,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
 public class AddStrafeParticlesPacket {
-	public static final Identifier ID = new Identifier(Enchancement.MOD_ID, "add_strafe_particles");
+	public static final Identifier ID = Enchancement.id("add_strafe_particles");
 
 	public static void send(ServerPlayerEntity player, int id) {
 		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());

@@ -18,7 +18,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
 public class DashPacket {
-	public static final Identifier ID = new Identifier(Enchancement.MOD_ID, "dash");
+	public static final Identifier ID = Enchancement.id("dash");
 
 	public static void send() {
 		ClientPlayNetworking.send(ID, new PacketByteBuf(Unpooled.buffer()));

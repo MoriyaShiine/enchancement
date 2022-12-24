@@ -9,7 +9,6 @@ import moriyashiine.enchancement.common.enchantment.*;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class ModEnchantments {
@@ -57,45 +56,45 @@ public class ModEnchantments {
 
 	public static void init() {
 		//helmet
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "assimilation"), ASSIMILATION);
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "perception"), PERCEPTION);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("assimilation"), ASSIMILATION);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("perception"), PERCEPTION);
 		//chestplate
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "amphibious"), AMPHIBIOUS);
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "strafe"), STRAFE);
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "wardenspine"), WARDENSPINE);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("amphibious"), AMPHIBIOUS);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("strafe"), STRAFE);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("wardenspine"), WARDENSPINE);
 		//leggings
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "dash"), DASH);
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "impact"), IMPACT);
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "slide"), SLIDE);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("dash"), DASH);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("impact"), IMPACT);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("slide"), SLIDE);
 		//boots
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "acceleration"), ACCELERATION);
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "bouncy"), BOUNCY);
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "gale"), GALE);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("acceleration"), ACCELERATION);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("bouncy"), BOUNCY);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("gale"), GALE);
 		//sword
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "berserk"), BERSERK);
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "frostbite"), FROSTBITE);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("berserk"), BERSERK);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("frostbite"), FROSTBITE);
 		//bow
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "chaos"), CHAOS);
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "delay"), DELAY);
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "phasing"), PHASING);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("chaos"), CHAOS);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("delay"), DELAY);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("phasing"), PHASING);
 		//crossbow
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "brimstone"), BRIMSTONE);
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "homing"), HOMING);
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "torch"), TORCH);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("brimstone"), BRIMSTONE);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("homing"), HOMING);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("torch"), TORCH);
 		//trident
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "leech"), LEECH);
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "warp"), WARP);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("leech"), LEECH);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("warp"), WARP);
 		//pickaxe
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "extracting"), EXTRACTING);
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "molten"), MOLTEN);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("extracting"), EXTRACTING);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("molten"), MOLTEN);
 		//axe
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "beheading"), BEHEADING);
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "lumberjack"), LUMBERJACK);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("beheading"), BEHEADING);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("lumberjack"), LUMBERJACK);
 		//shovel
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "bury"), BURY);
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "scooping"), SCOOPING);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("bury"), BURY);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("scooping"), SCOOPING);
 		//fishing rod
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "disarm"), DISARM);
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "grapple"), GRAPPLE);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("disarm"), DISARM);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("grapple"), GRAPPLE);
 	}
 }

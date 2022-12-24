@@ -33,7 +33,7 @@ import java.util.Map;
 public class FrozenReloadListener implements IdentifiableResourceReloadListener, SimpleSynchronousResourceReloadListener {
 	public static final FrozenReloadListener INSTANCE = new FrozenReloadListener();
 
-	private static final Identifier ID = new Identifier(Enchancement.MOD_ID, "frozen");
+	private static final Identifier ID = Enchancement.id("frozen");
 
 	private static final Identifier PACKED_ICE_TEXTURE = new Identifier("textures/block/packed_ice.png");
 	private static final boolean DEBUG_TEXTURES = Boolean.getBoolean(Enchancement.MOD_ID + ".debug_frozen_textures");
@@ -96,7 +96,7 @@ public class FrozenReloadListener implements IdentifiableResourceReloadListener,
 					destTex.setColor(dx, dy, srcTex.getColor(dx % srcTex.getWidth(), dy % srcTex.getHeight()));
 				}
 			}
-			Identifier textureID = new Identifier(Enchancement.MOD_ID, String.format("textures/generated/frozen_%sx%s", width, height));
+			Identifier textureID = Enchancement.id(String.format("textures/generated/frozen_%sx%s", width, height));
 			// if in debug mode, output generated textures to the current game directory
 			if (DEBUG_TEXTURES) {
 				try {

@@ -6,22 +6,21 @@ package moriyashiine.enchancement.common.registry;
 
 import moriyashiine.enchancement.common.Enchancement;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class ModSoundEvents {
-	public static final SoundEvent ENTITY_ICE_SHARD_SHATTER = new SoundEvent(new Identifier(Enchancement.MOD_ID, "entity.ice_shard.shatter"));
-	public static final SoundEvent ENTITY_BRIMSTONE_FIRE = new SoundEvent(new Identifier(Enchancement.MOD_ID, "entity.brimstone.fire"));
-	public static final SoundEvent ENTITY_GENERIC_STRAFE = new SoundEvent(new Identifier(Enchancement.MOD_ID, "entity.generic.strafe"));
-	public static final SoundEvent ENTITY_GENERIC_DASH = new SoundEvent(new Identifier(Enchancement.MOD_ID, "entity.generic.dash"));
-	public static final SoundEvent ENTITY_GENERIC_IMPACT = new SoundEvent(new Identifier(Enchancement.MOD_ID, "entity.generic.impact"));
-	public static final SoundEvent ENTITY_GENERIC_AIR_JUMP = new SoundEvent(new Identifier(Enchancement.MOD_ID, "entity.generic.air_jump"));
-	public static final SoundEvent ENTITY_GENERIC_FREEZE = new SoundEvent(new Identifier(Enchancement.MOD_ID, "entity.generic.freeze"));
-	public static final SoundEvent ENTITY_GENERIC_TELEPORT = new SoundEvent(new Identifier(Enchancement.MOD_ID, "entity.generic.teleport"));
-	public static final SoundEvent ENTITY_GENERIC_BURY = new SoundEvent(new Identifier(Enchancement.MOD_ID, "entity.generic.bury"));
+	public static final SoundEvent ENTITY_ICE_SHARD_SHATTER = new SoundEvent(Enchancement.id("entity.ice_shard.shatter"));
+	public static final SoundEvent ENTITY_BRIMSTONE_FIRE = new SoundEvent(Enchancement.id("entity.brimstone.fire"));
+	public static final SoundEvent ENTITY_GENERIC_STRAFE = new SoundEvent(Enchancement.id("entity.generic.strafe"));
+	public static final SoundEvent ENTITY_GENERIC_DASH = new SoundEvent(Enchancement.id("entity.generic.dash"));
+	public static final SoundEvent ENTITY_GENERIC_IMPACT = new SoundEvent(Enchancement.id("entity.generic.impact"));
+	public static final SoundEvent ENTITY_GENERIC_AIR_JUMP = new SoundEvent(Enchancement.id("entity.generic.air_jump"));
+	public static final SoundEvent ENTITY_GENERIC_FREEZE = new SoundEvent(Enchancement.id("entity.generic.freeze"));
+	public static final SoundEvent ENTITY_GENERIC_TELEPORT = new SoundEvent(Enchancement.id("entity.generic.teleport"));
+	public static final SoundEvent ENTITY_GENERIC_BURY = new SoundEvent(Enchancement.id("entity.generic.bury"));
 
-	public static final SoundEvent BLOCK_ORE_EXTRACT = new SoundEvent(new Identifier(Enchancement.MOD_ID, "block.ore.extract"));
-	public static final SoundEvent BLOCK_GENERIC_SMELT = new SoundEvent(new Identifier(Enchancement.MOD_ID, "block.generic.smelt"));
+	public static final SoundEvent BLOCK_ORE_EXTRACT = new SoundEvent(Enchancement.id("block.ore.extract"));
+	public static final SoundEvent BLOCK_GENERIC_SMELT = new SoundEvent(Enchancement.id("block.generic.smelt"));
 
 	public static void init() {
 		Registry.register(Registry.SOUND_EVENT, ENTITY_ICE_SHARD_SHATTER.getId(), ENTITY_ICE_SHARD_SHATTER);

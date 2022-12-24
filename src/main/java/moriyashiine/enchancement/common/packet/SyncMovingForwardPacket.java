@@ -16,7 +16,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
 public class SyncMovingForwardPacket {
-	public static final Identifier ID = new Identifier(Enchancement.MOD_ID, "sync_moving_forward");
+	public static final Identifier ID = Enchancement.id("sync_moving_forward");
 
 	public static void send(boolean movingForward) {
 		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());

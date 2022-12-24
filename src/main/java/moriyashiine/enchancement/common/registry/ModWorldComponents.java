@@ -10,11 +10,10 @@ import dev.onyxstudios.cca.api.v3.world.WorldComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.world.WorldComponentInitializer;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.component.world.LumberjackComponent;
-import net.minecraft.util.Identifier;
 
 public class ModWorldComponents implements WorldComponentInitializer {
 	//axe
-	public static final ComponentKey<LumberjackComponent> LUMBERJACK = ComponentRegistry.getOrCreate(new Identifier(Enchancement.MOD_ID, "lumberjack"), LumberjackComponent.class);
+	public static final ComponentKey<LumberjackComponent> LUMBERJACK = ComponentRegistry.getOrCreate(Enchancement.id("lumberjack"), LumberjackComponent.class);
 
 	@Override
 	public void registerWorldComponentFactories(WorldComponentFactoryRegistry registry) {

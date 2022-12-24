@@ -13,7 +13,6 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class ModEntityTypes {
@@ -23,9 +22,9 @@ public class ModEntityTypes {
 	public static final EntityType<TorchEntity> TORCH = FabricEntityTypeBuilder.<TorchEntity>create(SpawnGroup.MISC, TorchEntity::new).dimensions(EntityType.ARROW.getDimensions()).build();
 
 	public static void init() {
-		Registry.register(Registry.ENTITY_TYPE, new Identifier(Enchancement.MOD_ID, "frozen_player"), FROZEN_PLAYER);
-		Registry.register(Registry.ENTITY_TYPE, new Identifier(Enchancement.MOD_ID, "ice_shard"), ICE_SHARD);
-		Registry.register(Registry.ENTITY_TYPE, new Identifier(Enchancement.MOD_ID, "brimstone"), BRIMSTONE);
-		Registry.register(Registry.ENTITY_TYPE, new Identifier(Enchancement.MOD_ID, "torch"), TORCH);
+		Registry.register(Registry.ENTITY_TYPE, Enchancement.id("frozen_player"), FROZEN_PLAYER);
+		Registry.register(Registry.ENTITY_TYPE, Enchancement.id("ice_shard"), ICE_SHARD);
+		Registry.register(Registry.ENTITY_TYPE, Enchancement.id("brimstone"), BRIMSTONE);
+		Registry.register(Registry.ENTITY_TYPE, Enchancement.id("torch"), TORCH);
 	}
 }

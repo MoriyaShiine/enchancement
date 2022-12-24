@@ -22,7 +22,7 @@ import net.minecraft.util.registry.Registry;
 import java.util.Map;
 
 public class BeheadingReloadListener extends JsonDataLoader implements IdentifiableResourceReloadListener {
-	private static final Identifier ID = new Identifier(Enchancement.MOD_ID, "beheading");
+	private static final Identifier ID = Enchancement.id("beheading");
 
 	public BeheadingReloadListener(Gson gson, String dataType) {
 		super(gson, dataType);

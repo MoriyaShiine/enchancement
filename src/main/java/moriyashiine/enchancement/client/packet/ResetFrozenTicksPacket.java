@@ -15,7 +15,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
 public class ResetFrozenTicksPacket {
-	public static final Identifier ID = new Identifier(Enchancement.MOD_ID, "reset_frozen_ticks");
+	public static final Identifier ID = Enchancement.id("reset_frozen_ticks");
 
 	public static void send(ServerPlayerEntity player) {
 		ServerPlayNetworking.send(player, ID, new PacketByteBuf(Unpooled.buffer()));

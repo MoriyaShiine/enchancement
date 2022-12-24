@@ -14,7 +14,7 @@ import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class IceShardEntityRenderer extends ProjectileEntityRenderer<IceShardEntity> {
-	private static final Identifier TEXTURE = new Identifier(Enchancement.MOD_ID, "textures/entity/projectiles/ice_shard.png");
+	private static final Identifier TEXTURE = Enchancement.id("textures/entity/projectiles/ice_shard.png");
 
 	public IceShardEntityRenderer(EntityRendererFactory.Context context) {
 		super(context);

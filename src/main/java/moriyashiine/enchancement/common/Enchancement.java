@@ -23,6 +23,7 @@ import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resource.ResourceType;
+import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,6 +45,10 @@ public class Enchancement implements ModInitializer {
 		ModScreenHandlerTypes.init();
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new BeheadingReloadListener(new Gson(), MOD_ID + "_beheading"));
 		initEvents();
+	}
+
+	public static Identifier id(String value) {
+		return new Identifier(MOD_ID, value);
 	}
 
 	private void initEvents() {

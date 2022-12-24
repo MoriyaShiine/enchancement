@@ -19,7 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
 public class AddMoltenParticlesPacket {
-	public static final Identifier ID = new Identifier(Enchancement.MOD_ID, "add_molten_particles");
+	public static final Identifier ID = Enchancement.id("add_molten_particles");
 
 	public static void send(ServerPlayerEntity player, BlockPos pos) {
 		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());

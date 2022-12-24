@@ -20,7 +20,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec2f;
 
 public class StrafePacket {
-	public static final Identifier ID = new Identifier(Enchancement.MOD_ID, "strafe");
+	public static final Identifier ID = Enchancement.id("strafe");
 
 	public static void send(Vec2f boost) {
 		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());

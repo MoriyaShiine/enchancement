@@ -30,8 +30,8 @@ public class ModelLoaderMixin {
 	private void enchancement$brimstone(Identifier id, CallbackInfoReturnable<JsonUnbakedModel> cir) {
 		if (id.equals(CROSSBOW)) {
 			List<ModelOverride.Condition> conditions = new LinkedList<>();
-			conditions.add(new ModelOverride.Condition(new Identifier(Enchancement.MOD_ID, "crossbow_brimstone"), 1));
-			cir.getReturnValue().getOverrides().add(new ModelOverride(new Identifier(Enchancement.MOD_ID, "item/crossbow_brimstone"), conditions));
+			conditions.add(new ModelOverride.Condition(Enchancement.id("crossbow_brimstone"), 1));
+			cir.getReturnValue().getOverrides().add(new ModelOverride(Enchancement.id("item/crossbow_brimstone"), conditions));
 		}
 	}
 }

@@ -17,7 +17,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
 public class AddGaleParticlesPacket {
-	public static final Identifier ID = new Identifier(Enchancement.MOD_ID, "add_gale_particles");
+	public static final Identifier ID = Enchancement.id("add_gale_particles");
 
 	public static void send(ServerPlayerEntity player, int id) {
 		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());

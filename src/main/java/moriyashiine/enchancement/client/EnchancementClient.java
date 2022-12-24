@@ -32,7 +32,6 @@ import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.resource.ResourceType;
-import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class EnchancementClient implements ClientModInitializer {
@@ -47,11 +46,11 @@ public class EnchancementClient implements ClientModInitializer {
 		EntityRendererRegistry.register(ModEntityTypes.ICE_SHARD, IceShardEntityRenderer::new);
 		EntityRendererRegistry.register(ModEntityTypes.BRIMSTONE, BrimstoneEntityRenderer::new);
 		EntityRendererRegistry.register(ModEntityTypes.TORCH, TorchEntityRenderer::new);
-		ModelPredicateProviderRegistry.register(Items.CROSSBOW, new Identifier(Enchancement.MOD_ID, "crossbow_brimstone"), (stack, world, entity, seed) -> CrossbowItemAccessor.enchancement$getProjectiles(stack).stream().anyMatch(foundStack -> ItemStack.areEqual(foundStack, EnchancementUtil.BRIMSTONE_STACK)) ? 1 : 0);
-		ModelPredicateProviderRegistry.register(Items.CROSSBOW, new Identifier(Enchancement.MOD_ID, "crossbow_torch"), (stack, world, entity, seed) -> CrossbowItem.hasProjectile(stack, Items.TORCH) ? 1 : 0);
+		ModelPredicateProviderRegistry.register(Items.CROSSBOW, Enchancement.id("crossbow_brimstone"), (stack, world, entity, seed) -> CrossbowItemAccessor.enchancement$getProjectiles(stack).stream().anyMatch(foundStack -> ItemStack.areEqual(foundStack, EnchancementUtil.BRIMSTONE_STACK)) ? 1 : 0);
+		ModelPredicateProviderRegistry.register(Items.CROSSBOW, Enchancement.id("crossbow_torch"), (stack, world, entity, seed) -> CrossbowItem.hasProjectile(stack, Items.TORCH) ? 1 : 0);
 		HandledScreens.register(ModScreenHandlerTypes.ENCHANTING_TABLE, EnchantingTableScreen::new);
 		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(FrozenReloadListener.INSTANCE);
-		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(Enchancement.MOD_ID, "alternate_dash"), modContainer, ResourcePackActivationType.NORMAL));
+		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(Enchancement.id("alternate_dash"), modContainer, ResourcePackActivationType.NORMAL));
 		initEvents();
 	}
 

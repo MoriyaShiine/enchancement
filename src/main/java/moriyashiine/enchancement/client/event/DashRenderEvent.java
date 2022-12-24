@@ -17,7 +17,7 @@ import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class DashRenderEvent implements HudRenderCallback {
-	private static final Identifier DASH_TEXTURE = new Identifier(Enchancement.MOD_ID, "textures/gui/dash.png");
+	private static final Identifier DASH_TEXTURE = Enchancement.id("textures/gui/dash.png");
 
 	@Override
 	public void onHudRender(MatrixStack matrices, float tickDelta) {

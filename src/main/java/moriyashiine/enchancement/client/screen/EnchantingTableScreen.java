@@ -34,7 +34,7 @@ import java.util.List;
 
 @Environment(EnvType.CLIENT)
 public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHandler> {
-	private static final Identifier TEXTURE = new Identifier(Enchancement.MOD_ID, "textures/gui/container/enchanting_table.png");
+	private static final Identifier TEXTURE = Enchancement.id("textures/gui/container/enchanting_table.png");
 	private static final Identifier BOOK_TEXTURE = new Identifier("textures/entity/enchanting_table_book.png");
 
 	private BookModel bookModel;

@@ -18,7 +18,7 @@ import net.minecraft.util.Identifier;
 import java.util.UUID;
 
 public class SyncFrozenPlayerSlimStatusC2S {
-	public static final Identifier ID = new Identifier(Enchancement.MOD_ID, "sync_frozen_player_slim_status_cs2");
+	public static final Identifier ID = Enchancement.id("sync_frozen_player_slim_status_cs2");
 
 	public static void send(UUID uuid, boolean slim) {
 		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());

@@ -19,7 +19,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
 public class GaleJumpPacket {
-	public static final Identifier ID = new Identifier(Enchancement.MOD_ID, "gale_jump");
+	public static final Identifier ID = Enchancement.id("gale_jump");
 
 	public static void send() {
 		ClientPlayNetworking.send(ID, new PacketByteBuf(Unpooled.buffer()));

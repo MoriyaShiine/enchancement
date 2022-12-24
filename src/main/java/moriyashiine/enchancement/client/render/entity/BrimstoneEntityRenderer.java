@@ -20,7 +20,7 @@ import net.minecraft.util.math.Vec3f;
 
 @Environment(EnvType.CLIENT)
 public class BrimstoneEntityRenderer extends ProjectileEntityRenderer<BrimstoneEntity> {
-	private static final Identifier TEXTURE = new Identifier(Enchancement.MOD_ID, "textures/entity/brimstone.png");
+	private static final Identifier TEXTURE = Enchancement.id("textures/entity/brimstone.png");
 
 	public BrimstoneEntityRenderer(EntityRendererFactory.Context context) {
 		super(context);
