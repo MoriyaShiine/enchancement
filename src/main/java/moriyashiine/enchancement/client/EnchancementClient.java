@@ -4,6 +4,7 @@
 
 package moriyashiine.enchancement.client;
 
+import moriyashiine.enchancement.client.event.AssimilationTooltipEvent;
 import moriyashiine.enchancement.client.event.DashRenderEvent;
 import moriyashiine.enchancement.client.packet.*;
 import moriyashiine.enchancement.client.reloadlisteners.FrozenReloadListener;
@@ -20,6 +21,7 @@ import moriyashiine.enchancement.mixin.brimstone.CrossbowItemAccessor;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
@@ -55,6 +57,7 @@ public class EnchancementClient implements ClientModInitializer {
 	}
 
 	private void initEvents() {
+		ItemTooltipCallback.EVENT.register(new AssimilationTooltipEvent());
 		HudRenderCallback.EVENT.register(new DashRenderEvent());
 	}
 }

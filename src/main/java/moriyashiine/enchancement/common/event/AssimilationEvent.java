@@ -5,6 +5,7 @@
 package moriyashiine.enchancement.common.event;
 
 import moriyashiine.enchancement.common.registry.ModEnchantments;
+import moriyashiine.enchancement.common.registry.ModTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.buffet.LivingEntityAccessor;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -44,7 +45,7 @@ public class AssimilationEvent implements ServerTickEvents.EndTick {
 		ItemStack food = ItemStack.EMPTY;
 		for (int i = 0; i < player.getInventory().main.size(); i++) {
 			ItemStack stack = player.getInventory().main.get(i);
-			if (stack.isFood()) {
+			if (stack.isFood() && !stack.isIn(ModTags.Items.CANNOT_ASSIMILATE)) {
 				FoodComponent component = stack.getItem().getFoodComponent();
 				if (needsFood(player, component)) {
 					if (food.isEmpty() || food.getItem().getFoodComponent().getHunger() < component.getHunger()) {

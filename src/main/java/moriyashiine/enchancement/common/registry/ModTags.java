@@ -31,6 +31,7 @@ public class ModTags {
 	}
 
 	public static class Items {
+		public static final TagKey<Item> CANNOT_ASSIMILATE = TagKey.of(Registry.ITEM_KEY, Enchancement.id("cannot_assimilate"));
 		public static final TagKey<Item> NO_LOYALTY = TagKey.of(Registry.ITEM_KEY, Enchancement.id("no_loyalty"));
 		public static final TagKey<Item> RETAINS_DURABILITY = TagKey.of(Registry.ITEM_KEY, Enchancement.id("retains_durability"));
 	}

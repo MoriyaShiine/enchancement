@@ -9,7 +9,7 @@
 	"#minecraft:redstone_ores",
 	"#minecraft:diamond_ores",
 	"#minecraft:emerald_ores",
-	"nether_quartz_ore",
-	"ancient_debris"
+	"minecraft:nether_quartz_ore",
+	"minecraft:ancient_debris"
   ]
 }
