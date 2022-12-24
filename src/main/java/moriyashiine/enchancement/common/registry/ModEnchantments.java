@@ -15,7 +15,6 @@ import net.minecraft.util.registry.Registry;
 public class ModEnchantments {
 	//helmet
 	public static final Enchantment ASSIMILATION = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_HEAD, EquipmentSlot.HEAD);
-	public static final Enchantment BUFFET = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_HEAD, EquipmentSlot.HEAD);
 	public static final Enchantment PERCEPTION = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_HEAD, EquipmentSlot.HEAD);
 	//chestplate
 	public static final Enchantment AMPHIBIOUS = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_CHEST, EquipmentSlot.CHEST);
@@ -59,7 +58,6 @@ public class ModEnchantments {
 	public static void init() {
 		//helmet
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "assimilation"), ASSIMILATION);
-		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "buffet"), BUFFET);
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "perception"), PERCEPTION);
 		//chestplate
 		Registry.register(Registry.ENCHANTMENT, new Identifier(Enchancement.MOD_ID, "amphibious"), AMPHIBIOUS);

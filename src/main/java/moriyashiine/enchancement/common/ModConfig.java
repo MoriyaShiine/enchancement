@@ -12,7 +12,7 @@ import java.util.List;
 public class ModConfig extends MidnightConfig {
 	@Entry
 	public static List<String> allowedEnchantments = List.of(
-			"enchancement:assimilation", "enchancement:buffet", "enchancement:perception",
+			"enchancement:assimilation", "enchancement:perception",
 			"enchancement:amphibious", "enchancement:strafe", "enchancement:wardenspine",
 			"enchancement:dash", "enchancement:impact", "enchancement:slide",
 			"enchancement:acceleration", "enchancement:bouncy", "enchancement:gale",
