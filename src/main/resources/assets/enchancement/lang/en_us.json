@@ -8,6 +8,7 @@
   "enchantment.minecraft.channeling.desc_redirect": "Allows the trident to summon lightning bolts when hitting an entity.",
   "enchantment.minecraft.luck_of_the_sea.desc_redirect": "Increases the chance of getting good loot while fishing and decreases the amount of time it takes for a fish to bite the hook.",
   "enchantment.minecraft.unbreaking.desc_redirect": "Causes the tool to not lose durability.",
+  "advancements.adventure.two_birds_one_arrow.description_redirect": "Kill two Phantoms with one crossbow shot",
   "enchantment.enchancement.assimilation": "Assimilation",
   "enchantment.enchancement.assimilation.desc": "Food is automatically eaten whenever it would not be wasted. Having food in the off hand will only check that food. Food and drinks are consumed 50% faster.",
   "enchantment.enchancement.perception": "Perception",
