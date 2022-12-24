@@ -52,7 +52,7 @@ public abstract class FishingBobberEntityMixin extends Entity {
 	private Vec3d enchancement$grapple(Vec3d value, PlayerEntity player) {
 		getDataTracker().set(HAS_GRAPPLE, EnchancementUtil.hasEnchantment(ModEnchantments.GRAPPLE, player));
 		if (hasGrapple()) {
-			return value.multiply(2, 1.5, 2);
+			return value.multiply(2, 2, 2);
 		}
 		return value;
 	}
