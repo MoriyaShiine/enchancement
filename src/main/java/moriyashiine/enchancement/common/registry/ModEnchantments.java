@@ -15,6 +15,7 @@ public class ModEnchantments {
 	//helmet
 	public static final Enchantment ASSIMILATION = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_HEAD, EquipmentSlot.HEAD);
 	public static final Enchantment PERCEPTION = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_HEAD, EquipmentSlot.HEAD);
+	public static final Enchantment VEIL = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_HEAD, EquipmentSlot.HEAD);
 	//chestplate
 	public static final Enchantment AMPHIBIOUS = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_CHEST, EquipmentSlot.CHEST);
 	public static final Enchantment STRAFE = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_CHEST, EquipmentSlot.CHEST);
@@ -58,6 +59,7 @@ public class ModEnchantments {
 		//helmet
 		Registry.register(Registry.ENCHANTMENT, Enchancement.id("assimilation"), ASSIMILATION);
 		Registry.register(Registry.ENCHANTMENT, Enchancement.id("perception"), PERCEPTION);
+		Registry.register(Registry.ENCHANTMENT, Enchancement.id("veil"), VEIL);
 		//chestplate
 		Registry.register(Registry.ENCHANTMENT, Enchancement.id("amphibious"), AMPHIBIOUS);
 		Registry.register(Registry.ENCHANTMENT, Enchancement.id("strafe"), STRAFE);

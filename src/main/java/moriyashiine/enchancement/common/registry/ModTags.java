@@ -28,6 +28,7 @@ public class ModTags {
 	public static class EntityTypes {
 		public static final TagKey<EntityType<?>> CANNOT_FREEZE = TagKey.of(Registry.ENTITY_TYPE_KEY, Enchancement.id("cannot_freeze"));
 		public static final TagKey<EntityType<?>> CANNOT_BURY = TagKey.of(Registry.ENTITY_TYPE_KEY, Enchancement.id("cannot_bury"));
+		public static final TagKey<EntityType<?>> VEIL_IMMUNE = TagKey.of(Registry.ENTITY_TYPE_KEY, Enchancement.id("veil_immune"));
 	}
 
 	public static class Items {

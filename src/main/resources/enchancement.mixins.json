@@ -90,6 +90,7 @@
 	"vanillachanges.weakerpotions.StatusEffectMixin",
 	"vanillachanges.weaponenchantmentcooldownrequirement.EnchantmentHelperMixin",
 	"vanillachanges.weaponenchantmentcooldownrequirement.PlayerEntityMixin",
+	"veil.LivingEntityMixin",
 	"wardenspine.LivingEntityMixin",
 	"warp.PersistentProjectileEntityMixin",
 	"warp.TridentEntityMixin",
@@ -116,7 +117,8 @@
 	"perception.client.MinecraftClientMixin",
 	"slide.client.PlayerEntityRendererMixin",
 	"torch.client.ModelLoaderMixin",
-	"vanillachanges.cooldownpreventsusage.client.MinecraftClientMixin"
+	"vanillachanges.cooldownpreventsusage.client.MinecraftClientMixin",
+	"veil.client.EntityRendererMixin"
   ],
   "injectors": {
 	"defaultRequire": 1

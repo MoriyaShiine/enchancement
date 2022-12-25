@@ -13,6 +13,8 @@
   "enchantment.enchancement.assimilation.desc": "Food is automatically eaten whenever it would not be wasted. Having food in the off hand will only check that food. Food and drinks are consumed 50% faster.",
   "enchantment.enchancement.perception": "Perception",
   "enchantment.enchancement.perception.desc": "Grants increased dark visibility and allows entities to be seen through walls within 16 blocks.",
+  "enchantment.enchancement.veil": "Veil",
+  "enchantment.enchancement.veil.desc": "Hostile entities need to be four times closer to detect you. Your name will not be visible through walls.",
   "enchantment.enchancement.amphibious": "Amphibious",
   "enchantment.enchancement.amphibious.desc": "Increases movement speed and mining speed while under water, and extends the amount of time the player can spend under water.",
   "enchantment.enchancement.strafe": "Strafe",

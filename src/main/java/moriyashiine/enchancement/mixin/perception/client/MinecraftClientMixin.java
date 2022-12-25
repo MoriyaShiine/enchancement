@@ -28,7 +28,7 @@ public class MinecraftClientMixin {
 
 	@Inject(method = "hasOutline", at = @At("HEAD"), cancellable = true)
 	private void enchancement$perception(Entity entity, CallbackInfoReturnable<Boolean> cir) {
-		if (player != null && entity instanceof LivingEntity living && !living.isSneaking() && !living.isInvisible() && entity.distanceTo(player) < 16 && EnchancementUtil.hasEnchantment(ModEnchantments.PERCEPTION, player) && !living.canSee(player)) {
+		if (player != null && entity instanceof LivingEntity living && !living.isSneaking() && !living.isInvisible() && entity.distanceTo(player) < 16 && EnchancementUtil.hasEnchantment(ModEnchantments.PERCEPTION, player) && !EnchancementUtil.hasEnchantment(ModEnchantments.VEIL, living) && !living.canSee(player)) {
 			cir.setReturnValue(true);
 		}
 	}
