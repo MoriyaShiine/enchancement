@@ -12,6 +12,7 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.TridentEntity;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.event.GameEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -26,6 +27,7 @@ public class PersistentProjectileEntityMixin {
 				if (warpComponent.hasWarp()) {
 					living.world.playSoundFromEntity(null, living, ModSoundEvents.ENTITY_GENERIC_TELEPORT, living.getSoundCategory(), 1, 1);
 					BlockPos pos = blockHitResult.getBlockPos().offset(blockHitResult.getSide());
+					living.world.emitGameEvent(GameEvent.TELEPORT, living.getPos(), GameEvent.Emitter.of(living, living.getSteppingBlockState()));
 					living.requestTeleport(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
 					living.world.sendEntityStatus(living, (byte) 46);
 					if (living instanceof PathAwareEntity pathAware) {

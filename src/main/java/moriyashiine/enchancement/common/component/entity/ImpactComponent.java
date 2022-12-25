@@ -22,6 +22,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.RaycastContext;
+import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.NotNull;
 
 public class ImpactComponent implements AutoSyncedComponent, CommonTickingComponent {
@@ -88,6 +89,7 @@ public class ImpactComponent implements AutoSyncedComponent, CommonTickingCompon
 					living.takeKnockback(MathHelper.lerp(delta, 1.5, 10), obj.getX() - living.getX(), obj.getZ() - living.getZ());
 				}
 			});
+			obj.getWorld().emitGameEvent(GameEvent.STEP, obj.getPos(), GameEvent.Emitter.of(obj.getSteppingBlockState()));
 		}
 		tick();
 	}

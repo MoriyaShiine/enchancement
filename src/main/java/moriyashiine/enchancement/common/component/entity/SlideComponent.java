@@ -11,6 +11,7 @@ import moriyashiine.enchancement.mixin.slide.EntityAccessor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.NotNull;
 
 public class SlideComponent implements CommonTickingComponent {
@@ -46,6 +47,7 @@ public class SlideComponent implements CommonTickingComponent {
 					if (ticksSliding <= 40) {
 						if (onGround) {
 							((EntityAccessor) obj).enchancement$spawnSprintingParticles();
+							obj.world.emitGameEvent(GameEvent.STEP, obj.getPos(), GameEvent.Emitter.of(obj.getSteppingBlockState()));
 						} else {
 							obj.airStrafingSpeed *= 10;
 						}

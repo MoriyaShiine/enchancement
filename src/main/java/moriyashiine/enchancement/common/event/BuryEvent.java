@@ -23,6 +23,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 public class BuryEvent implements UseEntityCallback {
@@ -43,6 +44,7 @@ public class BuryEvent implements UseEntityCallback {
 					if (state.isIn(ModTags.Blocks.BURIABLE) && state.isFullCube(world, down)) {
 						if (!world.isClient) {
 							world.playSoundFromEntity(null, entity, ModSoundEvents.ENTITY_GENERIC_BURY, entity.getSoundCategory(), 1, 1);
+							world.emitGameEvent(GameEvent.ENTITY_INTERACT, entity.getPos(), GameEvent.Emitter.of(entity, entity.getSteppingBlockState()));
 							player.getItemCooldownManager().set(stack.getItem(), 200);
 							stack.damage(1, player, stackUser -> stackUser.sendToolBreakStatus(hand));
 							buryComponent.setBuryPos(down);

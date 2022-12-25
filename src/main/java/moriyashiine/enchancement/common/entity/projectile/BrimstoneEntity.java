@@ -24,6 +24,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -87,6 +88,9 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 			end = start.add(getRotationVector());
 		}
 		if (!world.isClient) {
+			if (ticksExisted == 5 || ticksExisted == 15) {
+				world.emitGameEvent(GameEvent.PROJECTILE_LAND, end, GameEvent.Emitter.of(this));
+			}
 			if (ticksExisted > 20) {
 				if (getOwner() instanceof ServerPlayerEntity player) {
 					Criteria.KILLED_BY_CROSSBOW.trigger(player, killedEntities);
