@@ -30,6 +30,7 @@ import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
+import net.minecraft.client.render.entity.FishingBobberEntityRenderer;
 import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -48,6 +49,7 @@ public class EnchancementClient implements ClientModInitializer {
 		EntityRendererRegistry.register(ModEntityTypes.ICE_SHARD, IceShardEntityRenderer::new);
 		EntityRendererRegistry.register(ModEntityTypes.BRIMSTONE, BrimstoneEntityRenderer::new);
 		EntityRendererRegistry.register(ModEntityTypes.TORCH, TorchEntityRenderer::new);
+		EntityRendererRegistry.register(ModEntityTypes.GRAPPLE_FISHING_BOBBER, FishingBobberEntityRenderer::new);
 		ModelPredicateProviderRegistry.register(Items.CROSSBOW, Enchancement.id("crossbow_brimstone"), (stack, world, entity, seed) -> CrossbowItemAccessor.enchancement$getProjectiles(stack).stream().anyMatch(foundStack -> ItemStack.areEqual(foundStack, EnchancementUtil.BRIMSTONE_STACK)) ? 1 : 0);
 		ModelPredicateProviderRegistry.register(Items.CROSSBOW, Enchancement.id("crossbow_torch"), (stack, world, entity, seed) -> CrossbowItem.hasProjectile(stack, Items.TORCH) ? 1 : 0);
 		HandledScreens.register(ModScreenHandlerTypes.ENCHANTING_TABLE, EnchantingTableScreen::new);

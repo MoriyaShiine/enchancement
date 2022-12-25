@@ -16,6 +16,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.WitchEntity;
 import net.minecraft.entity.passive.SquidEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.entity.projectile.SpectralArrowEntity;
 import net.minecraft.entity.projectile.TridentEntity;
 
@@ -43,6 +44,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	//shovel
 	public static final ComponentKey<BuryComponent> BURY = ComponentRegistry.getOrCreate(Enchancement.id("bury"), BuryComponent.class);
 	//fishing rod
+	public static final ComponentKey<DisarmComponent> DISARM = ComponentRegistry.getOrCreate(Enchancement.id("disarm"), DisarmComponent.class);
 	public static final ComponentKey<WitchDisarmComponent> WITCH_DISARM = ComponentRegistry.getOrCreate(Enchancement.id("witch_disarm"), WitchDisarmComponent.class);
 
 	@Override
@@ -63,6 +65,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerFor(TridentEntity.class, LEECH, LeechComponent::new);
 		registry.registerFor(TridentEntity.class, WARP, WarpComponent::new);
 		registry.registerFor(LivingEntity.class, BURY, BuryComponent::new);
+		registry.registerFor(FishingBobberEntity.class, DISARM, fishingBobber -> new DisarmComponent());
 		registry.registerFor(WitchEntity.class, WITCH_DISARM, witch -> new WitchDisarmComponent());
 	}
 }

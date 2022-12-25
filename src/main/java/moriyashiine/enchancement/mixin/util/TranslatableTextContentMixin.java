@@ -29,7 +29,8 @@ public class TranslatableTextContentMixin {
 			case "enchantment.minecraft.channeling.desc" -> ModConfig.channelingWorksWhenNotThundering;
 			case "enchantment.minecraft.luck_of_the_sea.desc" -> ModConfig.luckOfTheSeaHasLure;
 			case "enchantment.minecraft.unbreaking.desc" -> ModConfig.unbreakingChangesFlag > 0;
-			case "advancements.adventure.two_birds_one_arrow.description" -> ModConfig.allowedEnchantments.contains("enchancement:brimstone");
+			case "advancements.adventure.two_birds_one_arrow.description" ->
+					ModConfig.allowedEnchantments.contains("enchancement:brimstone");
 			default -> false;
 		};
 	}

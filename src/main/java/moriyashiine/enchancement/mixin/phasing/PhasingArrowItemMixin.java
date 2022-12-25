@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class PhasingArrowItemMixin {
 	@Inject(method = "createArrow", at = @At("RETURN"))
 	private void enchancement$phasing(World world, ItemStack stack, LivingEntity shooter, CallbackInfoReturnable<PersistentProjectileEntity> cir) {
-		if (EnchancementUtil.hasEnchantment(ModEnchantments.PHASING, shooter)) {
+		if (EnchancementUtil.hasEnchantment(ModEnchantments.PHASING, shooter.getActiveItem())) {
 			PersistentProjectileEntity arrow = cir.getReturnValue();
 			ModEntityComponents.PHASHING.maybeGet(arrow).ifPresent(phasingComponent -> {
 				phasingComponent.setShouldPhase(true);
