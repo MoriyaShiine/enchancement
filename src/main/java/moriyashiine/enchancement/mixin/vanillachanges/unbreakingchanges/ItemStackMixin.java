@@ -25,8 +25,8 @@ public abstract class ItemStackMixin {
 
 	@Inject(method = "damage(ILnet/minecraft/entity/LivingEntity;Ljava/util/function/Consumer;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isDamageable()Z"))
 	private <T extends LivingEntity> void enchancement$fixUnbreakableItemsNotGrantingAdvancements(int amount, T entity, Consumer<T> breakCallback, CallbackInfo ci) {
-		if (EnchancementUtil.shouldBeUnbreakable(ItemStack.class.cast(this))) {
-			Criteria.ITEM_DURABILITY_CHANGED.trigger(entity instanceof ServerPlayerEntity player ? player : null, ItemStack.class.cast(this), getDamage());
+		if (entity instanceof ServerPlayerEntity player && EnchancementUtil.shouldBeUnbreakable(ItemStack.class.cast(this))) {
+			Criteria.ITEM_DURABILITY_CHANGED.trigger(player, ItemStack.class.cast(this), getDamage());
 		}
 	}
 
