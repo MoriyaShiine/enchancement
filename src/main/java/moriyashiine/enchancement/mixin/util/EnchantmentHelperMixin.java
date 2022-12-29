@@ -9,7 +9,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentLevelEntry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -29,8 +29,8 @@ public class EnchantmentHelperMixin {
 				}
 			}
 			if (entries.isEmpty()) {
-				for (int i = 0; i < Registry.ENCHANTMENT.size(); i++) {
-					Enchantment enchantment = Registry.ENCHANTMENT.get(i);
+				for (int i = 0; i < Registries.ENCHANTMENT.size(); i++) {
+					Enchantment enchantment = Registries.ENCHANTMENT.get(i);
 					if (enchantment != null && enchantment.isAcceptableItem(stack)) {
 						entries.add(new EnchantmentLevelEntry(enchantment, 1));
 						return;

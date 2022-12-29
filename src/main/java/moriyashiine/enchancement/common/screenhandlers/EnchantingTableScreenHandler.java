@@ -18,6 +18,7 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.Registries;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
@@ -25,7 +26,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
-import net.minecraft.util.registry.Registry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +58,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 				if (stack.getItem() == Items.BOOK) {
 					return true;
 				} else if (stack.isEnchantable()) {
-					for (Enchantment enchantment : Registry.ENCHANTMENT) {
+					for (Enchantment enchantment : Registries.ENCHANTMENT) {
 						if (isEnchantmentAllowed(enchantment, stack)) {
 							return true;
 						}
@@ -104,7 +104,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 	}
 
 	@Override
-	public ItemStack transferSlot(PlayerEntity player, int index) {
+	public ItemStack quickMove(PlayerEntity player, int index) {
 		ItemStack stack = ItemStack.EMPTY;
 		Slot slot = slots.get(index);
 		if (slot.hasStack()) {
@@ -205,7 +205,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 				selectedEnchantments = new ArrayList<>();
 				viewIndex = 0;
 				enchantingStack = stack;
-				for (Enchantment enchantment : Registry.ENCHANTMENT) {
+				for (Enchantment enchantment : Registries.ENCHANTMENT) {
 					if (isEnchantmentAllowed(enchantment, stack)) {
 						validEnchantments.add(enchantment);
 					}
@@ -254,7 +254,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		if (enchantment.isAvailableForRandomSelection()) {
 			if (!enchantment.isTreasure() || ModConfig.allowTreasureEnchantmentsInEnchantingTable) {
 				if (stack.isOf(Items.BOOK) || enchantment.isAcceptableItem(stack)) {
-					return !Registry.ENCHANTMENT.entryOf(Registry.ENCHANTMENT.getKey(enchantment).orElse(null)).isIn(ModTags.Enchantments.UNSELECTABLE);
+					return !Registries.ENCHANTMENT.entryOf(Registries.ENCHANTMENT.getKey(enchantment).orElse(null)).isIn(ModTags.Enchantments.UNSELECTABLE);
 				}
 			}
 		}

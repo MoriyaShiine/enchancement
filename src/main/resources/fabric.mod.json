@@ -42,13 +42,13 @@
   ],
   "accessWidener": "enchancement.accesswidener",
   "depends": {
-	"fabricloader": ">=0.14.12",
-	"minecraft": "~1.19.2",
+	"fabricloader": ">=0.14.11",
+	"minecraft": "~1.19.3",
 	"java": ">=17",
-	"bookshelf": ">=16.2.16",
-	"enchdesc": ">=13.0.13",
-	"fabric-api": ">=0.69.0",
-	"tooltipfix": ">=1.1.0-1.19"
+	"bookshelf": ">=17.0.2",
+	"enchdesc": ">=14.0.4",
+	"fabric-api": ">=0.70.0",
+	"tooltipfix": ">=1.1.1-1.19.3"
   },
   "custom": {
 	"cardinal-components": [

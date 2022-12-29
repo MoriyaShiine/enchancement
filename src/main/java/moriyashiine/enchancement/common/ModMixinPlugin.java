@@ -27,7 +27,7 @@ public class ModMixinPlugin implements IMixinConfigPlugin {
 		if (mixinClassName.contains("integration.architectury")) {
 			return FabricLoader.getInstance().isModLoaded("architectury");
 		} else if (mixinClassName.contains("integration.geckolib")) {
-			return FabricLoader.getInstance().isModLoaded("geckolib3");
+			return FabricLoader.getInstance().isModLoaded("geckolib");
 		} else if (mixinClassName.contains("integration.impaled")) {
 			return FabricLoader.getInstance().isModLoaded("impaled");
 		} else if (mixinClassName.contains("integration.sodium")) {

@@ -14,9 +14,9 @@ import net.minecraft.client.render.entity.ProjectileEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Matrix3f;
-import net.minecraft.util.math.Matrix4f;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.RotationAxis;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 
 @Environment(EnvType.CLIENT)
 public class BrimstoneEntityRenderer extends ProjectileEntityRenderer<BrimstoneEntity> {
@@ -38,15 +38,15 @@ public class BrimstoneEntityRenderer extends ProjectileEntityRenderer<BrimstoneE
 		float u = v + 4 * -0.5F / scale;
 		VertexConsumer vertices = vertexConsumers.getBuffer(RenderLayer.getEntityAlpha(TEXTURE));
 		matrices.push();
-		matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-MathHelper.lerp(tickDelta, entity.prevYaw, entity.getYaw()) + 90));
-		matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(MathHelper.lerp(tickDelta, entity.prevPitch, entity.getPitch()) + 90));
-		matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion((entity.world.getTime() + entity.age) * 12));
+		matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-MathHelper.lerp(tickDelta, entity.prevYaw, entity.getYaw()) + 90));
+		matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(MathHelper.lerp(tickDelta, entity.prevPitch, entity.getPitch()) + 90));
+		matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees((entity.world.getTime() + entity.age) * 12));
 		matrices.scale(scale, 1, scale);
 		MatrixStack.Entry entry = matrices.peek();
 		for (int j = 0; j < entity.maxY; j++) {
 			for (int i = 0; i < 360; i += 15) {
 				drawPlane(entry.getPositionMatrix(), entry.getNormalMatrix(), vertices, u, v);
-				matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(i));
+				matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(i));
 			}
 			matrices.translate(0, 1, 0);
 		}

@@ -17,7 +17,7 @@ import net.minecraft.item.ArrowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.potion.PotionUtil;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -34,15 +34,15 @@ public class ArrowItemMixin {
 			StatusEffect effect = null;
 			int attempts = 0;
 			if (shooter.isSneaking()) {
-				while (effect == null || effect.getCategory() != StatusEffectCategory.BENEFICIAL || Registry.STATUS_EFFECT.entryOf(Registry.STATUS_EFFECT.getKey(effect).orElse(null)).isIn(ModTags.StatusEffects.CHAOS_UNCHOOSABLE)) {
-					effect = Registry.STATUS_EFFECT.get(shooter.getRandom().nextInt(Registry.STATUS_EFFECT.size()));
+				while (effect == null || effect.getCategory() != StatusEffectCategory.BENEFICIAL || Registries.STATUS_EFFECT.entryOf(Registries.STATUS_EFFECT.getKey(effect).orElse(null)).isIn(ModTags.StatusEffects.CHAOS_UNCHOOSABLE)) {
+					effect = Registries.STATUS_EFFECT.get(shooter.getRandom().nextInt(Registries.STATUS_EFFECT.size()));
 					if (++attempts > 128) {
 						return;
 					}
 				}
 			} else {
-				while (effect == null || effect.getCategory() != StatusEffectCategory.HARMFUL || Registry.STATUS_EFFECT.entryOf(Registry.STATUS_EFFECT.getKey(effect).orElse(null)).isIn(ModTags.StatusEffects.CHAOS_UNCHOOSABLE)) {
-					effect = Registry.STATUS_EFFECT.get(shooter.getRandom().nextInt(Registry.STATUS_EFFECT.size()));
+				while (effect == null || effect.getCategory() != StatusEffectCategory.HARMFUL || Registries.STATUS_EFFECT.entryOf(Registries.STATUS_EFFECT.getKey(effect).orElse(null)).isIn(ModTags.StatusEffects.CHAOS_UNCHOOSABLE)) {
+					effect = Registries.STATUS_EFFECT.get(shooter.getRandom().nextInt(Registries.STATUS_EFFECT.size()));
 					if (++attempts > 128) {
 						return;
 					}

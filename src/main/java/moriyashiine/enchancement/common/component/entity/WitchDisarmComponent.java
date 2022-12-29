@@ -10,8 +10,8 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
 import net.minecraft.potion.Potion;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,14 +23,14 @@ public class WitchDisarmComponent implements Component {
 	public void readFromNbt(NbtCompound tag) {
 		NbtList disabledPotions = tag.getList("DisabledPotions", NbtElement.STRING_TYPE);
 		for (int i = 0; i < disabledPotions.size(); i++) {
-			this.disabledPotions.add(Registry.POTION.get(Identifier.tryParse(disabledPotions.getString(i))));
+			this.disabledPotions.add(Registries.POTION.get(Identifier.tryParse(disabledPotions.getString(i))));
 		}
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag) {
 		NbtList disabledPotions = new NbtList();
-		disabledPotions.addAll(this.disabledPotions.stream().map(potion -> NbtString.of(Registry.POTION.getId(potion).toString())).toList());
+		disabledPotions.addAll(this.disabledPotions.stream().map(potion -> NbtString.of(Registries.POTION.getId(potion).toString())).toList());
 		tag.put("DisabledPotions", disabledPotions);
 	}
 

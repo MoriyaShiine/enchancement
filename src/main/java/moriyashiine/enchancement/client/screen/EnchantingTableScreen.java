@@ -27,8 +27,8 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Matrix4f;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.RotationAxis;
+import org.joml.Matrix4f;
 
 import java.util.List;
 
@@ -196,17 +196,16 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 		DiffuseLighting.disableGuiDepthLighting();
 		RenderSystem.backupProjectionMatrix();
 		RenderSystem.viewport((width - 320) / 2 * scaleFactor, (height - 240) / 2 * scaleFactor, 320 * scaleFactor, 240 * scaleFactor);
-		Matrix4f matrix4f = Matrix4f.translate(-0.34F, 0.23F, 0);
-		matrix4f.multiply(Matrix4f.viewboxMatrix(90.0, 4 / 3F, 9, 80));
+		Matrix4f matrix4f = new Matrix4f().translation(-0.34F, 0.23F, 0).perspective((float) Math.toRadians(90), 4 / 3F, 9, 80);
 		RenderSystem.setProjectionMatrix(matrix4f);
 		matrices.push();
 		matrices.translate(0.0, 3.3F, 1984);
 		matrices.scale(5, 5, 5);
-		matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180));
-		matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(20));
+		matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(180));
+		matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(20));
 		matrices.translate((1 - deltaTurningSpeed) * 0.2F, (1 - deltaTurningSpeed) * 0.1F, (1 - deltaTurningSpeed) * 0.25F);
-		matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-(1 - deltaTurningSpeed) * 90 - 90));
-		matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(180));
+		matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-(1 - deltaTurningSpeed) * 90 - 90));
+		matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(180));
 		bookModel.setPageAngles(0, MathHelper.clamp((leftFlipAmount - (float) MathHelper.fastFloor(leftFlipAmount)) * 1.6F - 0.3F, 0, 1), MathHelper.clamp((rightFlipAmount - (float) MathHelper.fastFloor(rightFlipAmount)) * 1.6F - 0.3F, 0, 1), deltaTurningSpeed);
 		VertexConsumerProvider.Immediate immediate = VertexConsumerProvider.immediate(Tessellator.getInstance().getBuffer());
 		bookModel.render(matrices, immediate.getBuffer(bookModel.getLayer(BOOK_TEXTURE)), 0xF000F0, OverlayTexture.DEFAULT_UV, 1, 1, 1, 1);

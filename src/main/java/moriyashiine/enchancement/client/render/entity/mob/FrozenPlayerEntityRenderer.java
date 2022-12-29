@@ -11,6 +11,8 @@ import net.minecraft.client.render.entity.BipedEntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
+import net.minecraft.client.util.DefaultSkinHelper;
+import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class FrozenPlayerEntityRenderer extends BipedEntityRenderer<FrozenPlayerEntity, BipedEntityModel<FrozenPlayerEntity>> {
@@ -20,5 +22,10 @@ public class FrozenPlayerEntityRenderer extends BipedEntityRenderer<FrozenPlayer
 		super(ctx, new BipedEntityModel<>(ctx.getPart(EntityModelLayers.PLAYER)), 0.5F);
 		defaultModel = model;
 		slimModel = new BipedEntityModel<>(ctx.getPart(EntityModelLayers.PLAYER_SLIM));
+	}
+
+	@Override
+	public Identifier getTexture(FrozenPlayerEntity entity) {
+		return DefaultSkinHelper.getTexture();
 	}
 }
