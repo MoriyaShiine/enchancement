@@ -59,12 +59,14 @@ public class IceShardEntity extends PersistentProjectileEntity {
 	protected void onEntityHit(EntityHitResult entityHitResult) {
 		if (!world.isClient) {
 			Entity entity = entityHitResult.getEntity();
-			Entity owner = getOwner();
-			if (EnchancementUtil.shouldHurt(owner, entity) && entity.damage(new ProjectileDamageSource("freeze", this, owner), 4)) {
-				entity.setFrozenTicks(400);
-				playSound(getHitSound(), 1, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
-				addIceShardParticles();
-				discard();
+			if (entity instanceof LivingEntity) {
+				Entity owner = getOwner();
+				if (EnchancementUtil.shouldHurt(owner, entity) && entity.damage(new ProjectileDamageSource("freeze", this, owner), 4)) {
+					entity.setFrozenTicks(400);
+					playSound(getHitSound(), 1, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
+					addIceShardParticles();
+					discard();
+				}
 			}
 		}
 	}
