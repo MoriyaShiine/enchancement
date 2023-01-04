@@ -21,15 +21,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.constant.DataTickets;
@@ -51,9 +50,6 @@ public abstract class GeoEntityRendererMixin<T extends Entity & GeoAnimatable> e
 	protected Matrix4f modelRenderTranslations;
 
 	@Shadow
-	public abstract T getAnimatable();
-
-	@Shadow
 	public abstract Identifier getTexture(T animatable);
 
 	@Shadow
@@ -66,22 +62,12 @@ public abstract class GeoEntityRendererMixin<T extends Entity & GeoAnimatable> e
 		super(ctx);
 	}
 
-	@Inject(method = "getTexture", at = @At("RETURN"), cancellable = true)
-	private void enchancement$frostbite(T animatable, CallbackInfoReturnable<Identifier> cir) {
-		ModEntityComponents.FROZEN.maybeGet(animatable).ifPresent(frozenComponent -> {
-			if (frozenComponent.isFrozen()) {
-				cir.setReturnValue(FrozenReloadListener.INSTANCE.getTexture(cir.getReturnValue()));
-			}
-		});
-	}
-
-	@ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lsoftware/bernie/geckolib/renderer/GeoEntityRenderer;defaultRender(Lnet/minecraft/client/util/math/MatrixStack;Lsoftware/bernie/geckolib/core/animatable/GeoAnimatable;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/render/RenderLayer;Lnet/minecraft/client/render/VertexConsumer;FFI)V"))
-	private RenderLayer enchancement$frostbite(RenderLayer value) {
-		FrozenComponent frozenComponent = ModEntityComponents.FROZEN.getNullable(getAnimatable());
-		if (frozenComponent != null && frozenComponent.isFrozen()) {
-			return RenderLayer.getEntitySolid(getTexture(getAnimatable()));
+	@Override
+	public RenderLayer getRenderType(T animatable, Identifier texture, @Nullable VertexConsumerProvider bufferSource, float partialTick) {
+		if (animatable instanceof LivingEntity && ModEntityComponents.FROZEN.get(animatable).isFrozen()) {
+			return RenderLayer.getEntitySolid(FrozenReloadListener.INSTANCE.getTexture(texture));
 		}
-		return value;
+		return getGeoModel().getRenderType(animatable, texture);
 	}
 
 	@Inject(method = "actuallyRender*", at = @At("HEAD"), cancellable = true)
@@ -111,7 +97,7 @@ public abstract class GeoEntityRendererMixin<T extends Entity & GeoAnimatable> e
 					this.model.handleAnimations(animatable, instanceId, animationState);
 				}
 				poseStack.translate(0, 0.01F, 0);
-				RenderSystem.setShaderTexture(0, getTexture(animatable));
+				RenderSystem.setShaderTexture(0, FrozenReloadListener.INSTANCE.getTexture(getTexture(animatable)));
 				modelRenderTranslations = new Matrix4f(poseStack.peek().getPositionMatrix());
 				if (!animatable.isInvisibleTo(MinecraftClient.getInstance().player)) {
 					for (GeoBone group : model.topLevelBones()) {
