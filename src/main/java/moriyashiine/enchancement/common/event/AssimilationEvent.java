@@ -7,7 +7,7 @@ package moriyashiine.enchancement.common.event;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import moriyashiine.enchancement.mixin.buffet.LivingEntityAccessor;
+import moriyashiine.enchancement.mixin.assimilation.LivingEntityAccessor;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.FoodComponent;

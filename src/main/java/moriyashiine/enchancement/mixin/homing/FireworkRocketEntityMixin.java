@@ -14,6 +14,7 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.FireworkRocketEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -29,7 +30,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(FireworkRocketEntity.class)
-public abstract class FireworkRocketEntityMixin extends Entity {
+public abstract class FireworkRocketEntityMixin extends ProjectileEntity {
 	@Unique
 	private static final TrackedData<ItemStack> STACK_SHOT_FROM = DataTracker.registerData(FireworkRocketEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
 	@Unique
@@ -38,8 +39,8 @@ public abstract class FireworkRocketEntityMixin extends Entity {
 	@Shadow
 	private int lifeTime;
 
-	public FireworkRocketEntityMixin(EntityType<?> type, World world) {
-		super(type, world);
+	public FireworkRocketEntityMixin(EntityType<? extends ProjectileEntity> entityType, World world) {
+		super(entityType, world);
 	}
 
 	@Inject(method = "<init>(Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/Entity;DDDZ)V", at = @At("TAIL"))
@@ -60,7 +61,7 @@ public abstract class FireworkRocketEntityMixin extends Entity {
 
 	@ModifyVariable(method = "tick", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/projectile/FireworkRocketEntity;getVelocity()Lnet/minecraft/util/math/Vec3d;", ordinal = 1), ordinal = 0)
 	private Vec3d enchancement$homing(Vec3d value) {
-		if (age % 3 == 0 && getDataTracker().get(HAS_HOMING) && ((ProjectileEntityAccessor) this).enchancement$getOwner() instanceof LivingEntity living) {
+		if (age % 3 == 0 && getDataTracker().get(HAS_HOMING) && getOwner() instanceof LivingEntity living) {
 			ItemStack stackShotFrom = getDataTracker().get(STACK_SHOT_FROM);
 			if (living.getMainHandStack() == stackShotFrom || living.getOffHandStack() == stackShotFrom) {
 				Vec3d eyePos = living.getEyePos();

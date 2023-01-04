@@ -2,7 +2,7 @@
  * All Rights Reserved (c) 2022 MoriyaShiine
  */
 
-package moriyashiine.enchancement.mixin.buffet;
+package moriyashiine.enchancement.mixin.assimilation;
 
 import net.minecraft.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;

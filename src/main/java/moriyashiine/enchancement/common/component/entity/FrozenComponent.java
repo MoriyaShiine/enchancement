@@ -62,24 +62,28 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 
 	@Override
 	public void serverTick() {
-		if (frozen && obj instanceof MobEntity mob) {
-			if (!mob.isAiDisabled()) {
-				mob.setAiDisabled(true);
+		if (frozen) {
+			if (obj instanceof MobEntity mob) {
+				if (!mob.isAiDisabled()) {
+					mob.setAiDisabled(true);
+				}
+				ticksFrozen++;
+				if (ticksFrozen > 200 && obj.getRandom().nextFloat() < 1 / 64F && !mob.isPersistent()) {
+					obj.damage(DamageSource.GENERIC, 2);
+				}
+				if (obj.horizontalCollision && obj.getVelocity().length() >= 0.05) {
+					obj.damage(DamageSource.FLY_INTO_WALL, 2);
+				}
+				if (ticksFrozen <= 10) {
+					obj.setVelocity(obj.getVelocity().multiply(0.25));
+				}
+				if (!obj.hasNoGravity()) {
+					obj.setVelocity(obj.getVelocity().add(0, -0.02, 0));
+				}
+				obj.move(MovementType.SELF, obj.getVelocity());
 			}
-			ticksFrozen++;
-			if (ticksFrozen > 200 && obj.getRandom().nextFloat() < 1 / 64F && !mob.isPersistent()) {
-				obj.damage(DamageSource.GENERIC, 2);
-			}
-			if (obj.horizontalCollision && obj.getVelocity().length() >= 0.05) {
-				obj.damage(DamageSource.FLY_INTO_WALL, 2);
-			}
-			if (ticksFrozen <= 10) {
-				obj.setVelocity(obj.getVelocity().multiply(0.25));
-			}
-			if (!obj.hasNoGravity()) {
-				obj.setVelocity(obj.getVelocity().add(0, -0.02, 0));
-			}
-			obj.move(MovementType.SELF, obj.getVelocity());
+		} else if (lastFreezingAttacker != null && obj.getFrozenTicks() <= 0) {
+			lastFreezingAttacker = null;
 		}
 	}
 
@@ -143,8 +147,8 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 		obj.setSilent(true);
 		obj.setHealth(1);
 		forcedPose = obj.getPose();
-		forcedHeadYaw = obj.headYaw;
-		forcedBodyYaw = obj.bodyYaw;
+		forcedHeadYaw = obj.getHeadYaw();
+		forcedBodyYaw = obj.getBodyYaw();
 		forcedPitch = obj.getPitch();
 		forcedLimbDistance = obj.limbDistance;
 		forcedLimbAngle = obj.limbAngle;
