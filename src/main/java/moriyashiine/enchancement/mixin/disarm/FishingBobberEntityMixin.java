@@ -67,19 +67,21 @@ public abstract class FishingBobberEntityMixin extends Entity {
 							stack.setDamage(MathHelper.nextInt(living.getRandom(), stack.getDamage(), (int) (stack.getMaxDamage() - (stack.getMaxDamage() * 0.05F))));
 						}
 						if (entity instanceof MobEntity mob) {
-							mob.setTarget(owner);
-							mob.setAttacker(owner);
-							if (entity instanceof InteractionObserver observer) {
-								observer.onInteractionWith(EntityInteraction.VILLAGER_HURT, owner);
+							if (!owner.isCreative()) {
+								mob.setTarget(owner);
+								mob.setAttacker(owner);
+								if (entity instanceof InteractionObserver observer) {
+									observer.onInteractionWith(EntityInteraction.VILLAGER_HURT, owner);
+								}
+								if (entity instanceof PiglinEntity piglin) {
+									PiglinBrainAccessor.enchancement$onAttacked(piglin, owner);
+								}
 							}
 							if (entity instanceof Merchant) {
 								stack = ItemStack.EMPTY;
 							}
 							if (entity instanceof EndermanEntity enderman) {
 								enderman.setCarriedBlock(null);
-							}
-							if (entity instanceof PiglinEntity piglin) {
-								PiglinBrainAccessor.enchancement$onAttacked(piglin, owner);
 							}
 							if (entity instanceof WitchEntity) {
 								Potion potion = PotionUtil.getPotion(stack);
