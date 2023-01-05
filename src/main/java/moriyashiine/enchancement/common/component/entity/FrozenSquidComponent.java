@@ -4,13 +4,12 @@
 
 package moriyashiine.enchancement.common.component.entity;
 
-import dev.onyxstudios.cca.api.v3.component.Component;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import net.minecraft.entity.passive.SquidEntity;
 import net.minecraft.nbt.NbtCompound;
 
-public class FrozenSquidComponent implements AutoSyncedComponent, Component {
+public class FrozenSquidComponent implements AutoSyncedComponent {
 	private final SquidEntity obj;
 	private float forcedRollAngle = 0, forcedTentacleAngle = 0, forcedTiltAngle = 0;
 
