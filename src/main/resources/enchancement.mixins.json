@@ -61,7 +61,7 @@
 	"vanillachanges.disabledisallowedenchantments.RegistryEntryReferenceMixin",
 	"vanillachanges.disabledisallowedenchantments.SimpleRegistryMixin",
 	"vanillachanges.disabledisallowedenchantments.TagEntryMixin",
-	"vanillachanges.disabledisallowedenchantments.integration.architectury.RegistriesImplRegistartImplMixin",
+	"vanillachanges.disabledisallowedenchantments.integration.architectury.RegistrarManagerImplRegistrarImplMixin",
 	"vanillachanges.freeenchantedbookmerging.AnvilScreenHandlerMixin",
 	"vanillachanges.luckoftheseahaslure.EnchantmentHelperMixin",
 	"vanillachanges.negateenderpearldamage.EnderPearlEntityMixin",

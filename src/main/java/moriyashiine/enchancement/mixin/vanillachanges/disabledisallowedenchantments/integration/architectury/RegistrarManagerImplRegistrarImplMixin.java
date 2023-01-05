@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = RegistrarManagerImpl.RegistrarImpl.class, remap = false)
-public abstract class RegistriesImplRegistartImplMixin<T> implements Registrar<T> {
+public abstract class RegistrarManagerImplRegistrarImplMixin<T> implements Registrar<T> {
 	@Shadow
 	private Registry<T> delegate;
 
