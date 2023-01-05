@@ -68,7 +68,8 @@
 	  "enchancement:warp",
 	  "enchancement:bury",
 	  "enchancement:disarm",
-	  "enchancement:witch_disarm",
+	  "enchancement:disarmed_player",
+	  "enchancement:disarmed_witch",
 	  "enchancement:lumberjack"
 	]
   }

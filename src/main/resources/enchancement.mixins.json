@@ -103,6 +103,7 @@
 	"brimstone.client.CrossbowItemMixin",
 	"brimstone.client.ModelLoaderMixin",
 	"bury.client.KeyboardInputMixin",
+	"disarm.client.MinecraftClientMixin",
 	"frostbite.client.LivingEntityRendererMixin",
 	"frostbite.client.SquidEntityRendererMixin",
 	"frostbite.client.integration.geckolib.GeoEntityRendererMixin",
@@ -116,7 +117,6 @@
 	"perception.client.MinecraftClientMixin",
 	"slide.client.PlayerEntityRendererMixin",
 	"torch.client.ModelLoaderMixin",
-	"vanillachanges.cooldownpreventsusage.client.MinecraftClientMixin",
 	"veil.client.EntityRendererMixin"
   ],
   "injectors": {

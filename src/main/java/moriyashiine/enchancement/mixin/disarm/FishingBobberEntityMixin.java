@@ -4,6 +4,7 @@
 
 package moriyashiine.enchancement.mixin.disarm;
 
+import moriyashiine.enchancement.common.component.entity.DisarmedPlayerComponent;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import net.minecraft.entity.*;
 import net.minecraft.entity.mob.EndermanEntity;
@@ -53,6 +54,9 @@ public abstract class FishingBobberEntityMixin extends Entity {
 			if (!stack.isEmpty()) {
 				if (entity instanceof PlayerEntity player) {
 					if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
+						DisarmedPlayerComponent disarmedPlayerComponent = ModEntityComponents.DISARMED_PLAYER.get(player);
+						disarmedPlayerComponent.getDisarmedItems().add(stack.getItem());
+						disarmedPlayerComponent.sync();
 						player.getItemCooldownManager().set(stack.getItem(), 60);
 						player.stopUsingItem();
 					}
@@ -80,7 +84,7 @@ public abstract class FishingBobberEntityMixin extends Entity {
 							if (entity instanceof WitchEntity) {
 								Potion potion = PotionUtil.getPotion(stack);
 								if (potion != Potions.EMPTY) {
-									ModEntityComponents.WITCH_DISARM.get(entity).disablePotion(potion);
+									ModEntityComponents.DISARMED_WITCH.get(entity).disablePotion(potion);
 								}
 							}
 						}

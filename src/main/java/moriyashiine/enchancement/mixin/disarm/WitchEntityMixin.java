@@ -37,6 +37,6 @@ public class WitchEntityMixin {
 
 	@Unique
 	private boolean isDisabled(Potion potion) {
-		return ModEntityComponents.WITCH_DISARM.get(this).isDisabled(potion);
+		return ModEntityComponents.DISARMED_WITCH.get(this).isDisabled(potion);
 	}
 }

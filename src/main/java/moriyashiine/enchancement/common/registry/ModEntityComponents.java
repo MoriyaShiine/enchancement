@@ -45,7 +45,8 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<BuryComponent> BURY = ComponentRegistry.getOrCreate(Enchancement.id("bury"), BuryComponent.class);
 	//fishing rod
 	public static final ComponentKey<DisarmComponent> DISARM = ComponentRegistry.getOrCreate(Enchancement.id("disarm"), DisarmComponent.class);
-	public static final ComponentKey<WitchDisarmComponent> WITCH_DISARM = ComponentRegistry.getOrCreate(Enchancement.id("witch_disarm"), WitchDisarmComponent.class);
+	public static final ComponentKey<DisarmedPlayerComponent> DISARMED_PLAYER = ComponentRegistry.getOrCreate(Enchancement.id("disarmed_player"), DisarmedPlayerComponent.class);
+	public static final ComponentKey<DisarmedWitchComponent> DISARMED_WITCH = ComponentRegistry.getOrCreate(Enchancement.id("disarmed_witch"), DisarmedWitchComponent.class);
 
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
@@ -66,6 +67,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerFor(TridentEntity.class, WARP, WarpComponent::new);
 		registry.registerFor(LivingEntity.class, BURY, BuryComponent::new);
 		registry.registerFor(FishingBobberEntity.class, DISARM, fishingBobber -> new DisarmComponent());
-		registry.registerFor(WitchEntity.class, WITCH_DISARM, witch -> new WitchDisarmComponent());
+		registry.registerForPlayers(DISARMED_PLAYER, DisarmedPlayerComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+		registry.registerFor(WitchEntity.class, DISARMED_WITCH, witch -> new DisarmedWitchComponent());
 	}
 }

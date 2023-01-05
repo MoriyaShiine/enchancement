@@ -16,7 +16,7 @@ import net.minecraft.util.Identifier;
 import java.util.HashSet;
 import java.util.Set;
 
-public class WitchDisarmComponent implements Component {
+public class DisarmedWitchComponent implements Component {
 	private final Set<Potion> disabledPotions = new HashSet<>();
 
 	@Override
@@ -30,7 +30,7 @@ public class WitchDisarmComponent implements Component {
 	@Override
 	public void writeToNbt(NbtCompound tag) {
 		NbtList disabledPotions = new NbtList();
-		disabledPotions.addAll(this.disabledPotions.stream().map(potion -> NbtString.of(Registries.POTION.getId(potion).toString())).toList());
+		this.disabledPotions.forEach(potion -> disabledPotions.add(NbtString.of(Registries.POTION.getId(potion).toString())));
 		tag.put("DisabledPotions", disabledPotions);
 	}
 
