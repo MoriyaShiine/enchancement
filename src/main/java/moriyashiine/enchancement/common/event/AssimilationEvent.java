@@ -7,13 +7,11 @@ package moriyashiine.enchancement.common.event;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import moriyashiine.enchancement.mixin.assimilation.LivingEntityAccessor;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.FoodComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.UseAction;
 
 public class AssimilationEvent implements ServerTickEvents.EndTick {
 	@Override
@@ -30,11 +28,6 @@ public class AssimilationEvent implements ServerTickEvents.EndTick {
 				}
 				if (!food.isEmpty()) {
 					player.eatFood(player.world, food);
-				}
-			}
-			if (player.getActiveItem().isFood() || player.getActiveItem().getUseAction() == UseAction.DRINK) {
-				if (player.getItemUseTime() == player.getActiveItem().getMaxUseTime() * 0.75F && EnchancementUtil.hasEnchantment(ModEnchantments.ASSIMILATION, player)) {
-					((LivingEntityAccessor) player).enchancement$consumeItem();
 				}
 			}
 		});

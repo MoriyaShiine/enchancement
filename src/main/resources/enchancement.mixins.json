@@ -8,7 +8,7 @@
 	"acceleration.LivingEntityMixin",
 	"acceleration.PlayerEntityMixin",
 	"amphibious.EnchantmentHelperMixin",
-	"assimilation.LivingEntityAccessor",
+	"assimilation.LivingEntityMixin",
 	"berserk.LivingEntityMixin",
 	"bouncy.LivingEntityMixin",
 	"brimstone.BrimstoneCrossbowMixin",
