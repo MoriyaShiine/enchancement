@@ -4,6 +4,9 @@
 
 package moriyashiine.enchancement.common.event;
 
+import io.github.apace100.apoli.component.PowerHolderComponent;
+import io.github.apace100.apoli.power.PreventItemUsePower;
+import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
@@ -20,7 +23,7 @@ public class AssimilationEvent implements ServerTickEvents.EndTick {
 			if (player.age % 20 == 0 && player.getHungerManager().getFoodLevel() <= 14 && EnchancementUtil.hasEnchantment(ModEnchantments.ASSIMILATION, player)) {
 				ItemStack food = ItemStack.EMPTY;
 				if (player.getOffHandStack().isFood()) {
-					if (needsFood(player, player.getOffHandStack().getItem().getFoodComponent())) {
+					if (needsFood(player, player.getOffHandStack().getItem().getFoodComponent()) && isFoodAllowed(player, player.getOffHandStack())) {
 						food = player.getOffHandStack();
 					}
 				} else {
@@ -42,7 +45,9 @@ public class AssimilationEvent implements ServerTickEvents.EndTick {
 				FoodComponent component = stack.getItem().getFoodComponent();
 				if (needsFood(player, component)) {
 					if (food.isEmpty() || food.getItem().getFoodComponent().getHunger() < component.getHunger()) {
-						food = stack;
+						if (isFoodAllowed(player, food)) {
+							food = stack;
+						}
 					}
 				}
 			}
@@ -52,5 +57,16 @@ public class AssimilationEvent implements ServerTickEvents.EndTick {
 
 	private static boolean needsFood(PlayerEntity player, FoodComponent component) {
 		return component != null && (player.getHungerManager().getFoodLevel() < 6 || player.getHungerManager().getFoodLevel() <= 20 - component.getHunger());
+	}
+
+	private static boolean isFoodAllowed(PlayerEntity player, ItemStack stack) {
+		if (Enchancement.isApoliLoaded) {
+			for (PreventItemUsePower power : PowerHolderComponent.getPowers(player, PreventItemUsePower.class)) {
+				if (power.doesPrevent(stack)) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 }

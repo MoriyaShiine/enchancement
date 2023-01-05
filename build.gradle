@@ -70,6 +70,9 @@ dependencies {
 //    modRuntimeOnly "curse.maven:enchantment-descriptions-250419:${enchantment_descriptions_version}"
     modRuntimeOnly "curse.maven:tooltipfix-411557:${tooltipfix_version}"
 
+    modCompileOnly("com.github.apace100:apoli:${apoli_version}") {
+        exclude(group: "*")
+    }
     modCompileOnly "dev.architectury:architectury-fabric:${architectury_version}"
     modCompileOnly "software.bernie.geckolib:geckolib-fabric-${geckolib_version}"
     modCompileOnly "com.github.Ladysnake:Impaled:${impaled_version}"

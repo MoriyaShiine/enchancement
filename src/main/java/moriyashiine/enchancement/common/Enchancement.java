@@ -23,6 +23,7 @@ import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
@@ -32,6 +33,8 @@ public class Enchancement implements ModInitializer {
 	public static final String MOD_ID = "enchancement";
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+
+	public static boolean isApoliLoaded = false;
 
 	@Override
 	public void onInitialize() {
@@ -46,6 +49,7 @@ public class Enchancement implements ModInitializer {
 		ModScreenHandlerTypes.init();
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new BeheadingReloadListener(new Gson(), MOD_ID + "_beheading"));
 		initEvents();
+		isApoliLoaded = FabricLoader.getInstance().isModLoaded("apoli");
 	}
 
 	public static Identifier id(String value) {
