@@ -45,7 +45,7 @@ public class AssimilationEvent implements ServerTickEvents.EndTick {
 				FoodComponent component = stack.getItem().getFoodComponent();
 				if (needsFood(player, component)) {
 					if (food.isEmpty() || food.getItem().getFoodComponent().getHunger() < component.getHunger()) {
-						if (isFoodAllowed(player, food)) {
+						if (isFoodAllowed(player, stack)) {
 							food = stack;
 						}
 					}
