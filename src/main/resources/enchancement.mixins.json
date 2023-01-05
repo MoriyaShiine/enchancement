@@ -83,6 +83,7 @@
 	"vanillachanges.singlelevelmode.TradeOffersEnchantBookFactoryMixin",
 	"vanillachanges.tridentsreturnfromvoid.TridentEntityMixin",
 	"vanillachanges.unbreakingchanges.ItemStackMixin",
+	"vanillachanges.unbreakingchanges.SetDamageLootFunctionMixin",
 	"vanillachanges.weakerpotions.DamageModifierStatusEffectMixin",
 	"vanillachanges.weakerpotions.StatusEffectMixin",
 	"vanillachanges.weaponenchantmentcooldownrequirement.EnchantmentHelperMixin",
