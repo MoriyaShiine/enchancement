@@ -20,7 +20,7 @@
   "enchantment.enchancement.strafe": "Strafe",
   "enchantment.enchancement.strafe.desc": "Double tapping a direction key will push you in that direction. Also increases air mobility.",
   "enchantment.enchancement.wardenspine": "Wardenspine",
-  "enchantment.enchancement.wardenspine.desc": "Damage taken from behind will be halved and harm the attacker.",
+  "enchantment.enchancement.wardenspine.desc": "Damage taken from behind will be reduced by 80% and harm the attacker.",
   "enchantment.enchancement.dash": "Dash",
   "enchantment.enchancement.dash.desc": "Sneaking in the air will boost you in the direction you are looking. Jumping immediately after dashing will grant a large horizontal boost.",
   "enchantment.enchancement.impact": "Impact",
