@@ -38,7 +38,7 @@ public class ModEnchantments {
 	public static final Enchantment PHASING = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.BOW, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
 	//crossbow
 	public static final Enchantment BRIMSTONE = new BrimstoneEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.CROSSBOW, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
-	public static final Enchantment HOMING = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.CROSSBOW, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
+	public static final Enchantment SCATTER = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.CROSSBOW, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
 	public static final Enchantment TORCH = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.CROSSBOW, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
 	//trident
 	public static final Enchantment LEECH = new LeechEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.TRIDENT, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
@@ -82,7 +82,7 @@ public class ModEnchantments {
 		Registry.register(Registries.ENCHANTMENT, Enchancement.id("phasing"), PHASING);
 		//crossbow
 		Registry.register(Registries.ENCHANTMENT, Enchancement.id("brimstone"), BRIMSTONE);
-		Registry.register(Registries.ENCHANTMENT, Enchancement.id("homing"), HOMING);
+		Registry.register(Registries.ENCHANTMENT, Enchancement.id("scatter"), SCATTER);
 		Registry.register(Registries.ENCHANTMENT, Enchancement.id("torch"), TORCH);
 		//trident
 		Registry.register(Registries.ENCHANTMENT, Enchancement.id("leech"), LEECH);

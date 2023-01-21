@@ -1,11 +1,11 @@
 {
-  "entity.ice_shard.shatter": {
+  "entity.shard.shatter": {
 	"sounds": [
 	  "random/glass1",
 	  "random/glass2",
 	  "random/glass3"
 	],
-	"subtitle": "subtitles.enchancement.entity.ice_shard.shatter"
+	"subtitle": "subtitles.enchancement.entity.shard.shatter"
   },
   "entity.brimstone.fire": {
 	"sounds": [

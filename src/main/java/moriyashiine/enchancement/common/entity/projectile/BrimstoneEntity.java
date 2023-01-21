@@ -75,7 +75,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 			BlockHitResult hitResult = world.raycast(new RaycastContext(start, end, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, this));
 			if (hitResult.getType() == HitResult.Type.BLOCK) {
 				if (world.isClient) {
-					spawnParticles(hitResult.getPos().getX(), hitResult.getPos().getY(), hitResult.getPos().getZ());
+					addParticles(hitResult.getPos().getX(), hitResult.getPos().getY(), hitResult.getPos().getZ());
 				}
 				break;
 			}
@@ -83,7 +83,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 				world.getOtherEntities(owner, Box.from(hitResult.getPos()).expand(0.5)).forEach(entity -> {
 					if (entity instanceof LivingEntity living && !living.isDead()) {
 						if (world.isClient) {
-							spawnParticles(entity.getX(), entity.getRandomBodyY(), entity.getZ());
+							addParticles(entity.getX(), entity.getRandomBodyY(), entity.getZ());
 						} else {
 							living.damage(DamageSource.arrow(this, owner).setBypassesArmor().setBypassesProtection(), (float) (getDamage() * (1 + (maxY / 224))));
 							if (living.isDead()) {
@@ -163,7 +163,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 		return dataTracker.get(DAMAGE);
 	}
 
-	private void spawnParticles(double x, double y, double z) {
+	private void addParticles(double x, double y, double z) {
 		float range = (float) MathHelper.lerp(getDamage() / 12, 0, 0.3F);
 		for (int i = 0; i < 8; i++) {
 			world.addParticle(PARTICLE, x + MathHelper.nextFloat(random, -range, range), y + MathHelper.nextFloat(random, -range, range), z + MathHelper.nextFloat(random, -range, range), MathHelper.nextFloat(random, -1, 1), MathHelper.nextFloat(random, -1, 1), MathHelper.nextFloat(random, -1, 1));

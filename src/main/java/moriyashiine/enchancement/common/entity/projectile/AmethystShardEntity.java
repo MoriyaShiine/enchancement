@@ -11,7 +11,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.ProjectileDamageSource;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -24,15 +24,15 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
 
-public class IceShardEntity extends PersistentProjectileEntity {
-	private static final ParticleEffect PARTICLE = new ItemStackParticleEffect(ParticleTypes.ITEM, new ItemStack(Items.ICE));
+public class AmethystShardEntity extends PersistentProjectileEntity {
+	private static final ParticleEffect PARTICLE = new ItemStackParticleEffect(ParticleTypes.ITEM, new ItemStack(Items.AMETHYST_SHARD));
 
-	public IceShardEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
+	public AmethystShardEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
 		super(entityType, world);
 	}
 
-	public IceShardEntity(World world, LivingEntity owner) {
-		super(ModEntityTypes.ICE_SHARD, owner, world);
+	public AmethystShardEntity(World world, LivingEntity owner) {
+		super(ModEntityTypes.AMETHYST_SHARD, owner, world);
 	}
 
 	@Override
@@ -61,8 +61,11 @@ public class IceShardEntity extends PersistentProjectileEntity {
 			Entity entity = entityHitResult.getEntity();
 			if (entity instanceof LivingEntity) {
 				Entity owner = getOwner();
-				if (EnchancementUtil.shouldHurt(owner, entity) && entity.damage(new ProjectileDamageSource("freeze", this, owner), 4)) {
-					entity.setFrozenTicks(400);
+				if (EnchancementUtil.shouldHurt(owner, entity) && entity.damage(DamageSource.arrow(this, owner), (float) getDamage())) {
+					if (isOnFire()) {
+						entity.setOnFireFor(5);
+					}
+					entity.timeUntilRegen = 0;
 					playSound(getHitSound(), 1, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
 					addParticles();
 					discard();

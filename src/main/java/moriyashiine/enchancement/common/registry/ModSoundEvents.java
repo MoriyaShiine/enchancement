@@ -10,7 +10,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.sound.SoundEvent;
 
 public class ModSoundEvents {
-	public static final SoundEvent ENTITY_ICE_SHARD_SHATTER = SoundEvent.of(Enchancement.id("entity.ice_shard.shatter"));
+	public static final SoundEvent ENTITY_SHARD_SHATTER = SoundEvent.of(Enchancement.id("entity.shard.shatter"));
 	public static final SoundEvent ENTITY_BRIMSTONE_FIRE = SoundEvent.of(Enchancement.id("entity.brimstone.fire"));
 	public static final SoundEvent ENTITY_GENERIC_STRAFE = SoundEvent.of(Enchancement.id("entity.generic.strafe"));
 	public static final SoundEvent ENTITY_GENERIC_DASH = SoundEvent.of(Enchancement.id("entity.generic.dash"));
@@ -24,7 +24,7 @@ public class ModSoundEvents {
 	public static final SoundEvent BLOCK_GENERIC_SMELT = SoundEvent.of(Enchancement.id("block.generic.smelt"));
 
 	public static void init() {
-		Registry.register(Registries.SOUND_EVENT, ENTITY_ICE_SHARD_SHATTER.getId(), ENTITY_ICE_SHARD_SHATTER);
+		Registry.register(Registries.SOUND_EVENT, ENTITY_SHARD_SHATTER.getId(), ENTITY_SHARD_SHATTER);
 		Registry.register(Registries.SOUND_EVENT, ENTITY_BRIMSTONE_FIRE.getId(), ENTITY_BRIMSTONE_FIRE);
 		Registry.register(Registries.SOUND_EVENT, ENTITY_GENERIC_STRAFE.getId(), ENTITY_GENERIC_STRAFE);
 		Registry.register(Registries.SOUND_EVENT, ENTITY_GENERIC_DASH.getId(), ENTITY_GENERIC_DASH);

@@ -19,7 +19,7 @@ public class ModConfig extends MidnightConfig {
 			"enchancement:berserk", "minecraft:fire_aspect", "enchancement:frostbite",
 			"minecraft:infinity",
 			"enchancement:chaos", "enchancement:delay", "enchancement:phasing",
-			"enchancement:brimstone", "enchancement:homing", "enchancement:torch",
+			"enchancement:brimstone", "enchancement:scatter", "enchancement:torch",
 			"minecraft:channeling", "enchancement:leech", "minecraft:riptide", "enchancement:warp",
 			"enchancement:extracting", "enchancement:molten",
 			"enchancement:beheading", "enchancement:lumberjack",
