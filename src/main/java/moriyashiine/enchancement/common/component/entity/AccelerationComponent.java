@@ -45,9 +45,9 @@ public class AccelerationComponent implements AutoSyncedComponent, CommonTicking
 		hasAcceleration = EnchancementUtil.hasEnchantment(ModEnchantments.ACCELERATION, obj);
 		obj.airStrafingSpeed *= speedMultiplier;
 		if (hasAcceleration) {
-			if (!obj.horizontalCollision && obj.isSprinting() && EnchancementUtil.isGroundedOrJumping(obj) && ModEntityComponents.MOVING_FORWARD.get(obj).isMovingForward()) {
-				if (speedMultiplier < 2) {
-					speedMultiplier = Math.min(2, speedMultiplier + 1 / 128F);
+			if (!obj.horizontalCollision && ((obj.isSprinting() && EnchancementUtil.isGroundedOrJumping(obj)) || obj.isSwimming()) && ModEntityComponents.MOVING_FORWARD.get(obj).isMovingForward()) {
+				if (speedMultiplier < 2.5) {
+					speedMultiplier = Math.min(2.5F, speedMultiplier + 1 / 92F);
 				}
 			} else if (speedMultiplier > 1) {
 				speedMultiplier = Math.max(1, speedMultiplier - 1 / 64F);
@@ -76,7 +76,7 @@ public class AccelerationComponent implements AutoSyncedComponent, CommonTicking
 		tick();
 		ModEntityComponents.MOVING_FORWARD.maybeGet(obj).ifPresent(movingForwardComponent -> {
 			if (obj.forwardSpeed > 0) {
-				if (!movingForwardComponent.isMovingForward() && hasAcceleration && obj.isSprinting()) {
+				if (!movingForwardComponent.isMovingForward() && hasAcceleration && (obj.isSprinting() || obj.isSwimming())) {
 					movingForwardComponent.setMovingForward(true);
 					SyncMovingForwardPacket.send(true);
 				}
