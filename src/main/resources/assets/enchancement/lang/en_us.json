@@ -16,7 +16,7 @@
   "enchantment.enchancement.veil": "Veil",
   "enchantment.enchancement.veil.desc": "Hostile entities need to be four times closer to detect you. Your name will not be visible through walls.",
   "enchantment.enchancement.amphibious": "Amphibious",
-  "enchantment.enchancement.amphibious.desc": "Increases movement speed and mining speed while under water, and extends the amount of time the player can spend under water.",
+  "enchantment.enchancement.amphibious.desc": "Increases movement speed and mining speed while under water, extends underwater breath, and halves time spent on fire.",
   "enchantment.enchancement.strafe": "Strafe",
   "enchantment.enchancement.strafe.desc": "Double tapping a direction key will push you in that direction. Also increases air mobility.",
   "enchantment.enchancement.wardenspine": "Wardenspine",
