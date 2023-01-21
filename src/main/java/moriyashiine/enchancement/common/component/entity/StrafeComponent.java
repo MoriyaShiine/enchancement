@@ -57,7 +57,7 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 				ticksInAir++;
 			}
 			if (ticksInAir > 10) {
-				obj.airStrafingSpeed *= 3;
+				obj.airStrafingSpeed *= 2;
 			}
 		} else {
 			strafeCooldown = 0;
