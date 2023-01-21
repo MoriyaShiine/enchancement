@@ -44,7 +44,7 @@
   "enchantment.enchancement.phasing": "Phasing",
   "enchantment.enchancement.phasing.desc": "Arrows have no gravity and will phase through up to 3 blocks, upon which they will regain gravity.",
   "enchantment.enchancement.brimstone": "Brimstone",
-  "enchantment.enchancement.brimstone.desc": "Fires a piercing laser that deals a large amount of damage at the cost 1 heart. Does not require arrows.",
+  "enchantment.enchancement.brimstone.desc": "Fires a piercing laser that ignores armor and deals more damage the longer the crossbow was charged and the further away the target is. Uses hearts instead of arrows.",
   "enchantment.enchancement.homing": "Homing",
   "enchantment.enchancement.homing.desc": "Fireworks shot from the crossbow will home towards the crosshair.",
   "enchantment.enchancement.torch": "Torch",

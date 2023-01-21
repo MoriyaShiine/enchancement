@@ -126,6 +126,10 @@ public class EnchancementUtil {
 		return 0;
 	}
 
+	public static int getBrimstoneDamage(float progress) {
+		return (int) (6 * progress) * 2;
+	}
+
 	public static void tickPacketImmunities() {
 		PACKET_IMMUNITIES.object2IntEntrySet().removeIf(entry -> entry.setValue(entry.getIntValue() - 1) <= 0);
 	}

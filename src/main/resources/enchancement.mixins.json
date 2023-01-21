@@ -101,6 +101,8 @@
 	"berserk.client.ItemStackMixin",
 	"berserk.client.integration.sodium.ColorARGBMixin",
 	"brimstone.client.CrossbowItemMixin",
+	"brimstone.client.InGameHudAccessor",
+	"brimstone.client.InGameHudMixin",
 	"brimstone.client.ModelLoaderMixin",
 	"bury.client.KeyboardInputMixin",
 	"disarm.client.MinecraftClientMixin",

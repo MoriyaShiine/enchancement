@@ -16,22 +16,28 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
+import org.joml.Vector3f;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class BrimstoneEntity extends PersistentProjectileEntity {
+	public static final TrackedData<Float> DAMAGE = DataTracker.registerData(BrimstoneEntity.class, TrackedDataHandlerRegistry.FLOAT);
 	public static final TrackedData<Float> FORCED_PITCH = DataTracker.registerData(BrimstoneEntity.class, TrackedDataHandlerRegistry.FLOAT);
 	public static final TrackedData<Float> FORCED_YAW = DataTracker.registerData(BrimstoneEntity.class, TrackedDataHandlerRegistry.FLOAT);
+
+	private static final DustParticleEffect PARTICLE = new DustParticleEffect(new Vector3f(1, 0, 0), 1);
 
 	public float maxY = 0;
 	public int ticksExisted = 0;
@@ -64,34 +70,37 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 		ticksExisted++;
 		maxY = 0;
 		Vec3d start = getPos(), end = start.add(getRotationVector());
-		while (maxY < 32) {
+		while (maxY < 256) {
 			maxY++;
 			BlockHitResult hitResult = world.raycast(new RaycastContext(start, end, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, this));
 			if (hitResult.getType() == HitResult.Type.BLOCK) {
+				if (world.isClient) {
+					spawnParticles(hitResult.getPos().getX(), hitResult.getPos().getY(), hitResult.getPos().getZ());
+				}
 				break;
 			}
-			if (!world.isClient) {
-				if (ticksExisted == 5 || ticksExisted == 15) {
-					if (getOwner() instanceof LivingEntity owner) {
-						world.getOtherEntities(owner, Box.from(hitResult.getPos()).expand(0.5)).forEach(entity -> {
-							if (entity instanceof LivingEntity living && !living.isDead()) {
-								living.damage(DamageSource.arrow(this, owner), (float) (getDamage() * 5));
-								if (living.isDead()) {
-									killedEntities.add(living);
-								}
+			if (ticksExisted == 3 && getOwner() instanceof LivingEntity owner) {
+				world.getOtherEntities(owner, Box.from(hitResult.getPos()).expand(0.5)).forEach(entity -> {
+					if (entity instanceof LivingEntity living && !living.isDead()) {
+						if (world.isClient) {
+							spawnParticles(entity.getX(), entity.getRandomBodyY(), entity.getZ());
+						} else {
+							living.damage(DamageSource.arrow(this, owner).setBypassesArmor().setBypassesProtection(), (float) (getDamage() * (1 + (maxY / 224))));
+							if (living.isDead()) {
+								killedEntities.add(living);
 							}
-						});
+						}
 					}
-				}
+				});
 			}
 			start = end;
 			end = start.add(getRotationVector());
 		}
 		if (!world.isClient) {
-			if (ticksExisted == 5 || ticksExisted == 15) {
+			if (ticksExisted == 3) {
 				world.emitGameEvent(GameEvent.PROJECTILE_LAND, end, GameEvent.Emitter.of(this));
 			}
-			if (ticksExisted > 20) {
+			if (ticksExisted > 10) {
 				if (getOwner() instanceof ServerPlayerEntity player) {
 					Criteria.KILLED_BY_CROSSBOW.trigger(player, killedEntities);
 				}
@@ -111,6 +120,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 	@Override
 	public void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
+		setDamage(nbt.getFloat("Damage"));
 		dataTracker.set(FORCED_PITCH, nbt.getFloat("ForcedPitch"));
 		dataTracker.set(FORCED_YAW, nbt.getFloat("ForcedYaw"));
 		ticksExisted = nbt.getInt("TicksExisted");
@@ -119,6 +129,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 	@Override
 	public void writeCustomDataToNbt(NbtCompound nbt) {
 		super.writeCustomDataToNbt(nbt);
+		nbt.putFloat("Damage", (float) getDamage());
 		nbt.putFloat("ForcedPitch", getPitch());
 		nbt.putFloat("ForcedYaw", getYaw());
 		nbt.putInt("TicksExisted", ticksExisted);
@@ -127,6 +138,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 	@Override
 	protected void initDataTracker() {
 		super.initDataTracker();
+		dataTracker.startTracking(DAMAGE, 0F);
 		dataTracker.startTracking(FORCED_PITCH, 0F);
 		dataTracker.startTracking(FORCED_YAW, 0F);
 	}
@@ -139,5 +151,22 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 	@Override
 	public float getYaw() {
 		return dataTracker.get(FORCED_YAW);
+	}
+
+	@Override
+	public void setDamage(double damage) {
+		dataTracker.set(DAMAGE, (float) damage);
+	}
+
+	@Override
+	public double getDamage() {
+		return dataTracker.get(DAMAGE);
+	}
+
+	private void spawnParticles(double x, double y, double z) {
+		float range = (float) MathHelper.lerp(getDamage() / 12, 0, 0.3F);
+		for (int i = 0; i < 8; i++) {
+			world.addParticle(PARTICLE, x + MathHelper.nextFloat(random, -range, range), y + MathHelper.nextFloat(random, -range, range), z + MathHelper.nextFloat(random, -range, range), MathHelper.nextFloat(random, -1, 1), MathHelper.nextFloat(random, -1, 1), MathHelper.nextFloat(random, -1, 1));
+		}
 	}
 }
