@@ -62,6 +62,8 @@ public class ModConfig extends MidnightConfig {
 	@Entry
 	public static boolean tridentsReturnFromVoid = true;
 	@Entry
+	public static boolean weakerFireAspect = true;
+	@Entry
 	public static boolean weakerPotions = true;
 
 	@Entry(min = 0, max = 1)

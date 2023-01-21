@@ -84,6 +84,8 @@
 	"vanillachanges.tridentsreturnfromvoid.TridentEntityMixin",
 	"vanillachanges.unbreakingchanges.ItemStackMixin",
 	"vanillachanges.unbreakingchanges.SetDamageLootFunctionMixin",
+	"vanillachanges.weakerfireaspect.MobEntityMixin",
+	"vanillachanges.weakerfireaspect.PlayerEntityMixin",
 	"vanillachanges.weakerpotions.DamageModifierStatusEffectMixin",
 	"vanillachanges.weakerpotions.StatusEffectMixin",
 	"vanillachanges.weaponenchantmentcooldownrequirement.EnchantmentHelperMixin",
