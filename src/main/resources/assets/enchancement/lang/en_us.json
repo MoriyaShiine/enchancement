@@ -73,7 +73,6 @@
   "death.attack.enchancement.life_drain": "%1$s had their life drained",
   "death.attack.enchancement.life_drain.player": "%1$s had their life drained whilst fighting %2$s",
   "subtitles.enchancement.entity.shard.shatter": "Shard shatters",
-  "subtitles.enchancement.entity.brimstone.fire": "Brimstone fires",
   "subtitles.enchancement.entity.generic.strafe": "Entity strafes",
   "subtitles.enchancement.entity.generic.dash": "Entity dashes",
   "subtitles.enchancement.entity.generic.impact": "Entity impacts",

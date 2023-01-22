@@ -6,6 +6,7 @@ package moriyashiine.enchancement.mixin.scatter;
 
 import moriyashiine.enchancement.common.entity.projectile.AmethystShardEntity;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
+import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.CrossbowUser;
 import net.minecraft.entity.LivingEntity;
@@ -14,7 +15,6 @@ import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -45,7 +45,7 @@ public class CrossbowItemMixin {
 				world.spawnEntity(projectileEntity);
 			}
 			crossbow.damage(1, shooter, stackUser -> stackUser.sendToolBreakStatus(hand));
-			world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.ITEM_CROSSBOW_SHOOT, SoundCategory.PLAYERS, 1, soundPitch);
+			world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), ModSoundEvents.ITEM_CROSSBOW_SCATTER, SoundCategory.PLAYERS, 1, soundPitch);
 			if (shooter instanceof PlayerEntity player) {
 				player.getItemCooldownManager().set(crossbow.getItem(), 20);
 			}

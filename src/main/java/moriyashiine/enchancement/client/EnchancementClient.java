@@ -44,6 +44,8 @@ public class EnchancementClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		ClientPlayNetworking.registerGlobalReceiver(AddStrafeParticlesPacket.ID, AddStrafeParticlesPacket::receive);
 		ClientPlayNetworking.registerGlobalReceiver(AddGaleParticlesPacket.ID, AddGaleParticlesPacket::receive);
+		ClientPlayNetworking.registerGlobalReceiver(PlayBrimstoneSoundPacket.ID, PlayBrimstoneSoundPacket::receive);
+		ClientPlayNetworking.registerGlobalReceiver(StopBrimstoneSoundPacket.ID, StopBrimstoneSoundPacket::receive);
 		ClientPlayNetworking.registerGlobalReceiver(ResetFrozenTicksPacket.ID, ResetFrozenTicksPacket::receive);
 		ClientPlayNetworking.registerGlobalReceiver(SyncFrozenPlayerSlimStatusS2C.ID, SyncFrozenPlayerSlimStatusS2C::receive);
 		ClientPlayNetworking.registerGlobalReceiver(AddMoltenParticlesPacket.ID, AddMoltenParticlesPacket::receive);
@@ -53,9 +55,14 @@ public class EnchancementClient implements ClientModInitializer {
 		EntityRendererRegistry.register(ModEntityTypes.AMETHYST_SHARD, AmethystShardEntityRenderer::new);
 		EntityRendererRegistry.register(ModEntityTypes.TORCH, TorchEntityRenderer::new);
 		EntityRendererRegistry.register(ModEntityTypes.GRAPPLE_FISHING_BOBBER, FishingBobberEntityRenderer::new);
-		ModelPredicateProviderRegistry.register(Items.CROSSBOW, Enchancement.id("crossbow_brimstone"), (stack, world, entity, seed) -> CrossbowItemAccessor.enchancement$getProjectiles(stack).stream().anyMatch(foundStack -> ItemStack.areEqual(foundStack, EnchancementUtil.BRIMSTONE_STACK)) ? 1 : 0);
-		ModelPredicateProviderRegistry.register(Items.CROSSBOW, Enchancement.id("crossbow_amethyst"), (stack, world, entity, seed) -> CrossbowItem.hasProjectile(stack, Items.AMETHYST_SHARD) ? 1 : 0);
-		ModelPredicateProviderRegistry.register(Items.CROSSBOW, Enchancement.id("crossbow_torch"), (stack, world, entity, seed) -> CrossbowItem.hasProjectile(stack, Items.TORCH) ? 1 : 0);
+		ModelPredicateProviderRegistry.register(Items.CROSSBOW, Enchancement.id("brimstone"), (stack, world, entity, seed) -> {
+			if (CrossbowItemAccessor.enchancement$getProjectiles(stack).stream().anyMatch(foundStack -> ItemStack.areEqual(foundStack, EnchancementUtil.BRIMSTONE_STACK))) {
+				return stack.getNbt().getInt("BrimstoneDamage") / 12F;
+			}
+			return 0;
+		});
+		ModelPredicateProviderRegistry.register(Items.CROSSBOW, Enchancement.id("amethyst_shard"), (stack, world, entity, seed) -> CrossbowItem.hasProjectile(stack, Items.AMETHYST_SHARD) ? 1 : 0);
+		ModelPredicateProviderRegistry.register(Items.CROSSBOW, Enchancement.id("torch"), (stack, world, entity, seed) -> CrossbowItem.hasProjectile(stack, Items.TORCH) ? 1 : 0);
 		HandledScreens.register(ModScreenHandlerTypes.ENCHANTING_TABLE, EnchantingTableScreen::new);
 		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(FrozenReloadListener.INSTANCE);
 		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(Enchancement.id("alternate_dash"), modContainer, ResourcePackActivationType.NORMAL));

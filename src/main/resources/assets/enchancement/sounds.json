@@ -7,12 +7,6 @@
 	],
 	"subtitle": "subtitles.enchancement.entity.shard.shatter"
   },
-  "entity.brimstone.fire": {
-	"sounds": [
-	  "enchancement:entity/brimstone"
-	],
-	"subtitle": "subtitles.enchancement.entity.brimstone.fire"
-  },
   "entity.generic.strafe": {
 	"sounds": [
 	  "dig/sand1",
@@ -87,5 +81,55 @@
 	  "block/furnace/fire_crackle5"
 	],
 	"subtitle": "subtitles.enchancement.block.generic.smelt"
+  },
+  "item.crossbow.loading_brimstone": {
+	"sounds": [
+	  "enchancement:item/crossbow/loading_crossbow"
+	],
+	"subtitle": "subtitles.item.crossbow.charge"
+  },
+  "item.crossbow.brimstone.1": {
+	"sounds": [
+	  "enchancement:item/crossbow/brimstone1"
+	],
+	"subtitle": "subtitles.item.crossbow.shoot"
+  },
+  "item.crossbow.brimstone.2": {
+	"sounds": [
+	  "enchancement:item/crossbow/brimstone2"
+	],
+	"subtitle": "subtitles.item.crossbow.shoot"
+  },
+  "item.crossbow.brimstone.3": {
+	"sounds": [
+	  "enchancement:item/crossbow/brimstone3"
+	],
+	"subtitle": "subtitles.item.crossbow.shoot"
+  },
+  "item.crossbow.brimstone.4": {
+	"sounds": [
+	  "enchancement:item/crossbow/brimstone4"
+	],
+	"subtitle": "subtitles.item.crossbow.shoot"
+  },
+  "item.crossbow.brimstone.5": {
+	"sounds": [
+	  "enchancement:item/crossbow/brimstone5"
+	],
+	"subtitle": "subtitles.item.crossbow.shoot"
+  },
+  "item.crossbow.brimstone.6": {
+	"sounds": [
+	  "enchancement:item/crossbow/brimstone6"
+	],
+	"subtitle": "subtitles.item.crossbow.shoot"
+  },
+  "item.crossbow.scatter": {
+	"sounds": [
+	  "enchancement:item/crossbow/scatter1",
+	  "enchancement:item/crossbow/scatter2",
+	  "enchancement:item/crossbow/scatter3"
+	],
+	"subtitle": "subtitles.item.crossbow.shoot"
   }
 }

@@ -30,7 +30,8 @@ public class ModelLoaderMixin {
 	private void enchancement$scatter(Identifier id, CallbackInfoReturnable<JsonUnbakedModel> cir) {
 		if (id.equals(CROSSBOW)) {
 			List<ModelOverride.Condition> conditions = new LinkedList<>();
-			conditions.add(new ModelOverride.Condition(Enchancement.id("crossbow_amethyst"), 1));
+			conditions.add(new ModelOverride.Condition(new Identifier("charged"), 1));
+			conditions.add(new ModelOverride.Condition(Enchancement.id("amethyst_shard"), 1));
 			cir.getReturnValue().getOverrides().add(new ModelOverride(Enchancement.id("item/crossbow_amethyst"), conditions));
 		}
 	}
