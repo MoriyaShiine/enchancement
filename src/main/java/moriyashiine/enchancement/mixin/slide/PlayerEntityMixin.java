@@ -17,14 +17,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class PlayerEntityMixin {
 	@Inject(method = "clipAtLedge", at = @At("HEAD"), cancellable = true)
 	private void enchancement$slide(CallbackInfoReturnable<Boolean> cir) {
-		if (ModEntityComponents.SLIDE.get(this).shouldSlide()) {
+		if (ModEntityComponents.SLIDE.get(this).isSliding()) {
 			cir.setReturnValue(false);
 		}
 	}
 
 	@ModifyArg(method = "updatePose", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setPose(Lnet/minecraft/entity/EntityPose;)V"))
 	private EntityPose enchancement$slide(EntityPose value) {
-		if (value == EntityPose.CROUCHING && ModEntityComponents.SLIDE.get(this).shouldSlide()) {
+		if (value == EntityPose.STANDING && ModEntityComponents.SLIDE.get(this).isSliding()) {
 			return EntityPose.SWIMMING;
 		}
 		return value;

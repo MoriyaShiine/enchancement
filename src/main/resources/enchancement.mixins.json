@@ -45,6 +45,7 @@
 	"scatter.ServerPlayerInteractionManagerMixin",
 	"scooping.EnchantmentHelperMixin",
 	"slide.EntityAccessor",
+	"slide.EntityMixin",
 	"slide.LivingEntityMixin",
 	"slide.PlayerEntityMixin",
 	"torch.CrossbowItemMixin",
@@ -124,6 +125,8 @@
 	"perception.client.MinecraftClientMixin",
 	"scatter.client.ClientPlayerInteractionManagerMixin",
 	"scatter.client.ModelLoaderMixin",
+	"slide.client.GameRendererMixin",
+	"slide.client.KeyboardInputMixin",
 	"slide.client.PlayerEntityRendererMixin",
 	"torch.client.ModelLoaderMixin",
 	"veil.client.EntityRendererMixin"
