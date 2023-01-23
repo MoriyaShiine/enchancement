@@ -22,9 +22,8 @@ public class ModEnchantments {
 	public static final Enchantment STRAFE = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_CHEST, EquipmentSlot.CHEST);
 	public static final Enchantment WARDENSPINE = new WardenspineEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_CHEST, EquipmentSlot.CHEST);
 	//leggings
-	public static final Enchantment DASH = new NoImpactEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_LEGS, EquipmentSlot.LEGS);
-	public static final Enchantment IMPACT = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_LEGS, EquipmentSlot.LEGS);
-	public static final Enchantment SLIDE = new NoImpactEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_LEGS, EquipmentSlot.LEGS);
+	public static final Enchantment DASH = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_LEGS, EquipmentSlot.LEGS);
+	public static final Enchantment SLIDE = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_LEGS, EquipmentSlot.LEGS);
 	//boots
 	public static final Enchantment ACCELERATION = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_FEET, EquipmentSlot.FEET);
 	public static final Enchantment BOUNCY = new BouncyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_FEET, EquipmentSlot.FEET);
@@ -67,7 +66,6 @@ public class ModEnchantments {
 		Registry.register(Registries.ENCHANTMENT, Enchancement.id("wardenspine"), WARDENSPINE);
 		//leggings
 		Registry.register(Registries.ENCHANTMENT, Enchancement.id("dash"), DASH);
-		Registry.register(Registries.ENCHANTMENT, Enchancement.id("impact"), IMPACT);
 		Registry.register(Registries.ENCHANTMENT, Enchancement.id("slide"), SLIDE);
 		//boots
 		Registry.register(Registries.ENCHANTMENT, Enchancement.id("acceleration"), ACCELERATION);

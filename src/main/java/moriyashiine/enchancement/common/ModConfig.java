@@ -14,7 +14,7 @@ public class ModConfig extends MidnightConfig {
 	public static List<String> allowedEnchantments = List.of(
 			"enchancement:assimilation", "enchancement:perception", "enchancement:veil",
 			"enchancement:amphibious", "enchancement:strafe", "enchancement:wardenspine",
-			"enchancement:dash", "enchancement:impact", "enchancement:slide",
+			"enchancement:dash", "enchancement:slide",
 			"enchancement:acceleration", "enchancement:bouncy", "enchancement:gale",
 			"enchancement:berserk", "minecraft:fire_aspect", "enchancement:frostbite",
 			"minecraft:infinity",

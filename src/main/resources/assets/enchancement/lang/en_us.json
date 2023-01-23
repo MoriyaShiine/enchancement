@@ -24,8 +24,6 @@
   "enchantment.enchancement.wardenspine.desc": "Damage taken from behind will be reduced by 80% and harm the attacker.",
   "enchantment.enchancement.dash": "Dash",
   "enchantment.enchancement.dash.desc": "Sneaking in the air will boost you in the direction you are looking. Jumping immediately after dashing will grant a large horizontal boost.",
-  "enchantment.enchancement.impact": "Impact",
-  "enchantment.enchancement.impact.desc": "Sneaking in the air will cause you to fall downwards at a high speed, negating fall damage. Any entities caught by the impact will be damaged and launched.",
   "enchantment.enchancement.slide": "Slide",
   "enchantment.enchancement.slide.desc": "Sprinting will now instead cause you to slide constantly. Jumping during a slide will launch you horizontally. Sneaking in the air will cause you to slam towards the ground, knocking back entities and negating fall damage.",
   "enchantment.enchancement.acceleration": "Acceleration",

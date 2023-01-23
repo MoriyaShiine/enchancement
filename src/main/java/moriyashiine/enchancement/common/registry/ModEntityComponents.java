@@ -25,7 +25,6 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<StrafeComponent> STRAFE = ComponentRegistry.getOrCreate(Enchancement.id("strafe"), StrafeComponent.class);
 	//leggings
 	public static final ComponentKey<DashComponent> DASH = ComponentRegistry.getOrCreate(Enchancement.id("dash"), DashComponent.class);
-	public static final ComponentKey<ImpactComponent> IMPACT = ComponentRegistry.getOrCreate(Enchancement.id("impact"), ImpactComponent.class);
 	public static final ComponentKey<SlideComponent> SLIDE = ComponentRegistry.getOrCreate(Enchancement.id("slide"), SlideComponent.class);
 	//boots
 	public static final ComponentKey<MovingForwardComponent> MOVING_FORWARD = ComponentRegistry.getOrCreate(Enchancement.id("moving_forward"), MovingForwardComponent.class);
@@ -52,7 +51,6 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
 		registry.registerForPlayers(STRAFE, StrafeComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(DASH, DashComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
-		registry.registerForPlayers(IMPACT, ImpactComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(SLIDE, SlideComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(MOVING_FORWARD, player -> new MovingForwardComponent(), RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(ACCELERATION, AccelerationComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
