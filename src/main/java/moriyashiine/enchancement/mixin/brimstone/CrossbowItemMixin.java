@@ -109,7 +109,7 @@ public abstract class CrossbowItemMixin {
 	@Inject(method = "getPullTime", at = @At("HEAD"), cancellable = true)
 	private static void enchancement$brimstone(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
 		if (EnchancementUtil.hasEnchantment(ModEnchantments.BRIMSTONE, stack)) {
-			cir.setReturnValue(120);
+			cir.setReturnValue(60);
 		}
 	}
 

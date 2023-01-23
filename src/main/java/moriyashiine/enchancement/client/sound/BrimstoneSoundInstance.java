@@ -42,7 +42,7 @@ public class BrimstoneSoundInstance extends MovingSoundInstance {
 		y = entity.getY();
 		z = entity.getZ();
 		age++;
-		pitch = MathHelper.lerp(age / 120F, 1, 2);
+		pitch = MathHelper.lerp(age / 60F, 1, 2);
 	}
 
 	public UUID getUuid() {
