@@ -13,6 +13,7 @@ import net.minecraft.entity.mob.PiglinEntity;
 import net.minecraft.entity.mob.WitchEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionUtil;
@@ -29,12 +30,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(FishingBobberEntity.class)
-public abstract class FishingBobberEntityMixin extends Entity {
+public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 	@Shadow
 	public abstract @Nullable PlayerEntity getPlayerOwner();
 
-	public FishingBobberEntityMixin(EntityType<?> type, World world) {
-		super(type, world);
+	public FishingBobberEntityMixin(EntityType<? extends ProjectileEntity> entityType, World world) {
+		super(entityType, world);
 	}
 
 	@Inject(method = "pullHookedEntity", at = @At("HEAD"), cancellable = true)
