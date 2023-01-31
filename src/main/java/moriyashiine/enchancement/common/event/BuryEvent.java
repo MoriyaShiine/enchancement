@@ -55,23 +55,25 @@ public class BuryEvent {
 				if (EnchancementUtil.hasEnchantment(ModEnchantments.BURY, stack)) {
 					BuryComponent buryComponent = ModEntityComponents.BURY.getNullable(entity);
 					if (buryComponent != null && buryComponent.getBuryPos() == null) {
-						BlockPos down = entity.getBlockPos().down();
-						BlockState state = world.getBlockState(down);
-						if (state.isIn(ModTags.Blocks.BURIABLE) && state.isFullCube(world, down)) {
-							if (!world.isClient) {
-								world.playSoundFromEntity(null, entity, ModSoundEvents.ENTITY_GENERIC_BURY, entity.getSoundCategory(), 1, 1);
-								world.emitGameEvent(GameEvent.ENTITY_INTERACT, entity.getPos(), GameEvent.Emitter.of(entity, entity.getSteppingBlockState()));
-								player.getItemCooldownManager().set(stack.getItem(), 200);
-								stack.damage(1, player, stackUser -> stackUser.sendToolBreakStatus(hand));
-								buryComponent.setBuryPos(down);
-								buryComponent.sync();
-							} else {
-								BlockStateParticleEffect particle = new BlockStateParticleEffect(ParticleTypes.BLOCK, state);
-								for (int i = 0; i < 24; i++) {
-									world.addParticle(particle, entity.getParticleX(1), entity.getRandomBodyY(), entity.getParticleZ(1), 0, 0, 0);
+						for (int i = 0; i <= 1; i++) {
+							BlockPos pos = entity.getBlockPos().down(i);
+							BlockState state = world.getBlockState(pos);
+							if (state.isIn(ModTags.Blocks.BURIABLE)) {
+								if (!world.isClient) {
+									world.playSoundFromEntity(null, entity, ModSoundEvents.ENTITY_GENERIC_BURY, entity.getSoundCategory(), 1, 1);
+									world.emitGameEvent(GameEvent.ENTITY_INTERACT, entity.getPos(), GameEvent.Emitter.of(entity, entity.getSteppingBlockState()));
+									player.getItemCooldownManager().set(stack.getItem(), 200);
+									stack.damage(1, player, stackUser -> stackUser.sendToolBreakStatus(hand));
+									buryComponent.setBuryPos(pos);
+									buryComponent.sync();
+								} else {
+									BlockStateParticleEffect particle = new BlockStateParticleEffect(ParticleTypes.BLOCK, state);
+									for (int j = 0; j < 24; j++) {
+										world.addParticle(particle, entity.getParticleX(1), entity.getRandomBodyY(), entity.getParticleZ(1), 0, 0, 0);
+									}
 								}
+								return ActionResult.success(world.isClient);
 							}
-							return ActionResult.success(world.isClient);
 						}
 					}
 				}
