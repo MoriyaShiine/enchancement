@@ -52,7 +52,7 @@ public class BuryEvent {
 					return ActionResult.PASS;
 				}
 				ItemStack stack = player.getStackInHand(hand);
-				if (EnchancementUtil.hasEnchantment(ModEnchantments.BURY, stack)) {
+				if (!player.getItemCooldownManager().isCoolingDown(stack.getItem()) && EnchancementUtil.hasEnchantment(ModEnchantments.BURY, stack)) {
 					BuryComponent buryComponent = ModEntityComponents.BURY.getNullable(entity);
 					if (buryComponent != null && buryComponent.getBuryPos() == null) {
 						for (int i = 0; i <= 1; i++) {
