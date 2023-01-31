@@ -77,6 +77,10 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 		}
 	}
 
+	public int getJumpsLeft() {
+		return jumpsLeft;
+	}
+
 	public boolean hasGale() {
 		return hasGale;
 	}
