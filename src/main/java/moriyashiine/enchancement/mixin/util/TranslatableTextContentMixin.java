@@ -15,23 +15,31 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class TranslatableTextContentMixin {
 	@ModifyVariable(method = "<init>*", at = @At("HEAD"), argsOnly = true)
 	private static String enchancement$redirectKey(String value) {
-		if (shouldRedirect(value)) {
-			return value + "_redirect";
-		}
-		return value;
+		return getRedirect(value);
 	}
 
 	@Unique
-	private static boolean shouldRedirect(String key) {
+	private static String getRedirect(String key) {
+		if (key.equals("enchantment.minecraft.channeling.desc")) {
+			if (ModConfig.channelingIgnitesOnMelee && ModConfig.channelingWorksWhenNotThundering) {
+				return key + ".redirect_melee_thunderless";
+			} else if (ModConfig.channelingIgnitesOnMelee) {
+				return key + ".redirect_melee";
+			} else if (ModConfig.channelingWorksWhenNotThundering) {
+				return key + ".redirect_thunderless";
+			}
+		}
 		return switch (key) {
-			case "enchantment.minecraft.fire_aspect.desc" -> ModConfig.fireAspectWorksAsFlintAndSteel;
-			case "enchantment.minecraft.infinity.desc" -> ModConfig.allowInfinityOnCrossbows;
-			case "enchantment.minecraft.channeling.desc" -> ModConfig.channelingWorksWhenNotThundering;
-			case "enchantment.minecraft.luck_of_the_sea.desc" -> ModConfig.luckOfTheSeaHasLure;
-			case "enchantment.minecraft.unbreaking.desc" -> ModConfig.unbreakingChangesFlag > 0;
+			case "enchantment.minecraft.fire_aspect.desc" ->
+					ModConfig.fireAspectWorksAsFlintAndSteel ? key + ".redirect" : key;
+			case "enchantment.minecraft.infinity.desc" -> ModConfig.allowInfinityOnCrossbows ? key + ".redirect" : key;
+			case "enchantment.minecraft.luck_of_the_sea.desc" ->
+					ModConfig.luckOfTheSeaHasLure ? key + ".redirect" : key;
+			case "enchantment.minecraft.unbreaking.desc" ->
+					ModConfig.unbreakingChangesFlag > 0 ? key + ".redirect" : key;
 			case "advancements.adventure.two_birds_one_arrow.description" ->
-					ModConfig.allowedEnchantments.contains("enchancement:brimstone");
-			default -> false;
+					ModConfig.allowedEnchantments.contains("enchancement:brimstone") ? key + ".redirect" : key;
+			default -> key;
 		};
 	}
 }

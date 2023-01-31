@@ -48,6 +48,8 @@ public class ModConfig extends MidnightConfig {
 	@Entry
 	public static boolean allTridentsHaveLoyalty = true;
 	@Entry
+	public static boolean channelingIgnitesOnMelee = true;
+	@Entry
 	public static boolean channelingWorksWhenNotThundering = true;
 	@Entry
 	public static boolean fireAspectWorksAsFlintAndSteel = true;
