@@ -15,7 +15,7 @@ public class ModConfig extends MidnightConfig {
 			"enchancement:assimilation", "enchancement:perception", "enchancement:veil",
 			"enchancement:amphibious", "enchancement:strafe", "enchancement:wardenspine",
 			"enchancement:dash", "enchancement:slide",
-			"enchancement:acceleration", "enchancement:bouncy", "enchancement:gale",
+			"enchancement:acceleration", "enchancement:bouncy", "enchancement:buoy", "enchancement:gale",
 			"enchancement:berserk", "minecraft:fire_aspect", "enchancement:frostbite",
 			"minecraft:infinity",
 			"enchancement:chaos", "enchancement:delay", "enchancement:phasing",

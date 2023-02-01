@@ -65,11 +65,20 @@ public class EnchancementUtil {
 		return entity instanceof LivingEntity living && EnchantmentHelper.getEquipmentLevel(enchantment, living) > 0;
 	}
 
-	public static boolean isGroundedOrJumping(LivingEntity living) {
+	public static boolean isGroundedOrAirborne(LivingEntity living, boolean allowWater) {
 		if (living instanceof PlayerEntity player && player.getAbilities().flying) {
 			return false;
 		}
-		return !living.isTouchingWater() && !living.isSwimming() && !living.isClimbing() && living.getVehicle() == null;
+		if (!allowWater) {
+			if (living.isTouchingWater() || living.isSwimming()) {
+				return false;
+			}
+		}
+		return !living.isClimbing() && living.getVehicle() == null;
+	}
+
+	public static boolean isGroundedOrAirborne(LivingEntity living) {
+		return isGroundedOrAirborne(living, false);
 	}
 
 	public static boolean shouldBeUnbreakable(ItemStack stack) {

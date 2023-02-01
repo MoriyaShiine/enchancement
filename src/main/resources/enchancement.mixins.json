@@ -17,6 +17,8 @@
 	"brimstone.CrossbowItemMixin",
 	"brimstone.ItemStackMixin",
 	"brimstone.LivingEntityMixin",
+	"buoy.LivingEntityMixin",
+	"buoy.PlayerEntityMixin",
 	"bury.AbstractBlockMixin",
 	"bury.EntityMixin",
 	"chaos.ArrowItemMixin",

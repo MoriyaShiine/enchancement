@@ -53,7 +53,7 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 			}
 			if (obj.isOnGround()) {
 				ticksInAir = 0;
-			} else if (EnchancementUtil.isGroundedOrJumping(obj) && obj.world.raycast(new RaycastContext(obj.getPos(), obj.getPos().add(0, -1, 0), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.ANY, obj)).getType() == HitResult.Type.MISS) {
+			} else if (EnchancementUtil.isGroundedOrAirborne(obj) && obj.world.raycast(new RaycastContext(obj.getPos(), obj.getPos().add(0, -1, 0), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.ANY, obj)).getType() == HitResult.Type.MISS) {
 				ticksInAir++;
 			}
 			if (ticksInAir > 10) {

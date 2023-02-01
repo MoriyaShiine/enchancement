@@ -153,12 +153,12 @@ public class SlideComponent implements CommonTickingComponent {
 			if (!options.sprintKey.isPressed()) {
 				disallowSlide = false;
 			}
-			if (!obj.isOnGround() && options.sneakKey.wasPressed() && !isSliding() && EnchancementUtil.isGroundedOrJumping(obj)) {
+			if (!obj.isOnGround() && options.sneakKey.wasPressed() && !isSliding() && EnchancementUtil.isGroundedOrAirborne(obj)) {
 				shouldSlam = true;
 				SlideSlamPacket.send();
 			}
 			if (options.sprintKey.isPressed() && !obj.isSneaking() && !disallowSlide) {
-				if (!isSliding() && obj.isOnGround() && EnchancementUtil.isGroundedOrJumping(obj)) {
+				if (!isSliding() && obj.isOnGround() && EnchancementUtil.isGroundedOrAirborne(obj)) {
 					velocity = getVelocityFromInput(options).rotateY((float) (-(obj.getHeadYaw() + 90) * Math.PI / 180));
 					SlideVelocityPacket.send(velocity);
 				}

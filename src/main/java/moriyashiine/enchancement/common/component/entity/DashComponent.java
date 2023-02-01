@@ -79,7 +79,7 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 				ticksPressingJump = 0;
 			}
 			boolean sneaking = obj.isSneaking();
-			if (!obj.isOnGround() && dashCooldown == 0 && sneaking && !wasSneaking && EnchancementUtil.isGroundedOrJumping(obj)) {
+			if (!obj.isOnGround() && dashCooldown == 0 && sneaking && !wasSneaking && EnchancementUtil.isGroundedOrAirborne(obj)) {
 				handle(obj, this);
 				if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || obj != MinecraftClient.getInstance().cameraEntity) {
 					for (int i = 0; i < 8; i++) {

@@ -27,6 +27,7 @@ public class ModEnchantments {
 	//boots
 	public static final Enchantment ACCELERATION = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_FEET, EquipmentSlot.FEET);
 	public static final Enchantment BOUNCY = new BouncyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_FEET, EquipmentSlot.FEET);
+	public static final Enchantment BUOY = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_FEET, EquipmentSlot.FEET);
 	public static final Enchantment GALE = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_FEET, EquipmentSlot.FEET);
 	//sword
 	public static final Enchantment BERSERK = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.WEAPON, EquipmentSlot.MAINHAND);
@@ -70,6 +71,7 @@ public class ModEnchantments {
 		//boots
 		Registry.register(Registries.ENCHANTMENT, Enchancement.id("acceleration"), ACCELERATION);
 		Registry.register(Registries.ENCHANTMENT, Enchancement.id("bouncy"), BOUNCY);
+		Registry.register(Registries.ENCHANTMENT, Enchancement.id("buoy"), BUOY);
 		Registry.register(Registries.ENCHANTMENT, Enchancement.id("gale"), GALE);
 		//sword
 		Registry.register(Registries.ENCHANTMENT, Enchancement.id("berserk"), BERSERK);

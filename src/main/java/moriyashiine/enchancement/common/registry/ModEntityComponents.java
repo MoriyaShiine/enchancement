@@ -29,6 +29,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	//boots
 	public static final ComponentKey<MovingForwardComponent> MOVING_FORWARD = ComponentRegistry.getOrCreate(Enchancement.id("moving_forward"), MovingForwardComponent.class);
 	public static final ComponentKey<AccelerationComponent> ACCELERATION = ComponentRegistry.getOrCreate(Enchancement.id("acceleration"), AccelerationComponent.class);
+	public static final ComponentKey<BuoyComponent> BUOY = ComponentRegistry.getOrCreate(Enchancement.id("buoy"), BuoyComponent.class);
 	public static final ComponentKey<GaleComponent> GALE = ComponentRegistry.getOrCreate(Enchancement.id("gale"), GaleComponent.class);
 	//sword
 	public static final ComponentKey<FrozenComponent> FROZEN = ComponentRegistry.getOrCreate(Enchancement.id("frozen"), FrozenComponent.class);
@@ -54,6 +55,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerForPlayers(SLIDE, SlideComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(MOVING_FORWARD, player -> new MovingForwardComponent(), RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(ACCELERATION, AccelerationComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+		registry.registerForPlayers(BUOY, BuoyComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(GALE, GaleComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(LivingEntity.class, FROZEN, FrozenComponent::new);
 		registry.registerFor(SquidEntity.class, FROZEN_SQUID, FrozenSquidComponent::new);

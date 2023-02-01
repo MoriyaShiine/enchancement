@@ -45,7 +45,7 @@ public class AccelerationComponent implements AutoSyncedComponent, CommonTicking
 		hasAcceleration = EnchancementUtil.hasEnchantment(ModEnchantments.ACCELERATION, obj);
 		obj.airStrafingSpeed *= speedMultiplier;
 		if (hasAcceleration) {
-			if (!obj.horizontalCollision && ((obj.isSprinting() && EnchancementUtil.isGroundedOrJumping(obj)) || obj.isSwimming()) && ModEntityComponents.MOVING_FORWARD.get(obj).isMovingForward()) {
+			if (!obj.horizontalCollision && ((obj.isSprinting() && EnchancementUtil.isGroundedOrAirborne(obj)) || obj.isSwimming()) && ModEntityComponents.MOVING_FORWARD.get(obj).isMovingForward()) {
 				if (speedMultiplier < 2.5) {
 					speedMultiplier = Math.min(2.5F, speedMultiplier + 1 / 92F);
 				}
