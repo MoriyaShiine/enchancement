@@ -48,6 +48,11 @@ public abstract class CrossbowItemMixin {
 	}
 
 	@Shadow
+	public static int getPullTime(ItemStack stack) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Shadow
 	private static boolean loadProjectiles(LivingEntity shooter, ItemStack projectile) {
 		throw new UnsupportedOperationException();
 	}
@@ -96,11 +101,14 @@ public abstract class CrossbowItemMixin {
 		if (ItemStack.areEqual(arrow, EnchancementUtil.BRIMSTONE_STACK)) {
 			damage = crossbow.getNbt().getInt("BrimstoneDamage");
 			entity.timeUntilRegen = 0;
-			entity.damage(ModDamageSources.LIFE_DRAIN, damage);
+			entity.damage(ModDamageSources.LIFE_DRAIN, entity.getMaxHealth() * (damage / 20F));
 			BrimstoneEntity brimstone = new BrimstoneEntity(world, entity);
 			brimstone.setDamage(damage);
 			brimstone.getDataTracker().set(BrimstoneEntity.FORCED_PITCH, entity.getPitch());
 			brimstone.getDataTracker().set(BrimstoneEntity.FORCED_YAW, entity.getHeadYaw());
+			if (entity instanceof PlayerEntity player) {
+				player.getItemCooldownManager().set(crossbow.getItem(), (int) (getPullTime(crossbow) * (damage / 12F)));
+			}
 			return brimstone;
 		}
 		return value;

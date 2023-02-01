@@ -83,9 +83,9 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 				world.getOtherEntities(owner, Box.from(hitResult.getPos()).expand(0.5)).forEach(entity -> {
 					if (entity instanceof LivingEntity living && !living.isDead()) {
 						if (world.isClient) {
-							addParticles(entity.getX(), entity.getRandomBodyY(), entity.getZ());
+							addParticles(living.getX(), living.getRandomBodyY(), living.getZ());
 						} else {
-							living.damage(DamageSource.arrow(this, owner).setBypassesArmor().setBypassesProtection(), (float) (getDamage() * (1 + (maxY / 224))));
+							living.damage(DamageSource.arrow(this, owner).setBypassesArmor().setBypassesProtection(), (float) ((Math.min(50, living.getMaxHealth()) * (getDamage() / 20F)) * (1 + (maxY / 224))));
 							if (living.isDead()) {
 								killedEntities.add(living);
 							}
