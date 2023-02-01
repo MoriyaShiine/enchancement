@@ -25,7 +25,6 @@ public class ModEnchantments {
 	public static final Enchantment DASH = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_LEGS, EquipmentSlot.LEGS);
 	public static final Enchantment SLIDE = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_LEGS, EquipmentSlot.LEGS);
 	//boots
-	public static final Enchantment ACCELERATION = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_FEET, EquipmentSlot.FEET);
 	public static final Enchantment BOUNCY = new BouncyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_FEET, EquipmentSlot.FEET);
 	public static final Enchantment BUOY = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_FEET, EquipmentSlot.FEET);
 	public static final Enchantment GALE = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_FEET, EquipmentSlot.FEET);
@@ -69,7 +68,6 @@ public class ModEnchantments {
 		Registry.register(Registries.ENCHANTMENT, Enchancement.id("dash"), DASH);
 		Registry.register(Registries.ENCHANTMENT, Enchancement.id("slide"), SLIDE);
 		//boots
-		Registry.register(Registries.ENCHANTMENT, Enchancement.id("acceleration"), ACCELERATION);
 		Registry.register(Registries.ENCHANTMENT, Enchancement.id("bouncy"), BOUNCY);
 		Registry.register(Registries.ENCHANTMENT, Enchancement.id("buoy"), BUOY);
 		Registry.register(Registries.ENCHANTMENT, Enchancement.id("gale"), GALE);
