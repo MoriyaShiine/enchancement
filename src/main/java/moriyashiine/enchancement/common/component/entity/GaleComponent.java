@@ -6,7 +6,7 @@ package moriyashiine.enchancement.common.component.entity;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
-import moriyashiine.enchancement.common.packet.GaleJumpPacket;
+import moriyashiine.enchancement.common.packet.GalePacket;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import moriyashiine.enchancement.common.registry.ModSoundEvents;
@@ -73,7 +73,7 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 		if (!obj.isOnGround() && hasGale && jumpCooldown == 0 && jumpsLeft > 0 && ticksInAir >= 10 && EnchancementUtil.isGroundedOrAirborne(obj) && ((LivingEntityAccessor) obj).enchancement$jumping()) {
 			handle(obj, this);
 			addGaleParticles(obj);
-			GaleJumpPacket.send();
+			GalePacket.send();
 		}
 	}
 
