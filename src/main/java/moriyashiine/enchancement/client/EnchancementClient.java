@@ -46,7 +46,7 @@ public class EnchancementClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(AddStrafeParticlesPacket.ID, AddStrafeParticlesPacket::receive);
 		ClientPlayNetworking.registerGlobalReceiver(AddGaleParticlesPacket.ID, AddGaleParticlesPacket::receive);
 		ClientPlayNetworking.registerGlobalReceiver(PlayBrimstoneSoundPacket.ID, PlayBrimstoneSoundPacket::receive);
-		ClientPlayNetworking.registerGlobalReceiver(StopBrimstoneSoundPacket.ID, StopBrimstoneSoundPacket::receive);
+		ClientPlayNetworking.registerGlobalReceiver(StopBrimstoneSoundsS2CPacket.ID, StopBrimstoneSoundsS2CPacket::receive);
 		ClientPlayNetworking.registerGlobalReceiver(ResetFrozenTicksPacket.ID, ResetFrozenTicksPacket::receive);
 		ClientPlayNetworking.registerGlobalReceiver(SyncFrozenPlayerSlimStatusS2C.ID, SyncFrozenPlayerSlimStatusS2C::receive);
 		ClientPlayNetworking.registerGlobalReceiver(AddMoltenParticlesPacket.ID, AddMoltenParticlesPacket::receive);

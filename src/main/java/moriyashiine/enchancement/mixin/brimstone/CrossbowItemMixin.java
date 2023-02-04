@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.brimstone;
 
 import moriyashiine.enchancement.client.packet.PlayBrimstoneSoundPacket;
-import moriyashiine.enchancement.client.packet.StopBrimstoneSoundPacket;
+import moriyashiine.enchancement.client.packet.StopBrimstoneSoundsS2CPacket;
 import moriyashiine.enchancement.common.entity.projectile.BrimstoneEntity;
 import moriyashiine.enchancement.common.registry.ModDamageSources;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
@@ -62,9 +62,9 @@ public abstract class CrossbowItemMixin {
 		if (EnchancementUtil.hasEnchantment(ModEnchantments.BRIMSTONE, stack) && !CrossbowItem.isCharged(stack)) {
 			if (!world.isClient) {
 				UUID uuid = stack.getNbt().getUuid("BrimstoneUUID");
-				PlayerLookup.tracking(user).forEach(foundPlayer -> StopBrimstoneSoundPacket.send(foundPlayer, uuid));
+				PlayerLookup.tracking(user).forEach(foundPlayer -> StopBrimstoneSoundsS2CPacket.send(foundPlayer, uuid));
 				if (user instanceof ServerPlayerEntity player) {
-					StopBrimstoneSoundPacket.send(player, uuid);
+					StopBrimstoneSoundsS2CPacket.send(player, uuid);
 				}
 			}
 			int damage = EnchancementUtil.getBrimstoneDamage(getPullProgress(getMaxUseTime(stack) - remainingUseTicks, stack));

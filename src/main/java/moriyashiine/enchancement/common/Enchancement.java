@@ -44,6 +44,7 @@ public class Enchancement implements ModInitializer {
 		ServerPlayNetworking.registerGlobalReceiver(SlideVelocityPacket.ID, SlideVelocityPacket::receive);
 		ServerPlayNetworking.registerGlobalReceiver(BuoyPacket.ID, BuoyPacket::receive);
 		ServerPlayNetworking.registerGlobalReceiver(GalePacket.ID, GalePacket::receive);
+		ServerPlayNetworking.registerGlobalReceiver(StopBrimstoneSoundsC2SPacket.ID, StopBrimstoneSoundsC2SPacket::receive);
 		ServerPlayNetworking.registerGlobalReceiver(SyncFrozenPlayerSlimStatusC2S.ID, SyncFrozenPlayerSlimStatusC2S::receive);
 		ModEntityTypes.init();
 		ModEnchantments.init();
