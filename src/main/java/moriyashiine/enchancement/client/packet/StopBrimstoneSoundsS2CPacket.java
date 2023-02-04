@@ -8,8 +8,6 @@ import io.netty.buffer.Unpooled;
 import moriyashiine.enchancement.client.sound.BrimstoneSoundInstance;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.packet.StopBrimstoneSoundsC2SPacket;
-import moriyashiine.enchancement.common.registry.ModEnchantments;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.brimstone.client.SoundManagerAccessor;
 import moriyashiine.enchancement.mixin.brimstone.client.SoundSystemAccessor;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
@@ -52,10 +50,8 @@ public class StopBrimstoneSoundsS2CPacket {
 			NbtCompound subNbt = stack.getSubNbt(Enchancement.MOD_ID);
 			if (subNbt != null && subNbt.contains("BrimstoneUUID")) {
 				UUID uuid = subNbt.getUuid("BrimstoneUUID");
-				if (EnchancementUtil.hasEnchantment(ModEnchantments.BRIMSTONE, stack)) {
-					StopBrimstoneSoundsS2CPacket.stopSounds(MinecraftClient.getInstance(), uuid);
-					StopBrimstoneSoundsC2SPacket.send(uuid);
-				}
+				StopBrimstoneSoundsS2CPacket.stopSounds(MinecraftClient.getInstance(), uuid);
+				StopBrimstoneSoundsC2SPacket.send(uuid);
 			}
 		}
 	}
