@@ -6,6 +6,7 @@ package moriyashiine.enchancement.mixin.brimstone;
 
 import moriyashiine.enchancement.client.packet.PlayBrimstoneSoundPacket;
 import moriyashiine.enchancement.client.packet.StopBrimstoneSoundsS2CPacket;
+import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.entity.projectile.BrimstoneEntity;
 import moriyashiine.enchancement.common.registry.ModDamageSources;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
@@ -17,6 +18,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -60,8 +62,9 @@ public abstract class CrossbowItemMixin {
 	@Inject(method = "onStoppedUsing", at = @At("HEAD"), cancellable = true)
 	private void enchancement$brimstone(ItemStack stack, World world, LivingEntity user, int remainingUseTicks, CallbackInfo ci) {
 		if (EnchancementUtil.hasEnchantment(ModEnchantments.BRIMSTONE, stack) && !CrossbowItem.isCharged(stack)) {
+			NbtCompound subNbt = stack.getSubNbt(Enchancement.MOD_ID);
 			if (!world.isClient) {
-				UUID uuid = stack.getNbt().getUuid("BrimstoneUUID");
+				UUID uuid = subNbt.getUuid("BrimstoneUUID");
 				PlayerLookup.tracking(user).forEach(foundPlayer -> StopBrimstoneSoundsS2CPacket.send(foundPlayer, uuid));
 				if (user instanceof ServerPlayerEntity player) {
 					StopBrimstoneSoundsS2CPacket.send(player, uuid);
@@ -70,7 +73,7 @@ public abstract class CrossbowItemMixin {
 			int damage = EnchancementUtil.getBrimstoneDamage(getPullProgress(getMaxUseTime(stack) - remainingUseTicks, stack));
 			if (damage > 0 && loadProjectiles(user, stack)) {
 				CrossbowItem.setCharged(stack, true);
-				stack.getNbt().putInt("BrimstoneDamage", damage);
+				subNbt.putInt("BrimstoneDamage", damage);
 				world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ITEM_CROSSBOW_LOADING_END, user instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE, 1, 1 / (world.getRandom().nextFloat() * 0.5F + 1) + 0.2F);
 				ci.cancel();
 			}
@@ -81,11 +84,12 @@ public abstract class CrossbowItemMixin {
 	private void enchancement$brimstone(World world, LivingEntity user, ItemStack stack, int remainingUseTicks, CallbackInfo ci) {
 		if (EnchancementUtil.hasEnchantment(ModEnchantments.BRIMSTONE, stack)) {
 			UUID uuid;
-			if (stack.getNbt().contains("BrimstoneUUID")) {
-				uuid = stack.getNbt().getUuid("BrimstoneUUID");
+			NbtCompound subNbt = stack.getOrCreateSubNbt(Enchancement.MOD_ID);
+			if (subNbt.contains("BrimstoneUUID")) {
+				uuid = subNbt.getUuid("BrimstoneUUID");
 			} else {
 				uuid = UUID.randomUUID();
-				stack.getNbt().putUuid("BrimstoneUUID", uuid);
+				subNbt.putUuid("BrimstoneUUID", uuid);
 			}
 			if (remainingUseTicks == getMaxUseTime(stack)) {
 				PlayerLookup.tracking(user).forEach(foundPlayer -> PlayBrimstoneSoundPacket.send(foundPlayer, user.getId(), uuid));
@@ -99,7 +103,9 @@ public abstract class CrossbowItemMixin {
 	@ModifyVariable(method = "createArrow", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/ArrowItem;createArrow(Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/LivingEntity;)Lnet/minecraft/entity/projectile/PersistentProjectileEntity;"))
 	private static PersistentProjectileEntity enchancement$brimstone(PersistentProjectileEntity value, World world, LivingEntity entity, ItemStack crossbow, ItemStack arrow) {
 		if (ItemStack.areEqual(arrow, EnchancementUtil.BRIMSTONE_STACK)) {
-			damage = crossbow.getNbt().getInt("BrimstoneDamage");
+			NbtCompound subNbt = crossbow.getSubNbt(Enchancement.MOD_ID);
+			damage = subNbt.getInt("BrimstoneDamage");
+			subNbt.remove("BrimstoneDamage");
 			entity.timeUntilRegen = 0;
 			entity.damage(ModDamageSources.LIFE_DRAIN, entity.getMaxHealth() * (damage / 20F));
 			BrimstoneEntity brimstone = new BrimstoneEntity(world, entity);

@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.util;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModTags;
@@ -37,7 +38,7 @@ public class EnchancementUtil {
 
 	static {
 		BRIMSTONE_STACK = new ItemStack(Items.LAVA_BUCKET);
-		BRIMSTONE_STACK.getOrCreateNbt().putBoolean("Brimstone", true);
+		BRIMSTONE_STACK.getOrCreateSubNbt(Enchancement.MOD_ID).putBoolean("Brimstone", true);
 	}
 
 	public static List<ItemEntity> mergeItemEntities(List<ItemEntity> drops) {

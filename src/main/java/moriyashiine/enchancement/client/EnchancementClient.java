@@ -58,7 +58,7 @@ public class EnchancementClient implements ClientModInitializer {
 		EntityRendererRegistry.register(ModEntityTypes.GRAPPLE_FISHING_BOBBER, FishingBobberEntityRenderer::new);
 		ModelPredicateProviderRegistry.register(Items.CROSSBOW, Enchancement.id("brimstone"), (stack, world, entity, seed) -> {
 			if (CrossbowItemAccessor.enchancement$getProjectiles(stack).stream().anyMatch(foundStack -> ItemStack.areEqual(foundStack, EnchancementUtil.BRIMSTONE_STACK))) {
-				return stack.getNbt().getInt("BrimstoneDamage") / 12F;
+				return stack.getSubNbt(Enchancement.MOD_ID).getInt("BrimstoneDamage") / 12F;
 			}
 			return 0;
 		});

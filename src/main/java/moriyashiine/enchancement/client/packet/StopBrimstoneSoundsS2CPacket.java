@@ -18,6 +18,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
@@ -47,10 +48,15 @@ public class StopBrimstoneSoundsS2CPacket {
 	}
 
 	public static void maybeStopSounds(PlayerEntity player, ItemStack stack) {
-		if (player.getItemUseTime() > 0 && EnchancementUtil.hasEnchantment(ModEnchantments.BRIMSTONE, stack) && stack.getNbt().contains("BrimstoneUUID")) {
-			UUID uuid = stack.getNbt().getUuid("BrimstoneUUID");
-			StopBrimstoneSoundsS2CPacket.stopSounds(MinecraftClient.getInstance(), uuid);
-			StopBrimstoneSoundsC2SPacket.send(uuid);
+		if (player.getItemUseTime() > 0 && stack.hasNbt()) {
+			NbtCompound subNbt = stack.getSubNbt(Enchancement.MOD_ID);
+			if (subNbt != null && subNbt.contains("BrimstoneUUID")) {
+				UUID uuid = subNbt.getUuid("BrimstoneUUID");
+				if (EnchancementUtil.hasEnchantment(ModEnchantments.BRIMSTONE, stack)) {
+					StopBrimstoneSoundsS2CPacket.stopSounds(MinecraftClient.getInstance(), uuid);
+					StopBrimstoneSoundsC2SPacket.send(uuid);
+				}
+			}
 		}
 	}
 }
