@@ -13,9 +13,11 @@ import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -23,6 +25,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -96,19 +99,26 @@ public abstract class CrossbowItemMixin {
 		}
 	}
 
-	@ModifyVariable(method = "createArrow", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/ArrowItem;createArrow(Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/LivingEntity;)Lnet/minecraft/entity/projectile/PersistentProjectileEntity;"))
-	private static PersistentProjectileEntity enchancement$brimstone(PersistentProjectileEntity value, World world, LivingEntity entity, ItemStack crossbow, ItemStack arrow) {
-		if (ItemStack.areEqual(arrow, EnchancementUtil.BRIMSTONE_STACK)) {
+	@ModifyVariable(method = "shoot", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/CrossbowItem;createArrow(Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)Lnet/minecraft/entity/projectile/PersistentProjectileEntity;"))
+	private static ProjectileEntity enchancement$brimstone(ProjectileEntity value, World world, LivingEntity shooter, Hand hand, ItemStack crossbow, ItemStack projectile, float soundPitch, boolean creative, float speed, float divergence, float simulated) {
+		if (ItemStack.areEqual(projectile, EnchancementUtil.BRIMSTONE_STACK)) {
+			boolean damageModified = false;
 			NbtCompound subNbt = crossbow.getSubNbt(Enchancement.MOD_ID);
 			damage = subNbt.getInt("BrimstoneDamage");
+			if (simulated != 0) {
+				damageModified = true;
+				damage /= 2;
+			}
 			subNbt.remove("BrimstoneDamage");
-			entity.timeUntilRegen = 0;
-			entity.damage(ModDamageSources.LIFE_DRAIN, entity.getMaxHealth() * (damage / 20F));
-			BrimstoneEntity brimstone = new BrimstoneEntity(world, entity);
+			shooter.timeUntilRegen = 0;
+			shooter.damage(ModDamageSources.LIFE_DRAIN, shooter.getMaxHealth() * (damage / 20F));
+			BrimstoneEntity brimstone = new BrimstoneEntity(world, shooter);
 			brimstone.setDamage(damage);
-			brimstone.getDataTracker().set(BrimstoneEntity.FORCED_PITCH, entity.getPitch());
-			brimstone.getDataTracker().set(BrimstoneEntity.FORCED_YAW, entity.getHeadYaw());
-			if (entity instanceof PlayerEntity player) {
+			brimstone.getDataTracker().set(BrimstoneEntity.FORCED_PITCH, shooter.getPitch());
+			brimstone.getDataTracker().set(BrimstoneEntity.FORCED_YAW, shooter.getHeadYaw() + simulated / 2);
+			if (damageModified) {
+				damage *= 2;
+			} else if (shooter instanceof PlayerEntity player) {
 				player.getItemCooldownManager().set(crossbow.getItem(), (int) (getPullTime(crossbow) * (damage / 12F)));
 			}
 			return brimstone;
@@ -119,7 +129,13 @@ public abstract class CrossbowItemMixin {
 	@Inject(method = "getPullTime", at = @At("HEAD"), cancellable = true)
 	private static void enchancement$brimstone(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
 		if (EnchancementUtil.hasEnchantment(ModEnchantments.BRIMSTONE, stack)) {
-			cir.setReturnValue(60);
+			int time = 60;
+			int quickCharge = EnchantmentHelper.getLevel(Enchantments.QUICK_CHARGE, stack);
+			while (quickCharge > 0) {
+				time -= 10;
+				quickCharge--;
+			}
+			cir.setReturnValue(Math.max(1, time));
 		}
 	}
 

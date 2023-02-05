@@ -10,7 +10,7 @@ import net.minecraft.util.Identifier;
 import java.util.List;
 
 public class ModConfig extends MidnightConfig {
-	@Hidden
+	@Entry
 	public static List<String> allowedEnchantments = List.of(
 			"enchancement:assimilation", "enchancement:perception", "enchancement:veil",
 			"enchancement:amphibious", "enchancement:strafe", "enchancement:wardenspine",
@@ -26,7 +26,7 @@ public class ModConfig extends MidnightConfig {
 			"enchancement:bury", "enchancement:scooping",
 			"enchancement:disarm", "enchancement:grapple", "minecraft:luck_of_the_sea",
 			"minecraft:efficiency", "minecraft:silk_touch");
-	@Hidden
+	@Entry
 	public static boolean invertedList = false;
 
 	@Entry
