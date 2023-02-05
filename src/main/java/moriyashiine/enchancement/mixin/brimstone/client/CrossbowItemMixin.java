@@ -42,9 +42,7 @@ public abstract class CrossbowItemMixin {
 
 	@Inject(method = "usageTick", at = @At("HEAD"))
 	private void enchancement$brimstone(World world, LivingEntity user, ItemStack stack, int remainingUseTicks, CallbackInfo ci) {
-		if (world.isClient) {
-			BrimstoneRenderEvent.health = EnchancementUtil.getBrimstoneDamage(getPullProgress(getMaxUseTime(stack) - remainingUseTicks, stack));
-		}
+		BrimstoneRenderEvent.health = EnchancementUtil.getBrimstoneDamage(getPullProgress(getMaxUseTime(stack) - remainingUseTicks, stack));
 	}
 
 	@Inject(method = "appendTooltip", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)

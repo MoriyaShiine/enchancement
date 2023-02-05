@@ -31,10 +31,14 @@ public class PlayBrimstoneSoundPacket {
 	public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
 		int entityId = buf.readInt();
 		UUID uuid = buf.readUuid();
-		client.execute(() -> {
-			Entity entity = handler.getWorld().getEntityById(entityId);
-			if (entity != null) {
-				client.getSoundManager().play(new BrimstoneSoundInstance(entity, uuid, entity.getSoundCategory()));
+		//noinspection Convert2Lambda
+		client.execute(new Runnable() {
+			@Override
+			public void run() {
+				Entity entity = handler.getWorld().getEntityById(entityId);
+				if (entity != null) {
+					client.getSoundManager().play(new BrimstoneSoundInstance(entity, uuid, entity.getSoundCategory()));
+				}
 			}
 		});
 	}
