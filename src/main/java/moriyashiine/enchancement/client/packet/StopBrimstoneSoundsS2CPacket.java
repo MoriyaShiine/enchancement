@@ -10,16 +10,21 @@ import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.packet.StopBrimstoneSoundsC2SPacket;
 import moriyashiine.enchancement.mixin.brimstone.client.SoundManagerAccessor;
 import moriyashiine.enchancement.mixin.brimstone.client.SoundSystemAccessor;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -37,6 +42,32 @@ public class StopBrimstoneSoundsS2CPacket {
 		client.execute(() -> stopSounds(client, uuid));
 	}
 
+	public static void stopSounds(Entity entity, ItemStack stack) {
+		UUID brimstoneUUID = StopBrimstoneSoundsS2CPacket.getBrimstoneUUID(stack);
+		if (brimstoneUUID != null) {
+			stopSounds(entity, brimstoneUUID);
+		}
+	}
+
+	public static void stopSounds(Entity entity, UUID brimstoneUUID) {
+		PlayerLookup.tracking(entity).forEach(foundPlayer -> StopBrimstoneSoundsS2CPacket.send(foundPlayer, brimstoneUUID));
+		if (entity instanceof ServerPlayerEntity serverPlayer) {
+			StopBrimstoneSoundsS2CPacket.send(serverPlayer, brimstoneUUID);
+		}
+	}
+
+	@Environment(EnvType.CLIENT)
+	public static void maybeStopSounds(PlayerEntity player, ItemStack stack) {
+		if (player.getItemUseTime() > 0) {
+			UUID brimstoneUUID = getBrimstoneUUID(stack);
+			if (brimstoneUUID != null) {
+				StopBrimstoneSoundsS2CPacket.stopSounds(MinecraftClient.getInstance(), brimstoneUUID);
+				StopBrimstoneSoundsC2SPacket.send(brimstoneUUID);
+			}
+		}
+	}
+
+	@Environment(EnvType.CLIENT)
 	public static void stopSounds(MinecraftClient client, UUID uuid) {
 		((SoundSystemAccessor) ((SoundManagerAccessor) client.getSoundManager()).enchancement$getSoundSystem()).enchancement$getSounds().values().forEach(sound -> {
 			if (sound instanceof BrimstoneSoundInstance brimstoneSoundInstance && brimstoneSoundInstance.getUuid().equals(uuid)) {
@@ -45,14 +76,14 @@ public class StopBrimstoneSoundsS2CPacket {
 		});
 	}
 
-	public static void maybeStopSounds(PlayerEntity player, ItemStack stack) {
-		if (player.getItemUseTime() > 0 && stack.hasNbt()) {
+	@Nullable
+	public static UUID getBrimstoneUUID(ItemStack stack) {
+		if (stack.hasNbt()) {
 			NbtCompound subNbt = stack.getSubNbt(Enchancement.MOD_ID);
 			if (subNbt != null && subNbt.contains("BrimstoneUUID")) {
-				UUID uuid = subNbt.getUuid("BrimstoneUUID");
-				StopBrimstoneSoundsS2CPacket.stopSounds(MinecraftClient.getInstance(), uuid);
-				StopBrimstoneSoundsC2SPacket.send(uuid);
+				return subNbt.getUuid("BrimstoneUUID");
 			}
 		}
+		return null;
 	}
 }

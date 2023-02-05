@@ -64,11 +64,7 @@ public abstract class CrossbowItemMixin {
 		if (EnchancementUtil.hasEnchantment(ModEnchantments.BRIMSTONE, stack) && !CrossbowItem.isCharged(stack)) {
 			NbtCompound subNbt = stack.getSubNbt(Enchancement.MOD_ID);
 			if (!world.isClient) {
-				UUID uuid = subNbt.getUuid("BrimstoneUUID");
-				PlayerLookup.tracking(user).forEach(foundPlayer -> StopBrimstoneSoundsS2CPacket.send(foundPlayer, uuid));
-				if (user instanceof ServerPlayerEntity player) {
-					StopBrimstoneSoundsS2CPacket.send(player, uuid);
-				}
+				StopBrimstoneSoundsS2CPacket.stopSounds(user, subNbt.getUuid("BrimstoneUUID"));
 			}
 			int damage = EnchancementUtil.getBrimstoneDamage(getPullProgress(getMaxUseTime(stack) - remainingUseTicks, stack));
 			if (damage > 0 && loadProjectiles(user, stack)) {
