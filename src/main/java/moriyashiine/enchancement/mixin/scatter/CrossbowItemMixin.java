@@ -8,6 +8,8 @@ import moriyashiine.enchancement.common.entity.projectile.AmethystShardEntity;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.CrossbowUser;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,7 +34,13 @@ public class CrossbowItemMixin {
 	private static void enchancement$scatter(World world, LivingEntity shooter, Hand hand, ItemStack crossbow, ItemStack projectile, float soundPitch, boolean creative, float speed, float divergence, float simulated, CallbackInfo ci) {
 		if (!world.isClient && EnchancementUtil.hasEnchantment(ModEnchantments.SCATTER, crossbow) && projectile.isOf(Items.AMETHYST_SHARD)) {
 			speed /= 2;
-			for (int i = 0; i < MathHelper.nextInt(world.random, 8, 16); i++) {
+			int count = MathHelper.nextInt(world.random, 8, 16);
+			int multishot = EnchantmentHelper.getLevel(Enchantments.MULTISHOT, crossbow);
+			while (multishot > 0) {
+				count *= 1.5F;
+				multishot--;
+			}
+			for (int i = 0; i < count; i++) {
 				AmethystShardEntity projectileEntity = new AmethystShardEntity(world, shooter);
 				if (shooter instanceof CrossbowUser crossbowUser) {
 					crossbowUser.shoot(crossbowUser.getTarget(), crossbow, projectileEntity, simulated);
