@@ -11,6 +11,7 @@ import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.util.LivingEntityAccessor;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -45,7 +46,8 @@ public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponen
 		hasBuoy = EnchancementUtil.hasEnchantment(ModEnchantments.BUOY, obj);
 		if (hasBuoy) {
 			if (shoudBoost) {
-				if ((obj.isSubmergedIn(FluidTags.WATER) || obj.isSubmergedIn(FluidTags.LAVA)) && EnchancementUtil.isGroundedOrAirborne(obj, true)) {
+				FluidState state = obj.world.getFluidState(obj.getBlockPos());
+				if ((state.isIn(FluidTags.WATER) || state.isIn(FluidTags.LAVA)) && EnchancementUtil.isGroundedOrAirborne(obj, true)) {
 					boost = (float) MathHelper.clamp(boost + 0.0025, 0.05, 2);
 					obj.addVelocity(0, boost, 0);
 				} else {
@@ -70,10 +72,10 @@ public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponen
 				double y = obj.getY();
 				double z = obj.getZ();
 				ParticleEffect bubbleColumn = ParticleTypes.BUBBLE_COLUMN_UP, splash = ParticleTypes.SPLASH, bubble = ParticleTypes.BUBBLE;
-				if (obj.isSubmergedIn(FluidTags.LAVA)) {
-					bubbleColumn = ParticleTypes.FLAME;
-					splash = ParticleTypes.SMALL_FLAME;
-					bubble = ParticleTypes.SMALL_FLAME;
+				if (obj.world.getFluidState(obj.getBlockPos()).isIn(FluidTags.LAVA)) {
+					bubbleColumn = ParticleTypes.LAVA;
+					splash = ParticleTypes.LAVA;
+					bubble = ParticleTypes.LAVA;
 				}
 				obj.world.addParticle(bubbleColumn, x, y, z, 0, 0.04, 0);
 				obj.world.addParticle(bubbleColumn, obj.getParticleX(0.5), y + obj.getHeight() / 8, obj.getParticleZ(0.5), 0, 0.04, 0);
@@ -85,9 +87,12 @@ public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponen
 				}
 			}
 			if (((LivingEntityAccessor) obj).enchancement$jumping()) {
-				if (!shoudBoost && (obj.isSubmergedIn(FluidTags.WATER) || obj.isSubmergedIn(FluidTags.LAVA))) {
-					shoudBoost = true;
-					BuoyPacket.send(true);
+				if (!shoudBoost) {
+					FluidState state = obj.world.getFluidState(obj.getBlockPos());
+					if (state.isIn(FluidTags.WATER) || state.isIn(FluidTags.LAVA)) {
+						shoudBoost = true;
+						BuoyPacket.send(true);
+					}
 				}
 			} else if (shoudBoost) {
 				shoudBoost = false;
