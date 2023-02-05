@@ -27,7 +27,7 @@
   },
   "entity.generic.impact": {
 	"sounds": [
-	  "mob/zombie/woodbreak"
+	  "enchancement:entity/impact"
 	],
 	"subtitle": "subtitles.enchancement.entity.generic.impact"
   },
