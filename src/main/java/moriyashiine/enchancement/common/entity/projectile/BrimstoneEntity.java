@@ -9,6 +9,7 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonPart;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -81,6 +82,9 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 			}
 			if (ticksExisted == 3 && getOwner() instanceof LivingEntity owner) {
 				world.getOtherEntities(owner, Box.from(hitResult.getPos()).expand(0.5)).forEach(entity -> {
+					if (entity instanceof EnderDragonPart part) {
+						entity = part.owner;
+					}
 					if (entity instanceof LivingEntity living && !living.isDead()) {
 						if (world.isClient) {
 							addParticles(living.getX(), living.getRandomBodyY(), living.getZ());

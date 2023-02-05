@@ -11,6 +11,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonPart;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
@@ -59,6 +60,9 @@ public class AmethystShardEntity extends PersistentProjectileEntity {
 	protected void onEntityHit(EntityHitResult entityHitResult) {
 		if (!world.isClient) {
 			Entity entity = entityHitResult.getEntity();
+			if (entity instanceof EnderDragonPart part) {
+				entity = part.owner;
+			}
 			if (entity instanceof LivingEntity) {
 				Entity owner = getOwner();
 				if (EnchancementUtil.shouldHurt(owner, entity) && entity.damage(DamageSource.arrow(this, owner), (float) getDamage())) {

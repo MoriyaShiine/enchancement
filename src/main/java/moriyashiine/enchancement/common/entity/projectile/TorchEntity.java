@@ -7,8 +7,10 @@ package moriyashiine.enchancement.common.entity.projectile;
 import moriyashiine.enchancement.common.registry.ModEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonPart;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemPlacementContext;
@@ -52,7 +54,11 @@ public class TorchEntity extends PersistentProjectileEntity {
 	@Override
 	protected void onEntityHit(EntityHitResult entityHitResult) {
 		int stuckArrows = 0;
-		if (entityHitResult.getEntity() instanceof LivingEntity living) {
+		Entity entity = entityHitResult.getEntity();
+		if (entity instanceof EnderDragonPart part) {
+			entity = part.owner;
+		}
+		if (entity instanceof LivingEntity living) {
 			living.setOnFireFor(2);
 			playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 1, 1);
 			if (!world.isClient) {
