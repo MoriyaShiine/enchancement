@@ -18,6 +18,7 @@
 	"brimstone.LivingEntityMixin",
 	"brimstone.PlayerEntityMixin",
 	"brimstone.ServerPlayerInteractionManagerMixin",
+	"buoy.EntityMixin",
 	"buoy.LivingEntityMixin",
 	"buoy.PlayerEntityMixin",
 	"bury.AbstractBlockMixin",

@@ -46,8 +46,7 @@ public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponen
 		hasBuoy = EnchancementUtil.hasEnchantment(ModEnchantments.BUOY, obj);
 		if (hasBuoy) {
 			if (shoudBoost) {
-				FluidState state = obj.world.getFluidState(obj.getBlockPos());
-				if ((state.isIn(FluidTags.WATER) || state.isIn(FluidTags.LAVA)) && EnchancementUtil.isGroundedOrAirborne(obj, true)) {
+				if (isSubmerged(false) && EnchancementUtil.isGroundedOrAirborne(obj, true)) {
 					boost = (float) MathHelper.clamp(boost + 0.0025, 0.05, 2);
 					obj.addVelocity(0, boost, 0);
 				} else {
@@ -72,7 +71,7 @@ public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponen
 				double y = obj.getY();
 				double z = obj.getZ();
 				ParticleEffect bubbleColumn = ParticleTypes.BUBBLE_COLUMN_UP, splash = ParticleTypes.SPLASH, bubble = ParticleTypes.BUBBLE;
-				if (obj.world.getFluidState(obj.getBlockPos()).isIn(FluidTags.LAVA)) {
+				if (isSubmerged(true)) {
 					bubbleColumn = ParticleTypes.LAVA;
 					splash = ParticleTypes.LAVA;
 					bubble = ParticleTypes.LAVA;
@@ -87,12 +86,9 @@ public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponen
 				}
 			}
 			if (((LivingEntityAccessor) obj).enchancement$jumping()) {
-				if (!shoudBoost) {
-					FluidState state = obj.world.getFluidState(obj.getBlockPos());
-					if (state.isIn(FluidTags.WATER) || state.isIn(FluidTags.LAVA)) {
-						shoudBoost = true;
-						BuoyPacket.send(true);
-					}
+				if (!shoudBoost && isSubmerged(false)) {
+					shoudBoost = true;
+					BuoyPacket.send(true);
 				}
 			} else if (shoudBoost) {
 				shoudBoost = false;
@@ -107,5 +103,15 @@ public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponen
 
 	public boolean hasBuoy() {
 		return hasBuoy;
+	}
+
+	private boolean isSubmerged(boolean onlyLava) {
+		for (int i = 0; i <= 1; i++) {
+			FluidState state = obj.world.getFluidState(obj.getBlockPos().up(i));
+			if ((!onlyLava && state.isIn(FluidTags.WATER)) || state.isIn(FluidTags.LAVA)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
