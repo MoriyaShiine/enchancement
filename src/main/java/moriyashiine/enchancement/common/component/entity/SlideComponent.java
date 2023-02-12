@@ -140,7 +140,7 @@ public class SlideComponent implements CommonTickingComponent {
 	@Override
 	public void clientTick() {
 		tick();
-		if (hasSlide) {
+		if (hasSlide && !obj.isSpectator()) {
 			if (shouldSlam) {
 				slamTick(() -> {
 					disallowSlide = true;
@@ -169,7 +169,7 @@ public class SlideComponent implements CommonTickingComponent {
 			wasSneaking = sneaking;
 			if (options.sprintKey.isPressed() && !obj.isSneaking() && !disallowSlide) {
 				if (!isSliding() && obj.isOnGround() && EnchancementUtil.isGroundedOrAirborne(obj)) {
-					velocity = getVelocityFromInput(options).rotateY((float) (-(obj.getHeadYaw() + 90) * Math.PI / 180));
+					velocity = getVelocityFromInput(options).rotateY((float) Math.toRadians(-(obj.getHeadYaw() + 90)));
 					SlideVelocityPacket.send(velocity);
 				}
 			} else if (velocity != Vec3d.ZERO) {
