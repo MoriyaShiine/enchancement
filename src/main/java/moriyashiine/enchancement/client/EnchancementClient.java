@@ -4,10 +4,7 @@
 
 package moriyashiine.enchancement.client;
 
-import moriyashiine.enchancement.client.event.AssimilationTooltipEvent;
-import moriyashiine.enchancement.client.event.BrimstoneRenderEvent;
-import moriyashiine.enchancement.client.event.DashRenderEvent;
-import moriyashiine.enchancement.client.event.GaleRenderEvent;
+import moriyashiine.enchancement.client.event.*;
 import moriyashiine.enchancement.client.packet.*;
 import moriyashiine.enchancement.client.reloadlisteners.FrozenReloadListener;
 import moriyashiine.enchancement.client.render.entity.AmethystShardEntityRenderer;
@@ -73,6 +70,7 @@ public class EnchancementClient implements ClientModInitializer {
 	private void initEvents() {
 		ItemTooltipCallback.EVENT.register(new AssimilationTooltipEvent());
 		HudRenderCallback.EVENT.register(new DashRenderEvent());
+		HudRenderCallback.EVENT.register(new BouncyRenderEvent());
 		HudRenderCallback.EVENT.register(new GaleRenderEvent());
 		HudRenderCallback.EVENT.register(new BrimstoneRenderEvent());
 	}

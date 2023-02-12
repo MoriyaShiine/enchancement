@@ -112,6 +112,7 @@
 	"berserk.client.ItemRendererMixin",
 	"berserk.client.ItemStackMixin",
 	"berserk.client.integration.sodium.ColorARGBMixin",
+	"bouncy.client.ClientPlayerInteractionManagerMixin",
 	"brimstone.client.ClientPlayerInteractionManagerMixin",
 	"brimstone.client.CrossbowItemMixin",
 	"brimstone.client.InGameHudAccessor",

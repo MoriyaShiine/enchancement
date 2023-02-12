@@ -31,7 +31,7 @@
   "enchantment.enchancement.buoy": "Buoy",
   "enchantment.enchancement.buoy.desc": "You can walk on fluids, and sneak to descend. Jumping while submerged will rapidly propel you upwards. Prevents floating.",
   "enchantment.enchancement.bouncy": "Bouncy",
-  "enchantment.enchancement.bouncy.desc": "Landing will bounce you back up at a speed proportional to your fall speed while not sneaking. Also negates fall damage.",
+  "enchantment.enchancement.bouncy.desc": "Landing will bounce you back up at a speed proportional to your fall speed while not sneaking. Can charge a jump boost while sneaking. Also negates fall damage.",
   "enchantment.enchancement.gale": "Gale",
   "enchantment.enchancement.gale.desc": "Allows you to jump two more times in the air.",
   "enchantment.enchancement.berserk": "Berserk",

@@ -22,7 +22,7 @@
   "enchantment.enchancement.slide": "슬라이딩",
   "enchantment.enchancement.slide.desc": "달리는 동안 웅크리면 빠른 속도로 기어갑니다. 기어가는 속도가 증가하고, 슬라이딩 후 점프하면 앞으로 튕겨저 나갑니다. (OLD, NEEDS UPDATING)",
   "enchantment.enchancement.bouncy": "통통이",
-  "enchantment.enchancement.bouncy.desc": "웅크리지 않고 착지하면 속도 감소 없이 떨어진 속도로 튀어오릅니다. 또한 낙하 피해를 무시합니다.",
+  "enchantment.enchancement.bouncy.desc": "웅크리지 않고 착지하면 속도 감소 없이 떨어진 속도로 튀어오릅니다. 또한 낙하 피해를 무시합니다. (OLD, NEEDS UPDATING)",
   "enchantment.enchancement.gale": "공중 밟기",
   "enchantment.enchancement.gale.desc": "공중에서 두번 더 점프할 수 있습니다.",
   "enchantment.enchancement.berserk": "광폭화",

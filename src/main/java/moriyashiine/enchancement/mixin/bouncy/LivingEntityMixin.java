@@ -4,14 +4,19 @@
 
 package moriyashiine.enchancement.mixin.bouncy;
 
+import moriyashiine.enchancement.common.component.entity.BouncyComponent;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
+import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.particle.BlockStateParticleEffect;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -20,11 +25,15 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
+	@Unique
+	private static final BlockStateParticleEffect SLIME_PARTICLE = new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.getDefaultState());
+
 	@Unique
 	private Vec3d prevVelocity;
 
@@ -39,10 +48,11 @@ public abstract class LivingEntityMixin extends Entity {
 		}
 	}
 
-	@ModifyArg(method = "fall", at = @At(value = "INVOKE", target = "Lnet/minecraft/particle/BlockStateParticleEffect;<init>(Lnet/minecraft/particle/ParticleType;Lnet/minecraft/block/BlockState;)V"))
-	private BlockState enchancement$bouncy(BlockState value) {
+	@SuppressWarnings("unchecked")
+	@ModifyArg(method = "fall", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;spawnParticles(Lnet/minecraft/particle/ParticleEffect;DDDIDDDD)I"))
+	private <T extends ParticleEffect> T enchancement$bouncy(T value) {
 		if (EnchancementUtil.hasEnchantment(ModEnchantments.BOUNCY, this)) {
-			return Blocks.SLIME_BLOCK.getDefaultState();
+			return (T) SLIME_PARTICLE;
 		}
 		return value;
 	}
@@ -59,5 +69,21 @@ public abstract class LivingEntityMixin extends Entity {
 			}
 			cir.setReturnValue(false);
 		}
+	}
+
+	@ModifyVariable(method = "jump", at = @At("STORE"))
+	private double enchancement$bouncy(double value) {
+		BouncyComponent bouncyComponent = ModEntityComponents.BOUNCY.getNullable(this);
+		if (bouncyComponent != null && bouncyComponent.hasBouncy()) {
+			float boostProgress = bouncyComponent.getBoostProgress();
+			if (boostProgress > 0) {
+				if (!world.isClient) {
+					world.playSoundFromEntity(null, this, SoundEvents.BLOCK_SLIME_BLOCK_FALL, getSoundCategory(), 1, 1);
+					((ServerWorld) world).spawnParticles(SLIME_PARTICLE, getX(), getY(), getZ(), 32, 0.0, 0.0, 0.0, 0.15F);
+				}
+				return value + (boostProgress * 2);
+			}
+		}
+		return value;
 	}
 }
