@@ -33,7 +33,7 @@ public class LivingEntityMixin {
 	private double enchancement$slide(double value) {
 		SlideComponent slideComponent = ModEntityComponents.SLIDE.getNullable(this);
 		if (slideComponent != null && slideComponent.shouldBoostJump()) {
-			slideComponent.resetJumpBoostCooldown();
+			slideComponent.setJumpBoostResetTicks(SlideComponent.DEFAULT_JUMP_BOOST_RESET_TICKS);
 			return value + ((slideComponent.getTimesJumped() - 1) / 3.75F);
 		}
 		return value;

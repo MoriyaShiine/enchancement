@@ -100,7 +100,7 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 				player.setVelocity(player.getVelocity().multiply(1.5));
 				galeComponent.hasGaleDashed = true;
 				dashComponent.setShouldRefreshDash(false);
-				dashComponent.setDashCooldown(DashComponent.MAX_COOLDOWN * 3);
+				dashComponent.setDashCooldown(DashComponent.DEFAULT_DASH_COOLDOWN * 3);
 				ModEntityComponents.STRAFE.get(player).setTicksInAir(0);
 			}
 		});

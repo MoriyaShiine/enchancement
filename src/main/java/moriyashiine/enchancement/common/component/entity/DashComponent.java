@@ -19,11 +19,11 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.Vec3d;
 
 public class DashComponent implements AutoSyncedComponent, CommonTickingComponent {
-	public static final int MAX_COOLDOWN = 20;
+	public static final int DEFAULT_DASH_COOLDOWN = 20;
 
 	private final PlayerEntity obj;
 	private boolean shouldRefreshDash = false;
-	private int dashCooldown = MAX_COOLDOWN, lastDashCooldown = MAX_COOLDOWN, wavedashTicks = 0;
+	private int dashCooldown = DEFAULT_DASH_COOLDOWN, lastDashCooldown = DEFAULT_DASH_COOLDOWN, wavedashTicks = 0;
 
 	private boolean hasDash = false, wasSneaking = false;
 	private int ticksPressingJump = 0;
@@ -64,7 +64,7 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 			}
 		} else {
 			shouldRefreshDash = false;
-			dashCooldown = MAX_COOLDOWN;
+			dashCooldown = DEFAULT_DASH_COOLDOWN;
 			wavedashTicks = 0;
 		}
 	}
@@ -78,7 +78,7 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 			} else {
 				ticksPressingJump = 0;
 			}
-			boolean sneaking = obj.isSneaking();
+			boolean sneaking = MinecraftClient.getInstance().options.sneakKey.isPressed();
 			if (!obj.isOnGround() && dashCooldown == 0 && sneaking && !wasSneaking && EnchancementUtil.isGroundedOrAirborne(obj)) {
 				handle(obj, this);
 				if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || obj != MinecraftClient.getInstance().cameraEntity) {
@@ -125,7 +125,7 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 		Vec3d velocity = entity.getRotationVector().normalize();
 		entity.setVelocity(velocity.getX(), velocity.getY(), velocity.getZ());
 		entity.fallDistance = 0;
-		dashComponent.setDashCooldown(MAX_COOLDOWN);
+		dashComponent.setDashCooldown(DEFAULT_DASH_COOLDOWN);
 		dashComponent.shouldRefreshDash = false;
 		dashComponent.wavedashTicks = 3;
 	}

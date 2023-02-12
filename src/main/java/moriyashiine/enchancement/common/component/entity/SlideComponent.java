@@ -29,16 +29,18 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 public class SlideComponent implements CommonTickingComponent {
+	public static final int DEFAULT_JUMP_BOOST_RESET_TICKS = 5, DEFAULT_SLAM_COOLDOWN = 7;
+
 	private static final EntityAttributeModifier STEP_HEIGHT_INCREASE = new EntityAttributeModifier(UUID.fromString("f95ce6ed-ecf3-433b-a7f0-a9c6092b0cf7"), "Enchantment modifier", 1, EntityAttributeModifier.Operation.ADDITION);
 
 	private final PlayerEntity obj;
 	private Vec3d velocity = Vec3d.ZERO;
 	private boolean shouldSlam = false;
-	private int jumpBoostTicks = 0, timesJumped = 0, timesJumpedResetTicks = 0, ticksSliding = 0;
+	private int jumpBoostResetTicks = DEFAULT_JUMP_BOOST_RESET_TICKS, slamCooldown = DEFAULT_SLAM_COOLDOWN, ticksLeftToJump = 0, timesJumped = 0, ticksSliding = 0;
 
 	private boolean hasSlide = false;
 
-	private boolean disallowSlide = false;
+	private boolean disallowSlide = false, wasSneaking = false;
 
 	public SlideComponent(PlayerEntity obj) {
 		this.obj = obj;
@@ -48,9 +50,10 @@ public class SlideComponent implements CommonTickingComponent {
 	public void readFromNbt(@NotNull NbtCompound tag) {
 		velocity = new Vec3d(tag.getDouble("VelocityX"), tag.getDouble("VelocityY"), tag.getDouble("VelocityZ"));
 		shouldSlam = tag.getBoolean("ShouldSlam");
-		jumpBoostTicks = tag.getInt("JumpBoostTicks");
+		jumpBoostResetTicks = tag.getInt("JumpBoostResetTicks");
+		slamCooldown = tag.getInt("SlamCooldown");
+		ticksLeftToJump = tag.getInt("TicksLeftToJump");
 		timesJumped = tag.getInt("TimesJumped");
-		timesJumpedResetTicks = tag.getInt("TimesJumpedResetTicks");
 		ticksSliding = tag.getInt("TicksSliding");
 	}
 
@@ -60,9 +63,10 @@ public class SlideComponent implements CommonTickingComponent {
 		tag.putDouble("VelocityY", velocity.getY());
 		tag.putDouble("VelocityZ", velocity.getZ());
 		tag.putBoolean("ShouldSlam", shouldSlam);
-		tag.putInt("JumpBoostTicks", jumpBoostTicks);
+		tag.putInt("JumpBoostResetTicks", jumpBoostResetTicks);
+		tag.putInt("SlamCooldown", slamCooldown);
+		tag.putInt("TicksLeftToJump", ticksLeftToJump);
 		tag.putInt("TimesJumped", timesJumped);
-		tag.putInt("TimesJumpedResetTicks", timesJumpedResetTicks);
 		tag.putInt("TicksSliding", ticksSliding);
 	}
 
@@ -73,12 +77,14 @@ public class SlideComponent implements CommonTickingComponent {
 			if (obj.isSneaking() || obj.isTouchingWater()) {
 				velocity = Vec3d.ZERO;
 			}
-			if (jumpBoostTicks > 0) {
-				jumpBoostTicks--;
-			}
-			if (timesJumped > 0 && timesJumpedResetTicks < 5 && obj.isOnGround() && ++timesJumpedResetTicks == 5) {
+			if (jumpBoostResetTicks > 0 && timesJumped > 0 && obj.isOnGround() && --jumpBoostResetTicks == 0) {
 				timesJumped = 0;
-				timesJumpedResetTicks = 0;
+			}
+			if (slamCooldown > 0) {
+				slamCooldown--;
+			}
+			if (ticksLeftToJump > 0) {
+				ticksLeftToJump--;
 			}
 			if (isSliding()) {
 				((EntityAccessor) obj).enchancement$spawnSprintingParticles();
@@ -99,9 +105,10 @@ public class SlideComponent implements CommonTickingComponent {
 		} else {
 			velocity = Vec3d.ZERO;
 			shouldSlam = false;
-			jumpBoostTicks = 0;
+			jumpBoostResetTicks = DEFAULT_JUMP_BOOST_RESET_TICKS;
+			slamCooldown = DEFAULT_SLAM_COOLDOWN;
+			ticksLeftToJump = 0;
 			timesJumped = 0;
-			timesJumpedResetTicks = 0;
 			ticksSliding = 0;
 		}
 	}
@@ -153,10 +160,13 @@ public class SlideComponent implements CommonTickingComponent {
 			if (!options.sprintKey.isPressed()) {
 				disallowSlide = false;
 			}
-			if (!obj.isOnGround() && options.sneakKey.wasPressed() && !isSliding() && EnchancementUtil.isGroundedOrAirborne(obj)) {
+			boolean sneaking = options.sneakKey.isPressed();
+			if (slamCooldown == 0 && !obj.isOnGround() && sneaking && !wasSneaking && !isSliding() && EnchancementUtil.isGroundedOrAirborne(obj)) {
 				shouldSlam = true;
+				slamCooldown = DEFAULT_SLAM_COOLDOWN;
 				SlideSlamPacket.send();
 			}
+			wasSneaking = sneaking;
 			if (options.sprintKey.isPressed() && !obj.isSneaking() && !disallowSlide) {
 				if (!isSliding() && obj.isOnGround() && EnchancementUtil.isGroundedOrAirborne(obj)) {
 					velocity = getVelocityFromInput(options).rotateY((float) (-(obj.getHeadYaw() + 90) * Math.PI / 180));
@@ -168,6 +178,7 @@ public class SlideComponent implements CommonTickingComponent {
 			}
 		} else {
 			disallowSlide = false;
+			wasSneaking = false;
 		}
 	}
 
@@ -187,8 +198,12 @@ public class SlideComponent implements CommonTickingComponent {
 		return shouldSlam;
 	}
 
-	public void resetJumpBoostCooldown() {
-		timesJumpedResetTicks = 0;
+	public void setJumpBoostResetTicks(int jumpBoostResetTicks) {
+		this.jumpBoostResetTicks = jumpBoostResetTicks;
+	}
+
+	public void setSlamCooldown(int slamCooldown) {
+		this.slamCooldown = slamCooldown;
 	}
 
 	public int getTimesJumped() {
@@ -200,7 +215,7 @@ public class SlideComponent implements CommonTickingComponent {
 	}
 
 	public boolean shouldBoostJump() {
-		return jumpBoostTicks > 0;
+		return ticksLeftToJump > 0;
 	}
 
 	public float getJumpBonus() {
@@ -217,7 +232,7 @@ public class SlideComponent implements CommonTickingComponent {
 		obj.fallDistance = 0;
 		if (obj.isOnGround()) {
 			shouldSlam = false;
-			jumpBoostTicks = 5;
+			ticksLeftToJump = 5;
 			if (timesJumped < 3) {
 				timesJumped++;
 			}
