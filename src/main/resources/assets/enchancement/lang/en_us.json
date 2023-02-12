@@ -21,7 +21,7 @@
   "enchantment.enchancement.amphibious": "Amphibious",
   "enchantment.enchancement.amphibious.desc": "Increases movement speed and mining speed while under water, extends underwater breath, and halves time spent on fire.",
   "enchantment.enchancement.strafe": "Strafe",
-  "enchantment.enchancement.strafe.desc": "Double tapping a direction key will push you in that direction. Also increases air mobility.",
+  "enchantment.enchancement.strafe.desc": "Double tapping the sprint key will push you in your movement direction. Also increases air mobility.",
   "enchantment.enchancement.wardenspine": "Wardenspine",
   "enchantment.enchancement.wardenspine.desc": "Damage taken from behind will be reduced by 80% and harm the attacker.",
   "enchantment.enchancement.dash": "Dash",

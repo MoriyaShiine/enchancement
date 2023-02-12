@@ -11,22 +11,25 @@ import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.option.GameOptions;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 
 public class StrafeComponent implements AutoSyncedComponent, CommonTickingComponent {
+	public static final int DEFAULT_STRAFE_COOLDOWN = 20;
+
 	private final PlayerEntity obj;
-	private int strafeCooldown = 0, ticksInAir = 0;
-	private boolean wasPressingForward = false, wasPressingBackward = false, wasPressingLeft = false, wasPressingRight = false;
-	private int ticksLeftToPressForward = 0, ticksLeftToPressBackward = 0, ticksLeftToPressLeft = 0, ticksLeftToPressRight = 0;
+	private int strafeCooldown = DEFAULT_STRAFE_COOLDOWN, ticksInAir = 0;
 
 	private boolean hasStrafe = false;
+
+	private boolean wasPressingSpring = false;
+	private int ticksLeftToPressSprint = 0;
 
 	public StrafeComponent(PlayerEntity obj) {
 		this.obj = obj;
@@ -60,7 +63,7 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 				obj.airStrafingSpeed *= 2;
 			}
 		} else {
-			strafeCooldown = 0;
+			strafeCooldown = DEFAULT_STRAFE_COOLDOWN;
 			ticksInAir = 0;
 		}
 	}
@@ -68,23 +71,24 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 	@Override
 	public void clientTick() {
 		tick();
-		if (hasStrafe && strafeCooldown == 0 && obj == MinecraftClient.getInstance().player) {
-			Direction direction = updatePressing();
-			if (direction != null) {
-				float pitch = obj.getPitch();
-				float yaw = obj.getHeadYaw();
-				switch (direction) {
-					case SOUTH -> pitch += 90;
-					case WEST -> yaw += 270;
-					case EAST -> yaw += 90;
-				}
-				float boostX = (float) (-Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)));
-				float boostZ = (float) (Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)));
-				Vec2f boost = new Vec2f(boostX, boostZ).normalize().multiply(0.75F);
-				handle(obj, this, boost.x, boost.y);
-				addStrafeParticles(obj);
-				StrafePacket.send(boost);
+		if (hasStrafe && strafeCooldown == 0 && !obj.isSpectator()) {
+			GameOptions options = MinecraftClient.getInstance().options;
+			boolean pressingSprint = options.sprintKey.isPressed();
+			if (ticksLeftToPressSprint > 0) {
+				ticksLeftToPressSprint--;
 			}
+			if (pressingSprint && !wasPressingSpring) {
+				if (ticksLeftToPressSprint > 0) {
+					ticksLeftToPressSprint = 0;
+					Vec3d velocity = getVelocityFromInput(options).rotateY((float) Math.toRadians(-(obj.getHeadYaw() + 90)));
+					handle(obj, this, velocity.getX(), velocity.getZ());
+					addStrafeParticles(obj);
+					StrafePacket.send(velocity);
+				} else {
+					ticksLeftToPressSprint = 7;
+				}
+			}
+			wasPressingSpring = pressingSprint;
 		}
 	}
 
@@ -96,64 +100,23 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 		return hasStrafe;
 	}
 
-	private Direction updatePressing() {
-		Direction direction = null;
-		boolean pressingForward = MinecraftClient.getInstance().options.forwardKey.isPressed();
-		boolean pressingBackward = MinecraftClient.getInstance().options.backKey.isPressed();
-		boolean pressingLeft = MinecraftClient.getInstance().options.leftKey.isPressed();
-		boolean pressingRight = MinecraftClient.getInstance().options.rightKey.isPressed();
-		if (ticksLeftToPressForward > 0) {
-			ticksLeftToPressForward--;
+	private Vec3d getVelocityFromInput(GameOptions options) {
+		if (options.backKey.isPressed()) {
+			return new Vec3d(-1, 0, 0);
 		}
-		if (ticksLeftToPressBackward > 0) {
-			ticksLeftToPressBackward--;
+		if (options.leftKey.isPressed()) {
+			return new Vec3d(0, 0, -1);
 		}
-		if (ticksLeftToPressLeft > 0) {
-			ticksLeftToPressLeft--;
+		if (options.rightKey.isPressed()) {
+			return new Vec3d(0, 0, 1);
 		}
-		if (ticksLeftToPressRight > 0) {
-			ticksLeftToPressRight--;
-		}
-		if (pressingForward && !wasPressingForward) {
-			if (ticksLeftToPressForward > 0) {
-				ticksLeftToPressForward = 0;
-				direction = Direction.NORTH;
-			} else {
-				ticksLeftToPressForward = 7;
-			}
-		} else if (pressingBackward && !wasPressingBackward) {
-			if (ticksLeftToPressBackward > 0) {
-				ticksLeftToPressBackward = 0;
-				direction = Direction.SOUTH;
-			} else {
-				ticksLeftToPressBackward = 7;
-			}
-		} else if (pressingLeft && !wasPressingLeft) {
-			if (ticksLeftToPressLeft > 0) {
-				ticksLeftToPressLeft = 0;
-				direction = Direction.WEST;
-			} else {
-				ticksLeftToPressLeft = 7;
-			}
-		} else if (pressingRight && !wasPressingRight) {
-			if (ticksLeftToPressRight > 0) {
-				ticksLeftToPressRight = 0;
-				direction = Direction.EAST;
-			} else {
-				ticksLeftToPressRight = 7;
-			}
-		}
-		wasPressingForward = pressingForward;
-		wasPressingBackward = pressingBackward;
-		wasPressingLeft = pressingLeft;
-		wasPressingRight = pressingRight;
-		return direction;
+		return new Vec3d(1, 0, 0);
 	}
 
-	public static void handle(Entity entity, StrafeComponent strafeComponent, float boostX, float boostZ) {
-		entity.addVelocity(boostX, 0, boostZ);
+	public static void handle(Entity entity, StrafeComponent strafeComponent, double velocityX, double velocityZ) {
+		entity.addVelocity(velocityX, 0, velocityZ);
 		entity.playSound(ModSoundEvents.ENTITY_GENERIC_STRAFE, 1, 1);
-		strafeComponent.strafeCooldown = 20;
+		strafeComponent.strafeCooldown = DEFAULT_STRAFE_COOLDOWN;
 	}
 
 	public static void addStrafeParticles(Entity entity) {

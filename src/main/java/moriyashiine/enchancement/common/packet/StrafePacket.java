@@ -17,24 +17,24 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.math.Vec3d;
 
 public class StrafePacket {
 	public static final Identifier ID = Enchancement.id("strafe");
 
-	public static void send(Vec2f boost) {
+	public static void send(Vec3d velocity) {
 		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
-		buf.writeFloat(boost.x);
-		buf.writeFloat(boost.y);
+		buf.writeFloat((float) velocity.getX());
+		buf.writeFloat((float) velocity.getZ());
 		ClientPlayNetworking.send(ID, buf);
 	}
 
 	public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-		float boostX = buf.readFloat();
-		float boostZ = buf.readFloat();
+		float velocityX = buf.readFloat();
+		float velocityZ = buf.readFloat();
 		server.execute(() -> ModEntityComponents.STRAFE.maybeGet(player).ifPresent(strafeComponent -> {
 			if (strafeComponent.hasStrafe()) {
-				StrafeComponent.handle(player, strafeComponent, boostX, boostZ);
+				StrafeComponent.handle(player, strafeComponent, velocityX, velocityZ);
 				PlayerLookup.tracking(player).forEach(foundPlayer -> AddStrafeParticlesPacket.send(foundPlayer, player.getId()));
 			}
 		}));
