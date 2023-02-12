@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.0-SNAPSHOT'
+    id 'fabric-loom' version '1.1-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -66,6 +66,9 @@ dependencies {
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
+    modImplementation("com.github.Virtuoel:Pehkui:${pehkui_version}") {
+        exclude group: "net.fabricmc.fabric-api"
+    }
     modRuntimeOnly "curse.maven:tooltipfix-411557:${tooltipfix_version}"
 
     modCompileOnly("com.github.apace100:apoli:${apoli_version}") {

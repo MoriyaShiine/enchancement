@@ -9,6 +9,7 @@ import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.common.packet.SlideSlamPacket;
 import moriyashiine.enchancement.common.packet.SlideVelocityPacket;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
+import moriyashiine.enchancement.common.registry.ModScaleTypes;
 import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.slide.EntityAccessor;
@@ -25,6 +26,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.*;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.NotNull;
+import virtuoel.pehkui.api.ScaleData;
 
 import java.util.UUID;
 
@@ -127,13 +129,22 @@ public class SlideComponent implements CommonTickingComponent {
 			});
 		}
 		EntityAttributeInstance attribute = obj.getAttributeInstance(StepHeightEntityAttributeMain.STEP_HEIGHT);
+		ScaleData data = ModScaleTypes.SLIDE_HITBOX_TYPE.getScaleData(obj);
 		if (hasSlide && isSliding()) {
 			if (!attribute.hasModifier(STEP_HEIGHT_INCREASE)) {
 				attribute.addPersistentModifier(STEP_HEIGHT_INCREASE);
 			}
+			if (data.getScale() != 1.5F) {
+				data.setScale(1.5F);
+			}
 			EnchancementUtil.PACKET_IMMUNITIES.put(obj, 20);
-		} else if (attribute.hasModifier(STEP_HEIGHT_INCREASE)) {
-			attribute.removeModifier(STEP_HEIGHT_INCREASE);
+		} else {
+			if (attribute.hasModifier(STEP_HEIGHT_INCREASE)) {
+				attribute.removeModifier(STEP_HEIGHT_INCREASE);
+			}
+			if (data.getScale() != 1) {
+				data.setScale(1);
+			}
 		}
 	}
 

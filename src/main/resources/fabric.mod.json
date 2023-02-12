@@ -45,9 +45,10 @@
 	"fabricloader": ">=0.14.11",
 	"minecraft": "~1.19.3",
 	"java": ">=17",
-	"bookshelf": ">=17.0.2",
+	"bookshelf": ">=17.0.3",
 	"enchdesc": ">=14.0.4",
 	"fabric-api": ">=0.70.0",
+	"pehkui": ">=3.6.3",
 	"tooltipfix": ">=1.1.1-1.19.3"
   },
   "custom": {
