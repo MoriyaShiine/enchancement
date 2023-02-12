@@ -11,11 +11,9 @@ import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.util.LivingEntityAccessor;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.util.math.MathHelper;
 
 public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponent {
@@ -46,7 +44,7 @@ public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponen
 		hasBuoy = EnchancementUtil.hasEnchantment(ModEnchantments.BUOY, obj);
 		if (hasBuoy) {
 			if (shoudBoost) {
-				if (isSubmerged(false) && EnchancementUtil.isGroundedOrAirborne(obj, true)) {
+				if (EnchancementUtil.isSubmerged(obj, true, true) && EnchancementUtil.isGroundedOrAirborne(obj, true)) {
 					boost = (float) MathHelper.clamp(boost + 0.0025, 0.05, 2);
 					obj.addVelocity(0, boost, 0);
 				} else {
@@ -71,7 +69,7 @@ public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponen
 				double y = obj.getY();
 				double z = obj.getZ();
 				ParticleEffect bubbleColumn = ParticleTypes.BUBBLE_COLUMN_UP, splash = ParticleTypes.SPLASH, bubble = ParticleTypes.BUBBLE;
-				if (isSubmerged(true)) {
+				if (EnchancementUtil.isSubmerged(obj, false, true)) {
 					bubbleColumn = ParticleTypes.LAVA;
 					splash = ParticleTypes.LAVA;
 					bubble = ParticleTypes.LAVA;
@@ -86,7 +84,7 @@ public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponen
 				}
 			}
 			if (((LivingEntityAccessor) obj).enchancement$jumping()) {
-				if (!shoudBoost && isSubmerged(false)) {
+				if (!shoudBoost && EnchancementUtil.isSubmerged(obj, true, true)) {
 					shoudBoost = true;
 					BuoyPacket.send(true);
 				}
@@ -103,15 +101,5 @@ public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponen
 
 	public boolean hasBuoy() {
 		return hasBuoy;
-	}
-
-	private boolean isSubmerged(boolean onlyLava) {
-		for (int i = 0; i <= 1; i++) {
-			FluidState state = obj.world.getFluidState(obj.getBlockPos().up(i));
-			if ((!onlyLava && state.isIn(FluidTags.WATER)) || state.isIn(FluidTags.LAVA)) {
-				return true;
-			}
-		}
-		return false;
 	}
 }

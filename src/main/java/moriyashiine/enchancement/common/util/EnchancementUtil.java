@@ -21,9 +21,11 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.world.ServerWorld;
 
 import java.util.List;
@@ -80,6 +82,16 @@ public class EnchancementUtil {
 
 	public static boolean isGroundedOrAirborne(LivingEntity living) {
 		return isGroundedOrAirborne(living, false);
+	}
+
+	public static boolean isSubmerged(Entity entity, boolean allowWater, boolean allowLava) {
+		for (int i = 0; i <= 1; i++) {
+			FluidState state = entity.world.getFluidState(entity.getBlockPos().up(i));
+			if ((allowWater && state.isIn(FluidTags.WATER)) || (allowLava && state.isIn(FluidTags.LAVA))) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public static boolean shouldBeUnbreakable(ItemStack stack) {
