@@ -127,6 +127,7 @@ public class SlideComponent implements CommonTickingComponent {
 				});
 				obj.getWorld().emitGameEvent(GameEvent.STEP, obj.getPos(), GameEvent.Emitter.of(obj.getSteppingBlockState()));
 			});
+			EnchancementUtil.PACKET_IMMUNITIES.put(obj, 20);
 		}
 		EntityAttributeInstance attribute = obj.getAttributeInstance(StepHeightEntityAttributeMain.STEP_HEIGHT);
 		ScaleData data = ModScaleTypes.SLIDE_HITBOX_TYPE.getScaleData(obj);
