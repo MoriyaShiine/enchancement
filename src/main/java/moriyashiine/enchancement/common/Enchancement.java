@@ -61,6 +61,7 @@ public class Enchancement implements ModInitializer {
 		ServerTickEvents.END_SERVER_TICK.register(server -> EnchancementUtil.tickPacketImmunities());
 		ServerLifecycleEvents.SERVER_STOPPED.register(server -> EnchancementUtil.PACKET_IMMUNITIES.clear());
 		ServerTickEvents.END_SERVER_TICK.register(new AssimilationEvent());
+		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new SlideEvent());
 		UseBlockCallback.EVENT.register(new FireAspectEvent());
 		ServerLivingEntityEvents.AFTER_DEATH.register(new FrostbiteEvent.Freeze());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new FrostbiteEvent.HandleDamage());
