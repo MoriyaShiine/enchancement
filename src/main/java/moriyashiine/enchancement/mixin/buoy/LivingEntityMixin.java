@@ -37,10 +37,8 @@ public abstract class LivingEntityMixin extends Entity {
 		return value;
 	}
 
+	@SuppressWarnings("CancellableInjectionUsage")
 	@Inject(method = "canWalkOnFluid", at = @At("HEAD"), cancellable = true)
-	private void enchancement$buoy(FluidState state, CallbackInfoReturnable<Boolean> cir) {
-		if (!isSneaking() && EnchancementUtil.hasEnchantment(ModEnchantments.BUOY, this)) {
-			cir.setReturnValue(true);
-		}
+	protected void enchancement$buoy(FluidState state, CallbackInfoReturnable<Boolean> cir) {
 	}
 }
