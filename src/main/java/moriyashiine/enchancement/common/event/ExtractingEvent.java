@@ -52,7 +52,7 @@ public class ExtractingEvent implements PlayerBlockBreakEvents.Before {
 						ores.forEach(ore -> {
 							BlockState oreState = world.getBlockState(ore);
 							drops.addAll(Block.getDroppedStacks(oreState, (ServerWorld) world, ore, world.getBlockEntity(ore), player, stack));
-							oreState.onStacksDropped((ServerWorld) world, player.getBlockPos(), stack, false);
+							oreState.onStacksDropped((ServerWorld) world, player.getBlockPos(), stack, true);
 							world.breakBlock(ore, false);
 							world.setBlockState(ore, replace);
 						});
