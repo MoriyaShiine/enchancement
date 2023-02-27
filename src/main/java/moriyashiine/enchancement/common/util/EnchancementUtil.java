@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.util;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import ladysnake.impaled.common.init.ImpaledEntityTypes;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
@@ -21,6 +22,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -101,6 +103,16 @@ public class EnchancementUtil {
 				return !stack.isEmpty() && stack.getMaxDamage() > 0;
 			}
 			return EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) >= flag;
+		}
+		return false;
+	}
+
+	public static boolean shouldDisableLoyalty(PersistentProjectileEntity entity) {
+		if (ModConfig.allTridentsHaveLoyalty) {
+			if (Enchancement.isImpaledLoaded && entity.getType() == ImpaledEntityTypes.GUARDIAN_TRIDENT) {
+				return true;
+			}
+			return !(entity.getOwner() instanceof PlayerEntity);
 		}
 		return false;
 	}
