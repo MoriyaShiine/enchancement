@@ -72,7 +72,7 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 	@Override
 	public void clientTick() {
 		tick();
-		if (hasDash && !obj.isSpectator()) {
+		if (hasDash && !obj.isSpectator() && obj == MinecraftClient.getInstance().player) {
 			if (((LivingEntityAccessor) obj).enchancement$jumping()) {
 				ticksPressingJump = Math.min(2, ++ticksPressingJump);
 			} else {

@@ -71,7 +71,7 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 	@Override
 	public void clientTick() {
 		tick();
-		if (hasStrafe && strafeCooldown == 0 && !obj.isSpectator()) {
+		if (hasStrafe && strafeCooldown == 0 && !obj.isSpectator() && obj == MinecraftClient.getInstance().player) {
 			GameOptions options = MinecraftClient.getInstance().options;
 			boolean pressingSprint = options.sprintKey.isPressed();
 			if (ticksLeftToPressSprint > 0) {

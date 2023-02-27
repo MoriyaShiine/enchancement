@@ -152,7 +152,7 @@ public class SlideComponent implements CommonTickingComponent {
 	@Override
 	public void clientTick() {
 		tick();
-		if (hasSlide && !obj.isSpectator()) {
+		if (hasSlide && !obj.isSpectator() && obj == MinecraftClient.getInstance().player) {
 			if (shouldSlam) {
 				slamTick(() -> {
 					disallowSlide = true;
