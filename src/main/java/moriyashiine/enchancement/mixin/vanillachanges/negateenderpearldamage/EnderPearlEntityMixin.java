@@ -1,3 +1,7 @@
+/*
+ * All Rights Reserved (c) MoriyaShiine
+ */
+
 package moriyashiine.enchancement.mixin.vanillachanges.negateenderpearldamage;
 
 import moriyashiine.enchancement.common.ModConfig;

@@ -1,3 +1,7 @@
+/*
+ * All Rights Reserved (c) MoriyaShiine
+ */
+
 package moriyashiine.enchancement.mixin.slide;
 
 import moriyashiine.enchancement.common.component.entity.SlideComponent;

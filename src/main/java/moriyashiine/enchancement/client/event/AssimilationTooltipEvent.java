@@ -1,3 +1,7 @@
+/*
+ * All Rights Reserved (c) MoriyaShiine
+ */
+
 package moriyashiine.enchancement.client.event;
 
 import moriyashiine.enchancement.common.Enchancement;
