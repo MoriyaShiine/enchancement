@@ -18,7 +18,7 @@ import java.util.function.Predicate;
 
 @Mixin({PlayerEntity.class, HostileEntity.class})
 public class ScatterCrossbowMixin {
-	@ModifyVariable(method = "getArrowType", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/RangedWeaponItem;getHeldProjectiles()Ljava/util/function/Predicate;"))
+	@ModifyVariable(method = "getProjectileType", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/RangedWeaponItem;getHeldProjectiles()Ljava/util/function/Predicate;"))
 	private Predicate<ItemStack> enchancement$scatter(Predicate<ItemStack> value, ItemStack stack) {
 		if (EnchancementUtil.hasEnchantment(ModEnchantments.SCATTER, stack)) {
 			value = value.or(projectile -> projectile.isOf(Items.AMETHYST_SHARD));

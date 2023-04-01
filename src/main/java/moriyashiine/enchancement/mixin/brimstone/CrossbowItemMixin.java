@@ -8,7 +8,7 @@ import moriyashiine.enchancement.client.packet.PlayBrimstoneSoundPacket;
 import moriyashiine.enchancement.client.packet.StopBrimstoneSoundsS2CPacket;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.entity.projectile.BrimstoneEntity;
-import moriyashiine.enchancement.common.registry.ModDamageSources;
+import moriyashiine.enchancement.common.registry.ModDamageTypes;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
@@ -110,8 +110,7 @@ public abstract class CrossbowItemMixin {
 				damage /= 2;
 			}
 			subNbt.remove("BrimstoneDamage");
-			shooter.timeUntilRegen = 0;
-			shooter.damage(ModDamageSources.LIFE_DRAIN, shooter.getMaxHealth() * (damage / 20F));
+			shooter.damage(ModDamageTypes.create(world, ModDamageTypes.LIFE_DRAIN), shooter.getMaxHealth() * (damage / 20F));
 			BrimstoneEntity brimstone = new BrimstoneEntity(world, shooter);
 			brimstone.setDamage(damage);
 			brimstone.getDataTracker().set(BrimstoneEntity.FORCED_PITCH, shooter.getPitch());

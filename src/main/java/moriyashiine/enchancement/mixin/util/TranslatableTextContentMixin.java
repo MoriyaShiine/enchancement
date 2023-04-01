@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(TranslatableTextContent.class)
 public class TranslatableTextContentMixin {
-	@ModifyVariable(method = "<init>*", at = @At("HEAD"), argsOnly = true)
+	@ModifyVariable(method = "<init>*", at = @At("HEAD"), ordinal = 0, argsOnly = true)
 	private static String enchancement$redirectKey(String value) {
 		return getRedirect(value);
 	}

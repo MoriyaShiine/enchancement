@@ -34,8 +34,8 @@ public class PlayerEntityMixin {
 		this.attackCooldown = attackCooldown;
 	}
 
-	@Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;onTargetDamaged(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/Entity;)V"), locals = LocalCapture.CAPTURE_FAILHARD)
-	private void enchancement$weaponEnchantmentCooldownRequirementOnTargetDamaged(Entity target, CallbackInfo ci, float attackDamage, float extraDamage, float attackCooldown) {
+	@Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;onTargetDamaged(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/Entity;)V"))
+	private void enchancement$weaponEnchantmentCooldownRequirementOnTargetDamaged(Entity target, CallbackInfo ci) {
 		if (attackCooldown < ModConfig.weaponEnchantmentCooldownRequirement) {
 			EnchancementUtil.shouldCancelTargetDamagedEnchantments = true;
 		}

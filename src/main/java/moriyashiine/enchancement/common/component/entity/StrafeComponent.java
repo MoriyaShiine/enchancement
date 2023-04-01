@@ -59,9 +59,6 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 			} else if (EnchancementUtil.isGroundedOrAirborne(obj) && obj.world.raycast(new RaycastContext(obj.getPos(), obj.getPos().add(0, -1, 0), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.ANY, obj)).getType() == HitResult.Type.MISS) {
 				ticksInAir++;
 			}
-			if (ticksInAir > 10) {
-				obj.airStrafingSpeed *= 2;
-			}
 		} else {
 			strafeCooldown = DEFAULT_STRAFE_COOLDOWN;
 			ticksInAir = 0;
@@ -90,6 +87,10 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 			}
 			wasPressingSpring = pressingSprint;
 		}
+	}
+
+	public int getTicksInAir() {
+		return ticksInAir;
 	}
 
 	public void setTicksInAir(int ticksInAir) {

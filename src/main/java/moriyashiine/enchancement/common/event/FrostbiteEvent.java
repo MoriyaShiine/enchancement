@@ -14,6 +14,7 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.passive.SquidEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.MathHelper;
@@ -34,8 +35,6 @@ public class FrostbiteEvent {
 						frozenPlayer.setHeadYaw(entity.getHeadYaw());
 						frozenPlayer.setBodyYaw(entity.getBodyYaw());
 						frozenPlayer.setPitch(entity.getPitch());
-						frozenPlayer.limbDistance = entity.limbDistance;
-						frozenPlayer.limbAngle = entity.limbAngle;
 						frozenPlayer.age = entity.age;
 						frozenPlayer.teleport(entity.getX(), entity.getY(), entity.getZ());
 						ModEntityComponents.FROZEN.get(frozenPlayer).freeze();
@@ -61,11 +60,11 @@ public class FrostbiteEvent {
 		@Override
 		public boolean allowDamage(LivingEntity entity, DamageSource source, float amount) {
 			FrozenComponent frozenComponent = ModEntityComponents.FROZEN.get(entity);
-			if (FrozenComponent.isSourceFreezingEntity(source)) {
+			if (FrozenComponent.isSourceFrostbiteWeapon(source)) {
 				frozenComponent.setLastFreezingAttacker(source.getAttacker());
 			}
 			if (frozenComponent.isFrozen()) {
-				if (source == DamageSource.FREEZE) {
+				if (source.isOf(DamageTypes.FREEZE)) {
 					return false;
 				} else {
 					Entity entitySource = source.getSource();

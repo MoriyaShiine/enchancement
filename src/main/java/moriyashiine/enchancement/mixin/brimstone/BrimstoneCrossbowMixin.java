@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin({PlayerEntity.class, HostileEntity.class})
 public class BrimstoneCrossbowMixin {
-	@Inject(method = "getArrowType", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/RangedWeaponItem;getHeldProjectiles()Ljava/util/function/Predicate;"), cancellable = true)
+	@Inject(method = "getProjectileType", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/RangedWeaponItem;getHeldProjectiles()Ljava/util/function/Predicate;"), cancellable = true)
 	private void enchancement$brimstone(ItemStack stack, CallbackInfoReturnable<ItemStack> cir) {
 		if (EnchancementUtil.hasEnchantment(ModEnchantments.BRIMSTONE, stack)) {
 			cir.setReturnValue(EnchancementUtil.BRIMSTONE_STACK.copy());

@@ -6,13 +6,12 @@ package moriyashiine.enchancement.common.component.entity;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
-import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.registry.ModDamageTypes;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.ProjectileDamageSource;
 import net.minecraft.entity.mob.DrownedEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.TridentEntity;
@@ -81,7 +80,7 @@ public class LeechComponent implements AutoSyncedComponent, CommonTickingCompone
 		if (stuckEntity != null && stuckEntity.isAlive()) {
 			if (obj.getOwner() instanceof LivingEntity living && living.isAlive()) {
 				obj.teleport(stuckEntity.getX(), stuckEntity.getEyeY(), stuckEntity.getZ());
-				if (ticksLeeching % 20 == 0 && stuckEntity.damage(new ProjectileDamageSource(Enchancement.MOD_ID + ".life_drain", obj, living), 1)) {
+				if (ticksLeeching % 20 == 0 && stuckEntity.damage(ModDamageTypes.create(obj.getWorld(), ModDamageTypes.LIFE_DRAIN, obj, living), 1)) {
 					living.heal(1);
 					stuckEntity.timeUntilRegen = 0;
 					stabTicks = 1;

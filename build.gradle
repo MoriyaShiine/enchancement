@@ -32,10 +32,6 @@ repositories {
         url "https://maven.terraformersmc.com"
     }
     maven {
-        name "curse"
-        url "https://cursemaven.com"
-    }
-    maven {
         name "modrinth"
         url "https://api.modrinth.com/maven"
     }
@@ -65,11 +61,10 @@ dependencies {
     include "com.github.emilyploszaj:step-height-entity-attribute:${step_height_entity_attribute_version}"
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-
     modImplementation("com.github.Virtuoel:Pehkui:${pehkui_version}") {
         exclude group: "net.fabricmc.fabric-api"
     }
-    modRuntimeOnly "curse.maven:tooltipfix-411557:${tooltipfix_version}"
+    modRuntimeOnly "maven.modrinth:tooltipfix:${tooltipfix_version}"
 
     modCompileOnly("com.github.apace100:apoli:${apoli_version}") {
         exclude(group: "*")

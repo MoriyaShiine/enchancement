@@ -4,13 +4,13 @@
 
 package moriyashiine.enchancement.common.entity.projectile;
 
+import moriyashiine.enchancement.common.registry.ModDamageTypes;
 import moriyashiine.enchancement.common.registry.ModEntityTypes;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonPart;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -89,7 +89,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 						if (world.isClient) {
 							addParticles(living.getX(), living.getRandomBodyY(), living.getZ());
 						} else {
-							living.damage(DamageSource.arrow(this, owner).setBypassesArmor().setBypassesProtection(), (float) ((Math.min(50, living.getMaxHealth()) * (getDamage() / 20F)) * (1 + (maxY / 224))));
+							living.damage(ModDamageTypes.create(world, ModDamageTypes.BRIMSTONE, this, owner), (float) ((Math.min(50, living.getMaxHealth()) * (getDamage() / 20F)) * (1 + (maxY / 224))));
 							if (living.isDead()) {
 								killedEntities.add(living);
 							}

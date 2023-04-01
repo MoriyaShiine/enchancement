@@ -4,6 +4,7 @@
 
 package moriyashiine.enchancement.common.entity.projectile;
 
+import moriyashiine.enchancement.common.registry.ModDamageTypes;
 import moriyashiine.enchancement.common.registry.ModEntityTypes;
 import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
@@ -12,7 +13,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonPart;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -65,11 +65,10 @@ public class AmethystShardEntity extends PersistentProjectileEntity {
 			}
 			if (entity instanceof LivingEntity) {
 				Entity owner = getOwner();
-				if (EnchancementUtil.shouldHurt(owner, entity) && entity.damage(DamageSource.arrow(this, owner), (float) getDamage())) {
+				if (EnchancementUtil.shouldHurt(owner, entity) && entity.damage(ModDamageTypes.create(world, ModDamageTypes.AMETHYST_SHARD, this, owner), (float) getDamage())) {
 					if (isOnFire()) {
 						entity.setOnFireFor(5);
 					}
-					entity.timeUntilRegen = 0;
 					playSound(getHitSound(), 1, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
 					addParticles();
 					discard();

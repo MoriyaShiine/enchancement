@@ -206,7 +206,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 		matrices.translate((1 - deltaTurningSpeed) * 0.2F, (1 - deltaTurningSpeed) * 0.1F, (1 - deltaTurningSpeed) * 0.25F);
 		matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-(1 - deltaTurningSpeed) * 90 - 90));
 		matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(180));
-		bookModel.setPageAngles(0, MathHelper.clamp((leftFlipAmount - (float) MathHelper.fastFloor(leftFlipAmount)) * 1.6F - 0.3F, 0, 1), MathHelper.clamp((rightFlipAmount - (float) MathHelper.fastFloor(rightFlipAmount)) * 1.6F - 0.3F, 0, 1), deltaTurningSpeed);
+		bookModel.setPageAngles(0, MathHelper.clamp((leftFlipAmount - (float) MathHelper.floor(leftFlipAmount)) * 1.6F - 0.3F, 0, 1), MathHelper.clamp((rightFlipAmount - (float) MathHelper.floor(rightFlipAmount)) * 1.6F - 0.3F, 0, 1), deltaTurningSpeed);
 		VertexConsumerProvider.Immediate immediate = VertexConsumerProvider.immediate(Tessellator.getInstance().getBuffer());
 		bookModel.render(matrices, immediate.getBuffer(bookModel.getLayer(BOOK_TEXTURE)), 0xF000F0, OverlayTexture.DEFAULT_UV, 1, 1, 1, 1);
 		immediate.draw();

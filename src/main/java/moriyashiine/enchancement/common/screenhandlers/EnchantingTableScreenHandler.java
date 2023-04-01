@@ -141,8 +141,8 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 	}
 
 	@Override
-	public void close(PlayerEntity player) {
-		super.close(player);
+	public void onClosed(PlayerEntity player) {
+		super.onClosed(player);
 		context.run((world, pos) -> dropInventory(player, inventory));
 	}
 

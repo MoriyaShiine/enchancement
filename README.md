@@ -1,5 +1,7 @@
 # Enchancement
-Enchancement is a mod that aims to completely overhaul vanilla Minecraft's enchanting system, along with some other adjacent mechanics.
+
+Enchancement is a mod that aims to completely overhaul vanilla Minecraft's enchanting system, along with some other
+adjacent mechanics.
 
 Enchancement currently adds 29 unique and fun enchantments to the game:
 
@@ -59,16 +61,24 @@ Fishing Rod Enchantments:
 ```
 
 Of the core changes, this mod will:
-* Overhaul the Enchanting Table with a new UI that removes the RNG involved in enchanting; you may simply choose the enchantments you wish to have.
+
+* Overhaul the Enchanting Table with a new UI that removes the RNG involved in enchanting; you may simply choose the
+  enchantments you wish to have.
 * Force items to only allow one enchantment.
-* Remove leveling from enchantments, meaning that the max level for all enchantments will be 1. Enchantments that are brought down to this level will act as their original max level counterpart, an example being Riptide I will function the same as Riptide III.
+* Remove leveling from enchantments, meaning that the max level for all enchantments will be 1. Enchantments that are
+  brought down to this level will act as their original max level counterpart, an example being Riptide I will function
+  the same as Riptide III.
 * Remove durability from most aspects of the game. There is an item tag to allow certain items to keep durability.
-* Remove most vanilla enchantments from the game. Enchancement tries to make choosing your enchantments more fun and engaging by replacing many of the boring stat change enchantments with enchantments that grant the player unique abilities.
+* Remove most vanilla enchantments from the game. Enchancement tries to make choosing your enchantments more fun and
+  engaging by replacing many of the boring stat change enchantments with enchantments that grant the player unique
+  abilities.
 
 Enchancement also adds some quality of life changes:
+
 * Infinity is now allowed on Crossbows.
 * All Tridents will have Loyalty built in as a native effect.
-* Channeling will now work during any weather, not just when thundering. Channeling will also create lightning that does not create fire or destroy items, and will ignite entities for 3 seconds on melee attack.
+* Channeling will now work during any weather, not just when thundering. Channeling will also create lightning that does
+  not create fire or destroy items, and will ignite entities for 3 seconds on melee attack.
 * Fire Aspect is now usable as Flint and Steel if you are sneaking.
 * Enchanted Books are free to merge with items in an Anvil.
 * Luck of the Sea acts as if the item also has Lure.
@@ -80,12 +90,18 @@ Enchancement also adds some quality of life changes:
 
 **Q: Can I disable any of these changes?**
 
-A: Everything in the mod is configurable down to disabling the entire mod if there are features that you wish to disable. All of the config options are self explanatory except for unbreakingChangesFlag (0 means all items are unbreakable, greater than 0 means items with x level of Unbreaking are unbreakable, and less than 0 means disabled).
+A: Everything in the mod is configurable down to disabling the entire mod if there are features that you wish to
+disable. All of the config options are self explanatory except for unbreakingChangesFlag (0 means all items are
+unbreakable, greater than 0 means items with x level of Unbreaking are unbreakable, and less than 0 means disabled).
 
 **Q: Why did you remove most of the vanilla enchantments?**
 
-A: I do not like how much of the vanilla enchanting meta relies exclusively on Protection, Sharpness, Power, and other such stat increasing enchantments. I also dislike Fortune because it incentivizes not mining ores until you have Fortune, which I find incredibly dumb.
+A: I do not like how much of the vanilla enchanting meta relies exclusively on Protection, Sharpness, Power, and other
+such stat increasing enchantments. I also dislike Fortune because it incentivizes not mining ores until you have
+Fortune, which I find incredibly dumb.
 
 **Q: I want to keep every enchantment anyway. How do I do this?**
 
-A: In the config file, remove all entries from allowedEnchantments and set invertedList to true. Keep in mind that while this shouldn't cause any bugs, any balance concerns created by doing this will not be addressed as it is outside of the scope of the mod's vision.
+A: In the config file, remove all entries from allowedEnchantments and set invertedList to true. Keep in mind that while
+this shouldn't cause any bugs, any balance concerns created by doing this will not be addressed as it is outside of the
+scope of the mod's vision.

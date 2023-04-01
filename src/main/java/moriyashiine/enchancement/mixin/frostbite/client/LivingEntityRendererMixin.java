@@ -105,22 +105,22 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
 				float bodyYaw = frozenComponent.getForcedBodyYaw();
 				float pitch = frozenComponent.getForcedPitch();
 				float headYawMinusBodyYaw = frozenComponent.getForcedHeadYaw() - bodyYaw;
-				float limbDistance = Math.min(1, frozenComponent.getForcedLimbDistance());
-				float limbAngleMinusLimbDistance = frozenComponent.getForcedLimbAngle() - frozenComponent.getForcedLimbDistance();
+				float limbAngle = frozenComponent.getForcedLimbAngle();
+				float limbDistance = frozenComponent.getForcedLimbDistance();
 				float animationProgress = getAnimationProgress(livingEntity, tickDelta);
 				if (LivingEntityRenderer.shouldFlipUpsideDown(livingEntity)) {
 					pitch *= -1;
 					headYawMinusBodyYaw *= -1;
 				}
 				if (livingEntity.isBaby()) {
-					limbAngleMinusLimbDistance *= 3;
+					limbAngle *= 3;
 				}
 				setupTransforms(livingEntity, matrices, animationProgress, bodyYaw, tickDelta);
 				matrices.scale(-1, -1, 1);
 				scale(livingEntity, matrices, tickDelta);
 				matrices.translate(0, -1.501F, 0);
-				model.animateModel(livingEntity, limbAngleMinusLimbDistance, limbDistance, tickDelta);
-				model.setAngles(livingEntity, limbAngleMinusLimbDistance, limbDistance, 0, headYawMinusBodyYaw, pitch);
+				model.animateModel(livingEntity, limbAngle, limbDistance, tickDelta);
+				model.setAngles(livingEntity, limbAngle, limbDistance, 0, headYawMinusBodyYaw, pitch);
 				boolean visible = isVisible(livingEntity);
 				boolean translucent = !visible && !livingEntity.isInvisibleTo(client.player);
 				RenderLayer renderLayer = getRenderLayer(livingEntity, visible, translucent, client.hasOutline(livingEntity));
@@ -129,7 +129,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
 				}
 				if (!livingEntity.isSpectator()) {
 					for (FeatureRenderer<T, M> featureRenderer : features) {
-						featureRenderer.render(matrices, vertexConsumers, light, livingEntity, limbAngleMinusLimbDistance, limbDistance, tickDelta, animationProgress, headYawMinusBodyYaw, pitch);
+						featureRenderer.render(matrices, vertexConsumers, light, livingEntity, limbAngle, limbDistance, tickDelta, animationProgress, headYawMinusBodyYaw, pitch);
 					}
 				}
 				matrices.pop();

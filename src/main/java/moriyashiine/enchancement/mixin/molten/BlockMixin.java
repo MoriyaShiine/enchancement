@@ -61,7 +61,7 @@ public class BlockMixin {
 		for (SmeltingRecipe recipe : world.getRecipeManager().listAllOfType(RecipeType.SMELTING)) {
 			for (Ingredient ingredient : recipe.getIngredients()) {
 				if (ingredient.test(stack)) {
-					return new Pair<>(new ItemStack(recipe.getOutput().getItem(), recipe.getOutput().getCount() * stack.getCount()), recipe.getExperience());
+					return new Pair<>(new ItemStack(recipe.getOutput(world.getRegistryManager()).getItem(), recipe.getOutput(world.getRegistryManager()).getCount() * stack.getCount()), recipe.getExperience());
 				}
 			}
 		}
