@@ -30,7 +30,7 @@ public class ClientPlayerInteractionManagerMixin {
 	@Unique
 	private static boolean allowUsage = false;
 
-	@Inject(method = "method_41929(Lnet/minecraft/util/Hand;Lnet/minecraft/entity/player/PlayerEntity;Lorg/apache/commons/lang3/mutable/MutableObject;I)Lnet/minecraft/network/Packet;", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ItemCooldownManager;isCoolingDown(Lnet/minecraft/item/Item;)Z"))
+	@Inject(method = "method_41929", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ItemCooldownManager;isCoolingDown(Lnet/minecraft/item/Item;)Z"))
 	private void enchancement$scatter(Hand hand, PlayerEntity player, MutableObject<ActionResult> mutableObject, int sequence, CallbackInfoReturnable<PlayerInteractItemC2SPacket> cir) {
 		ItemStack stack = player.getStackInHand(hand);
 		if (player.getItemCooldownManager().isCoolingDown(stack.getItem()) && stack.isOf(Items.CROSSBOW) && EnchancementUtil.hasEnchantment(ModEnchantments.SCATTER, stack) && !CrossbowItem.isCharged(stack)) {
@@ -38,7 +38,7 @@ public class ClientPlayerInteractionManagerMixin {
 		}
 	}
 
-	@ModifyExpressionValue(method = "method_41929(Lnet/minecraft/util/Hand;Lnet/minecraft/entity/player/PlayerEntity;Lorg/apache/commons/lang3/mutable/MutableObject;I)Lnet/minecraft/network/Packet;", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ItemCooldownManager;isCoolingDown(Lnet/minecraft/item/Item;)Z"))
+	@ModifyExpressionValue(method = "method_41929", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ItemCooldownManager;isCoolingDown(Lnet/minecraft/item/Item;)Z"))
 	private boolean enchancement$scatter(boolean value) {
 		if (allowUsage) {
 			allowUsage = false;
