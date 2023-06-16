@@ -41,12 +41,12 @@ public abstract class PersistentProjectileEntityMixin extends Entity {
 	private void enchancement$phasing(BlockHitResult blockHitResult, CallbackInfo ci) {
 		ModEntityComponents.PHASHING.maybeGet(this).ifPresent(phasingComponent -> {
 			if (phasingComponent.shouldPhase()) {
-				BlockState state = world.getBlockState(blockHitResult.getBlockPos());
-				state.onProjectileHit(world, state, blockHitResult, PersistentProjectileEntity.class.cast(this));
+				BlockState state = getWorld().getBlockState(blockHitResult.getBlockPos());
+				state.onProjectileHit(getWorld(), state, blockHitResult, PersistentProjectileEntity.class.cast(this));
 				double distance = 0;
 				Vec3d start = getPos(), end = start.add(getVelocity().multiply(1 / 8F).normalize());
 				while (distance < 4) {
-					BlockHitResult hitResult = world.raycast(new RaycastContext(start, end, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, this));
+					BlockHitResult hitResult = getWorld().raycast(new RaycastContext(start, end, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, this));
 					if (hitResult.getType() == HitResult.Type.MISS) {
 						break;
 					}
@@ -55,19 +55,19 @@ public abstract class PersistentProjectileEntityMixin extends Entity {
 					end = start.add(getVelocity().multiply(1 / 8F).normalize());
 				}
 				if (distance <= 3.1) {
-					if (!world.isClient) {
+					if (!getWorld().isClient) {
 						Vec3d target = getPos().add(getVelocity());
 						EntityHitResult entityHitResult = getEntityCollision(getPos(), target.add(getVelocity()));
 						if (entityHitResult != null) {
 							onEntityHit(entityHitResult);
 						}
 						setNoGravity(false);
-						world.emitGameEvent(GameEvent.TELEPORT, getPos(), GameEvent.Emitter.of(this));
+						getWorld().emitGameEvent(GameEvent.TELEPORT, getPos(), GameEvent.Emitter.of(this));
 						teleport(end.getX(), end.getY(), end.getZ());
 					} else {
 						for (int i = 0; i < 6; i++) {
-							world.addParticle(ParticleTypes.REVERSE_PORTAL, blockHitResult.getPos().getX() + MathHelper.nextDouble(random, -getWidth() / 2, getWidth() / 2), blockHitResult.getPos().getY() + MathHelper.nextDouble(random, -getHeight() / 2, getHeight() / 2), blockHitResult.getPos().getZ() + MathHelper.nextDouble(random, -getWidth() / 2, getWidth() / 2), 0, 0, 0);
-							world.addParticle(ParticleTypes.REVERSE_PORTAL, end.getX() + MathHelper.nextDouble(random, -getWidth() / 2, getWidth() / 2), end.getY() + MathHelper.nextDouble(random, -getHeight() / 2, getHeight() / 2), end.getZ() + MathHelper.nextDouble(random, -getWidth() / 2, getWidth() / 2), 0, 0, 0);
+							getWorld().addParticle(ParticleTypes.REVERSE_PORTAL, blockHitResult.getPos().getX() + MathHelper.nextDouble(random, -getWidth() / 2, getWidth() / 2), blockHitResult.getPos().getY() + MathHelper.nextDouble(random, -getHeight() / 2, getHeight() / 2), blockHitResult.getPos().getZ() + MathHelper.nextDouble(random, -getWidth() / 2, getWidth() / 2), 0, 0, 0);
+							getWorld().addParticle(ParticleTypes.REVERSE_PORTAL, end.getX() + MathHelper.nextDouble(random, -getWidth() / 2, getWidth() / 2), end.getY() + MathHelper.nextDouble(random, -getHeight() / 2, getHeight() / 2), end.getZ() + MathHelper.nextDouble(random, -getWidth() / 2, getWidth() / 2), 0, 0, 0);
 						}
 					}
 					phasingComponent.setShouldPhase(false);

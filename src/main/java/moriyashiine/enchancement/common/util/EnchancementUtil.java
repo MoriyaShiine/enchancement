@@ -6,7 +6,6 @@ package moriyashiine.enchancement.common.util;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import ladysnake.impaled.common.init.ImpaledEntityTypes;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
@@ -88,7 +87,7 @@ public class EnchancementUtil {
 
 	public static boolean isSubmerged(Entity entity, boolean allowWater, boolean allowLava) {
 		for (int i = 0; i <= 1; i++) {
-			FluidState state = entity.world.getFluidState(entity.getBlockPos().up(i));
+			FluidState state = entity.getWorld().getFluidState(entity.getBlockPos().up(i));
 			if ((allowWater && state.isIn(FluidTags.WATER)) || (allowLava && state.isIn(FluidTags.LAVA))) {
 				return true;
 			}
@@ -109,9 +108,11 @@ public class EnchancementUtil {
 
 	public static boolean shouldDisableLoyalty(PersistentProjectileEntity entity) {
 		if (ModConfig.allTridentsHaveLoyalty) {
+			/*
 			if (Enchancement.isImpaledLoaded && entity.getType() == ImpaledEntityTypes.GUARDIAN_TRIDENT) {
 				return true;
 			}
+			 */
 			return !(entity.getOwner() instanceof PlayerEntity);
 		}
 		return false;
@@ -133,7 +134,7 @@ public class EnchancementUtil {
 				if (owner.equals(attacker.getUuid())) {
 					return false;
 				}
-				return shouldHurt(attacker, ((ServerWorld) attacker.world).getEntity(owner));
+				return shouldHurt(attacker, ((ServerWorld) attacker.getWorld()).getEntity(owner));
 			}
 		}
 		return true;

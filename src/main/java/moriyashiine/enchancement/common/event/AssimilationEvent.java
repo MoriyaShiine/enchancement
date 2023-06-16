@@ -4,9 +4,6 @@
 
 package moriyashiine.enchancement.common.event;
 
-import io.github.apace100.apoli.component.PowerHolderComponent;
-import io.github.apace100.apoli.power.PreventItemUsePower;
-import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.registry.ModTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
@@ -30,7 +27,7 @@ public class AssimilationEvent implements ServerTickEvents.EndTick {
 					food = getMostNeededFood(player);
 				}
 				if (!food.isEmpty()) {
-					player.eatFood(player.world, food);
+					player.eatFood(player.getWorld(), food);
 				}
 			}
 		});
@@ -60,6 +57,7 @@ public class AssimilationEvent implements ServerTickEvents.EndTick {
 	}
 
 	private static boolean isFoodAllowed(PlayerEntity player, ItemStack stack) {
+		/*
 		if (Enchancement.isApoliLoaded) {
 			for (PreventItemUsePower power : PowerHolderComponent.getPowers(player, PreventItemUsePower.class)) {
 				if (power.doesPrevent(stack)) {
@@ -67,6 +65,7 @@ public class AssimilationEvent implements ServerTickEvents.EndTick {
 				}
 			}
 		}
+		 */
 		return true;
 	}
 }

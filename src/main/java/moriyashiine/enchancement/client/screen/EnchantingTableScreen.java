@@ -9,6 +9,8 @@ import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.screenhandlers.EnchantingTableScreenHandler;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.render.OverlayTexture;
@@ -61,39 +63,39 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 	}
 
 	@Override
-	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		renderBackground(matrices);
-		super.render(matrices, mouseX, mouseY, delta);
-		drawMouseoverTooltip(matrices, mouseX, mouseY);
+	public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+		renderBackground(context);
+		super.render(context, mouseX, mouseY, delta);
+		drawMouseoverTooltip(context, mouseX, mouseY);
 	}
 
 	@Override
-	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
+	protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
 		int posX = (width - backgroundWidth) / 2;
 		int posY = (height - backgroundHeight) / 2;
 		RenderSystem.setShaderTexture(0, TEXTURE);
-		drawTexture(matrices, posX, posY, 0, 0, backgroundWidth, backgroundHeight);
+		context.drawTexture(TEXTURE, posX, posY, 0, 0, backgroundWidth, backgroundHeight);
 		if (client != null && client.player != null && handler.canEnchant(client.player, true)) {
 			if (handler.validEnchantments.size() > 3) {
 				if (isInUpButtonBounds(posX, posY, mouseX, mouseY)) {
-					drawTexture(matrices, posX + 154, posY + 12, 192, 0, 16, 16);
+					context.drawTexture(TEXTURE, posX + 154, posY + 12, 192, 0, 16, 16);
 				} else {
-					drawTexture(matrices, posX + 154, posY + 12, 176, 0, 16, 16);
+					context.drawTexture(TEXTURE, posX + 154, posY + 12, 176, 0, 16, 16);
 				}
 				if (isInDownButtonBounds(posX, posY, mouseX, mouseY)) {
-					drawTexture(matrices, posX + 154, posY + 29, 192, 16, 16, 16);
+					context.drawTexture(TEXTURE, posX + 154, posY + 29, 192, 16, 16, 16);
 				} else {
-					drawTexture(matrices, posX + 154, posY + 29, 176, 16, 16, 16);
+					context.drawTexture(TEXTURE, posX + 154, posY + 29, 176, 16, 16, 16);
 				}
 			}
 			if (isInEnchantButtonBounds(posX, posY, mouseX, mouseY)) {
-				drawTexture(matrices, posX + 154, posY + 50, 192, 32, 16, 16);
+				context.drawTexture(TEXTURE, posX + 154, posY + 50, 192, 32, 16, 16);
 				if (infoTexts == null) {
 					infoTexts = List.of(Text.translatable("tooltip." + Enchancement.MOD_ID + ".experience_level_cost", handler.getExperienceLevelCost()).formatted(Formatting.DARK_GREEN), Text.translatable("tooltip." + Enchancement.MOD_ID + ".lapis_lazuli_cost", handler.getLapisLazuliCost()).formatted(Formatting.BLUE));
 				}
-				client.currentScreen.renderTooltip(matrices, infoTexts, mouseX, mouseY);
+				context.drawTooltip(client.textRenderer, infoTexts, mouseX, mouseY);
 			} else {
-				drawTexture(matrices, posX + 154, posY + 50, 176, 32, 16, 16);
+				context.drawTexture(TEXTURE, posX + 154, posY + 50, 176, 32, 16, 16);
 				infoTexts = null;
 			}
 			highlightedEnchantmentIndex = -1;
@@ -112,7 +114,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 						break;
 					}
 				}
-				textRenderer.draw(matrices, handler.selectedEnchantments.contains(enchantment) ? enchantmentName.formatted(Formatting.DARK_GREEN) : isAllowed ? enchantmentName.formatted(Formatting.BLACK) : enchantmentName.formatted(Formatting.DARK_RED, Formatting.STRIKETHROUGH), posX + 66, posY + 16 + (i * 19), 0xFFFFFF);
+				context.drawText(textRenderer, handler.selectedEnchantments.contains(enchantment) ? enchantmentName.formatted(Formatting.DARK_GREEN) : isAllowed ? enchantmentName.formatted(Formatting.BLACK) : enchantmentName.formatted(Formatting.DARK_RED, Formatting.STRIKETHROUGH), posX + 66, posY + 16 + (i * 19), 0xFFFFFF, false);
 				if (isInBounds(posX, posY + 16 + (i * 19), mouseX, mouseY, 64, 67 + textRenderer.getWidth(enchantmentName), 0, 8)) {
 					if (isAllowed || handler.selectedEnchantments.contains(enchantment)) {
 						highlightedEnchantmentIndex = i;
@@ -120,13 +122,13 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 					if (infoTexts == null) {
 						infoTexts = List.of(Text.translatable(enchantment.getTranslationKey()).formatted(Formatting.GRAY), Text.translatable(enchantment.getTranslationKey() + ".desc").formatted(Formatting.DARK_GRAY));
 					}
-					client.currentScreen.renderTooltip(matrices, infoTexts, mouseX, mouseY);
+					context.drawTooltip(textRenderer, infoTexts, mouseX, mouseY);
 				} else {
 					infoTexts = null;
 				}
 			}
 		}
-		renderBook(matrices, client.getTickDelta());
+		renderBook(context.getMatrices(), client.getTickDelta());
 	}
 
 	@Override
@@ -197,7 +199,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 		RenderSystem.backupProjectionMatrix();
 		RenderSystem.viewport((width - 320) / 2 * scaleFactor, (height - 240) / 2 * scaleFactor, 320 * scaleFactor, 240 * scaleFactor);
 		Matrix4f matrix4f = new Matrix4f().translation(-0.34F, 0.23F, 0).perspective((float) Math.toRadians(90), 4 / 3F, 9, 80);
-		RenderSystem.setProjectionMatrix(matrix4f);
+		RenderSystem.setProjectionMatrix(matrix4f, null);
 		matrices.push();
 		matrices.translate(0.0, 3.3F, 1984);
 		matrices.scale(5, 5, 5);

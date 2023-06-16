@@ -134,7 +134,7 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 	}
 
 	public boolean shouldFreezeOnDeath(DamageSource source) {
-		if (!obj.world.isClient && !obj.getType().isIn(ModTags.EntityTypes.CANNOT_FREEZE) && lastFreezingAttacker != null) {
+		if (!obj.getWorld().isClient && !obj.getType().isIn(ModTags.EntityTypes.CANNOT_FREEZE) && lastFreezingAttacker != null) {
 			return source.isIn(DamageTypeTags.IS_FREEZING) || isSourceFrostbiteWeapon(source);
 		}
 		return false;

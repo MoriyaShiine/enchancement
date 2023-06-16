@@ -38,7 +38,7 @@ public class FishingRodItemMixin {
 		boolean hasGrapple = EnchancementUtil.hasEnchantment(ModEnchantments.GRAPPLE, cachedStack);
 		cachedStack = null;
 		if (hasGrapple && value instanceof FishingBobberEntity fishingBobber) {
-			return new GrappleFishingBobberEntity(fishingBobber.getPlayerOwner(), fishingBobber.world, fishingBobber.luckOfTheSeaLevel, fishingBobber.lureLevel);
+			return new GrappleFishingBobberEntity(fishingBobber.getPlayerOwner(), fishingBobber.getWorld(), fishingBobber.luckOfTheSeaLevel, fishingBobber.lureLevel);
 		}
 		return value;
 	}

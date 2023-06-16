@@ -57,8 +57,13 @@ dependencies {
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-world:${cardinal_components_version}"
     modImplementation "maven.modrinth:midnightlib:${midnightlib_version}"
     include "maven.modrinth:midnightlib:${midnightlib_version}"
+
+    modImplementation files("include/step-height-entity-attribute-1.3.0.jar")
+    include files("include/step-height-entity-attribute-1.3.0.jar")
+    /*
     modImplementation "com.github.emilyploszaj:step-height-entity-attribute:${step_height_entity_attribute_version}"
     include "com.github.emilyploszaj:step-height-entity-attribute:${step_height_entity_attribute_version}"
+     */
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     modImplementation("com.github.Virtuoel:Pehkui:${pehkui_version}") {
@@ -66,12 +71,14 @@ dependencies {
     }
     modRuntimeOnly "maven.modrinth:tooltipfix:${tooltipfix_version}"
 
+    /*
     modCompileOnly("com.github.apace100:apoli:${apoli_version}") {
         exclude(group: "*")
     }
+     */
     modCompileOnly "dev.architectury:architectury-fabric:${architectury_version}"
     modCompileOnly "software.bernie.geckolib:geckolib-fabric-${geckolib_version}"
-    modCompileOnly "com.github.Ladysnake:Impaled:${impaled_version}"
+    /* modCompileOnly "com.github.Ladysnake:Impaled:${impaled_version}" */
     modCompileOnly "maven.modrinth:sodium:${sodium_version}"
     modRuntimeOnly "maven.modrinth:sodium:${sodium_version}"
     implementation "org.joml:joml:1.10.4"

@@ -8,6 +8,7 @@ import moriyashiine.enchancement.client.util.EnchancementClientUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.BakedModel;
@@ -24,8 +25,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Environment(EnvType.CLIENT)
 @Mixin(ItemRenderer.class)
 public class ItemRendererMixin {
-	@Inject(method = "renderGuiItemModel", at = @At("HEAD"))
-	private void enchancement$berserk(MatrixStack matrices, ItemStack stack, int x, int y, BakedModel model, CallbackInfo ci) {
+	@Inject(method = "renderBakedItemModel", at = @At("HEAD"))
+	private void enchancement$berserk(BakedModel model, ItemStack stack, int light, int overlay, MatrixStack matrices, VertexConsumer vertices, CallbackInfo ci) {
 		EnchancementClientUtil.berserkColor = EnchancementClientUtil.getBerserkColor(MinecraftClient.getInstance().player, stack);
 	}
 

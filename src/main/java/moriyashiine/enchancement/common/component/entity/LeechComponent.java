@@ -55,7 +55,7 @@ public class LeechComponent implements AutoSyncedComponent, CommonTickingCompone
 		if (stuckEntityId == -2) {
 			stuckEntity = null;
 			stuckEntityId = -1;
-		} else if (stuckEntityId != -1 && stuckEntity == null && obj.world.getEntityById(stuckEntityId) instanceof LivingEntity living) {
+		} else if (stuckEntityId != -1 && stuckEntity == null && obj.getWorld().getEntityById(stuckEntityId) instanceof LivingEntity living) {
 			stuckEntity = living;
 		} else {
 			if (stuckEntity != null && stuckEntity.isAlive()) {
@@ -99,7 +99,7 @@ public class LeechComponent implements AutoSyncedComponent, CommonTickingCompone
 		if (stuckEntity != null && stuckEntity.isAlive() && stabTicks == 19 / 20F) {
 			if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || stuckEntity != MinecraftClient.getInstance().cameraEntity) {
 				for (int i = 0; i < 6; i++) {
-					obj.world.addParticle(ParticleTypes.DAMAGE_INDICATOR, stuckEntity.getParticleX(0.5), stuckEntity.getBodyY(0.5), stuckEntity.getParticleZ(0.5), 0, 0, 0);
+					obj.getWorld().addParticle(ParticleTypes.DAMAGE_INDICATOR, stuckEntity.getParticleX(0.5), stuckEntity.getBodyY(0.5), stuckEntity.getParticleZ(0.5), 0, 0, 0);
 				}
 			}
 		}

@@ -30,7 +30,7 @@ public class FrozenPlayerEntity extends MobEntity {
 	@Override
 	public void tick() {
 		super.tick();
-		if (!world.isClient && SLIM_STATUSES.containsKey(getUuid())) {
+		if (!getWorld().isClient && SLIM_STATUSES.containsKey(getUuid())) {
 			dataTracker.set(SLIM, SLIM_STATUSES.removeBoolean(getUuid()));
 		}
 	}

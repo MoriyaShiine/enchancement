@@ -22,7 +22,7 @@ public class BrimstoneSoundInstance extends MovingSoundInstance {
 	private int age = 0;
 
 	public BrimstoneSoundInstance(Entity entity, UUID uuid, SoundCategory soundCategory) {
-		super(ModSoundEvents.ITEM_CROSSBOW_LOADING_BRIMSTONE, soundCategory, entity.world.random);
+		super(ModSoundEvents.ITEM_CROSSBOW_LOADING_BRIMSTONE, soundCategory, entity.getWorld().random);
 		this.entity = entity;
 		this.uuid = uuid;
 		x = entity.getX();

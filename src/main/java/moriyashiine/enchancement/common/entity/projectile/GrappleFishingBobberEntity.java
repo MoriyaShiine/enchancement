@@ -56,7 +56,7 @@ public class GrappleFishingBobberEntity extends FishingBobberEntity {
 	protected void onBlockHit(BlockHitResult blockHitResult) {
 		super.onBlockHit(blockHitResult);
 		grapplePos = blockHitResult.getBlockPos();
-		grappleState = world.getBlockState(grapplePos);
+		grappleState = getWorld().getBlockState(grapplePos);
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class GrappleFishingBobberEntity extends FishingBobberEntity {
 	@Override
 	public int use(ItemStack usedItem) {
 		int use = super.use(usedItem);
-		if (!world.isClient) {
+		if (!getWorld().isClient) {
 			if (grappleState != null) {
 				PlayerEntity player = getPlayerOwner();
 				if (player != null) {

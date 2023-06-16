@@ -25,11 +25,11 @@ public class PersistentProjectileEntityMixin {
 		if (PersistentProjectileEntity.class.cast(this) instanceof TridentEntity entity && entity.getOwner() instanceof LivingEntity living) {
 			ModEntityComponents.WARP.maybeGet(entity).ifPresent(warpComponent -> {
 				if (warpComponent.hasWarp()) {
-					living.world.playSoundFromEntity(null, living, ModSoundEvents.ENTITY_GENERIC_TELEPORT, living.getSoundCategory(), 1, 1);
+					living.getWorld().playSoundFromEntity(null, living, ModSoundEvents.ENTITY_GENERIC_TELEPORT, living.getSoundCategory(), 1, 1);
 					BlockPos pos = blockHitResult.getBlockPos().offset(blockHitResult.getSide());
-					living.world.emitGameEvent(GameEvent.TELEPORT, living.getPos(), GameEvent.Emitter.of(living, living.getSteppingBlockState()));
+					living.getWorld().emitGameEvent(GameEvent.TELEPORT, living.getPos(), GameEvent.Emitter.of(living, living.getSteppingBlockState()));
 					living.requestTeleport(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-					living.world.sendEntityStatus(living, (byte) 46);
+					living.getWorld().sendEntityStatus(living, (byte) 46);
 					if (living instanceof PathAwareEntity pathAware) {
 						pathAware.getNavigation().stop();
 					}

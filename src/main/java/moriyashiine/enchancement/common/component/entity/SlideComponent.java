@@ -90,7 +90,7 @@ public class SlideComponent implements CommonTickingComponent {
 			}
 			if (isSliding()) {
 				((EntityAccessor) obj).enchancement$spawnSprintingParticles();
-				obj.world.emitGameEvent(GameEvent.STEP, obj.getPos(), GameEvent.Emitter.of(obj.getSteppingBlockState()));
+				obj.getWorld().emitGameEvent(GameEvent.STEP, obj.getPos(), GameEvent.Emitter.of(obj.getSteppingBlockState()));
 				if (obj.isOnGround()) {
 					obj.setVelocity(velocity.getX(), obj.getVelocity().getY(), velocity.getZ());
 				} else {
@@ -160,9 +160,9 @@ public class SlideComponent implements CommonTickingComponent {
 					for (int i = 0; i < 360; i += 15) {
 						for (int j = 1; j < 5; j++) {
 							double x = obj.getX() + MathHelper.sin(i) * j / 2, z = obj.getZ() + MathHelper.cos(i) * j / 2;
-							BlockState state = obj.world.getBlockState(mutable.set(x, Math.round(obj.getY() - 1), z));
-							if (!state.getMaterial().isReplaceable() && obj.world.getBlockState(mutable.move(Direction.UP)).getMaterial().isReplaceable()) {
-								obj.world.addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, state), x, mutable.getY(), z, 0, 0, 0);
+							BlockState state = obj.getWorld().getBlockState(mutable.set(x, Math.round(obj.getY() - 1), z));
+							if (!state.isReplaceable() && obj.getWorld().getBlockState(mutable.move(Direction.UP)).isReplaceable()) {
+								obj.getWorld().addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, state), x, mutable.getY(), z, 0, 0, 0);
 							}
 						}
 					}

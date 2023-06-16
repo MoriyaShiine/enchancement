@@ -26,7 +26,7 @@ public class FrostbiteEnchantment extends EmptyEnchantment {
 
 	@Override
 	public void onTargetDamaged(LivingEntity user, Entity target, int level) {
-		if (!target.world.isClient && target instanceof LivingEntity living && EnchancementUtil.hasEnchantment(this, user.getMainHandStack())) {
+		if (!target.getWorld().isClient && target instanceof LivingEntity living && EnchancementUtil.hasEnchantment(this, user.getMainHandStack())) {
 			if (!living.isDead()) {
 				if (target.getFrozenTicks() < 300) {
 					target.setFrozenTicks(300);
