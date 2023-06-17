@@ -72,8 +72,8 @@ public abstract class LivingEntityMixin extends Entity {
 		}
 	}
 
-	@ModifyVariable(method = "jump", at = @At("STORE"))
-	private double enchancement$bouncy(double value) {
+	@ModifyVariable(method = "jump", at = @At(value = "STORE", target = "Lnet/minecraft/entity/Entity;getYaw()F"))
+	private float enchancement$bouncy(float value) {
 		BouncyComponent bouncyComponent = ModEntityComponents.BOUNCY.getNullable(this);
 		if (bouncyComponent != null && bouncyComponent.hasBouncy()) {
 			float boostProgress = bouncyComponent.getBoostProgress();

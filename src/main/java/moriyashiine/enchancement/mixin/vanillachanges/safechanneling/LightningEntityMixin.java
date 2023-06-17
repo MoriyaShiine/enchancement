@@ -18,7 +18,7 @@ import java.util.List;
 
 @Mixin(LightningEntity.class)
 public class LightningEntityMixin {
-	@ModifyVariable(method = "tick", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/World;getOtherEntities(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/Box;Ljava/util/function/Predicate;)Ljava/util/List;"))
+	@ModifyVariable(method = "tick", at = @At(value = "STORE", target = "Lnet/minecraft/world/World;getOtherEntities(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/Box;Ljava/util/function/Predicate;)Ljava/util/List;"))
 	private List<Entity> enchancement$safeChanneling(List<Entity> list) {
 		if (ModEntityComponents.CHANNELING.get(this).isSafe()) {
 			for (int i = list.size() - 1; i >= 0; i--) {

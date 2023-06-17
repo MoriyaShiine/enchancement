@@ -8,6 +8,7 @@ import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.entity.SquidEntityRenderer;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.passive.SquidEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,9 +28,9 @@ public class SquidEntityRendererMixin<T extends SquidEntity> {
 	}
 
 	@ModifyVariable(method = "setupTransforms(Lnet/minecraft/entity/passive/SquidEntity;Lnet/minecraft/client/util/math/MatrixStack;FFF)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/util/math/MathHelper;lerp(FFF)F", ordinal = 1), ordinal = 4)
-	private float enchancement$frostbiteRollAngle(float value, T entity) {
-		if (ModEntityComponents.FROZEN.get(entity).isFrozen()) {
-			return ModEntityComponents.FROZEN_SQUID.get(entity).getForcedRollAngle();
+	private float enchancement$frostbiteRollAngle(float value, T squidEntity, MatrixStack matrixStack, float f, float g, float h) {
+		if (ModEntityComponents.FROZEN.get(squidEntity).isFrozen()) {
+			return ModEntityComponents.FROZEN_SQUID.get(squidEntity).getForcedRollAngle();
 		}
 		return value;
 	}

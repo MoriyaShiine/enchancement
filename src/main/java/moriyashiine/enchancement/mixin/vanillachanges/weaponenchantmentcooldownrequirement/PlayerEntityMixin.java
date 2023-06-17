@@ -22,7 +22,7 @@ public class PlayerEntityMixin {
 	private float attackCooldown = 0;
 
 	@ModifyVariable(method = "attack", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getFireAspect(Lnet/minecraft/entity/LivingEntity;)I"), ordinal = 1)
-	private int enchancement$weaponEnchantmentCooldownRequirement(int value) {
+	private float enchancement$weaponEnchantmentCooldownRequirement(float value) {
 		if (attackCooldown < ModConfig.weaponEnchantmentCooldownRequirement) {
 			return 0;
 		}

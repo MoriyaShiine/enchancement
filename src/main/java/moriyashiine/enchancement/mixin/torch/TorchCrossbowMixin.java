@@ -1,7 +1,3 @@
-/*
- * All Rights Reserved (c) MoriyaShiine
- */
-
 package moriyashiine.enchancement.mixin.torch;
 
 import moriyashiine.enchancement.common.registry.ModEnchantments;
@@ -16,13 +12,13 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 import java.util.function.Predicate;
 
-@Mixin({PlayerEntity.class, HostileEntity.class})
+@Mixin({HostileEntity.class, PlayerEntity.class})
 public class TorchCrossbowMixin {
-	@ModifyVariable(method = "getProjectileType", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/RangedWeaponItem;getHeldProjectiles()Ljava/util/function/Predicate;"))
-	private Predicate<ItemStack> enchancement$torch(Predicate<ItemStack> value, ItemStack stack) {
-		if (EnchancementUtil.hasEnchantment(ModEnchantments.TORCH, stack)) {
-			value = value.or(projectile -> projectile.isOf(Items.TORCH));
-		}
-		return value;
-	}
+    @ModifyVariable(method = "getProjectileType", at = @At("STORE"), ordinal = 0)
+    private Predicate<ItemStack> enchancement$torch(Predicate<ItemStack> value, ItemStack stack) {
+        if (EnchancementUtil.hasEnchantment(ModEnchantments.TORCH, stack)) {
+            value = value.or(projectile -> projectile.isOf(Items.TORCH));
+        }
+        return value;
+    }
 }

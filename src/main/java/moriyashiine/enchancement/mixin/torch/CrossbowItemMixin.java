@@ -36,7 +36,15 @@ public class CrossbowItemMixin {
 		}
 	}
 
-	@ModifyVariable(method = "createArrow", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/ArrowItem;createArrow(Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/LivingEntity;)Lnet/minecraft/entity/projectile/PersistentProjectileEntity;"))
+	@ModifyVariable(
+		method = "createArrow",
+		at = @At(
+			value = "STORE",
+			target = "Lnet/minecraft/item/ArrowItem;createArrow(Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/LivingEntity;)Lnet/minecraft/entity/projectile/PersistentProjectileEntity;",
+			ordinal = 0
+		),
+		ordinal = 0
+	)
 	private static PersistentProjectileEntity enchancement$torch(PersistentProjectileEntity value, World world, LivingEntity entity, ItemStack crossbow, ItemStack arrow) {
 		if (arrow.isOf(Items.TORCH)) {
 			TorchEntity torch = new TorchEntity(world, entity);

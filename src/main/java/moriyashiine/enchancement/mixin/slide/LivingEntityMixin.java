@@ -30,7 +30,7 @@ public class LivingEntityMixin {
 	}
 
 	@ModifyVariable(method = "jump", at = @At("STORE"))
-	private double enchancement$slide(double value) {
+	private float enchancement$slide2(float value) {
 		SlideComponent slideComponent = ModEntityComponents.SLIDE.getNullable(this);
 		if (slideComponent != null && slideComponent.shouldBoostJump()) {
 			slideComponent.setJumpBoostResetTicks(SlideComponent.DEFAULT_JUMP_BOOST_RESET_TICKS);

@@ -29,7 +29,7 @@ public abstract class TridentEntityMixin extends PersistentProjectileEntity {
 		LeechComponent.maybeSet(owner, stack, this);
 	}
 
-	@ModifyVariable(method = "tick", at = @At("STORE"))
+	@ModifyVariable(method = "tick", at = @At("STORE"), ordinal = 0)
 	private int enchancement$leech(int value) {
 		if (ModEntityComponents.LEECH.get(this).getStuckEntity() != null) {
 			return 0;
