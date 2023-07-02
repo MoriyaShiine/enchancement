@@ -58,6 +58,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerFor(LivingEntity.class, FROZEN, FrozenComponent::new);
 		registry.registerFor(SquidEntity.class, FROZEN_SQUID, FrozenSquidComponent::new);
 		registry.registerFor(ArrowEntity.class, DELAY, DelayComponent::new);
+		registry.registerFor(SpectralArrowEntity.class, DELAY, DelayComponent::new);
 		registry.registerFor(ArrowEntity.class, PHASHING, PhasingComponent::new);
 		registry.registerFor(SpectralArrowEntity.class, PHASHING, PhasingComponent::new);
 		registry.registerFor(LightningEntity.class, CHANNELING, lightning -> new ChannelingComponent());
