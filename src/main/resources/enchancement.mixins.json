@@ -37,7 +37,6 @@
 	"grapple.FishingBobberEntityMixin",
 	"grapple.FishingRodItemMixin",
 	"leech.TridentEntityMixin",
-	"leech.integration.impaled.ImpaledTridentItemMixin",
 	"molten.AbstractFurnaceBlockEntityAccessor",
 	"molten.BlockMixin",
 	"phasing.PersistentProjectileEntityMixin",
@@ -102,7 +101,6 @@
 	"wardenspine.LivingEntityMixin",
 	"warp.PersistentProjectileEntityMixin",
 	"warp.TridentEntityMixin",
-	"warp.integration.impaled.ImpaledTridentItemMixin"
   ],
   "client": [
 	"berserk.client.ItemColorsMixin",
@@ -128,7 +126,6 @@
 	"frostbite.client.integration.geckolib.GeoModelMixin",
 	"frostbite.client.integration.geckolib.GeoRenderLayerMixin",
 	"leech.client.TridentEntityRendererMixin",
-	"leech.client.integration.impaled.ImpaledTridentEntityRendererMixin",
 	"perception.client.LightmapTextureManagerMixin",
 	"perception.client.MinecraftClientMixin",
 	"scatter.client.ClientPlayerInteractionManagerMixin",
