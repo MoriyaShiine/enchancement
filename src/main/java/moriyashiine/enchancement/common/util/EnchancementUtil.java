@@ -6,7 +6,6 @@ package moriyashiine.enchancement.common.util;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import ladysnake.impaled.common.init.ImpaledEntityTypes;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.registry.ModEnchantments;
@@ -109,9 +108,6 @@ public class EnchancementUtil {
 
 	public static boolean shouldDisableLoyalty(PersistentProjectileEntity entity) {
 		if (ModConfig.allTridentsHaveLoyalty) {
-			if (Enchancement.isImpaledLoaded && entity.getType() == ImpaledEntityTypes.GUARDIAN_TRIDENT) {
-				return true;
-			}
 			return !(entity.getOwner() instanceof PlayerEntity);
 		}
 		return false;
