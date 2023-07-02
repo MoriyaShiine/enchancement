@@ -152,19 +152,20 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 			if (canEnchant(player, player.isCreative())) {
 				context.run((world, pos) -> {
 					ItemStack stack = slots.get(0).getStack();
+					boolean stackChanged = false;
 					if (stack.isOf(Items.BOOK)) {
 						stack = new ItemStack(Items.ENCHANTED_BOOK);
 						for (Enchantment enchantment : selectedEnchantments) {
 							EnchantedBookItem.addEnchantment(stack, new EnchantmentLevelEntry(enchantment, enchantment.getMaxLevel()));
 						}
-						slots.get(0).setStack(stack);
+						stackChanged = true;
 					} else {
 						for (Enchantment enchantment : selectedEnchantments) {
 							stack.addEnchantment(enchantment, enchantment.getMaxLevel());
 						}
 					}
 					if (!player.isCreative() && getExperienceLevelCost() > 0) {
-						player.addExperienceLevels(-getExperienceLevelCost());
+						player.applyEnchantmentCosts(stack, getExperienceLevelCost());
 					}
 					player.incrementStat(Stats.ENCHANT_ITEM);
 					if (player instanceof ServerPlayerEntity serverPlayer) {
@@ -173,6 +174,9 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 					world.playSound(null, pos, SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, SoundCategory.BLOCKS, 1, world.random.nextFloat() * 0.1F + 0.9F);
 					if (!player.isCreative() && getLapisLazuliCost() > 0) {
 						slots.get(1).getStack().decrement(getLapisLazuliCost());
+					}
+					if (stackChanged) {
+						slots.get(0).setStack(stack);
 					}
 					inventory.markDirty();
 				});
