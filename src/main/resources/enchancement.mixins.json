@@ -1,6 +1,5 @@
 {
   "required": true,
-  "minVersion": "0.8",
   "package": "moriyashiine.enchancement.mixin",
   "plugin": "moriyashiine.enchancement.common.ModMixinPlugin",
   "compatibilityLevel": "JAVA_17",

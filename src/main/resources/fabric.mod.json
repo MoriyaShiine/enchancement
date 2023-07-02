@@ -43,12 +43,10 @@
   "accessWidener": "enchancement.accesswidener",
   "depends": {
 	"fabricloader": "*",
-	"minecraft": "~1.19.4",
+	"minecraft": "~1.20.1",
 	"java": ">=17",
-	"bookshelf": ">=18.0.2",
-	"enchdesc": ">=15.0.1",
-	"fabric-api": ">=0.76.0",
-	"pehkui": ">=3.7.2",
+	"fabric-api": ">=0.84.0",
+	"pehkui": ">=3.7.6",
 	"tooltipfix": ">=1.1.1-1.19.3"
   },
   "custom": {
