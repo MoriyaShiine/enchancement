@@ -71,6 +71,7 @@
   "enchantment.enchancement.grapple": "Grapple",
   "enchantment.enchancement.grapple.desc": "The fishing hook can latch onto blocks. When releasing, you will be launched toward that block. Pulling entities applies more velocity.",
   "death.attack.enchancement.life_drain": "%1$s had their life drained",
+  "death.attack.enchancement.life_drain.item": "%1$s had their life drained whilst fighting %2$s wielding %3$s",
   "death.attack.enchancement.life_drain.player": "%1$s had their life drained whilst fighting %2$s",
   "subtitles.enchancement.entity.shard.shatter": "Shard shatters",
   "subtitles.enchancement.entity.generic.strafe": "Entity strafes",
