@@ -83,7 +83,7 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 				handle(obj, this);
 				if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || obj != MinecraftClient.getInstance().cameraEntity) {
 					for (int i = 0; i < 8; i++) {
-						obj.world.addParticle(ParticleTypes.CLOUD, obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 0, 0);
+						obj.getWorld().addParticle(ParticleTypes.CLOUD, obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 0, 0);
 					}
 				}
 				DashPacket.send();

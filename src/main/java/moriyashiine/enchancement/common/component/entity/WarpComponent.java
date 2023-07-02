@@ -39,7 +39,7 @@ public class WarpComponent implements AutoSyncedComponent, ClientTickingComponen
 	public void clientTick() {
 		if (hasWarp) {
 			for (int i = 0; i < 8; i++) {
-				obj.world.addParticle(ParticleTypes.REVERSE_PORTAL, obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 0, 0);
+				obj.getWorld().addParticle(ParticleTypes.REVERSE_PORTAL, obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 0, 0);
 			}
 		}
 	}

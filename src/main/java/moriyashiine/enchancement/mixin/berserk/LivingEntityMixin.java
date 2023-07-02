@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class LivingEntityMixin {
 	@ModifyVariable(method = "damage", at = @At("HEAD"), argsOnly = true)
 	private float enchancement$berserk(float value, DamageSource source) {
-		if (source.getSource() instanceof LivingEntity living && !living.world.isClient) {
+		if (source.getSource() instanceof LivingEntity living && !living.getWorld().isClient) {
 			return value + EnchancementUtil.getBonusBerserkDamage(living, living.getMainHandStack());
 		}
 		return value;

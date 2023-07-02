@@ -56,7 +56,7 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 			}
 			if (obj.isOnGround()) {
 				ticksInAir = 0;
-			} else if (EnchancementUtil.isGroundedOrAirborne(obj) && obj.world.raycast(new RaycastContext(obj.getPos(), obj.getPos().add(0, -1, 0), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.ANY, obj)).getType() == HitResult.Type.MISS) {
+			} else if (EnchancementUtil.isGroundedOrAirborne(obj) && obj.getWorld().raycast(new RaycastContext(obj.getPos(), obj.getPos().add(0, -1, 0), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.ANY, obj)).getType() == HitResult.Type.MISS) {
 				ticksInAir++;
 			}
 		} else {
@@ -123,7 +123,7 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 	public static void addStrafeParticles(Entity entity) {
 		if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || entity != MinecraftClient.getInstance().cameraEntity) {
 			for (int i = 0; i < 8; i++) {
-				entity.world.addParticle(ParticleTypes.CLOUD, entity.getParticleX(1), entity.getRandomBodyY(), entity.getParticleZ(1), 0, 0, 0);
+				entity.getWorld().addParticle(ParticleTypes.CLOUD, entity.getParticleX(1), entity.getRandomBodyY(), entity.getParticleZ(1), 0, 0, 0);
 			}
 		}
 	}

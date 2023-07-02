@@ -45,9 +45,9 @@ public class TorchEntity extends PersistentProjectileEntity {
 	@Override
 	public void tick() {
 		super.tick();
-		if (world.isClient) {
-			world.addParticle(ParticleTypes.FLAME, getX(), getY(), getZ(), 0, 0, 0);
-			world.addParticle(ParticleTypes.SMOKE, getX(), getY(), getZ(), 0, 0, 0);
+		if (getWorld().isClient) {
+			getWorld().addParticle(ParticleTypes.FLAME, getX(), getY(), getZ(), 0, 0, 0);
+			getWorld().addParticle(ParticleTypes.SMOKE, getX(), getY(), getZ(), 0, 0, 0);
 		}
 	}
 
@@ -61,35 +61,35 @@ public class TorchEntity extends PersistentProjectileEntity {
 		if (entity instanceof LivingEntity living) {
 			living.setOnFireFor(2);
 			playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 1, 1);
-			if (!world.isClient) {
+			if (!getWorld().isClient) {
 				stuckArrows = living.getStuckArrowCount();
 			}
 		}
 		super.onEntityHit(entityHitResult);
-		if (!world.isClient && entityHitResult.getEntity() instanceof LivingEntity living && living.getStuckArrowCount() != stuckArrows) {
+		if (!getWorld().isClient && entityHitResult.getEntity() instanceof LivingEntity living && living.getStuckArrowCount() != stuckArrows) {
 			living.setStuckArrowCount(stuckArrows);
 		}
 	}
 
 	@Override
 	protected void onBlockHit(BlockHitResult blockHitResult) {
-		BlockState state = world.getBlockState(blockHitResult.getBlockPos());
-		state.onProjectileHit(world, state, blockHitResult, this);
-		if (!world.isClient) {
+		BlockState state = getWorld().getBlockState(blockHitResult.getBlockPos());
+		state.onProjectileHit(getWorld(), state, blockHitResult, this);
+		if (!getWorld().isClient) {
 			discard();
 			if (shouldPlaceTorch && getOwner() instanceof PlayerEntity player) {
 				BlockPos pos = blockHitResult.getBlockPos().offset(blockHitResult.getSide());
 				ItemPlacementContext context = new ItemPlacementContext(player, Hand.MAIN_HAND, asItemStack(), blockHitResult);
 				if (context.canPlace()) {
 					state = Blocks.TORCH.getPlacementState(context);
-					if (state != null && state.canPlaceAt(world, pos)) {
-						world.setBlockState(pos, state);
+					if (state != null && state.canPlaceAt(getWorld(), pos)) {
+						getWorld().setBlockState(pos, state);
 						playSound(Blocks.TORCH.getDefaultState().getSoundGroup().getPlaceSound(), 1, 1);
 						return;
 					} else {
 						state = Blocks.WALL_TORCH.getPlacementState(context);
-						if (state != null && state.canPlaceAt(world, pos)) {
-							world.setBlockState(pos, state);
+						if (state != null && state.canPlaceAt(getWorld(), pos)) {
+							getWorld().setBlockState(pos, state);
 							playSound(Blocks.TORCH.getDefaultState().getSoundGroup().getPlaceSound(), 1, 1);
 							return;
 						}

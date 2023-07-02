@@ -17,7 +17,7 @@ public class LeechEvent implements ServerLivingEntityEvents.AllowDamage {
 			ModEntityComponents.LEECH.maybeGet(trident).ifPresent(leechComponent -> {
 				if (leechComponent.hasLeech() && leechComponent.getStuckEntity() == null) {
 					if (trident.getOwner() != entity) {
-						entity.world.getEntitiesByClass(TridentEntity.class, entity.getBoundingBox().expand(1), foundTrident -> true).forEach(otherTrident -> ModEntityComponents.LEECH.maybeGet(otherTrident).ifPresent(otherLeech -> {
+						entity.getWorld().getEntitiesByClass(TridentEntity.class, entity.getBoundingBox().expand(1), foundTrident -> true).forEach(otherTrident -> ModEntityComponents.LEECH.maybeGet(otherTrident).ifPresent(otherLeech -> {
 							if (otherLeech.getStuckEntity() == entity) {
 								otherLeech.setStuckEntityId(-2);
 								otherLeech.sync();

@@ -109,7 +109,7 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 	public static void addGaleParticles(Entity entity) {
 		if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || entity != MinecraftClient.getInstance().cameraEntity) {
 			for (int i = 0; i < 8; i++) {
-				entity.world.addParticle(ParticleTypes.CLOUD, entity.getParticleX(1), entity.getY(), entity.getParticleZ(1), 0, 0, 0);
+				entity.getWorld().addParticle(ParticleTypes.CLOUD, entity.getParticleX(1), entity.getY(), entity.getParticleZ(1), 0, 0, 0);
 			}
 		}
 	}

@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -29,7 +30,7 @@ public class LivingEntityMixin {
 		return value;
 	}
 
-	@ModifyVariable(method = "jump", at = @At("STORE"))
+	@ModifyArg(method = "jump", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setVelocity(DDD)V"), index = 1)
 	private double enchancement$slide(double value) {
 		SlideComponent slideComponent = ModEntityComponents.SLIDE.getNullable(this);
 		if (slideComponent != null && slideComponent.shouldBoostJump()) {

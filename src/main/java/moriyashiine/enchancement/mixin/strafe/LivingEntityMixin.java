@@ -22,7 +22,7 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@ModifyArg(method = "applyMovementInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;updateVelocity(FLnet/minecraft/util/math/Vec3d;)V"))
 	private float enchancement$strafe(float value) {
-		if (!onGround) {
+		if (!isOnGround()) {
 			StrafeComponent strafeComponent = ModEntityComponents.STRAFE.getNullable(this);
 			if (strafeComponent != null && strafeComponent.getTicksInAir() > 10) {
 				return value * 2;

@@ -28,7 +28,7 @@ public class FrostbiteEvent {
 			FrozenComponent frozenComponent = ModEntityComponents.FROZEN.get(entity);
 			if (frozenComponent.shouldFreezeOnDeath(damageSource)) {
 				if (entity instanceof ServerPlayerEntity serverPlayer) {
-					FrozenPlayerEntity frozenPlayer = ModEntityTypes.FROZEN_PLAYER.create(entity.world);
+					FrozenPlayerEntity frozenPlayer = ModEntityTypes.FROZEN_PLAYER.create(entity.getWorld());
 					if (frozenPlayer != null) {
 						frozenPlayer.setCustomName(entity.getName());
 						frozenPlayer.setPersistent();
@@ -39,7 +39,7 @@ public class FrostbiteEvent {
 						frozenPlayer.teleport(entity.getX(), entity.getY(), entity.getZ());
 						ModEntityComponents.FROZEN.get(frozenPlayer).freeze();
 						SyncFrozenPlayerSlimStatusS2C.send(serverPlayer, frozenPlayer.getUuid());
-						entity.world.spawnEntity(frozenPlayer);
+						entity.getWorld().spawnEntity(frozenPlayer);
 					}
 				} else {
 					frozenComponent.freeze();
@@ -73,13 +73,13 @@ public class FrostbiteEvent {
 						return false;
 					} else {
 						for (int i = 0; i < MathHelper.nextInt(entity.getRandom(), 24, 32); i++) {
-							IceShardEntity iceShard = new IceShardEntity(entity.world, entity);
+							IceShardEntity iceShard = new IceShardEntity(entity.getWorld(), entity);
 							iceShard.setOwner(frozenComponent.getLastFreezingAttacker());
 							iceShard.teleport(entity.getX(), entity.getEyeY(), entity.getZ());
 							iceShard.setVelocity(new Vec3d(entity.getRandom().nextGaussian(), entity.getRandom().nextGaussian() / 2, entity.getRandom().nextGaussian()).normalize().multiply(0.75));
-							entity.world.spawnEntity(iceShard);
+							entity.getWorld().spawnEntity(iceShard);
 						}
-						entity.world.emitGameEvent(GameEvent.ENTITY_DIE, entity.getPos(), GameEvent.Emitter.of(entity, entity.getSteppingBlockState()));
+						entity.getWorld().emitGameEvent(GameEvent.ENTITY_DIE, entity.getPos(), GameEvent.Emitter.of(entity, entity.getSteppingBlockState()));
 						entity.discard();
 					}
 				}

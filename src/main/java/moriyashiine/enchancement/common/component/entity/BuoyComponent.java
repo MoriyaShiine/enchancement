@@ -74,12 +74,12 @@ public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponen
 					splash = ParticleTypes.LAVA;
 					bubble = ParticleTypes.LAVA;
 				}
-				obj.world.addParticle(bubbleColumn, x, y, z, 0, 0.04, 0);
-				obj.world.addParticle(bubbleColumn, obj.getParticleX(0.5), y + obj.getHeight() / 8, obj.getParticleZ(0.5), 0, 0.04, 0);
-				if (obj.world.getBlockState(obj.getBlockPos().up()).isAir()) {
+				obj.getWorld().addParticle(bubbleColumn, x, y, z, 0, 0.04, 0);
+				obj.getWorld().addParticle(bubbleColumn, obj.getParticleX(0.5), y + obj.getHeight() / 8, obj.getParticleZ(0.5), 0, 0.04, 0);
+				if (obj.getWorld().getBlockState(obj.getBlockPos().up()).isAir()) {
 					for (int i = 0; i < 2; i++) {
-						obj.world.addParticle(splash, obj.getParticleX(0.5), obj.getBlockY() + 1, obj.getParticleZ(0.5), 0, 1, 0);
-						obj.world.addParticle(bubble, obj.getParticleX(0.5), obj.getBlockY() + 1, obj.getParticleZ(0.5), 0, 0.2, 0);
+						obj.getWorld().addParticle(splash, obj.getParticleX(0.5), obj.getBlockY() + 1, obj.getParticleZ(0.5), 0, 1, 0);
+						obj.getWorld().addParticle(bubble, obj.getParticleX(0.5), obj.getBlockY() + 1, obj.getParticleZ(0.5), 0, 0.2, 0);
 					}
 				}
 			}

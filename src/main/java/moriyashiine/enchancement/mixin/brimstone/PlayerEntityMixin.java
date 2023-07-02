@@ -24,7 +24,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
 	@Inject(method = "dropItem(Lnet/minecraft/item/ItemStack;ZZ)Lnet/minecraft/entity/ItemEntity;", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;swingHand(Lnet/minecraft/util/Hand;)V", shift = At.Shift.BY, by = 2))
 	private void enchancement$brimstone(ItemStack stack, boolean throwRandomly, boolean retainOwnership, CallbackInfoReturnable<ItemEntity> cir) {
-		if (!world.isClient) {
+		if (!getWorld().isClient) {
 			StopBrimstoneSoundsS2CPacket.stopSounds(this, stack);
 		}
 	}

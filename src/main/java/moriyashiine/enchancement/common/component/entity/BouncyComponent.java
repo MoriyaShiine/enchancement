@@ -49,7 +49,7 @@ public class BouncyComponent implements AutoSyncedComponent, CommonTickingCompon
 	}
 
 	public float getBoostProgress() {
-		return MathHelper.lerp((bounceStrength - 2) / 58F, 0, 1);
+		return MathHelper.lerp((bounceStrength - 2) / 58F, 0F, 1F);
 	}
 
 	public boolean hasBouncy() {

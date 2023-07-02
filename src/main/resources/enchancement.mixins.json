@@ -100,9 +100,10 @@
 	"veil.LivingEntityMixin",
 	"wardenspine.LivingEntityMixin",
 	"warp.PersistentProjectileEntityMixin",
-	"warp.TridentEntityMixin",
+	"warp.TridentEntityMixin"
   ],
   "client": [
+	"berserk.client.DrawContextMixin",
 	"berserk.client.ItemColorsMixin",
 	"berserk.client.ItemEntityRendererMixin",
 	"berserk.client.ItemRendererMixin",

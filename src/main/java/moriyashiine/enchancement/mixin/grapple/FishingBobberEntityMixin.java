@@ -40,7 +40,7 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 	private void enchancement$grapple(CallbackInfo ci) {
 		if (FishingBobberEntity.class.cast(this) instanceof GrappleFishingBobberEntity grappleFishingBobber) {
 			if (grappleFishingBobber.grappleState != null) {
-				if (grappleFishingBobber.age % 10 == 0 && grappleFishingBobber.world.getBlockState(grappleFishingBobber.grapplePos) != grappleFishingBobber.grappleState) {
+				if (grappleFishingBobber.age % 10 == 0 && grappleFishingBobber.getWorld().getBlockState(grappleFishingBobber.grapplePos) != grappleFishingBobber.grappleState) {
 					grappleFishingBobber.grapplePos = null;
 					grappleFishingBobber.grappleState = null;
 				}

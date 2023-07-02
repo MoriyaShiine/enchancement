@@ -26,7 +26,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -44,7 +43,7 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@Inject(method = "tick", at = @At("HEAD"))
 	private void enchancement$bouncy(CallbackInfo ci) {
-		if (!world.isClient) {
+		if (!getWorld().isClient) {
 			prevVelocity = getVelocity();
 		}
 	}
@@ -61,8 +60,8 @@ public abstract class LivingEntityMixin extends Entity {
 	@Inject(method = "handleFallDamage", at = @At("HEAD"), cancellable = true)
 	private void enchancement$bouncy(float fallDistance, float damageMultiplier, DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
 		if (prevVelocity != null && !damageSource.isOf(DamageTypes.STALAGMITE) && fallDistance > getSafeFallDistance() && EnchancementUtil.hasEnchantment(ModEnchantments.BOUNCY, this)) {
-			if (!world.isClient) {
-				world.playSoundFromEntity(null, this, SoundEvents.BLOCK_SLIME_BLOCK_FALL, getSoundCategory(), 1, 1);
+			if (!getWorld().isClient) {
+				getWorld().playSoundFromEntity(null, this, SoundEvents.BLOCK_SLIME_BLOCK_FALL, getSoundCategory(), 1, 1);
 				if (!bypassesLandingEffects()) {
 					setVelocity(getVelocity().getX(), -prevVelocity.getY() * 0.99, getVelocity().getZ());
 					velocityModified = true;
@@ -72,15 +71,15 @@ public abstract class LivingEntityMixin extends Entity {
 		}
 	}
 
-	@ModifyVariable(method = "jump", at = @At("STORE"))
+	@ModifyArg(method = "jump", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setVelocity(DDD)V"), index = 1)
 	private double enchancement$bouncy(double value) {
 		BouncyComponent bouncyComponent = ModEntityComponents.BOUNCY.getNullable(this);
 		if (bouncyComponent != null && bouncyComponent.hasBouncy()) {
 			float boostProgress = bouncyComponent.getBoostProgress();
 			if (boostProgress > 0) {
-				if (!world.isClient) {
-					world.playSoundFromEntity(null, this, SoundEvents.BLOCK_SLIME_BLOCK_FALL, getSoundCategory(), 1, 1);
-					((ServerWorld) world).spawnParticles(SLIME_PARTICLE, getX(), getY(), getZ(), 32, 0.0, 0.0, 0.0, 0.15F);
+				if (!getWorld().isClient) {
+					getWorld().playSoundFromEntity(null, this, SoundEvents.BLOCK_SLIME_BLOCK_FALL, getSoundCategory(), 1, 1);
+					((ServerWorld) getWorld()).spawnParticles(SLIME_PARTICLE, getX(), getY(), getZ(), 32, 0.0, 0.0, 0.0, 0.15F);
 				}
 				return value + (boostProgress * 2);
 			}

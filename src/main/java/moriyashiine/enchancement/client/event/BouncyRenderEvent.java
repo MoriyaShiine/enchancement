@@ -4,32 +4,27 @@
 
 package moriyashiine.enchancement.client.event;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class BouncyRenderEvent implements HudRenderCallback {
-	private static final MinecraftClient client = MinecraftClient.getInstance();
+	private static final Identifier ICONS = new Identifier("textures/gui/icons.png");
 
 	@Override
-	public void onHudRender(MatrixStack matrixStack, float tickDelta) {
-		ModEntityComponents.BOUNCY.maybeGet(client.getCameraEntity()).ifPresent(bouncyComponent -> {
+	public void onHudRender(DrawContext drawContext, float tickDelta) {
+		ModEntityComponents.BOUNCY.maybeGet(MinecraftClient.getInstance().getCameraEntity()).ifPresent(bouncyComponent -> {
 			if (bouncyComponent.hasBouncy()) {
 				float boostProgress = bouncyComponent.getBoostProgress();
 				if (boostProgress > 0) {
-					matrixStack.push();
-					RenderSystem.setShaderTexture(0, DrawableHelper.GUI_ICONS_TEXTURE);
-					int width = client.getWindow().getScaledWidth() / 2 - 91;
-					int height = client.getWindow().getScaledHeight() - 32 + 3;
-					DrawableHelper.drawTexture(matrixStack, width, height, 0, 84, 182, 5, 256, 256);
-					DrawableHelper.drawTexture(matrixStack, client.getWindow().getScaledWidth() / 2 - 91, height, 0, 89, (int) (182 * boostProgress), 5, 256, 256);
-					matrixStack.pop();
+					int width = drawContext.getScaledWindowWidth() / 2 - 91, height = drawContext.getScaledWindowHeight() - 32 + 3;
+					drawContext.drawTexture(ICONS, width, height, 0, 84, 182, 5, 256, 256);
+					drawContext.drawTexture(ICONS, width, height, 0, 89, (int) (182 * boostProgress), 5, 256, 256);
 				}
 			}
 		});

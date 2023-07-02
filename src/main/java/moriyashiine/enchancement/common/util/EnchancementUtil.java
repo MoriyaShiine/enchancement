@@ -87,7 +87,7 @@ public class EnchancementUtil {
 
 	public static boolean isSubmerged(Entity entity, boolean allowWater, boolean allowLava) {
 		for (int i = 0; i <= 1; i++) {
-			FluidState state = entity.world.getFluidState(entity.getBlockPos().up(i));
+			FluidState state = entity.getWorld().getFluidState(entity.getBlockPos().up(i));
 			if ((allowWater && state.isIn(FluidTags.WATER)) || (allowLava && state.isIn(FluidTags.LAVA))) {
 				return true;
 			}
@@ -129,7 +129,7 @@ public class EnchancementUtil {
 				if (owner.equals(attacker.getUuid())) {
 					return false;
 				}
-				return shouldHurt(attacker, ((ServerWorld) attacker.world).getEntity(owner));
+				return shouldHurt(attacker, ((ServerWorld) attacker.getWorld()).getEntity(owner));
 			}
 		}
 		return true;

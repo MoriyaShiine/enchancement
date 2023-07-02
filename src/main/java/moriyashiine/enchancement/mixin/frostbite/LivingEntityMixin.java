@@ -51,11 +51,11 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@Inject(method = "pushAwayFrom", at = @At("HEAD"))
 	private void enchancement$frostbite(Entity entity, CallbackInfo ci) {
-		if (!world.isClient) {
+		if (!getWorld().isClient) {
 			ModEntityComponents.FROZEN.maybeGet(this).ifPresent(frozenComponent -> {
 				if (frozenComponent.isFrozen()) {
 					Entity lastFreezingAttacker = frozenComponent.getLastFreezingAttacker();
-					if (EnchancementUtil.shouldHurt(lastFreezingAttacker, entity) && entity.damage(ModDamageTypes.create(world, ModDamageTypes.FROSTBITE, lastFreezingAttacker == null ? this : lastFreezingAttacker), 8)) {
+					if (EnchancementUtil.shouldHurt(lastFreezingAttacker, entity) && entity.damage(ModDamageTypes.create(getWorld(), ModDamageTypes.FROSTBITE, lastFreezingAttacker == null ? this : lastFreezingAttacker), 8)) {
 						damage(getDamageSources().generic(), 2);
 						entity.setFrozenTicks(800);
 					}
