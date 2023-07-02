@@ -72,6 +72,7 @@
 	"vanillachanges.freeenchantedbookmerging.AnvilScreenHandlerMixin",
 	"vanillachanges.luckoftheseahaslure.EnchantmentHelperMixin",
 	"vanillachanges.negateenderpearldamage.EnderPearlEntityMixin",
+	"vanillachanges.nolifedrainknockback.LivingEntityMixin",
 	"vanillachanges.overhaulenchantingtable.EnchantingTableBlockMixin",
 	"vanillachanges.safechanneling.LightningEntityMixin",
 	"vanillachanges.safechanneling.TridentEntityMixin",
