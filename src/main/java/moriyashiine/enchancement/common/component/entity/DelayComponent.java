@@ -10,11 +10,13 @@ import moriyashiine.enchancement.common.registry.ModEntityComponents;
 import net.minecraft.command.argument.EntityAnchorArgumentType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.RaycastContext;
 import org.jetbrains.annotations.NotNull;
 
 public class DelayComponent implements AutoSyncedComponent, CommonTickingComponent {
@@ -85,7 +87,13 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 			boolean punching = obj.getOwner() instanceof LivingEntity living && living.handSwinging && (living.getMainHandStack() == stackShotFrom || living.getOffHandStack() == stackShotFrom);
 			if (ticksFloating > 300 || punching) {
 				if (punching && obj.getOwner() instanceof LivingEntity living && living.isSneaking()) {
-					Vec3d pos = obj.getWorld().raycast(new RaycastContext(living.getEyePos(), living.getEyePos().add(living.getRotationVector().multiply(64)), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, living)).getPos();
+					HitResult result = ProjectileUtil.getCollision(living, entity -> !entity.isSpectator() && entity.canHit(), 64);
+					Vec3d pos;
+					if (result instanceof EntityHitResult entityHitResult) {
+						pos = entityHitResult.getEntity().getEyePos();
+					} else {
+						pos = result.getPos();
+					}
 					obj.setVelocity(pos.getX() - obj.getX(), pos.getY() - obj.getY(), pos.getZ() - obj.getZ(), cachedSpeed, cachedDivergence);
 					storedVelocity = obj.getVelocity();
 					obj.lookAt(EntityAnchorArgumentType.EntityAnchor.FEET, pos);
@@ -94,7 +102,6 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 				}
 				obj.setDamage(obj.getDamage() * MathHelper.lerp(Math.min(1, ticksFloating / 100F), 1, 2.5));
 				obj.setVelocity(storedVelocity);
-				storedVelocity = null;
 				hasDelay = false;
 				sync();
 			}
@@ -124,6 +131,10 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 
 	public void setHasDelay(boolean hasDelay) {
 		this.hasDelay = hasDelay;
+	}
+
+	public boolean alwaysHurt() {
+		return storedVelocity != null;
 	}
 
 	public boolean shouldChangeParticles() {
