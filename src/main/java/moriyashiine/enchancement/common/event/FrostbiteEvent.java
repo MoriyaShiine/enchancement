@@ -17,6 +17,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.passive.SquidEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.event.GameEvent;
@@ -72,12 +73,16 @@ public class FrostbiteEvent {
 						entity.setVelocity(entity.getVelocity().add(-(entitySource.getX() - entity.getX()), 0, -(entitySource.getZ() - entity.getZ())).normalize().multiply(0.5));
 						return false;
 					} else {
-						for (int i = 0; i < MathHelper.nextInt(entity.getRandom(), 24, 32); i++) {
-							IceShardEntity iceShard = new IceShardEntity(entity.getWorld(), entity);
-							iceShard.setOwner(frozenComponent.getLastFreezingAttacker());
-							iceShard.teleport(entity.getX(), entity.getEyeY(), entity.getZ());
-							iceShard.setVelocity(new Vec3d(entity.getRandom().nextGaussian(), entity.getRandom().nextGaussian() / 2, entity.getRandom().nextGaussian()).normalize().multiply(0.75));
-							entity.getWorld().spawnEntity(iceShard);
+						for (int i = 0; i < 4; i++) {
+							if (entity.getWorld().getEntitiesByType(ModEntityTypes.ICE_SHARD, new Box(entity.getBlockPos()).expand(2), foundEntity -> true).size() < 64) {
+								for (int j = 0; j < MathHelper.nextInt(entity.getRandom(), 6, 8); j++) {
+									IceShardEntity iceShard = new IceShardEntity(entity.getWorld(), entity);
+									iceShard.setOwner(frozenComponent.getLastFreezingAttacker());
+									iceShard.teleport(entity.getX(), entity.getEyeY(), entity.getZ());
+									iceShard.setVelocity(new Vec3d(entity.getRandom().nextGaussian(), entity.getRandom().nextGaussian() / 2, entity.getRandom().nextGaussian()).normalize().multiply(0.75));
+									entity.getWorld().spawnEntity(iceShard);
+								}
+							}
 						}
 						entity.getWorld().emitGameEvent(GameEvent.ENTITY_DIE, entity.getPos(), GameEvent.Emitter.of(entity, entity.getSteppingBlockState()));
 						entity.discard();
