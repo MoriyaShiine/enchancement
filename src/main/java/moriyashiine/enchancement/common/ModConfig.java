@@ -7,11 +7,12 @@ package moriyashiine.enchancement.common;
 import eu.midnightdust.lib.config.MidnightConfig;
 import net.minecraft.util.Identifier;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class ModConfig extends MidnightConfig {
 	@Entry
-	public static List<String> allowedEnchantments = List.of(
+	public static List<String> allowedEnchantments = Arrays.asList(
 			"enchancement:assimilation", "enchancement:perception", "enchancement:veil",
 			"enchancement:amphibious", "enchancement:strafe", "enchancement:wardenspine",
 			"enchancement:dash", "enchancement:slide",
@@ -83,6 +84,29 @@ public class ModConfig extends MidnightConfig {
 			return !allowedEnchantments.contains(identifier.toString());
 		}
 		return allowedEnchantments.contains(identifier.toString());
+	}
+
+	public static int encode() {
+		StringBuilder builder = new StringBuilder();
+		for (String value : allowedEnchantments) {
+			builder.append(value);
+		}
+		String encoding = builder.toString() +
+				invertedList +
+				overhaulEnchantingTable + allowTreasureEnchantmentsInEnchantingTable +
+				singleEnchantmentMode + singleLevelMode +
+				allowInfinityOnCrossbows + allTridentsHaveLoyalty +
+				channelingIgnitesOnMelee + channelingWorksWhenNotThundering +
+				fireAspectWorksAsFlintAndSteel + freeEnchantedBookMerging +
+				luckOfTheSeaHasLure +
+				negateEnderPearlDamage +
+				safeChanneling +
+				tridentsReturnFromVoid +
+				weakerFireAspect + weakerGoldenApple + weakerPotions +
+				weaponEnchantmentCooldownRequirement +
+				maxExtractingBlocks + maxLumberjackBlocks + maxLumberjackHorizontalLength +
+				unbreakingChangesFlag;
+		return encoding.hashCode();
 	}
 
 	static {
