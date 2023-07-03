@@ -40,6 +40,7 @@ import net.minecraft.resource.ResourceType;
 public class EnchancementClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
+		ClientPlayNetworking.registerGlobalReceiver(SyncEnchantingTableCostPacket.ID, SyncEnchantingTableCostPacket::receive);
 		ClientPlayNetworking.registerGlobalReceiver(AddStrafeParticlesPacket.ID, AddStrafeParticlesPacket::receive);
 		ClientPlayNetworking.registerGlobalReceiver(AddGaleParticlesPacket.ID, AddGaleParticlesPacket::receive);
 		ClientPlayNetworking.registerGlobalReceiver(PlayBrimstoneSoundPacket.ID, PlayBrimstoneSoundPacket::receive);

@@ -85,7 +85,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 			if (isInEnchantButtonBounds(posX, posY, mouseX, mouseY)) {
 				context.drawTexture(TEXTURE, posX + 154, posY + 50, 192, 32, 16, 16);
 				if (infoTexts == null) {
-					infoTexts = List.of(Text.translatable("tooltip." + Enchancement.MOD_ID + ".experience_level_cost", handler.getExperienceLevelCost()).formatted(Formatting.DARK_GREEN), Text.translatable("tooltip." + Enchancement.MOD_ID + ".lapis_lazuli_cost", handler.getLapisLazuliCost()).formatted(Formatting.BLUE));
+					infoTexts = List.of(Text.translatable("tooltip." + Enchancement.MOD_ID + ".experience_level_cost", handler.getCost()).formatted(Formatting.DARK_GREEN), Text.translatable("tooltip." + Enchancement.MOD_ID + ".lapis_lazuli_cost", handler.getCost()).formatted(Formatting.BLUE));
 				}
 				context.drawTooltip(textRenderer, infoTexts, mouseX, mouseY);
 			} else {
