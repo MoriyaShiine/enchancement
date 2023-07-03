@@ -23,16 +23,15 @@ public class AddMoltenParticlesPacket {
 
 	public static void send(ServerPlayerEntity player, BlockPos pos) {
 		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
-		buf.writeLong(pos.asLong());
+		buf.writeBlockPos(pos);
 		ServerPlayNetworking.send(player, ID, buf);
 	}
 
 	public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-		long longPos = buf.readLong();
+		BlockPos pos = buf.readBlockPos();
 		client.execute(() -> {
 			ClientWorld world = client.world;
 			if (world != null) {
-				BlockPos pos = BlockPos.fromLong(longPos);
 				for (int i = 0; i < 8; i++) {
 					world.addParticle(ParticleTypes.SMALL_FLAME, pos.getX() + 0.5 + MathHelper.nextDouble(world.random, -0.5, 0.5F), pos.getY() + 0.5 + MathHelper.nextDouble(world.random, -0.5, 0.5F), pos.getZ() + 0.5 + MathHelper.nextDouble(world.random, -0.5, 0.5F), 0, 0, 0);
 				}
