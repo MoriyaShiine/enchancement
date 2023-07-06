@@ -6,7 +6,10 @@ package moriyashiine.enchancement.common;
 
 import com.google.gson.Gson;
 import moriyashiine.enchancement.common.event.*;
-import moriyashiine.enchancement.common.init.*;
+import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModEntityTypes;
+import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
+import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.packet.*;
 import moriyashiine.enchancement.common.reloadlisteners.BeheadingReloadListener;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
@@ -48,7 +51,6 @@ public class Enchancement implements ModInitializer {
 		ModEnchantments.init();
 		ModSoundEvents.init();
 		ModScreenHandlerTypes.init();
-		ModScaleTypes.init();
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new BeheadingReloadListener(new Gson(), MOD_ID + "_beheading"));
 		initEvents();
 		isApoliLoaded = FabricLoader.getInstance().isModLoaded("apoli");
@@ -68,7 +70,6 @@ public class Enchancement implements ModInitializer {
 		ServerTickEvents.END_SERVER_TICK.register(server -> EnchancementUtil.tickPacketImmunities());
 		ServerLifecycleEvents.SERVER_STOPPED.register(server -> EnchancementUtil.PACKET_IMMUNITIES.clear());
 		ServerTickEvents.END_SERVER_TICK.register(new AssimilationEvent());
-		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new SlideEvent());
 		UseBlockCallback.EVENT.register(new FireAspectEvent());
 		ServerLivingEntityEvents.AFTER_DEATH.register(new FrostbiteEvent.Freeze());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new FrostbiteEvent.HandleDamage());
