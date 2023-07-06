@@ -79,6 +79,9 @@ public class ModConfig extends MidnightConfig {
 	@Entry(min = -1)
 	public static int unbreakingChangesFlag = 0;
 
+	@Entry(category = "client")
+	public static boolean enchantmentDescriptions = true;
+
 	public static boolean isEnchantmentAllowed(Identifier identifier) {
 		if (invertedList) {
 			return !allowedEnchantments.contains(identifier.toString());

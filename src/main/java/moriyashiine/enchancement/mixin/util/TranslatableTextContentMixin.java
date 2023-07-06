@@ -32,7 +32,6 @@ public class TranslatableTextContentMixin {
 		return switch (key) {
 			case "enchantment.minecraft.fire_aspect.desc" ->
 					ModConfig.fireAspectWorksAsFlintAndSteel ? key + ".redirect" : key;
-			case "enchantment.minecraft.infinity.desc" -> ModConfig.allowInfinityOnCrossbows ? key + ".redirect" : key;
 			case "enchantment.minecraft.luck_of_the_sea.desc" ->
 					ModConfig.luckOfTheSeaHasLure ? key + ".redirect" : key;
 			case "enchantment.minecraft.unbreaking.desc" ->

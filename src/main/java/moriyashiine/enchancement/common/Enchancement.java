@@ -32,6 +32,7 @@ public class Enchancement implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	public static boolean isApoliLoaded = false;
+	public static boolean commonEnchantmentDescriptionsModLoaded = false;
 
 	@Override
 	public void onInitialize() {
@@ -51,6 +52,12 @@ public class Enchancement implements ModInitializer {
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new BeheadingReloadListener(new Gson(), MOD_ID + "_beheading"));
 		initEvents();
 		isApoliLoaded = FabricLoader.getInstance().isModLoaded("apoli");
+		for (String mod : new String[]{"enchdesc", "enchantedtooltips", "idwtialsimmoedm"}) {
+			if (FabricLoader.getInstance().isModLoaded(mod)) {
+				commonEnchantmentDescriptionsModLoaded = true;
+				break;
+			}
+		}
 	}
 
 	public static Identifier id(String value) {
