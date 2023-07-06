@@ -5,8 +5,8 @@
 package moriyashiine.enchancement.mixin.scatter;
 
 import moriyashiine.enchancement.common.entity.projectile.AmethystShardEntity;
-import moriyashiine.enchancement.common.registry.ModEnchantments;
-import moriyashiine.enchancement.common.registry.ModSoundEvents;
+import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;

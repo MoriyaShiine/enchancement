@@ -6,8 +6,8 @@ package moriyashiine.enchancement.common.event;
 
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.component.world.LumberjackComponent;
-import moriyashiine.enchancement.common.registry.ModEnchantments;
-import moriyashiine.enchancement.common.registry.ModWorldComponents;
+import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModWorldComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.block.Block;

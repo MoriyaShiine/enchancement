@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.event;
 
-import moriyashiine.enchancement.common.registry.ModEntityComponents;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;

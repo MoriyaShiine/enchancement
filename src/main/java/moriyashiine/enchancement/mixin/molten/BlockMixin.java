@@ -5,9 +5,9 @@
 package moriyashiine.enchancement.mixin.molten;
 
 import moriyashiine.enchancement.client.packet.AddMoltenParticlesPacket;
-import moriyashiine.enchancement.common.registry.ModEnchantments;
-import moriyashiine.enchancement.common.registry.ModSoundEvents;
-import moriyashiine.enchancement.common.registry.ModTags;
+import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.enchancement.common.init.ModTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.block.Block;

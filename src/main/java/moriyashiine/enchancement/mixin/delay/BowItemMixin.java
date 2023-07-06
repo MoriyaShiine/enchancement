@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.delay;
 
-import moriyashiine.enchancement.common.registry.ModEntityComponents;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.BowItem;
 import org.spongepowered.asm.mixin.Mixin;

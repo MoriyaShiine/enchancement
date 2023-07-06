@@ -6,9 +6,9 @@ package moriyashiine.enchancement.common.component.entity;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
-import moriyashiine.enchancement.common.registry.ModDamageTypes;
-import moriyashiine.enchancement.common.registry.ModEnchantments;
-import moriyashiine.enchancement.common.registry.ModEntityComponents;
+import moriyashiine.enchancement.common.init.ModDamageTypes;
+import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;

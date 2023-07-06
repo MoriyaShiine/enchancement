@@ -7,7 +7,7 @@ package moriyashiine.enchancement.mixin.frostbite.client;
 import moriyashiine.enchancement.client.reloadlisteners.FrozenReloadListener;
 import moriyashiine.enchancement.client.render.entity.mob.FrozenPlayerEntityRenderer;
 import moriyashiine.enchancement.common.entity.mob.FrozenPlayerEntity;
-import moriyashiine.enchancement.common.registry.ModEntityComponents;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;

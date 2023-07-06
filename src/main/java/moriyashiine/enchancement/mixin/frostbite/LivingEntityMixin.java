@@ -4,8 +4,8 @@
 
 package moriyashiine.enchancement.mixin.frostbite;
 
-import moriyashiine.enchancement.common.registry.ModDamageTypes;
-import moriyashiine.enchancement.common.registry.ModEntityComponents;
+import moriyashiine.enchancement.common.init.ModDamageTypes;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;

@@ -4,8 +4,8 @@
 
 package moriyashiine.enchancement.common.entity.projectile;
 
-import moriyashiine.enchancement.common.registry.ModDamageTypes;
-import moriyashiine.enchancement.common.registry.ModEntityTypes;
+import moriyashiine.enchancement.common.init.ModDamageTypes;
+import moriyashiine.enchancement.common.init.ModEntityTypes;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;

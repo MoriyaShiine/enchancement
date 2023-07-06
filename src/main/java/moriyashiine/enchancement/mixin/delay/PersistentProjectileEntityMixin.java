@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.delay;
 
 import moriyashiine.enchancement.common.component.entity.DelayComponent;
-import moriyashiine.enchancement.common.registry.ModEntityComponents;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.particle.ParticleEffect;

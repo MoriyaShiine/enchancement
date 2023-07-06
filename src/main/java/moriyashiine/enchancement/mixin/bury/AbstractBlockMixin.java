@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.bury;
 
-import moriyashiine.enchancement.common.registry.ModEntityComponents;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;

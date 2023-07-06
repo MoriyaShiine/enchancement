@@ -7,7 +7,7 @@ package moriyashiine.enchancement.mixin.frostbite.client.integration.geckolib;
 import com.mojang.blaze3d.systems.RenderSystem;
 import moriyashiine.enchancement.client.reloadlisteners.FrozenReloadListener;
 import moriyashiine.enchancement.common.component.entity.FrozenComponent;
-import moriyashiine.enchancement.common.registry.ModEntityComponents;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;

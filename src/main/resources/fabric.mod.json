@@ -31,10 +31,10 @@
 	  "moriyashiine.enchancement.client.EnchancementClient"
 	],
 	"cardinal-components-entity": [
-	  "moriyashiine.enchancement.common.registry.ModEntityComponents"
+	  "moriyashiine.enchancement.common.init.ModEntityComponents"
 	],
 	"cardinal-components-world": [
-	  "moriyashiine.enchancement.common.registry.ModWorldComponents"
+	  "moriyashiine.enchancement.common.init.ModWorldComponents"
 	]
   },
   "mixins": [

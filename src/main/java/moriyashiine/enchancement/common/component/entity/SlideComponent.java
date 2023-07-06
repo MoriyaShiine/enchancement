@@ -6,11 +6,11 @@ package moriyashiine.enchancement.common.component.entity;
 
 import dev.emi.stepheightentityattribute.StepHeightEntityAttributeMain;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
+import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModScaleTypes;
+import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.packet.SlideSlamPacket;
 import moriyashiine.enchancement.common.packet.SlideVelocityPacket;
-import moriyashiine.enchancement.common.registry.ModEnchantments;
-import moriyashiine.enchancement.common.registry.ModScaleTypes;
-import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.slide.EntityAccessor;
 import net.minecraft.block.BlockState;

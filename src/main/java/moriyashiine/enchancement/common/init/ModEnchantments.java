@@ -2,7 +2,7 @@
  * All Rights Reserved (c) MoriyaShiine
  */
 
-package moriyashiine.enchancement.common.registry;
+package moriyashiine.enchancement.common.init;
 
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.enchantment.*;

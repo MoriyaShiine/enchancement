@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.client.event;
 
-import moriyashiine.enchancement.common.registry.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.brimstone.client.InGameHudAccessor;
 import net.fabricmc.api.EnvType;

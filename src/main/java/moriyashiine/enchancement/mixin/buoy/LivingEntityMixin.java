@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.buoy;
 
-import moriyashiine.enchancement.common.registry.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;

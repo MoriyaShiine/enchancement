@@ -4,8 +4,8 @@
 
 package moriyashiine.enchancement.mixin.warp;
 
-import moriyashiine.enchancement.common.registry.ModEntityComponents;
-import moriyashiine.enchancement.common.registry.ModSoundEvents;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.ModSoundEvents;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;

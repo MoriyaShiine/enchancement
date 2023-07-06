@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.perception.client;
 
-import moriyashiine.enchancement.common.registry.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

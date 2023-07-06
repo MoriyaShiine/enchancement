@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.disarm;
 
 import moriyashiine.enchancement.common.component.entity.DisarmedPlayerComponent;
-import moriyashiine.enchancement.common.registry.ModEntityComponents;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.entity.*;
 import net.minecraft.entity.mob.EndermanEntity;
 import net.minecraft.entity.mob.MobEntity;

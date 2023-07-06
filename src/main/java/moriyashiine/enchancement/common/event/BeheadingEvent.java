@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.event;
 
-import moriyashiine.enchancement.common.registry.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.util.BeheadingEntry;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;

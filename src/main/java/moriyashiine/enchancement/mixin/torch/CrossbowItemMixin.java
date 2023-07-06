@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.torch;
 
 import moriyashiine.enchancement.common.entity.projectile.TorchEntity;
-import moriyashiine.enchancement.common.registry.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;

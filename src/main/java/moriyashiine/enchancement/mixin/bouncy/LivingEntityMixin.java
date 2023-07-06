@@ -5,8 +5,8 @@
 package moriyashiine.enchancement.mixin.bouncy;
 
 import moriyashiine.enchancement.common.component.entity.BouncyComponent;
-import moriyashiine.enchancement.common.registry.ModEnchantments;
-import moriyashiine.enchancement.common.registry.ModEntityComponents;
+import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;

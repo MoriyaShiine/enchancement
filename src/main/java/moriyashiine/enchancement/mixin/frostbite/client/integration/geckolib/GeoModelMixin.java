@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.frostbite.client.integration.geckolib;
 
-import moriyashiine.enchancement.common.registry.ModEntityComponents;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.spongepowered.asm.mixin.Mixin;

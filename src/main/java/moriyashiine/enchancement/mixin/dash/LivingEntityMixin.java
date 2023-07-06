@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.dash;
 
 import moriyashiine.enchancement.common.component.entity.DashComponent;
-import moriyashiine.enchancement.common.registry.ModEntityComponents;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;

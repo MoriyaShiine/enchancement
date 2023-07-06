@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.disarm;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import moriyashiine.enchancement.common.registry.ModEntityComponents;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.entity.mob.WitchEntity;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;

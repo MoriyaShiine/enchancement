@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.leech;
 
 import moriyashiine.enchancement.common.component.entity.LeechComponent;
-import moriyashiine.enchancement.common.registry.ModEntityComponents;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;

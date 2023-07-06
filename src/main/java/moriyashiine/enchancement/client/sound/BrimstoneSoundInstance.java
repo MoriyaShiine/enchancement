@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.client.sound;
 
-import moriyashiine.enchancement.common.registry.ModSoundEvents;
+import moriyashiine.enchancement.common.init.ModSoundEvents;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.sound.MovingSoundInstance;

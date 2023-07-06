@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.vanillachanges.safechanneling;
 
-import moriyashiine.enchancement.common.registry.ModEntityComponents;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LightningEntity;

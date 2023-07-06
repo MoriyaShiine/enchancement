@@ -6,8 +6,8 @@ package moriyashiine.enchancement.common;
 
 import com.google.gson.Gson;
 import moriyashiine.enchancement.common.event.*;
+import moriyashiine.enchancement.common.init.*;
 import moriyashiine.enchancement.common.packet.*;
-import moriyashiine.enchancement.common.registry.*;
 import moriyashiine.enchancement.common.reloadlisteners.BeheadingReloadListener;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.api.ModInitializer;

@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.entity.projectile;
 
-import moriyashiine.enchancement.common.registry.ModEntityTypes;
+import moriyashiine.enchancement.common.init.ModEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;

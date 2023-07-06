@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.strafe;
 
 import moriyashiine.enchancement.common.component.entity.StrafeComponent;
-import moriyashiine.enchancement.common.registry.ModEntityComponents;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;

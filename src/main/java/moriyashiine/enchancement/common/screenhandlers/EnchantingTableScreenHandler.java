@@ -6,8 +6,8 @@ package moriyashiine.enchancement.common.screenhandlers;
 
 import moriyashiine.enchancement.client.packet.SyncEnchantingTableCostPacket;
 import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.registry.ModScreenHandlerTypes;
-import moriyashiine.enchancement.common.registry.ModTags;
+import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
+import moriyashiine.enchancement.common.init.ModTags;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.advancement.criterion.Criteria;

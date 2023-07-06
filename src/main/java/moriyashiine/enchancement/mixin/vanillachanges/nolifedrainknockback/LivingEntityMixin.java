@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.vanillachanges.nolifedrainknockback;
 
-import moriyashiine.enchancement.common.registry.ModDamageTypes;
+import moriyashiine.enchancement.common.init.ModDamageTypes;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import org.spongepowered.asm.mixin.Mixin;

@@ -6,7 +6,7 @@ package moriyashiine.enchancement.mixin.brimstone.client;
 
 import moriyashiine.enchancement.client.event.BrimstoneRenderEvent;
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.registry.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
