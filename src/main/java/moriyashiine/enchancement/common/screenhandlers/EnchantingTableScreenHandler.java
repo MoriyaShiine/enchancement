@@ -255,8 +255,15 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 	}
 
 	private int getCost(ItemStack stack) {
+		int enchantability = 13;
+		if (stack.getItem() instanceof ArmorItem armorItem) {
+			enchantability = armorItem.getEnchantability();
+		} else if (stack.getItem() instanceof ToolItem toolItem) {
+			enchantability = toolItem.getEnchantability();
+		} else if (stack.isOf(Items.BOOK)) {
+			enchantability = 30;
+		}
 		float[] bookshelfCountArray = {0};
-		int enchantability = 0;
 		context.run((world, pos) -> {
 			for (BlockPos offset : EnchantingTableBlock.POWER_PROVIDER_OFFSETS) {
 				if (EnchantingTableBlock.canAccessPowerProvider(world, pos, offset)) {
@@ -267,13 +274,6 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 			}
 		});
 		int bookshelfCount = Math.min(15, (int) bookshelfCountArray[0]);
-		if (stack.getItem() instanceof ArmorItem armorItem) {
-			enchantability = armorItem.getEnchantability();
-		} else if (stack.getItem() instanceof ToolItem toolItem) {
-			enchantability = toolItem.getEnchantability();
-		} else if (stack.isOf(Items.BOOK)) {
-			enchantability = 30;
-		}
 		double cost = 60F / (Math.max(1, enchantability + bookshelfCount));
 		if (bookshelfCount == 15) {
 			cost = MathHelper.floor(cost);
