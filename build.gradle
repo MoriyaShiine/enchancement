@@ -60,7 +60,7 @@ dependencies {
     modCompileOnly("com.github.apace100:apoli:${apoli_version}") {
         exclude(group: "*")
     }
-    modCompileOnly "dev.architectury:architectury-fabric:${architectury_version}"
+    modCompileOnly "maven.modrinth:architectury-api:${architectury_version}+fabric"
     modCompileOnly "software.bernie.geckolib:geckolib-fabric-${geckolib_version}"
     modCompileOnly "maven.modrinth:sodium:${sodium_version}"
     modRuntimeOnly "maven.modrinth:sodium:${sodium_version}"
