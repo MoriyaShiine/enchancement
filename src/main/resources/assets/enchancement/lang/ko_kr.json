@@ -5,7 +5,6 @@
   "entity.enchancement.amethyst_shard": "자수정 조각",
   "entity.enchancement.torch": "횟불",
   "enchantment.minecraft.fire_aspect.desc.redirect": "몹을 공격할 때 추가 화염 피해를 입힙니다. 블록에 웅크리기를 이용하여 불을 붙일 수 있습니다.",
-  "enchantment.minecraft.infinity.desc.redirect": "활이나 쇠뇌에 일반 화살을 제한 없이 발사할 수 있습니다. 화살을 제한 없이 발사하려면 최소 화살 한개를 가지고 있어야 합니다.",
   "enchantment.minecraft.channeling.desc.redirect_melee": "폭풍우가 치는동안 삼지창이 번개를 소환합니다. 근접 공격시 대상에게 화염 피해를 입힙니다.",
   "enchantment.minecraft.channeling.desc.redirect_thunderless": "삼지창을 던져 대상에게 맞추면, 번개를 소환합니다.",
   "enchantment.minecraft.channeling.desc.redirect_melee_thunderless": "삼지창을 던져 대상에게 맞추면, 번개를 소환합니다. 근접 공격시 대상에게 화염 피해를 입힙니다.",
