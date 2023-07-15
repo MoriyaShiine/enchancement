@@ -12,6 +12,7 @@ import moriyashiine.enchancement.mixin.brimstone.client.SoundManagerAccessor;
 import moriyashiine.enchancement.mixin.brimstone.client.SoundSystemAccessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -28,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public class StopBrimstoneSoundsS2CPacket {
+public class StopBrimstoneSoundsS2CPacket implements ClientPlayNetworking.PlayChannelHandler {
 	public static final Identifier ID = Enchancement.id("stop_brimstone_sounds_s2c");
 
 	public static void send(ServerPlayerEntity player, UUID uuid) {
@@ -37,7 +38,8 @@ public class StopBrimstoneSoundsS2CPacket {
 		ServerPlayNetworking.send(player, ID, buf);
 	}
 
-	public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
+	@Override
+	public void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
 		UUID uuid = buf.readUuid();
 		client.execute(() -> stopSounds(client, uuid));
 	}

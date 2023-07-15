@@ -7,6 +7,7 @@ package moriyashiine.enchancement.client.packet;
 import io.netty.buffer.Unpooled;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.packet.SyncFrozenPlayerSlimStatusC2S;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.MinecraftClient;
@@ -17,7 +18,7 @@ import net.minecraft.util.Identifier;
 
 import java.util.UUID;
 
-public class SyncFrozenPlayerSlimStatusS2C {
+public class SyncFrozenPlayerSlimStatusS2C implements ClientPlayNetworking.PlayChannelHandler {
 	public static final Identifier ID = Enchancement.id("sync_frozen_player_slim_status_s2c");
 
 	public static void send(ServerPlayerEntity player, UUID uuid) {
@@ -26,7 +27,8 @@ public class SyncFrozenPlayerSlimStatusS2C {
 		ServerPlayNetworking.send(player, ID, buf);
 	}
 
-	public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
+	@Override
+	public void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
 		UUID uuid = buf.readUuid();
 		client.execute(() -> {
 			if (client.player != null) {

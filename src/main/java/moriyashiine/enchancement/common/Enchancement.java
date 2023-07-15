@@ -39,14 +39,14 @@ public class Enchancement implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		ServerPlayNetworking.registerGlobalReceiver(StrafePacket.ID, StrafePacket::receive);
-		ServerPlayNetworking.registerGlobalReceiver(DashPacket.ID, DashPacket::receive);
-		ServerPlayNetworking.registerGlobalReceiver(SlideSlamPacket.ID, SlideSlamPacket::receive);
-		ServerPlayNetworking.registerGlobalReceiver(SlideVelocityPacket.ID, SlideVelocityPacket::receive);
-		ServerPlayNetworking.registerGlobalReceiver(BuoyPacket.ID, BuoyPacket::receive);
-		ServerPlayNetworking.registerGlobalReceiver(GalePacket.ID, GalePacket::receive);
-		ServerPlayNetworking.registerGlobalReceiver(StopBrimstoneSoundsC2SPacket.ID, StopBrimstoneSoundsC2SPacket::receive);
-		ServerPlayNetworking.registerGlobalReceiver(SyncFrozenPlayerSlimStatusC2S.ID, SyncFrozenPlayerSlimStatusC2S::receive);
+		ServerPlayNetworking.registerGlobalReceiver(StrafePacket.ID, new StrafePacket());
+		ServerPlayNetworking.registerGlobalReceiver(DashPacket.ID, new DashPacket());
+		ServerPlayNetworking.registerGlobalReceiver(SlideSlamPacket.ID, new SlideSlamPacket());
+		ServerPlayNetworking.registerGlobalReceiver(SlideVelocityPacket.ID, new SlideVelocityPacket());
+		ServerPlayNetworking.registerGlobalReceiver(BuoyPacket.ID, new BuoyPacket());
+		ServerPlayNetworking.registerGlobalReceiver(GalePacket.ID, new GalePacket());
+		ServerPlayNetworking.registerGlobalReceiver(StopBrimstoneSoundsC2SPacket.ID, new StopBrimstoneSoundsC2SPacket());
+		ServerPlayNetworking.registerGlobalReceiver(SyncFrozenPlayerSlimStatusC2S.ID, new SyncFrozenPlayerSlimStatusC2S());
 		ModEntityTypes.init();
 		ModEnchantments.init();
 		ModSoundEvents.init();

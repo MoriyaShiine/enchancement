@@ -36,7 +36,6 @@ public class AssimilationEvent implements ServerTickEvents.EndTick {
 		});
 	}
 
-	@SuppressWarnings("ConstantConditions")
 	private static ItemStack getMostNeededFood(PlayerEntity player) {
 		ItemStack food = ItemStack.EMPTY;
 		for (int i = 0; i < player.getInventory().main.size(); i++) {

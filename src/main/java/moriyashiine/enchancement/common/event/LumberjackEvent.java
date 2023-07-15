@@ -69,7 +69,6 @@ public class LumberjackEvent implements PlayerBlockBreakEvents.Before {
 		return tree;
 	}
 
-	@SuppressWarnings("ConstantConditions")
 	private static boolean isWithinHorizontalBounds(List<BlockPos> tree) {
 		Integer minX = null, maxX = null, minZ = null, maxZ = null;
 		for (BlockPos pos : tree) {

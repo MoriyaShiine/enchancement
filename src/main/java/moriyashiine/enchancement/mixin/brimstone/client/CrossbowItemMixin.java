@@ -48,7 +48,7 @@ public abstract class CrossbowItemMixin {
 	@Inject(method = "appendTooltip", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
 	private void enchancement$brimstone(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context, CallbackInfo ci, List<ItemStack> list, ItemStack projectile) {
 		if (ItemStack.areEqual(projectile, EnchancementUtil.BRIMSTONE_STACK)) {
-			MutableText hearts = Texts.bracketed(Text.literal("\u2764").append(" x" + stack.getSubNbt(Enchancement.MOD_ID).getInt("BrimstoneDamage") / 2).formatted(Formatting.RED)).formatted(Formatting.DARK_RED);
+			MutableText hearts = Texts.bracketed(Text.literal("❤").append(" x" + stack.getSubNbt(Enchancement.MOD_ID).getInt("BrimstoneDamage") / 2).formatted(Formatting.RED)).formatted(Formatting.DARK_RED);
 			tooltip.add(Text.translatable("item.minecraft.crossbow.projectile").append(" ").append(Texts.bracketed(Text.translatable(ModEnchantments.BRIMSTONE.getTranslationKey()).append(" ").append(hearts))));
 			ci.cancel();
 		}

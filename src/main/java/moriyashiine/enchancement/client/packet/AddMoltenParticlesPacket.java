@@ -6,6 +6,7 @@ package moriyashiine.enchancement.client.packet;
 
 import io.netty.buffer.Unpooled;
 import moriyashiine.enchancement.common.Enchancement;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.MinecraftClient;
@@ -18,7 +19,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
-public class AddMoltenParticlesPacket {
+public class AddMoltenParticlesPacket implements ClientPlayNetworking.PlayChannelHandler {
 	public static final Identifier ID = Enchancement.id("add_molten_particles");
 
 	public static void send(ServerPlayerEntity player, BlockPos pos) {
@@ -27,7 +28,8 @@ public class AddMoltenParticlesPacket {
 		ServerPlayNetworking.send(player, ID, buf);
 	}
 
-	public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
+	@Override
+	public void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
 		BlockPos pos = buf.readBlockPos();
 		client.execute(() -> {
 			ClientWorld world = client.world;
