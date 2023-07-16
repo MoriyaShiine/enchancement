@@ -18,7 +18,7 @@ import net.minecraft.util.Identifier;
 
 import java.util.UUID;
 
-public class SyncFrozenPlayerSlimStatusC2S implements ServerPlayNetworking.PlayChannelHandler {
+public class SyncFrozenPlayerSlimStatusC2S {
 	public static final Identifier ID = Enchancement.id("sync_frozen_player_slim_status_cs2");
 
 	public static void send(UUID uuid, boolean slim) {
@@ -28,10 +28,12 @@ public class SyncFrozenPlayerSlimStatusC2S implements ServerPlayNetworking.PlayC
 		ClientPlayNetworking.send(ID, buf);
 	}
 
-	@Override
-	public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-		UUID uuid = buf.readUuid();
-		boolean slim = buf.readBoolean();
-		server.execute(() -> FrozenPlayerEntity.SLIM_STATUSES.put(uuid, slim));
+	public static class Receiver implements ServerPlayNetworking.PlayChannelHandler {
+		@Override
+		public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
+			UUID uuid = buf.readUuid();
+			boolean slim = buf.readBoolean();
+			server.execute(() -> FrozenPlayerEntity.SLIM_STATUSES.put(uuid, slim));
+		}
 	}
 }

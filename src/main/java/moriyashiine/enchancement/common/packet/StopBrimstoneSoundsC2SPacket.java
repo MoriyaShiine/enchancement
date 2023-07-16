@@ -19,7 +19,7 @@ import net.minecraft.util.Identifier;
 
 import java.util.UUID;
 
-public class StopBrimstoneSoundsC2SPacket implements ServerPlayNetworking.PlayChannelHandler {
+public class StopBrimstoneSoundsC2SPacket {
 	public static final Identifier ID = Enchancement.id("stop_brimstone_sounds_c2s");
 
 	public static void send(UUID uuid) {
@@ -28,9 +28,11 @@ public class StopBrimstoneSoundsC2SPacket implements ServerPlayNetworking.PlayCh
 		ClientPlayNetworking.send(ID, buf);
 	}
 
-	@Override
-	public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-		UUID uuid = buf.readUuid();
-		server.execute(() -> PlayerLookup.tracking(player).forEach(foundPlayer -> StopBrimstoneSoundsS2CPacket.send(foundPlayer, uuid)));
+	public static class Receiver implements ServerPlayNetworking.PlayChannelHandler {
+		@Override
+		public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
+			UUID uuid = buf.readUuid();
+			server.execute(() -> PlayerLookup.tracking(player).forEach(foundPlayer -> StopBrimstoneSoundsS2CPacket.send(foundPlayer, uuid)));
+		}
 	}
 }

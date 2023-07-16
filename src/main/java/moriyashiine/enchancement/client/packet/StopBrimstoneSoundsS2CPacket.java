@@ -29,19 +29,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public class StopBrimstoneSoundsS2CPacket implements ClientPlayNetworking.PlayChannelHandler {
+public class StopBrimstoneSoundsS2CPacket {
 	public static final Identifier ID = Enchancement.id("stop_brimstone_sounds_s2c");
 
 	public static void send(ServerPlayerEntity player, UUID uuid) {
 		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
 		buf.writeUuid(uuid);
 		ServerPlayNetworking.send(player, ID, buf);
-	}
-
-	@Override
-	public void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-		UUID uuid = buf.readUuid();
-		client.execute(() -> stopSounds(client, uuid));
 	}
 
 	public static void stopSounds(Entity entity, ItemStack stack) {
@@ -87,5 +81,14 @@ public class StopBrimstoneSoundsS2CPacket implements ClientPlayNetworking.PlayCh
 			}
 		}
 		return null;
+	}
+
+	@Environment(EnvType.CLIENT)
+	public static class Receiver implements ClientPlayNetworking.PlayChannelHandler {
+		@Override
+		public void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
+			UUID uuid = buf.readUuid();
+			client.execute(() -> stopSounds(client, uuid));
+		}
 	}
 }

@@ -20,7 +20,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 
-public class StrafePacket implements ServerPlayNetworking.PlayChannelHandler {
+public class StrafePacket {
 	public static final Identifier ID = Enchancement.id("strafe");
 
 	public static void send(Vec3d velocity) {
@@ -30,15 +30,17 @@ public class StrafePacket implements ServerPlayNetworking.PlayChannelHandler {
 		ClientPlayNetworking.send(ID, buf);
 	}
 
-	@Override
-	public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-		float velocityX = buf.readFloat();
-		float velocityZ = buf.readFloat();
-		server.execute(() -> ModEntityComponents.STRAFE.maybeGet(player).ifPresent(strafeComponent -> {
-			if (strafeComponent.hasStrafe()) {
-				StrafeComponent.handle(player, strafeComponent, velocityX, velocityZ);
-				PlayerLookup.tracking(player).forEach(foundPlayer -> AddStrafeParticlesPacket.send(foundPlayer, player.getId()));
-			}
-		}));
+	public static class Receiver implements ServerPlayNetworking.PlayChannelHandler {
+		@Override
+		public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
+			float velocityX = buf.readFloat();
+			float velocityZ = buf.readFloat();
+			server.execute(() -> ModEntityComponents.STRAFE.maybeGet(player).ifPresent(strafeComponent -> {
+				if (strafeComponent.hasStrafe()) {
+					StrafeComponent.handle(player, strafeComponent, velocityX, velocityZ);
+					PlayerLookup.tracking(player).forEach(foundPlayer -> AddStrafeParticlesPacket.send(foundPlayer, player.getId()));
+				}
+			}));
+		}
 	}
 }

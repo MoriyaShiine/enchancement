@@ -19,20 +19,22 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
-public class GalePacket implements ServerPlayNetworking.PlayChannelHandler {
+public class GalePacket {
 	public static final Identifier ID = Enchancement.id("gale");
 
 	public static void send() {
 		ClientPlayNetworking.send(ID, new PacketByteBuf(Unpooled.buffer()));
 	}
 
-	@Override
-	public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-		server.execute(() -> ModEntityComponents.GALE.maybeGet(player).ifPresent(galeComponent -> {
-			if (galeComponent.hasGale()) {
-				GaleComponent.handle(player, galeComponent);
-				PlayerLookup.tracking(player).forEach(foundPlayer -> AddGaleParticlesPacket.send(foundPlayer, player.getId()));
-			}
-		}));
+	public static class Receiver implements ServerPlayNetworking.PlayChannelHandler {
+		@Override
+		public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
+			server.execute(() -> ModEntityComponents.GALE.maybeGet(player).ifPresent(galeComponent -> {
+				if (galeComponent.hasGale()) {
+					GaleComponent.handle(player, galeComponent);
+					PlayerLookup.tracking(player).forEach(foundPlayer -> AddGaleParticlesPacket.send(foundPlayer, player.getId()));
+				}
+			}));
+		}
 	}
 }

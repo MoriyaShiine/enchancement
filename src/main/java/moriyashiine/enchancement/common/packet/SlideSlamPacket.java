@@ -17,7 +17,7 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
-public class SlideSlamPacket implements ServerPlayNetworking.PlayChannelHandler {
+public class SlideSlamPacket {
 	public static final Identifier ID = Enchancement.id("slide_slam");
 
 	public static void send() {
@@ -25,13 +25,15 @@ public class SlideSlamPacket implements ServerPlayNetworking.PlayChannelHandler 
 		ClientPlayNetworking.send(ID, buf);
 	}
 
-	@Override
-	public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-		server.execute(() -> ModEntityComponents.SLIDE.maybeGet(player).ifPresent(slideComponent -> {
-			if (slideComponent.hasSlide()) {
-				slideComponent.setShouldSlam(true);
-				slideComponent.setSlamCooldown(SlideComponent.DEFAULT_SLAM_COOLDOWN);
-			}
-		}));
+	public static class Receiver implements ServerPlayNetworking.PlayChannelHandler {
+		@Override
+		public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
+			server.execute(() -> ModEntityComponents.SLIDE.maybeGet(player).ifPresent(slideComponent -> {
+				if (slideComponent.hasSlide()) {
+					slideComponent.setShouldSlam(true);
+					slideComponent.setSlamCooldown(SlideComponent.DEFAULT_SLAM_COOLDOWN);
+				}
+			}));
+		}
 	}
 }

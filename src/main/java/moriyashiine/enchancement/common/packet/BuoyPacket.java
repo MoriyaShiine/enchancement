@@ -16,7 +16,7 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
-public class BuoyPacket implements ServerPlayNetworking.PlayChannelHandler {
+public class BuoyPacket {
 	public static final Identifier ID = Enchancement.id("buoy");
 
 	public static void send(boolean shouldBoost) {
@@ -25,13 +25,15 @@ public class BuoyPacket implements ServerPlayNetworking.PlayChannelHandler {
 		ClientPlayNetworking.send(ID, buf);
 	}
 
-	@Override
-	public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-		boolean shouldBoost = buf.readBoolean();
-		server.execute(() -> ModEntityComponents.BUOY.maybeGet(player).ifPresent(buoyComponent -> {
-			if (buoyComponent.hasBuoy()) {
-				buoyComponent.setShoudBoost(shouldBoost);
-			}
-		}));
+	public static class Receiver implements ServerPlayNetworking.PlayChannelHandler {
+		@Override
+		public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
+			boolean shouldBoost = buf.readBoolean();
+			server.execute(() -> ModEntityComponents.BUOY.maybeGet(player).ifPresent(buoyComponent -> {
+				if (buoyComponent.hasBuoy()) {
+					buoyComponent.setShoudBoost(shouldBoost);
+				}
+			}));
+		}
 	}
 }

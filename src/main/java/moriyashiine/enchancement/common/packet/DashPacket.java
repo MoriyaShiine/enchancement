@@ -18,20 +18,22 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
-public class DashPacket implements ServerPlayNetworking.PlayChannelHandler {
+public class DashPacket {
 	public static final Identifier ID = Enchancement.id("dash");
 
 	public static void send() {
 		ClientPlayNetworking.send(ID, new PacketByteBuf(Unpooled.buffer()));
 	}
 
-	@Override
-	public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-		server.execute(() -> ModEntityComponents.DASH.maybeGet(player).ifPresent(dashComponent -> {
-			if (dashComponent.hasDash()) {
-				EnchancementUtil.PACKET_IMMUNITIES.put(player, 20);
-				DashComponent.handle(player, dashComponent);
-			}
-		}));
+	public static class Receiver implements ServerPlayNetworking.PlayChannelHandler {
+		@Override
+		public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
+			server.execute(() -> ModEntityComponents.DASH.maybeGet(player).ifPresent(dashComponent -> {
+				if (dashComponent.hasDash()) {
+					EnchancementUtil.PACKET_IMMUNITIES.put(player, 20);
+					DashComponent.handle(player, dashComponent);
+				}
+			}));
+		}
 	}
 }

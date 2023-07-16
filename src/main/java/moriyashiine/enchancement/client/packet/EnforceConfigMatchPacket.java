@@ -8,6 +8,8 @@ import eu.midnightdust.lib.util.PlatformFunctions;
 import io.netty.buffer.Unpooled;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.ModConfig;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -19,7 +21,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
-public class EnforceConfigMatchPacket implements ClientPlayNetworking.PlayChannelHandler {
+public class EnforceConfigMatchPacket {
 	public static final Identifier ID = Enchancement.id("enforce_config_match");
 
 	private static final Text DISCONNECT_TEXT = Text.literal("The server you are attempting to connect to has ")
@@ -37,13 +39,16 @@ public class EnforceConfigMatchPacket implements ClientPlayNetworking.PlayChanne
 		ServerPlayNetworking.send(player, ID, buf);
 	}
 
-	@Override
-	public void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-		int encoding = buf.readInt();
-		client.execute(() -> {
-			if (ModConfig.encode() != encoding) {
-				handler.getConnection().disconnect(DISCONNECT_TEXT);
-			}
-		});
+	@Environment(EnvType.CLIENT)
+	public static class Receiver implements ClientPlayNetworking.PlayChannelHandler {
+		@Override
+		public void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
+			int encoding = buf.readInt();
+			client.execute(() -> {
+				if (ModConfig.encode() != encoding) {
+					handler.getConnection().disconnect(DISCONNECT_TEXT);
+				}
+			});
+		}
 	}
 }

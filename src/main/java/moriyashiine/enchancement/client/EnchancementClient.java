@@ -40,15 +40,15 @@ import net.minecraft.resource.ResourceType;
 public class EnchancementClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-		ClientPlayNetworking.registerGlobalReceiver(EnforceConfigMatchPacket.ID, new EnforceConfigMatchPacket());
-		ClientPlayNetworking.registerGlobalReceiver(SyncEnchantingTableCostPacket.ID, new SyncEnchantingTableCostPacket());
-		ClientPlayNetworking.registerGlobalReceiver(AddStrafeParticlesPacket.ID, new AddStrafeParticlesPacket());
-		ClientPlayNetworking.registerGlobalReceiver(AddGaleParticlesPacket.ID, new AddGaleParticlesPacket());
-		ClientPlayNetworking.registerGlobalReceiver(PlayBrimstoneSoundPacket.ID, new PlayBrimstoneSoundPacket());
-		ClientPlayNetworking.registerGlobalReceiver(StopBrimstoneSoundsS2CPacket.ID, new StopBrimstoneSoundsS2CPacket());
-		ClientPlayNetworking.registerGlobalReceiver(ResetFrozenTicksPacket.ID, new ResetFrozenTicksPacket());
-		ClientPlayNetworking.registerGlobalReceiver(SyncFrozenPlayerSlimStatusS2C.ID, new SyncFrozenPlayerSlimStatusS2C());
-		ClientPlayNetworking.registerGlobalReceiver(AddMoltenParticlesPacket.ID, new AddMoltenParticlesPacket());
+		ClientPlayNetworking.registerGlobalReceiver(EnforceConfigMatchPacket.ID, new EnforceConfigMatchPacket.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(SyncEnchantingTableCostPacket.ID, new SyncEnchantingTableCostPacket.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(AddStrafeParticlesPacket.ID, new AddStrafeParticlesPacket.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(AddGaleParticlesPacket.ID, new AddGaleParticlesPacket.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(PlayBrimstoneSoundPacket.ID, new PlayBrimstoneSoundPacket.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(StopBrimstoneSoundsS2CPacket.ID, new StopBrimstoneSoundsS2CPacket.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(ResetFrozenTicksPacket.ID, new ResetFrozenTicksPacket.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(SyncFrozenPlayerSlimStatusS2C.ID, new SyncFrozenPlayerSlimStatusS2C.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(AddMoltenParticlesPacket.ID, new AddMoltenParticlesPacket.Receiver());
 		EntityRendererRegistry.register(ModEntityTypes.FROZEN_PLAYER, FrozenPlayerEntityRenderer::new);
 		EntityRendererRegistry.register(ModEntityTypes.ICE_SHARD, IceShardEntityRenderer::new);
 		EntityRendererRegistry.register(ModEntityTypes.BRIMSTONE, BrimstoneEntityRenderer::new);

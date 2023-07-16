@@ -7,6 +7,8 @@ package moriyashiine.enchancement.client.packet;
 import io.netty.buffer.Unpooled;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.packet.SyncFrozenPlayerSlimStatusC2S;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -18,7 +20,7 @@ import net.minecraft.util.Identifier;
 
 import java.util.UUID;
 
-public class SyncFrozenPlayerSlimStatusS2C implements ClientPlayNetworking.PlayChannelHandler {
+public class SyncFrozenPlayerSlimStatusS2C {
 	public static final Identifier ID = Enchancement.id("sync_frozen_player_slim_status_s2c");
 
 	public static void send(ServerPlayerEntity player, UUID uuid) {
@@ -27,13 +29,16 @@ public class SyncFrozenPlayerSlimStatusS2C implements ClientPlayNetworking.PlayC
 		ServerPlayNetworking.send(player, ID, buf);
 	}
 
-	@Override
-	public void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-		UUID uuid = buf.readUuid();
-		client.execute(() -> {
-			if (client.player != null) {
-				SyncFrozenPlayerSlimStatusC2S.send(uuid, client.player.getModel().equals("slim"));
-			}
-		});
+	@Environment(EnvType.CLIENT)
+	public static class Receiver implements ClientPlayNetworking.PlayChannelHandler {
+		@Override
+		public void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
+			UUID uuid = buf.readUuid();
+			client.execute(() -> {
+				if (client.player != null) {
+					SyncFrozenPlayerSlimStatusC2S.send(uuid, client.player.getModel().equals("slim"));
+				}
+			});
+		}
 	}
 }

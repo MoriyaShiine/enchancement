@@ -17,7 +17,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 
-public class SlideVelocityPacket implements ServerPlayNetworking.PlayChannelHandler {
+public class SlideVelocityPacket {
 	public static final Identifier ID = Enchancement.id("slide_velocity");
 
 	public static void send(Vec3d velocity) {
@@ -27,14 +27,16 @@ public class SlideVelocityPacket implements ServerPlayNetworking.PlayChannelHand
 		ClientPlayNetworking.send(ID, buf);
 	}
 
-	@Override
-	public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-		float velocityX = buf.readFloat();
-		float velocityZ = buf.readFloat();
-		server.execute(() -> ModEntityComponents.SLIDE.maybeGet(player).ifPresent(slideComponent -> {
-			if (slideComponent.hasSlide()) {
-				slideComponent.setVelocity(new Vec3d(velocityX, 0, velocityZ));
-			}
-		}));
+	public static class Receiver implements ServerPlayNetworking.PlayChannelHandler {
+		@Override
+		public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
+			float velocityX = buf.readFloat();
+			float velocityZ = buf.readFloat();
+			server.execute(() -> ModEntityComponents.SLIDE.maybeGet(player).ifPresent(slideComponent -> {
+				if (slideComponent.hasSlide()) {
+					slideComponent.setVelocity(new Vec3d(velocityX, 0, velocityZ));
+				}
+			}));
+		}
 	}
 }
