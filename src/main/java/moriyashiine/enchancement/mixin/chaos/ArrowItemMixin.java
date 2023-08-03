@@ -28,9 +28,9 @@ import java.util.Collections;
 
 @Mixin(ArrowItem.class)
 public class ArrowItemMixin {
-	@Inject(method = "createArrow", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "createArrow", at = @At("RETURN"))
 	private void enchancement$chaos(World world, ItemStack stack, LivingEntity shooter, CallbackInfoReturnable<PersistentProjectileEntity> cir) {
-		if (stack.getItem() == Items.ARROW && EnchancementUtil.hasEnchantment(ModEnchantments.CHAOS, shooter.getActiveItem())) {
+		if (stack.getItem() == Items.ARROW && cir.getReturnValue() instanceof ArrowEntity arrow && EnchancementUtil.hasEnchantment(ModEnchantments.CHAOS, shooter.getActiveItem())) {
 			StatusEffect effect = null;
 			int attempts = 0;
 			if (shooter.isSneaking()) {
@@ -48,10 +48,8 @@ public class ArrowItemMixin {
 					}
 				}
 			}
-			ArrowEntity arrow = new ArrowEntity(world, shooter);
 			arrow.initFromStack(PotionUtil.setCustomPotionEffects(new ItemStack(Items.TIPPED_ARROW), Collections.singleton(new StatusEffectInstance(effect, effect.isInstant() ? 1 : 200))));
 			arrow.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
-			cir.setReturnValue(arrow);
 		}
 	}
 }
