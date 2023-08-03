@@ -15,6 +15,9 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class ItemStackMixin {
 	@ModifyVariable(method = "addEnchantment", at = @At("HEAD"), argsOnly = true)
 	private Enchantment enchancement$disableDisallowedEnchantments(Enchantment value) {
-		return EnchancementUtil.getSelfOrReplacement(value, (ItemStack) (Object) this);
+		if (EnchancementUtil.isEnchantmentAllowed(value)) {
+			return value;
+		}
+		return EnchancementUtil.getReplacement(value, (ItemStack) (Object) this);
 	}
 }

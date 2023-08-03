@@ -4,7 +4,6 @@
 
 package moriyashiine.enchancement.mixin.vanillachanges.disabledisallowedenchantments;
 
-import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -22,7 +21,7 @@ public class EnchantmentHelperMixin {
 	private static Map<Enchantment, Integer> enchancement$disableDisallowedEnchantments(Map<Enchantment, Integer> value, Map<Enchantment, Integer> map, ItemStack stack) {
 		Map<Enchantment, Integer> newMap = new LinkedHashMap<>();
 		for (Enchantment enchantment : value.keySet()) {
-			newMap.put(EnchancementUtil.getSelfOrReplacement(enchantment, stack), ModConfig.singleLevelMode ? 1 : value.get(enchantment));
+			newMap.put(EnchancementUtil.isEnchantmentAllowed(enchantment) ? enchantment : EnchancementUtil.getReplacement(enchantment, stack), value.get(enchantment));
 		}
 		return newMap;
 	}

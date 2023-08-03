@@ -87,6 +87,7 @@
 	"vanillachanges.singlelevelmode.EnchantCommandMixin",
 	"vanillachanges.singlelevelmode.EnchantedBookItemMixin",
 	"vanillachanges.singlelevelmode.EnchantmentHelperMixin",
+	"vanillachanges.singlelevelmode.EnchantmentLevelEntryMixin",
 	"vanillachanges.singlelevelmode.EnchantmentMixin",
 	"vanillachanges.singlelevelmode.EnchantRandomlyLootFunctionMixin",
 	"vanillachanges.singlelevelmode.ItemStackMixin",

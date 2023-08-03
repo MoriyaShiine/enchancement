@@ -64,21 +64,18 @@ public class EnchancementUtil {
 		return drops;
 	}
 
-	public static Enchantment getSelfOrReplacement(Enchantment enchantment, ItemStack stack) {
-		if (!isEnchantmentAllowed(enchantment)) {
-			List<Enchantment> enchantments = new ArrayList<>();
-			for (Enchantment entry : Registries.ENCHANTMENT) {
-				if (stack.isOf(Items.ENCHANTED_BOOK) || entry.isAcceptableItem(stack)) {
-					enchantments.add(entry);
-				}
+	public static Enchantment getReplacement(Enchantment enchantment, ItemStack stack) {
+		List<Enchantment> enchantments = new ArrayList<>();
+		for (Enchantment entry : Registries.ENCHANTMENT) {
+			if (stack.isOf(Items.ENCHANTED_BOOK) || entry.isAcceptableItem(stack)) {
+				enchantments.add(entry);
 			}
-			int index = Registries.ENCHANTMENT.getId(enchantment).hashCode() % enchantments.size();
-			if (index < 0) {
-				index += enchantments.size();
-			}
-			return enchantments.get(index);
 		}
-		return enchantment;
+		int index = Registries.ENCHANTMENT.getId(enchantment).hashCode() % enchantments.size();
+		if (index < 0) {
+			index += enchantments.size();
+		}
+		return enchantments.get(index);
 	}
 
 	public static boolean hasEnchantment(Enchantment enchantment, ItemStack stack) {
