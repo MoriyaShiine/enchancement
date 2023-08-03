@@ -26,9 +26,12 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -61,12 +64,40 @@ public class EnchancementUtil {
 		return drops;
 	}
 
+	public static Enchantment getSelfOrReplacement(Enchantment enchantment, ItemStack stack) {
+		if (!isEnchantmentAllowed(enchantment)) {
+			List<Enchantment> enchantments = new ArrayList<>();
+			for (Enchantment entry : Registries.ENCHANTMENT) {
+				if (stack.isOf(Items.ENCHANTED_BOOK) || entry.isAcceptableItem(stack)) {
+					enchantments.add(entry);
+				}
+			}
+			int index = Registries.ENCHANTMENT.getId(enchantment).hashCode() % enchantments.size();
+			if (index < 0) {
+				index += enchantments.size();
+			}
+			return enchantments.get(index);
+		}
+		return enchantment;
+	}
+
 	public static boolean hasEnchantment(Enchantment enchantment, ItemStack stack) {
 		return EnchantmentHelper.getLevel(enchantment, stack) > 0;
 	}
 
 	public static boolean hasEnchantment(Enchantment enchantment, Entity entity) {
 		return entity instanceof LivingEntity living && EnchantmentHelper.getEquipmentLevel(enchantment, living) > 0;
+	}
+
+	public static boolean isEnchantmentAllowed(Identifier identifier) {
+		if (ModConfig.invertedList) {
+			return !ModConfig.allowedEnchantments.contains(identifier.toString());
+		}
+		return ModConfig.allowedEnchantments.contains(identifier.toString());
+	}
+
+	public static boolean isEnchantmentAllowed(Enchantment enchantment) {
+		return isEnchantmentAllowed(Registries.ENCHANTMENT.getId(enchantment));
 	}
 
 	public static boolean isGroundedOrAirborne(LivingEntity living, boolean allowWater) {

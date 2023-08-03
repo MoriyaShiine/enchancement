@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.vanillachanges.disabledisallowedenchantments;
 
 import com.mojang.serialization.Lifecycle;
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.util.RemovedRegistryEntry;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.registry.Registries;
@@ -29,7 +29,7 @@ public abstract class SimpleRegistryMixin<T> {
 
 	@Inject(method = "set(ILnet/minecraft/registry/RegistryKey;Ljava/lang/Object;Lcom/mojang/serialization/Lifecycle;)Lnet/minecraft/registry/entry/RegistryEntry$Reference;", at = @At("HEAD"), cancellable = true)
 	private void enchancement$disableDisallowedEnchantments(int i, RegistryKey<T> registryKey, T object, Lifecycle lifecycle, CallbackInfoReturnable<RegistryEntry.Reference<T>> cir) {
-		if (SimpleRegistry.class.cast(this) == Registries.ENCHANTMENT && !ModConfig.isEnchantmentAllowed(registryKey.getValue())) {
+		if (SimpleRegistry.class.cast(this) == Registries.ENCHANTMENT && !EnchancementUtil.isEnchantmentAllowed(registryKey.getValue())) {
 			RemovedRegistryEntry.REMOVED_ENTRIES.add(new RemovedRegistryEntry((Enchantment) object, registryKey.getValue(), i));
 			cir.setReturnValue(RegistryEntry.Reference.standAlone(getEntryOwner(), registryKey));
 		}

@@ -5,7 +5,6 @@
 package moriyashiine.enchancement.common;
 
 import eu.midnightdust.lib.config.MidnightConfig;
-import net.minecraft.util.Identifier;
 
 import java.util.Arrays;
 import java.util.List;
@@ -81,13 +80,6 @@ public class ModConfig extends MidnightConfig {
 
 	@Entry(category = "client")
 	public static boolean enchantmentDescriptions = true;
-
-	public static boolean isEnchantmentAllowed(Identifier identifier) {
-		if (invertedList) {
-			return !allowedEnchantments.contains(identifier.toString());
-		}
-		return allowedEnchantments.contains(identifier.toString());
-	}
 
 	public static int encode() {
 		StringBuilder builder = new StringBuilder();
