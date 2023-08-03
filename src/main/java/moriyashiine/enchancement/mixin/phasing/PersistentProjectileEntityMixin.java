@@ -42,7 +42,7 @@ public abstract class PersistentProjectileEntityMixin extends Entity {
 		ModEntityComponents.PHASHING.maybeGet(this).ifPresent(phasingComponent -> {
 			if (phasingComponent.shouldPhase()) {
 				BlockState state = getWorld().getBlockState(blockHitResult.getBlockPos());
-				state.onProjectileHit(getWorld(), state, blockHitResult, PersistentProjectileEntity.class.cast(this));
+				state.onProjectileHit(getWorld(), state, blockHitResult, (PersistentProjectileEntity) (Object) this);
 				double distance = 0;
 				Vec3d start = getPos(), end = start.add(getVelocity().multiply(1 / 8F).normalize());
 				while (distance < 4) {

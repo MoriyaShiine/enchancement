@@ -20,7 +20,7 @@ public class LivingEntityMixin {
 		if (entity != null && entity.getType().isIn(ModTags.EntityTypes.VEIL_IMMUNE)) {
 			return value;
 		}
-		if (EnchancementUtil.hasEnchantment(ModEnchantments.VEIL, LivingEntity.class.cast(this))) {
+		if (EnchancementUtil.hasEnchantment(ModEnchantments.VEIL, (LivingEntity) (Object) this)) {
 			return value / 4;
 		}
 		return value;

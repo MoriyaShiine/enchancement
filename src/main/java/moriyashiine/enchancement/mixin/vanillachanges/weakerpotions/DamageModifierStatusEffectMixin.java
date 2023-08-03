@@ -19,9 +19,9 @@ public class DamageModifierStatusEffectMixin {
 	@Inject(method = "adjustModifierAmount", at = @At("RETURN"), cancellable = true)
 	private void enchancement$weakerPotions(int amplifier, EntityAttributeModifier modifier, CallbackInfoReturnable<Double> cir) {
 		if (ModConfig.weakerPotions) {
-			if (DamageModifierStatusEffect.class.cast(this) == StatusEffects.STRENGTH) {
+			if ((Object) this == StatusEffects.STRENGTH) {
 				cir.setReturnValue(cir.getReturnValueD() * 1 / 3F);
-			} else if (DamageModifierStatusEffect.class.cast(this) == StatusEffects.WEAKNESS) {
+			} else if ((Object) this == StatusEffects.WEAKNESS) {
 				cir.setReturnValue(cir.getReturnValueD() * 1 / 4F);
 			}
 		}

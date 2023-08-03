@@ -18,6 +18,6 @@ import org.spongepowered.asm.mixin.injection.At;
 public class ItemStackMixin {
 	@ModifyExpressionValue(method = "getTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getAttackDamage(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/EntityGroup;)F"))
 	private float enchancement$berserk(float value) {
-		return value + EnchancementUtil.getBonusBerserkDamage(MinecraftClient.getInstance().player, ItemStack.class.cast(this));
+		return value + EnchancementUtil.getBonusBerserkDamage(MinecraftClient.getInstance().player, (ItemStack) (Object) this);
 	}
 }

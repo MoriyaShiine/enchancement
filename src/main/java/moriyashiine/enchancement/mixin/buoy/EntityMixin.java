@@ -20,7 +20,7 @@ public abstract class EntityMixin {
 
 	@Inject(method = "onBubbleColumnCollision", at = @At("HEAD"), cancellable = true)
 	private void enchancement$buoy(boolean drag, CallbackInfo ci) {
-		if (EnchancementUtil.hasEnchantment(ModEnchantments.BUOY, Entity.class.cast(this))) {
+		if (EnchancementUtil.hasEnchantment(ModEnchantments.BUOY, (Entity) (Object) this)) {
 			onLanding();
 			ci.cancel();
 		}

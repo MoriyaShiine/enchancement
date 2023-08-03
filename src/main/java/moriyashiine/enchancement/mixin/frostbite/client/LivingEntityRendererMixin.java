@@ -84,10 +84,10 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "ConstantValue"})
 	@Inject(method = "render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("HEAD"), cancellable = true)
 	private void enchancement$frostbite(T livingEntity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-		if (LivingEntityRenderer.class.cast(this) instanceof FrozenPlayerEntityRenderer frozenPlayerEntityRenderer && livingEntity instanceof FrozenPlayerEntity frozenPlayer) {
+		if ((Object) this instanceof FrozenPlayerEntityRenderer frozenPlayerEntityRenderer && livingEntity instanceof FrozenPlayerEntity frozenPlayer) {
 			if (frozenPlayer.getDataTracker().get(FrozenPlayerEntity.SLIM)) {
 				model = (M) frozenPlayerEntityRenderer.slimModel;
 			} else {

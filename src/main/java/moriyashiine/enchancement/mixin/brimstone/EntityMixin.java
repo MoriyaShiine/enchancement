@@ -17,6 +17,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class EntityMixin {
 	@Inject(method = "dropStack(Lnet/minecraft/item/ItemStack;F)Lnet/minecraft/entity/ItemEntity;", at = @At(value = "RETURN", ordinal = 1, shift = At.Shift.BY, by = 2))
 	private void enchancement$brimstone(ItemStack stack, float yOffset, CallbackInfoReturnable<ItemEntity> cir) {
-		StopBrimstoneSoundsS2CPacket.stopSounds(Entity.class.cast(this), stack);
+		StopBrimstoneSoundsS2CPacket.stopSounds((Entity) (Object) this, stack);
 	}
 }

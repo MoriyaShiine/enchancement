@@ -20,9 +20,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PersistentProjectileEntity.class)
 public class PersistentProjectileEntityMixin {
+	@SuppressWarnings("ConstantValue")
 	@Inject(method = "onBlockHit", at = @At("TAIL"))
 	private void enchancement$warp(BlockHitResult blockHitResult, CallbackInfo ci) {
-		if (PersistentProjectileEntity.class.cast(this) instanceof TridentEntity entity && entity.getOwner() instanceof LivingEntity living) {
+		if ((Object) this instanceof TridentEntity entity && entity.getOwner() instanceof LivingEntity living) {
 			ModEntityComponents.WARP.maybeGet(entity).ifPresent(warpComponent -> {
 				if (warpComponent.hasWarp()) {
 					living.getWorld().playSoundFromEntity(null, living, ModSoundEvents.ENTITY_GENERIC_TELEPORT, living.getSoundCategory(), 1, 1);
