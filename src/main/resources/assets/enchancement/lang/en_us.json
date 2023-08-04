@@ -130,7 +130,7 @@
   "enchancement.midnightconfig.invertedList": "Inverted List",
   "enchancement.midnightconfig.overhaulEnchantingTable": "Overhaul Enchanting Table",
   "enchancement.midnightconfig.allowTreasureEnchantmentsInEnchantingTable": "Allow Treasure Enchantments In Enchanting Table",
-  "enchancement.midnightconfig.singleEnchantmentMode": "Single Enchantment Mode",
+  "enchancement.midnightconfig.enchantmentLimit": "Enchantment Limit",
   "enchancement.midnightconfig.singleLevelMode": "Single Level Mode",
   "enchancement.midnightconfig.allowInfinityOnCrossbows": "Allow Infinity On Crossbows",
   "enchancement.midnightconfig.allTridentsHaveLoyalty": "All Tridents Have Loyalty",

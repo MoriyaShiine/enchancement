@@ -123,6 +123,13 @@ public class EnchancementUtil {
 		return false;
 	}
 
+	public static boolean limitCheck(boolean fallback, boolean value) {
+		if (ModConfig.enchantmentLimit < 0) {
+			return fallback;
+		}
+		return value;
+	}
+
 	public static boolean shouldBeUnbreakable(ItemStack stack) {
 		int flag = ModConfig.unbreakingChangesFlag;
 		if (flag >= 0 && !stack.isIn(ModTags.Items.RETAINS_DURABILITY)) {

@@ -5,7 +5,9 @@
 package moriyashiine.enchancement.client.screen;
 
 import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.screenhandlers.EnchantingTableScreenHandler;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
@@ -101,7 +103,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 					enchantment = handler.getEnchantmentFromViewIndex(i);
 				}
 				MutableText enchantmentName = Text.translatable(enchantment.getTranslationKey());
-				boolean isAllowed = true;
+				boolean isAllowed = EnchancementUtil.limitCheck(true, handler.selectedEnchantments.size() < ModConfig.enchantmentLimit);
 				for (Enchantment foundEnchantment : handler.selectedEnchantments) {
 					if (!foundEnchantment.canCombine(enchantment)) {
 						isAllowed = false;

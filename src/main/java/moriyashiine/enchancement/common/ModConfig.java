@@ -35,9 +35,9 @@ public class ModConfig extends MidnightConfig {
 	public static boolean allowTreasureEnchantmentsInEnchantingTable = false;
 
 	@Entry
-	public static boolean singleEnchantmentMode = true;
-	@Entry
 	public static boolean singleLevelMode = true;
+	@Entry(min = -1)
+	public static int enchantmentLimit = 1;
 
 	@Entry
 	public static boolean allowInfinityOnCrossbows = true;
@@ -89,7 +89,7 @@ public class ModConfig extends MidnightConfig {
 		String encoding = builder.toString() +
 				invertedList +
 				overhaulEnchantingTable + allowTreasureEnchantmentsInEnchantingTable +
-				singleEnchantmentMode + singleLevelMode +
+				singleLevelMode + enchantmentLimit +
 				allowInfinityOnCrossbows + allTridentsHaveLoyalty +
 				channelingIgnitesOnMelee + channelingWorksWhenNotThundering +
 				fireAspectWorksAsFlintAndSteel + freeEnchantedBookMerging +
