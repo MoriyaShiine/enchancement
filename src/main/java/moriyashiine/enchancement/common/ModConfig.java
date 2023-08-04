@@ -36,7 +36,7 @@ public class ModConfig extends MidnightConfig {
 
 	@Entry
 	public static boolean singleLevelMode = true;
-	@Entry(min = -1)
+	@Entry
 	public static int enchantmentLimit = 1;
 
 	@Entry

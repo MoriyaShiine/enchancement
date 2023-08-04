@@ -124,7 +124,7 @@ public class EnchancementUtil {
 	}
 
 	public static boolean limitCheck(boolean fallback, boolean value) {
-		if (ModConfig.enchantmentLimit < 0) {
+		if (ModConfig.enchantmentLimit == 0) {
 			return fallback;
 		}
 		return value;
