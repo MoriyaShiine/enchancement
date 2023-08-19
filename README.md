@@ -66,7 +66,7 @@ Of the core changes, this mod will:
 * Remove most vanilla enchantments from the game. Enchancement tries to make choosing your enchantments more fun and engaging by replacing many of the boring stat change enchantments with enchantments that grant the player unique abilities.
 
 Enchancement also adds some quality of life changes:
-* Adds descriptions to the tooltip of enchanted items.
+* Adds descriptions to the tooltip of enchanted items and colors enchantment names green.
 * Infinity is now allowed on Crossbows.
 * All Tridents will have Loyalty built in as a native effect.
 * Channeling will now work during any weather, not just when thundering. Channeling will also create lightning that does not create fire or destroy items, and will ignite entities for 3 seconds on melee attack.
