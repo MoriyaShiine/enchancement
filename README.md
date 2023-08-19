@@ -81,7 +81,7 @@ Enchancement also adds some quality of life changes:
 
 **Q: Can I disable any of these changes?**
 
-A: Everything in the mod is configurable down to disabling the entire mod if there are features that you wish to disable. All of the config options are self explanatory except for unbreakingChangesFlag (0 means all items are unbreakable, greater than 0 means items with x level of Unbreaking are unbreakable, and less than 0 means disabled).
+A: Everything in the mod is configurable down to disabling the entire mod if there are features that you wish to disable. All of the config options are self explanatory except for enchantmentLimit (0 means no limit, greater than 0 means items cannot have more than that number of enchantments) and unbreakingChangesFlag (0 means all items are unbreakable, greater than 0 means items with x level of Unbreaking are unbreakable, and less than 0 means disabled).
 
 **Q: Why did you remove most of the vanilla enchantments?**
 
