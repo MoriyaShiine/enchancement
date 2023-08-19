@@ -59,7 +59,7 @@
   "enchantment.enchancement.amphibious": "Amphibious",
   "enchantment.enchancement.amphibious.desc": "Increases underwater mining and movement speed. Decreases air consumption underwater and time spent on fire.",
   "enchantment.enchancement.strafe": "Strafe",
-  "enchantment.enchancement.strafe.desc": "Increases air mobility. Double tapping your sprint key launches you in your movement direction.",
+  "enchantment.enchancement.strafe.desc": "Increases air mobility. Double tapping [%s] launches you in your movement direction.",
   "enchantment.enchancement.wardenspine": "Wardenspine",
   "enchantment.enchancement.wardenspine.desc": "Harms attackers and greatly decreases damage taken from behind.",
   "enchantment.enchancement.dash": "Dash",
@@ -108,9 +108,6 @@
   "enchantment.enchancement.disarm.desc": "Steals or disables a latched entity's held item.",
   "enchantment.enchancement.grapple": "Grapple",
   "enchantment.enchancement.grapple.desc": "Allows the Fishing Bobber to latch onto blocks. Launches you towards that block upon release. Reels in entities with more strength.",
-  "death.attack.enchancement.life_drain": "%1$s had their life drained",
-  "death.attack.enchancement.life_drain.item": "%1$s had their life drained whilst fighting %2$s wielding %3$s",
-  "death.attack.enchancement.life_drain.player": "%1$s had their life drained whilst fighting %2$s",
   "subtitles.enchancement.entity.shard.shatter": "Shard shatters",
   "subtitles.enchancement.entity.generic.strafe": "Entity strafes",
   "subtitles.enchancement.entity.generic.dash": "Entity dashes",
@@ -121,6 +118,11 @@
   "subtitles.enchancement.entity.generic.bury": "Entity buried",
   "subtitles.enchancement.block.ore.extract": "Ores extracted",
   "subtitles.enchancement.block.generic.smelt": "Block smelts",
+  "death.attack.enchancement.life_drain": "%1$s had their life drained",
+  "death.attack.enchancement.life_drain.item": "%1$s had their life drained whilst fighting %2$s wielding %3$s",
+  "death.attack.enchancement.life_drain.player": "%1$s had their life drained whilst fighting %2$s",
+  "key.categories.enchancement": "Enchancement",
+  "key.enchancement.strafe": "Strafe",
   "tooltip.enchancement.experience_level_cost": "Experience Cost: %d levels",
   "tooltip.enchancement.lapis_lazuli_cost": "Lapis Lazuli Cost: %d Lapis Lazuli",
   "tooltip.enchancement.cannot_assimilate": "Ignored by Assimilation",
@@ -150,5 +152,6 @@
   "enchancement.midnightconfig.maxLumberjackBlocks": "Max Lumberjack Blocks",
   "enchancement.midnightconfig.maxLumberjackHorizontalLength": "Max Lumberjack Horizontal Length",
   "enchancement.midnightconfig.unbreakingChangesFlag": "Unbreaking Changes Flag",
-  "enchancement.midnightconfig.enchantmentDescriptions": "Enchantment Descriptions"
+  "enchancement.midnightconfig.enchantmentDescriptions": "Enchantment Descriptions",
+  "enchancement.midnightconfig.coloredEnchantmentNames": "Colored Enchantment Names"
 }

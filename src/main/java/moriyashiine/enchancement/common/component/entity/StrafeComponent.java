@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.component.entity;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
+import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.packet.StrafePacket;
@@ -28,8 +29,8 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 
 	private boolean hasStrafe = false;
 
-	private boolean wasPressingSpring = false;
-	private int ticksLeftToPressSprint = 0;
+	private boolean wasPressingActivationKey = false;
+	private int ticksLeftToPressActivationKey = 0;
 
 	public StrafeComponent(PlayerEntity obj) {
 		this.obj = obj;
@@ -70,22 +71,22 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 		tick();
 		if (hasStrafe && strafeCooldown == 0 && !obj.isSpectator() && obj == MinecraftClient.getInstance().player) {
 			GameOptions options = MinecraftClient.getInstance().options;
-			boolean pressingSprint = options.sprintKey.isPressed();
-			if (ticksLeftToPressSprint > 0) {
-				ticksLeftToPressSprint--;
+			boolean pressingActivationKey = EnchancementClient.STRAFE_KEYBINDING.isUnbound() ? options.sprintKey.isPressed() : EnchancementClient.STRAFE_KEYBINDING.isPressed();
+			if (ticksLeftToPressActivationKey > 0) {
+				ticksLeftToPressActivationKey--;
 			}
-			if (pressingSprint && !wasPressingSpring) {
-				if (ticksLeftToPressSprint > 0) {
-					ticksLeftToPressSprint = 0;
+			if (pressingActivationKey && !wasPressingActivationKey) {
+				if (ticksLeftToPressActivationKey > 0) {
+					ticksLeftToPressActivationKey = 0;
 					Vec3d velocity = getVelocityFromInput(options).rotateY((float) Math.toRadians(-(obj.getHeadYaw() + 90)));
 					handle(obj, this, velocity.getX(), velocity.getZ());
 					addStrafeParticles(obj);
 					StrafePacket.send(velocity);
 				} else {
-					ticksLeftToPressSprint = 7;
+					ticksLeftToPressActivationKey = 7;
 				}
 			}
-			wasPressingSpring = pressingSprint;
+			wasPressingActivationKey = pressingActivationKey;
 		}
 	}
 

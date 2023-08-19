@@ -80,6 +80,8 @@ public class ModConfig extends MidnightConfig {
 
 	@Entry(category = "client")
 	public static boolean enchantmentDescriptions = true;
+	@Entry(category = "client")
+	public static boolean coloredEnchantmentNames = true;
 
 	public static int encode() {
 		StringBuilder builder = new StringBuilder();
