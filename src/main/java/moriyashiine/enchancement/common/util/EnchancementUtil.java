@@ -87,6 +87,9 @@ public class EnchancementUtil {
 	}
 
 	public static boolean isEnchantmentAllowed(Identifier identifier) {
+		if (identifier == null) {
+			return true;
+		}
 		if (ModConfig.invertedList) {
 			return !ModConfig.allowedEnchantments.contains(identifier.toString());
 		}
