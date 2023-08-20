@@ -142,6 +142,7 @@
 	"slide.client.GameRendererMixin",
 	"slide.client.KeyboardInputMixin",
 	"slide.client.PlayerEntityRendererMixin",
+	"strafe.client.TranslatableTextContentMixin",
 	"torch.client.ModelLoaderMixin",
 	"veil.client.EntityRendererMixin"
   ],
