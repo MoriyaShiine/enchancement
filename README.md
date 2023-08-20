@@ -11,7 +11,7 @@ Helmet Enchantments:
 
 Chestplate Enchantments:
 * Amphibious: Increases underwater mining and movement speed. Decreases air consumption underwater and time spent on fire.
-* Strafe: Increases air mobility. Double tapping your sprint key launches you in your movement direction.
+* Strafe: Increases air mobility. Double tapping your sprint/strafe key launches you in your movement direction.
 * Wardenspine: Harms attackers and greatly decreases damage taken from behind.
 
 Leggings Enchantments:
