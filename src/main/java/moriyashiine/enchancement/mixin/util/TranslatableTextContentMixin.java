@@ -37,7 +37,7 @@ public class TranslatableTextContentMixin {
 			case "enchantment.minecraft.unbreaking.desc" ->
 					ModConfig.unbreakingChangesFlag > 0 ? key + ".redirect" : key;
 			case "advancements.adventure.two_birds_one_arrow.description" ->
-					ModConfig.allowedEnchantments.contains("enchancement:brimstone") ? key + ".redirect" : key;
+					!ModConfig.disallowedEnchantments.contains("enchancement:brimstone") ? key + ".redirect" : key;
 			default -> key;
 		};
 	}

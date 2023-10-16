@@ -128,7 +128,7 @@
   "tooltip.enchancement.cannot_assimilate": "Ignored by Assimilation",
   "enchancement.midnightconfig.title": "Enchancement",
   "enchancement.midnightconfig.category.client": "Client",
-  "enchancement.midnightconfig.allowedEnchantments": "Allowed Enchantments",
+  "enchancement.midnightconfig.disallowedEnchantments": "Disallowed Enchantments",
   "enchancement.midnightconfig.invertedList": "Inverted List",
   "enchancement.midnightconfig.overhaulEnchantingTable": "Overhaul Enchanting Table",
   "enchancement.midnightconfig.allowTreasureEnchantmentsInEnchantingTable": "Allow Treasure Enchantments In Enchanting Table",

@@ -11,21 +11,38 @@ import java.util.List;
 
 public class ModConfig extends MidnightConfig {
 	@Entry
-	public static List<String> allowedEnchantments = Arrays.asList(
-			"enchancement:assimilation", "enchancement:perception", "enchancement:veil",
-			"enchancement:amphibious", "enchancement:strafe", "enchancement:wardenspine",
-			"enchancement:dash", "enchancement:slide",
-			"enchancement:bouncy", "enchancement:buoy", "enchancement:gale",
-			"enchancement:berserk", "minecraft:fire_aspect", "enchancement:frostbite",
-			"minecraft:infinity",
-			"enchancement:chaos", "enchancement:delay", "enchancement:phasing",
-			"enchancement:brimstone", "enchancement:scatter", "enchancement:torch",
-			"minecraft:channeling", "enchancement:leech", "minecraft:riptide", "enchancement:warp",
-			"enchancement:extracting", "enchancement:molten",
-			"enchancement:beheading", "enchancement:lumberjack",
-			"enchancement:bury", "enchancement:scooping",
-			"enchancement:disarm", "enchancement:grapple", "minecraft:luck_of_the_sea",
-			"minecraft:efficiency", "minecraft:silk_touch");
+	public static List<String> disallowedEnchantments = Arrays.asList(
+			"minecraft:aqua_affinity",
+			"minecraft:bane_of_arthropods",
+			"minecraft:binding_curse",
+			"minecraft:blast_protection",
+			"minecraft:depth_strider",
+			"minecraft:feather_falling",
+			"minecraft:fire_protection",
+			"minecraft:flame",
+			"minecraft:fortune",
+			"minecraft:frost_walker",
+			"minecraft:impaling",
+			"minecraft:knockback",
+			"minecraft:looting",
+			"minecraft:loyalty",
+			"minecraft:lure",
+			"minecraft:mending",
+			"minecraft:multishot",
+			"minecraft:piercing",
+			"minecraft:power",
+			"minecraft:projectile_protection",
+			"minecraft:protection",
+			"minecraft:punch",
+			"minecraft:quick_charge",
+			"minecraft:respiration",
+			"minecraft:sharpness",
+			"minecraft:smite",
+			"minecraft:soul_speed",
+			"minecraft:sweeping",
+			"minecraft:swift_sneak",
+			"minecraft:thorns",
+			"minecraft:unbreaking");
 	@Entry
 	public static boolean invertedList = false;
 
@@ -85,7 +102,7 @@ public class ModConfig extends MidnightConfig {
 
 	public static int encode() {
 		StringBuilder builder = new StringBuilder();
-		for (String value : allowedEnchantments) {
+		for (String value : disallowedEnchantments) {
 			builder.append(value);
 		}
 		String encoding = builder.toString() +

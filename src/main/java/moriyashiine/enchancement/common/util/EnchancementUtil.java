@@ -91,9 +91,9 @@ public class EnchancementUtil {
 			return true;
 		}
 		if (ModConfig.invertedList) {
-			return !ModConfig.allowedEnchantments.contains(identifier.toString());
+			return ModConfig.disallowedEnchantments.contains(identifier.toString());
 		}
-		return ModConfig.allowedEnchantments.contains(identifier.toString());
+		return !ModConfig.disallowedEnchantments.contains(identifier.toString());
 	}
 
 	public static boolean isEnchantmentAllowed(Enchantment enchantment) {
