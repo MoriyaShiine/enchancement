@@ -22,19 +22,16 @@ import java.util.List;
 public class EnchantmentDescriptionsEvent implements ItemTooltipCallback {
 	@Override
 	public void getTooltip(ItemStack stack, TooltipContext context, List<Text> lines) {
-		EnchantmentHelper.get(stack).forEach((enchantment, integer) -> {
-			for (int i = 0; i < lines.size(); i++) {
-				if (lines.get(i).getContent() instanceof TranslatableTextContent text && text.getKey().equals(enchantment.getTranslationKey())) {
-					if (ModConfig.coloredEnchantmentNames && !enchantment.isCursed()) {
-						lines.set(i, Text.translatable(text.getKey()).formatted(Formatting.GREEN));
-					}
-					if (enableDescriptions()) {
+		if (enableDescriptions()) {
+			EnchantmentHelper.get(stack).forEach((enchantment, integer) -> {
+				for (int i = 0; i < lines.size(); i++) {
+					if (lines.get(i).getContent() instanceof TranslatableTextContent text && text.getKey().equals(enchantment.getTranslationKey())) {
 						lines.add(i + 1, Text.literal(" - ").formatted(Formatting.GRAY).append(Text.translatable(enchantment.getTranslationKey() + ".desc").formatted(Formatting.DARK_GRAY)));
+						break;
 					}
-					break;
 				}
-			}
-		});
+			});
+		}
 	}
 
 	private static boolean enableDescriptions() {
