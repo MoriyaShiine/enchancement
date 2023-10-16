@@ -89,4 +89,4 @@ A: I do not like how much of the vanilla enchanting meta relies exclusively on P
 
 **Q: I want to keep every enchantment anyway. How do I do this?**
 
-A: In the config file, remove all entries from allowedEnchantments and set invertedList to true. Keep in mind that while this shouldn't cause any bugs, any balance concerns created by doing this will not be addressed as it is outside of the scope of the mod's vision.
+A: In the configuration file, remove all entries from disallowedEnchantments. Keep in mind that while this shouldn't cause any bugs, any balance concerns created by doing this will not be addressed as it is outside of the scope of the mod's vision.
