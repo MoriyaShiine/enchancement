@@ -21,7 +21,14 @@ public class EnchantmentHelperMixin {
 	private static Map<Enchantment, Integer> enchancement$disableDisallowedEnchantments(Map<Enchantment, Integer> value, Map<Enchantment, Integer> map, ItemStack stack) {
 		Map<Enchantment, Integer> newMap = new LinkedHashMap<>();
 		for (Enchantment enchantment : value.keySet()) {
-			newMap.put(EnchancementUtil.isEnchantmentAllowed(enchantment) ? enchantment : EnchancementUtil.getReplacement(enchantment, stack), value.get(enchantment));
+			if (EnchancementUtil.isEnchantmentAllowed(enchantment)) {
+				newMap.put(enchantment, value.get(enchantment));
+			} else {
+				Enchantment replacement = EnchancementUtil.getReplacement(enchantment, stack);
+				if (replacement != null) {
+					newMap.put(replacement, Math.min(replacement.getMaxLevel(), value.get(enchantment)));
+				}
+			}
 		}
 		return newMap;
 	}

@@ -27,6 +27,7 @@ import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,12 +78,16 @@ public class EnchancementUtil {
 		return map;
 	}
 
+	@Nullable
 	public static Enchantment getReplacement(Enchantment enchantment, ItemStack stack) {
 		List<Enchantment> enchantments = new ArrayList<>();
 		for (Enchantment entry : Registries.ENCHANTMENT) {
 			if (stack.isOf(Items.ENCHANTED_BOOK) || entry.isAcceptableItem(stack)) {
 				enchantments.add(entry);
 			}
+		}
+		if (enchantments.isEmpty()) {
+			return null;
 		}
 		int index = Registries.ENCHANTMENT.getId(enchantment).hashCode() % enchantments.size();
 		if (index < 0) {
