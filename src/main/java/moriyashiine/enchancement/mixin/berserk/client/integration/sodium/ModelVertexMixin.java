@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-@Mixin(ModelVertex.class)
+@Mixin(value = ModelVertex.class, remap = false)
 public class ModelVertexMixin {
 	@ModifyVariable(method = "write", at = @At("HEAD"), ordinal = 0, argsOnly = true)
 	private static int enchancement$berserk(int value) {
