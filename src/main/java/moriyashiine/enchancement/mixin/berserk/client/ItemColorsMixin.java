@@ -5,8 +5,6 @@
 package moriyashiine.enchancement.mixin.berserk.client;
 
 import moriyashiine.enchancement.client.util.EnchancementClientUtil;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Environment(EnvType.CLIENT)
 @Mixin(ItemColors.class)
 public class ItemColorsMixin {
 	@Inject(method = "getColor", at = @At("RETURN"), cancellable = true)

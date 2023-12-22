@@ -8,8 +8,6 @@ import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.screenhandlers.EnchantingTableScreenHandler;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.DiffuseLighting;
@@ -31,7 +29,6 @@ import net.minecraft.util.math.RotationAxis;
 
 import java.util.List;
 
-@Environment(EnvType.CLIENT)
 public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHandler> {
 	private static final Identifier TEXTURE = Enchancement.id("textures/gui/container/enchanting_table.png");
 	private static final Identifier BOOK_TEXTURE = new Identifier("textures/entity/enchanting_table_book.png");

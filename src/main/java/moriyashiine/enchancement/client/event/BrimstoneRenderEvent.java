@@ -7,13 +7,10 @@ package moriyashiine.enchancement.client.event;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.brimstone.client.InGameHudAccessor;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 
-@Environment(EnvType.CLIENT)
 public class BrimstoneRenderEvent implements HudRenderCallback {
 	public static int forcedHeight = -1, health = -1;
 

@@ -8,8 +8,6 @@ import moriyashiine.enchancement.client.reloadlisteners.FrozenReloadListener;
 import moriyashiine.enchancement.client.render.entity.mob.FrozenPlayerEntityRenderer;
 import moriyashiine.enchancement.common.entity.mob.FrozenPlayerEntity;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -33,7 +31,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 
-@Environment(EnvType.CLIENT)
 @Mixin(LivingEntityRenderer.class)
 public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extends EntityModel<T>> extends EntityRenderer<T> {
 	@Shadow

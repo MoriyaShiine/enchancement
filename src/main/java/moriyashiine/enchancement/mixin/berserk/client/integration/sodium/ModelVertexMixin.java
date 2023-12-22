@@ -6,13 +6,10 @@ package moriyashiine.enchancement.mixin.berserk.client.integration.sodium;
 
 import moriyashiine.enchancement.client.util.EnchancementClientUtil;
 import net.caffeinemc.mods.sodium.api.vertex.format.common.ModelVertex;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-@Environment(EnvType.CLIENT)
 @Mixin(ModelVertex.class)
 public class ModelVertexMixin {
 	@ModifyVariable(method = "write", at = @At("HEAD"), ordinal = 0, argsOnly = true)

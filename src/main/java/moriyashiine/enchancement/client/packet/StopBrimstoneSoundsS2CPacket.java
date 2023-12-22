@@ -52,7 +52,7 @@ public class StopBrimstoneSoundsS2CPacket {
 		}
 	}
 
-	@Environment(EnvType.CLIENT)
+	//client
 	public static void maybeStopSounds(PlayerEntity player, ItemStack stack) {
 		if (player.getItemUseTime() > 0) {
 			UUID brimstoneUUID = getBrimstoneUUID(stack);
@@ -63,7 +63,7 @@ public class StopBrimstoneSoundsS2CPacket {
 		}
 	}
 
-	@Environment(EnvType.CLIENT)
+	//client
 	public static void stopSounds(MinecraftClient client, UUID uuid) {
 		((SoundSystemAccessor) ((SoundManagerAccessor) client.getSoundManager()).enchancement$getSoundSystem()).enchancement$getSounds().values().forEach(sound -> {
 			if (sound instanceof BrimstoneSoundInstance brimstoneSoundInstance && brimstoneSoundInstance.getUuid().equals(uuid)) {

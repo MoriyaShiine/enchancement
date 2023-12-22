@@ -8,8 +8,6 @@ import moriyashiine.enchancement.client.event.BrimstoneRenderEvent;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.CrossbowItem;
@@ -29,7 +27,6 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.List;
 
-@Environment(EnvType.CLIENT)
 @Mixin(CrossbowItem.class)
 public abstract class CrossbowItemMixin {
 	@Shadow

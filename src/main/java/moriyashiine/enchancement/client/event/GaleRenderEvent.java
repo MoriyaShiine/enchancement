@@ -7,14 +7,11 @@ package moriyashiine.enchancement.client.event;
 import com.mojang.blaze3d.systems.RenderSystem;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 
-@Environment(EnvType.CLIENT)
 public class GaleRenderEvent implements HudRenderCallback {
 	private static final Identifier GALE_TEXTURE = Enchancement.id("textures/gui/gale.png");
 

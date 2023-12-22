@@ -6,8 +6,6 @@ package moriyashiine.enchancement.client.event;
 
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.ModConfig;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -18,7 +16,6 @@ import net.minecraft.util.Formatting;
 
 import java.util.List;
 
-@Environment(EnvType.CLIENT)
 public class EnchantmentDescriptionsEvent implements ItemTooltipCallback {
 	@Override
 	public void getTooltip(ItemStack stack, TooltipContext context, List<Text> lines) {

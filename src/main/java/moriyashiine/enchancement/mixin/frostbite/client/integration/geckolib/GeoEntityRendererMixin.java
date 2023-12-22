@@ -8,8 +8,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import moriyashiine.enchancement.client.reloadlisteners.FrozenReloadListener;
 import moriyashiine.enchancement.common.component.entity.FrozenComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
@@ -38,7 +36,6 @@ import software.bernie.geckolib.model.data.EntityModelData;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import software.bernie.geckolib.renderer.GeoRenderer;
 
-@Environment(EnvType.CLIENT)
 @Mixin(value = GeoEntityRenderer.class, remap = false)
 public abstract class GeoEntityRendererMixin<T extends Entity & GeoAnimatable> extends EntityRenderer<T> implements GeoRenderer<T> {
 	@Shadow

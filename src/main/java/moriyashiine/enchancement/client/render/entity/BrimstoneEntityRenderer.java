@@ -6,8 +6,6 @@ package moriyashiine.enchancement.client.render.entity;
 
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.entity.projectile.BrimstoneEntity;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.ProjectileEntityRenderer;
@@ -18,7 +16,6 @@ import net.minecraft.util.math.RotationAxis;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
-@Environment(EnvType.CLIENT)
 public class BrimstoneEntityRenderer extends ProjectileEntityRenderer<BrimstoneEntity> {
 	private static final Identifier TEXTURE = Enchancement.id("textures/entity/brimstone.png");
 

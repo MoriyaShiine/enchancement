@@ -5,8 +5,6 @@
 package moriyashiine.enchancement.mixin.frostbite.client.integration.geckolib;
 
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,7 +14,6 @@ import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.GeoModel;
 
-@Environment(EnvType.CLIENT)
 @Mixin(value = GeoModel.class, remap = false)
 public class GeoModelMixin<T extends GeoAnimatable> {
 	@Shadow

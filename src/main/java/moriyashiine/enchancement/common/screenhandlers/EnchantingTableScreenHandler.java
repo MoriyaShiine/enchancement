@@ -8,8 +8,6 @@ import moriyashiine.enchancement.client.packet.SyncEnchantingTableCostPacket;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
 import moriyashiine.enchancement.common.init.ModTags;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.EnchantingTableBlock;
@@ -290,7 +288,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		}
 	}
 
-	@Environment(EnvType.CLIENT)
+	//client
 	public void setCost(int cost) {
 		this.cost = cost;
 	}

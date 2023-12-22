@@ -5,8 +5,6 @@
 package moriyashiine.enchancement.mixin.strafe.client;
 
 import moriyashiine.enchancement.client.EnchancementClient;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableTextContent;
@@ -15,7 +13,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-@Environment(EnvType.CLIENT)
 @Mixin(TranslatableTextContent.class)
 public class TranslatableTextContentMixin {
 	@ModifyVariable(method = "<init>", at = @At("HEAD"), argsOnly = true)

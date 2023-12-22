@@ -5,8 +5,6 @@
 package moriyashiine.enchancement.mixin.leech.client;
 
 import moriyashiine.enchancement.client.util.EnchancementClientUtil;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -22,7 +20,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Environment(EnvType.CLIENT)
 @Mixin(TridentEntityRenderer.class)
 public abstract class TridentEntityRendererMixin extends EntityRenderer<TridentEntity> {
 	@Shadow

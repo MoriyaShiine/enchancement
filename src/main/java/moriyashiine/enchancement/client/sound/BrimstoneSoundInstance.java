@@ -5,8 +5,6 @@
 package moriyashiine.enchancement.client.sound;
 
 import moriyashiine.enchancement.common.init.ModSoundEvents;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.sound.MovingSoundInstance;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -15,7 +13,6 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.UUID;
 
-@Environment(EnvType.CLIENT)
 public class BrimstoneSoundInstance extends MovingSoundInstance {
 	private final Entity entity;
 	private final UUID uuid;

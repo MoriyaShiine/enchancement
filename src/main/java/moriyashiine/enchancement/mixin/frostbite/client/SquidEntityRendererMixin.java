@@ -5,8 +5,6 @@
 package moriyashiine.enchancement.mixin.frostbite.client;
 
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.render.entity.SquidEntityRenderer;
 import net.minecraft.entity.passive.SquidEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Environment(EnvType.CLIENT)
 @Mixin(SquidEntityRenderer.class)
 public class SquidEntityRendererMixin<T extends SquidEntity> {
 	@ModifyVariable(method = "setupTransforms(Lnet/minecraft/entity/passive/SquidEntity;Lnet/minecraft/client/util/math/MatrixStack;FFF)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/util/math/MathHelper;lerp(FFF)F", ordinal = 0), ordinal = 3)
