@@ -96,7 +96,9 @@ public class TorchEntity extends PersistentProjectileEntity {
 					}
 				}
 			}
-			dropStack(asItemStack(), 0.1F);
+			if (getOwner() instanceof PlayerEntity) {
+				dropStack(asItemStack(), 0.1F);
+			}
 		}
 	}
 

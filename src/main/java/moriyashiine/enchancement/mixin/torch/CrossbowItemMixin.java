@@ -38,7 +38,7 @@ public class CrossbowItemMixin {
 
 	@ModifyVariable(method = "createArrow", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/ArrowItem;createArrow(Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/LivingEntity;)Lnet/minecraft/entity/projectile/PersistentProjectileEntity;"))
 	private static PersistentProjectileEntity enchancement$torch(PersistentProjectileEntity value, World world, LivingEntity entity, ItemStack crossbow, ItemStack arrow) {
-		if (arrow.isOf(Items.TORCH)) {
+		if (EnchancementUtil.hasEnchantment(ModEnchantments.TORCH, crossbow) && (arrow.isOf(Items.TORCH) || !(entity instanceof PlayerEntity))) {
 			TorchEntity torch = new TorchEntity(world, entity);
 			torch.setDamage(torch.getDamage() / 5);
 			return torch;

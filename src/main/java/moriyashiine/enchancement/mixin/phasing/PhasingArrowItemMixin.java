@@ -8,6 +8,7 @@ import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ArrowItem;
 import net.minecraft.item.ItemStack;
@@ -22,7 +23,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class PhasingArrowItemMixin {
 	@Inject(method = "createArrow", at = @At("RETURN"))
 	private void enchancement$phasing(World world, ItemStack stack, LivingEntity shooter, CallbackInfoReturnable<PersistentProjectileEntity> cir) {
-		if (EnchancementUtil.hasEnchantment(ModEnchantments.PHASING, shooter.getActiveItem())) {
+		boolean hasPhasing = shooter instanceof PlayerEntity ? EnchancementUtil.hasEnchantment(ModEnchantments.PHASING, shooter.getActiveItem()) : EnchancementUtil.hasEnchantment(ModEnchantments.PHASING, shooter);
+		if (hasPhasing) {
 			PersistentProjectileEntity arrow = cir.getReturnValue();
 			ModEntityComponents.PHASHING.maybeGet(arrow).ifPresent(phasingComponent -> {
 				phasingComponent.setShouldPhase(true);

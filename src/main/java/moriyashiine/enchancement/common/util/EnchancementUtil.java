@@ -14,10 +14,7 @@ import moriyashiine.enchancement.mixin.util.ItemEntityAccessor;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,15 +22,16 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.FluidTags;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.random.Random;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 
 public class EnchancementUtil {
 	public static final Object2IntMap<PlayerEntity> PACKET_IMMUNITIES = new Object2IntOpenHashMap<>();
@@ -62,6 +60,21 @@ public class EnchancementUtil {
 			}
 		}
 		return drops;
+	}
+
+	public static Map<Enchantment, Integer> getRandomEnchantment(ItemStack stack, Random random) {
+		Map<Enchantment, Integer> map = new HashMap<>();
+		List<Enchantment> enchantments = new ArrayList<>();
+		for (Enchantment enchantment : Registries.ENCHANTMENT) {
+			if (enchantment.isAcceptableItem(stack)) {
+				enchantments.add(enchantment);
+			}
+		}
+		if (!enchantments.isEmpty()) {
+			Enchantment enchantment = enchantments.get(random.nextInt(enchantments.size()));
+			map.put(enchantment, MathHelper.nextInt(random, 1, enchantment.getMaxLevel()));
+		}
+		return map;
 	}
 
 	public static Enchantment getReplacement(Enchantment enchantment, ItemStack stack) {
@@ -158,17 +171,10 @@ public class EnchancementUtil {
 		if (attacker == hitEntity) {
 			return false;
 		}
-		if (hitEntity instanceof PlayerEntity hitPlayer) {
-			return attacker instanceof PlayerEntity attackingPlayer && attackingPlayer.shouldDamagePlayer(hitPlayer);
-		} else {
-			NbtCompound tag = hitEntity.writeNbt(new NbtCompound());
-			if (tag.contains("Owner")) {
-				UUID owner = tag.getUuid("Owner");
-				if (owner.equals(attacker.getUuid())) {
-					return false;
-				}
-				return shouldHurt(attacker, ((ServerWorld) attacker.getWorld()).getEntity(owner));
-			}
+		if (hitEntity instanceof PlayerEntity hitPlayer && attacker instanceof PlayerEntity attackingPlayer) {
+			return attackingPlayer.shouldDamagePlayer(hitPlayer);
+		} else if (hitEntity instanceof Ownable ownable) {
+			return shouldHurt(attacker, ownable.getOwner());
 		}
 		return true;
 	}

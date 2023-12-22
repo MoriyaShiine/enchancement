@@ -8,6 +8,7 @@ import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ArrowItem;
 import net.minecraft.item.ItemStack;
@@ -22,7 +23,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class DelayArrowItemMixin {
 	@Inject(method = "createArrow", at = @At("RETURN"))
 	private void enchancement$delay(World world, ItemStack stack, LivingEntity shooter, CallbackInfoReturnable<PersistentProjectileEntity> cir) {
-		if (EnchancementUtil.hasEnchantment(ModEnchantments.DELAY, shooter.getActiveItem())) {
+		boolean hasDelay = shooter instanceof PlayerEntity ? EnchancementUtil.hasEnchantment(ModEnchantments.DELAY, shooter.getActiveItem()) : EnchancementUtil.hasEnchantment(ModEnchantments.DELAY, shooter);
+		if (hasDelay) {
 			PersistentProjectileEntity arrow = cir.getReturnValue();
 			ModEntityComponents.DELAY.maybeGet(arrow).ifPresent(delayComponent -> {
 				delayComponent.setHasDelay(true);
