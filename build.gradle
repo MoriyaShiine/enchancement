@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.3-SNAPSHOT'
+    id 'fabric-loom' version '1.4-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -46,8 +46,7 @@ dependencies {
     mappings "net.fabricmc:yarn:${yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${loader_version}"
 
-    implementation include("com.github.LlamaLad7:MixinExtras:${mixin_extras_version}")
-    annotationProcessor "com.github.LlamaLad7:MixinExtras:${mixin_extras_version}"
+    include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:${mixin_extras_version}")))
     modApi include("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_version}")
     modApi include("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}")
     modApi include("dev.onyxstudios.cardinal-components-api:cardinal-components-world:${cardinal_components_version}")
