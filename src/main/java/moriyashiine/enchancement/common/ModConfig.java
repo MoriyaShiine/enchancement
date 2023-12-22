@@ -42,7 +42,8 @@ public class ModConfig extends MidnightConfig {
 			"minecraft:sweeping",
 			"minecraft:swift_sneak",
 			"minecraft:thorns",
-			"minecraft:unbreaking");
+			"minecraft:unbreaking",
+			"minecraft:vanishing_curse");
 	@Entry
 	public static boolean invertedList = false;
 
