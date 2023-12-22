@@ -63,7 +63,7 @@
 	"vanillachanges.allowinfinityoncrossbows.EnchantmentMixin",
 	"vanillachanges.alltridentshaveloyalty.EnchantmentHelperMixin",
 	"vanillachanges.alltridentshaveloyalty.TridentEntityMixin",
-	"vanillachanges.channelingignitesonmelee.EnchantmentMixin",
+	"vanillachanges.channelingignitesonmelee.EnchantmentHelperMixin",
 	"vanillachanges.channelingworkswhennotthundering.LightningRodBlockMixin",
 	"vanillachanges.channelingworkswhennotthundering.TridentEntityMixin",
 	"vanillachanges.disabledisallowedenchantments.EnchantedBookItemMixin",
