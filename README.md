@@ -67,6 +67,7 @@ Of the core changes, this mod will:
 
 Enchancement also adds some quality of life changes:
 * Adds descriptions to the tooltip of enchanted items and colors enchantment names green.
+* Fishing Bobbers are now accurately thrown instead of having a weird offset.
 * Infinity is now allowed on Crossbows.
 * All Tridents will have Loyalty built in as a native effect.
 * Channeling will now work during any weather, not just when thundering. Channeling will also create lightning that does not create fire or destroy items, and will ignite entities for 3 seconds on melee attack.
@@ -74,6 +75,7 @@ Enchancement also adds some quality of life changes:
 * Enchanted Books are free to merge with items in an Anvil.
 * Luck of the Sea acts as if the item also has Lure.
 * Ender Pearls no longer deal damage upon landing.
+* Mobs can spawn with any random enchantment.
 * Tridents will return from the void if thrown down there.
 * Makes a select few potions a bit weaker to account for the removal of some enchantments.
 * Reduces the saturation gained and Regeneration level given from Golden Apples.
