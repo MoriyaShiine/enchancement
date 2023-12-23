@@ -37,7 +37,7 @@ public class BouncyComponent implements AutoSyncedComponent, CommonTickingCompon
 		hasBouncy = EnchancementUtil.hasEnchantment(ModEnchantments.BOUNCY, obj);
 		if (hasBouncy) {
 			if (obj.isOnGround() && obj.isSneaking()) {
-				if (bounceStrength < 60) {
+				if (bounceStrength < 30) {
 					bounceStrength++;
 				}
 			} else {
@@ -49,7 +49,7 @@ public class BouncyComponent implements AutoSyncedComponent, CommonTickingCompon
 	}
 
 	public float getBoostProgress() {
-		return MathHelper.lerp((bounceStrength - 2) / 58F, 0F, 1F);
+		return MathHelper.lerp((bounceStrength - 2) / 28F, 0F, 1F);
 	}
 
 	public boolean hasBouncy() {
