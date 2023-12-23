@@ -58,6 +58,8 @@ public class ModConfig extends MidnightConfig {
 	public static int enchantmentLimit = 1;
 
 	@Entry
+	public static boolean accurateFishingBobbers = true;
+	@Entry
 	public static boolean allowInfinityOnCrossbows = true;
 	@Entry
 	public static boolean allTridentsHaveLoyalty = true;

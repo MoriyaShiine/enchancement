@@ -4,6 +4,7 @@
 
 package moriyashiine.enchancement.common.entity.projectile;
 
+import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -50,6 +51,10 @@ public class GrappleFishingBobberEntity extends FishingBobberEntity {
 		setPitch((float) (MathHelper.atan2(velocity.y, velocity.horizontalLength()) * 57.2957763671875));
 		prevYaw = getYaw();
 		prevPitch = getPitch();
+
+		if (ModConfig.accurateFishingBobbers) {
+			accurateFishingBobbers(this, thrower, 2.75F);
+		}
 	}
 
 	@Override
@@ -87,5 +92,10 @@ public class GrappleFishingBobberEntity extends FishingBobberEntity {
 	@Override
 	protected Text getDefaultName() {
 		return EntityType.FISHING_BOBBER.getName();
+	}
+
+	public static void accurateFishingBobbers(FishingBobberEntity fishingBobber, PlayerEntity thrower, float speed) {
+		fishingBobber.refreshPositionAndAngles(thrower.getX(), thrower.getEyeY(), thrower.getZ(), thrower.getYaw(), thrower.getPitch());
+		fishingBobber.setVelocity(thrower, thrower.getPitch(), thrower.getYaw(), 0, speed, 0);
 	}
 }

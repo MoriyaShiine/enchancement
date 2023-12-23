@@ -61,6 +61,7 @@
 	"util.ServerPlayNetworkHandlerMixin",
 	"util.TranslatableTextContentMixin",
 	"util.enforceconfigmatch.PlayerManagerMixin",
+	"vanillachanges.accuratefishingbobbers.FishingBobberEntityMixin",
 	"vanillachanges.allowinfinityoncrossbows.CrossbowItemMixin",
 	"vanillachanges.allowinfinityoncrossbows.EnchantmentMixin",
 	"vanillachanges.alltridentshaveloyalty.EnchantmentHelperMixin",
