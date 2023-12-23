@@ -50,6 +50,10 @@ public abstract class LivingEntityMixin extends Entity {
 		if (!damageSource.isOf(DamageTypes.STALAGMITE) && fallDistance > getSafeFallDistance() && EnchancementUtil.hasEnchantment(ModEnchantments.BOUNCY, this)) {
 			getWorld().playSoundFromEntity(null, this, SoundEvents.BLOCK_SLIME_BLOCK_FALL, getSoundCategory(), 1, 1);
 			if (!bypassesLandingEffects()) {
+				BouncyComponent bouncyComponent = ModEntityComponents.BOUNCY.getNullable(this);
+				if (bouncyComponent != null && bouncyComponent.grappleTimer > 0) {
+					fallDistance = 30;
+				}
 				double bounceStrength = Math.log((fallDistance / 7) + 1) / Math.log(1.05) / 16;
 				setVelocity(getVelocity().getX(), bounceStrength, getVelocity().getZ());
 				velocityModified = true;

@@ -14,7 +14,7 @@ import net.minecraft.util.math.MathHelper;
 
 public class BouncyComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private final PlayerEntity obj;
-	public int bounceStrength = 0;
+	public int bounceStrength = 0, grappleTimer = 0;
 
 	private boolean hasBouncy = false;
 
@@ -25,11 +25,13 @@ public class BouncyComponent implements AutoSyncedComponent, CommonTickingCompon
 	@Override
 	public void readFromNbt(NbtCompound tag) {
 		bounceStrength = tag.getInt("BounceStrength");
+		grappleTimer = tag.getInt("GrappleTimer");
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag) {
 		tag.putInt("BounceStrength", bounceStrength);
+		tag.putInt("GrappleTimer", grappleTimer);
 	}
 
 	@Override
@@ -43,8 +45,14 @@ public class BouncyComponent implements AutoSyncedComponent, CommonTickingCompon
 			} else {
 				bounceStrength = 0;
 			}
+			if (obj.isOnGround()) {
+				grappleTimer = 0;
+			} else if (grappleTimer > 0) {
+				grappleTimer--;
+			}
 		} else {
 			bounceStrength = 0;
+			grappleTimer = 0;
 		}
 	}
 
