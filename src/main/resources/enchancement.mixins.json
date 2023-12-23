@@ -76,6 +76,7 @@
 	"vanillachanges.disabledisallowedenchantments.SimpleRegistryMixin",
 	"vanillachanges.disabledisallowedenchantments.TagEntryMixin",
 	"vanillachanges.disabledisallowedenchantments.integration.architectury.RegistrarManagerImplRegistrarImplMixin",
+	"vanillachanges.drowneduseheldtrident.DrownedEntityMixin",
 	"vanillachanges.enchantmentlimit.AnvilScreenHandlerMixin",
 	"vanillachanges.enchantmentlimit.EnchantCommandMixin",
 	"vanillachanges.enchantmentlimit.EnchantedBookItemMixin",

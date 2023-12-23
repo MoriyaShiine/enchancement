@@ -71,6 +71,7 @@ Enchancement also adds some quality of life changes:
 * Infinity is now allowed on Crossbows.
 * All Tridents will have Loyalty built in as a native effect.
 * Channeling will now work during any weather, not just when thundering. Channeling will also create lightning that does not create fire or destroy items, and will ignite entities for 3 seconds on melee attack.
+* Drowned will use the data of their held Trident when throwing it.
 * Fire Aspect is now usable as Flint and Steel if you are sneaking.
 * Enchanted Books are free to merge with items in an Anvil.
 * Luck of the Sea acts as if the item also has Lure.
