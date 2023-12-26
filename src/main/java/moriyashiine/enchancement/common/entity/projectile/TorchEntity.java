@@ -59,9 +59,9 @@ public class TorchEntity extends PersistentProjectileEntity {
 			entity = part.owner;
 		}
 		if (entity instanceof LivingEntity living) {
-			living.setOnFireFor(2);
 			playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 1, 1);
 			if (!getWorld().isClient) {
+				living.setOnFireFor(Math.min(16, (int) Math.ceil(living.getFireTicks() / 20F) + 2));
 				stuckArrows = living.getStuckArrowCount();
 			}
 		}
