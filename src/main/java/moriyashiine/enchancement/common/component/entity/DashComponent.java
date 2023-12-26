@@ -95,10 +95,6 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 		}
 	}
 
-	public void setShouldRefreshDash(boolean shouldRefreshDash) {
-		this.shouldRefreshDash = shouldRefreshDash;
-	}
-
 	public int getDashCooldown() {
 		return dashCooldown;
 	}
@@ -117,7 +113,7 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 	}
 
 	public boolean shouldWavedash() {
-		return ticksPressingJump < 2 && wavedashTicks > 0;
+		return ticksPressingJump < 2 && wavedashTicks > 0 && obj.isOnGround();
 	}
 
 	public static void handle(Entity entity, DashComponent dashComponent) {
