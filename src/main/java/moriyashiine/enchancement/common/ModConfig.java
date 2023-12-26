@@ -122,11 +122,15 @@ public class ModConfig extends MidnightConfig {
 				invertedList +
 				overhaulEnchantingTable + allowTreasureEnchantmentsInEnchantingTable +
 				singleLevelMode + enchantmentLimit +
-				allowInfinityOnCrossbows + allTridentsHaveLoyalty +
+				accurateFishingBobbers + allowInfinityOnCrossbows + allTridentsHaveLoyalty +
 				channelingIgnitesOnMelee + channelingWorksWhenNotThundering +
-				fireAspectWorksAsFlintAndSteel + freeEnchantedBookMerging +
+				drownedUseHeldTrident +
+				enchantedChestplatesIncreaseAirMobility +
+				fasterBows + fireAspectWorksAsFlintAndSteel + freeEnchantedBookMerging +
 				luckOfTheSeaHasLure +
 				negateEnderPearlDamage +
+				projectilesBypassCooldown +
+				randomMobEnchantments +
 				safeChanneling +
 				tridentsReturnFromVoid +
 				weakerFireAspect + weakerGoldenApple + weakerPotions +
