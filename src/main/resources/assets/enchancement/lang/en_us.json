@@ -87,7 +87,7 @@
   "enchantment.enchancement.scatter": "Scatter",
   "enchantment.enchancement.scatter.desc": "Allows Amethyst Shards to be loaded which explode into a burst of projectiles.",
   "enchantment.enchancement.torch": "Torch",
-  "enchantment.enchancement.torch.desc": "Allows rapid loading of Torches that ignite shot mobs. Torches that land on a block will be placed if fired while sneaking.",
+  "enchantment.enchancement.torch.desc": "Allows rapid loading of Torches that ignite shot mobs. Torches that land on a block will be placed if fired while sneaking. The Crossbow can only load Torches.",
   "enchantment.enchancement.leech": "Leech",
   "enchantment.enchancement.leech.desc": "Regenerates health when dealing damage. Thrown Tridents will temporarily stick to mobs and deal damage.",
   "enchantment.enchancement.warp": "Warp",

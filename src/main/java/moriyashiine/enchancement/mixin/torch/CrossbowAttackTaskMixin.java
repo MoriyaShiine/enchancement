@@ -22,8 +22,8 @@ public class CrossbowAttackTaskMixin<E extends MobEntity> {
 
 	@Inject(method = "tickState", at = @At("HEAD"))
 	private void enchancement$torch(E entity, LivingEntity target, CallbackInfo ci) {
-		if (EnchancementUtil.hasEnchantment(ModEnchantments.TORCH, entity.getMainHandStack())) {
-			chargingCooldown = 1;
+		if (EnchancementUtil.hasEnchantment(ModEnchantments.TORCH, entity.getMainHandStack()) && chargingCooldown > 5) {
+			chargingCooldown = 5;
 		}
 	}
 }
