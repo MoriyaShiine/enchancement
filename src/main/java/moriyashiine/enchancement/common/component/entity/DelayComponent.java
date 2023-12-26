@@ -100,7 +100,7 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 					forcedPitch = MathHelper.wrapDegrees(obj.getPitch() + 180);
 					forcedYaw = MathHelper.wrapDegrees(-(obj.getYaw() + 180));
 				}
-				obj.setDamage(obj.getDamage() * MathHelper.lerp(Math.min(1, ticksFloating / 100F), 1, 2.5));
+				obj.setDamage(obj.getDamage() * MathHelper.lerp(Math.min(1, ticksFloating / 60F), 1, 2.5));
 				obj.setVelocity(storedVelocity);
 				hasDelay = false;
 				sync();
@@ -138,6 +138,6 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 	}
 
 	public boolean shouldChangeParticles() {
-		return ticksFloating >= 100;
+		return ticksFloating >= 60;
 	}
 }
