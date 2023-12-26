@@ -82,6 +82,7 @@
 	"vanillachanges.enchantmentlimit.EnchantedBookItemMixin",
 	"vanillachanges.enchantmentlimit.EnchantmentHelperMixin",
 	"vanillachanges.enchantmentlimit.ItemStackMixin",
+	"vanillachanges.fasterbows.BowItemMixin",
 	"vanillachanges.freeenchantedbookmerging.AnvilScreenHandlerMixin",
 	"vanillachanges.luckoftheseahaslure.EnchantmentHelperMixin",
 	"vanillachanges.negateenderpearldamage.EnderPearlEntityMixin",
@@ -152,6 +153,8 @@
 	"strafe.client.TranslatableTextContentMixin",
 	"torch.client.ModelLoaderMixin",
 	"vanillachanges.coloredenchantmentnames.client.EnchantmentMixin",
+	"vanillachanges.fasterbows.client.ClientPlayerEntityMixin",
+	"vanillachanges.fasterbows.client.ModelPredicateProviderRegistryMixin",
 	"veil.client.EntityRendererMixin"
   ],
   "injectors": {
