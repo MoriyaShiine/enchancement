@@ -2,9 +2,9 @@
  * All Rights Reserved (c) MoriyaShiine
  */
 
-package moriyashiine.enchancement.mixin.strafe;
+package moriyashiine.enchancement.mixin.vanillachanges.enchantedchestplatesincreaseairmobility;
 
-import moriyashiine.enchancement.common.component.entity.StrafeComponent;
+import moriyashiine.enchancement.common.component.entity.AirMobilityComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -21,10 +21,10 @@ public abstract class LivingEntityMixin extends Entity {
 	}
 
 	@ModifyArg(method = "applyMovementInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;updateVelocity(FLnet/minecraft/util/math/Vec3d;)V"))
-	private float enchancement$strafe(float value) {
+	private float enchancement$enchantedChestplatesIncreaseAirMobility(float value) {
 		if (!isOnGround()) {
-			StrafeComponent strafeComponent = ModEntityComponents.STRAFE.getNullable(this);
-			if (strafeComponent != null && strafeComponent.getTicksInAir() > 10) {
+			AirMobilityComponent airMobilityComponent = ModEntityComponents.AIR_MOBILITY.getNullable(this);
+			if (airMobilityComponent != null && airMobilityComponent.getTicksInAir() > 10) {
 				return value * 2;
 			}
 		}

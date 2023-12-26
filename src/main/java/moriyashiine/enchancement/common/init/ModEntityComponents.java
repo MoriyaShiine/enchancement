@@ -21,6 +21,8 @@ import net.minecraft.entity.projectile.SpectralArrowEntity;
 import net.minecraft.entity.projectile.TridentEntity;
 
 public class ModEntityComponents implements EntityComponentInitializer {
+	//misc
+	public static final ComponentKey<AirMobilityComponent> AIR_MOBILITY = ComponentRegistry.getOrCreate(Enchancement.id("air_mobility"), AirMobilityComponent.class);
 	//chestplate
 	public static final ComponentKey<StrafeComponent> STRAFE = ComponentRegistry.getOrCreate(Enchancement.id("strafe"), StrafeComponent.class);
 	//leggings
@@ -49,6 +51,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
+		registry.registerFor(LivingEntity.class, AIR_MOBILITY, AirMobilityComponent::new);
 		registry.registerForPlayers(STRAFE, StrafeComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(DASH, DashComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(SLIDE, SlideComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);

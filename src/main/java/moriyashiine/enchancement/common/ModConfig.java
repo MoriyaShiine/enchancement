@@ -70,6 +70,8 @@ public class ModConfig extends MidnightConfig {
 	@Entry
 	public static boolean drownedUseHeldTrident = true;
 	@Entry
+	public static boolean enchantedChestplatesIncreaseAirMobility = true;
+	@Entry
 	public static boolean fireAspectWorksAsFlintAndSteel = true;
 	@Entry
 	public static boolean freeEnchantedBookMerging = true;

@@ -17,15 +17,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.RaycastContext;
 
 public class StrafeComponent implements AutoSyncedComponent, CommonTickingComponent {
 	public static final int DEFAULT_STRAFE_COOLDOWN = 20;
 
 	private final PlayerEntity obj;
-	private int strafeCooldown = DEFAULT_STRAFE_COOLDOWN, ticksInAir = 0;
+	private int strafeCooldown = DEFAULT_STRAFE_COOLDOWN;
 
 	private boolean hasStrafe = false;
 
@@ -39,13 +37,11 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 	@Override
 	public void readFromNbt(NbtCompound tag) {
 		strafeCooldown = tag.getInt("StrafeCooldown");
-		ticksInAir = tag.getInt("TicksInAir");
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag) {
 		tag.putInt("StrafeCooldown", strafeCooldown);
-		tag.putInt("TicksInAir", ticksInAir);
 	}
 
 	@Override
@@ -55,14 +51,8 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 			if (strafeCooldown > 0) {
 				strafeCooldown--;
 			}
-			if (obj.isOnGround()) {
-				ticksInAir = 0;
-			} else if (EnchancementUtil.isGroundedOrAirborne(obj) && obj.getWorld().raycast(new RaycastContext(obj.getPos(), obj.getPos().add(0, -1, 0), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.ANY, obj)).getType() == HitResult.Type.MISS) {
-				ticksInAir++;
-			}
 		} else {
 			strafeCooldown = DEFAULT_STRAFE_COOLDOWN;
-			ticksInAir = 0;
 		}
 	}
 
@@ -88,14 +78,6 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 			}
 			wasPressingActivationKey = pressingActivationKey;
 		}
-	}
-
-	public int getTicksInAir() {
-		return ticksInAir;
-	}
-
-	public void setTicksInAir(int ticksInAir) {
-		this.ticksInAir = ticksInAir;
 	}
 
 	public boolean hasStrafe() {

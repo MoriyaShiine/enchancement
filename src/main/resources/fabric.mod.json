@@ -50,6 +50,7 @@
   },
   "custom": {
 	"cardinal-components": [
+	  "enchancement:air_mobility",
 	  "enchancement:strafe",
 	  "enchancement:dash",
 	  "enchancement:slide",
