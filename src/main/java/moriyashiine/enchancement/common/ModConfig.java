@@ -82,6 +82,8 @@ public class ModConfig extends MidnightConfig {
 	@Entry
 	public static boolean negateEnderPearlDamage = true;
 	@Entry
+	public static boolean projectilesBypassCooldown = true;
+	@Entry
 	public static boolean randomMobEnchantments = true;
 	@Entry
 	public static boolean safeChanneling = true;

@@ -88,6 +88,7 @@
 	"vanillachanges.negateenderpearldamage.EnderPearlEntityMixin",
 	"vanillachanges.nolifedrainknockback.LivingEntityMixin",
 	"vanillachanges.overhaulenchantingtable.EnchantingTableBlockMixin",
+	"vanillachanges.projectilesbypasscooldown.LivingEntityMixin",
 	"vanillachanges.randommobenchantments.MobEntityMixin",
 	"vanillachanges.randommobenchantments.PillagerEntityMixin",
 	"vanillachanges.randommobenchantments.VindicatorEntityMixin",
