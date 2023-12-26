@@ -84,6 +84,9 @@ public class GrappleFishingBobberEntity extends FishingBobberEntity {
 			PlayerEntity player = getPlayerOwner();
 			if (player != null) {
 				if (!getWorld().isClient) {
+					if (getY() > player.getY()) {
+						player.setVelocity(player.getVelocity().getX(), 0, player.getVelocity().getZ());
+					}
 					player.setVelocity(player.getVelocity().add(new Vec3d(Math.min(10, getX() - player.getX()), Math.min(10, getY() - player.getY()), Math.min(10, getZ() - player.getZ())).multiply(0.2)));
 					player.velocityModified = true;
 				}
