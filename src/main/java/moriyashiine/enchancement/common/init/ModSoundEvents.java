@@ -12,6 +12,7 @@ import net.minecraft.sound.SoundEvent;
 public class ModSoundEvents {
 	public static final SoundEvent ENTITY_SHARD_SHATTER = SoundEvent.of(Enchancement.id("entity.shard.shatter"));
 	public static final SoundEvent ENTITY_GENERIC_STRAFE = SoundEvent.of(Enchancement.id("entity.generic.strafe"));
+	public static final SoundEvent ENTITY_GENERIC_WARDENSPINE = SoundEvent.of(Enchancement.id("entity.generic.wardenspine"));
 	public static final SoundEvent ENTITY_GENERIC_DASH = SoundEvent.of(Enchancement.id("entity.generic.dash"));
 	public static final SoundEvent ENTITY_GENERIC_IMPACT = SoundEvent.of(Enchancement.id("entity.generic.impact"));
 	public static final SoundEvent ENTITY_GENERIC_AIR_JUMP = SoundEvent.of(Enchancement.id("entity.generic.air_jump"));
@@ -34,6 +35,7 @@ public class ModSoundEvents {
 	public static void init() {
 		Registry.register(Registries.SOUND_EVENT, ENTITY_SHARD_SHATTER.getId(), ENTITY_SHARD_SHATTER);
 		Registry.register(Registries.SOUND_EVENT, ENTITY_GENERIC_STRAFE.getId(), ENTITY_GENERIC_STRAFE);
+		Registry.register(Registries.SOUND_EVENT, ENTITY_GENERIC_WARDENSPINE.getId(), ENTITY_GENERIC_WARDENSPINE);
 		Registry.register(Registries.SOUND_EVENT, ENTITY_GENERIC_DASH.getId(), ENTITY_GENERIC_DASH);
 		Registry.register(Registries.SOUND_EVENT, ENTITY_GENERIC_IMPACT.getId(), ENTITY_GENERIC_IMPACT);
 		Registry.register(Registries.SOUND_EVENT, ENTITY_GENERIC_AIR_JUMP.getId(), ENTITY_GENERIC_AIR_JUMP);
