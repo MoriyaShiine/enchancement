@@ -55,6 +55,7 @@
 	"torch.CrossbowItemAccessor",
 	"torch.CrossbowItemMixin",
 	"torch.HostileEntityMixin",
+	"torch.LivingEntityMixin",
 	"torch.PlayerEntityMixin",
 	"util.EnchantmentHelperMixin",
 	"util.ItemEntityAccessor",
