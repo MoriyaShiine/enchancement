@@ -19,6 +19,7 @@
 	"buoy.EntityMixin",
 	"buoy.LivingEntityMixin",
 	"buoy.PlayerEntityMixin",
+	"buoy.PowderSnowBlockMixin",
 	"bury.AbstractBlockMixin",
 	"bury.EntityMixin",
 	"chaos.ArrowItemMixin",

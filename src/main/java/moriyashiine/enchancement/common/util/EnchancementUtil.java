@@ -11,6 +11,7 @@ import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModTags;
 import moriyashiine.enchancement.mixin.util.ItemEntityAccessor;
+import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -134,10 +135,10 @@ public class EnchancementUtil {
 		return isGroundedOrAirborne(living, false);
 	}
 
-	public static boolean isSubmerged(Entity entity, boolean allowWater, boolean allowLava) {
+	public static boolean isSubmerged(Entity entity, boolean allowWater, boolean allowLava, boolean allowPowderSnow) {
 		for (int i = 0; i <= 1; i++) {
-			FluidState state = entity.getWorld().getFluidState(entity.getBlockPos().up(i));
-			if ((allowWater && state.isIn(FluidTags.WATER)) || (allowLava && state.isIn(FluidTags.LAVA))) {
+			FluidState fluidState = entity.getWorld().getFluidState(entity.getBlockPos().up(i));
+			if ((allowWater && fluidState.isIn(FluidTags.WATER)) || (allowLava && fluidState.isIn(FluidTags.LAVA)) || (allowPowderSnow && entity.getWorld().getBlockState(entity.getBlockPos().up(i)).isOf(Blocks.POWDER_SNOW))) {
 				return true;
 			}
 		}

@@ -26,7 +26,7 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@ModifyArg(method = "applyMovementInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;updateVelocity(FLnet/minecraft/util/math/Vec3d;)V"))
 	private float enchancement$buoy(float value) {
-		if (EnchancementUtil.hasEnchantment(ModEnchantments.BUOY, this) && EnchancementUtil.isSubmerged(this, true, false)) {
+		if (EnchancementUtil.hasEnchantment(ModEnchantments.BUOY, this) && EnchancementUtil.isSubmerged(this, true, false, false)) {
 			value *= 1.5F;
 			int depthStriderLevel = EnchantmentHelper.getDepthStrider((LivingEntity) (Object) this);
 			while (depthStriderLevel > 0) {

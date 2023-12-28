@@ -44,7 +44,7 @@ public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponen
 		hasBuoy = EnchancementUtil.hasEnchantment(ModEnchantments.BUOY, obj);
 		if (hasBuoy) {
 			if (shoudBoost) {
-				if (EnchancementUtil.isSubmerged(obj, true, true) && EnchancementUtil.isGroundedOrAirborne(obj, true)) {
+				if (EnchancementUtil.isSubmerged(obj, true, true, true) && EnchancementUtil.isGroundedOrAirborne(obj, true)) {
 					boost = (float) MathHelper.clamp(boost + 0.0025, 0.05, 2);
 					obj.addVelocity(0, boost, 0);
 				} else {
@@ -69,10 +69,14 @@ public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponen
 				double y = obj.getY();
 				double z = obj.getZ();
 				ParticleEffect bubbleColumn = ParticleTypes.BUBBLE_COLUMN_UP, splash = ParticleTypes.SPLASH, bubble = ParticleTypes.BUBBLE;
-				if (EnchancementUtil.isSubmerged(obj, false, true)) {
+				if (EnchancementUtil.isSubmerged(obj, false, true, false)) {
 					bubbleColumn = ParticleTypes.LAVA;
 					splash = ParticleTypes.LAVA;
 					bubble = ParticleTypes.LAVA;
+				} else if (EnchancementUtil.isSubmerged(obj, false, false, true)) {
+					bubbleColumn = ParticleTypes.SNOWFLAKE;
+					splash = ParticleTypes.SNOWFLAKE;
+					bubble = ParticleTypes.SNOWFLAKE;
 				}
 				obj.getWorld().addParticle(bubbleColumn, x, y, z, 0, 0.04, 0);
 				obj.getWorld().addParticle(bubbleColumn, obj.getParticleX(0.5), y + obj.getHeight() / 8, obj.getParticleZ(0.5), 0, 0.04, 0);
@@ -84,7 +88,7 @@ public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponen
 				}
 			}
 			if (((LivingEntityAccessor) obj).enchancement$jumping()) {
-				if (!shoudBoost && EnchancementUtil.isSubmerged(obj, true, true)) {
+				if (!shoudBoost && EnchancementUtil.isSubmerged(obj, true, true, true)) {
 					shoudBoost = true;
 					BuoyPacket.send(true);
 				}
