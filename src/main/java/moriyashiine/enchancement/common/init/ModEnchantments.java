@@ -22,6 +22,7 @@ public class ModEnchantments {
 	public static final Enchantment STRAFE = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_CHEST, EquipmentSlot.CHEST);
 	public static final Enchantment WARDENSPINE = new WardenspineEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_CHEST, EquipmentSlot.CHEST);
 	//leggings
+	public static final Enchantment ADRENALINE = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_LEGS, EquipmentSlot.LEGS);
 	public static final Enchantment DASH = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_LEGS, EquipmentSlot.LEGS);
 	public static final Enchantment SLIDE = new EmptyEnchantment(Enchantment.Rarity.RARE, EnchantmentTarget.ARMOR_LEGS, EquipmentSlot.LEGS);
 	//boots
@@ -65,6 +66,7 @@ public class ModEnchantments {
 		Registry.register(Registries.ENCHANTMENT, Enchancement.id("strafe"), STRAFE);
 		Registry.register(Registries.ENCHANTMENT, Enchancement.id("wardenspine"), WARDENSPINE);
 		//leggings
+		Registry.register(Registries.ENCHANTMENT, Enchancement.id("adrenaline"), ADRENALINE);
 		Registry.register(Registries.ENCHANTMENT, Enchancement.id("dash"), DASH);
 		Registry.register(Registries.ENCHANTMENT, Enchancement.id("slide"), SLIDE);
 		//boots

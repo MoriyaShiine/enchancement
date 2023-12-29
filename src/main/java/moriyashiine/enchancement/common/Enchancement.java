@@ -72,6 +72,7 @@ public class Enchancement implements ModInitializer {
 		ServerLifecycleEvents.SERVER_STOPPED.register(server -> EnchancementUtil.PACKET_IMMUNITIES.clear());
 		MultiplyMovementSpeedEvent.EVENT.register(new EnchantedChestplateAirMobilityEvent());
 		ServerTickEvents.END_SERVER_TICK.register(new AssimilationEvent());
+		MultiplyMovementSpeedEvent.EVENT.register(new AdrenalineEvent());
 		MultiplyMovementSpeedEvent.EVENT.register(new BuoyEvent());
 		UseBlockCallback.EVENT.register(new FireAspectEvent());
 		ServerLivingEntityEvents.AFTER_DEATH.register(new FrostbiteEvent.Freeze());

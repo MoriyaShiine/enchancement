@@ -78,6 +78,7 @@ public class EnchancementClient implements ClientModInitializer {
 	private void initEvents() {
 		ItemTooltipCallback.EVENT.register(new EnchantmentDescriptionsEvent());
 		ItemTooltipCallback.EVENT.register(new AssimilationTooltipEvent());
+		ItemTooltipCallback.EVENT.register(new AdrenalineRenderEvent());
 		HudRenderCallback.EVENT.register(new DashRenderEvent());
 		HudRenderCallback.EVENT.register(new BouncyRenderEvent());
 		HudRenderCallback.EVENT.register(new GaleRenderEvent());

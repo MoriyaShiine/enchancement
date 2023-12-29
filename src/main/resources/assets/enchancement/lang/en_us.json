@@ -62,6 +62,8 @@
   "enchantment.enchancement.strafe.desc": "Double tapping [%s] launches you in your movement direction.",
   "enchantment.enchancement.wardenspine": "Wardenspine",
   "enchantment.enchancement.wardenspine.desc": "Harms and blinds attackers and greatly decreases damage taken from behind.",
+  "enchantment.enchancement.adrenaline": "Adrenaline",
+  "enchantment.enchancement.adrenaline.desc": "Increases movement speed proportional to missing health.",
   "enchantment.enchancement.dash": "Dash",
   "enchantment.enchancement.dash.desc": "Sneaking in the air launches you in your look direction.",
   "enchantment.enchancement.slide": "Slide",
