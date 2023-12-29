@@ -1,12 +1,10 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.client.reloadlisteners;
 
 import moriyashiine.enchancement.common.Enchancement;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceReloadListenerKeys;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
@@ -29,7 +27,6 @@ import java.util.Map;
 /**
  * @author UpcraftLP (<a href="https://github.com/UpcraftLP">https://github.com/UpcraftLP</a>)
  */
-@Environment(EnvType.CLIENT)
 public class FrozenReloadListener implements IdentifiableResourceReloadListener, SimpleSynchronousResourceReloadListener {
 	public static final FrozenReloadListener INSTANCE = new FrozenReloadListener();
 

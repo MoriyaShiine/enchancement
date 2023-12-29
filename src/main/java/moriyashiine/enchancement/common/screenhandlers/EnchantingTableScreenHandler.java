@@ -1,24 +1,26 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.common.screenhandlers;
 
+import moriyashiine.enchancement.client.packet.SyncEnchantingTableCostPacket;
 import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.registry.ModScreenHandlerTypes;
-import moriyashiine.enchancement.common.registry.ModTags;
+import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
+import moriyashiine.enchancement.common.init.ModTags;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.EnchantingTableBlock;
+import net.minecraft.block.entity.ChiseledBookshelfBlockEntity;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentLevelEntry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.item.EnchantedBookItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
@@ -26,6 +28,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +39,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 	public int viewIndex = 0;
 
 	private ItemStack enchantingStack = null;
+	private int cost = 0;
 
 	private final Inventory inventory = new SimpleInventory(2) {
 		@Override
@@ -78,6 +83,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 				selectedEnchantments = null;
 				viewIndex = 0;
 				enchantingStack = null;
+				cost = 0;
 				super.onTakeItem(player, stack);
 			}
 		});
@@ -141,8 +147,8 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 	}
 
 	@Override
-	public void close(PlayerEntity player) {
-		super.close(player);
+	public void onClosed(PlayerEntity player) {
+		super.onClosed(player);
 		context.run((world, pos) -> dropInventory(player, inventory));
 	}
 
@@ -152,27 +158,29 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 			if (canEnchant(player, player.isCreative())) {
 				context.run((world, pos) -> {
 					ItemStack stack = slots.get(0).getStack();
+					boolean stackChanged = false;
 					if (stack.isOf(Items.BOOK)) {
 						stack = new ItemStack(Items.ENCHANTED_BOOK);
 						for (Enchantment enchantment : selectedEnchantments) {
 							EnchantedBookItem.addEnchantment(stack, new EnchantmentLevelEntry(enchantment, enchantment.getMaxLevel()));
 						}
-						slots.get(0).setStack(stack);
+						stackChanged = true;
 					} else {
 						for (Enchantment enchantment : selectedEnchantments) {
 							stack.addEnchantment(enchantment, enchantment.getMaxLevel());
 						}
 					}
-					if (!player.isCreative() && getExperienceLevelCost() > 0) {
-						player.addExperienceLevels(-getExperienceLevelCost());
+					if (!player.isCreative() && cost > 0) {
+						player.applyEnchantmentCosts(stack, cost);
 					}
 					player.incrementStat(Stats.ENCHANT_ITEM);
-					if (player instanceof ServerPlayerEntity serverPlayer) {
-						Criteria.ENCHANTED_ITEM.trigger(serverPlayer, stack, getExperienceLevelCost());
-					}
+					Criteria.ENCHANTED_ITEM.trigger((ServerPlayerEntity) player, stack, cost);
 					world.playSound(null, pos, SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, SoundCategory.BLOCKS, 1, world.random.nextFloat() * 0.1F + 0.9F);
-					if (!player.isCreative() && getLapisLazuliCost() > 0) {
-						slots.get(1).getStack().decrement(getLapisLazuliCost());
+					if (!player.isCreative() && cost > 0) {
+						slots.get(1).getStack().decrement(cost);
+					}
+					if (stackChanged) {
+						slots.get(0).setStack(stack);
 					}
 					inventory.markDirty();
 				});
@@ -191,6 +199,10 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 			} else {
 				selectedEnchantments.add(enchantment);
 			}
+			cost = getCost(slots.get(0).getStack());
+			if (player instanceof ServerPlayerEntity serverPlayer) {
+				SyncEnchantingTableCostPacket.send(serverPlayer, cost);
+			}
 			return true;
 		}
 		return false;
@@ -205,6 +217,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 				selectedEnchantments = new ArrayList<>();
 				viewIndex = 0;
 				enchantingStack = stack;
+				cost = 0;
 				for (Enchantment enchantment : Registries.ENCHANTMENT) {
 					if (isEnchantmentAllowed(enchantment, stack)) {
 						validEnchantments.add(enchantment);
@@ -230,17 +243,42 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 			if (simulate) {
 				return true;
 			}
-			return player.experienceLevel >= getExperienceLevelCost() && slots.get(1).getStack().getCount() >= getLapisLazuliCost();
+			return player.experienceLevel >= cost && slots.get(1).getStack().getCount() >= cost;
 		}
 		return false;
 	}
 
-	public int getExperienceLevelCost() {
-		return selectedEnchantments.size() * ModConfig.experienceLevelCost;
+	public int getCost() {
+		return cost;
 	}
 
-	public int getLapisLazuliCost() {
-		return selectedEnchantments.size() * ModConfig.lapisLazuliCost;
+	private int getCost(ItemStack stack) {
+		int enchantability = 13;
+		if (stack.getItem() instanceof ArmorItem armorItem) {
+			enchantability = armorItem.getEnchantability();
+		} else if (stack.getItem() instanceof ToolItem toolItem) {
+			enchantability = toolItem.getEnchantability();
+		} else if (stack.isOf(Items.BOOK)) {
+			enchantability = 30;
+		}
+		float[] bookshelfCountArray = {0};
+		context.run((world, pos) -> {
+			for (BlockPos offset : EnchantingTableBlock.POWER_PROVIDER_OFFSETS) {
+				if (EnchantingTableBlock.canAccessPowerProvider(world, pos, offset)) {
+					bookshelfCountArray[0]++;
+				} else if (world.getBlockEntity(pos.add(offset)) instanceof ChiseledBookshelfBlockEntity chiseledBookshelfBlockEntity && world.getBlockState(pos.add(offset.getX() / 2, offset.getY(), offset.getZ() / 2)).isIn(BlockTags.ENCHANTMENT_POWER_TRANSMITTER)) {
+					bookshelfCountArray[0] += chiseledBookshelfBlockEntity.getOpenSlotCount() / 3F;
+				}
+			}
+		});
+		int bookshelfCount = Math.min(15, (int) bookshelfCountArray[0]);
+		double cost = 60F / (Math.max(1, enchantability + bookshelfCount));
+		if (bookshelfCount == 15) {
+			cost = MathHelper.floor(cost);
+		} else {
+			cost = MathHelper.ceil(cost);
+		}
+		return (int) (cost * selectedEnchantments.size());
 	}
 
 	public void updateViewIndex(boolean up) {
@@ -248,6 +286,11 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		if (viewIndex < 0) {
 			viewIndex += validEnchantments.size();
 		}
+	}
+
+	//client
+	public void setCost(int cost) {
+		this.cost = cost;
 	}
 
 	private static boolean isEnchantmentAllowed(Enchantment enchantment, ItemStack stack) {

@@ -1,10 +1,10 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.common.event;
 
-import moriyashiine.enchancement.common.registry.ModEntityComponents;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -17,7 +17,7 @@ public class LeechEvent implements ServerLivingEntityEvents.AllowDamage {
 			ModEntityComponents.LEECH.maybeGet(trident).ifPresent(leechComponent -> {
 				if (leechComponent.hasLeech() && leechComponent.getStuckEntity() == null) {
 					if (trident.getOwner() != entity) {
-						entity.world.getEntitiesByClass(TridentEntity.class, entity.getBoundingBox().expand(1), foundTrident -> true).forEach(otherTrident -> ModEntityComponents.LEECH.maybeGet(otherTrident).ifPresent(otherLeech -> {
+						entity.getWorld().getEntitiesByClass(TridentEntity.class, entity.getBoundingBox().expand(1), foundTrident -> true).forEach(otherTrident -> ModEntityComponents.LEECH.maybeGet(otherTrident).ifPresent(otherLeech -> {
 							if (otherLeech.getStuckEntity() == entity) {
 								otherLeech.setStuckEntityId(-2);
 								otherLeech.sync();

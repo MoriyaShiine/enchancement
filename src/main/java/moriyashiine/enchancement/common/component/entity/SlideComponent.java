@@ -1,16 +1,15 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.common.component.entity;
 
 import dev.emi.stepheightentityattribute.StepHeightEntityAttributeMain;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
+import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.packet.SlideSlamPacket;
 import moriyashiine.enchancement.common.packet.SlideVelocityPacket;
-import moriyashiine.enchancement.common.registry.ModEnchantments;
-import moriyashiine.enchancement.common.registry.ModScaleTypes;
-import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.slide.EntityAccessor;
 import net.minecraft.block.BlockState;
@@ -26,7 +25,6 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.*;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.NotNull;
-import virtuoel.pehkui.api.ScaleData;
 
 import java.util.UUID;
 
@@ -90,7 +88,7 @@ public class SlideComponent implements CommonTickingComponent {
 			}
 			if (isSliding()) {
 				((EntityAccessor) obj).enchancement$spawnSprintingParticles();
-				obj.world.emitGameEvent(GameEvent.STEP, obj.getPos(), GameEvent.Emitter.of(obj.getSteppingBlockState()));
+				obj.getWorld().emitGameEvent(GameEvent.STEP, obj.getPos(), GameEvent.Emitter.of(obj.getSteppingBlockState()));
 				if (obj.isOnGround()) {
 					obj.setVelocity(velocity.getX(), obj.getVelocity().getY(), velocity.getZ());
 				} else {
@@ -130,22 +128,13 @@ public class SlideComponent implements CommonTickingComponent {
 			EnchancementUtil.PACKET_IMMUNITIES.put(obj, 20);
 		}
 		EntityAttributeInstance attribute = obj.getAttributeInstance(StepHeightEntityAttributeMain.STEP_HEIGHT);
-		ScaleData data = ModScaleTypes.SLIDE_HITBOX_TYPE.getScaleData(obj);
 		if (hasSlide && isSliding()) {
 			if (!attribute.hasModifier(STEP_HEIGHT_INCREASE)) {
 				attribute.addPersistentModifier(STEP_HEIGHT_INCREASE);
 			}
-			if (data.getScale() != 1.5F) {
-				data.setScale(1.5F);
-			}
 			EnchancementUtil.PACKET_IMMUNITIES.put(obj, 20);
-		} else {
-			if (attribute.hasModifier(STEP_HEIGHT_INCREASE)) {
-				attribute.removeModifier(STEP_HEIGHT_INCREASE);
-			}
-			if (data.getScale() != 1) {
-				data.setScale(1);
-			}
+		} else if (attribute.hasModifier(STEP_HEIGHT_INCREASE)) {
+			attribute.removeModifier(STEP_HEIGHT_INCREASE);
 		}
 	}
 
@@ -160,9 +149,9 @@ public class SlideComponent implements CommonTickingComponent {
 					for (int i = 0; i < 360; i += 15) {
 						for (int j = 1; j < 5; j++) {
 							double x = obj.getX() + MathHelper.sin(i) * j / 2, z = obj.getZ() + MathHelper.cos(i) * j / 2;
-							BlockState state = obj.world.getBlockState(mutable.set(x, Math.round(obj.getY() - 1), z));
-							if (!state.getMaterial().isReplaceable() && obj.world.getBlockState(mutable.move(Direction.UP)).getMaterial().isReplaceable()) {
-								obj.world.addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, state), x, mutable.getY(), z, 0, 0, 0);
+							BlockState state = obj.getWorld().getBlockState(mutable.set(x, Math.round(obj.getY() - 1), z));
+							if (!state.isReplaceable() && obj.getWorld().getBlockState(mutable.move(Direction.UP)).isReplaceable()) {
+								obj.getWorld().addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, state), x, mutable.getY(), z, 0, 0, 0);
 							}
 						}
 					}
@@ -231,7 +220,7 @@ public class SlideComponent implements CommonTickingComponent {
 	}
 
 	public float getJumpBonus() {
-		return MathHelper.lerp(ticksSliding / 60F, 1, 3);
+		return MathHelper.lerp(ticksSliding / 60F, 1F, 3F);
 	}
 
 	public boolean hasSlide() {

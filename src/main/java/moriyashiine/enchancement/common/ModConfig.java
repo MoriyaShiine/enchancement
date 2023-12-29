@@ -1,31 +1,49 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.common;
 
 import eu.midnightdust.lib.config.MidnightConfig;
-import net.minecraft.util.Identifier;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class ModConfig extends MidnightConfig {
 	@Entry
-	public static List<String> allowedEnchantments = List.of(
-			"enchancement:assimilation", "enchancement:perception", "enchancement:veil",
-			"enchancement:amphibious", "enchancement:strafe", "enchancement:wardenspine",
-			"enchancement:dash", "enchancement:slide",
-			"enchancement:bouncy", "enchancement:buoy", "enchancement:gale",
-			"enchancement:berserk", "minecraft:fire_aspect", "enchancement:frostbite",
-			"minecraft:infinity",
-			"enchancement:chaos", "enchancement:delay", "enchancement:phasing",
-			"enchancement:brimstone", "enchancement:scatter", "enchancement:torch",
-			"minecraft:channeling", "enchancement:leech", "minecraft:riptide", "enchancement:warp",
-			"enchancement:extracting", "enchancement:molten",
-			"enchancement:beheading", "enchancement:lumberjack",
-			"enchancement:bury", "enchancement:scooping",
-			"enchancement:disarm", "enchancement:grapple", "minecraft:luck_of_the_sea",
-			"minecraft:efficiency", "minecraft:silk_touch");
+	public static List<String> disallowedEnchantments = Arrays.asList(
+			"minecraft:aqua_affinity",
+			"minecraft:bane_of_arthropods",
+			"minecraft:binding_curse",
+			"minecraft:blast_protection",
+			"minecraft:depth_strider",
+			"minecraft:feather_falling",
+			"minecraft:fire_protection",
+			"minecraft:flame",
+			"minecraft:fortune",
+			"minecraft:frost_walker",
+			"minecraft:impaling",
+			"minecraft:knockback",
+			"minecraft:looting",
+			"minecraft:loyalty",
+			"minecraft:lure",
+			"minecraft:mending",
+			"minecraft:multishot",
+			"minecraft:piercing",
+			"minecraft:power",
+			"minecraft:projectile_protection",
+			"minecraft:protection",
+			"minecraft:punch",
+			"minecraft:quick_charge",
+			"minecraft:respiration",
+			"minecraft:sharpness",
+			"minecraft:smite",
+			"minecraft:soul_speed",
+			"minecraft:sweeping",
+			"minecraft:swift_sneak",
+			"minecraft:thorns",
+			"minecraft:unbreaking",
+			"minecraft:vanishing_curse");
 	@Entry
 	public static boolean invertedList = false;
 
@@ -33,16 +51,14 @@ public class ModConfig extends MidnightConfig {
 	public static boolean overhaulEnchantingTable = true;
 	@Entry
 	public static boolean allowTreasureEnchantmentsInEnchantingTable = false;
-	@Entry
-	public static int experienceLevelCost = 5;
-	@Entry
-	public static int lapisLazuliCost = 5;
 
-	@Entry
-	public static boolean singleEnchantmentMode = true;
 	@Entry
 	public static boolean singleLevelMode = true;
+	@Entry
+	public static int enchantmentLimit = 1;
 
+	@Entry
+	public static boolean accurateFishingBobbers = true;
 	@Entry
 	public static boolean allowInfinityOnCrossbows = true;
 	@Entry
@@ -52,6 +68,8 @@ public class ModConfig extends MidnightConfig {
 	@Entry
 	public static boolean channelingWorksWhenNotThundering = true;
 	@Entry
+	public static boolean drownedUseHeldTrident = true;
+	@Entry
 	public static boolean fireAspectWorksAsFlintAndSteel = true;
 	@Entry
 	public static boolean freeEnchantedBookMerging = true;
@@ -59,6 +77,8 @@ public class ModConfig extends MidnightConfig {
 	public static boolean luckOfTheSeaHasLure = true;
 	@Entry
 	public static boolean negateEnderPearlDamage = true;
+	@Entry
+	public static boolean randomMobEnchantments = true;
 	@Entry
 	public static boolean safeChanneling = true;
 	@Entry
@@ -82,11 +102,32 @@ public class ModConfig extends MidnightConfig {
 	@Entry(min = -1)
 	public static int unbreakingChangesFlag = 0;
 
-	public static boolean isEnchantmentAllowed(Identifier identifier) {
-		if (invertedList) {
-			return !allowedEnchantments.contains(identifier.toString());
+	@Entry(category = "client")
+	public static boolean enchantmentDescriptions = true;
+	@Entry(category = "client")
+	public static boolean coloredEnchantmentNames = true;
+
+	public static int encode() {
+		StringBuilder builder = new StringBuilder();
+		for (String value : disallowedEnchantments) {
+			builder.append(value);
 		}
-		return allowedEnchantments.contains(identifier.toString());
+		String encoding = builder.toString() +
+				invertedList +
+				overhaulEnchantingTable + allowTreasureEnchantmentsInEnchantingTable +
+				singleLevelMode + enchantmentLimit +
+				allowInfinityOnCrossbows + allTridentsHaveLoyalty +
+				channelingIgnitesOnMelee + channelingWorksWhenNotThundering +
+				fireAspectWorksAsFlintAndSteel + freeEnchantedBookMerging +
+				luckOfTheSeaHasLure +
+				negateEnderPearlDamage +
+				safeChanneling +
+				tridentsReturnFromVoid +
+				weakerFireAspect + weakerGoldenApple + weakerPotions +
+				weaponEnchantmentCooldownRequirement +
+				maxExtractingBlocks + maxLumberjackBlocks + maxLumberjackHorizontalLength +
+				unbreakingChangesFlag;
+		return encoding.hashCode();
 	}
 
 	static {

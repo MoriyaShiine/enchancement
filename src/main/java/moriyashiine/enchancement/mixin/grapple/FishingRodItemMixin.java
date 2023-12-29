@@ -1,11 +1,11 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.mixin.grapple;
 
 import moriyashiine.enchancement.common.entity.projectile.GrappleFishingBobberEntity;
-import moriyashiine.enchancement.common.registry.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -38,7 +38,7 @@ public class FishingRodItemMixin {
 		boolean hasGrapple = EnchancementUtil.hasEnchantment(ModEnchantments.GRAPPLE, cachedStack);
 		cachedStack = null;
 		if (hasGrapple && value instanceof FishingBobberEntity fishingBobber) {
-			return new GrappleFishingBobberEntity(fishingBobber.getPlayerOwner(), fishingBobber.world, fishingBobber.luckOfTheSeaLevel, fishingBobber.lureLevel);
+			return new GrappleFishingBobberEntity(fishingBobber.getPlayerOwner(), fishingBobber.getWorld(), fishingBobber.luckOfTheSeaLevel, fishingBobber.lureLevel);
 		}
 		return value;
 	}

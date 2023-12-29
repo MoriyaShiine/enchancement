@@ -1,16 +1,16 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.common.entity.projectile;
 
-import moriyashiine.enchancement.common.registry.ModEntityTypes;
+import moriyashiine.enchancement.common.init.ModDamageTypes;
+import moriyashiine.enchancement.common.init.ModEntityTypes;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonPart;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -73,23 +73,23 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 		Vec3d start = getPos(), end = start.add(getRotationVector());
 		while (maxY < 256) {
 			maxY++;
-			BlockHitResult hitResult = world.raycast(new RaycastContext(start, end, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, this));
+			BlockHitResult hitResult = getWorld().raycast(new RaycastContext(start, end, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, this));
 			if (hitResult.getType() == HitResult.Type.BLOCK) {
-				if (world.isClient) {
+				if (getWorld().isClient) {
 					addParticles(hitResult.getPos().getX(), hitResult.getPos().getY(), hitResult.getPos().getZ());
 				}
 				break;
 			}
 			if (ticksExisted == 3 && getOwner() instanceof LivingEntity owner) {
-				world.getOtherEntities(owner, Box.from(hitResult.getPos()).expand(0.5)).forEach(entity -> {
+				getWorld().getOtherEntities(owner, Box.from(hitResult.getPos()).expand(0.5)).forEach(entity -> {
 					if (entity instanceof EnderDragonPart part) {
 						entity = part.owner;
 					}
 					if (entity instanceof LivingEntity living && !living.isDead()) {
-						if (world.isClient) {
+						if (getWorld().isClient) {
 							addParticles(living.getX(), living.getRandomBodyY(), living.getZ());
 						} else {
-							living.damage(DamageSource.arrow(this, owner).setBypassesArmor().setBypassesProtection(), (float) ((Math.min(50, living.getMaxHealth()) * (getDamage() / 20F)) * (1 + (maxY / 224))));
+							living.damage(ModDamageTypes.create(getWorld(), ModDamageTypes.BRIMSTONE, this, owner), (float) ((Math.min(50, living.getMaxHealth()) * (getDamage() / 20F)) * (1 + (maxY / 224))));
 							if (living.isDead()) {
 								killedEntities.add(living);
 							}
@@ -100,9 +100,9 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 			start = end;
 			end = start.add(getRotationVector());
 		}
-		if (!world.isClient) {
+		if (!getWorld().isClient) {
 			if (ticksExisted == 3) {
-				world.emitGameEvent(GameEvent.PROJECTILE_LAND, end, GameEvent.Emitter.of(this));
+				getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, end, GameEvent.Emitter.of(this));
 			}
 			if (ticksExisted > 10) {
 				if (getOwner() instanceof ServerPlayerEntity player) {
@@ -170,7 +170,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 	private void addParticles(double x, double y, double z) {
 		float range = (float) MathHelper.lerp(getDamage() / 12, 0, 0.3F);
 		for (int i = 0; i < 8; i++) {
-			world.addParticle(PARTICLE, x + MathHelper.nextFloat(random, -range, range), y + MathHelper.nextFloat(random, -range, range), z + MathHelper.nextFloat(random, -range, range), MathHelper.nextFloat(random, -1, 1), MathHelper.nextFloat(random, -1, 1), MathHelper.nextFloat(random, -1, 1));
+			getWorld().addParticle(PARTICLE, x + MathHelper.nextFloat(random, -range, range), y + MathHelper.nextFloat(random, -range, range), z + MathHelper.nextFloat(random, -range, range), MathHelper.nextFloat(random, -1, 1), MathHelper.nextFloat(random, -1, 1), MathHelper.nextFloat(random, -1, 1));
 		}
 	}
 }

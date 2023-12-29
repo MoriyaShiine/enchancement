@@ -1,5 +1,5 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.common.event;
@@ -7,8 +7,8 @@ package moriyashiine.enchancement.common.event;
 import io.github.apace100.apoli.component.PowerHolderComponent;
 import io.github.apace100.apoli.power.PreventItemUsePower;
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.registry.ModEnchantments;
-import moriyashiine.enchancement.common.registry.ModTags;
+import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.entity.player.PlayerEntity;
@@ -30,13 +30,12 @@ public class AssimilationEvent implements ServerTickEvents.EndTick {
 					food = getMostNeededFood(player);
 				}
 				if (!food.isEmpty()) {
-					player.eatFood(player.world, food);
+					player.eatFood(player.getWorld(), food);
 				}
 			}
 		});
 	}
 
-	@SuppressWarnings("ConstantConditions")
 	private static ItemStack getMostNeededFood(PlayerEntity player) {
 		ItemStack food = ItemStack.EMPTY;
 		for (int i = 0; i < player.getInventory().main.size(); i++) {

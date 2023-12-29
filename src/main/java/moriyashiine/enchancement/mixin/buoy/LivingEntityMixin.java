@@ -1,10 +1,10 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.mixin.buoy;
 
-import moriyashiine.enchancement.common.registry.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -28,7 +28,7 @@ public abstract class LivingEntityMixin extends Entity {
 	private float enchancement$buoy(float value) {
 		if (EnchancementUtil.hasEnchantment(ModEnchantments.BUOY, this) && EnchancementUtil.isSubmerged(this, true, false)) {
 			value *= 1.5F;
-			int depthStriderLevel = EnchantmentHelper.getDepthStrider(LivingEntity.class.cast(this));
+			int depthStriderLevel = EnchantmentHelper.getDepthStrider((LivingEntity) (Object) this);
 			while (depthStriderLevel > 0) {
 				depthStriderLevel--;
 				value *= 1.2F;

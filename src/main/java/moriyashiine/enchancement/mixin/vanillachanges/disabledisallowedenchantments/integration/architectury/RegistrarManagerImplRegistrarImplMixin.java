@@ -1,5 +1,5 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.mixin.vanillachanges.disabledisallowedenchantments.integration.architectury;
@@ -23,10 +23,8 @@ public abstract class RegistrarManagerImplRegistrarImplMixin<T> implements Regis
 
 	@Inject(method = "contains", at = @At("HEAD"), cancellable = true)
 	private void enchancement$disableDisallowedEnchantments(Identifier id, CallbackInfoReturnable<Boolean> cir) {
-		if (delegate == Registries.ENCHANTMENT) {
-			if (RemovedRegistryEntry.getFromId(id) != null) {
-				cir.setReturnValue(true);
-			}
+		if (delegate == Registries.ENCHANTMENT && RemovedRegistryEntry.getFromId(id) != null) {
+			cir.setReturnValue(true);
 		}
 	}
 }

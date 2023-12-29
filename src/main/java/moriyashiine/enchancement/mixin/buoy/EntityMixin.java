@@ -1,10 +1,10 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.mixin.buoy;
 
-import moriyashiine.enchancement.common.registry.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,7 +20,7 @@ public abstract class EntityMixin {
 
 	@Inject(method = "onBubbleColumnCollision", at = @At("HEAD"), cancellable = true)
 	private void enchancement$buoy(boolean drag, CallbackInfo ci) {
-		if (EnchancementUtil.hasEnchantment(ModEnchantments.BUOY, Entity.class.cast(this))) {
+		if (EnchancementUtil.hasEnchantment(ModEnchantments.BUOY, (Entity) (Object) this)) {
 			onLanding();
 			ci.cancel();
 		}

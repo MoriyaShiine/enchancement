@@ -1,11 +1,13 @@
+/*
+ * All Rights Reserved (c) MoriyaShiine
+ */
+
 package moriyashiine.enchancement.client.event;
 
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.registry.ModEnchantments;
-import moriyashiine.enchancement.common.registry.ModTags;
+import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
@@ -16,7 +18,6 @@ import net.minecraft.util.Formatting;
 
 import java.util.List;
 
-@Environment(EnvType.CLIENT)
 public class AssimilationTooltipEvent implements ItemTooltipCallback {
 	@Override
 	public void getTooltip(ItemStack stack, TooltipContext context, List<Text> lines) {

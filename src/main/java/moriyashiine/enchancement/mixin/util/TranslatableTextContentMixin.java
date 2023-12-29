@@ -1,5 +1,5 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.mixin.util;
@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(TranslatableTextContent.class)
 public class TranslatableTextContentMixin {
-	@ModifyVariable(method = "<init>*", at = @At("HEAD"), argsOnly = true)
+	@ModifyVariable(method = "<init>", at = @At("HEAD"), ordinal = 0, argsOnly = true)
 	private static String enchancement$redirectKey(String value) {
 		return getRedirect(value);
 	}
@@ -32,13 +32,12 @@ public class TranslatableTextContentMixin {
 		return switch (key) {
 			case "enchantment.minecraft.fire_aspect.desc" ->
 					ModConfig.fireAspectWorksAsFlintAndSteel ? key + ".redirect" : key;
-			case "enchantment.minecraft.infinity.desc" -> ModConfig.allowInfinityOnCrossbows ? key + ".redirect" : key;
 			case "enchantment.minecraft.luck_of_the_sea.desc" ->
 					ModConfig.luckOfTheSeaHasLure ? key + ".redirect" : key;
 			case "enchantment.minecraft.unbreaking.desc" ->
 					ModConfig.unbreakingChangesFlag > 0 ? key + ".redirect" : key;
 			case "advancements.adventure.two_birds_one_arrow.description" ->
-					ModConfig.allowedEnchantments.contains("enchancement:brimstone") ? key + ".redirect" : key;
+					!ModConfig.disallowedEnchantments.contains("enchancement:brimstone") ? key + ".redirect" : key;
 			default -> key;
 		};
 	}

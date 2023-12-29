@@ -1,5 +1,5 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.mixin.vanillachanges.tridentsreturnfromvoid;
@@ -21,7 +21,7 @@ public abstract class TridentEntityMixin extends PersistentProjectileEntity {
 
 	@ModifyExpressionValue(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/TridentEntity;isNoClip()Z"))
 	private boolean enchancement$tridentsReturnFromVoid(boolean value) {
-		if (ModConfig.tridentsReturnFromVoid && getY() <= world.getBottomY()) {
+		if (ModConfig.tridentsReturnFromVoid && getY() <= getWorld().getBottomY()) {
 			return true;
 		}
 		return value;

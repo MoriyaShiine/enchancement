@@ -1,13 +1,13 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.common.component.entity;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
+import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.packet.BuoyPacket;
-import moriyashiine.enchancement.common.registry.ModEnchantments;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.util.LivingEntityAccessor;
 import net.minecraft.entity.player.PlayerEntity;
@@ -74,12 +74,12 @@ public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponen
 					splash = ParticleTypes.LAVA;
 					bubble = ParticleTypes.LAVA;
 				}
-				obj.world.addParticle(bubbleColumn, x, y, z, 0, 0.04, 0);
-				obj.world.addParticle(bubbleColumn, obj.getParticleX(0.5), y + obj.getHeight() / 8, obj.getParticleZ(0.5), 0, 0.04, 0);
-				if (obj.world.getBlockState(obj.getBlockPos().up()).isAir()) {
+				obj.getWorld().addParticle(bubbleColumn, x, y, z, 0, 0.04, 0);
+				obj.getWorld().addParticle(bubbleColumn, obj.getParticleX(0.5), y + obj.getHeight() / 8, obj.getParticleZ(0.5), 0, 0.04, 0);
+				if (obj.getWorld().getBlockState(obj.getBlockPos().up()).isAir()) {
 					for (int i = 0; i < 2; i++) {
-						obj.world.addParticle(splash, obj.getParticleX(0.5), obj.getBlockY() + 1, obj.getParticleZ(0.5), 0, 1, 0);
-						obj.world.addParticle(bubble, obj.getParticleX(0.5), obj.getBlockY() + 1, obj.getParticleZ(0.5), 0, 0.2, 0);
+						obj.getWorld().addParticle(splash, obj.getParticleX(0.5), obj.getBlockY() + 1, obj.getParticleZ(0.5), 0, 1, 0);
+						obj.getWorld().addParticle(bubble, obj.getParticleX(0.5), obj.getBlockY() + 1, obj.getParticleZ(0.5), 0, 0.2, 0);
 					}
 				}
 			}

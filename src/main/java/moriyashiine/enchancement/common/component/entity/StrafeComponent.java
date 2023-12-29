@@ -1,14 +1,15 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.common.component.entity;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
+import moriyashiine.enchancement.client.EnchancementClient;
+import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.packet.StrafePacket;
-import moriyashiine.enchancement.common.registry.ModEnchantments;
-import moriyashiine.enchancement.common.registry.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.GameOptions;
@@ -28,8 +29,8 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 
 	private boolean hasStrafe = false;
 
-	private boolean wasPressingSpring = false;
-	private int ticksLeftToPressSprint = 0;
+	private boolean wasPressingActivationKey = false;
+	private int ticksLeftToPressActivationKey = 0;
 
 	public StrafeComponent(PlayerEntity obj) {
 		this.obj = obj;
@@ -56,11 +57,8 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 			}
 			if (obj.isOnGround()) {
 				ticksInAir = 0;
-			} else if (EnchancementUtil.isGroundedOrAirborne(obj) && obj.world.raycast(new RaycastContext(obj.getPos(), obj.getPos().add(0, -1, 0), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.ANY, obj)).getType() == HitResult.Type.MISS) {
+			} else if (EnchancementUtil.isGroundedOrAirborne(obj) && obj.getWorld().raycast(new RaycastContext(obj.getPos(), obj.getPos().add(0, -1, 0), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.ANY, obj)).getType() == HitResult.Type.MISS) {
 				ticksInAir++;
-			}
-			if (ticksInAir > 10) {
-				obj.airStrafingSpeed *= 2;
 			}
 		} else {
 			strafeCooldown = DEFAULT_STRAFE_COOLDOWN;
@@ -73,23 +71,27 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 		tick();
 		if (hasStrafe && strafeCooldown == 0 && !obj.isSpectator() && obj == MinecraftClient.getInstance().player) {
 			GameOptions options = MinecraftClient.getInstance().options;
-			boolean pressingSprint = options.sprintKey.isPressed();
-			if (ticksLeftToPressSprint > 0) {
-				ticksLeftToPressSprint--;
+			boolean pressingActivationKey = EnchancementClient.STRAFE_KEYBINDING.isUnbound() ? options.sprintKey.isPressed() : EnchancementClient.STRAFE_KEYBINDING.isPressed();
+			if (ticksLeftToPressActivationKey > 0) {
+				ticksLeftToPressActivationKey--;
 			}
-			if (pressingSprint && !wasPressingSpring) {
-				if (ticksLeftToPressSprint > 0) {
-					ticksLeftToPressSprint = 0;
+			if (pressingActivationKey && !wasPressingActivationKey) {
+				if (ticksLeftToPressActivationKey > 0) {
+					ticksLeftToPressActivationKey = 0;
 					Vec3d velocity = getVelocityFromInput(options).rotateY((float) Math.toRadians(-(obj.getHeadYaw() + 90)));
 					handle(obj, this, velocity.getX(), velocity.getZ());
 					addStrafeParticles(obj);
 					StrafePacket.send(velocity);
 				} else {
-					ticksLeftToPressSprint = 7;
+					ticksLeftToPressActivationKey = 7;
 				}
 			}
-			wasPressingSpring = pressingSprint;
+			wasPressingActivationKey = pressingActivationKey;
 		}
+	}
+
+	public int getTicksInAir() {
+		return ticksInAir;
 	}
 
 	public void setTicksInAir(int ticksInAir) {
@@ -122,7 +124,7 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 	public static void addStrafeParticles(Entity entity) {
 		if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || entity != MinecraftClient.getInstance().cameraEntity) {
 			for (int i = 0; i < 8; i++) {
-				entity.world.addParticle(ParticleTypes.CLOUD, entity.getParticleX(1), entity.getRandomBodyY(), entity.getParticleZ(1), 0, 0, 0);
+				entity.getWorld().addParticle(ParticleTypes.CLOUD, entity.getParticleX(1), entity.getRandomBodyY(), entity.getParticleZ(1), 0, 0, 0);
 			}
 		}
 	}

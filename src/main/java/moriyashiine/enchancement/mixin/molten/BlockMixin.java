@@ -1,13 +1,13 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.mixin.molten;
 
 import moriyashiine.enchancement.client.packet.AddMoltenParticlesPacket;
-import moriyashiine.enchancement.common.registry.ModEnchantments;
-import moriyashiine.enchancement.common.registry.ModSoundEvents;
-import moriyashiine.enchancement.common.registry.ModTags;
+import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.enchancement.common.init.ModTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.block.Block;
@@ -61,7 +61,7 @@ public class BlockMixin {
 		for (SmeltingRecipe recipe : world.getRecipeManager().listAllOfType(RecipeType.SMELTING)) {
 			for (Ingredient ingredient : recipe.getIngredients()) {
 				if (ingredient.test(stack)) {
-					return new Pair<>(new ItemStack(recipe.getOutput().getItem(), recipe.getOutput().getCount() * stack.getCount()), recipe.getExperience());
+					return new Pair<>(new ItemStack(recipe.getOutput(world.getRegistryManager()).getItem(), recipe.getOutput(world.getRegistryManager()).getCount() * stack.getCount()), recipe.getExperience());
 				}
 			}
 		}

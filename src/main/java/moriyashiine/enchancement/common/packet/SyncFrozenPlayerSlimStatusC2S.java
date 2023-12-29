@@ -1,5 +1,5 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.common.packet;
@@ -9,6 +9,7 @@ import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.entity.mob.FrozenPlayerEntity;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -27,9 +28,12 @@ public class SyncFrozenPlayerSlimStatusC2S {
 		ClientPlayNetworking.send(ID, buf);
 	}
 
-	public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-		UUID uuid = buf.readUuid();
-		boolean slim = buf.readBoolean();
-		server.execute(() -> FrozenPlayerEntity.SLIM_STATUSES.put(uuid, slim));
+	public static class Receiver implements ServerPlayNetworking.PlayChannelHandler {
+		@Override
+		public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
+			UUID uuid = buf.readUuid();
+			boolean slim = buf.readBoolean();
+			server.execute(() -> FrozenPlayerEntity.SLIM_STATUSES.put(uuid, slim));
+		}
 	}
 }

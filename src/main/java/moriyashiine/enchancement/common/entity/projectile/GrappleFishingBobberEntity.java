@@ -1,10 +1,12 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.common.entity.projectile;
 
-import moriyashiine.enchancement.common.registry.ModEntityTypes;
+import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.ModEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -50,13 +52,17 @@ public class GrappleFishingBobberEntity extends FishingBobberEntity {
 		setPitch((float) (MathHelper.atan2(velocity.y, velocity.horizontalLength()) * 57.2957763671875));
 		prevYaw = getYaw();
 		prevPitch = getPitch();
+
+		if (ModConfig.accurateFishingBobbers) {
+			accurateFishingBobbers(this, thrower, 2.75F);
+		}
 	}
 
 	@Override
 	protected void onBlockHit(BlockHitResult blockHitResult) {
 		super.onBlockHit(blockHitResult);
 		grapplePos = blockHitResult.getBlockPos();
-		grappleState = world.getBlockState(grapplePos);
+		grappleState = getWorld().getBlockState(grapplePos);
 	}
 
 	@Override
@@ -65,27 +71,37 @@ public class GrappleFishingBobberEntity extends FishingBobberEntity {
 		if (owner != null) {
 			Vec3d vec3d = new Vec3d(owner.getX() - getX(), owner.getY() - getY(), owner.getZ() - getZ()).multiply(0.1);
 			entity.setVelocity(entity.getVelocity().add(vec3d).multiply(2));
+			if (!entity.isOnGround()) {
+				ModEntityComponents.BOUNCY.maybeGet(entity).ifPresent(bouncyComponent -> bouncyComponent.grappleTimer = 30);
+			}
 		}
 	}
 
 	@Override
 	public int use(ItemStack usedItem) {
 		int use = super.use(usedItem);
-		if (!world.isClient) {
-			if (grappleState != null) {
-				PlayerEntity player = getPlayerOwner();
-				if (player != null) {
+		if (grappleState != null) {
+			PlayerEntity player = getPlayerOwner();
+			if (player != null) {
+				if (!getWorld().isClient) {
 					player.setVelocity(player.getVelocity().add(new Vec3d(Math.min(10, getX() - player.getX()), Math.min(10, getY() - player.getY()), Math.min(10, getZ() - player.getZ())).multiply(0.2)));
 					player.velocityModified = true;
 				}
+				if (!player.isOnGround()) {
+					ModEntityComponents.BOUNCY.get(player).grappleTimer = 30;
+				}
 			}
-			return 1;
 		}
-		return use;
+		return getWorld().isClient ? use : 1;
 	}
 
 	@Override
 	protected Text getDefaultName() {
 		return EntityType.FISHING_BOBBER.getName();
+	}
+
+	public static void accurateFishingBobbers(FishingBobberEntity fishingBobber, PlayerEntity thrower, float speed) {
+		fishingBobber.refreshPositionAndAngles(thrower.getX(), thrower.getEyeY(), thrower.getZ(), thrower.getYaw(), thrower.getPitch());
+		fishingBobber.setVelocity(thrower, thrower.getPitch(), thrower.getYaw(), 0, speed, 0);
 	}
 }

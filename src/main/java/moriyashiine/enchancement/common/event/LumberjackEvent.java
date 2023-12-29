@@ -1,13 +1,13 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.common.event;
 
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.component.world.LumberjackComponent;
-import moriyashiine.enchancement.common.registry.ModEnchantments;
-import moriyashiine.enchancement.common.registry.ModWorldComponents;
+import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModWorldComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.block.Block;
@@ -69,7 +69,6 @@ public class LumberjackEvent implements PlayerBlockBreakEvents.Before {
 		return tree;
 	}
 
-	@SuppressWarnings("ConstantConditions")
 	private static boolean isWithinHorizontalBounds(List<BlockPos> tree) {
 		Integer minX = null, maxX = null, minZ = null, maxZ = null;
 		for (BlockPos pos : tree) {

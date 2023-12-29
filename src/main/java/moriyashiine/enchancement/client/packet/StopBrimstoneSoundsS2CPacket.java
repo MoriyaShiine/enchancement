@@ -1,5 +1,5 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.client.packet;
@@ -12,6 +12,7 @@ import moriyashiine.enchancement.mixin.brimstone.client.SoundManagerAccessor;
 import moriyashiine.enchancement.mixin.brimstone.client.SoundSystemAccessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -37,11 +38,6 @@ public class StopBrimstoneSoundsS2CPacket {
 		ServerPlayNetworking.send(player, ID, buf);
 	}
 
-	public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-		UUID uuid = buf.readUuid();
-		client.execute(() -> stopSounds(client, uuid));
-	}
-
 	public static void stopSounds(Entity entity, ItemStack stack) {
 		UUID brimstoneUUID = StopBrimstoneSoundsS2CPacket.getBrimstoneUUID(stack);
 		if (brimstoneUUID != null) {
@@ -56,7 +52,7 @@ public class StopBrimstoneSoundsS2CPacket {
 		}
 	}
 
-	@Environment(EnvType.CLIENT)
+	//client
 	public static void maybeStopSounds(PlayerEntity player, ItemStack stack) {
 		if (player.getItemUseTime() > 0) {
 			UUID brimstoneUUID = getBrimstoneUUID(stack);
@@ -67,7 +63,7 @@ public class StopBrimstoneSoundsS2CPacket {
 		}
 	}
 
-	@Environment(EnvType.CLIENT)
+	//client
 	public static void stopSounds(MinecraftClient client, UUID uuid) {
 		((SoundSystemAccessor) ((SoundManagerAccessor) client.getSoundManager()).enchancement$getSoundSystem()).enchancement$getSounds().values().forEach(sound -> {
 			if (sound instanceof BrimstoneSoundInstance brimstoneSoundInstance && brimstoneSoundInstance.getUuid().equals(uuid)) {
@@ -85,5 +81,14 @@ public class StopBrimstoneSoundsS2CPacket {
 			}
 		}
 		return null;
+	}
+
+	@Environment(EnvType.CLIENT)
+	public static class Receiver implements ClientPlayNetworking.PlayChannelHandler {
+		@Override
+		public void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
+			UUID uuid = buf.readUuid();
+			client.execute(() -> stopSounds(client, uuid));
+		}
 	}
 }

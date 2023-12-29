@@ -1,12 +1,12 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.mixin.scatter;
 
 import moriyashiine.enchancement.common.entity.projectile.AmethystShardEntity;
-import moriyashiine.enchancement.common.registry.ModEnchantments;
-import moriyashiine.enchancement.common.registry.ModSoundEvents;
+import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -32,7 +32,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class CrossbowItemMixin {
 	@Inject(method = "shoot", at = @At("HEAD"), cancellable = true)
 	private static void enchancement$scatter(World world, LivingEntity shooter, Hand hand, ItemStack crossbow, ItemStack projectile, float soundPitch, boolean creative, float speed, float divergence, float simulated, CallbackInfo ci) {
-		if (!world.isClient && EnchancementUtil.hasEnchantment(ModEnchantments.SCATTER, crossbow) && projectile.isOf(Items.AMETHYST_SHARD)) {
+		if (!world.isClient && EnchancementUtil.hasEnchantment(ModEnchantments.SCATTER, crossbow) && (projectile.isOf(Items.AMETHYST_SHARD) || !(shooter instanceof PlayerEntity))) {
 			speed /= 2;
 			int count = MathHelper.nextInt(world.random, 8, 16);
 			int multishot = EnchantmentHelper.getLevel(Enchantments.MULTISHOT, crossbow);

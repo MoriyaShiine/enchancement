@@ -1,5 +1,5 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.mixin.vanillachanges.unbreakingchanges;
@@ -25,14 +25,14 @@ public abstract class ItemStackMixin {
 
 	@Inject(method = "damage(ILnet/minecraft/entity/LivingEntity;Ljava/util/function/Consumer;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isDamageable()Z"))
 	private <T extends LivingEntity> void enchancement$fixUnbreakableItemsNotGrantingAdvancements(int amount, T entity, Consumer<T> breakCallback, CallbackInfo ci) {
-		if (entity instanceof ServerPlayerEntity player && EnchancementUtil.shouldBeUnbreakable(ItemStack.class.cast(this))) {
-			Criteria.ITEM_DURABILITY_CHANGED.trigger(player, ItemStack.class.cast(this), getDamage());
+		if (entity instanceof ServerPlayerEntity player && EnchancementUtil.shouldBeUnbreakable((ItemStack) (Object) this)) {
+			Criteria.ITEM_DURABILITY_CHANGED.trigger(player, (ItemStack) (Object) this, getDamage());
 		}
 	}
 
 	@Inject(method = "isDamageable", at = @At("HEAD"), cancellable = true)
 	private void enchancement$unbreakingChanges(CallbackInfoReturnable<Boolean> cir) {
-		if (EnchancementUtil.shouldBeUnbreakable(ItemStack.class.cast(this))) {
+		if (EnchancementUtil.shouldBeUnbreakable((ItemStack) (Object) this)) {
 			cir.setReturnValue(false);
 		}
 	}

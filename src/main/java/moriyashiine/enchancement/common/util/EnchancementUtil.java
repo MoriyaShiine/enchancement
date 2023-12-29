@@ -1,24 +1,20 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.common.util;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import ladysnake.impaled.common.init.ImpaledEntityTypes;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.registry.ModEnchantments;
-import moriyashiine.enchancement.common.registry.ModTags;
+import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModTags;
 import moriyashiine.enchancement.mixin.util.ItemEntityAccessor;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,12 +22,17 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.FluidTags;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.random.Random;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 
 public class EnchancementUtil {
 	public static final Object2IntMap<PlayerEntity> PACKET_IMMUNITIES = new Object2IntOpenHashMap<>();
@@ -62,12 +63,59 @@ public class EnchancementUtil {
 		return drops;
 	}
 
+	public static Map<Enchantment, Integer> getRandomEnchantment(ItemStack stack, Random random) {
+		Map<Enchantment, Integer> map = new HashMap<>();
+		List<Enchantment> enchantments = new ArrayList<>();
+		for (Enchantment enchantment : Registries.ENCHANTMENT) {
+			if (enchantment.isAcceptableItem(stack)) {
+				enchantments.add(enchantment);
+			}
+		}
+		if (!enchantments.isEmpty()) {
+			Enchantment enchantment = enchantments.get(random.nextInt(enchantments.size()));
+			map.put(enchantment, MathHelper.nextInt(random, 1, enchantment.getMaxLevel()));
+		}
+		return map;
+	}
+
+	@Nullable
+	public static Enchantment getReplacement(Enchantment enchantment, ItemStack stack) {
+		List<Enchantment> enchantments = new ArrayList<>();
+		for (Enchantment entry : Registries.ENCHANTMENT) {
+			if (stack.isOf(Items.ENCHANTED_BOOK) || entry.isAcceptableItem(stack)) {
+				enchantments.add(entry);
+			}
+		}
+		if (enchantments.isEmpty()) {
+			return null;
+		}
+		int index = Registries.ENCHANTMENT.getId(enchantment).hashCode() % enchantments.size();
+		if (index < 0) {
+			index += enchantments.size();
+		}
+		return enchantments.get(index);
+	}
+
 	public static boolean hasEnchantment(Enchantment enchantment, ItemStack stack) {
 		return EnchantmentHelper.getLevel(enchantment, stack) > 0;
 	}
 
 	public static boolean hasEnchantment(Enchantment enchantment, Entity entity) {
 		return entity instanceof LivingEntity living && EnchantmentHelper.getEquipmentLevel(enchantment, living) > 0;
+	}
+
+	public static boolean isEnchantmentAllowed(Identifier identifier) {
+		if (identifier == null) {
+			return true;
+		}
+		if (ModConfig.invertedList) {
+			return ModConfig.disallowedEnchantments.contains(identifier.toString());
+		}
+		return !ModConfig.disallowedEnchantments.contains(identifier.toString());
+	}
+
+	public static boolean isEnchantmentAllowed(Enchantment enchantment) {
+		return isEnchantmentAllowed(Registries.ENCHANTMENT.getId(enchantment));
 	}
 
 	public static boolean isGroundedOrAirborne(LivingEntity living, boolean allowWater) {
@@ -88,12 +136,19 @@ public class EnchancementUtil {
 
 	public static boolean isSubmerged(Entity entity, boolean allowWater, boolean allowLava) {
 		for (int i = 0; i <= 1; i++) {
-			FluidState state = entity.world.getFluidState(entity.getBlockPos().up(i));
+			FluidState state = entity.getWorld().getFluidState(entity.getBlockPos().up(i));
 			if ((allowWater && state.isIn(FluidTags.WATER)) || (allowLava && state.isIn(FluidTags.LAVA))) {
 				return true;
 			}
 		}
 		return false;
+	}
+
+	public static boolean limitCheck(boolean fallback, boolean value) {
+		if (ModConfig.enchantmentLimit == 0) {
+			return fallback;
+		}
+		return value;
 	}
 
 	public static boolean shouldBeUnbreakable(ItemStack stack) {
@@ -109,9 +164,6 @@ public class EnchancementUtil {
 
 	public static boolean shouldDisableLoyalty(PersistentProjectileEntity entity) {
 		if (ModConfig.allTridentsHaveLoyalty) {
-			if (Enchancement.isImpaledLoaded && entity.getType() == ImpaledEntityTypes.GUARDIAN_TRIDENT) {
-				return true;
-			}
 			return !(entity.getOwner() instanceof PlayerEntity);
 		}
 		return false;
@@ -124,17 +176,10 @@ public class EnchancementUtil {
 		if (attacker == hitEntity) {
 			return false;
 		}
-		if (hitEntity instanceof PlayerEntity hitPlayer) {
-			return attacker instanceof PlayerEntity attackingPlayer && attackingPlayer.shouldDamagePlayer(hitPlayer);
-		} else {
-			NbtCompound tag = hitEntity.writeNbt(new NbtCompound());
-			if (tag.contains("Owner")) {
-				UUID owner = tag.getUuid("Owner");
-				if (owner.equals(attacker.getUuid())) {
-					return false;
-				}
-				return shouldHurt(attacker, ((ServerWorld) attacker.world).getEntity(owner));
-			}
+		if (hitEntity instanceof PlayerEntity hitPlayer && attacker instanceof PlayerEntity attackingPlayer) {
+			return attackingPlayer.shouldDamagePlayer(hitPlayer);
+		} else if (hitEntity instanceof Ownable ownable) {
+			return shouldHurt(attacker, ownable.getOwner());
 		}
 		return true;
 	}

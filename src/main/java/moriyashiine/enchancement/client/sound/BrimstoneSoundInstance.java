@@ -1,12 +1,10 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.client.sound;
 
-import moriyashiine.enchancement.common.registry.ModSoundEvents;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import moriyashiine.enchancement.common.init.ModSoundEvents;
 import net.minecraft.client.sound.MovingSoundInstance;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -15,14 +13,13 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.UUID;
 
-@Environment(EnvType.CLIENT)
 public class BrimstoneSoundInstance extends MovingSoundInstance {
 	private final Entity entity;
 	private final UUID uuid;
 	private int age = 0;
 
 	public BrimstoneSoundInstance(Entity entity, UUID uuid, SoundCategory soundCategory) {
-		super(ModSoundEvents.ITEM_CROSSBOW_LOADING_BRIMSTONE, soundCategory, entity.world.random);
+		super(ModSoundEvents.ITEM_CROSSBOW_LOADING_BRIMSTONE, soundCategory, entity.getWorld().random);
 		this.entity = entity;
 		this.uuid = uuid;
 		x = entity.getX();
@@ -42,7 +39,7 @@ public class BrimstoneSoundInstance extends MovingSoundInstance {
 		y = entity.getY();
 		z = entity.getZ();
 		age++;
-		pitch = MathHelper.lerp(age / 60F, 1, 2);
+		pitch = MathHelper.lerp(age / 60F, 1F, 2F);
 	}
 
 	public UUID getUuid() {

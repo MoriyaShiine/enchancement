@@ -1,5 +1,5 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.mixin.grapple;
@@ -27,7 +27,7 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 	@SuppressWarnings("ConstantValue")
 	@Inject(method = "removeIfInvalid", at = @At("HEAD"), cancellable = true)
 	private void enchancement$grapple(PlayerEntity player, CallbackInfoReturnable<Boolean> cir) {
-		if (FishingBobberEntity.class.cast(this) instanceof GrappleFishingBobberEntity) {
+		if ((Object) this instanceof GrappleFishingBobberEntity) {
 			if (player.isRemoved() || !player.isAlive() || !player.getMainHandStack().isOf(Items.FISHING_ROD) && !player.getOffHandStack().isOf(Items.FISHING_ROD) || this.squaredDistanceTo(player) > 4096) {
 				discard();
 				cir.setReturnValue(true);
@@ -36,11 +36,12 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 		}
 	}
 
+	@SuppressWarnings("ConstantValue")
 	@Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/FishingBobberEntity;checkForCollision()V", shift = At.Shift.BEFORE), cancellable = true)
 	private void enchancement$grapple(CallbackInfo ci) {
-		if (FishingBobberEntity.class.cast(this) instanceof GrappleFishingBobberEntity grappleFishingBobber) {
+		if ((Object) this instanceof GrappleFishingBobberEntity grappleFishingBobber) {
 			if (grappleFishingBobber.grappleState != null) {
-				if (grappleFishingBobber.age % 10 == 0 && grappleFishingBobber.world.getBlockState(grappleFishingBobber.grapplePos) != grappleFishingBobber.grappleState) {
+				if (grappleFishingBobber.age % 10 == 0 && grappleFishingBobber.getWorld().getBlockState(grappleFishingBobber.grapplePos) != grappleFishingBobber.grappleState) {
 					grappleFishingBobber.grapplePos = null;
 					grappleFishingBobber.grappleState = null;
 				}

@@ -1,11 +1,11 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.mixin.veil;
 
-import moriyashiine.enchancement.common.registry.ModEnchantments;
-import moriyashiine.enchancement.common.registry.ModTags;
+import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -20,7 +20,7 @@ public class LivingEntityMixin {
 		if (entity != null && entity.getType().isIn(ModTags.EntityTypes.VEIL_IMMUNE)) {
 			return value;
 		}
-		if (EnchancementUtil.hasEnchantment(ModEnchantments.VEIL, LivingEntity.class.cast(this))) {
+		if (EnchancementUtil.hasEnchantment(ModEnchantments.VEIL, (LivingEntity) (Object) this)) {
 			return value / 4;
 		}
 		return value;

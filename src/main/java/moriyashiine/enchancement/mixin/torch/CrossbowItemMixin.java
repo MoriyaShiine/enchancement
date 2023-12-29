@@ -1,11 +1,11 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.mixin.torch;
 
 import moriyashiine.enchancement.common.entity.projectile.TorchEntity;
-import moriyashiine.enchancement.common.registry.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -38,7 +38,7 @@ public class CrossbowItemMixin {
 
 	@ModifyVariable(method = "createArrow", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/ArrowItem;createArrow(Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/LivingEntity;)Lnet/minecraft/entity/projectile/PersistentProjectileEntity;"))
 	private static PersistentProjectileEntity enchancement$torch(PersistentProjectileEntity value, World world, LivingEntity entity, ItemStack crossbow, ItemStack arrow) {
-		if (arrow.isOf(Items.TORCH)) {
+		if (EnchancementUtil.hasEnchantment(ModEnchantments.TORCH, crossbow) && (arrow.isOf(Items.TORCH) || !(entity instanceof PlayerEntity))) {
 			TorchEntity torch = new TorchEntity(world, entity);
 			torch.setDamage(torch.getDamage() / 5);
 			return torch;

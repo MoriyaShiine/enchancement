@@ -1,5 +1,5 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.mixin.vanillachanges.singlelevelmode;
@@ -15,11 +15,20 @@ import net.minecraft.registry.Registries;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EnchantmentHelper.class)
 public class EnchantmentHelperMixin {
+	@ModifyVariable(method = "createNbt", at = @At(value = "HEAD"), argsOnly = true)
+	private static int enchancement$singleLevelModeNbt(int value) {
+		if (ModConfig.singleLevelMode) {
+			return 1;
+		}
+		return value;
+	}
+
 	@Inject(method = "forEachEnchantment(Lnet/minecraft/enchantment/EnchantmentHelper$Consumer;Lnet/minecraft/item/ItemStack;)V", at = @At("HEAD"), cancellable = true)
 	private static void enchancement$singleLevelMode(EnchantmentHelper.Consumer consumer, ItemStack stack, CallbackInfo ci) {
 		if (ModConfig.singleLevelMode) {
@@ -43,7 +52,7 @@ public class EnchantmentHelperMixin {
 	}
 
 	@ModifyExpressionValue(method = "getPossibleEntries", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/Enchantment;getMaxLevel()I"))
-	private static int enchancement$singleLevelMode(int value) {
+	private static int enchancement$singleLevelModeEntries(int value) {
 		if (ModConfig.singleLevelMode) {
 			return 1;
 		}

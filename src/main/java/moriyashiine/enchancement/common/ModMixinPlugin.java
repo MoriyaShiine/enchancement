@@ -1,5 +1,5 @@
 /*
- * All Rights Reserved (c) 2022 MoriyaShiine
+ * All Rights Reserved (c) MoriyaShiine
  */
 
 package moriyashiine.enchancement.common;
@@ -28,8 +28,6 @@ public class ModMixinPlugin implements IMixinConfigPlugin {
 			return FabricLoader.getInstance().isModLoaded("architectury");
 		} else if (mixinClassName.contains("integration.geckolib")) {
 			return FabricLoader.getInstance().isModLoaded("geckolib");
-		} else if (mixinClassName.contains("integration.impaled")) {
-			return FabricLoader.getInstance().isModLoaded("impaled");
 		} else if (mixinClassName.contains("integration.sodium")) {
 			return FabricLoader.getInstance().isModLoaded("sodium");
 		}

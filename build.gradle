@@ -1,14 +1,14 @@
 plugins {
-    id 'fabric-loom' version '1.1-SNAPSHOT'
+    id 'fabric-loom' version '1.4-SNAPSHOT'
     id 'maven-publish'
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
-
-archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
 
 loom {
     accessWidenerPath = file("src/main/resources/enchancement.accesswidener")
@@ -17,7 +17,7 @@ loom {
 repositories {
     maven {
         name "cardinal components"
-        url "https://ladysnake.jfrog.io/artifactory/mods"
+        url "https://maven.ladysnake.org/releases"
     }
     maven {
         name "architectury"
@@ -30,10 +30,6 @@ repositories {
     maven {
         name "mod menu"
         url "https://maven.terraformersmc.com"
-    }
-    maven {
-        name "curse"
-        url "https://cursemaven.com"
     }
     maven {
         name "modrinth"
@@ -50,33 +46,21 @@ dependencies {
     mappings "net.fabricmc:yarn:${yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${loader_version}"
 
-    implementation "com.github.LlamaLad7:MixinExtras:${mixin_extras_version}"
-    annotationProcessor "com.github.LlamaLad7:MixinExtras:${mixin_extras_version}"
-    include "com.github.LlamaLad7:MixinExtras:${mixin_extras_version}"
-    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_version}"
-    include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_version}"
-    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}"
-    include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}"
-    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-world:${cardinal_components_version}"
-    include "dev.onyxstudios.cardinal-components-api:cardinal-components-world:${cardinal_components_version}"
-    modImplementation "maven.modrinth:midnightlib:${midnightlib_version}"
-    include "maven.modrinth:midnightlib:${midnightlib_version}"
-    modImplementation "com.github.emilyploszaj:step-height-entity-attribute:${step_height_entity_attribute_version}"
-    include "com.github.emilyploszaj:step-height-entity-attribute:${step_height_entity_attribute_version}"
+    include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:${mixin_extras_version}")))
+    modApi include("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_version}")
+    modApi include("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}")
+    modApi include("dev.onyxstudios.cardinal-components-api:cardinal-components-world:${cardinal_components_version}")
+    modApi include("maven.modrinth:midnightlib:${midnightlib_version}")
+    modApi include("com.github.emilyploszaj:step-height-entity-attribute:${step_height_entity_attribute_version}")
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-
-    modImplementation("com.github.Virtuoel:Pehkui:${pehkui_version}") {
-        exclude group: "net.fabricmc.fabric-api"
-    }
-    modRuntimeOnly "curse.maven:tooltipfix-411557:${tooltipfix_version}"
+    modRuntimeOnly "maven.modrinth:tooltipfix:${tooltipfix_version}"
 
     modCompileOnly("com.github.apace100:apoli:${apoli_version}") {
         exclude(group: "*")
     }
-    modCompileOnly "dev.architectury:architectury-fabric:${architectury_version}"
+    modCompileOnly "maven.modrinth:architectury-api:${architectury_version}+fabric"
     modCompileOnly "software.bernie.geckolib:geckolib-fabric-${geckolib_version}"
-    modCompileOnly "com.github.Ladysnake:Impaled:${impaled_version}"
     modCompileOnly "maven.modrinth:sodium:${sodium_version}"
     modRuntimeOnly "maven.modrinth:sodium:${sodium_version}"
     implementation "org.joml:joml:1.10.4"
@@ -98,6 +82,9 @@ tasks.withType(JavaCompile).configureEach {
 
 java {
     withSourcesJar()
+
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 jar {

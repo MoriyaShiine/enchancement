@@ -31,10 +31,10 @@
 	  "moriyashiine.enchancement.client.EnchancementClient"
 	],
 	"cardinal-components-entity": [
-	  "moriyashiine.enchancement.common.registry.ModEntityComponents"
+	  "moriyashiine.enchancement.common.init.ModEntityComponents"
 	],
 	"cardinal-components-world": [
-	  "moriyashiine.enchancement.common.registry.ModWorldComponents"
+	  "moriyashiine.enchancement.common.init.ModWorldComponents"
 	]
   },
   "mixins": [
@@ -42,14 +42,11 @@
   ],
   "accessWidener": "enchancement.accesswidener",
   "depends": {
-	"fabricloader": ">=0.14.11",
-	"minecraft": "~1.19.3",
+	"fabricloader": "*",
+	"minecraft": "~1.20.1",
 	"java": ">=17",
-	"bookshelf": ">=17.0.3",
-	"enchdesc": ">=14.0.4",
-	"fabric-api": ">=0.70.0",
-	"pehkui": ">=3.6.3",
-	"tooltipfix": ">=1.1.1-1.19.3"
+	"fabric-api": ">=0.84.0",
+	"tooltipfix": ">=1.1.1-1.20"
   },
   "custom": {
 	"cardinal-components": [
