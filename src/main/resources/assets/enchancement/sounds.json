@@ -7,6 +7,15 @@
 	],
 	"subtitle": "subtitles.enchancement.entity.shard.shatter"
   },
+  "entity.fishing_bobber.grapple": {
+	"sounds": [
+	  {
+		"name": "random/orb",
+		"volume": 0.25
+	  }
+	],
+	"subtitle": "subtitles.enchancement.entity.fishing_bobber.grapple"
+  },
   "entity.generic.strafe": {
 	"sounds": [
 	  "dig/sand1",
