@@ -16,7 +16,6 @@ import net.minecraft.world.RaycastContext;
 
 public class AirMobilityComponent implements CommonTickingComponent {
 	private final LivingEntity obj;
-
 	private int ticksInAir = 0;
 
 	public AirMobilityComponent(LivingEntity obj) {
