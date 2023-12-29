@@ -16,7 +16,7 @@ public class BuoyEvent implements MultiplyMovementSpeedEvent {
 	@Override
 	public float multiply(float currentMultiplier, World world, LivingEntity living) {
 		if (EnchancementUtil.hasEnchantment(ModEnchantments.BUOY, living)) {
-			if (ModEntityComponents.EXTENDED_WATER.get(living).getTicksLeft() > 0 || EnchancementUtil.isSubmerged(living, true, false, false)) {
+			if (ModEntityComponents.EXTENDED_WATER.get(living).getTicksWet() > 0 || EnchancementUtil.isSubmerged(living, true, false, false)) {
 				currentMultiplier = Math.min(3, currentMultiplier * 1.5F);
 				int depthStriderLevel = EnchantmentHelper.getDepthStrider(living);
 				while (depthStriderLevel > 0) {

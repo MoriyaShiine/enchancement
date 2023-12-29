@@ -12,11 +12,13 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.math.MathHelper;
 
 public class ExtendedWaterComponent implements CommonTickingComponent {
-	private int ticksLeft = 0;
-
 	private final LivingEntity obj;
+	private int ticksWet = 0;
+
+	private boolean hasAmphibious = false, hasBuoy = false;
 
 	public ExtendedWaterComponent(LivingEntity obj) {
 		this.obj = obj;
@@ -24,35 +26,37 @@ public class ExtendedWaterComponent implements CommonTickingComponent {
 
 	@Override
 	public void readFromNbt(NbtCompound tag) {
-		ticksLeft = tag.getInt("TicksLeft");
+		ticksWet = tag.getInt("TicksWet");
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag) {
-		tag.putInt("TicksLeft", ticksLeft);
+		tag.putInt("TicksWet", ticksWet);
 	}
 
 	@Override
 	public void tick() {
-		if (ticksLeft > 0) {
-			ticksLeft--;
-			if (obj.isOnFire()) {
-				obj.extinguishWithSound();
-			}
-		}
+		hasAmphibious = EnchancementUtil.hasEnchantment(ModEnchantments.AMPHIBIOUS, obj);
+		hasBuoy = EnchancementUtil.hasEnchantment(ModEnchantments.BUOY, obj);
 		if (shouldCount()) {
 			if (obj.isWet()) {
-				ticksLeft = 100;
+				ticksWet = 100;
 			}
 		} else {
-			ticksLeft = 0;
+			ticksWet = 0;
+		}
+		if (ticksWet > 0) {
+			ticksWet--;
+			if (hasAmphibious && obj.isOnFire()) {
+				obj.extinguishWithSound();
+			}
 		}
 	}
 
 	@Override
 	public void serverTick() {
 		tick();
-		if (ticksLeft > 0 && obj.age % 10 == 0 && !obj.isWet()) {
+		if (ticksWet > 0 && obj.age % 10 == 0 && !obj.isWet()) {
 			obj.getWorld().playSound(null, obj.getBlockPos(), SoundEvents.BLOCK_POINTED_DRIPSTONE_DRIP_WATER, obj.getSoundCategory(), 1, 1);
 		}
 	}
@@ -60,18 +64,27 @@ public class ExtendedWaterComponent implements CommonTickingComponent {
 	@Override
 	public void clientTick() {
 		tick();
-		if (ticksLeft > 0 && !obj.isInvisible() && !obj.isWet()) {
+		if (ticksWet > 0 && !obj.isInvisible() && !obj.isWet()) {
 			if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || MinecraftClient.getInstance().player != obj) {
-				obj.getWorld().addParticle(ParticleTypes.FALLING_WATER, obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 0, 0);
+				if (hasAmphibious) {
+					obj.getWorld().addParticle(ParticleTypes.FALLING_WATER, obj.getParticleX(1), obj.getY() + obj.getHeight() * MathHelper.nextDouble(obj.getRandom(), 0.4, 0.8), obj.getParticleZ(1), 0, 0, 0);
+				}
+				if (hasBuoy) {
+					obj.getWorld().addParticle(ParticleTypes.FALLING_WATER, obj.getParticleX(1), obj.getY() + obj.getHeight() * 0.15, obj.getParticleZ(1), 0, 0, 0);
+				}
 			}
 		}
 	}
 
-	public int getTicksLeft() {
-		return ticksLeft;
+	public int getTicksWet() {
+		return ticksWet;
+	}
+
+	public boolean hasAmphibious() {
+		return hasAmphibious;
 	}
 
 	private boolean shouldCount() {
-		return EnchancementUtil.hasEnchantment(ModEnchantments.AMPHIBIOUS, obj) || EnchancementUtil.hasEnchantment(ModEnchantments.BUOY, obj);
+		return hasAmphibious || hasBuoy;
 	}
 }

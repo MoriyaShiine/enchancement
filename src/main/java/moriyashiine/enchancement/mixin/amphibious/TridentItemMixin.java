@@ -2,9 +2,10 @@
  * All Rights Reserved (c) MoriyaShiine
  */
 
-package moriyashiine.enchancement.mixin.util;
+package moriyashiine.enchancement.mixin.amphibious;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import moriyashiine.enchancement.common.component.entity.ExtendedWaterComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,16 +18,18 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(TridentItem.class)
 public class TridentItemMixin {
 	@ModifyExpressionValue(method = "onStoppedUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isTouchingWaterOrRain()Z"))
-	private boolean enchancement$extendedWater(boolean value, ItemStack stack, World world, LivingEntity user) {
-		if (ModEntityComponents.EXTENDED_WATER.get(user).getTicksLeft() > 0) {
+	private boolean enchancement$amphibious(boolean value, ItemStack stack, World world, LivingEntity user) {
+		ExtendedWaterComponent extendedWaterComponent = ModEntityComponents.EXTENDED_WATER.get(user);
+		if (extendedWaterComponent.hasAmphibious() && extendedWaterComponent.getTicksWet() > 0) {
 			return true;
 		}
 		return value;
 	}
 
 	@ModifyExpressionValue(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isTouchingWaterOrRain()Z"))
-	private boolean enchancement$extendedWater(boolean value, World world, PlayerEntity user) {
-		if (ModEntityComponents.EXTENDED_WATER.get(user).getTicksLeft() > 0) {
+	private boolean enchancement$amphibious(boolean value, World world, PlayerEntity user) {
+		ExtendedWaterComponent extendedWaterComponent = ModEntityComponents.EXTENDED_WATER.get(user);
+		if (extendedWaterComponent.hasAmphibious() && extendedWaterComponent.getTicksWet() > 0) {
 			return true;
 		}
 		return value;
