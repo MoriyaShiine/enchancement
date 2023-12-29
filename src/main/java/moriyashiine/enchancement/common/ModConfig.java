@@ -68,6 +68,8 @@ public class ModConfig extends MidnightConfig {
 	@Entry
 	public static boolean channelingWorksWhenNotThundering = true;
 	@Entry
+	public static boolean crossbowsPullFromInventory = true;
+	@Entry
 	public static boolean drownedUseHeldTrident = true;
 	@Entry
 	public static boolean enchantedChestplatesIncreaseAirMobility = true;
@@ -123,7 +125,7 @@ public class ModConfig extends MidnightConfig {
 				overhaulEnchantingTable + allowTreasureEnchantmentsInEnchantingTable +
 				singleLevelMode + enchantmentLimit +
 				accurateFishingBobbers + allowInfinityOnCrossbows + allTridentsHaveLoyalty +
-				channelingIgnitesOnMelee + channelingWorksWhenNotThundering +
+				channelingIgnitesOnMelee + channelingWorksWhenNotThundering + crossbowsPullFromInventory +
 				drownedUseHeldTrident +
 				enchantedChestplatesIncreaseAirMobility +
 				fasterBows + fireAspectWorksAsFlintAndSteel + freeEnchantedBookMerging +
