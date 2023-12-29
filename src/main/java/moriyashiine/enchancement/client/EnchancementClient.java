@@ -44,6 +44,8 @@ import org.lwjgl.glfw.GLFW;
 @Environment(EnvType.CLIENT)
 public class EnchancementClient implements ClientModInitializer {
 	public static final KeyBinding STRAFE_KEYBINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".strafe", GLFW.GLFW_KEY_UNKNOWN, "key.categories." + Enchancement.MOD_ID));
+	public static final KeyBinding SLIDE_KEYBINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".slide", GLFW.GLFW_KEY_UNKNOWN, "key.categories." + Enchancement.MOD_ID));
+	public static final KeyBinding SLAM_KEYBINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".slam", GLFW.GLFW_KEY_UNKNOWN, "key.categories." + Enchancement.MOD_ID));
 
 	@Override
 	public void onInitializeClient() {

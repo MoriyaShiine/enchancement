@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.component.entity;
 
 import dev.emi.stepheightentityattribute.StepHeightEntityAttributeMain;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
+import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.packet.SlideSlamPacket;
@@ -40,7 +41,7 @@ public class SlideComponent implements CommonTickingComponent {
 
 	private boolean hasSlide = false;
 
-	private boolean disallowSlide = false, wasSneaking = false;
+	private boolean disallowSlide = false, wasPressingSlamKey = false;
 
 	public SlideComponent(PlayerEntity obj) {
 		this.obj = obj;
@@ -158,17 +159,11 @@ public class SlideComponent implements CommonTickingComponent {
 				});
 			}
 			GameOptions options = MinecraftClient.getInstance().options;
-			if (!options.sprintKey.isPressed()) {
+			boolean pressingSlideKey = EnchancementClient.SLIDE_KEYBINDING.isUnbound() ? options.sprintKey.isPressed() : EnchancementClient.SLIDE_KEYBINDING.isPressed();
+			if (!pressingSlideKey) {
 				disallowSlide = false;
 			}
-			boolean sneaking = options.sneakKey.isPressed();
-			if (slamCooldown == 0 && !obj.isOnGround() && sneaking && !wasSneaking && !isSliding() && EnchancementUtil.isGroundedOrAirborne(obj)) {
-				shouldSlam = true;
-				slamCooldown = DEFAULT_SLAM_COOLDOWN;
-				SlideSlamPacket.send();
-			}
-			wasSneaking = sneaking;
-			if (options.sprintKey.isPressed() && !obj.isSneaking() && !disallowSlide) {
+			if (pressingSlideKey && !obj.isSneaking() && !disallowSlide) {
 				if (!isSliding() && obj.isOnGround() && EnchancementUtil.isGroundedOrAirborne(obj)) {
 					velocity = getVelocityFromInput(options).rotateY((float) Math.toRadians(-(obj.getHeadYaw() + 90)));
 					SlideVelocityPacket.send(velocity);
@@ -177,9 +172,16 @@ public class SlideComponent implements CommonTickingComponent {
 				velocity = Vec3d.ZERO;
 				SlideVelocityPacket.send(velocity);
 			}
+			boolean pressingSlamKey = EnchancementClient.SLAM_KEYBINDING.isUnbound() ? options.sprintKey.isPressed() : EnchancementClient.SLAM_KEYBINDING.isPressed();
+			if (slamCooldown == 0 && !obj.isOnGround() && pressingSlamKey && !wasPressingSlamKey && !isSliding() && EnchancementUtil.isGroundedOrAirborne(obj)) {
+				shouldSlam = true;
+				slamCooldown = DEFAULT_SLAM_COOLDOWN;
+				SlideSlamPacket.send();
+			}
+			wasPressingSlamKey = pressingSlamKey;
 		} else {
 			disallowSlide = false;
-			wasSneaking = false;
+			wasPressingSlamKey = false;
 		}
 	}
 

@@ -155,6 +155,7 @@
 	"slide.client.GameRendererMixin",
 	"slide.client.KeyboardInputMixin",
 	"slide.client.PlayerEntityRendererMixin",
+	"slide.client.TranslatableTextContentMixin",
 	"strafe.client.TranslatableTextContentMixin",
 	"torch.client.MinecraftClientMixin",
 	"torch.client.ModelLoaderMixin",
