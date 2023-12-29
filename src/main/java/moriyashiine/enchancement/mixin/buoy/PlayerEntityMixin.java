@@ -8,23 +8,15 @@ import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
-public abstract class PlayerEntityMixin extends LivingEntityMixin {
-	@Shadow
-	public abstract ItemStack getEquippedStack(EquipmentSlot slot);
-
+public abstract class PlayerEntityMixin extends LivingEntity {
 	protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
 		super(entityType, world);
 	}
@@ -35,12 +27,5 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
 			return EntityPose.STANDING;
 		}
 		return value;
-	}
-
-	@Override
-	protected void enchancement$buoy(FluidState state, CallbackInfoReturnable<Boolean> cir) {
-		if (!isSneaking() && EnchancementUtil.hasEnchantment(ModEnchantments.BUOY, getEquippedStack(EquipmentSlot.FEET))) {
-			cir.setReturnValue(true);
-		}
 	}
 }

@@ -6,6 +6,7 @@
   "mixins": [
 	"amphibious.EnchantmentHelperMixin",
 	"amphibious.ProtectionEnchantmentMixin",
+	"api.event.LivingEntityMixin",
 	"assimilation.LivingEntityMixin",
 	"berserk.LivingEntityMixin",
 	"bouncy.LivingEntityMixin",
@@ -82,7 +83,6 @@
 	"vanillachanges.disabledisallowedenchantments.TagEntryMixin",
 	"vanillachanges.disabledisallowedenchantments.integration.architectury.RegistrarManagerImplRegistrarImplMixin",
 	"vanillachanges.drowneduseheldtrident.DrownedEntityMixin",
-	"vanillachanges.enchantedchestplatesincreaseairmobility.LivingEntityMixin",
 	"vanillachanges.enchantmentlimit.AnvilScreenHandlerMixin",
 	"vanillachanges.enchantmentlimit.EnchantCommandMixin",
 	"vanillachanges.enchantmentlimit.EnchantedBookItemMixin",
