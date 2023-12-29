@@ -50,6 +50,7 @@
   },
   "custom": {
 	"cardinal-components": [
+	  "enchancement:extended_water",
 	  "enchancement:air_mobility",
 	  "enchancement:strafe",
 	  "enchancement:dash",

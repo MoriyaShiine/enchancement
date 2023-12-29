@@ -5,6 +5,7 @@
 package moriyashiine.enchancement.mixin.buoy;
 
 import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -26,12 +27,14 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@ModifyArg(method = "applyMovementInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;updateVelocity(FLnet/minecraft/util/math/Vec3d;)V"))
 	private float enchancement$buoy(float value) {
-		if (EnchancementUtil.hasEnchantment(ModEnchantments.BUOY, this) && EnchancementUtil.isSubmerged(this, true, false, false)) {
-			value *= 1.5F;
-			int depthStriderLevel = EnchantmentHelper.getDepthStrider((LivingEntity) (Object) this);
-			while (depthStriderLevel > 0) {
-				depthStriderLevel--;
-				value *= 1.2F;
+		if (EnchancementUtil.hasEnchantment(ModEnchantments.BUOY, this)) {
+			if (ModEntityComponents.EXTENDED_WATER.get(this).getTicksLeft() > 0 || EnchancementUtil.isSubmerged(this, true, false, false)) {
+				value *= 1.5F;
+				int depthStriderLevel = EnchantmentHelper.getDepthStrider((LivingEntity) (Object) this);
+				while (depthStriderLevel > 0) {
+					depthStriderLevel--;
+					value *= 1.2F;
+				}
 			}
 		}
 		return value;

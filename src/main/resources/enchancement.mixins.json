@@ -63,6 +63,7 @@
 	"util.LivingEntityAccessor",
 	"util.ServerPlayNetworkHandlerMixin",
 	"util.TranslatableTextContentMixin",
+	"util.TridentItemMixin",
 	"util.enforceconfigmatch.PlayerManagerMixin",
 	"vanillachanges.accuratefishingbobbers.FishingBobberEntityMixin",
 	"vanillachanges.allowinfinityoncrossbows.CrossbowItemMixin",
