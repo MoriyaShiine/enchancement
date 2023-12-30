@@ -86,6 +86,8 @@ public class ModConfig extends MidnightConfig {
 	@Entry
 	public static boolean projectilesBypassCooldown = true;
 	@Entry
+	public static boolean projectilesNegateVelocity = true;
+	@Entry
 	public static boolean randomMobEnchantments = true;
 	@Entry
 	public static boolean safeChanneling = true;
@@ -131,7 +133,7 @@ public class ModConfig extends MidnightConfig {
 				fasterBows + fireAspectWorksAsFlintAndSteel + freeEnchantedBookMerging +
 				luckOfTheSeaHasLure +
 				negateEnderPearlDamage +
-				projectilesBypassCooldown +
+				projectilesBypassCooldown + projectilesNegateVelocity +
 				randomMobEnchantments +
 				safeChanneling +
 				tridentsReturnFromVoid +
