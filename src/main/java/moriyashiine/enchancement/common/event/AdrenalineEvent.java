@@ -14,7 +14,7 @@ public class AdrenalineEvent implements MultiplyMovementSpeedEvent {
 	@Override
 	public float multiply(float currentMultiplier, World world, LivingEntity living) {
 		if (EnchancementUtil.hasEnchantment(ModEnchantments.ADRENALINE, living)) {
-			currentMultiplier = Math.min(4, currentMultiplier * getMultiplier(living));
+			currentMultiplier = EnchancementUtil.capMovementMultiplier(currentMultiplier * getMultiplier(living));
 		}
 		return currentMultiplier;
 	}

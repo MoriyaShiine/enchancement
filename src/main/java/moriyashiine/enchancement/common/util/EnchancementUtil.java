@@ -40,6 +40,8 @@ public class EnchancementUtil {
 
 	public static final ItemStack BRIMSTONE_STACK;
 
+	public static final int MAXIMUM_MOVEMENT_MULTIPLIER = 4;
+
 	public static boolean shouldCancelTargetDamagedEnchantments = false;
 
 	static {
@@ -183,6 +185,10 @@ public class EnchancementUtil {
 			return shouldHurt(attacker, ownable.getOwner());
 		}
 		return true;
+	}
+
+	public static float capMovementMultiplier(float multiplier) {
+		return Math.min(MAXIMUM_MOVEMENT_MULTIPLIER, multiplier);
 	}
 
 	public static float getMaxBonusBerserkDamage(ItemStack stack) {
