@@ -85,7 +85,7 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 				sync();
 			}
 			boolean punching = obj.getOwner() instanceof LivingEntity living && living.handSwinging && (living.getMainHandStack() == stackShotFrom || living.getOffHandStack() == stackShotFrom);
-			if (ticksFloating > 300 || punching) {
+			if (ticksFloating > 200 || punching) {
 				if (punching && obj.getOwner() instanceof LivingEntity living && living.isSneaking()) {
 					HitResult result = ProjectileUtil.getCollision(living, entity -> !entity.isSpectator() && entity.canHit(), 64);
 					Vec3d pos;
