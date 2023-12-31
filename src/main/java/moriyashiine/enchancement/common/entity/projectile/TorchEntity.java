@@ -113,4 +113,14 @@ public class TorchEntity extends PersistentProjectileEntity {
 		super.writeCustomDataToNbt(nbt);
 		nbt.putBoolean("ShouldPlaceTorch", shouldPlaceTorch);
 	}
+
+	@Override
+	public boolean isOnFire() {
+		return true;
+	}
+
+	@Override
+	public boolean doesRenderOnFire() {
+		return false;
+	}
 }
