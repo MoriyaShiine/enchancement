@@ -109,6 +109,8 @@ public class ModConfig extends MidnightConfig {
 	public static int maxLumberjackBlocks = 1024;
 	@Entry(min = 1)
 	public static int maxLumberjackHorizontalLength = 7;
+	@Entry(min = 0)
+	public static int coyoteBiteTicks = 3;
 	@Entry(min = -1)
 	public static int unbreakingChangesFlag = 0;
 
@@ -140,6 +142,7 @@ public class ModConfig extends MidnightConfig {
 				weakerFireAspect + weakerGoldenApple + weakerPotions +
 				weaponEnchantmentCooldownRequirement +
 				maxExtractingBlocks + maxLumberjackBlocks + maxLumberjackHorizontalLength +
+				coyoteBiteTicks +
 				unbreakingChangesFlag;
 		return encoding.hashCode();
 	}

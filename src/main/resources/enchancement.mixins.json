@@ -165,6 +165,7 @@
 	"torch.client.MinecraftClientMixin",
 	"torch.client.ModelLoaderMixin",
 	"vanillachanges.coloredenchantmentnames.client.EnchantmentMixin",
+	"vanillachanges.coyotebite.MinecraftClientMixin",
 	"vanillachanges.fasterbows.client.ClientPlayerEntityMixin",
 	"vanillachanges.fasterbows.client.ModelPredicateProviderRegistryMixin",
 	"veil.client.EntityRendererMixin"
