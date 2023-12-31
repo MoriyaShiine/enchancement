@@ -49,6 +49,7 @@
 	"cardinal-components": [
 	  "enchancement:extended_water",
 	  "enchancement:air_mobility",
+	  "enchancement:projectile_timer",
 	  "enchancement:strafe",
 	  "enchancement:dash",
 	  "enchancement:slide",

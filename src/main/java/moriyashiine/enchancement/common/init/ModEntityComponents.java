@@ -24,6 +24,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	//misc
 	public static final ComponentKey<ExtendedWaterComponent> EXTENDED_WATER = ComponentRegistry.getOrCreate(Enchancement.id("extended_water"), ExtendedWaterComponent.class);
 	public static final ComponentKey<AirMobilityComponent> AIR_MOBILITY = ComponentRegistry.getOrCreate(Enchancement.id("air_mobility"), AirMobilityComponent.class);
+	public static final ComponentKey<ProjectileTimerComponent> PROJECTILE_TIMER = ComponentRegistry.getOrCreate(Enchancement.id("projectile_timer"), ProjectileTimerComponent.class);
 	//chestplate
 	public static final ComponentKey<StrafeComponent> STRAFE = ComponentRegistry.getOrCreate(Enchancement.id("strafe"), StrafeComponent.class);
 	//leggings
@@ -54,6 +55,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
 		registry.registerFor(LivingEntity.class, EXTENDED_WATER, ExtendedWaterComponent::new);
 		registry.registerFor(LivingEntity.class, AIR_MOBILITY, AirMobilityComponent::new);
+		registry.registerFor(LivingEntity.class, PROJECTILE_TIMER, living -> new ProjectileTimerComponent());
 		registry.registerForPlayers(STRAFE, StrafeComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(DASH, DashComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(SLIDE, SlideComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
