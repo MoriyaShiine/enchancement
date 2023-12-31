@@ -41,7 +41,7 @@ public abstract class LivingEntityMixin extends Entity {
 				if (source.getSource() instanceof LivingEntity living) {
 					getWorld().playSound(null, getBlockPos(), ModSoundEvents.ENTITY_GENERIC_WARDENSPINE, getSoundCategory(), 1, 1);
 					living.damage(getDamageSources().thorns(this), 4);
-					living.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 100));
+					living.addStatusEffect(new StatusEffectInstance(StatusEffects.DARKNESS, 100));
 				}
 				return value * 0.2F;
 			}
