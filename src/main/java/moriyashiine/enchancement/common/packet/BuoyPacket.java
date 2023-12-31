@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.packet;
 
 import io.netty.buffer.Unpooled;
 import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.component.entity.BuoyComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
@@ -29,11 +30,12 @@ public class BuoyPacket {
 		@Override
 		public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
 			boolean shouldBoost = buf.readBoolean();
-			server.execute(() -> ModEntityComponents.BUOY.maybeGet(player).ifPresent(buoyComponent -> {
+			server.execute(() -> {
+				BuoyComponent buoyComponent = ModEntityComponents.BUOY.get(player);
 				if (buoyComponent.hasBuoy()) {
 					buoyComponent.setShouldBoost(shouldBoost);
 				}
-			}));
+			});
 		}
 	}
 }

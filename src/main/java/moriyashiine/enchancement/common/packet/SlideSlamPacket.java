@@ -28,12 +28,13 @@ public class SlideSlamPacket {
 	public static class Receiver implements ServerPlayNetworking.PlayChannelHandler {
 		@Override
 		public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-			server.execute(() -> ModEntityComponents.SLIDE.maybeGet(player).ifPresent(slideComponent -> {
+			server.execute(() -> {
+				SlideComponent slideComponent = ModEntityComponents.SLIDE.get(player);
 				if (slideComponent.hasSlide()) {
 					slideComponent.setShouldSlam(true);
 					slideComponent.setSlamCooldown(SlideComponent.DEFAULT_SLAM_COOLDOWN);
 				}
-			}));
+			});
 		}
 	}
 }

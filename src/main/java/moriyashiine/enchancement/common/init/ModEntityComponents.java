@@ -39,7 +39,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<FrozenSquidComponent> FROZEN_SQUID = ComponentRegistry.getOrCreate(Enchancement.id("frozen_squid"), FrozenSquidComponent.class);
 	//bow
 	public static final ComponentKey<DelayComponent> DELAY = ComponentRegistry.getOrCreate(Enchancement.id("delay"), DelayComponent.class);
-	public static final ComponentKey<PhasingComponent> PHASHING = ComponentRegistry.getOrCreate(Enchancement.id("phasing"), PhasingComponent.class);
+	public static final ComponentKey<PhasingComponent> PHASING = ComponentRegistry.getOrCreate(Enchancement.id("phasing"), PhasingComponent.class);
 	//trident
 	public static final ComponentKey<ChannelingComponent> CHANNELING = ComponentRegistry.getOrCreate(Enchancement.id("channeling"), ChannelingComponent.class);
 	public static final ComponentKey<LeechComponent> LEECH = ComponentRegistry.getOrCreate(Enchancement.id("leech"), LeechComponent.class);
@@ -66,8 +66,8 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerFor(SquidEntity.class, FROZEN_SQUID, FrozenSquidComponent::new);
 		registry.registerFor(ArrowEntity.class, DELAY, DelayComponent::new);
 		registry.registerFor(SpectralArrowEntity.class, DELAY, DelayComponent::new);
-		registry.registerFor(ArrowEntity.class, PHASHING, PhasingComponent::new);
-		registry.registerFor(SpectralArrowEntity.class, PHASHING, PhasingComponent::new);
+		registry.registerFor(ArrowEntity.class, PHASING, PhasingComponent::new);
+		registry.registerFor(SpectralArrowEntity.class, PHASING, PhasingComponent::new);
 		registry.registerFor(LightningEntity.class, CHANNELING, lightning -> new ChannelingComponent());
 		registry.registerFor(TridentEntity.class, LEECH, LeechComponent::new);
 		registry.registerFor(TridentEntity.class, WARP, WarpComponent::new);

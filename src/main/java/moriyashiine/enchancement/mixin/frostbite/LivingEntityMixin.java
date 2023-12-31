@@ -4,6 +4,7 @@
 
 package moriyashiine.enchancement.mixin.frostbite;
 
+import moriyashiine.enchancement.common.component.entity.FrozenComponent;
 import moriyashiine.enchancement.common.init.ModDamageTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
@@ -52,15 +53,14 @@ public abstract class LivingEntityMixin extends Entity {
 	@Inject(method = "pushAwayFrom", at = @At("HEAD"))
 	private void enchancement$frostbite(Entity entity, CallbackInfo ci) {
 		if (!getWorld().isClient) {
-			ModEntityComponents.FROZEN.maybeGet(this).ifPresent(frozenComponent -> {
-				if (frozenComponent.isFrozen()) {
-					Entity lastFreezingAttacker = frozenComponent.getLastFreezingAttacker();
-					if (EnchancementUtil.shouldHurt(lastFreezingAttacker, entity) && entity.damage(ModDamageTypes.create(getWorld(), ModDamageTypes.FROSTBITE, lastFreezingAttacker == null ? this : lastFreezingAttacker), 8)) {
-						damage(getDamageSources().generic(), 2);
-						entity.setFrozenTicks(800);
-					}
+			FrozenComponent frozenComponent = ModEntityComponents.FROZEN.get(this);
+			if (frozenComponent.isFrozen()) {
+				Entity lastFreezingAttacker = frozenComponent.getLastFreezingAttacker();
+				if (EnchancementUtil.shouldHurt(lastFreezingAttacker, entity) && entity.damage(ModDamageTypes.create(getWorld(), ModDamageTypes.FROSTBITE, lastFreezingAttacker == null ? this : lastFreezingAttacker), 8)) {
+					damage(getDamageSources().generic(), 2);
+					entity.setFrozenTicks(800);
 				}
-			});
+			}
 		}
 	}
 }

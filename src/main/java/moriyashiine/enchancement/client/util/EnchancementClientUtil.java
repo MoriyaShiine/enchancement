@@ -4,6 +4,7 @@
 
 package moriyashiine.enchancement.client.util;
 
+import moriyashiine.enchancement.common.component.entity.LeechComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.client.model.Model;
@@ -32,20 +33,19 @@ public class EnchancementClientUtil {
 	}
 
 	public static void renderLeechTrident(TridentEntity entity, MatrixStack matrices, VertexConsumerProvider vertexConsumers, Model model, Identifier texture, int light, Runnable runnable, CallbackInfo ci) {
-		ModEntityComponents.LEECH.maybeGet(entity).ifPresent(leechComponent -> {
-			LivingEntity stuckEntity = leechComponent.getStuckEntity();
-			if (stuckEntity != null) {
-				float offsetX = MathHelper.sin(leechComponent.getRenderTicks()), offsetZ = MathHelper.cos(leechComponent.getRenderTicks());
-				matrices.push();
-				matrices.translate(offsetX, 0, offsetZ);
-				matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees((float) -MathHelper.wrapDegrees((MathHelper.atan2(stuckEntity.getZ() - entity.getZ() + offsetZ, stuckEntity.getX() - entity.getX() + offsetX) * 57.2957763671875) - 90) + 90));
-				matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(60));
-				matrices.translate(0, -leechComponent.getStabTicks(), 0);
-				model.render(matrices, ItemRenderer.getDirectItemGlintConsumer(vertexConsumers, model.getLayer(texture), false, entity.isEnchanted()), light, OverlayTexture.DEFAULT_UV, 1, 1, 1, 1);
-				matrices.pop();
-				runnable.run();
-				ci.cancel();
-			}
-		});
+		LeechComponent leechComponent = ModEntityComponents.LEECH.get(entity);
+		LivingEntity stuckEntity = leechComponent.getStuckEntity();
+		if (stuckEntity != null) {
+			float offsetX = MathHelper.sin(leechComponent.getRenderTicks()), offsetZ = MathHelper.cos(leechComponent.getRenderTicks());
+			matrices.push();
+			matrices.translate(offsetX, 0, offsetZ);
+			matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees((float) -MathHelper.wrapDegrees((MathHelper.atan2(stuckEntity.getZ() - entity.getZ() + offsetZ, stuckEntity.getX() - entity.getX() + offsetX) * 57.2957763671875) - 90) + 90));
+			matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(60));
+			matrices.translate(0, -leechComponent.getStabTicks(), 0);
+			model.render(matrices, ItemRenderer.getDirectItemGlintConsumer(vertexConsumers, model.getLayer(texture), false, entity.isEnchanted()), light, OverlayTexture.DEFAULT_UV, 1, 1, 1, 1);
+			matrices.pop();
+			runnable.run();
+			ci.cancel();
+		}
 	}
 }
