@@ -63,6 +63,7 @@
 	"util.EnchantmentHelperMixin",
 	"util.ItemEntityAccessor",
 	"util.LivingEntityAccessor",
+	"util.PotionEntityMixin",
 	"util.ServerPlayNetworkHandlerMixin",
 	"util.TranslatableTextContentMixin",
 	"util.enforceconfigmatch.PlayerManagerMixin",

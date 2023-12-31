@@ -4,8 +4,10 @@
 
 package moriyashiine.enchancement.common.component.entity;
 
+import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
@@ -14,7 +16,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 
-public class ExtendedWaterComponent implements CommonTickingComponent {
+public class ExtendedWaterComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private final LivingEntity obj;
 	private int ticksWet = 0;
 
@@ -40,7 +42,7 @@ public class ExtendedWaterComponent implements CommonTickingComponent {
 		hasBuoy = EnchancementUtil.hasEnchantment(ModEnchantments.BUOY, obj);
 		if (shouldCount()) {
 			if (obj.isWet()) {
-				ticksWet = 100;
+				markWet();
 			}
 		} else {
 			ticksWet = 0;
@@ -76,15 +78,23 @@ public class ExtendedWaterComponent implements CommonTickingComponent {
 		}
 	}
 
+	public void sync() {
+		ModEntityComponents.EXTENDED_WATER.sync(obj);
+	}
+
 	public int getTicksWet() {
 		return ticksWet;
+	}
+
+	public void markWet() {
+		ticksWet = 100;
 	}
 
 	public boolean hasAmphibious() {
 		return hasAmphibious;
 	}
 
-	private boolean shouldCount() {
+	public boolean shouldCount() {
 		return hasAmphibious || hasBuoy;
 	}
 }
