@@ -167,6 +167,9 @@ public class EnchancementUtil {
 
 	public static boolean shouldDisableLoyalty(PersistentProjectileEntity entity) {
 		if (ModConfig.allTridentsHaveLoyalty) {
+			if (entity.getType().isIn(ModTags.EntityTypes.NO_LOYALTY)) {
+				return true;
+			}
 			return !(entity.getOwner() instanceof PlayerEntity);
 		}
 		return false;
