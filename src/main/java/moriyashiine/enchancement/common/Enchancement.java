@@ -5,6 +5,7 @@
 package moriyashiine.enchancement.common;
 
 import com.google.gson.Gson;
+import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import moriyashiine.enchancement.common.event.*;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
@@ -69,7 +70,10 @@ public class Enchancement implements ModInitializer {
 	private void initEvents() {
 		ServerTickEvents.END_SERVER_TICK.register(server -> EnchancementUtil.tickPacketImmunities());
 		ServerLifecycleEvents.SERVER_STOPPED.register(server -> EnchancementUtil.PACKET_IMMUNITIES.clear());
+		MultiplyMovementSpeedEvent.EVENT.register(new EnchantedChestplateAirMobilityEvent());
 		ServerTickEvents.END_SERVER_TICK.register(new AssimilationEvent());
+		MultiplyMovementSpeedEvent.EVENT.register(new AdrenalineEvent());
+		MultiplyMovementSpeedEvent.EVENT.register(new BuoyEvent());
 		UseBlockCallback.EVENT.register(new FireAspectEvent());
 		ServerLivingEntityEvents.AFTER_DEATH.register(new FrostbiteEvent.Freeze());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new FrostbiteEvent.HandleDamage());

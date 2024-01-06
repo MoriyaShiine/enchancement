@@ -45,14 +45,13 @@ public class BouncyComponent implements AutoSyncedComponent, CommonTickingCompon
 			} else {
 				bounceStrength = 0;
 			}
-			if (obj.isOnGround()) {
-				grappleTimer = 0;
-			} else if (grappleTimer > 0) {
-				grappleTimer--;
-			}
 		} else {
 			bounceStrength = 0;
+		}
+		if (obj.isOnGround()) {
 			grappleTimer = 0;
+		} else if (grappleTimer > 0) {
+			grappleTimer--;
 		}
 	}
 

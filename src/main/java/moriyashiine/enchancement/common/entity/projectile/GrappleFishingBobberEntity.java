@@ -7,6 +7,7 @@ package moriyashiine.enchancement.common.entity.projectile;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
+import moriyashiine.enchancement.common.init.ModSoundEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -15,6 +16,7 @@ import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -63,6 +65,23 @@ public class GrappleFishingBobberEntity extends FishingBobberEntity {
 		super.onBlockHit(blockHitResult);
 		grapplePos = blockHitResult.getBlockPos();
 		grappleState = getWorld().getBlockState(grapplePos);
+		if (getWorld().isClient) {
+			PlayerEntity owner = getPlayerOwner();
+			if (owner != null) {
+				owner.playSound(ModSoundEvents.ENTITY_FISHING_BOBBER_GRAPPLE, 1, 1);
+			}
+		}
+	}
+
+	@Override
+	protected void onEntityHit(EntityHitResult entityHitResult) {
+		super.onEntityHit(entityHitResult);
+		if (getWorld().isClient) {
+			PlayerEntity owner = getPlayerOwner();
+			if (owner != null) {
+				owner.playSound(ModSoundEvents.ENTITY_FISHING_BOBBER_GRAPPLE, 1, 1);
+			}
+		}
 	}
 
 	@Override
@@ -84,6 +103,9 @@ public class GrappleFishingBobberEntity extends FishingBobberEntity {
 			PlayerEntity player = getPlayerOwner();
 			if (player != null) {
 				if (!getWorld().isClient) {
+					if (getY() > player.getY()) {
+						player.setVelocity(player.getVelocity().getX(), 0, player.getVelocity().getZ());
+					}
 					player.setVelocity(player.getVelocity().add(new Vec3d(Math.min(10, getX() - player.getX()), Math.min(10, getY() - player.getY()), Math.min(10, getZ() - player.getZ())).multiply(0.2)));
 					player.velocityModified = true;
 				}

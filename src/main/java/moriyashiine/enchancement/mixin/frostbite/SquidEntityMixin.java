@@ -36,11 +36,9 @@ public class SquidEntityMixin extends WaterCreatureEntity {
 	@ModifyArgs(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/SquidEntity;setVelocity(DDD)V", ordinal = 0))
 	private void enchancement$frostbite(Args args) {
 		if (ModEntityComponents.FROZEN.get(this).isFrozen()) {
-			ModEntityComponents.FROZEN_SQUID.maybeGet(this).ifPresent(frozenSquidComponent -> {
-				args.set(0, getVelocity().getX());
-				args.set(1, getVelocity().getY());
-				args.set(2, getVelocity().getZ());
-			});
+			args.set(0, getVelocity().getX());
+			args.set(1, getVelocity().getY());
+			args.set(2, getVelocity().getZ());
 		}
 	}
 }

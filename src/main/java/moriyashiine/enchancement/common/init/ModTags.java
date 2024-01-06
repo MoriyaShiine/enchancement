@@ -28,6 +28,7 @@ public class ModTags {
 	public static class EntityTypes {
 		public static final TagKey<EntityType<?>> CANNOT_FREEZE = TagKey.of(Registries.ENTITY_TYPE.getKey(), Enchancement.id("cannot_freeze"));
 		public static final TagKey<EntityType<?>> CANNOT_BURY = TagKey.of(Registries.ENTITY_TYPE.getKey(), Enchancement.id("cannot_bury"));
+		public static final TagKey<EntityType<?>> NO_LOYALTY = TagKey.of(Registries.ENTITY_TYPE.getKey(), Enchancement.id("has_no_loyalty"));
 		public static final TagKey<EntityType<?>> VEIL_IMMUNE = TagKey.of(Registries.ENTITY_TYPE.getKey(), Enchancement.id("veil_immune"));
 	}
 

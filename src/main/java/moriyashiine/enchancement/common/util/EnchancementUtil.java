@@ -11,6 +11,7 @@ import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModTags;
 import moriyashiine.enchancement.mixin.util.ItemEntityAccessor;
+import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -38,6 +39,8 @@ public class EnchancementUtil {
 	public static final Object2IntMap<PlayerEntity> PACKET_IMMUNITIES = new Object2IntOpenHashMap<>();
 
 	public static final ItemStack BRIMSTONE_STACK;
+
+	public static final int MAXIMUM_MOVEMENT_MULTIPLIER = 4;
 
 	public static boolean shouldCancelTargetDamagedEnchantments = false;
 
@@ -134,10 +137,10 @@ public class EnchancementUtil {
 		return isGroundedOrAirborne(living, false);
 	}
 
-	public static boolean isSubmerged(Entity entity, boolean allowWater, boolean allowLava) {
+	public static boolean isSubmerged(Entity entity, boolean allowWater, boolean allowLava, boolean allowPowderSnow) {
 		for (int i = 0; i <= 1; i++) {
-			FluidState state = entity.getWorld().getFluidState(entity.getBlockPos().up(i));
-			if ((allowWater && state.isIn(FluidTags.WATER)) || (allowLava && state.isIn(FluidTags.LAVA))) {
+			FluidState fluidState = entity.getWorld().getFluidState(entity.getBlockPos().up(i));
+			if ((allowWater && fluidState.isIn(FluidTags.WATER)) || (allowLava && fluidState.isIn(FluidTags.LAVA)) || (allowPowderSnow && entity.getWorld().getBlockState(entity.getBlockPos().up(i)).isOf(Blocks.POWDER_SNOW))) {
 				return true;
 			}
 		}
@@ -164,6 +167,9 @@ public class EnchancementUtil {
 
 	public static boolean shouldDisableLoyalty(PersistentProjectileEntity entity) {
 		if (ModConfig.allTridentsHaveLoyalty) {
+			if (entity.getType().isIn(ModTags.EntityTypes.NO_LOYALTY)) {
+				return true;
+			}
 			return !(entity.getOwner() instanceof PlayerEntity);
 		}
 		return false;
@@ -182,6 +188,10 @@ public class EnchancementUtil {
 			return shouldHurt(attacker, ownable.getOwner());
 		}
 		return true;
+	}
+
+	public static float capMovementMultiplier(float multiplier) {
+		return Math.min(MAXIMUM_MOVEMENT_MULTIPLIER, multiplier);
 	}
 
 	public static float getMaxBonusBerserkDamage(ItemStack stack) {

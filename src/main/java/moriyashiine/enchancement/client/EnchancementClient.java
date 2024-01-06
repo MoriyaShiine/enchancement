@@ -20,8 +20,7 @@ import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.brimstone.CrossbowItemAccessor;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -41,9 +40,10 @@ import net.minecraft.item.Items;
 import net.minecraft.resource.ResourceType;
 import org.lwjgl.glfw.GLFW;
 
-@Environment(EnvType.CLIENT)
 public class EnchancementClient implements ClientModInitializer {
 	public static final KeyBinding STRAFE_KEYBINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".strafe", GLFW.GLFW_KEY_UNKNOWN, "key.categories." + Enchancement.MOD_ID));
+	public static final KeyBinding SLIDE_KEYBINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".slide", GLFW.GLFW_KEY_UNKNOWN, "key.categories." + Enchancement.MOD_ID));
+	public static final KeyBinding SLAM_KEYBINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".slam", GLFW.GLFW_KEY_UNKNOWN, "key.categories." + Enchancement.MOD_ID));
 
 	@Override
 	public void onInitializeClient() {
@@ -78,7 +78,9 @@ public class EnchancementClient implements ClientModInitializer {
 
 	private void initEvents() {
 		ItemTooltipCallback.EVENT.register(new EnchantmentDescriptionsEvent());
+		ClientTickEvents.END_WORLD_TICK.register(new CoyoteBiteEvent());
 		ItemTooltipCallback.EVENT.register(new AssimilationTooltipEvent());
+		ItemTooltipCallback.EVENT.register(new AdrenalineRenderEvent());
 		HudRenderCallback.EVENT.register(new DashRenderEvent());
 		HudRenderCallback.EVENT.register(new BouncyRenderEvent());
 		HudRenderCallback.EVENT.register(new GaleRenderEvent());

@@ -26,7 +26,7 @@ public class PhasingArrowItemMixin {
 		boolean hasPhasing = shooter instanceof PlayerEntity ? EnchancementUtil.hasEnchantment(ModEnchantments.PHASING, shooter.getActiveItem()) : EnchancementUtil.hasEnchantment(ModEnchantments.PHASING, shooter);
 		if (hasPhasing) {
 			PersistentProjectileEntity arrow = cir.getReturnValue();
-			ModEntityComponents.PHASHING.maybeGet(arrow).ifPresent(phasingComponent -> {
+			ModEntityComponents.PHASING.maybeGet(arrow).ifPresent(phasingComponent -> {
 				phasingComponent.setShouldPhase(true);
 				phasingComponent.sync();
 			});

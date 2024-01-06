@@ -21,6 +21,10 @@ import net.minecraft.entity.projectile.SpectralArrowEntity;
 import net.minecraft.entity.projectile.TridentEntity;
 
 public class ModEntityComponents implements EntityComponentInitializer {
+	//misc
+	public static final ComponentKey<ExtendedWaterComponent> EXTENDED_WATER = ComponentRegistry.getOrCreate(Enchancement.id("extended_water"), ExtendedWaterComponent.class);
+	public static final ComponentKey<AirMobilityComponent> AIR_MOBILITY = ComponentRegistry.getOrCreate(Enchancement.id("air_mobility"), AirMobilityComponent.class);
+	public static final ComponentKey<ProjectileTimerComponent> PROJECTILE_TIMER = ComponentRegistry.getOrCreate(Enchancement.id("projectile_timer"), ProjectileTimerComponent.class);
 	//chestplate
 	public static final ComponentKey<StrafeComponent> STRAFE = ComponentRegistry.getOrCreate(Enchancement.id("strafe"), StrafeComponent.class);
 	//leggings
@@ -35,7 +39,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<FrozenSquidComponent> FROZEN_SQUID = ComponentRegistry.getOrCreate(Enchancement.id("frozen_squid"), FrozenSquidComponent.class);
 	//bow
 	public static final ComponentKey<DelayComponent> DELAY = ComponentRegistry.getOrCreate(Enchancement.id("delay"), DelayComponent.class);
-	public static final ComponentKey<PhasingComponent> PHASHING = ComponentRegistry.getOrCreate(Enchancement.id("phasing"), PhasingComponent.class);
+	public static final ComponentKey<PhasingComponent> PHASING = ComponentRegistry.getOrCreate(Enchancement.id("phasing"), PhasingComponent.class);
 	//trident
 	public static final ComponentKey<ChannelingComponent> CHANNELING = ComponentRegistry.getOrCreate(Enchancement.id("channeling"), ChannelingComponent.class);
 	public static final ComponentKey<LeechComponent> LEECH = ComponentRegistry.getOrCreate(Enchancement.id("leech"), LeechComponent.class);
@@ -49,6 +53,9 @@ public class ModEntityComponents implements EntityComponentInitializer {
 
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
+		registry.registerFor(LivingEntity.class, EXTENDED_WATER, ExtendedWaterComponent::new);
+		registry.registerFor(LivingEntity.class, AIR_MOBILITY, AirMobilityComponent::new);
+		registry.registerFor(LivingEntity.class, PROJECTILE_TIMER, living -> new ProjectileTimerComponent());
 		registry.registerForPlayers(STRAFE, StrafeComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(DASH, DashComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(SLIDE, SlideComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
@@ -59,8 +66,8 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerFor(SquidEntity.class, FROZEN_SQUID, FrozenSquidComponent::new);
 		registry.registerFor(ArrowEntity.class, DELAY, DelayComponent::new);
 		registry.registerFor(SpectralArrowEntity.class, DELAY, DelayComponent::new);
-		registry.registerFor(ArrowEntity.class, PHASHING, PhasingComponent::new);
-		registry.registerFor(SpectralArrowEntity.class, PHASHING, PhasingComponent::new);
+		registry.registerFor(ArrowEntity.class, PHASING, PhasingComponent::new);
+		registry.registerFor(SpectralArrowEntity.class, PHASING, PhasingComponent::new);
 		registry.registerFor(LightningEntity.class, CHANNELING, lightning -> new ChannelingComponent());
 		registry.registerFor(TridentEntity.class, LEECH, LeechComponent::new);
 		registry.registerFor(TridentEntity.class, WARP, WarpComponent::new);

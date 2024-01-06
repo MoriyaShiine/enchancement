@@ -27,8 +27,8 @@ public class CrossbowAttackGoalMixin<T extends HostileEntity & CrossbowUser> {
 
 	@Inject(method = "tick", at = @At("HEAD"))
 	private void enchancement$torch(CallbackInfo ci) {
-		if (EnchancementUtil.hasEnchantment(ModEnchantments.TORCH, actor.getMainHandStack())) {
-			chargedTicksLeft = 1;
+		if (EnchancementUtil.hasEnchantment(ModEnchantments.TORCH, actor.getMainHandStack()) && chargedTicksLeft > 5) {
+			chargedTicksLeft = 5;
 		}
 	}
 }

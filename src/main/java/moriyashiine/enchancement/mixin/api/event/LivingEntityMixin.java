@@ -2,10 +2,9 @@
  * All Rights Reserved (c) MoriyaShiine
  */
 
-package moriyashiine.enchancement.mixin.strafe;
+package moriyashiine.enchancement.mixin.api.event;
 
-import moriyashiine.enchancement.common.component.entity.StrafeComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -21,13 +20,7 @@ public abstract class LivingEntityMixin extends Entity {
 	}
 
 	@ModifyArg(method = "applyMovementInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;updateVelocity(FLnet/minecraft/util/math/Vec3d;)V"))
-	private float enchancement$strafe(float value) {
-		if (!isOnGround()) {
-			StrafeComponent strafeComponent = ModEntityComponents.STRAFE.getNullable(this);
-			if (strafeComponent != null && strafeComponent.getTicksInAir() > 10) {
-				return value * 2;
-			}
-		}
-		return value;
+	private float enchancement$multiplyMovementSpeed(float value) {
+		return value * MultiplyMovementSpeedEvent.EVENT.invoker().multiply(1, getWorld(), (LivingEntity) (Object) this);
 	}
 }

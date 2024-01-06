@@ -135,10 +135,9 @@ public class LeechComponent implements AutoSyncedComponent, CommonTickingCompone
 
 	public static void maybeSet(LivingEntity user, ItemStack stack, PersistentProjectileEntity trident) {
 		if (EnchancementUtil.hasEnchantment(ModEnchantments.LEECH, stack) || (user instanceof DrownedEntity && EnchancementUtil.hasEnchantment(ModEnchantments.LEECH, user))) {
-			ModEntityComponents.LEECH.maybeGet(trident).ifPresent(leechComponent -> {
-				leechComponent.setHasLeech(true);
-				leechComponent.sync();
-			});
+			LeechComponent leechComponent = ModEntityComponents.LEECH.get(trident);
+			leechComponent.setHasLeech(true);
+			leechComponent.sync();
 		}
 	}
 }

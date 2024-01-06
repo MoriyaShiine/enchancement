@@ -39,7 +39,7 @@ public abstract class PersistentProjectileEntityMixin extends Entity {
 
 	@Inject(method = "onBlockHit", at = @At("HEAD"), cancellable = true)
 	private void enchancement$phasing(BlockHitResult blockHitResult, CallbackInfo ci) {
-		ModEntityComponents.PHASHING.maybeGet(this).ifPresent(phasingComponent -> {
+		ModEntityComponents.PHASING.maybeGet(this).ifPresent(phasingComponent -> {
 			if (phasingComponent.shouldPhase()) {
 				BlockState state = getWorld().getBlockState(blockHitResult.getBlockPos());
 				state.onProjectileHit(getWorld(), state, blockHitResult, (PersistentProjectileEntity) (Object) this);

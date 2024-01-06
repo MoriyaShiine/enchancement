@@ -12,8 +12,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacket;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,15 +21,15 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(ClientPlayerInteractionManager.class)
 public class ClientPlayerInteractionManagerMixin {
 	@Unique
 	private static boolean allowUsage = false;
 
-	@Inject(method = "method_41929", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ItemCooldownManager;isCoolingDown(Lnet/minecraft/item/Item;)Z"))
-	private void enchancement$brimstone(Hand hand, PlayerEntity player, MutableObject<ActionResult> mutableObject, int sequence, CallbackInfoReturnable<PlayerInteractItemC2SPacket> cir) {
-		ItemStack stack = player.getStackInHand(hand);
+	@Inject(method = "method_41929", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ItemCooldownManager;isCoolingDown(Lnet/minecraft/item/Item;)Z"), locals = LocalCapture.CAPTURE_FAILHARD)
+	private void enchancement$brimstone(Hand hand, PlayerEntity player, MutableObject mutableObject, int sequence, CallbackInfoReturnable<Packet> cir, PlayerInteractItemC2SPacket packet, ItemStack stack) {
 		if (player.getItemCooldownManager().isCoolingDown(stack.getItem()) && stack.isOf(Items.CROSSBOW) && EnchancementUtil.hasEnchantment(ModEnchantments.BRIMSTONE, stack) && !CrossbowItem.isCharged(stack)) {
 			allowUsage = true;
 		}

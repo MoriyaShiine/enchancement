@@ -7,6 +7,15 @@
 	],
 	"subtitle": "subtitles.enchancement.entity.shard.shatter"
   },
+  "entity.fishing_bobber.grapple": {
+	"sounds": [
+	  {
+		"name": "random/orb",
+		"volume": 0.25
+	  }
+	],
+	"subtitle": "subtitles.enchancement.entity.fishing_bobber.grapple"
+  },
   "entity.generic.strafe": {
 	"sounds": [
 	  "dig/sand1",
@@ -15,6 +24,41 @@
 	  "dig/sand4"
 	],
 	"subtitle": "subtitles.enchancement.entity.generic.strafe"
+  },
+  "entity.generic.wardenspine": {
+	"sounds": [
+	  {
+		"name": "block/sculk_sensor/sculk_clicking1",
+		"volume": 0.73,
+		"pitch": 1.5
+	  },
+	  {
+		"name": "block/sculk_sensor/sculk_clicking2",
+		"volume": 0.73,
+		"pitch": 1.5
+	  },
+	  {
+		"name": "block/sculk_sensor/sculk_clicking3",
+		"volume": 0.73,
+		"pitch": 1.5
+	  },
+	  {
+		"name": "block/sculk_sensor/sculk_clicking4",
+		"volume": 0.73,
+		"pitch": 1.5
+	  },
+	  {
+		"name": "block/sculk_sensor/sculk_clicking5",
+		"volume": 0.73,
+		"pitch": 1.5
+	  },
+	  {
+		"name": "block/sculk_sensor/sculk_clicking6",
+		"volume": 0.73,
+		"pitch": 1.5
+	  }
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.wardenspine"
   },
   "entity.generic.dash": {
 	"sounds": [

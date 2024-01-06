@@ -68,7 +68,13 @@ public class ModConfig extends MidnightConfig {
 	@Entry
 	public static boolean channelingWorksWhenNotThundering = true;
 	@Entry
+	public static boolean crossbowsPullFromInventory = true;
+	@Entry
 	public static boolean drownedUseHeldTrident = true;
+	@Entry
+	public static boolean enchantedChestplatesIncreaseAirMobility = true;
+	@Entry
+	public static boolean fasterBows = true;
 	@Entry
 	public static boolean fireAspectWorksAsFlintAndSteel = true;
 	@Entry
@@ -77,6 +83,10 @@ public class ModConfig extends MidnightConfig {
 	public static boolean luckOfTheSeaHasLure = true;
 	@Entry
 	public static boolean negateEnderPearlDamage = true;
+	@Entry
+	public static boolean projectilesBypassCooldown = true;
+	@Entry
+	public static boolean projectilesNegateVelocity = true;
 	@Entry
 	public static boolean randomMobEnchantments = true;
 	@Entry
@@ -99,6 +109,8 @@ public class ModConfig extends MidnightConfig {
 	public static int maxLumberjackBlocks = 1024;
 	@Entry(min = 1)
 	public static int maxLumberjackHorizontalLength = 7;
+	@Entry(min = 0)
+	public static int coyoteBiteTicks = 3;
 	@Entry(min = -1)
 	public static int unbreakingChangesFlag = 0;
 
@@ -116,16 +128,21 @@ public class ModConfig extends MidnightConfig {
 				invertedList +
 				overhaulEnchantingTable + allowTreasureEnchantmentsInEnchantingTable +
 				singleLevelMode + enchantmentLimit +
-				allowInfinityOnCrossbows + allTridentsHaveLoyalty +
-				channelingIgnitesOnMelee + channelingWorksWhenNotThundering +
-				fireAspectWorksAsFlintAndSteel + freeEnchantedBookMerging +
+				accurateFishingBobbers + allowInfinityOnCrossbows + allTridentsHaveLoyalty +
+				channelingIgnitesOnMelee + channelingWorksWhenNotThundering + crossbowsPullFromInventory +
+				drownedUseHeldTrident +
+				enchantedChestplatesIncreaseAirMobility +
+				fasterBows + fireAspectWorksAsFlintAndSteel + freeEnchantedBookMerging +
 				luckOfTheSeaHasLure +
 				negateEnderPearlDamage +
+				projectilesBypassCooldown + projectilesNegateVelocity +
+				randomMobEnchantments +
 				safeChanneling +
 				tridentsReturnFromVoid +
 				weakerFireAspect + weakerGoldenApple + weakerPotions +
 				weaponEnchantmentCooldownRequirement +
 				maxExtractingBlocks + maxLumberjackBlocks + maxLumberjackHorizontalLength +
+				coyoteBiteTicks +
 				unbreakingChangesFlag;
 		return encoding.hashCode();
 	}

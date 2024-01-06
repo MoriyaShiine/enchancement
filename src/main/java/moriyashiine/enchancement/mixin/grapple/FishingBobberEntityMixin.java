@@ -28,7 +28,7 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 	@Inject(method = "removeIfInvalid", at = @At("HEAD"), cancellable = true)
 	private void enchancement$grapple(PlayerEntity player, CallbackInfoReturnable<Boolean> cir) {
 		if ((Object) this instanceof GrappleFishingBobberEntity) {
-			if (player.isRemoved() || !player.isAlive() || !player.getMainHandStack().isOf(Items.FISHING_ROD) && !player.getOffHandStack().isOf(Items.FISHING_ROD) || this.squaredDistanceTo(player) > 4096) {
+			if (player.isRemoved() || !player.isAlive() || !player.getMainHandStack().isOf(Items.FISHING_ROD) && !player.getOffHandStack().isOf(Items.FISHING_ROD) || squaredDistanceTo(player) > 4096) {
 				discard();
 				cir.setReturnValue(true);
 			}
