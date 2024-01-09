@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -26,16 +25,6 @@ public class LivingEntityMixin {
 		SlideComponent slideComponent = ModEntityComponents.SLIDE.getNullable(this);
 		if (slideComponent != null && slideComponent.isSliding()) {
 			return Math.max(0, value - 6);
-		}
-		return value;
-	}
-
-	@ModifyArg(method = "jump", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setVelocity(DDD)V"), index = 1)
-	private double enchancement$slide(double value) {
-		SlideComponent slideComponent = ModEntityComponents.SLIDE.getNullable(this);
-		if (slideComponent != null && slideComponent.shouldBoostJump()) {
-			slideComponent.setJumpBoostResetTicks(SlideComponent.DEFAULT_JUMP_BOOST_RESET_TICKS);
-			return value + ((slideComponent.getTimesJumped() - 1) / 3.75F);
 		}
 		return value;
 	}
