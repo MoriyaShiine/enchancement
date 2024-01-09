@@ -146,6 +146,7 @@
 	"brimstone.client.SoundManagerAccessor",
 	"brimstone.client.SoundSystemAccessor",
 	"bury.client.KeyboardInputMixin",
+	"dash.client.TranslatableTextContentMixin",
 	"disarm.client.MinecraftClientMixin",
 	"frostbite.client.LivingEntityRendererMixin",
 	"frostbite.client.SquidEntityRendererMixin",

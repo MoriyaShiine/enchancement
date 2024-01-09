@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.component.entity;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
+import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.packet.DashPacket;
@@ -25,7 +26,7 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 	private boolean shouldRefreshDash = false;
 	private int dashCooldown = DEFAULT_DASH_COOLDOWN, lastDashCooldown = DEFAULT_DASH_COOLDOWN, wavedashTicks = 0;
 
-	private boolean hasDash = false, wasSneaking = false;
+	private boolean hasDash = false, wasPressingDashKey = false;
 	private int ticksPressingJump = 0;
 
 	public DashComponent(PlayerEntity obj) {
@@ -78,8 +79,8 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 			} else {
 				ticksPressingJump = 0;
 			}
-			boolean sneaking = MinecraftClient.getInstance().options.sneakKey.isPressed();
-			if (!obj.isOnGround() && dashCooldown == 0 && sneaking && !wasSneaking && EnchancementUtil.isGroundedOrAirborne(obj)) {
+			boolean pressingDashKey = EnchancementClient.DASH_KEYBINDING.isPressed();
+			if (!obj.isOnGround() && dashCooldown == 0 && pressingDashKey && !wasPressingDashKey && EnchancementUtil.isGroundedOrAirborne(obj)) {
 				handle(obj, this);
 				if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || obj != MinecraftClient.getInstance().cameraEntity) {
 					for (int i = 0; i < 8; i++) {
@@ -88,9 +89,9 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 				}
 				DashPacket.send();
 			}
-			wasSneaking = sneaking;
+			wasPressingDashKey = pressingDashKey;
 		} else {
-			wasSneaking = false;
+			wasPressingDashKey = false;
 			ticksPressingJump = 0;
 		}
 	}
