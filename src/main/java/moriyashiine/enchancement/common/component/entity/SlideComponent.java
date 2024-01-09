@@ -151,7 +151,7 @@ public class SlideComponent implements CommonTickingComponent {
 				});
 			}
 			GameOptions options = MinecraftClient.getInstance().options;
-			boolean pressingSlideKey = EnchancementClient.SLIDE_KEYBINDING.isUnbound() ? options.sprintKey.isPressed() : EnchancementClient.SLIDE_KEYBINDING.isPressed();
+			boolean pressingSlideKey = EnchancementClient.SLIDE_KEYBINDING.isPressed();
 			if (!pressingSlideKey) {
 				disallowSlide = false;
 			}
@@ -164,7 +164,7 @@ public class SlideComponent implements CommonTickingComponent {
 				velocity = Vec3d.ZERO;
 				SlideVelocityPacket.send(velocity);
 			}
-			boolean pressingSlamKey = EnchancementClient.SLAM_KEYBINDING.isUnbound() ? options.sprintKey.isPressed() : EnchancementClient.SLAM_KEYBINDING.isPressed();
+			boolean pressingSlamKey = EnchancementClient.SLAM_KEYBINDING.isPressed();
 			if (slamCooldown == 0 && !obj.isOnGround() && pressingSlamKey && !wasPressingSlamKey && !isSliding() && EnchancementUtil.isGroundedOrAirborne(obj)) {
 				shouldSlam = true;
 				slamCooldown = DEFAULT_SLAM_COOLDOWN;

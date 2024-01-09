@@ -7,6 +7,7 @@ package moriyashiine.enchancement.common.component.entity;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.client.EnchancementClient;
+import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.packet.StrafePacket;
@@ -27,7 +28,7 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 
 	private boolean hasStrafe = false;
 
-	private boolean wasPressingActivationKey = false;
+	private boolean wasPressingStrafeKey = false;
 	private int ticksLeftToPressActivationKey = 0;
 
 	public StrafeComponent(PlayerEntity obj) {
@@ -61,12 +62,12 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 		tick();
 		if (hasStrafe && strafeCooldown == 0 && !obj.isSpectator() && obj == MinecraftClient.getInstance().player) {
 			GameOptions options = MinecraftClient.getInstance().options;
-			boolean pressingActivationKey = EnchancementClient.STRAFE_KEYBINDING.isUnbound() ? options.sprintKey.isPressed() : EnchancementClient.STRAFE_KEYBINDING.isPressed();
+			boolean pressingStrafeKey = EnchancementClient.STRAFE_KEYBINDING.isPressed();
 			if (ticksLeftToPressActivationKey > 0) {
 				ticksLeftToPressActivationKey--;
 			}
-			if (pressingActivationKey && !wasPressingActivationKey) {
-				if (ticksLeftToPressActivationKey > 0) {
+			if (pressingStrafeKey && !wasPressingStrafeKey) {
+				if (ticksLeftToPressActivationKey > 0 || ModConfig.singlePressStrafe) {
 					ticksLeftToPressActivationKey = 0;
 					Vec3d velocity = getVelocityFromInput(options).rotateY((float) Math.toRadians(-(obj.getHeadYaw() + 90)));
 					handle(obj, this, velocity.getX(), velocity.getZ());
@@ -76,7 +77,7 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 					ticksLeftToPressActivationKey = 7;
 				}
 			}
-			wasPressingActivationKey = pressingActivationKey;
+			wasPressingStrafeKey = pressingStrafeKey;
 		}
 	}
 

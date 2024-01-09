@@ -164,6 +164,8 @@
 	"strafe.client.TranslatableTextContentMixin",
 	"torch.client.MinecraftClientMixin",
 	"torch.client.ModelLoaderMixin",
+	"vanillachanges.allowduplicatekeybindings.client.ControlsListWidgetKeyBindingEntryMixin",
+	"vanillachanges.allowduplicatekeybindings.client.KeyBindingMixin",
 	"vanillachanges.coloredenchantmentnames.client.EnchantmentMixin",
 	"vanillachanges.coyotebite.MinecraftClientMixin",
 	"vanillachanges.fasterbows.client.ClientPlayerEntityMixin",

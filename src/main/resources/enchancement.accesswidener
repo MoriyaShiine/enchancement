@@ -6,3 +6,4 @@ accessible field net/minecraft/entity/projectile/FishingBobberEntity luckOfTheSe
 mutable field net/minecraft/entity/projectile/FishingBobberEntity luckOfTheSeaLevel I
 accessible field net/minecraft/entity/projectile/FishingBobberEntity lureLevel I
 mutable field net/minecraft/entity/projectile/FishingBobberEntity lureLevel I
+accessible field net/minecraft/client/option/KeyBinding timesPressed I

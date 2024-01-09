@@ -118,6 +118,10 @@ public class ModConfig extends MidnightConfig {
 	public static boolean enchantmentDescriptions = true;
 	@Entry(category = "client")
 	public static boolean coloredEnchantmentNames = true;
+	@Entry(category = "client")
+	public static boolean allowDuplicateKeybindings = true;
+	@Entry(category = "client")
+	public static boolean singlePressStrafe = false;
 
 	public static int encode() {
 		StringBuilder builder = new StringBuilder();
