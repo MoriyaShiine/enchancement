@@ -21,7 +21,6 @@ public class CoyoteBiteEvent implements ClientTickEvents.EndWorldTick {
 			ticks = ModConfig.coyoteBiteTicks;
 		}
 		if (ticks > 0) {
-			System.out.println(ticks);
 			ticks--;
 		}
 		if (ticks == 0 || target == null || target.isRemoved() || !target.isAlive()) {
