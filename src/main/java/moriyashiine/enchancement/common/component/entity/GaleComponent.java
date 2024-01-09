@@ -18,8 +18,11 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 
 public class GaleComponent implements AutoSyncedComponent, CommonTickingComponent {
+	public static final int DEFAULT_GALE_COOLDOWN = 10;
+
 	private final PlayerEntity obj;
-	private int jumpCooldown = 10, jumpsLeft = 0, ticksInAir = 0;
+	private boolean shouldRefreshGale = false;
+	private int galeCooldown = DEFAULT_GALE_COOLDOWN, lastGaleCooldown = DEFAULT_GALE_COOLDOWN, jumpCooldown = 10, jumpsLeft = 0, ticksInAir = 0;
 
 	private boolean hasGale = false;
 
@@ -29,6 +32,9 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 
 	@Override
 	public void readFromNbt(NbtCompound tag) {
+		shouldRefreshGale = tag.getBoolean("ShouldRefreshGale");
+		galeCooldown = tag.getInt("GaleCooldown");
+		lastGaleCooldown = tag.getInt("LastGaleCooldown");
 		jumpCooldown = tag.getInt("JumpCooldown");
 		jumpsLeft = tag.getInt("JumpsLeft");
 		ticksInAir = tag.getInt("TicksInAir");
@@ -36,6 +42,9 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 
 	@Override
 	public void writeToNbt(NbtCompound tag) {
+		tag.putBoolean("ShouldRefreshGale", shouldRefreshGale);
+		tag.putInt("GaleCooldown", galeCooldown);
+		tag.putInt("LastGaleCooldown", lastGaleCooldown);
 		tag.putInt("JumpCooldown", jumpCooldown);
 		tag.putInt("JumpsLeft", jumpsLeft);
 		tag.putInt("TicksInAir", ticksInAir);
@@ -45,16 +54,28 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 	public void tick() {
 		hasGale = EnchancementUtil.hasEnchantment(ModEnchantments.GALE, obj);
 		if (hasGale) {
+			if (!shouldRefreshGale) {
+				if (obj.isOnGround()) {
+					shouldRefreshGale = true;
+				}
+			} else if (galeCooldown > 0) {
+				galeCooldown--;
+				if (galeCooldown == 0 && jumpsLeft < 2) {
+					jumpsLeft++;
+					setGaleCooldown(DEFAULT_GALE_COOLDOWN);
+				}
+			}
 			if (jumpCooldown > 0) {
 				jumpCooldown--;
 			}
 			if (obj.isOnGround()) {
 				ticksInAir = 0;
-				jumpsLeft = 2;
 			} else {
 				ticksInAir++;
 			}
 		} else {
+			shouldRefreshGale = false;
+			galeCooldown = DEFAULT_GALE_COOLDOWN;
 			jumpCooldown = 0;
 			jumpsLeft = 0;
 			ticksInAir = 0;
@@ -71,6 +92,19 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 		}
 	}
 
+	public void setGaleCooldown(int galeCooldown) {
+		this.galeCooldown = galeCooldown;
+		lastGaleCooldown = galeCooldown;
+	}
+
+	public int getGaleCooldown() {
+		return galeCooldown;
+	}
+
+	public int getLastGaleCooldown() {
+		return lastGaleCooldown;
+	}
+
 	public int getJumpsLeft() {
 		return jumpsLeft;
 	}
@@ -83,6 +117,8 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 		player.jump();
 		player.setVelocity(player.getVelocity().getX(), player.getVelocity().getY() * 1.5, player.getVelocity().getZ());
 		player.playSound(ModSoundEvents.ENTITY_GENERIC_AIR_JUMP, 1, 1);
+		galeComponent.setGaleCooldown(DEFAULT_GALE_COOLDOWN);
+		galeComponent.shouldRefreshGale = false;
 		galeComponent.jumpCooldown = 10;
 		galeComponent.jumpsLeft--;
 	}

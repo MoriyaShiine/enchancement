@@ -63,16 +63,14 @@ public class AmethystShardEntity extends PersistentProjectileEntity {
 			if (entity instanceof EnderDragonPart part) {
 				entity = part.owner;
 			}
-			if (entity instanceof LivingEntity) {
-				Entity owner = getOwner();
-				if (EnchancementUtil.shouldHurt(owner, entity) && entity.damage(ModDamageTypes.create(getWorld(), ModDamageTypes.AMETHYST_SHARD, this, owner), (float) getDamage())) {
-					if (isOnFire()) {
-						entity.setOnFireFor(5);
-					}
-					playSound(getHitSound(), 1, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
-					addParticles();
-					discard();
+			Entity owner = getOwner();
+			if (EnchancementUtil.shouldHurt(owner, entity) && entity.damage(ModDamageTypes.create(getWorld(), ModDamageTypes.AMETHYST_SHARD, this, owner), (float) getDamage())) {
+				if (isOnFire()) {
+					entity.setOnFireFor(5);
 				}
+				playSound(getHitSound(), 1, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
+				addParticles();
+				discard();
 			}
 		}
 	}

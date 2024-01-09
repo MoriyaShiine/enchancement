@@ -63,14 +63,12 @@ public class IceShardEntity extends PersistentProjectileEntity {
 			if (entity instanceof EnderDragonPart part) {
 				entity = part.owner;
 			}
-			if (entity instanceof LivingEntity) {
-				Entity owner = getOwner();
-				if (EnchancementUtil.shouldHurt(owner, entity) && entity.damage(ModDamageTypes.create(getWorld(), ModDamageTypes.ICE_SHARD, this, owner), 4)) {
-					entity.setFrozenTicks(400);
-					playSound(getHitSound(), 1, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
-					addParticles();
-					discard();
-				}
+			Entity owner = getOwner();
+			if (EnchancementUtil.shouldHurt(owner, entity) && entity.damage(ModDamageTypes.create(getWorld(), ModDamageTypes.ICE_SHARD, this, owner), 4)) {
+				entity.setFrozenTicks(400);
+				playSound(getHitSound(), 1, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
+				addParticles();
+				discard();
 			}
 		}
 	}

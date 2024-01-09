@@ -7,6 +7,7 @@ package moriyashiine.enchancement.common.component.entity;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.client.EnchancementClient;
+import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.packet.StrafePacket;
@@ -27,7 +28,7 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 
 	private boolean hasStrafe = false;
 
-	private boolean wasPressingActivationKey = false;
+	private boolean wasPressingStrafeKey = false;
 	private int ticksLeftToPressActivationKey = 0;
 
 	public StrafeComponent(PlayerEntity obj) {
@@ -61,22 +62,25 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 		tick();
 		if (hasStrafe && strafeCooldown == 0 && !obj.isSpectator() && obj == MinecraftClient.getInstance().player) {
 			GameOptions options = MinecraftClient.getInstance().options;
-			boolean pressingActivationKey = EnchancementClient.STRAFE_KEYBINDING.isUnbound() ? options.sprintKey.isPressed() : EnchancementClient.STRAFE_KEYBINDING.isPressed();
+			boolean pressingStrafeKey = EnchancementClient.STRAFE_KEYBINDING.isPressed();
 			if (ticksLeftToPressActivationKey > 0) {
 				ticksLeftToPressActivationKey--;
 			}
-			if (pressingActivationKey && !wasPressingActivationKey) {
-				if (ticksLeftToPressActivationKey > 0) {
+			if (pressingStrafeKey && !wasPressingStrafeKey) {
+				if (ticksLeftToPressActivationKey > 0 || ModConfig.singlePressStrafe) {
 					ticksLeftToPressActivationKey = 0;
-					Vec3d velocity = getVelocityFromInput(options).rotateY((float) Math.toRadians(-(obj.getHeadYaw() + 90)));
-					handle(obj, this, velocity.getX(), velocity.getZ());
-					addStrafeParticles(obj);
-					StrafePacket.send(velocity);
+					Vec3d inputVelocity = getVelocityFromInput(options);
+					if (inputVelocity != Vec3d.ZERO) {
+						Vec3d velocity = inputVelocity.rotateY((float) Math.toRadians(-(obj.getHeadYaw() + 90)));
+						handle(obj, this, velocity.getX(), velocity.getZ());
+						addStrafeParticles(obj);
+						StrafePacket.send(velocity);
+					}
 				} else {
 					ticksLeftToPressActivationKey = 7;
 				}
 			}
-			wasPressingActivationKey = pressingActivationKey;
+			wasPressingStrafeKey = pressingStrafeKey;
 		}
 	}
 
@@ -85,6 +89,9 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 	}
 
 	private Vec3d getVelocityFromInput(GameOptions options) {
+		if (options.forwardKey.isPressed()) {
+			return new Vec3d(1, 0, 0);
+		}
 		if (options.backKey.isPressed()) {
 			return new Vec3d(-1, 0, 0);
 		}
@@ -94,7 +101,7 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 		if (options.rightKey.isPressed()) {
 			return new Vec3d(0, 0, 1);
 		}
-		return new Vec3d(1, 0, 0);
+		return Vec3d.ZERO;
 	}
 
 	public static void handle(Entity entity, StrafeComponent strafeComponent, double velocityX, double velocityZ) {

@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.entity.projectile;
 
 import moriyashiine.enchancement.common.init.ModDamageTypes;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -81,28 +82,29 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 				}
 				break;
 			}
-			if (ticksExisted == 3 && getOwner() instanceof LivingEntity owner) {
-				getWorld().getOtherEntities(owner, Box.from(hitResult.getPos()).expand(0.5), EntityPredicates.EXCEPT_SPECTATOR.and(entity -> !hitEntities.contains(entity))).forEach(entity -> {
+			if (ticksExisted == 3) {
+				Entity owner = getOwner();
+				getWorld().getOtherEntities(owner, Box.from(hitResult.getPos()).expand(0.5), EntityPredicates.EXCEPT_SPECTATOR.and(entity -> !hitEntities.contains(entity) && EnchancementUtil.shouldHurt(owner, entity))).forEach(entity -> {
 					if (entity instanceof EnderDragonPart part) {
 						entity = part.owner;
 					}
-					if (entity instanceof LivingEntity living && !living.isDead()) {
-						if (getWorld().isClient) {
-							addParticles(living.getX(), living.getRandomBodyY(), living.getZ());
+					if (getWorld().isClient) {
+						addParticles(entity.getX(), entity.getRandomBodyY(), entity.getZ());
+					} else {
+						double damage = getDamage();
+						if (entity instanceof LivingEntity living) {
+							damage *= living.getMaxHealth() / 20F;
+						}
+						if (maxY < 16) {
+							damage *= MathHelper.lerp(maxY / 16F, 0.25F, 1);
 						} else {
-							double percentage = (getDamage() / 20F);
-							double damage = living.getMaxHealth() * percentage;
-							if (maxY < 16) {
-								damage *= MathHelper.lerp(maxY / 16F, 0.25F, 1);
-							} else {
-								damage *= Math.min(2, MathHelper.lerp((maxY - 16) / 200F, 1F, 2F));
-							}
-							damage = Math.min(50, damage);
-							living.damage(ModDamageTypes.create(getWorld(), ModDamageTypes.BRIMSTONE, this, owner), (float) damage);
-							hitEntities.add(living);
-							if (living.isDead()) {
-								killedEntities.add(living);
-							}
+							damage *= Math.min(2, MathHelper.lerp((maxY - 16) / 200F, 1F, 2F));
+						}
+						damage = Math.min(50, damage);
+						entity.damage(ModDamageTypes.create(getWorld(), ModDamageTypes.BRIMSTONE, this, owner), (float) damage);
+						hitEntities.add(entity);
+						if (entity instanceof LivingEntity living && living.isDead()) {
+							killedEntities.add(living);
 						}
 					}
 				});

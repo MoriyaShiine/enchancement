@@ -41,9 +41,10 @@ import net.minecraft.resource.ResourceType;
 import org.lwjgl.glfw.GLFW;
 
 public class EnchancementClient implements ClientModInitializer {
-	public static final KeyBinding STRAFE_KEYBINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".strafe", GLFW.GLFW_KEY_UNKNOWN, "key.categories." + Enchancement.MOD_ID));
-	public static final KeyBinding SLIDE_KEYBINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".slide", GLFW.GLFW_KEY_UNKNOWN, "key.categories." + Enchancement.MOD_ID));
-	public static final KeyBinding SLAM_KEYBINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".slam", GLFW.GLFW_KEY_UNKNOWN, "key.categories." + Enchancement.MOD_ID));
+	public static final KeyBinding DASH_KEYBINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".dash", GLFW.GLFW_KEY_LEFT_SHIFT, "key.categories." + Enchancement.MOD_ID));
+	public static final KeyBinding SLAM_KEYBINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".slam", GLFW.GLFW_KEY_LEFT_CONTROL, "key.categories." + Enchancement.MOD_ID));
+	public static final KeyBinding SLIDE_KEYBINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".slide", GLFW.GLFW_KEY_LEFT_CONTROL, "key.categories." + Enchancement.MOD_ID));
+	public static final KeyBinding STRAFE_KEYBINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".strafe", GLFW.GLFW_KEY_LEFT_CONTROL, "key.categories." + Enchancement.MOD_ID));
 
 	@Override
 	public void onInitializeClient() {

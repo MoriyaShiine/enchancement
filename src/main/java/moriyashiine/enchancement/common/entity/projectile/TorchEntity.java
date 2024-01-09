@@ -77,7 +77,7 @@ public class TorchEntity extends PersistentProjectileEntity {
 		state.onProjectileHit(getWorld(), state, blockHitResult, this);
 		if (!getWorld().isClient) {
 			discard();
-			if (shouldPlaceTorch && getOwner() instanceof PlayerEntity player) {
+			if (shouldPlaceTorch && getOwner() instanceof PlayerEntity player && player.getAbilities().allowModifyWorld) {
 				BlockPos pos = blockHitResult.getBlockPos().offset(blockHitResult.getSide());
 				ItemPlacementContext context = new ItemPlacementContext(player, Hand.MAIN_HAND, asItemStack(), blockHitResult);
 				if (context.canPlace()) {
