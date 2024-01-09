@@ -22,7 +22,12 @@ public class GaleRenderEvent implements HudRenderCallback {
 				int jumpsLeft = galeComponent.getJumpsLeft();
 				if (jumpsLeft < 2) {
 					RenderSystem.enableBlend();
-					drawContext.drawTexture(GALE_TEXTURE, (int) (drawContext.getScaledWindowWidth() / 2F) - 5, (int) (drawContext.getScaledWindowHeight() / 2F) + 27, 0, jumpsLeft == 1 ? 0 : 9, 9, 9, 9, 18);
+					if (galeComponent.getGaleCooldown() < galeComponent.getLastGaleCooldown()) {
+						drawContext.drawTexture(GALE_TEXTURE, (int) (drawContext.getScaledWindowWidth() / 2F) - 5, (int) (drawContext.getScaledWindowHeight() / 2F) + 27, 0, jumpsLeft == 0 ? 9 : 0, 9, 9, 9, 27);
+						drawContext.drawTexture(GALE_TEXTURE, (int) (drawContext.getScaledWindowWidth() / 2F) - 5, (int) (drawContext.getScaledWindowHeight() / 2F) + 27, 0, jumpsLeft == 0 ? 18 : 9, 9, (int) ((galeComponent.getGaleCooldown() / (float) galeComponent.getLastGaleCooldown()) * 9), 9, 27);
+					} else {
+						drawContext.drawTexture(GALE_TEXTURE, (int) (drawContext.getScaledWindowWidth() / 2F) - 5, (int) (drawContext.getScaledWindowHeight() / 2F) + 27, 0, jumpsLeft == 0 ? 18 : 9, 9, 9, 9, 27);
+					}
 					RenderSystem.disableBlend();
 				}
 			}
