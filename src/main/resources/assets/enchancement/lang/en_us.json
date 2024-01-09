@@ -125,6 +125,7 @@
   "death.attack.enchancement.life_drain": "%1$s had their life drained",
   "death.attack.enchancement.life_drain.item": "%1$s had their life drained whilst fighting %2$s wielding %3$s",
   "death.attack.enchancement.life_drain.player": "%1$s had their life drained whilst fighting %2$s",
+  "death.attack.freeze.item": "%1$s was frozen to death by %2$s wielding %3$s",
   "key.categories.enchancement": "Enchancement",
   "key.enchancement.strafe": "Strafe",
   "key.enchancement.slide": "Slide",
