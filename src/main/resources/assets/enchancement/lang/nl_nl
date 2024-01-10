@@ -58,7 +58,7 @@
     "enchantment.enchancement.veil.desc": "Verkleint het detectiebereik van monsters en verbergt je naam achter muren.",
     "enchantment.enchancement.amphibious": "Amfibisch",
     "enchantment.enchancement.amphibious.desc": "Verhoogt onderwatermijnbouw en bewegingssnelheid. ",
-    "enchantment.enchancement.strafe": "Zijwarts",
+    "enchantment.enchancement.strafe": "Zijwaarts",
     "enchantment.enchancement.strafe.desc": "Dubbeltikken op [%s] brengt u in uw bewegingsrichting.",
     "enchantment.enchancement.strafe.desc.single": "Tikken op [%s] brengt u in uw bewegingsrichting.",
     "enchantment.enchancement.wardenspine": "Hoederruggraat",
@@ -112,7 +112,7 @@
     "enchantment.enchancement.grapple": "Grijp",
     "enchantment.enchancement.grapple.desc": "Zorgt ervoor dat de Fishing Bobber zich aan blokken kan vastklikken. ",
     "subtitles.enchancement.entity.shard.shatter": "Scherf verbrijzelt",
-    "subtitles.enchancement.entity.generic.strafe": "Entiteit ging zijwarts",
+    "subtitles.enchancement.entity.generic.strafe": "Entiteit ging zijwaarts",
     "subtitles.enchancement.entity.generic.wardenspine": "Wardenspine wordt geactiveerd",
     "subtitles.enchancement.entity.generic.dash": "Entiteit lanceer",
     "subtitles.enchancement.entity.generic.impact": "Entiteitseffecten",
@@ -128,9 +128,9 @@
     "death.attack.enchancement.life_drain.player": "Het leven van %1$s werd uitgeput tijdens een gevecht tegen %2$s",
     "death.attack.freeze.item": "%2$s bevroor %1$s met %3$s",
     "key.categories.enchancement": "Enchancement",
-    "key.enchancement.dash": "lanceer",
+    "key.enchancement.dash": "Lanceer",
     "key.enchancement.slam": "Dichtslaan",
-    "key.enchancement.strafe": "Zijwarts",
+    "key.enchancement.strafe": "Zijwaarts",
     "key.enchancement.slide": "Glij",
     "tooltip.enchancement.experience_level_cost": "Ervaringskosten: %d niveaus",
     "tooltip.enchancement.lapis_lazuli_cost": "Lapis Lazuli Kosten: %d Lapis Lazuli",
@@ -176,5 +176,5 @@
     "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.NONE": "Niets",
     "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.VANILLA_AND_ENCHANCEMENT": "Vanille en Enchancement",
     "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.ALL": "Alles",
-    "enchancement.midnightconfig.singlePressStrafe": "Enkel Druk Zijwarts"
+    "enchancement.midnightconfig.singlePressStrafe": "Enkel Druk Zijwaarts"
 }
