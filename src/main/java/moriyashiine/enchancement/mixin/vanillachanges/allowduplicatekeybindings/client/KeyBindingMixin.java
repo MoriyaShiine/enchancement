@@ -20,7 +20,7 @@ public class KeyBindingMixin {
 	private static void enchancement$allowDuplicateKeybindings(InputUtil.Key key, CallbackInfo ci, KeyBinding keyBinding) {
 		if (EnchancementClientUtil.allowDuplicateKeybinding(keyBinding)) {
 			for (KeyBinding keyBinding2 : MinecraftClient.getInstance().options.allKeys) {
-				if (keyBinding2.equals(keyBinding) && EnchancementClientUtil.allowDuplicateKeybinding(keyBinding2)) {
+				if (keyBinding != keyBinding2 && keyBinding.equals(keyBinding2) && EnchancementClientUtil.allowDuplicateKeybinding(keyBinding2)) {
 					keyBinding2.timesPressed++;
 				}
 			}
@@ -31,7 +31,7 @@ public class KeyBindingMixin {
 	private static void enchancement$allowDuplicateKeybindings(InputUtil.Key key, boolean pressed, CallbackInfo ci, KeyBinding keyBinding) {
 		if (EnchancementClientUtil.allowDuplicateKeybinding(keyBinding)) {
 			for (KeyBinding keyBinding2 : MinecraftClient.getInstance().options.allKeys) {
-				if (keyBinding2.equals(keyBinding) && EnchancementClientUtil.allowDuplicateKeybinding(keyBinding2)) {
+				if (keyBinding != keyBinding2 && keyBinding.equals(keyBinding2) && EnchancementClientUtil.allowDuplicateKeybinding(keyBinding2)) {
 					keyBinding2.setPressed(pressed);
 				}
 			}
