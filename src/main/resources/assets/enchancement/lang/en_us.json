@@ -173,5 +173,8 @@
   "enchancement.midnightconfig.enchantmentDescriptions": "Enchantment Descriptions",
   "enchancement.midnightconfig.coloredEnchantmentNames": "Colored Enchantment Names",
   "enchancement.midnightconfig.allowDuplicateKeybindings": "Allow Duplicate Keybindings",
+  "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.NONE": "None",
+  "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.VANILLA_AND_ENCHANCEMENT": "Vanilla and Enchancement",
+  "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.ALL": "All",
   "enchancement.midnightconfig.singlePressStrafe": "Single Press Strafe"
 }

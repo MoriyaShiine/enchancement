@@ -4,10 +4,12 @@
 
 package moriyashiine.enchancement.client.util;
 
+import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.component.entity.LeechComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.client.model.Model;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.ItemRenderer;
@@ -20,8 +22,24 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class EnchancementClientUtil {
+	public static final Set<KeyBinding> VANILLA_AND_ENCHANCEMENT_KEYBINDINGS = new HashSet<>();
+
 	public static int berserkColor = -1;
+
+	public static boolean allowDuplicateKeybinding(KeyBinding keyBinding) {
+		if (keyBinding == null) {
+			return false;
+		}
+		return switch (ModConfig.allowDuplicateKeybindings) {
+			case NONE -> false;
+			case VANILLA_AND_ENCHANCEMENT -> VANILLA_AND_ENCHANCEMENT_KEYBINDINGS.contains(keyBinding);
+			case ALL -> true;
+		};
+	}
 
 	public static int getBerserkColor(LivingEntity living, ItemStack stack) {
 		float damageBonus = EnchancementUtil.getBonusBerserkDamage(living, stack);

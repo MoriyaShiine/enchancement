@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.vanillachanges.allowduplicatekeybindings.client;
 
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.client.util.EnchancementClientUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
@@ -18,9 +18,9 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 public class KeyBindingMixin {
 	@Inject(method = "onKeyPressed", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
 	private static void enchancement$allowDuplicateKeybindings(InputUtil.Key key, CallbackInfo ci, KeyBinding keyBinding) {
-		if (ModConfig.allowDuplicateKeybindings && keyBinding != null) {
+		if (EnchancementClientUtil.allowDuplicateKeybinding(keyBinding)) {
 			for (KeyBinding keyBinding2 : MinecraftClient.getInstance().options.allKeys) {
-				if (keyBinding2.equals(keyBinding)) {
+				if (keyBinding2.equals(keyBinding) && EnchancementClientUtil.allowDuplicateKeybinding(keyBinding2)) {
 					keyBinding2.timesPressed++;
 				}
 			}
@@ -29,9 +29,9 @@ public class KeyBindingMixin {
 
 	@Inject(method = "setKeyPressed", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
 	private static void enchancement$allowDuplicateKeybindings(InputUtil.Key key, boolean pressed, CallbackInfo ci, KeyBinding keyBinding) {
-		if (ModConfig.allowDuplicateKeybindings && keyBinding != null) {
+		if (EnchancementClientUtil.allowDuplicateKeybinding(keyBinding)) {
 			for (KeyBinding keyBinding2 : MinecraftClient.getInstance().options.allKeys) {
-				if (keyBinding2.equals(keyBinding)) {
+				if (keyBinding2.equals(keyBinding) && EnchancementClientUtil.allowDuplicateKeybinding(keyBinding2)) {
 					keyBinding2.setPressed(pressed);
 				}
 			}

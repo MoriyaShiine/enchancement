@@ -5,6 +5,7 @@
 package moriyashiine.enchancement.common;
 
 import eu.midnightdust.lib.config.MidnightConfig;
+import moriyashiine.enchancement.client.util.AllowDuplicateKeybindingsMode;
 
 import java.util.Arrays;
 import java.util.List;
@@ -119,7 +120,7 @@ public class ModConfig extends MidnightConfig {
 	@Entry(category = "client")
 	public static boolean coloredEnchantmentNames = true;
 	@Entry(category = "client")
-	public static boolean allowDuplicateKeybindings = true;
+	public static AllowDuplicateKeybindingsMode allowDuplicateKeybindings = AllowDuplicateKeybindingsMode.VANILLA_AND_ENCHANCEMENT;
 	@Entry(category = "client")
 	public static boolean singlePressStrafe = false;
 
