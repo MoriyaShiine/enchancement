@@ -60,7 +60,7 @@
   "enchantment.enchancement.amphibious.desc": "Increases underwater mining and movement speed. Decreases air consumption underwater and time spent on fire. Immediately extinguishes you and allows usage of Riptide for 5 seconds after leaving water.",
   "enchantment.enchancement.strafe": "Strafe",
   "enchantment.enchancement.strafe.desc": "Double tapping [%s] launches you in your movement direction.",
-  "enchantment.enchancement.strafe.desc.single": "Tapping [%s] launches you in your movement direction.",
+  "enchantment.enchancement.strafe.desc.single": "Pressing [%s] launches you in your movement direction.",
   "enchantment.enchancement.wardenspine": "Wardenspine",
   "enchantment.enchancement.wardenspine.desc": "Harms and blinds attackers and greatly decreases damage taken from behind.",
   "enchantment.enchancement.adrenaline": "Adrenaline",
@@ -173,5 +173,8 @@
   "enchancement.midnightconfig.enchantmentDescriptions": "Enchantment Descriptions",
   "enchancement.midnightconfig.coloredEnchantmentNames": "Colored Enchantment Names",
   "enchancement.midnightconfig.allowDuplicateKeybindings": "Allow Duplicate Keybindings",
+  "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.NONE": "None",
+  "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.VANILLA_AND_ENCHANCEMENT": "Vanilla and Enchancement",
+  "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.ALL": "All",
   "enchancement.midnightconfig.singlePressStrafe": "Single Press Strafe"
 }
