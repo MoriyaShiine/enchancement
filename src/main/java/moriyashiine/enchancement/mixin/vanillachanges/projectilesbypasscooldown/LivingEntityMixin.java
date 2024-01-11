@@ -7,9 +7,8 @@ package moriyashiine.enchancement.mixin.vanillachanges.projectilesbypasscooldown
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.component.entity.ProjectileTimerComponent;
-import moriyashiine.enchancement.common.entity.projectile.AmethystShardEntity;
-import moriyashiine.enchancement.common.entity.projectile.IceShardEntity;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.ModTags;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -22,7 +21,7 @@ public class LivingEntityMixin {
 	@ModifyVariable(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;wakeUp()V", shift = At.Shift.BY, by = 2), argsOnly = true)
 	private float enchancement$projectilesBypassCooldownTimer(float value, DamageSource source) {
 		if (source.getSource() instanceof ProjectileEntity projectile && (ModConfig.projectilesBypassCooldown || ModEntityComponents.DELAY.get(projectile).hasDelay())) {
-			if (!(projectile instanceof AmethystShardEntity || projectile instanceof IceShardEntity)) {
+			if (!projectile.getType().isIn(ModTags.EntityTypes.BYPASSES_DECREASING_DAMAGE)) {
 				ProjectileTimerComponent projectileTimerComponent = ModEntityComponents.PROJECTILE_TIMER.get(this);
 				projectileTimerComponent.incrementTimesHit();
 				projectileTimerComponent.markAsHit();
