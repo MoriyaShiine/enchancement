@@ -78,6 +78,13 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 		int posY = (height - backgroundHeight) / 2 - 16;
 		context.drawTexture(TEXTURE, posX, posY, 0, 0, backgroundWidth, backgroundHeight);
 		if (client != null && client.player != null && handler.canEnchant(client.player, true)) {
+			if (!handler.getRepairIngredient().isEmpty()) {
+				forceTransparency = true;
+				context.setShaderColor(1, 1, 1, 0.5F);
+				context.drawItem(handler.getRepairIngredient().getMatchingStacks()[ingredientIndex], (width - backgroundWidth) / 2 + 25, (height - backgroundHeight) / 2 + 51);
+				context.setShaderColor(1, 1, 1, 1);
+				forceTransparency = false;
+			}
 			if (handler.validEnchantments.size() > 4) {
 				if (isInUpButtonBounds(posX, posY, mouseX, mouseY)) {
 					context.drawTexture(TEXTURE, posX + 154, posY + 28, 192, 0, 16, 16);
@@ -150,13 +157,6 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 				} else {
 					infoTexts = null;
 				}
-			}
-			if (!handler.getRepairIngredient().isEmpty()) {
-				forceTransparency = true;
-				context.setShaderColor(1, 1, 1, 0.5F);
-				context.drawItem(handler.getRepairIngredient().getMatchingStacks()[ingredientIndex], (width - backgroundWidth) / 2 + 25, (height - backgroundHeight) / 2 + 51);
-				context.setShaderColor(1, 1, 1, 1);
-				forceTransparency = false;
 			}
 		}
 		drawBook(context, (width - backgroundWidth) / 2, (height - backgroundHeight) / 2, client.getTickDelta());
