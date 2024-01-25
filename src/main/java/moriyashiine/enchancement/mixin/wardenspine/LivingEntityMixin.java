@@ -6,7 +6,7 @@ package moriyashiine.enchancement.mixin.wardenspine;
 
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -36,14 +36,15 @@ public abstract class LivingEntityMixin extends Entity {
 		if (source.isIn(DamageTypeTags.BYPASSES_ENCHANTMENTS) || source.isOf(DamageTypes.THORNS)) {
 			return value;
 		}
-		if (source.getSource() != null && EnchancementUtil.hasEnchantment(ModEnchantments.WARDENSPINE, this)) {
-			if (Math.abs(MathHelper.subtractAngles(getHeadYaw(), source.getSource().getHeadYaw())) <= 75) {
+		if (source.getSource() != null) {
+			int level = EnchantmentHelper.getEquipmentLevel(ModEnchantments.WARDENSPINE, (LivingEntity) (Object) this);
+			if (level > 0 && Math.abs(MathHelper.subtractAngles(getHeadYaw(), source.getSource().getHeadYaw())) <= 75) {
 				if (source.getSource() instanceof LivingEntity living) {
 					getWorld().playSound(null, getBlockPos(), ModSoundEvents.ENTITY_GENERIC_WARDENSPINE, getSoundCategory(), 1, 1);
 					living.damage(getDamageSources().thorns(this), 4);
-					living.addStatusEffect(new StatusEffectInstance(StatusEffects.DARKNESS, 300));
+					living.addStatusEffect(new StatusEffectInstance(StatusEffects.DARKNESS, 150 * level));
 				}
-				return value * 0.2F;
+				return value * (1 - (level * 0.4F));
 			}
 		}
 		return value;

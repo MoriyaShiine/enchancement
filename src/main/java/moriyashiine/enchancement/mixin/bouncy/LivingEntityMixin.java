@@ -72,7 +72,7 @@ public abstract class LivingEntityMixin extends Entity {
 					getWorld().playSoundFromEntity(null, this, SoundEvents.BLOCK_SLIME_BLOCK_FALL, getSoundCategory(), 1, 1);
 					((ServerWorld) getWorld()).spawnParticles(SLIME_PARTICLE, getX(), getY(), getZ(), 32, 0.0, 0.0, 0.0, 0.15F);
 				}
-				return value + (boostProgress * 2);
+				return value + (boostProgress * bouncyComponent.getBouncyLevel());
 			}
 		}
 		return value;

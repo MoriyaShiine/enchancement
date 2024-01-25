@@ -12,6 +12,7 @@ import moriyashiine.enchancement.common.packet.GalePacket;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.util.LivingEntityAccessor;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -24,6 +25,7 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 	private boolean shouldRefreshGale = false;
 	private int galeCooldown = DEFAULT_GALE_COOLDOWN, lastGaleCooldown = DEFAULT_GALE_COOLDOWN, jumpCooldown = 10, jumpsLeft = 0, ticksInAir = 0;
 
+	private int galeLevel = 0;
 	private boolean hasGale = false;
 
 	public GaleComponent(PlayerEntity obj) {
@@ -52,7 +54,8 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 
 	@Override
 	public void tick() {
-		hasGale = EnchancementUtil.hasEnchantment(ModEnchantments.GALE, obj);
+		galeLevel = EnchantmentHelper.getEquipmentLevel(ModEnchantments.GALE, obj);
+		hasGale = galeLevel > 0;
 		if (hasGale) {
 			if (!shouldRefreshGale) {
 				if (obj.isOnGround()) {
@@ -60,7 +63,7 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 				}
 			} else if (galeCooldown > 0) {
 				galeCooldown--;
-				if (galeCooldown == 0 && jumpsLeft < 2) {
+				if (galeCooldown == 0 && jumpsLeft < galeLevel) {
 					jumpsLeft++;
 					setGaleCooldown(DEFAULT_GALE_COOLDOWN);
 				}
@@ -107,6 +110,10 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 
 	public int getJumpsLeft() {
 		return jumpsLeft;
+	}
+
+	public int getGaleLevel() {
+		return galeLevel;
 	}
 
 	public boolean hasGale() {

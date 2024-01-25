@@ -4,7 +4,6 @@
 
 package moriyashiine.enchancement.common;
 
-import com.google.gson.Gson;
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import moriyashiine.enchancement.common.event.*;
 import moriyashiine.enchancement.common.init.ModEnchantments;
@@ -13,6 +12,8 @@ import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.packet.*;
 import moriyashiine.enchancement.common.reloadlisteners.BeheadingReloadListener;
+import moriyashiine.enchancement.common.reloadlisteners.EnchantingMaterialReloadListener;
+import moriyashiine.enchancement.common.reloadlisteners.ExtractingBaseBlockReloadListener;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
@@ -52,7 +53,9 @@ public class Enchancement implements ModInitializer {
 		ModEnchantments.init();
 		ModSoundEvents.init();
 		ModScreenHandlerTypes.init();
-		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new BeheadingReloadListener(new Gson(), MOD_ID + "_beheading"));
+		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new EnchantingMaterialReloadListener());
+		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new BeheadingReloadListener());
+		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new ExtractingBaseBlockReloadListener());
 		initEvents();
 		isApoliLoaded = FabricLoader.getInstance().isModLoaded("apoli");
 		for (String mod : new String[]{"enchdesc", "enchantedtooltips", "idwtialsimmoedm"}) {

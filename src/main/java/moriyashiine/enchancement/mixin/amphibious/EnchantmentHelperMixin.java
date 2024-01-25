@@ -9,6 +9,7 @@ import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -18,15 +19,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class EnchantmentHelperMixin {
 	@Inject(method = "getDepthStrider", at = @At("HEAD"), cancellable = true)
 	private static void enchancement$amphibiousDepthStrider(LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
-		if (EnchancementUtil.hasEnchantment(ModEnchantments.AMPHIBIOUS, entity)) {
-			cir.setReturnValue(Enchantments.DEPTH_STRIDER.getMaxLevel());
+		int level = EnchantmentHelper.getEquipmentLevel(ModEnchantments.AMPHIBIOUS, entity);
+		if (level > 0) {
+			cir.setReturnValue(MathHelper.floor(Enchantments.DEPTH_STRIDER.getMaxLevel() / 2F * level));
 		}
 	}
 
 	@Inject(method = "getRespiration", at = @At("HEAD"), cancellable = true)
 	private static void enchancement$amphibiousRespiration(LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
-		if (EnchancementUtil.hasEnchantment(ModEnchantments.AMPHIBIOUS, entity)) {
-			cir.setReturnValue(Enchantments.RESPIRATION.getMaxLevel());
+		int level = EnchantmentHelper.getEquipmentLevel(ModEnchantments.AMPHIBIOUS, entity);
+		if (level > 0) {
+			cir.setReturnValue(MathHelper.ceil(Enchantments.RESPIRATION.getMaxLevel() / 2F * level));
 		}
 	}
 

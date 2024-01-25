@@ -6,6 +6,7 @@ package moriyashiine.enchancement.mixin.vanillachanges.projectilesbypasscooldown
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.component.entity.DelayComponent;
 import moriyashiine.enchancement.common.component.entity.ProjectileTimerComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModTags;
@@ -20,8 +21,15 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class LivingEntityMixin {
 	@ModifyVariable(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;wakeUp()V", shift = At.Shift.BY, by = 2), argsOnly = true)
 	private float enchancement$projectilesBypassCooldownTimer(float value, DamageSource source) {
-		if (source.getSource() instanceof ProjectileEntity projectile && (ModConfig.projectilesBypassCooldown || ModEntityComponents.DELAY.get(projectile).hasDelay())) {
-			if (!projectile.getType().isIn(ModTags.EntityTypes.BYPASSES_DECREASING_DAMAGE)) {
+		if (source.getSource() instanceof ProjectileEntity projectile) {
+			boolean bypass = ModConfig.projectilesBypassCooldown;
+			if (!bypass) {
+				DelayComponent delayComponent = ModEntityComponents.DELAY.getNullable(projectile);
+				if (delayComponent != null && delayComponent.hasDelay()) {
+					bypass = true;
+				}
+			}
+			if (bypass && !projectile.getType().isIn(ModTags.EntityTypes.BYPASSES_DECREASING_DAMAGE)) {
 				ProjectileTimerComponent projectileTimerComponent = ModEntityComponents.PROJECTILE_TIMER.get(this);
 				projectileTimerComponent.incrementTimesHit();
 				projectileTimerComponent.markAsHit();

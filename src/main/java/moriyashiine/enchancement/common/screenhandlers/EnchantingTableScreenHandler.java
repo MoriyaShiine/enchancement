@@ -19,6 +19,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.*;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.screen.ScreenHandler;
@@ -32,16 +33,21 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EnchantingTableScreenHandler extends ScreenHandler {
+	public static final Map<Item, Ingredient> ENCHANTING_MATERIAL_MAP = new HashMap<>();
+
 	public List<Enchantment> validEnchantments = null, selectedEnchantments = null;
 	public int viewIndex = 0;
 
 	private ItemStack enchantingStack = null;
+	private Ingredient repairIngredient = null;
 	private int cost = 0;
 
-	private final Inventory inventory = new SimpleInventory(2) {
+	private final Inventory inventory = new SimpleInventory(3) {
 		@Override
 		public void markDirty() {
 			super.markDirty();
@@ -57,7 +63,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 	public EnchantingTableScreenHandler(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
 		super(ModScreenHandlerTypes.ENCHANTING_TABLE, syncId);
 		this.context = context;
-		addSlot(new Slot(inventory, 0, 15, 47) {
+		addSlot(new Slot(inventory, 0, 15, 31) {
 			@Override
 			public boolean canInsert(ItemStack stack) {
 				if (stack.getItem() == Items.BOOK) {
@@ -83,14 +89,22 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 				selectedEnchantments = null;
 				viewIndex = 0;
 				enchantingStack = null;
+				repairIngredient = null;
 				cost = 0;
+				player.getInventory().offerOrDrop(slots.get(2).getStack());
 				super.onTakeItem(player, stack);
 			}
 		});
-		addSlot(new Slot(inventory, 1, 35, 47) {
+		addSlot(new Slot(inventory, 1, 35, 31) {
 			@Override
 			public boolean canInsert(ItemStack stack) {
 				return stack.isOf(Items.LAPIS_LAZULI);
+			}
+		});
+		addSlot(new Slot(inventory, 2, 25, 51) {
+			@Override
+			public boolean canInsert(ItemStack stack) {
+				return getRepairIngredient(slots.get(0).getStack()).test(stack);
 			}
 		});
 		int index;
@@ -116,16 +130,16 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		if (slot.hasStack()) {
 			ItemStack stackInSlot = slot.getStack();
 			stack = stackInSlot.copy();
-			if (index == 0) {
-				if (!insertItem(stackInSlot, 2, 38, true)) {
-					return ItemStack.EMPTY;
-				}
-			} else if (index == 1) {
-				if (!insertItem(stackInSlot, 2, 38, true)) {
+			if (index == 0 || index == 1 || index == 2) {
+				if (!insertItem(stackInSlot, 2, 38, false)) {
 					return ItemStack.EMPTY;
 				}
 			} else if (stackInSlot.isOf(Items.LAPIS_LAZULI)) {
-				if (!insertItem(stackInSlot, 1, 2, true)) {
+				if (!insertItem(stackInSlot, 1, 2, false)) {
+					return ItemStack.EMPTY;
+				}
+			} else if (getRepairIngredient(slots.get(0).getStack()).test(stackInSlot)) {
+				if (!insertItem(stackInSlot, 2, 3, false)) {
 					return ItemStack.EMPTY;
 				}
 			} else if (!slots.get(0).hasStack() && slots.get(0).canInsert(stackInSlot)) {
@@ -178,6 +192,9 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 					world.playSound(null, pos, SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, SoundCategory.BLOCKS, 1, world.random.nextFloat() * 0.1F + 0.9F);
 					if (!player.isCreative() && cost > 0) {
 						slots.get(1).getStack().decrement(cost);
+						if (!getRepairIngredient(slots.get(0).getStack()).isEmpty()) {
+							slots.get(2).getStack().decrement(cost);
+						}
 					}
 					if (stackChanged) {
 						slots.get(0).setStack(stack);
@@ -192,8 +209,8 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		} else if (id == 2) {
 			updateViewIndex(false);
 			return true;
-		} else if (id > 2 && id < 6) {
-			Enchantment enchantment = getEnchantmentFromViewIndex(id - 3);
+		} else if (id > 2 && id < 8) {
+			Enchantment enchantment = getEnchantmentFromViewIndex(id - 4);
 			if (selectedEnchantments.contains(enchantment)) {
 				selectedEnchantments.remove(enchantment);
 			} else {
@@ -217,6 +234,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 				selectedEnchantments = new ArrayList<>();
 				viewIndex = 0;
 				enchantingStack = stack;
+				repairIngredient = getRepairIngredient(stack);
 				cost = 0;
 				for (Enchantment enchantment : Registries.ENCHANTMENT) {
 					if (isEnchantmentAllowed(enchantment, stack)) {
@@ -229,7 +247,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 	}
 
 	public Enchantment getEnchantmentFromViewIndex(int index) {
-		if (validEnchantments.size() <= 3) {
+		if (validEnchantments.size() <= 4) {
 			return validEnchantments.get(index);
 		}
 		return validEnchantments.get((index + viewIndex) % validEnchantments.size());
@@ -243,9 +261,37 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 			if (simulate) {
 				return true;
 			}
-			return player.experienceLevel >= cost && slots.get(1).getStack().getCount() >= cost;
+			if (player.experienceLevel >= cost && slots.get(1).getStack().getCount() >= cost) {
+				if (!getRepairIngredient(slots.get(0).getStack()).isEmpty()) {
+					return slots.get(2).getStack().getCount() >= cost;
+				}
+				return true;
+			}
 		}
 		return false;
+	}
+
+	public Ingredient getRepairIngredient() {
+		return repairIngredient;
+	}
+
+	private Ingredient getRepairIngredient(ItemStack stack) {
+		Item item = stack.getItem();
+		Ingredient ingredient = ENCHANTING_MATERIAL_MAP.getOrDefault(item, Ingredient.EMPTY);
+		if (ingredient.isEmpty()) {
+			if (item instanceof ArmorItem armorItem) {
+				Ingredient repairIngredient = armorItem.getMaterial().getRepairIngredient();
+				if (!repairIngredient.isEmpty()) {
+					ingredient = repairIngredient;
+				}
+			} else if (item instanceof ToolItem toolItem) {
+				Ingredient repairIngredient = toolItem.getMaterial().getRepairIngredient();
+				if (!repairIngredient.isEmpty()) {
+					ingredient = repairIngredient;
+				}
+			}
+		}
+		return ingredient;
 	}
 
 	public int getCost() {

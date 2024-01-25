@@ -7,7 +7,7 @@ package moriyashiine.enchancement.common.component.entity;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.common.init.ModEnchantments;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.MathHelper;
@@ -16,6 +16,7 @@ public class BouncyComponent implements AutoSyncedComponent, CommonTickingCompon
 	private final PlayerEntity obj;
 	public int bounceStrength = 0, grappleTimer = 0;
 
+	private int bouncyLevel = 0;
 	private boolean hasBouncy = false;
 
 	public BouncyComponent(PlayerEntity obj) {
@@ -36,7 +37,8 @@ public class BouncyComponent implements AutoSyncedComponent, CommonTickingCompon
 
 	@Override
 	public void tick() {
-		hasBouncy = EnchancementUtil.hasEnchantment(ModEnchantments.BOUNCY, obj);
+		bouncyLevel = EnchantmentHelper.getEquipmentLevel(ModEnchantments.BOUNCY, obj);
+		hasBouncy = bouncyLevel > 0;
 		if (hasBouncy) {
 			if (obj.isOnGround() && obj.isSneaking()) {
 				if (bounceStrength < 30) {
@@ -57,6 +59,10 @@ public class BouncyComponent implements AutoSyncedComponent, CommonTickingCompon
 
 	public float getBoostProgress() {
 		return MathHelper.lerp((bounceStrength - 2) / 28F, 0F, 1F);
+	}
+
+	public int getBouncyLevel() {
+		return bouncyLevel;
 	}
 
 	public boolean hasBouncy() {

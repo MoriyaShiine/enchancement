@@ -10,6 +10,7 @@ import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.packet.BuoyPacket;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.util.LivingEntityAccessor;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
@@ -41,11 +42,12 @@ public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponen
 
 	@Override
 	public void tick() {
-		hasBuoy = EnchancementUtil.hasEnchantment(ModEnchantments.BUOY, obj);
+		int buoyLevel = EnchantmentHelper.getEquipmentLevel(ModEnchantments.BUOY, obj);
+		hasBuoy = buoyLevel > 0;
 		if (hasBuoy) {
 			if (shouldBoost) {
 				if (EnchancementUtil.isSubmerged(obj, true, true, true) && EnchancementUtil.isGroundedOrAirborne(obj, true)) {
-					boost = (float) MathHelper.clamp(boost + 0.0025, 0.15, 2);
+					boost = (float) MathHelper.clamp(boost + 0.0025, 0.15, buoyLevel);
 					obj.addVelocity(0, boost, 0);
 				} else {
 					shouldBoost = false;

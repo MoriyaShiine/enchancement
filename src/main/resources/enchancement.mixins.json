@@ -77,6 +77,8 @@
 	"vanillachanges.channelingworkswhennotthundering.LightningRodBlockMixin",
 	"vanillachanges.channelingworkswhennotthundering.TridentEntityMixin",
 	"vanillachanges.crossbowspullfrominventory.PlayerEntityMixin",
+	"vanillachanges.cumulativeweaponenchantments.MobEntityMixin",
+	"vanillachanges.cumulativeweaponenchantments.PlayerEntityMixin",
 	"vanillachanges.disabledisallowedenchantments.EnchantedBookItemMixin",
 	"vanillachanges.disabledisallowedenchantments.EnchantmentHelperMixin",
 	"vanillachanges.disabledisallowedenchantments.ItemStackMixin",
@@ -118,7 +120,7 @@
 	"vanillachanges.unbreakingchanges.SetDamageLootFunctionMixin",
 	"vanillachanges.weakerfireaspect.MobEntityMixin",
 	"vanillachanges.weakerfireaspect.PlayerEntityMixin",
-	"vanillachanges.weakergoldenapple.ItemSettingsMixin",
+	"vanillachanges.weakergoldenapple.ItemMixin",
 	"vanillachanges.weakerpotions.DamageModifierStatusEffectMixin",
 	"vanillachanges.weakerpotions.StatusEffectMixin",
 	"vanillachanges.weaponenchantmentcooldownrequirement.EnchantmentHelperMixin",
@@ -172,9 +174,11 @@
 	"vanillachanges.coyotebite.MinecraftClientMixin",
 	"vanillachanges.fasterbows.client.ClientPlayerEntityMixin",
 	"vanillachanges.fasterbows.client.ModelPredicateProviderRegistryMixin",
+	"vanillachanges.overhaulenchantingtable.client.RenderLayersMixin",
 	"veil.client.EntityRendererMixin"
   ],
   "injectors": {
-	"defaultRequire": 1
+	"defaultRequire": 1,
+	"maxShiftBy": 5
   }
 }

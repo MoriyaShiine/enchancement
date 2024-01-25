@@ -11,9 +11,9 @@ import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.packet.StrafePacket;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.GameOptions;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -21,11 +21,12 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.Vec3d;
 
 public class StrafeComponent implements AutoSyncedComponent, CommonTickingComponent {
-	public static final int DEFAULT_STRAFE_COOLDOWN = 20;
+	public static final int DEFAULT_STRAFE_COOLDOWN = 40;
 
 	private final PlayerEntity obj;
 	private int strafeCooldown = DEFAULT_STRAFE_COOLDOWN;
 
+	private int strafeLevel = 0;
 	private boolean hasStrafe = false;
 
 	private boolean wasPressingStrafeKey = false;
@@ -47,7 +48,8 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 
 	@Override
 	public void tick() {
-		hasStrafe = EnchancementUtil.hasEnchantment(ModEnchantments.STRAFE, obj);
+		strafeLevel = EnchantmentHelper.getEquipmentLevel(ModEnchantments.STRAFE, obj);
+		hasStrafe = strafeLevel > 0;
 		if (hasStrafe) {
 			if (strafeCooldown > 0) {
 				strafeCooldown--;
@@ -104,10 +106,10 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 		return Vec3d.ZERO;
 	}
 
-	public static void handle(Entity entity, StrafeComponent strafeComponent, double velocityX, double velocityZ) {
-		entity.addVelocity(velocityX, 0, velocityZ);
-		entity.playSound(ModSoundEvents.ENTITY_GENERIC_STRAFE, 1, 1);
-		strafeComponent.strafeCooldown = DEFAULT_STRAFE_COOLDOWN;
+	public static void handle(PlayerEntity player, StrafeComponent strafeComponent, double velocityX, double velocityZ) {
+		player.addVelocity(velocityX, 0, velocityZ);
+		player.playSound(ModSoundEvents.ENTITY_GENERIC_STRAFE, 1, 1);
+		strafeComponent.strafeCooldown = DEFAULT_STRAFE_COOLDOWN / strafeComponent.strafeLevel;
 	}
 
 	public static void addStrafeParticles(Entity entity) {

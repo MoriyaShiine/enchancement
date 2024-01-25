@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 public class PlayerEntityMixin {
 	@ModifyArg(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;setOnFireFor(I)V", ordinal = 1))
 	private int enchancement$weakerFireAspect(int value) {
-		if (ModConfig.weakerFireAspect) {
+		if (ModConfig.weakerFireAspect && !ModConfig.cumulativeWeaponEnchantments) {
 			return value * 3 / 4;
 		}
 		return value;
