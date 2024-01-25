@@ -5,7 +5,6 @@
 package moriyashiine.enchancement.common.enchantment;
 
 import moriyashiine.enchancement.client.packet.ResetFrozenTicksPacket;
-import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
@@ -29,11 +28,9 @@ public class FrostbiteEnchantment extends EmptyEnchantment {
 	public void onTargetDamaged(LivingEntity user, Entity target, int level) {
 		if (!target.getWorld().isClient && target instanceof LivingEntity living && EnchancementUtil.hasEnchantment(this, user.getMainHandStack())) {
 			if (!living.isDead()) {
-				if (ModConfig.cumulativeWeaponEnchantments) {
-					int frozenTicks = target.getFrozenTicks();
-					target.setFrozenTicks(Math.min(level == 1 ? 120 : 240, frozenTicks + 20));
-				} else {
-					target.setFrozenTicks(level == 1 ? 120 : 240);
+				int frozenTicks = 120 * level;
+				if (target.getFrozenTicks() < frozenTicks) {
+					target.setFrozenTicks(frozenTicks);
 				}
 			} else if (target instanceof ServerPlayerEntity player) {
 				ResetFrozenTicksPacket.send(player);

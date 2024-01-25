@@ -77,8 +77,6 @@
 	"vanillachanges.channelingworkswhennotthundering.LightningRodBlockMixin",
 	"vanillachanges.channelingworkswhennotthundering.TridentEntityMixin",
 	"vanillachanges.crossbowspullfrominventory.PlayerEntityMixin",
-	"vanillachanges.cumulativeweaponenchantments.MobEntityMixin",
-	"vanillachanges.cumulativeweaponenchantments.PlayerEntityMixin",
 	"vanillachanges.disabledisallowedenchantments.EnchantedBookItemMixin",
 	"vanillachanges.disabledisallowedenchantments.EnchantmentHelperMixin",
 	"vanillachanges.disabledisallowedenchantments.ItemStackMixin",
