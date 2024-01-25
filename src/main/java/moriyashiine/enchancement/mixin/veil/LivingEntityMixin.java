@@ -6,7 +6,7 @@ package moriyashiine.enchancement.mixin.veil;
 
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModTags;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,8 +20,9 @@ public class LivingEntityMixin {
 		if (entity != null && entity.getType().isIn(ModTags.EntityTypes.VEIL_IMMUNE)) {
 			return value;
 		}
-		if (EnchancementUtil.hasEnchantment(ModEnchantments.VEIL, (LivingEntity) (Object) this)) {
-			return value / 4;
+		int level = EnchantmentHelper.getEquipmentLevel(ModEnchantments.VEIL, (LivingEntity) (Object) this);
+		if (level > 0) {
+			return value / (level * 2);
 		}
 		return value;
 	}
