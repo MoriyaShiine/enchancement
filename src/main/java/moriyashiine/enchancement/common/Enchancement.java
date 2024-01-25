@@ -13,6 +13,7 @@ import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.packet.*;
 import moriyashiine.enchancement.common.reloadlisteners.BeheadingReloadListener;
 import moriyashiine.enchancement.common.reloadlisteners.EnchantingMaterialReloadListener;
+import moriyashiine.enchancement.common.reloadlisteners.ExtractingBaseBlockReloadListener;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
@@ -54,6 +55,7 @@ public class Enchancement implements ModInitializer {
 		ModScreenHandlerTypes.init();
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new EnchantingMaterialReloadListener());
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new BeheadingReloadListener());
+		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new ExtractingBaseBlockReloadListener());
 		initEvents();
 		isApoliLoaded = FabricLoader.getInstance().isModLoaded("apoli");
 		for (String mod : new String[]{"enchdesc", "enchantedtooltips", "idwtialsimmoedm"}) {
