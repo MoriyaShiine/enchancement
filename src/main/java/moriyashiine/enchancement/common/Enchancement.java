@@ -18,6 +18,7 @@ import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
@@ -80,6 +81,7 @@ public class Enchancement implements ModInitializer {
 		ServerTickEvents.END_SERVER_TICK.register(new AssimilationEvent());
 		MultiplyMovementSpeedEvent.EVENT.register(new AdrenalineEvent());
 		MultiplyMovementSpeedEvent.EVENT.register(new BuoyEvent());
+		ServerEntityEvents.EQUIPMENT_CHANGE.register(new GaleEvent());
 		UseBlockCallback.EVENT.register(new FireAspectEvent());
 		ServerLivingEntityEvents.AFTER_DEATH.register(new FrostbiteEvent.Freeze());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new FrostbiteEvent.HandleDamage());

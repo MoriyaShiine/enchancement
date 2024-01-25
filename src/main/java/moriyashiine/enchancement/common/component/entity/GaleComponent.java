@@ -7,6 +7,7 @@ package moriyashiine.enchancement.common.component.entity;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.packet.GalePacket;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
@@ -95,6 +96,10 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 		}
 	}
 
+	public void sync() {
+		ModEntityComponents.GALE.sync(obj);
+	}
+
 	public void setGaleCooldown(int galeCooldown) {
 		this.galeCooldown = galeCooldown;
 		lastGaleCooldown = galeCooldown;
@@ -110,6 +115,10 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 
 	public int getJumpsLeft() {
 		return jumpsLeft;
+	}
+
+	public void setJumpsLeft(int jumpsLeft) {
+		this.jumpsLeft = jumpsLeft;
 	}
 
 	public int getGaleLevel() {
