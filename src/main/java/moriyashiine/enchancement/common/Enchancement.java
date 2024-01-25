@@ -4,7 +4,6 @@
 
 package moriyashiine.enchancement.common;
 
-import com.google.gson.Gson;
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import moriyashiine.enchancement.common.event.*;
 import moriyashiine.enchancement.common.init.ModEnchantments;
@@ -52,7 +51,7 @@ public class Enchancement implements ModInitializer {
 		ModEnchantments.init();
 		ModSoundEvents.init();
 		ModScreenHandlerTypes.init();
-		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new BeheadingReloadListener(new Gson(), MOD_ID + "_beheading"));
+		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new BeheadingReloadListener());
 		initEvents();
 		isApoliLoaded = FabricLoader.getInstance().isModLoaded("apoli");
 		for (String mod : new String[]{"enchdesc", "enchantedtooltips", "idwtialsimmoedm"}) {
