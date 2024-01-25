@@ -52,6 +52,7 @@ public class EnchancementClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		ClientPlayNetworking.registerGlobalReceiver(EnforceConfigMatchPacket.ID, new EnforceConfigMatchPacket.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(SyncEnchantingMaterialMapPacket.ID, new SyncEnchantingMaterialMapPacket.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(SyncEnchantingTableCostPacket.ID, new SyncEnchantingTableCostPacket.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(AddStrafeParticlesPacket.ID, new AddStrafeParticlesPacket.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(AddGaleParticlesPacket.ID, new AddGaleParticlesPacket.Receiver());

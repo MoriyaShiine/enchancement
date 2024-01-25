@@ -9,6 +9,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.event.SyncEnchantingMaterialMapEvent;
 import moriyashiine.enchancement.common.screenhandlers.EnchantingTableScreenHandler;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.item.Item;
@@ -51,5 +52,6 @@ public class EnchantingMaterialReloadListener implements SimpleSynchronousResour
 				}
 			}
 		});
+		SyncEnchantingMaterialMapEvent.shouldSend = true;
 	}
 }
