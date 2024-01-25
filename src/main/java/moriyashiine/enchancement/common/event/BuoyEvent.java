@@ -15,9 +15,10 @@ import net.minecraft.world.World;
 public class BuoyEvent implements MultiplyMovementSpeedEvent {
 	@Override
 	public float multiply(float currentMultiplier, World world, LivingEntity living) {
-		if (EnchancementUtil.hasEnchantment(ModEnchantments.BUOY, living)) {
+		int level = EnchantmentHelper.getEquipmentLevel(ModEnchantments.BUOY, living);
+		if (level > 0) {
 			if (ModEntityComponents.EXTENDED_WATER.get(living).getTicksWet() > 0 || EnchancementUtil.isSubmerged(living, true, false, false)) {
-				currentMultiplier = EnchancementUtil.capMovementMultiplier(currentMultiplier * 1.5F);
+				currentMultiplier = EnchancementUtil.capMovementMultiplier(currentMultiplier * (level == 1 ? 1.25F : 1.5F));
 				int depthStriderLevel = EnchantmentHelper.getDepthStrider(living);
 				while (depthStriderLevel > 0) {
 					depthStriderLevel--;

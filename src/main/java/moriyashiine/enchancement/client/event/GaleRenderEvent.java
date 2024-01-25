@@ -20,7 +20,7 @@ public class GaleRenderEvent implements HudRenderCallback {
 		ModEntityComponents.GALE.maybeGet(MinecraftClient.getInstance().cameraEntity).ifPresent(galeComponent -> {
 			if (galeComponent.hasGale()) {
 				int jumpsLeft = galeComponent.getJumpsLeft();
-				if (jumpsLeft < 2) {
+				if (jumpsLeft < galeComponent.getGaleLevel()) {
 					RenderSystem.enableBlend();
 					if (galeComponent.getGaleCooldown() < galeComponent.getLastGaleCooldown()) {
 						drawContext.drawTexture(GALE_TEXTURE, (int) (drawContext.getScaledWindowWidth() / 2F) - 5, (int) (drawContext.getScaledWindowHeight() / 2F) + 27, 0, jumpsLeft == 0 ? 9 : 0, 9, 9, 9, 27);
