@@ -194,23 +194,26 @@ public class EnchancementUtil {
 		return Math.min(MAXIMUM_MOVEMENT_MULTIPLIER, multiplier);
 	}
 
-	public static float getMaxBonusBerserkDamage(ItemStack stack) {
+	public static float getMaxBonusBerserkDamage(ItemStack stack, int level) {
 		float maxBonus = 1;
 		for (EntityAttributeModifier modifier : stack.getAttributeModifiers(EquipmentSlot.MAINHAND).get(EntityAttributes.GENERIC_ATTACK_DAMAGE)) {
-			maxBonus += modifier.getValue();
+			maxBonus += (float) (modifier.getValue() / (level == 1 ? 2 : 1));
 		}
 		return maxBonus / 2;
 	}
 
 	public static float getBonusBerserkDamage(LivingEntity living, ItemStack stack) {
-		if (living != null && hasEnchantment(ModEnchantments.BERSERK, stack)) {
-			float health = living.getMaxHealth() - 1;
-			float bonus = 0;
-			while (health > living.getHealth()) {
-				health -= 2;
-				bonus += 0.5F;
+		if (living != null) {
+			int level = EnchantmentHelper.getLevel(ModEnchantments.BERSERK, stack);
+			if (level > 0) {
+				float health = living.getMaxHealth() - 1;
+				float bonus = 0;
+				while (health > living.getHealth()) {
+					health -= 2;
+					bonus += level == 1 ? 0.25F : 0.5F;
+				}
+				return Math.min(bonus, getMaxBonusBerserkDamage(stack, level));
 			}
-			return Math.min(bonus, getMaxBonusBerserkDamage(stack));
 		}
 		return 0;
 	}
