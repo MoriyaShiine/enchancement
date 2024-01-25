@@ -16,6 +16,7 @@ import moriyashiine.enchancement.mixin.slide.EntityAccessor;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.GameOptions;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -39,6 +40,7 @@ public class SlideComponent implements CommonTickingComponent {
 	private boolean shouldSlam = false;
 	private int jumpBoostResetTicks = DEFAULT_JUMP_BOOST_RESET_TICKS, slamCooldown = DEFAULT_SLAM_COOLDOWN, ticksLeftToJump = 0, ticksSliding = 0;
 
+	private int slideLevel = 0;
 	private boolean hasSlide = false;
 
 	private boolean disallowSlide = false, wasPressingSlamKey = false;
@@ -71,7 +73,8 @@ public class SlideComponent implements CommonTickingComponent {
 
 	@Override
 	public void tick() {
-		hasSlide = EnchancementUtil.hasEnchantment(ModEnchantments.SLIDE, obj);
+		slideLevel = EnchantmentHelper.getEquipmentLevel(ModEnchantments.SLIDE, obj);
+		hasSlide = slideLevel > 0;
 		if (hasSlide) {
 			if (obj.isSneaking() || obj.isTouchingWater()) {
 				velocity = Vec3d.ZERO;
@@ -247,6 +250,6 @@ public class SlideComponent implements CommonTickingComponent {
 			sideways = true;
 			z = 1;
 		}
-		return new Vec3d(any ? x : 1, 0, z).multiply(forward && sideways ? 0.75F : 1);
+		return new Vec3d(any ? x : 1, 0, z).multiply(forward && sideways ? 0.75F : 1).multiply(slideLevel == 1 ? 0.5F : 1);
 	}
 }

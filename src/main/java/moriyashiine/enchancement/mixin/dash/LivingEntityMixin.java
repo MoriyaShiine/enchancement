@@ -18,7 +18,7 @@ public class LivingEntityMixin {
 	private Vec3d enchancement$dash(Vec3d value) {
 		DashComponent dashComponent = ModEntityComponents.DASH.getNullable(this);
 		if (dashComponent != null && dashComponent.shouldWavedash()) {
-			dashComponent.setDashCooldown(0);
+			dashComponent.setDashCooldown(dashComponent.getDashLevel() == 1 ? DashComponent.DEFAULT_DASH_COOLDOWN / 2 : 0);
 			return value.multiply(2);
 		}
 		return value;
