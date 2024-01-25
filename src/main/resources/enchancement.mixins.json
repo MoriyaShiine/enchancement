@@ -172,6 +172,7 @@
 	"vanillachanges.coyotebite.MinecraftClientMixin",
 	"vanillachanges.fasterbows.client.ClientPlayerEntityMixin",
 	"vanillachanges.fasterbows.client.ModelPredicateProviderRegistryMixin",
+	"vanillachanges.overhaulenchantingtable.client.RenderLayersMixin",
 	"veil.client.EntityRendererMixin"
   ],
   "injectors": {
