@@ -101,6 +101,7 @@
 	"vanillachanges.randommobenchantments.MobEntityMixin",
 	"vanillachanges.randommobenchantments.PillagerEntityMixin",
 	"vanillachanges.randommobenchantments.VindicatorEntityMixin",
+	"vanillachanges.rebalancearmor.ArmorMaterialsMixin",
 	"vanillachanges.safechanneling.LightningEntityMixin",
 	"vanillachanges.safechanneling.TridentEntityMixin",
 	"vanillachanges.singlelevelmode.AnvilScreenHandlerMixin",

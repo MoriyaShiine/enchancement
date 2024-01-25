@@ -91,6 +91,8 @@ public class ModConfig extends MidnightConfig {
 	@Entry
 	public static boolean randomMobEnchantments = true;
 	@Entry
+	public static boolean rebalanceArmor = true;
+	@Entry
 	public static boolean safeChanneling = true;
 	@Entry
 	public static boolean tridentsReturnFromVoid = true;
@@ -141,7 +143,7 @@ public class ModConfig extends MidnightConfig {
 				luckOfTheSeaHasLure +
 				negateEnderPearlDamage +
 				projectilesBypassCooldown + projectilesNegateVelocity +
-				randomMobEnchantments +
+				randomMobEnchantments + rebalanceArmor +
 				safeChanneling +
 				tridentsReturnFromVoid +
 				weakerFireAspect + weakerGoldenApple + weakerPotions +
