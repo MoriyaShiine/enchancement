@@ -12,7 +12,6 @@ import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.event.ExtractingEvent;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.registry.Registries;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
@@ -39,6 +38,9 @@ public class ExtractingBaseBlockReloadListener implements SimpleSynchronousResou
 					JsonObject object = JsonParser.parseReader(new JsonReader(new InputStreamReader(stream))).getAsJsonObject();
 					Identifier blockId = new Identifier(identifier.getPath().substring(identifier.getPath().indexOf("/") + 1, identifier.getPath().length() - 5).replace("/", ":"));
 					Block block = Registries.BLOCK.get(blockId);
+					if (block == Registries.BLOCK.get(Registries.BLOCK.getDefaultId()) && !blockId.equals(Registries.BLOCK.getDefaultId())) {
+						continue;
+					}
 					String base;
 					try {
 						base = JsonHelper.getString(object, "base");
@@ -48,7 +50,7 @@ public class ExtractingBaseBlockReloadListener implements SimpleSynchronousResou
 					}
 					Identifier baseBlockId = new Identifier(base);
 					Block baseBlock = Registries.BLOCK.get(baseBlockId);
-					if (baseBlock == Blocks.AIR) {
+					if (baseBlock == Registries.BLOCK.get(Registries.BLOCK.getDefaultId()) && !baseBlockId.equals(Registries.BLOCK.getDefaultId())) {
 						Enchancement.LOGGER.error("Unknown block '{}' in file '{}'", baseBlockId, identifier);
 						continue;
 					}
