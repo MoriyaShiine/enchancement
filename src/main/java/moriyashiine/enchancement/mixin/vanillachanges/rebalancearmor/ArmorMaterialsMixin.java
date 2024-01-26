@@ -17,9 +17,6 @@ public class ArmorMaterialsMixin {
 	@Inject(method = "getProtection", at = @At("RETURN"), cancellable = true)
 	private void enchancement$rebalanceArmor(ArmorItem.Type type, CallbackInfoReturnable<Integer> cir) {
 		if (ModConfig.rebalanceArmor) {
-			if ((Object) this == ArmorMaterials.CHAIN) {
-				cir.setReturnValue(ArmorMaterials.IRON.getProtection(type));
-			}
 			if (type == ArmorItem.Type.BOOTS) {
 				if ((Object) this == ArmorMaterials.IRON) {
 					cir.setReturnValue(cir.getReturnValueI() + 1);

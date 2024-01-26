@@ -8,6 +8,7 @@ import moriyashiine.enchancement.client.packet.SyncEnchantingTableCostPacket;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
 import moriyashiine.enchancement.common.init.ModTags;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.EnchantingTableBlock;
@@ -181,7 +182,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 						stackChanged = true;
 					} else {
 						for (Enchantment enchantment : selectedEnchantments) {
-							stack.addEnchantment(enchantment, enchantment.getMaxLevel());
+							stack.addEnchantment(enchantment, EnchancementUtil.getModifiedMaxLevel(stack, enchantment.getMaxLevel()));
 						}
 					}
 					if (!player.isCreative() && cost > 0) {

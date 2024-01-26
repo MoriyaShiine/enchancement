@@ -111,6 +111,7 @@
 	"vanillachanges.singlelevelmode.EnchantmentLevelEntryMixin",
 	"vanillachanges.singlelevelmode.EnchantmentMixin",
 	"vanillachanges.singlelevelmode.EnchantRandomlyLootFunctionMixin",
+	"vanillachanges.singlelevelmode.ItemMixin",
 	"vanillachanges.singlelevelmode.ItemStackMixin",
 	"vanillachanges.singlelevelmode.SetEnchantmentsLootFunctionMixin",
 	"vanillachanges.singlelevelmode.TradeOffersEnchantBookFactoryMixin",
