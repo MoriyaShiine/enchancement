@@ -147,6 +147,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 						break;
 					}
 				}
+				enchantmentName = Text.literal(textRenderer.trimToWidth(enchantmentName.getString(), 80));
 				context.drawText(textRenderer, handler.selectedEnchantments.contains(enchantment) ? enchantmentName.formatted(Formatting.DARK_GREEN) : isAllowed ? enchantmentName.formatted(Formatting.BLACK) : enchantmentName.formatted(Formatting.DARK_RED, Formatting.STRIKETHROUGH), posX + 66, posY + 16 + (i * 19), 0xFFFFFF, false);
 				if (isInBounds(posX, posY + 11 + (i * 19), mouseX, mouseY, 64, 67 + textRenderer.getWidth(enchantmentName), 0, 16)) {
 					if (isAllowed || handler.selectedEnchantments.contains(enchantment)) {
