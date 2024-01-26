@@ -20,7 +20,7 @@ public class ProtectionEnchantmentMixin {
 		if (value > 0) {
 			int level = EnchantmentHelper.getEquipmentLevel(ModEnchantments.AMPHIBIOUS, living);
 			if (level > 0) {
-				return MathHelper.ceil(value * (level == 1 ? 0.75F : 0.5F));
+				return Math.max(0, MathHelper.ceil(value * (1 - level * 0.25F)));
 			}
 		}
 		return value;

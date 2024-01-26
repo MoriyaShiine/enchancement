@@ -49,7 +49,7 @@ public abstract class LivingEntityMixin extends Entity {
 		if (activeItemStack.isFood() || activeItemStack.getUseAction() == UseAction.DRINK) {
 			int level = EnchantmentHelper.getEquipmentLevel(ModEnchantments.ASSIMILATION, (LivingEntity) (Object) this);
 			if (level > 0) {
-				itemUseTimeLeft = MathHelper.floor(itemUseTimeLeft * (1 - (level * 0.125F)));
+				itemUseTimeLeft = Math.max(1, MathHelper.floor(itemUseTimeLeft * (1 - level * 0.125F)));
 			}
 		}
 	}

@@ -23,15 +23,15 @@ public class AdrenalineEvent implements MultiplyMovementSpeedEvent {
 
 	public static float getMultiplier(LivingEntity living, int level) {
 		float percentage = living.getHealth() / living.getMaxHealth();
-		return switch ((int) Math.floor(percentage * 10 + 0.5)) {
-			case 10 -> level == 1 ? 1.05F : 1.1F;
-			case 9 -> level == 1 ? 1.1F : 1.2F;
-			case 8 -> level == 1 ? 1.15F : 1.3F;
-			case 7 -> level == 1 ? 1.2F : 1.4F;
-			case 6 -> level == 1 ? 1.25F : 1.5F;
-			case 5 -> level == 1 ? 1.3F : 1.6F;
-			case 4 -> level == 1 ? 1.35F : 1.7F;
-			default -> level == 1 ? 1.4F : 1.8F;
+		return 1 + switch ((int) Math.floor(percentage * 10 + 0.5)) {
+			case 10 -> level * 0.05F;
+			case 9 -> level * 0.1F;
+			case 8 -> level * 0.15F;
+			case 7 -> level * 0.2F;
+			case 6 -> level * 0.25F;
+			case 5 -> level * 0.3F;
+			case 4 -> level * 0.35F;
+			default -> level * 0.4F;
 		};
 	}
 }
