@@ -13,6 +13,7 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.UseAction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -48,7 +49,7 @@ public abstract class LivingEntityMixin extends Entity {
 		if (activeItemStack.isFood() || activeItemStack.getUseAction() == UseAction.DRINK) {
 			int level = EnchantmentHelper.getEquipmentLevel(ModEnchantments.ASSIMILATION, (LivingEntity) (Object) this);
 			if (level > 0) {
-				itemUseTimeLeft *= (int) (1 - (level * 0.125F));
+				itemUseTimeLeft = Math.max(1, MathHelper.floor(itemUseTimeLeft * (1 - level * 0.125F)));
 			}
 		}
 	}

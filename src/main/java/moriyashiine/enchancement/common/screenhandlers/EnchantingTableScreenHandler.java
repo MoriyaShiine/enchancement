@@ -8,6 +8,7 @@ import moriyashiine.enchancement.client.packet.SyncEnchantingTableCostPacket;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
 import moriyashiine.enchancement.common.init.ModTags;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.EnchantingTableBlock;
@@ -31,6 +32,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -181,7 +183,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 						stackChanged = true;
 					} else {
 						for (Enchantment enchantment : selectedEnchantments) {
-							stack.addEnchantment(enchantment, enchantment.getMaxLevel());
+							stack.addEnchantment(enchantment, EnchancementUtil.getModifiedMaxLevel(stack, enchantment.getMaxLevel()));
 						}
 					}
 					if (!player.isCreative() && cost > 0) {
@@ -310,7 +312,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		float[] bookshelfCountArray = {0};
 		context.run((world, pos) -> {
 			for (BlockPos offset : EnchantingTableBlock.POWER_PROVIDER_OFFSETS) {
-				if (EnchantingTableBlock.canAccessPowerProvider(world, pos, offset)) {
+				if (canAccessPowerProvider(world, pos, offset)) {
 					bookshelfCountArray[0]++;
 				} else if (world.getBlockEntity(pos.add(offset)) instanceof ChiseledBookshelfBlockEntity chiseledBookshelfBlockEntity && world.getBlockState(pos.add(offset.getX() / 2, offset.getY(), offset.getZ() / 2)).isIn(BlockTags.ENCHANTMENT_POWER_TRANSMITTER)) {
 					bookshelfCountArray[0] += chiseledBookshelfBlockEntity.getOpenSlotCount() / 3F;
@@ -334,9 +336,14 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		}
 	}
 
-	//client
+	// client
 	public void setCost(int cost) {
 		this.cost = cost;
+	}
+
+	// clone of vanilla method because for some reason quilt always returns true
+	private static boolean canAccessPowerProvider(World world, BlockPos tablePos, BlockPos providerOffset) {
+		return world.getBlockState(tablePos.add(providerOffset)).isIn(BlockTags.ENCHANTMENT_POWER_PROVIDER) && world.getBlockState(tablePos.add(providerOffset.getX() / 2, providerOffset.getY(), providerOffset.getZ() / 2)).isIn(BlockTags.ENCHANTMENT_POWER_TRANSMITTER);
 	}
 
 	private static boolean isEnchantmentAllowed(Enchantment enchantment, ItemStack stack) {

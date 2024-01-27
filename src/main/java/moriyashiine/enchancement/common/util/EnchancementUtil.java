@@ -21,8 +21,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.util.Identifier;
@@ -30,10 +29,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EnchancementUtil {
 	public static final Object2IntMap<PlayerEntity> PACKET_IMMUNITIES = new Object2IntOpenHashMap<>();
@@ -105,6 +101,24 @@ public class EnchancementUtil {
 
 	public static boolean hasEnchantment(Enchantment enchantment, Entity entity) {
 		return entity instanceof LivingEntity living && EnchantmentHelper.getEquipmentLevel(enchantment, living) > 0;
+	}
+
+	public static boolean hasWeakEnchantments(ItemStack stack) {
+		boolean weak = false;
+		if (stack.getItem() instanceof ArmorItem armorItem) {
+			ArmorMaterial material = armorItem.getMaterial();
+			weak = material == ArmorMaterials.LEATHER || material == ArmorMaterials.IRON;
+			if (!weak && Arrays.stream(ArmorMaterials.values()).noneMatch(armorMaterial -> armorMaterial == material)) {
+				weak = material.getEnchantability() <= ArmorMaterials.IRON.getEnchantability();
+			}
+		} else if (stack.getItem() instanceof ToolItem toolItem) {
+			ToolMaterial material = toolItem.getMaterial();
+			weak = material == ToolMaterials.WOOD || material == ToolMaterials.STONE || material == ToolMaterials.IRON;
+			if (!weak && Arrays.stream(ToolMaterials.values()).noneMatch(toolMaterial -> toolMaterial == material)) {
+				weak = material.getEnchantability() <= ToolMaterials.IRON.getEnchantability();
+			}
+		}
+		return weak;
 	}
 
 	public static boolean isEnchantmentAllowed(Identifier identifier) {
@@ -216,6 +230,13 @@ public class EnchancementUtil {
 			}
 		}
 		return 0;
+	}
+
+	public static int getModifiedMaxLevel(ItemStack stack, int maxLevel) {
+		if (EnchancementUtil.hasWeakEnchantments(stack)) {
+			return MathHelper.ceil(maxLevel / 2F);
+		}
+		return maxLevel;
 	}
 
 	public static int getBrimstoneDamage(float progress) {

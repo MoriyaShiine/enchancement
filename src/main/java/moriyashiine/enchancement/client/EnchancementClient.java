@@ -52,6 +52,7 @@ public class EnchancementClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		ClientPlayNetworking.registerGlobalReceiver(EnforceConfigMatchPacket.ID, new EnforceConfigMatchPacket.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(SyncEnchantingMaterialMapPacket.ID, new SyncEnchantingMaterialMapPacket.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(SyncEnchantingTableCostPacket.ID, new SyncEnchantingTableCostPacket.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(AddStrafeParticlesPacket.ID, new AddStrafeParticlesPacket.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(AddGaleParticlesPacket.ID, new AddGaleParticlesPacket.Receiver());
@@ -77,6 +78,7 @@ public class EnchancementClient implements ClientModInitializer {
 		HandledScreens.register(ModScreenHandlerTypes.ENCHANTING_TABLE, EnchantingTableScreen::new);
 		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(FrozenReloadListener.INSTANCE);
 		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(Enchancement.id("alternate_dash"), modContainer, ResourcePackActivationType.NORMAL));
+		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(Enchancement.id("alternate_gale"), modContainer, ResourcePackActivationType.NORMAL));
 		initEvents();
 	}
 

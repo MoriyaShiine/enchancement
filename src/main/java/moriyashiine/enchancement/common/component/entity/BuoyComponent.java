@@ -47,7 +47,7 @@ public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponen
 		if (hasBuoy) {
 			if (shouldBoost) {
 				if (EnchancementUtil.isSubmerged(obj, true, true, true) && EnchancementUtil.isGroundedOrAirborne(obj, true)) {
-					boost = (float) MathHelper.clamp(boost + 0.0025, 0.15, buoyLevel);
+					boost = (float) MathHelper.clamp(boost + 0.0025, buoyLevel * 0.075, buoyLevel);
 					obj.addVelocity(0, boost, 0);
 				} else {
 					shouldBoost = false;

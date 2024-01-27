@@ -74,10 +74,19 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 
 	@Override
 	protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
+		int strength = 0;
 		int posX = (width - backgroundWidth) / 2;
 		int posY = (height - backgroundHeight) / 2 - 16;
 		context.drawTexture(TEXTURE, posX, posY, 0, 0, backgroundWidth, backgroundHeight);
 		if (client != null && client.player != null && handler.canEnchant(client.player, true)) {
+			strength = EnchancementUtil.hasWeakEnchantments(handler.getSlot(0).getStack()) ? 1 : 2;
+			if (!handler.getRepairIngredient().isEmpty()) {
+				forceTransparency = true;
+				context.setShaderColor(1, 1, 1, 0.5F);
+				context.drawItem(handler.getRepairIngredient().getMatchingStacks()[ingredientIndex], (width - backgroundWidth) / 2 + 25, (height - backgroundHeight) / 2 + 51);
+				context.setShaderColor(1, 1, 1, 1);
+				forceTransparency = false;
+			}
 			if (handler.validEnchantments.size() > 4) {
 				if (isInUpButtonBounds(posX, posY, mouseX, mouseY)) {
 					context.drawTexture(TEXTURE, posX + 154, posY + 28, 192, 0, 16, 16);
@@ -138,6 +147,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 						break;
 					}
 				}
+				enchantmentName = Text.literal(textRenderer.trimToWidth(enchantmentName.getString(), 80));
 				context.drawText(textRenderer, handler.selectedEnchantments.contains(enchantment) ? enchantmentName.formatted(Formatting.DARK_GREEN) : isAllowed ? enchantmentName.formatted(Formatting.BLACK) : enchantmentName.formatted(Formatting.DARK_RED, Formatting.STRIKETHROUGH), posX + 66, posY + 16 + (i * 19), 0xFFFFFF, false);
 				if (isInBounds(posX, posY + 11 + (i * 19), mouseX, mouseY, 64, 67 + textRenderer.getWidth(enchantmentName), 0, 16)) {
 					if (isAllowed || handler.selectedEnchantments.contains(enchantment)) {
@@ -151,12 +161,13 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 					infoTexts = null;
 				}
 			}
-			if (!handler.getRepairIngredient().isEmpty()) {
-				forceTransparency = true;
-				context.setShaderColor(1, 1, 1, 0.5F);
-				context.drawItem(handler.getRepairIngredient().getMatchingStacks()[ingredientIndex], (width - backgroundWidth) / 2 + 25, (height - backgroundHeight) / 2 + 51);
-				context.setShaderColor(1, 1, 1, 1);
-				forceTransparency = false;
+		}
+		for (int i = 2; i > 0; i--) {
+			int startX = posX + 39 + MathHelper.lerp(MathHelper.lerp(delta, pageTurningSpeed, nextPageTurningSpeed), 0, 4);
+			int startY = posY + 41 - (i * 10);
+			context.drawTexture(TEXTURE, startX, startY, 176, 48, 8, 8);
+			if (i <= strength) {
+				context.drawTexture(TEXTURE, startX, startY, 184, 48, 8, 8);
 			}
 		}
 		drawBook(context, (width - backgroundWidth) / 2, (height - backgroundHeight) / 2, client.getTickDelta());
@@ -235,7 +246,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 		float deltaPageangle = MathHelper.lerp(delta, this.pageAngle, this.nextPageAngle);
 		DiffuseLighting.method_34742();
 		context.getMatrices().push();
-		context.getMatrices().translate(x + 33, y + 15, 100);
+		context.getMatrices().translate(x + 23, y + 15, 100);
 		context.getMatrices().scale(-40, 40, 40);
 		context.getMatrices().multiply(RotationAxis.POSITIVE_X.rotationDegrees(25));
 		context.getMatrices().translate((1 - deltaTurningSpeed) * 0.2F, (1 - deltaTurningSpeed) * 0.1F, (1 - deltaTurningSpeed) * 0.25F);

@@ -9,6 +9,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.event.SyncEnchantingMaterialMapEvent;
 import moriyashiine.enchancement.common.screenhandlers.EnchantingTableScreenHandler;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.item.Item;
@@ -39,6 +40,9 @@ public class EnchantingMaterialReloadListener implements SimpleSynchronousResour
 					JsonObject object = JsonParser.parseReader(new JsonReader(new InputStreamReader(stream))).getAsJsonObject();
 					Identifier itemId = new Identifier(identifier.getPath().substring(identifier.getPath().indexOf("/") + 1, identifier.getPath().length() - 5).replace("/", ":"));
 					Item item = Registries.ITEM.get(itemId);
+					if (item == Registries.ITEM.get(Registries.ITEM.getDefaultId()) && !itemId.equals(Registries.ITEM.getDefaultId())) {
+						continue;
+					}
 					Ingredient ingredient;
 					try {
 						ingredient = Ingredient.fromJson(JsonHelper.getObject(object, "ingredient"));
@@ -51,5 +55,6 @@ public class EnchantingMaterialReloadListener implements SimpleSynchronousResour
 				}
 			}
 		});
+		SyncEnchantingMaterialMapEvent.shouldSend = true;
 	}
 }

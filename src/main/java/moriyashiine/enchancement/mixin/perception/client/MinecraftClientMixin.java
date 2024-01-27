@@ -28,7 +28,7 @@ public class MinecraftClientMixin {
 	private void enchancement$perception(Entity entity, CallbackInfoReturnable<Boolean> cir) {
 		if (player != null && entity instanceof LivingEntity living && !living.isSneaking() && !living.isInvisible()) {
 			int level = EnchantmentHelper.getEquipmentLevel(ModEnchantments.PERCEPTION, player);
-			if (level > 0 && entity.distanceTo(player) < 8 * level && !EnchancementUtil.hasEnchantment(ModEnchantments.VEIL, living) && !living.canSee(player)) {
+			if (level > 0 && entity.distanceTo(player) < level * 8 && !EnchancementUtil.hasEnchantment(ModEnchantments.VEIL, living) && !living.canSee(player)) {
 				cir.setReturnValue(true);
 			}
 		}

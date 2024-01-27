@@ -18,7 +18,7 @@ public class BuoyEvent implements MultiplyMovementSpeedEvent {
 		int level = EnchantmentHelper.getEquipmentLevel(ModEnchantments.BUOY, living);
 		if (level > 0) {
 			if (ModEntityComponents.EXTENDED_WATER.get(living).getTicksWet() > 0 || EnchancementUtil.isSubmerged(living, true, false, false)) {
-				currentMultiplier = EnchancementUtil.capMovementMultiplier(currentMultiplier * (level == 1 ? 1.25F : 1.5F));
+				currentMultiplier = EnchancementUtil.capMovementMultiplier(currentMultiplier * (1 + level * 0.25F));
 				int depthStriderLevel = EnchantmentHelper.getDepthStrider(living);
 				while (depthStriderLevel > 0) {
 					depthStriderLevel--;

@@ -212,6 +212,10 @@ public class SlideComponent implements CommonTickingComponent {
 		return MathHelper.lerp(ticksSliding / 60F, 1F, 3F);
 	}
 
+	public int getSlideLevel() {
+		return slideLevel;
+	}
+
 	public boolean hasSlide() {
 		return hasSlide;
 	}
@@ -250,6 +254,6 @@ public class SlideComponent implements CommonTickingComponent {
 			sideways = true;
 			z = 1;
 		}
-		return new Vec3d(any ? x : 1, 0, z).multiply(forward && sideways ? 0.75F : 1).multiply(slideLevel == 1 ? 0.5F : 1);
+		return new Vec3d(any ? x : 1, 0, z).multiply(forward && sideways ? 0.75F : 1).multiply(slideLevel * 0.5F);
 	}
 }

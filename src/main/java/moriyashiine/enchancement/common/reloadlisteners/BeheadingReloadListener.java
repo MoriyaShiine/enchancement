@@ -12,7 +12,6 @@ import moriyashiine.enchancement.common.util.BeheadingEntry;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
-import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
@@ -39,10 +38,13 @@ public class BeheadingReloadListener implements SimpleSynchronousResourceReloadL
 					JsonObject object = JsonParser.parseReader(new JsonReader(new InputStreamReader(stream))).getAsJsonObject();
 					Identifier entityId = new Identifier(identifier.getPath().substring(identifier.getPath().indexOf("/") + 1, identifier.getPath().length() - 5).replace("/", ":"));
 					EntityType<?> entity_type = Registries.ENTITY_TYPE.get(entityId);
-					Identifier itemId = new Identifier(JsonHelper.getString(object, "drop"));
-					Item drop = Registries.ITEM.get(itemId);
-					if (drop == Items.AIR) {
-						Enchancement.LOGGER.error("Unknown item '{}' in file '{}'", itemId, identifier);
+					if (entity_type == Registries.ENTITY_TYPE.get(Registries.ENTITY_TYPE.getDefaultId()) && !entityId.equals(Registries.ENTITY_TYPE.getDefaultId())) {
+						continue;
+					}
+					Identifier dropId = new Identifier(JsonHelper.getString(object, "drop"));
+					Item drop = Registries.ITEM.get(dropId);
+					if (drop == Registries.ITEM.get(Registries.ITEM.getDefaultId()) && !dropId.equals(Registries.ITEM.getDefaultId())) {
+						Enchancement.LOGGER.error("Unknown item '{}' in file '{}'", dropId, identifier);
 						continue;
 					}
 					float chance = JsonHelper.getFloat(object, "chance");

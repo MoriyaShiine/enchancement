@@ -20,7 +20,7 @@ public class EntityMixin {
 			if (slideComponent.getJumpBonus() > 2) {
 				return value * 1.25F;
 			} else if (slideComponent.shouldBoostJump()) {
-				return value * 2;
+				return value * (1 + 0.5F * slideComponent.getSlideLevel());
 			}
 		}
 		return value;
