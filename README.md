@@ -6,22 +6,22 @@ Enchancement currently adds 29 unique and fun enchantments to the game:
 ```
 Helmet Enchantments:
 * Assimilation: Automatically consumes food when you're hungry, prioritizing off hand. Food and drinks are consumed faster.
-* Perception: Increases visibilty in the dark and causes mobs to be seen through walls.
+* Perception: Increases visibility in the dark and causes mobs to be seen through walls.
 * Veil: Decreases monster detection range and hides your name behind walls.
 
 Chestplate Enchantments:
-* Amphibious: Increases underwater mining and movement speed. Decreases air consumption underwater and time spent on fire.
-* Strafe: Increases air mobility. Double tapping your sprint/strafe key launches you in your movement direction.
+* Amphibious: Increases underwater mining and movement speed. Decreases air consumption underwater and time spent on fire. Immediately extinguishes you and allows usage of Riptide for 5 seconds after leaving water.
+* Strafe: Double tapping Left Control (configurable) launches you in your movement direction.
 * Wardenspine: Harms attackers and greatly decreases damage taken from behind.
 
 Leggings Enchantments:
-* Dash: Sneaking in the air launches you in your look direction.
-* Slide: Holding your sprint key causes you to slide constantly. Sneaking in the air causes you to slam towards the ground, knocking back mobs and negating fall damage.
+* Dash: Pressing Left Shift (configurable) in the air launches you in your look direction.
+* Slide: Holding Left Control (configurable) while grounded causes you to slide constantly. Pressing Left Control (configurable) in the air causes you to slam towards the ground, knocking back mobs and negating fall damage.
 
 Boots Enchantments:
-* Buoy: Causes you to walk on fluids, descending via sneaking. Holding jump while submerged rapidly propels you upwards. Prevents floating.
+* Buoy: Causes you to walk on fluids, descending via sneaking. Holding jump while submerged rapidly propels you upwards. Prevents floating. Grants a speed boost for 5 seconds after leaving water.
 * Bouncy: Negates fall damage. Launches you upwards upon landing while not sneaking. Sneaking while grounded will charge a super jump.
-* Gale: Allows you to jump two more times in the air.
+* Gale: Allows you to jump more times in the air.
 
 Sword Enchantments:
 * Berserk: Increases damage dealt proportional to missing health.
@@ -35,7 +35,7 @@ Bow Enchantments:
 Crossbow Enchantments:
 * Brimstone: Fires a piercing laser that ignores armor and increases damage with charge and distance. Costs health to fire.
 * Scatter: Allows Amethyst Shards to be loaded which explode into a burst of projectiles.
-* Torch: Allows rapid loading of Torches that ignite shot mobs. Torches that land on a block will be placed if fired while sneaking.
+* Torch: Allows rapid loading of Torches that ignite shot mobs. Torches that land on a block will be placed if fired while sneaking. The Crossbow can only load Torches.
 
 Trident Enchantments:
 * Leech: Regenerates health when dealing damage. Thrown Tridents will temporarily stick to mobs and deal damage.
@@ -61,25 +61,31 @@ Fishing Rod Enchantments:
 Of the core changes, this mod will:
 * Overhaul the Enchanting Table with a new UI that removes the RNG involved in enchanting; you may simply choose the enchantments you wish to have.
 * Force items to only allow one enchantment.
-* Remove leveling from enchantments, meaning that the max level for all enchantments will be 1. Enchantments that are brought down to this level will act as their original max level counterpart, an example being Riptide I will function the same as Riptide III.
+* Remove leveling from enchantments, meaning that the max level for all enchantments will be 1. Enchantments that are brought down to this level will act as their original max level counterpart, an example being Riptide I will function the same as Riptide III. Enchantments on gear made from materials easier to obtain will be weaker.
 * Remove durability from most aspects of the game. There is an item tag to allow certain items to keep durability.
 * Remove most vanilla enchantments from the game. Enchancement tries to make choosing your enchantments more fun and engaging by replacing many of the boring stat change enchantments with enchantments that grant the player unique abilities.
 
 Enchancement also adds some quality of life changes:
+* Attacking an entity for 3 ticks after it leaves your crosshair still applies damage.
 * Adds descriptions to the tooltip of enchanted items and colors enchantment names green.
-* Fishing Bobbers are now accurately thrown instead of having a weird offset.
-* Infinity is now allowed on Crossbows.
-* All Tridents will have Loyalty built in as a native effect.
-* Channeling will now work during any weather, not just when thundering. Channeling will also create lightning that does not create fire or destroy items, and will ignite entities for 3 seconds on melee attack.
+* Fishing Bobbers are accurately thrown instead of having a weird offset.
+* Infinity is allowed on Crossbows.
+* All Tridents have Loyalty built in as a native effect.
+* Channeling works during any weather, not just when thundering. Channeling also creates lightning that does not create fire or destroy items, and ignites entities for 3 seconds on melee attack.
+* Crossbows can pull projectiles from your inventory instead of just from your off-hand.
 * Drowned will use the data of their held Trident when throwing it.
-* Fire Aspect is now usable as Flint and Steel if you are sneaking.
+* Enchanted chestplates will increase your air mobility.
+* Bows are drawn faster and don't decrease your movement speed as much.
+* Fire Aspect is usable as Flint and Steel if you are sneaking, and ignites for less time.
 * Enchanted Books are free to merge with items in an Anvil.
 * Luck of the Sea acts as if the item also has Lure.
 * Ender Pearls no longer deal damage upon landing.
+* Projectiles ignore invulnerability frames (with damage falloff) and negate velocity.
 * Mobs can spawn with any random enchantment.
-* Tridents will return from the void if thrown down there.
+* Iron armor has been made stronger and Golden armor has been made slightly weaker.
+* Tridents will automatically return to you if thrown in the void.
+* Golden Apples can only be eaten while hungry.
 * Makes a select few potions a bit weaker to account for the removal of some enchantments.
-* Reduces the saturation gained and Regeneration level given from Golden Apples.
 * Weapon enchantments such as Fire Aspect or Frostbite will not function unless the player's attack cooldown is >= 70%.
 
 **Q: Can I disable any of these changes?**
