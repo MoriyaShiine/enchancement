@@ -21,7 +21,7 @@ public class EnchantmentHelperMixin {
 	private static void enchancement$amphibiousDepthStrider(LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
 		int level = EnchantmentHelper.getEquipmentLevel(ModEnchantments.AMPHIBIOUS, entity);
 		if (level > 0) {
-			cir.setReturnValue(MathHelper.floor(Enchantments.DEPTH_STRIDER.getMaxLevel() / 2F * level));
+			cir.setReturnValue(MathHelper.ceil(Enchantments.DEPTH_STRIDER.getMaxLevel() / 2F * level));
 		}
 	}
 
