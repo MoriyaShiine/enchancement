@@ -24,7 +24,7 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 	public static final int DEFAULT_STRAFE_COOLDOWN = 40;
 
 	private final PlayerEntity obj;
-	private int strafeCooldown = DEFAULT_STRAFE_COOLDOWN;
+	private int strafeCooldown = DEFAULT_STRAFE_COOLDOWN, lastStrafeCooldown = DEFAULT_STRAFE_COOLDOWN;
 
 	private int strafeLevel = 0;
 	private boolean hasStrafe = false;
@@ -39,11 +39,13 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 	@Override
 	public void readFromNbt(NbtCompound tag) {
 		strafeCooldown = tag.getInt("StrafeCooldown");
+		lastStrafeCooldown = tag.getInt("LastStrafeCooldown");
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag) {
 		tag.putInt("StrafeCooldown", strafeCooldown);
+		tag.putInt("LastStrafeCooldown", lastStrafeCooldown);
 	}
 
 	@Override
@@ -55,7 +57,7 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 				strafeCooldown--;
 			}
 		} else {
-			strafeCooldown = DEFAULT_STRAFE_COOLDOWN;
+			setStrafeCooldown(DEFAULT_STRAFE_COOLDOWN);
 		}
 	}
 
@@ -86,6 +88,19 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 		}
 	}
 
+	public int getStrafeCooldown() {
+		return strafeCooldown;
+	}
+
+	public void setStrafeCooldown(int strafeCooldown) {
+		this.strafeCooldown = strafeCooldown;
+		lastStrafeCooldown = strafeCooldown;
+	}
+
+	public int getLastStrafeCooldown() {
+		return lastStrafeCooldown;
+	}
+
 	public boolean hasStrafe() {
 		return hasStrafe;
 	}
@@ -109,7 +124,7 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 	public static void handle(PlayerEntity player, StrafeComponent strafeComponent, double velocityX, double velocityZ) {
 		player.addVelocity(velocityX, 0, velocityZ);
 		player.playSound(ModSoundEvents.ENTITY_GENERIC_STRAFE, 1, 1);
-		strafeComponent.strafeCooldown = DEFAULT_STRAFE_COOLDOWN / strafeComponent.strafeLevel;
+		strafeComponent.setStrafeCooldown(DEFAULT_STRAFE_COOLDOWN / strafeComponent.strafeLevel);
 	}
 
 	public static void addStrafeParticles(Entity entity) {
