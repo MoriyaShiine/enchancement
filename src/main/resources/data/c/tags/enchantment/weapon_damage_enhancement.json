@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-	"enchancement:berserk"
+	"enchancement:berserk",
+	"enchancement:delay",
+	"enchancement:scooping"
   ]
 }

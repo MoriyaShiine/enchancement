@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
 	"enchancement:strafe",
+	"enchancement:adrenaline",
 	"enchancement:dash",
 	"enchancement:slide",
 	"enchancement:buoy",

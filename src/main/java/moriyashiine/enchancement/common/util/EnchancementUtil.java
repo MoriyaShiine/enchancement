@@ -29,7 +29,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class EnchancementUtil {
 	public static final Object2IntMap<PlayerEntity> PACKET_IMMUNITIES = new Object2IntOpenHashMap<>();
@@ -104,21 +107,30 @@ public class EnchancementUtil {
 	}
 
 	public static boolean hasWeakEnchantments(ItemStack stack) {
-		boolean weak = false;
+		if (stack.isIn(ModTags.Items.STRONGLY_ENCHANTED)) {
+			return false;
+		}
+		if (stack.isIn(ModTags.Items.WEAKLY_ENCHANTED)) {
+			return true;
+		}
 		if (stack.getItem() instanceof ArmorItem armorItem) {
 			ArmorMaterial material = armorItem.getMaterial();
-			weak = material == ArmorMaterials.LEATHER || material == ArmorMaterials.IRON;
-			if (!weak && Arrays.stream(ArmorMaterials.values()).noneMatch(armorMaterial -> armorMaterial == material)) {
-				weak = material.getEnchantability() <= ArmorMaterials.IRON.getEnchantability();
+			for (ArmorMaterial mat : ArmorMaterials.values()) {
+				if (material == mat) {
+					return mat == ArmorMaterials.LEATHER || mat == ArmorMaterials.IRON;
+				}
 			}
+			return material.getEnchantability() <= ArmorMaterials.IRON.getEnchantability();
 		} else if (stack.getItem() instanceof ToolItem toolItem) {
 			ToolMaterial material = toolItem.getMaterial();
-			weak = material == ToolMaterials.WOOD || material == ToolMaterials.STONE || material == ToolMaterials.IRON;
-			if (!weak && Arrays.stream(ToolMaterials.values()).noneMatch(toolMaterial -> toolMaterial == material)) {
-				weak = material.getEnchantability() <= ToolMaterials.IRON.getEnchantability();
+			for (ToolMaterial mat : ToolMaterials.values()) {
+				if (material == mat) {
+					return mat == ToolMaterials.WOOD || mat == ToolMaterials.STONE || mat == ToolMaterials.IRON;
+				}
 			}
+			return material.getEnchantability() <= ToolMaterials.IRON.getEnchantability();
 		}
-		return weak;
+		return false;
 	}
 
 	public static boolean isEnchantmentAllowed(Identifier identifier) {
