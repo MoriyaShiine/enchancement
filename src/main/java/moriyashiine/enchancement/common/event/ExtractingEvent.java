@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public class ExtractingEvent implements PlayerBlockBreakEvents.Before {
-	public static Map<Block, Block> BASE_BLOCK_MAP = new HashMap<>();
+	public static final Map<Block, Block> BASE_BLOCK_MAP = new HashMap<>();
 
 	@Override
 	public boolean beforeBlockBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity blockEntity) {

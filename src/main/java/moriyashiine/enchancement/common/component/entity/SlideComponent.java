@@ -180,10 +180,6 @@ public class SlideComponent implements CommonTickingComponent {
 		}
 	}
 
-	public Vec3d getVelocity() {
-		return velocity;
-	}
-
 	public void setVelocity(Vec3d velocity) {
 		this.velocity = velocity;
 	}

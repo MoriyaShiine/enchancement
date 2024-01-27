@@ -29,7 +29,7 @@ public class ClientPlayerInteractionManagerMixin {
 	private static boolean allowUsage = false;
 
 	@Inject(method = "method_41929", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ItemCooldownManager;isCoolingDown(Lnet/minecraft/item/Item;)Z"), locals = LocalCapture.CAPTURE_FAILHARD)
-	private void enchancement$scatter(Hand hand, PlayerEntity player, MutableObject mutableObject, int sequence, CallbackInfoReturnable<Packet> cir, PlayerInteractItemC2SPacket packet, ItemStack stack) {
+	private void enchancement$scatter(Hand hand, PlayerEntity player, MutableObject<?> mutableObject, int sequence, CallbackInfoReturnable<Packet<?>> cir, PlayerInteractItemC2SPacket packet, ItemStack stack) {
 		if (player.getItemCooldownManager().isCoolingDown(stack.getItem()) && stack.isOf(Items.CROSSBOW) && EnchancementUtil.hasEnchantment(ModEnchantments.SCATTER, stack) && !CrossbowItem.isCharged(stack)) {
 			allowUsage = true;
 		}

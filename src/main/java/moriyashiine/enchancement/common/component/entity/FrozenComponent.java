@@ -101,10 +101,6 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 		return frozen;
 	}
 
-	public void setFrozen(boolean frozen) {
-		this.frozen = frozen;
-	}
-
 	public EntityPose getForcedPose() {
 		return forcedPose;
 	}
