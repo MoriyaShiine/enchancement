@@ -11,6 +11,7 @@ import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModTags;
 import moriyashiine.enchancement.mixin.util.ItemEntityAccessor;
+import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -20,8 +21,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.util.Identifier;
@@ -38,6 +38,8 @@ public class EnchancementUtil {
 	public static final Object2IntMap<PlayerEntity> PACKET_IMMUNITIES = new Object2IntOpenHashMap<>();
 
 	public static final ItemStack BRIMSTONE_STACK;
+
+	public static final int MAXIMUM_MOVEMENT_MULTIPLIER = 4;
 
 	public static boolean shouldCancelTargetDamagedEnchantments = false;
 
@@ -104,6 +106,33 @@ public class EnchancementUtil {
 		return entity instanceof LivingEntity living && EnchantmentHelper.getEquipmentLevel(enchantment, living) > 0;
 	}
 
+	public static boolean hasWeakEnchantments(ItemStack stack) {
+		if (stack.isIn(ModTags.Items.STRONGLY_ENCHANTED)) {
+			return false;
+		}
+		if (stack.isIn(ModTags.Items.WEAKLY_ENCHANTED)) {
+			return true;
+		}
+		if (stack.getItem() instanceof ArmorItem armorItem) {
+			ArmorMaterial material = armorItem.getMaterial();
+			for (ArmorMaterial mat : ArmorMaterials.values()) {
+				if (material == mat) {
+					return mat == ArmorMaterials.LEATHER || mat == ArmorMaterials.IRON;
+				}
+			}
+			return material.getEnchantability() <= ArmorMaterials.IRON.getEnchantability();
+		} else if (stack.getItem() instanceof ToolItem toolItem) {
+			ToolMaterial material = toolItem.getMaterial();
+			for (ToolMaterial mat : ToolMaterials.values()) {
+				if (material == mat) {
+					return mat == ToolMaterials.WOOD || mat == ToolMaterials.STONE || mat == ToolMaterials.IRON;
+				}
+			}
+			return material.getEnchantability() <= ToolMaterials.IRON.getEnchantability();
+		}
+		return false;
+	}
+
 	public static boolean isEnchantmentAllowed(Identifier identifier) {
 		if (identifier == null) {
 			return true;
@@ -134,10 +163,10 @@ public class EnchancementUtil {
 		return isGroundedOrAirborne(living, false);
 	}
 
-	public static boolean isSubmerged(Entity entity, boolean allowWater, boolean allowLava) {
+	public static boolean isSubmerged(Entity entity, boolean allowWater, boolean allowLava, boolean allowPowderSnow) {
 		for (int i = 0; i <= 1; i++) {
-			FluidState state = entity.getWorld().getFluidState(entity.getBlockPos().up(i));
-			if ((allowWater && state.isIn(FluidTags.WATER)) || (allowLava && state.isIn(FluidTags.LAVA))) {
+			FluidState fluidState = entity.getWorld().getFluidState(entity.getBlockPos().up(i));
+			if ((allowWater && fluidState.isIn(FluidTags.WATER)) || (allowLava && fluidState.isIn(FluidTags.LAVA)) || (allowPowderSnow && entity.getWorld().getBlockState(entity.getBlockPos().up(i)).isOf(Blocks.POWDER_SNOW))) {
 				return true;
 			}
 		}
@@ -152,18 +181,23 @@ public class EnchancementUtil {
 	}
 
 	public static boolean shouldBeUnbreakable(ItemStack stack) {
-		int flag = ModConfig.unbreakingChangesFlag;
-		if (flag >= 0 && !stack.isIn(ModTags.Items.RETAINS_DURABILITY)) {
-			if (flag == 0) {
-				return !stack.isEmpty() && stack.getMaxDamage() > 0;
+		if (!stack.isEmpty()) {
+			int flag = ModConfig.unbreakingChangesFlag;
+			if (flag >= 0 && !stack.isIn(ModTags.Items.RETAINS_DURABILITY)) {
+				if (flag == 0) {
+					return stack.getMaxDamage() > 0;
+				}
+				return EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) >= flag;
 			}
-			return EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) >= flag;
 		}
 		return false;
 	}
 
 	public static boolean shouldDisableLoyalty(PersistentProjectileEntity entity) {
 		if (ModConfig.allTridentsHaveLoyalty) {
+			if (entity.getType().isIn(ModTags.EntityTypes.NO_LOYALTY)) {
+				return true;
+			}
 			return !(entity.getOwner() instanceof PlayerEntity);
 		}
 		return false;
@@ -184,25 +218,39 @@ public class EnchancementUtil {
 		return true;
 	}
 
-	public static float getMaxBonusBerserkDamage(ItemStack stack) {
+	public static float capMovementMultiplier(float multiplier) {
+		return Math.min(MAXIMUM_MOVEMENT_MULTIPLIER, multiplier);
+	}
+
+	public static float getMaxBonusBerserkDamage(ItemStack stack, int level) {
 		float maxBonus = 1;
 		for (EntityAttributeModifier modifier : stack.getAttributeModifiers(EquipmentSlot.MAINHAND).get(EntityAttributes.GENERIC_ATTACK_DAMAGE)) {
-			maxBonus += modifier.getValue();
+			maxBonus += (float) (modifier.getValue() / (level == 1 ? 2 : 1));
 		}
 		return maxBonus / 2;
 	}
 
 	public static float getBonusBerserkDamage(LivingEntity living, ItemStack stack) {
-		if (living != null && hasEnchantment(ModEnchantments.BERSERK, stack)) {
-			float health = living.getMaxHealth() - 1;
-			float bonus = 0;
-			while (health > living.getHealth()) {
-				health -= 2;
-				bonus += 0.5F;
+		if (living != null) {
+			int level = EnchantmentHelper.getLevel(ModEnchantments.BERSERK, stack);
+			if (level > 0) {
+				float health = living.getMaxHealth() - 1;
+				float bonus = 0;
+				while (health > living.getHealth()) {
+					health -= 2;
+					bonus += level == 1 ? 0.25F : 0.5F;
+				}
+				return Math.min(bonus, getMaxBonusBerserkDamage(stack, level));
 			}
-			return Math.min(bonus, getMaxBonusBerserkDamage(stack));
 		}
 		return 0;
+	}
+
+	public static int getModifiedMaxLevel(ItemStack stack, int maxLevel) {
+		if (EnchancementUtil.hasWeakEnchantments(stack)) {
+			return MathHelper.ceil(maxLevel / 2F);
+		}
+		return maxLevel;
 	}
 
 	public static int getBrimstoneDamage(float progress) {

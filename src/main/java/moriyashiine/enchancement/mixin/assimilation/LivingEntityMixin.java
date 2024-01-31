@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.assimilation;
 
 import moriyashiine.enchancement.common.init.ModEnchantments;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -13,6 +13,7 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.UseAction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -46,8 +47,9 @@ public abstract class LivingEntityMixin extends Entity {
 	@Unique
 	private void modifyTimeLeft() {
 		if (activeItemStack.isFood() || activeItemStack.getUseAction() == UseAction.DRINK) {
-			if (EnchancementUtil.hasEnchantment(ModEnchantments.ASSIMILATION, this)) {
-				itemUseTimeLeft *= 0.75F;
+			int level = EnchantmentHelper.getEquipmentLevel(ModEnchantments.ASSIMILATION, (LivingEntity) (Object) this);
+			if (level > 0) {
+				itemUseTimeLeft = Math.max(1, MathHelper.floor(itemUseTimeLeft * (1 - level * 0.125F)));
 			}
 		}
 	}

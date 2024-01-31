@@ -35,12 +35,13 @@ public class StrafePacket {
 		public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
 			float velocityX = buf.readFloat();
 			float velocityZ = buf.readFloat();
-			server.execute(() -> ModEntityComponents.STRAFE.maybeGet(player).ifPresent(strafeComponent -> {
+			server.execute(() -> {
+				StrafeComponent strafeComponent = ModEntityComponents.STRAFE.get(player);
 				if (strafeComponent.hasStrafe()) {
 					StrafeComponent.handle(player, strafeComponent, velocityX, velocityZ);
 					PlayerLookup.tracking(player).forEach(foundPlayer -> AddStrafeParticlesPacket.send(foundPlayer, player.getId()));
 				}
-			}));
+			});
 		}
 	}
 }

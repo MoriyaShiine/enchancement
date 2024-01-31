@@ -28,12 +28,13 @@ public class DashPacket {
 	public static class Receiver implements ServerPlayNetworking.PlayChannelHandler {
 		@Override
 		public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-			server.execute(() -> ModEntityComponents.DASH.maybeGet(player).ifPresent(dashComponent -> {
+			server.execute(() -> {
+				DashComponent dashComponent = ModEntityComponents.DASH.get(player);
 				if (dashComponent.hasDash()) {
 					EnchancementUtil.PACKET_IMMUNITIES.put(player, 20);
 					DashComponent.handle(player, dashComponent);
 				}
-			}));
+			});
 		}
 	}
 }

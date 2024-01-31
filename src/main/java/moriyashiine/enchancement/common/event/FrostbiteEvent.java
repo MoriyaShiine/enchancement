@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.event;
 
 import moriyashiine.enchancement.client.packet.SyncFrozenPlayerSlimStatusS2C;
 import moriyashiine.enchancement.common.component.entity.FrozenComponent;
+import moriyashiine.enchancement.common.component.entity.FrozenSquidComponent;
 import moriyashiine.enchancement.common.entity.mob.FrozenPlayerEntity;
 import moriyashiine.enchancement.common.entity.projectile.IceShardEntity;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
@@ -45,12 +46,11 @@ public class FrostbiteEvent {
 				} else {
 					frozenComponent.freeze();
 					if (entity instanceof SquidEntity squid) {
-						ModEntityComponents.FROZEN_SQUID.maybeGet(squid).ifPresent(frozenSquidComponent -> {
-							frozenSquidComponent.setForcedRollAngle(squid.rollAngle);
-							frozenSquidComponent.setForcedTentacleAngle(squid.tentacleAngle);
-							frozenSquidComponent.setForcedTiltAngle(squid.tiltAngle);
-							frozenSquidComponent.sync();
-						});
+						FrozenSquidComponent frozenSquidComponent = ModEntityComponents.FROZEN_SQUID.get(squid);
+						frozenSquidComponent.setForcedRollAngle(squid.rollAngle);
+						frozenSquidComponent.setForcedTentacleAngle(squid.tentacleAngle);
+						frozenSquidComponent.setForcedTiltAngle(squid.tiltAngle);
+						frozenSquidComponent.sync();
 					}
 				}
 			}

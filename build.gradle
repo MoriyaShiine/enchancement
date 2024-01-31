@@ -47,11 +47,11 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${loader_version}"
 
     include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:${mixin_extras_version}")))
-    modApi include("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_version}")
-    modApi include("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}")
-    modApi include("dev.onyxstudios.cardinal-components-api:cardinal-components-world:${cardinal_components_version}")
-    modApi include("maven.modrinth:midnightlib:${midnightlib_version}")
-    modApi include("com.github.emilyploszaj:step-height-entity-attribute:${step_height_entity_attribute_version}")
+    include modApi("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_version}")
+    include modApi("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}")
+    include modApi("dev.onyxstudios.cardinal-components-api:cardinal-components-world:${cardinal_components_version}")
+    include modApi("maven.modrinth:midnightlib:${midnightlib_version}")
+    include modApi("com.github.emilyploszaj:step-height-entity-attribute:${step_height_entity_attribute_version}")
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     modRuntimeOnly "maven.modrinth:tooltipfix:${tooltipfix_version}"

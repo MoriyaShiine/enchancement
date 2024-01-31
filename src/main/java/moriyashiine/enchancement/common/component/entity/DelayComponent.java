@@ -85,7 +85,7 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 				sync();
 			}
 			boolean punching = obj.getOwner() instanceof LivingEntity living && living.handSwinging && (living.getMainHandStack() == stackShotFrom || living.getOffHandStack() == stackShotFrom);
-			if (ticksFloating > 300 || punching) {
+			if (ticksFloating > 200 || punching) {
 				if (punching && obj.getOwner() instanceof LivingEntity living && living.isSneaking()) {
 					HitResult result = ProjectileUtil.getCollision(living, entity -> !entity.isSpectator() && entity.canHit(), 64);
 					Vec3d pos;
@@ -100,7 +100,7 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 					forcedPitch = MathHelper.wrapDegrees(obj.getPitch() + 180);
 					forcedYaw = MathHelper.wrapDegrees(-(obj.getYaw() + 180));
 				}
-				obj.setDamage(obj.getDamage() * MathHelper.lerp(Math.min(1, ticksFloating / 100F), 1, 2.5));
+				obj.setDamage(obj.getDamage() * MathHelper.lerp(Math.min(1, ticksFloating / 60F), 1, 2));
 				obj.setVelocity(storedVelocity);
 				hasDelay = false;
 				sync();
@@ -138,6 +138,6 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 	}
 
 	public boolean shouldChangeParticles() {
-		return ticksFloating >= 100;
+		return ticksFloating >= 60;
 	}
 }

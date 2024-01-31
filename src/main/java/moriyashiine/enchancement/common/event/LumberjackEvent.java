@@ -85,6 +85,9 @@ public class LumberjackEvent implements PlayerBlockBreakEvents.Before {
 				maxZ = pos.getZ();
 			}
 		}
+		if (minX == null) {
+			return false;
+		}
 		return Math.abs(maxX - minX) < ModConfig.maxLumberjackHorizontalLength && Math.abs(maxZ - minZ) < ModConfig.maxLumberjackHorizontalLength;
 	}
 }

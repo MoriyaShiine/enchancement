@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common;
 
-import com.google.gson.Gson;
+import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import moriyashiine.enchancement.common.event.*;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
@@ -12,15 +12,19 @@ import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.packet.*;
 import moriyashiine.enchancement.common.reloadlisteners.BeheadingReloadListener;
+import moriyashiine.enchancement.common.reloadlisteners.EnchantingMaterialReloadListener;
+import moriyashiine.enchancement.common.reloadlisteners.ExtractingBaseBlockReloadListener;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.loader.api.FabricLoader;
@@ -51,7 +55,9 @@ public class Enchancement implements ModInitializer {
 		ModEnchantments.init();
 		ModSoundEvents.init();
 		ModScreenHandlerTypes.init();
-		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new BeheadingReloadListener(new Gson(), MOD_ID + "_beheading"));
+		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new EnchantingMaterialReloadListener());
+		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new BeheadingReloadListener());
+		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new ExtractingBaseBlockReloadListener());
 		initEvents();
 		isApoliLoaded = FabricLoader.getInstance().isModLoaded("apoli");
 		for (String mod : new String[]{"enchdesc", "enchantedtooltips", "idwtialsimmoedm"}) {
@@ -67,9 +73,15 @@ public class Enchancement implements ModInitializer {
 	}
 
 	private void initEvents() {
+		ServerPlayConnectionEvents.JOIN.register(new SyncEnchantingMaterialMapEvent.Join());
+		ServerTickEvents.END_SERVER_TICK.register(new SyncEnchantingMaterialMapEvent.Tick());
 		ServerTickEvents.END_SERVER_TICK.register(server -> EnchancementUtil.tickPacketImmunities());
 		ServerLifecycleEvents.SERVER_STOPPED.register(server -> EnchancementUtil.PACKET_IMMUNITIES.clear());
+		MultiplyMovementSpeedEvent.EVENT.register(new EnchantedChestplateAirMobilityEvent());
 		ServerTickEvents.END_SERVER_TICK.register(new AssimilationEvent());
+		MultiplyMovementSpeedEvent.EVENT.register(new AdrenalineEvent());
+		MultiplyMovementSpeedEvent.EVENT.register(new BuoyEvent());
+		ServerEntityEvents.EQUIPMENT_CHANGE.register(new GaleEvent());
 		UseBlockCallback.EVENT.register(new FireAspectEvent());
 		ServerLivingEntityEvents.AFTER_DEATH.register(new FrostbiteEvent.Freeze());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new FrostbiteEvent.HandleDamage());

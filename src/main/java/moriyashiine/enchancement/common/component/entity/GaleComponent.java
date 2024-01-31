@@ -13,16 +13,20 @@ import moriyashiine.enchancement.common.packet.GalePacket;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.util.LivingEntityAccessor;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 
 public class GaleComponent implements AutoSyncedComponent, CommonTickingComponent {
-	private final PlayerEntity obj;
-	private boolean hasGaleDashed = true;
-	private int jumpCooldown = 10, jumpsLeft = 0, ticksInAir = 0;
+	public static final int DEFAULT_GALE_COOLDOWN = 10;
 
+	private final PlayerEntity obj;
+	private boolean shouldRefreshGale = false;
+	private int galeCooldown = DEFAULT_GALE_COOLDOWN, lastGaleCooldown = DEFAULT_GALE_COOLDOWN, jumpCooldown = 10, jumpsLeft = 0, ticksInAir = 0;
+
+	private int galeLevel = 0;
 	private boolean hasGale = false;
 
 	public GaleComponent(PlayerEntity obj) {
@@ -31,7 +35,9 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 
 	@Override
 	public void readFromNbt(NbtCompound tag) {
-		hasGaleDashed = tag.getBoolean("HasGaleDashed");
+		shouldRefreshGale = tag.getBoolean("ShouldRefreshGale");
+		galeCooldown = tag.getInt("GaleCooldown");
+		lastGaleCooldown = tag.getInt("LastGaleCooldown");
 		jumpCooldown = tag.getInt("JumpCooldown");
 		jumpsLeft = tag.getInt("JumpsLeft");
 		ticksInAir = tag.getInt("TicksInAir");
@@ -39,7 +45,9 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 
 	@Override
 	public void writeToNbt(NbtCompound tag) {
-		tag.putBoolean("HasGaleDashed", hasGaleDashed);
+		tag.putBoolean("ShouldRefreshGale", shouldRefreshGale);
+		tag.putInt("GaleCooldown", galeCooldown);
+		tag.putInt("LastGaleCooldown", lastGaleCooldown);
 		tag.putInt("JumpCooldown", jumpCooldown);
 		tag.putInt("JumpsLeft", jumpsLeft);
 		tag.putInt("TicksInAir", ticksInAir);
@@ -47,20 +55,31 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 
 	@Override
 	public void tick() {
-		hasGale = EnchancementUtil.hasEnchantment(ModEnchantments.GALE, obj);
+		galeLevel = EnchantmentHelper.getEquipmentLevel(ModEnchantments.GALE, obj);
+		hasGale = galeLevel > 0;
 		if (hasGale) {
+			if (!shouldRefreshGale) {
+				if (obj.isOnGround()) {
+					shouldRefreshGale = true;
+				}
+			} else if (galeCooldown > 0) {
+				galeCooldown--;
+				if (galeCooldown == 0 && jumpsLeft < galeLevel) {
+					jumpsLeft++;
+					setGaleCooldown(DEFAULT_GALE_COOLDOWN);
+				}
+			}
 			if (jumpCooldown > 0) {
 				jumpCooldown--;
 			}
 			if (obj.isOnGround()) {
-				hasGaleDashed = false;
 				ticksInAir = 0;
-				jumpsLeft = 2;
 			} else {
 				ticksInAir++;
 			}
 		} else {
-			hasGaleDashed = true;
+			shouldRefreshGale = false;
+			galeCooldown = DEFAULT_GALE_COOLDOWN;
 			jumpCooldown = 0;
 			jumpsLeft = 0;
 			ticksInAir = 0;
@@ -77,8 +96,33 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 		}
 	}
 
+	public void sync() {
+		ModEntityComponents.GALE.sync(obj);
+	}
+
+	public void setGaleCooldown(int galeCooldown) {
+		this.galeCooldown = galeCooldown;
+		lastGaleCooldown = galeCooldown;
+	}
+
+	public int getGaleCooldown() {
+		return galeCooldown;
+	}
+
+	public int getLastGaleCooldown() {
+		return lastGaleCooldown;
+	}
+
 	public int getJumpsLeft() {
 		return jumpsLeft;
+	}
+
+	public void setJumpsLeft(int jumpsLeft) {
+		this.jumpsLeft = jumpsLeft;
+	}
+
+	public int getGaleLevel() {
+		return galeLevel;
 	}
 
 	public boolean hasGale() {
@@ -86,24 +130,13 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 	}
 
 	public static void handle(PlayerEntity player, GaleComponent galeComponent) {
-		ModEntityComponents.DASH.maybeGet(player).ifPresent(dashComponent -> {
-			player.jump();
-			if (galeComponent.hasGaleDashed) {
-				player.setVelocity(0, player.getVelocity().getY() * 1.5, 0);
-			} else {
-				player.setVelocity(player.getVelocity().getX(), player.getVelocity().getY() * 1.5, player.getVelocity().getZ());
-			}
-			player.playSound(ModSoundEvents.ENTITY_GENERIC_AIR_JUMP, 1, 1);
-			galeComponent.jumpCooldown = 10;
-			galeComponent.jumpsLeft--;
-			if (dashComponent.hasDash() && dashComponent.shouldWavedash()) {
-				player.setVelocity(player.getVelocity().multiply(1.5));
-				galeComponent.hasGaleDashed = true;
-				dashComponent.setShouldRefreshDash(false);
-				dashComponent.setDashCooldown(DashComponent.DEFAULT_DASH_COOLDOWN * 3);
-				ModEntityComponents.STRAFE.get(player).setTicksInAir(0);
-			}
-		});
+		player.jump();
+		player.setVelocity(player.getVelocity().getX(), player.getVelocity().getY() * 1.5, player.getVelocity().getZ());
+		player.playSound(ModSoundEvents.ENTITY_GENERIC_AIR_JUMP, 1, 1);
+		galeComponent.setGaleCooldown(DEFAULT_GALE_COOLDOWN);
+		galeComponent.shouldRefreshGale = false;
+		galeComponent.jumpCooldown = 10;
+		galeComponent.jumpsLeft--;
 	}
 
 	public static void addGaleParticles(Entity entity) {

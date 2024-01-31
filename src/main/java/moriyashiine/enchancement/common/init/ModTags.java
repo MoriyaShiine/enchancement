@@ -26,8 +26,10 @@ public class ModTags {
 	}
 
 	public static class EntityTypes {
+		public static final TagKey<EntityType<?>> BYPASSES_DECREASING_DAMAGE = TagKey.of(Registries.ENTITY_TYPE.getKey(), Enchancement.id("bypasses_decreasing_damage"));
 		public static final TagKey<EntityType<?>> CANNOT_FREEZE = TagKey.of(Registries.ENTITY_TYPE.getKey(), Enchancement.id("cannot_freeze"));
 		public static final TagKey<EntityType<?>> CANNOT_BURY = TagKey.of(Registries.ENTITY_TYPE.getKey(), Enchancement.id("cannot_bury"));
+		public static final TagKey<EntityType<?>> NO_LOYALTY = TagKey.of(Registries.ENTITY_TYPE.getKey(), Enchancement.id("has_no_loyalty"));
 		public static final TagKey<EntityType<?>> VEIL_IMMUNE = TagKey.of(Registries.ENTITY_TYPE.getKey(), Enchancement.id("veil_immune"));
 	}
 
@@ -35,6 +37,8 @@ public class ModTags {
 		public static final TagKey<Item> CANNOT_ASSIMILATE = TagKey.of(Registries.ITEM.getKey(), Enchancement.id("cannot_assimilate"));
 		public static final TagKey<Item> NO_LOYALTY = TagKey.of(Registries.ITEM.getKey(), Enchancement.id("no_loyalty"));
 		public static final TagKey<Item> RETAINS_DURABILITY = TagKey.of(Registries.ITEM.getKey(), Enchancement.id("retains_durability"));
+		public static final TagKey<Item> STRONGLY_ENCHANTED = TagKey.of(Registries.ITEM.getKey(), Enchancement.id("strongly_enchanted"));
+		public static final TagKey<Item> WEAKLY_ENCHANTED = TagKey.of(Registries.ITEM.getKey(), Enchancement.id("weakly_enchanted"));
 	}
 
 	public static class StatusEffects {

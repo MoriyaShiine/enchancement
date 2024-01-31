@@ -29,12 +29,13 @@ public class GalePacket {
 	public static class Receiver implements ServerPlayNetworking.PlayChannelHandler {
 		@Override
 		public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-			server.execute(() -> ModEntityComponents.GALE.maybeGet(player).ifPresent(galeComponent -> {
+			server.execute(() -> {
+				GaleComponent galeComponent = ModEntityComponents.GALE.get(player);
 				if (galeComponent.hasGale()) {
 					GaleComponent.handle(player, galeComponent);
 					PlayerLookup.tracking(player).forEach(foundPlayer -> AddGaleParticlesPacket.send(foundPlayer, player.getId()));
 				}
-			}));
+			});
 		}
 	}
 }

@@ -6,6 +6,7 @@ package moriyashiine.enchancement.mixin.vanillachanges.singlelevelmode;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
@@ -38,7 +39,7 @@ public class EnchantmentHelperMixin {
 			NbtList nbtList = stack.getEnchantments();
 			for (int i = 0; i < nbtList.size(); i++) {
 				NbtCompound nbtCompound = nbtList.getCompound(i);
-				Registries.ENCHANTMENT.getOrEmpty(EnchantmentHelper.getIdFromNbt(nbtCompound)).ifPresent(enchantment -> consumer.accept(enchantment, enchantment.getMaxLevel()));
+				Registries.ENCHANTMENT.getOrEmpty(EnchantmentHelper.getIdFromNbt(nbtCompound)).ifPresent(enchantment -> consumer.accept(enchantment, EnchancementUtil.getModifiedMaxLevel(stack, enchantment.getMaxLevel())));
 			}
 			ci.cancel();
 		}
@@ -47,7 +48,7 @@ public class EnchantmentHelperMixin {
 	@Inject(method = "getLevel", at = @At("RETURN"), cancellable = true)
 	private static void enchancement$singleLevelMode(Enchantment enchantment, ItemStack stack, CallbackInfoReturnable<Integer> cir) {
 		if (cir.getReturnValueI() > 0 && ModConfig.singleLevelMode) {
-			cir.setReturnValue(enchantment.getMaxLevel());
+			cir.setReturnValue(EnchancementUtil.getModifiedMaxLevel(stack, enchantment.getMaxLevel()));
 		}
 	}
 

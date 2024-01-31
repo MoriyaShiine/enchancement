@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.component.entity;
 
 import dev.emi.stepheightentityattribute.StepHeightEntityAttributeMain;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
+import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.packet.SlideSlamPacket;
@@ -15,6 +16,7 @@ import moriyashiine.enchancement.mixin.slide.EntityAccessor;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.GameOptions;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -36,11 +38,12 @@ public class SlideComponent implements CommonTickingComponent {
 	private final PlayerEntity obj;
 	private Vec3d velocity = Vec3d.ZERO;
 	private boolean shouldSlam = false;
-	private int jumpBoostResetTicks = DEFAULT_JUMP_BOOST_RESET_TICKS, slamCooldown = DEFAULT_SLAM_COOLDOWN, ticksLeftToJump = 0, timesJumped = 0, ticksSliding = 0;
+	private int jumpBoostResetTicks = DEFAULT_JUMP_BOOST_RESET_TICKS, slamCooldown = DEFAULT_SLAM_COOLDOWN, ticksLeftToJump = 0, ticksSliding = 0;
 
+	private int slideLevel = 0;
 	private boolean hasSlide = false;
 
-	private boolean disallowSlide = false, wasSneaking = false;
+	private boolean disallowSlide = false, wasPressingSlamKey = false;
 
 	public SlideComponent(PlayerEntity obj) {
 		this.obj = obj;
@@ -53,7 +56,6 @@ public class SlideComponent implements CommonTickingComponent {
 		jumpBoostResetTicks = tag.getInt("JumpBoostResetTicks");
 		slamCooldown = tag.getInt("SlamCooldown");
 		ticksLeftToJump = tag.getInt("TicksLeftToJump");
-		timesJumped = tag.getInt("TimesJumped");
 		ticksSliding = tag.getInt("TicksSliding");
 	}
 
@@ -66,19 +68,16 @@ public class SlideComponent implements CommonTickingComponent {
 		tag.putInt("JumpBoostResetTicks", jumpBoostResetTicks);
 		tag.putInt("SlamCooldown", slamCooldown);
 		tag.putInt("TicksLeftToJump", ticksLeftToJump);
-		tag.putInt("TimesJumped", timesJumped);
 		tag.putInt("TicksSliding", ticksSliding);
 	}
 
 	@Override
 	public void tick() {
-		hasSlide = EnchancementUtil.hasEnchantment(ModEnchantments.SLIDE, obj);
+		slideLevel = EnchantmentHelper.getEquipmentLevel(ModEnchantments.SLIDE, obj);
+		hasSlide = slideLevel > 0;
 		if (hasSlide) {
 			if (obj.isSneaking() || obj.isTouchingWater()) {
 				velocity = Vec3d.ZERO;
-			}
-			if (jumpBoostResetTicks > 0 && timesJumped > 0 && obj.isOnGround() && --jumpBoostResetTicks == 0) {
-				timesJumped = 0;
 			}
 			if (slamCooldown > 0) {
 				slamCooldown--;
@@ -94,8 +93,6 @@ public class SlideComponent implements CommonTickingComponent {
 				} else {
 					obj.setVelocity(velocity.getX() * 0.8, obj.getVelocity().getY(), velocity.getZ() * 0.8);
 				}
-				obj.velocityDirty = true;
-				obj.velocityModified = true;
 				if (ticksSliding < 60) {
 					ticksSliding++;
 				}
@@ -108,7 +105,6 @@ public class SlideComponent implements CommonTickingComponent {
 			jumpBoostResetTicks = DEFAULT_JUMP_BOOST_RESET_TICKS;
 			slamCooldown = DEFAULT_SLAM_COOLDOWN;
 			ticksLeftToJump = 0;
-			timesJumped = 0;
 			ticksSliding = 0;
 		}
 	}
@@ -158,17 +154,11 @@ public class SlideComponent implements CommonTickingComponent {
 				});
 			}
 			GameOptions options = MinecraftClient.getInstance().options;
-			if (!options.sprintKey.isPressed()) {
+			boolean pressingSlideKey = EnchancementClient.SLIDE_KEYBINDING.isPressed();
+			if (!pressingSlideKey) {
 				disallowSlide = false;
 			}
-			boolean sneaking = options.sneakKey.isPressed();
-			if (slamCooldown == 0 && !obj.isOnGround() && sneaking && !wasSneaking && !isSliding() && EnchancementUtil.isGroundedOrAirborne(obj)) {
-				shouldSlam = true;
-				slamCooldown = DEFAULT_SLAM_COOLDOWN;
-				SlideSlamPacket.send();
-			}
-			wasSneaking = sneaking;
-			if (options.sprintKey.isPressed() && !obj.isSneaking() && !disallowSlide) {
+			if (pressingSlideKey && !obj.isSneaking() && !disallowSlide) {
 				if (!isSliding() && obj.isOnGround() && EnchancementUtil.isGroundedOrAirborne(obj)) {
 					velocity = getVelocityFromInput(options).rotateY((float) Math.toRadians(-(obj.getHeadYaw() + 90)));
 					SlideVelocityPacket.send(velocity);
@@ -177,14 +167,17 @@ public class SlideComponent implements CommonTickingComponent {
 				velocity = Vec3d.ZERO;
 				SlideVelocityPacket.send(velocity);
 			}
+			boolean pressingSlamKey = EnchancementClient.SLAM_KEYBINDING.isPressed();
+			if (slamCooldown == 0 && !obj.isOnGround() && pressingSlamKey && !wasPressingSlamKey && !isSliding() && EnchancementUtil.isGroundedOrAirborne(obj)) {
+				shouldSlam = true;
+				slamCooldown = DEFAULT_SLAM_COOLDOWN;
+				SlideSlamPacket.send();
+			}
+			wasPressingSlamKey = pressingSlamKey;
 		} else {
 			disallowSlide = false;
-			wasSneaking = false;
+			wasPressingSlamKey = false;
 		}
-	}
-
-	public Vec3d getVelocity() {
-		return velocity;
 	}
 
 	public void setVelocity(Vec3d velocity) {
@@ -199,16 +192,8 @@ public class SlideComponent implements CommonTickingComponent {
 		return shouldSlam;
 	}
 
-	public void setJumpBoostResetTicks(int jumpBoostResetTicks) {
-		this.jumpBoostResetTicks = jumpBoostResetTicks;
-	}
-
 	public void setSlamCooldown(int slamCooldown) {
 		this.slamCooldown = slamCooldown;
-	}
-
-	public int getTimesJumped() {
-		return timesJumped;
 	}
 
 	public boolean isSliding() {
@@ -223,20 +208,20 @@ public class SlideComponent implements CommonTickingComponent {
 		return MathHelper.lerp(ticksSliding / 60F, 1F, 3F);
 	}
 
+	public int getSlideLevel() {
+		return slideLevel;
+	}
+
 	public boolean hasSlide() {
 		return hasSlide;
 	}
 
 	private void slamTick(Runnable onLand) {
 		obj.setVelocity(obj.getVelocity().getX() * 0.98, -3, obj.getVelocity().getZ() * 0.98);
-		obj.velocityDirty = true;
 		obj.fallDistance = 0;
 		if (obj.isOnGround()) {
 			shouldSlam = false;
 			ticksLeftToJump = 5;
-			if (timesJumped < 3) {
-				timesJumped++;
-			}
 			obj.playSound(ModSoundEvents.ENTITY_GENERIC_IMPACT, 1, 1);
 			onLand.run();
 		}
@@ -265,6 +250,6 @@ public class SlideComponent implements CommonTickingComponent {
 			sideways = true;
 			z = 1;
 		}
-		return new Vec3d(any ? x : 1, 0, z).multiply(forward && sideways ? 0.75F : 1);
+		return new Vec3d(any ? x : 1, 0, z).multiply(forward && sideways ? 0.75F : 1).multiply(slideLevel * 0.5F);
 	}
 }

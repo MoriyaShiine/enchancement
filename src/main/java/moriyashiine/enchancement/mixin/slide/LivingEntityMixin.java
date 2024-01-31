@@ -7,12 +7,12 @@ package moriyashiine.enchancement.mixin.slide;
 import moriyashiine.enchancement.common.component.entity.SlideComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -21,21 +21,22 @@ public class LivingEntityMixin {
 	@Shadow
 	private float leaningPitch;
 
+	@ModifyVariable(method = "damage", at = @At("HEAD"), argsOnly = true)
+	private float enchancement$slide(float value, DamageSource source) {
+		if (source.getSource() != null) {
+			SlideComponent slideComponent = ModEntityComponents.SLIDE.getNullable(this);
+			if (slideComponent != null && slideComponent.isSliding()) {
+				return value * 1.5F;
+			}
+		}
+		return value;
+	}
+
 	@ModifyVariable(method = "handleFallDamage", at = @At("HEAD"), ordinal = 0, argsOnly = true)
 	private float enchancement$slide(float value) {
 		SlideComponent slideComponent = ModEntityComponents.SLIDE.getNullable(this);
 		if (slideComponent != null && slideComponent.isSliding()) {
 			return Math.max(0, value - 6);
-		}
-		return value;
-	}
-
-	@ModifyArg(method = "jump", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setVelocity(DDD)V"), index = 1)
-	private double enchancement$slide(double value) {
-		SlideComponent slideComponent = ModEntityComponents.SLIDE.getNullable(this);
-		if (slideComponent != null && slideComponent.shouldBoostJump()) {
-			slideComponent.setJumpBoostResetTicks(SlideComponent.DEFAULT_JUMP_BOOST_RESET_TICKS);
-			return value + ((slideComponent.getTimesJumped() - 1) / 3.75F);
 		}
 		return value;
 	}

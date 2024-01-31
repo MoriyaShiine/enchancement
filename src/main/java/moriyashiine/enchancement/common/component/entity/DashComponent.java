@@ -6,26 +6,28 @@ package moriyashiine.enchancement.common.component.entity;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
+import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.packet.DashPacket;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.util.LivingEntityAccessor;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.Entity;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.Vec3d;
 
 public class DashComponent implements AutoSyncedComponent, CommonTickingComponent {
-	public static final int DEFAULT_DASH_COOLDOWN = 20;
+	public static final int DEFAULT_DASH_COOLDOWN = 40;
 
 	private final PlayerEntity obj;
 	private boolean shouldRefreshDash = false;
 	private int dashCooldown = DEFAULT_DASH_COOLDOWN, lastDashCooldown = DEFAULT_DASH_COOLDOWN, wavedashTicks = 0;
 
-	private boolean hasDash = false, wasSneaking = false;
+	private int dashLevel = 0;
+	private boolean hasDash = false, wasPressingDashKey = false;
 	private int ticksPressingJump = 0;
 
 	public DashComponent(PlayerEntity obj) {
@@ -50,7 +52,8 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 
 	@Override
 	public void tick() {
-		hasDash = EnchancementUtil.hasEnchantment(ModEnchantments.DASH, obj);
+		dashLevel = EnchantmentHelper.getEquipmentLevel(ModEnchantments.DASH, obj);
+		hasDash = dashLevel > 0;
 		if (hasDash) {
 			if (!shouldRefreshDash) {
 				if (obj.isOnGround()) {
@@ -64,7 +67,7 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 			}
 		} else {
 			shouldRefreshDash = false;
-			dashCooldown = DEFAULT_DASH_COOLDOWN;
+			setDashCooldown(DEFAULT_DASH_COOLDOWN);
 			wavedashTicks = 0;
 		}
 	}
@@ -78,8 +81,8 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 			} else {
 				ticksPressingJump = 0;
 			}
-			boolean sneaking = MinecraftClient.getInstance().options.sneakKey.isPressed();
-			if (!obj.isOnGround() && dashCooldown == 0 && sneaking && !wasSneaking && EnchancementUtil.isGroundedOrAirborne(obj)) {
+			boolean pressingDashKey = EnchancementClient.DASH_KEYBINDING.isPressed();
+			if (!obj.isOnGround() && dashCooldown == 0 && pressingDashKey && !wasPressingDashKey && EnchancementUtil.isGroundedOrAirborne(obj)) {
 				handle(obj, this);
 				if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || obj != MinecraftClient.getInstance().cameraEntity) {
 					for (int i = 0; i < 8; i++) {
@@ -88,15 +91,11 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 				}
 				DashPacket.send();
 			}
-			wasSneaking = sneaking;
+			wasPressingDashKey = pressingDashKey;
 		} else {
-			wasSneaking = false;
+			wasPressingDashKey = false;
 			ticksPressingJump = 0;
 		}
-	}
-
-	public void setShouldRefreshDash(boolean shouldRefreshDash) {
-		this.shouldRefreshDash = shouldRefreshDash;
 	}
 
 	public int getDashCooldown() {
@@ -112,20 +111,24 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 		return lastDashCooldown;
 	}
 
+	public int getDashLevel() {
+		return dashLevel;
+	}
+
 	public boolean hasDash() {
 		return hasDash;
 	}
 
 	public boolean shouldWavedash() {
-		return ticksPressingJump < 2 && wavedashTicks > 0;
+		return ticksPressingJump < 2 && wavedashTicks > 0 && obj.isOnGround();
 	}
 
-	public static void handle(Entity entity, DashComponent dashComponent) {
-		entity.playSound(ModSoundEvents.ENTITY_GENERIC_DASH, 1, 1);
-		Vec3d velocity = entity.getRotationVector().normalize();
-		entity.setVelocity(velocity.getX(), velocity.getY(), velocity.getZ());
-		entity.fallDistance = 0;
-		dashComponent.setDashCooldown(DEFAULT_DASH_COOLDOWN);
+	public static void handle(PlayerEntity player, DashComponent dashComponent) {
+		player.playSound(ModSoundEvents.ENTITY_GENERIC_DASH, 1, 1);
+		Vec3d velocity = player.getRotationVector().normalize();
+		player.setVelocity(velocity.getX(), velocity.getY(), velocity.getZ());
+		player.fallDistance = 0;
+		dashComponent.setDashCooldown(DEFAULT_DASH_COOLDOWN / dashComponent.dashLevel);
 		dashComponent.shouldRefreshDash = false;
 		dashComponent.wavedashTicks = 3;
 	}

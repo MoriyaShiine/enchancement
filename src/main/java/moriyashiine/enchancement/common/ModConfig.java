@@ -5,6 +5,7 @@
 package moriyashiine.enchancement.common;
 
 import eu.midnightdust.lib.config.MidnightConfig;
+import moriyashiine.enchancement.client.util.AllowDuplicateKeybindingsMode;
 
 import java.util.Arrays;
 import java.util.List;
@@ -68,7 +69,13 @@ public class ModConfig extends MidnightConfig {
 	@Entry
 	public static boolean channelingWorksWhenNotThundering = true;
 	@Entry
+	public static boolean crossbowsPullFromInventory = true;
+	@Entry
 	public static boolean drownedUseHeldTrident = true;
+	@Entry
+	public static boolean enchantedChestplatesIncreaseAirMobility = true;
+	@Entry
+	public static boolean fasterBows = true;
 	@Entry
 	public static boolean fireAspectWorksAsFlintAndSteel = true;
 	@Entry
@@ -78,7 +85,13 @@ public class ModConfig extends MidnightConfig {
 	@Entry
 	public static boolean negateEnderPearlDamage = true;
 	@Entry
+	public static boolean projectilesBypassCooldown = true;
+	@Entry
+	public static boolean projectilesNegateVelocity = true;
+	@Entry
 	public static boolean randomMobEnchantments = true;
+	@Entry
+	public static boolean rebalanceArmor = true;
 	@Entry
 	public static boolean safeChanneling = true;
 	@Entry
@@ -99,6 +112,8 @@ public class ModConfig extends MidnightConfig {
 	public static int maxLumberjackBlocks = 1024;
 	@Entry(min = 1)
 	public static int maxLumberjackHorizontalLength = 7;
+	@Entry(min = 0)
+	public static int coyoteBiteTicks = 3;
 	@Entry(min = -1)
 	public static int unbreakingChangesFlag = 0;
 
@@ -106,6 +121,10 @@ public class ModConfig extends MidnightConfig {
 	public static boolean enchantmentDescriptions = true;
 	@Entry(category = "client")
 	public static boolean coloredEnchantmentNames = true;
+	@Entry(category = "client")
+	public static AllowDuplicateKeybindingsMode allowDuplicateKeybindings = AllowDuplicateKeybindingsMode.VANILLA_AND_ENCHANCEMENT;
+	@Entry(category = "client")
+	public static boolean singlePressStrafe = false;
 
 	public static int encode() {
 		StringBuilder builder = new StringBuilder();
@@ -116,16 +135,21 @@ public class ModConfig extends MidnightConfig {
 				invertedList +
 				overhaulEnchantingTable + allowTreasureEnchantmentsInEnchantingTable +
 				singleLevelMode + enchantmentLimit +
-				allowInfinityOnCrossbows + allTridentsHaveLoyalty +
-				channelingIgnitesOnMelee + channelingWorksWhenNotThundering +
-				fireAspectWorksAsFlintAndSteel + freeEnchantedBookMerging +
+				accurateFishingBobbers + allowInfinityOnCrossbows + allTridentsHaveLoyalty +
+				channelingIgnitesOnMelee + channelingWorksWhenNotThundering + crossbowsPullFromInventory +
+				drownedUseHeldTrident +
+				enchantedChestplatesIncreaseAirMobility +
+				fasterBows + fireAspectWorksAsFlintAndSteel + freeEnchantedBookMerging +
 				luckOfTheSeaHasLure +
 				negateEnderPearlDamage +
+				projectilesBypassCooldown + projectilesNegateVelocity +
+				randomMobEnchantments + rebalanceArmor +
 				safeChanneling +
 				tridentsReturnFromVoid +
 				weakerFireAspect + weakerGoldenApple + weakerPotions +
 				weaponEnchantmentCooldownRequirement +
 				maxExtractingBlocks + maxLumberjackBlocks + maxLumberjackHorizontalLength +
+				coyoteBiteTicks +
 				unbreakingChangesFlag;
 		return encoding.hashCode();
 	}

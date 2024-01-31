@@ -58,10 +58,9 @@ public class WarpComponent implements AutoSyncedComponent, ClientTickingComponen
 
 	public static void maybeSet(LivingEntity user, ItemStack stack, PersistentProjectileEntity trident) {
 		if (EnchancementUtil.hasEnchantment(ModEnchantments.WARP, stack) || (user instanceof DrownedEntity && EnchancementUtil.hasEnchantment(ModEnchantments.WARP, user))) {
-			ModEntityComponents.WARP.maybeGet(trident).ifPresent(warpComponent -> {
-				warpComponent.setHasWarp(true);
-				warpComponent.sync();
-			});
+			WarpComponent warpComponent = ModEntityComponents.WARP.get(trident);
+			warpComponent.setHasWarp(true);
+			warpComponent.sync();
 		}
 	}
 }

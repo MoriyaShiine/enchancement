@@ -59,9 +59,9 @@ public class TorchEntity extends PersistentProjectileEntity {
 			entity = part.owner;
 		}
 		if (entity instanceof LivingEntity living) {
-			living.setOnFireFor(2);
 			playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 1, 1);
 			if (!getWorld().isClient) {
+				living.setOnFireFor(Math.min(16, (int) Math.ceil(living.getFireTicks() / 20F) + 2));
 				stuckArrows = living.getStuckArrowCount();
 			}
 		}
@@ -77,7 +77,7 @@ public class TorchEntity extends PersistentProjectileEntity {
 		state.onProjectileHit(getWorld(), state, blockHitResult, this);
 		if (!getWorld().isClient) {
 			discard();
-			if (shouldPlaceTorch && getOwner() instanceof PlayerEntity player) {
+			if (shouldPlaceTorch && getOwner() instanceof PlayerEntity player && player.getAbilities().allowModifyWorld) {
 				BlockPos pos = blockHitResult.getBlockPos().offset(blockHitResult.getSide());
 				ItemPlacementContext context = new ItemPlacementContext(player, Hand.MAIN_HAND, asItemStack(), blockHitResult);
 				if (context.canPlace()) {
@@ -112,5 +112,15 @@ public class TorchEntity extends PersistentProjectileEntity {
 	public void writeCustomDataToNbt(NbtCompound nbt) {
 		super.writeCustomDataToNbt(nbt);
 		nbt.putBoolean("ShouldPlaceTorch", shouldPlaceTorch);
+	}
+
+	@Override
+	public boolean isOnFire() {
+		return true;
+	}
+
+	@Override
+	public boolean doesRenderOnFire() {
+		return false;
 	}
 }

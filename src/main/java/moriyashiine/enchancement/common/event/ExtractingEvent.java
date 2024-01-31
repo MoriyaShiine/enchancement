@@ -25,14 +25,13 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public class ExtractingEvent implements PlayerBlockBreakEvents.Before {
+	public static final Map<Block, Block> BASE_BLOCK_MAP = new HashMap<>();
+
 	@Override
 	public boolean beforeBlockBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity blockEntity) {
 		if (!player.isSneaking()) {
@@ -87,6 +86,10 @@ public class ExtractingEvent implements PlayerBlockBreakEvents.Before {
 	}
 
 	private static Block getBaseBlock(BlockState state) {
+		Block baseBlock = BASE_BLOCK_MAP.get(state.getBlock());
+		if (baseBlock != null) {
+			return baseBlock;
+		}
 		if (state.isIn(ModTags.Blocks.NETHER_ORES)) {
 			return Blocks.NETHERRACK;
 		} else if (state.isIn(ModTags.Blocks.END_ORES)) {

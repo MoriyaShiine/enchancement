@@ -13,6 +13,7 @@ import moriyashiine.enchancement.client.render.entity.IceShardEntityRenderer;
 import moriyashiine.enchancement.client.render.entity.TorchEntityRenderer;
 import moriyashiine.enchancement.client.render.entity.mob.FrozenPlayerEntityRenderer;
 import moriyashiine.enchancement.client.screen.EnchantingTableScreen;
+import moriyashiine.enchancement.client.util.EnchancementClientUtil;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
@@ -20,8 +21,7 @@ import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.brimstone.CrossbowItemAccessor;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -41,13 +41,18 @@ import net.minecraft.item.Items;
 import net.minecraft.resource.ResourceType;
 import org.lwjgl.glfw.GLFW;
 
-@Environment(EnvType.CLIENT)
+import java.util.function.Supplier;
+
 public class EnchancementClient implements ClientModInitializer {
-	public static final KeyBinding STRAFE_KEYBINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".strafe", GLFW.GLFW_KEY_UNKNOWN, "key.categories." + Enchancement.MOD_ID));
+	public static final KeyBinding DASH_KEYBINDING = registerKeyBinding(() -> KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".dash", GLFW.GLFW_KEY_LEFT_SHIFT, "key.categories." + Enchancement.MOD_ID)));
+	public static final KeyBinding SLAM_KEYBINDING = registerKeyBinding(() -> KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".slam", GLFW.GLFW_KEY_LEFT_CONTROL, "key.categories." + Enchancement.MOD_ID)));
+	public static final KeyBinding SLIDE_KEYBINDING = registerKeyBinding(() -> KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".slide", GLFW.GLFW_KEY_LEFT_CONTROL, "key.categories." + Enchancement.MOD_ID)));
+	public static final KeyBinding STRAFE_KEYBINDING = registerKeyBinding(() -> KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".strafe", GLFW.GLFW_KEY_LEFT_CONTROL, "key.categories." + Enchancement.MOD_ID)));
 
 	@Override
 	public void onInitializeClient() {
 		ClientPlayNetworking.registerGlobalReceiver(EnforceConfigMatchPacket.ID, new EnforceConfigMatchPacket.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(SyncEnchantingMaterialMapPacket.ID, new SyncEnchantingMaterialMapPacket.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(SyncEnchantingTableCostPacket.ID, new SyncEnchantingTableCostPacket.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(AddStrafeParticlesPacket.ID, new AddStrafeParticlesPacket.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(AddGaleParticlesPacket.ID, new AddGaleParticlesPacket.Receiver());
@@ -73,15 +78,25 @@ public class EnchancementClient implements ClientModInitializer {
 		HandledScreens.register(ModScreenHandlerTypes.ENCHANTING_TABLE, EnchantingTableScreen::new);
 		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(FrozenReloadListener.INSTANCE);
 		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(Enchancement.id("alternate_dash"), modContainer, ResourcePackActivationType.NORMAL));
+		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(Enchancement.id("alternate_gale"), modContainer, ResourcePackActivationType.NORMAL));
 		initEvents();
 	}
 
 	private void initEvents() {
 		ItemTooltipCallback.EVENT.register(new EnchantmentDescriptionsEvent());
+		ClientTickEvents.END_WORLD_TICK.register(new CoyoteBiteEvent());
 		ItemTooltipCallback.EVENT.register(new AssimilationTooltipEvent());
+//		HudRenderCallback.EVENT.register(new StrafeRenderEvent());
+		ItemTooltipCallback.EVENT.register(new AdrenalineRenderEvent());
 		HudRenderCallback.EVENT.register(new DashRenderEvent());
 		HudRenderCallback.EVENT.register(new BouncyRenderEvent());
 		HudRenderCallback.EVENT.register(new GaleRenderEvent());
 		HudRenderCallback.EVENT.register(new BrimstoneRenderEvent());
+	}
+
+	private static KeyBinding registerKeyBinding(Supplier<KeyBinding> supplier) {
+		KeyBinding keyBinding = supplier.get();
+		EnchancementClientUtil.VANILLA_AND_ENCHANCEMENT_KEYBINDINGS.add(keyBinding);
+		return keyBinding;
 	}
 }

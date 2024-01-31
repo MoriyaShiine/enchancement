@@ -11,7 +11,7 @@ import net.minecraft.entity.EquipmentSlot;
 
 public class BouncyEnchantment extends EmptyEnchantment {
 	public BouncyEnchantment(Rarity weight, EnchantmentTarget type, EquipmentSlot... slotTypes) {
-		super(weight, type, slotTypes);
+		super(2, weight, type, slotTypes);
 	}
 
 	@Override

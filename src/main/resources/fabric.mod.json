@@ -21,9 +21,6 @@
   "icon": "assets/enchancement/icon.png",
   "environment": "*",
   "entrypoints": {
-	"preLaunch": [
-	  "moriyashiine.enchancement.common.ModPreLaunchEntrypoint"
-	],
 	"main": [
 	  "moriyashiine.enchancement.common.Enchancement"
 	],
@@ -50,6 +47,9 @@
   },
   "custom": {
 	"cardinal-components": [
+	  "enchancement:extended_water",
+	  "enchancement:air_mobility",
+	  "enchancement:projectile_timer",
 	  "enchancement:strafe",
 	  "enchancement:dash",
 	  "enchancement:slide",

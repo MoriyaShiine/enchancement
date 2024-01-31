@@ -37,7 +37,7 @@ public class CrossbowItemMixin {
 			int count = MathHelper.nextInt(world.random, 8, 16);
 			int multishot = EnchantmentHelper.getLevel(Enchantments.MULTISHOT, crossbow);
 			while (multishot > 0) {
-				count *= 1.5F;
+				count = (int) (count * 1.5F);
 				multishot--;
 			}
 			for (int i = 0; i < count; i++) {

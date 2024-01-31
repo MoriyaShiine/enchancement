@@ -27,8 +27,9 @@ public class EnchantmentHelperMixin {
 
 	@Inject(method = "getLooting", at = @At("HEAD"), cancellable = true)
 	private static void enchancement$scooping(LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
-		if (EnchancementUtil.hasEnchantment(ModEnchantments.SCOOPING, entity)) {
-			cir.setReturnValue(Enchantments.LOOTING.getMaxLevel() + 2);
+		int level = EnchantmentHelper.getLevel(ModEnchantments.SCOOPING, entity.getMainHandStack());
+		if (level > 0) {
+			cir.setReturnValue(EnchancementUtil.getModifiedMaxLevel(entity.getMainHandStack(), Enchantments.LOOTING.getMaxLevel() + 2));
 		}
 	}
 }

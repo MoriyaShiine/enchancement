@@ -31,7 +31,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
 
 	@ModifyArg(method = "updatePose", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setPose(Lnet/minecraft/entity/EntityPose;)V"))
 	private EntityPose enchancement$buoy(EntityPose value) {
-		if (value == EntityPose.SWIMMING && EnchancementUtil.hasEnchantment(ModEnchantments.BUOY, this)) {
+		if (value == EntityPose.SWIMMING && isTouchingWater() && EnchancementUtil.hasEnchantment(ModEnchantments.BUOY, this)) {
 			return EntityPose.STANDING;
 		}
 		return value;

@@ -18,7 +18,11 @@ import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.registry.Registries;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -30,6 +34,8 @@ import net.minecraft.util.math.RotationAxis;
 import java.util.List;
 
 public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHandler> {
+	public static boolean forceTransparency = false;
+
 	private static final Identifier TEXTURE = Enchancement.id("textures/gui/container/enchanting_table.png");
 	private static final Identifier BOOK_TEXTURE = new Identifier("textures/entity/enchanting_table_book.png");
 
@@ -45,9 +51,12 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 	private float pageRotationSpeed;
 
 	private int highlightedEnchantmentIndex = -1;
+	private int ingredientIndex = 0, ingredientIndexTicks = 0;
 
 	public EnchantingTableScreen(EnchantingTableScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
+		backgroundHeight += 16;
+		titleY -= 16;
 	}
 
 	@Override
@@ -65,36 +74,67 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 
 	@Override
 	protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
+		int strength = 0;
 		int posX = (width - backgroundWidth) / 2;
-		int posY = (height - backgroundHeight) / 2;
+		int posY = (height - backgroundHeight) / 2 - 16;
 		context.drawTexture(TEXTURE, posX, posY, 0, 0, backgroundWidth, backgroundHeight);
 		if (client != null && client.player != null && handler.canEnchant(client.player, true)) {
-			if (handler.validEnchantments.size() > 3) {
+			strength = EnchancementUtil.hasWeakEnchantments(handler.getSlot(0).getStack()) ? 1 : 2;
+			if (!handler.getRepairIngredient().isEmpty()) {
+				forceTransparency = true;
+				context.setShaderColor(1, 1, 1, 0.5F);
+				context.drawItem(handler.getRepairIngredient().getMatchingStacks()[ingredientIndex], (width - backgroundWidth) / 2 + 25, (height - backgroundHeight) / 2 + 51);
+				context.setShaderColor(1, 1, 1, 1);
+				forceTransparency = false;
+			}
+			if (handler.validEnchantments.size() > 4) {
 				if (isInUpButtonBounds(posX, posY, mouseX, mouseY)) {
-					context.drawTexture(TEXTURE, posX + 154, posY + 12, 192, 0, 16, 16);
+					context.drawTexture(TEXTURE, posX + 154, posY + 28, 192, 0, 16, 16);
 				} else {
-					context.drawTexture(TEXTURE, posX + 154, posY + 12, 176, 0, 16, 16);
+					context.drawTexture(TEXTURE, posX + 154, posY + 28, 176, 0, 16, 16);
 				}
 				if (isInDownButtonBounds(posX, posY, mouseX, mouseY)) {
-					context.drawTexture(TEXTURE, posX + 154, posY + 29, 192, 16, 16, 16);
+					context.drawTexture(TEXTURE, posX + 154, posY + 45, 192, 16, 16, 16);
 				} else {
-					context.drawTexture(TEXTURE, posX + 154, posY + 29, 176, 16, 16, 16);
+					context.drawTexture(TEXTURE, posX + 154, posY + 45, 176, 16, 16, 16);
 				}
 			}
 			if (isInEnchantButtonBounds(posX, posY, mouseX, mouseY)) {
-				context.drawTexture(TEXTURE, posX + 154, posY + 50, 192, 32, 16, 16);
+				context.drawTexture(TEXTURE, posX + 154, posY + 66, 192, 32, 16, 16);
 				if (infoTexts == null) {
-					infoTexts = List.of(Text.translatable("tooltip." + Enchancement.MOD_ID + ".experience_level_cost", handler.getCost()).formatted(Formatting.DARK_GREEN), Text.translatable("tooltip." + Enchancement.MOD_ID + ".lapis_lazuli_cost", handler.getCost()).formatted(Formatting.BLUE));
+					MutableText xpCost = Text.translatable("tooltip." + Enchancement.MOD_ID + ".experience_level_cost", handler.getCost()).formatted(Formatting.GREEN);
+					MutableText lapisCost = Text.translatable("tooltip." + Enchancement.MOD_ID + ".material_cost", handler.getCost(), Text.translatable(Registries.ITEM.getId(Items.LAPIS_LAZULI).toTranslationKey("item"))).formatted(Formatting.GREEN);
+					MutableText repairCost = null;
+					if (!handler.getRepairIngredient().isEmpty()) {
+						Item currentItem = handler.getRepairIngredient().getMatchingStacks()[ingredientIndex].getItem();
+						repairCost = Text.translatable("tooltip." + Enchancement.MOD_ID + ".material_cost", handler.getCost(), Text.translatable(Registries.ITEM.getId(currentItem).toTranslationKey(currentItem instanceof BlockItem ? "block" : "item"))).formatted(Formatting.GREEN);
+					}
+					if (!client.player.isCreative()) {
+						if (client.player.experienceLevel < handler.getCost()) {
+							xpCost.formatted(Formatting.RED);
+						}
+						if (handler.getSlot(1).getStack().getCount() < handler.getCost()) {
+							lapisCost.formatted(Formatting.RED);
+						}
+						if (repairCost != null && handler.getSlot(2).getStack().getCount() < handler.getCost()) {
+							repairCost.formatted(Formatting.RED);
+						}
+					}
+					if (repairCost == null) {
+						infoTexts = List.of(xpCost, lapisCost);
+					} else {
+						infoTexts = List.of(xpCost, lapisCost, repairCost);
+					}
 				}
 				context.drawTooltip(textRenderer, infoTexts, mouseX, mouseY);
 			} else {
-				context.drawTexture(TEXTURE, posX + 154, posY + 50, 176, 32, 16, 16);
+				context.drawTexture(TEXTURE, posX + 154, posY + 66, 176, 32, 16, 16);
 				infoTexts = null;
 			}
 			highlightedEnchantmentIndex = -1;
-			for (int i = 0; i < handler.validEnchantments.size() && i < 3; i++) {
+			for (int i = 0; i < handler.validEnchantments.size() && i < 4; i++) {
 				Enchantment enchantment;
-				if (handler.validEnchantments.size() <= 3) {
+				if (handler.validEnchantments.size() <= 4) {
 					enchantment = handler.validEnchantments.get(i);
 				} else {
 					enchantment = handler.getEnchantmentFromViewIndex(i);
@@ -107,8 +147,9 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 						break;
 					}
 				}
+				enchantmentName = Text.literal(textRenderer.trimToWidth(enchantmentName.getString(), 80));
 				context.drawText(textRenderer, handler.selectedEnchantments.contains(enchantment) ? enchantmentName.formatted(Formatting.DARK_GREEN) : isAllowed ? enchantmentName.formatted(Formatting.BLACK) : enchantmentName.formatted(Formatting.DARK_RED, Formatting.STRIKETHROUGH), posX + 66, posY + 16 + (i * 19), 0xFFFFFF, false);
-				if (isInBounds(posX, posY + 16 + (i * 19), mouseX, mouseY, 64, 67 + textRenderer.getWidth(enchantmentName), 0, 8)) {
+				if (isInBounds(posX, posY + 11 + (i * 19), mouseX, mouseY, 64, 67 + textRenderer.getWidth(enchantmentName), 0, 16)) {
 					if (isAllowed || handler.selectedEnchantments.contains(enchantment)) {
 						highlightedEnchantmentIndex = i;
 					}
@@ -119,6 +160,14 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 				} else {
 					infoTexts = null;
 				}
+			}
+		}
+		for (int i = 2; i > 0; i--) {
+			int startX = posX + 39 + MathHelper.lerp(MathHelper.lerp(delta, pageTurningSpeed, nextPageTurningSpeed), 0, 4);
+			int startY = posY + 41 - (i * 10);
+			context.drawTexture(TEXTURE, startX, startY, 176, 48, 8, 8);
+			if (i <= strength) {
+				context.drawTexture(TEXTURE, startX, startY, 184, 48, 8, 8);
 			}
 		}
 		drawBook(context, (width - backgroundWidth) / 2, (height - backgroundHeight) / 2, client.getTickDelta());
@@ -139,17 +188,26 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 		nextPageTurningSpeed = MathHelper.clamp(nextPageTurningSpeed, 0, 1);
 		pageRotationSpeed += (MathHelper.clamp((approximatePageAngle - nextPageAngle) * 0.4F, -0.2F, 0.2F) - pageRotationSpeed) * 0.9F;
 		nextPageAngle += pageRotationSpeed;
+
+		if (handler.getRepairIngredient().getMatchingStacks().length > 1) {
+			ingredientIndexTicks++;
+			if (ingredientIndexTicks % 20 == 0) {
+				ingredientIndex = (ingredientIndex + 1) % handler.getRepairIngredient().getMatchingStacks().length;
+			}
+		} else {
+			ingredientIndex = ingredientIndexTicks = 0;
+		}
 	}
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		int posX = (width - backgroundWidth) / 2;
-		int posY = (height - backgroundHeight) / 2;
+		int posY = (height - backgroundHeight) / 2 - 16;
 		if (handler.canEnchant(client.player, client.player.isCreative()) && isInEnchantButtonBounds(posX, posY, (int) mouseX, (int) mouseY) && !handler.selectedEnchantments.isEmpty() && handler.onButtonClick(client.player, 0)) {
 			client.interactionManager.clickButton(handler.syncId, 0);
 			return true;
 		}
-		if (handler.validEnchantments.size() > 3) {
+		if (handler.validEnchantments.size() > 4) {
 			if (isInUpButtonBounds(posX, posY, (int) mouseX, (int) mouseY) && handler.onButtonClick(client.player, 1)) {
 				client.interactionManager.clickButton(handler.syncId, 1);
 				client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1));
@@ -163,8 +221,8 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 				return true;
 			}
 		}
-		if (highlightedEnchantmentIndex >= 0 && handler.onButtonClick(client.player, highlightedEnchantmentIndex + 3)) {
-			client.interactionManager.clickButton(handler.syncId, highlightedEnchantmentIndex + 3);
+		if (highlightedEnchantmentIndex >= 0 && handler.onButtonClick(client.player, highlightedEnchantmentIndex + 4)) {
+			client.interactionManager.clickButton(handler.syncId, highlightedEnchantmentIndex + 4);
 			client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1));
 			return true;
 		}
@@ -173,7 +231,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
-		if (handler.validEnchantments.size() > 3) {
+		if (handler.validEnchantments.size() > 4) {
 			int delta = (amount > 0 ? -1 : 1);
 			handler.updateViewIndex(amount > 0);
 			client.interactionManager.clickButton(handler.syncId, amount > 0 ? 1 : 2);
@@ -188,7 +246,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 		float deltaPageangle = MathHelper.lerp(delta, this.pageAngle, this.nextPageAngle);
 		DiffuseLighting.method_34742();
 		context.getMatrices().push();
-		context.getMatrices().translate(x + 33, y + 31, 100);
+		context.getMatrices().translate(x + 23, y + 15, 100);
 		context.getMatrices().scale(-40, 40, 40);
 		context.getMatrices().multiply(RotationAxis.POSITIVE_X.rotationDegrees(25));
 		context.getMatrices().translate((1 - deltaTurningSpeed) * 0.2F, (1 - deltaTurningSpeed) * 0.1F, (1 - deltaTurningSpeed) * 0.25F);
@@ -207,14 +265,14 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 	}
 
 	private static boolean isInUpButtonBounds(int posX, int posY, int mouseX, int mouseY) {
-		return isInBounds(posX, posY, mouseX, mouseY, 154, 170, 12, 28);
+		return isInBounds(posX, posY, mouseX, mouseY, 154, 170, 28, 44);
 	}
 
 	private static boolean isInDownButtonBounds(int posX, int posY, int mouseX, int mouseY) {
-		return isInBounds(posX, posY, mouseX, mouseY, 154, 170, 29, 45);
+		return isInBounds(posX, posY, mouseX, mouseY, 154, 170, 45, 61);
 	}
 
 	private static boolean isInEnchantButtonBounds(int posX, int posY, int mouseX, int mouseY) {
-		return isInBounds(posX, posY, mouseX, mouseY, 154, 170, 50, 66);
+		return isInBounds(posX, posY, mouseX, mouseY, 154, 170, 66, 82);
 	}
 }

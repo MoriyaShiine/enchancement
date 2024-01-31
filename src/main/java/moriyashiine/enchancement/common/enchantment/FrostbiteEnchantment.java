@@ -16,7 +16,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 public class FrostbiteEnchantment extends EmptyEnchantment {
 	public FrostbiteEnchantment(Rarity weight, EnchantmentTarget type, EquipmentSlot... slotTypes) {
-		super(weight, type, slotTypes);
+		super(2, weight, type, slotTypes);
 	}
 
 	@Override
@@ -28,8 +28,9 @@ public class FrostbiteEnchantment extends EmptyEnchantment {
 	public void onTargetDamaged(LivingEntity user, Entity target, int level) {
 		if (!target.getWorld().isClient && target instanceof LivingEntity living && EnchancementUtil.hasEnchantment(this, user.getMainHandStack())) {
 			if (!living.isDead()) {
-				if (target.getFrozenTicks() < 300) {
-					target.setFrozenTicks(300);
+				int frozenTicks = level * 120;
+				if (target.getFrozenTicks() < frozenTicks) {
+					target.setFrozenTicks(frozenTicks);
 				}
 			} else if (target instanceof ServerPlayerEntity player) {
 				ResetFrozenTicksPacket.send(player);

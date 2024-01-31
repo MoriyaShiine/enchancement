@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.entity.projectile;
 
 import moriyashiine.enchancement.common.init.ModDamageTypes;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -18,6 +19,7 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.DustParticleEffect;
+import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
@@ -43,7 +45,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 	public float maxY = 0;
 	public int ticksExisted = 0;
 
-	private final Set<Entity> killedEntities = new HashSet<>();
+	private final Set<Entity> hitEntities = new HashSet<>(), killedEntities = new HashSet<>();
 
 	public BrimstoneEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
 		super(entityType, world);
@@ -80,19 +82,26 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 				}
 				break;
 			}
-			if (ticksExisted == 3 && getOwner() instanceof LivingEntity owner) {
-				getWorld().getOtherEntities(owner, Box.from(hitResult.getPos()).expand(0.5)).forEach(entity -> {
-					if (entity instanceof EnderDragonPart part) {
-						entity = part.owner;
-					}
-					if (entity instanceof LivingEntity living && !living.isDead()) {
-						if (getWorld().isClient) {
-							addParticles(living.getX(), living.getRandomBodyY(), living.getZ());
+			if (ticksExisted == 3) {
+				Entity owner = getOwner();
+				getWorld().getOtherEntities(owner, Box.from(hitResult.getPos()).expand(0.5), EntityPredicates.EXCEPT_SPECTATOR.and(entity -> !hitEntities.contains(entity) && !(entity instanceof EnderDragonPart) && EnchancementUtil.shouldHurt(owner, entity))).forEach(entity -> {
+					if (getWorld().isClient) {
+						addParticles(entity.getX(), entity.getRandomBodyY(), entity.getZ());
+					} else {
+						double damage = getDamage();
+						if (entity instanceof LivingEntity living) {
+							damage *= living.getMaxHealth() / 20F;
+						}
+						if (maxY < 16) {
+							damage *= MathHelper.lerp(maxY / 16F, 0.25F, 1);
 						} else {
-							living.damage(ModDamageTypes.create(getWorld(), ModDamageTypes.BRIMSTONE, this, owner), (float) ((Math.min(50, living.getMaxHealth()) * (getDamage() / 20F)) * (1 + (maxY / 224))));
-							if (living.isDead()) {
-								killedEntities.add(living);
-							}
+							damage *= Math.min(2, MathHelper.lerp((maxY - 16) / 200F, 1F, 2F));
+						}
+						damage = Math.min(50, damage);
+						entity.damage(ModDamageTypes.create(getWorld(), ModDamageTypes.BRIMSTONE, this, owner), (float) damage);
+						hitEntities.add(entity);
+						if (entity instanceof LivingEntity living && living.isDead()) {
+							killedEntities.add(living);
 						}
 					}
 				});

@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.packet;
 
 import io.netty.buffer.Unpooled;
 import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.component.entity.SlideComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
@@ -32,11 +33,12 @@ public class SlideVelocityPacket {
 		public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
 			float velocityX = buf.readFloat();
 			float velocityZ = buf.readFloat();
-			server.execute(() -> ModEntityComponents.SLIDE.maybeGet(player).ifPresent(slideComponent -> {
+			server.execute(() -> {
+				SlideComponent slideComponent = ModEntityComponents.SLIDE.get(player);
 				if (slideComponent.hasSlide()) {
 					slideComponent.setVelocity(new Vec3d(velocityX, 0, velocityZ));
 				}
-			}));
+			});
 		}
 	}
 }
