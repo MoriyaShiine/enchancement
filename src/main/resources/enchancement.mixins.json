@@ -116,6 +116,7 @@
 	"vanillachanges.singlelevelmode.SetEnchantmentsLootFunctionMixin",
 	"vanillachanges.singlelevelmode.TradeOffersEnchantBookFactoryMixin",
 	"vanillachanges.tridentsreturnfromvoid.TridentEntityMixin",
+	"vanillachanges.unbreakingchanges.GrindstoneScreenHandlerMixin",
 	"vanillachanges.unbreakingchanges.ItemStackMixin",
 	"vanillachanges.unbreakingchanges.SetDamageLootFunctionMixin",
 	"vanillachanges.weakerfireaspect.MobEntityMixin",

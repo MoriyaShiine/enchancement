@@ -181,12 +181,14 @@ public class EnchancementUtil {
 	}
 
 	public static boolean shouldBeUnbreakable(ItemStack stack) {
-		int flag = ModConfig.unbreakingChangesFlag;
-		if (flag >= 0 && !stack.isIn(ModTags.Items.RETAINS_DURABILITY)) {
-			if (flag == 0) {
-				return !stack.isEmpty() && stack.getMaxDamage() > 0;
+		if (!stack.isEmpty()) {
+			int flag = ModConfig.unbreakingChangesFlag;
+			if (flag >= 0 && !stack.isIn(ModTags.Items.RETAINS_DURABILITY)) {
+				if (flag == 0) {
+					return stack.getMaxDamage() > 0;
+				}
+				return EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) >= flag;
 			}
-			return EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) >= flag;
 		}
 		return false;
 	}
