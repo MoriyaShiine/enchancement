@@ -84,10 +84,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 			}
 			if (ticksExisted == 3) {
 				Entity owner = getOwner();
-				getWorld().getOtherEntities(owner, Box.from(hitResult.getPos()).expand(0.5), EntityPredicates.EXCEPT_SPECTATOR.and(entity -> !hitEntities.contains(entity) && EnchancementUtil.shouldHurt(owner, entity))).forEach(entity -> {
-					if (entity instanceof EnderDragonPart part) {
-						entity = part.owner;
-					}
+				getWorld().getOtherEntities(owner, Box.from(hitResult.getPos()).expand(0.5), EntityPredicates.EXCEPT_SPECTATOR.and(entity -> !hitEntities.contains(entity) && !(entity instanceof EnderDragonPart) && EnchancementUtil.shouldHurt(owner, entity))).forEach(entity -> {
 					if (getWorld().isClient) {
 						addParticles(entity.getX(), entity.getRandomBodyY(), entity.getZ());
 					} else {
