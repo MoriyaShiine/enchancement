@@ -6,12 +6,12 @@ package moriyashiine.enchancement.common.entity.projectile;
 
 import moriyashiine.enchancement.common.init.ModDamageTypes;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
+import moriyashiine.enchancement.common.init.ModTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.boss.dragon.EnderDragonPart;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -84,7 +84,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 			}
 			if (ticksExisted == 3) {
 				Entity owner = getOwner();
-				getWorld().getOtherEntities(owner, Box.from(hitResult.getPos()).expand(0.5), EntityPredicates.EXCEPT_SPECTATOR.and(entity -> !hitEntities.contains(entity) && !(entity instanceof EnderDragonPart) && EnchancementUtil.shouldHurt(owner, entity))).forEach(entity -> {
+				getWorld().getOtherEntities(owner, Box.from(hitResult.getPos()).expand(0.5), EntityPredicates.EXCEPT_SPECTATOR.and(entity -> canEntityBeHit(owner, entity))).forEach(entity -> {
 					if (getWorld().isClient) {
 						addParticles(entity.getX(), entity.getRandomBodyY(), entity.getZ());
 					} else {
@@ -181,5 +181,12 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 		for (int i = 0; i < 8; i++) {
 			getWorld().addParticle(PARTICLE, x + MathHelper.nextFloat(random, -range, range), y + MathHelper.nextFloat(random, -range, range), z + MathHelper.nextFloat(random, -range, range), MathHelper.nextFloat(random, -1, 1), MathHelper.nextFloat(random, -1, 1), MathHelper.nextFloat(random, -1, 1));
 		}
+	}
+
+	private boolean canEntityBeHit(Entity owner, Entity entity) {
+		if (entity instanceof LivingEntity || entity.getType().isIn(ModTags.EntityTypes.BRIMSTONE_HITTABLE)) {
+			return !hitEntities.contains(entity) && entity.isAlive() && EnchancementUtil.shouldHurt(owner, entity);
+		}
+		return false;
 	}
 }

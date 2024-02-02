@@ -26,6 +26,7 @@ public class ModTags {
 	}
 
 	public static class EntityTypes {
+		public static final TagKey<EntityType<?>> BRIMSTONE_HITTABLE = TagKey.of(Registries.ENTITY_TYPE.getKey(), Enchancement.id("brimstone_hittable"));
 		public static final TagKey<EntityType<?>> BYPASSES_DECREASING_DAMAGE = TagKey.of(Registries.ENTITY_TYPE.getKey(), Enchancement.id("bypasses_decreasing_damage"));
 		public static final TagKey<EntityType<?>> CANNOT_FREEZE = TagKey.of(Registries.ENTITY_TYPE.getKey(), Enchancement.id("cannot_freeze"));
 		public static final TagKey<EntityType<?>> CANNOT_BURY = TagKey.of(Registries.ENTITY_TYPE.getKey(), Enchancement.id("cannot_bury"));
