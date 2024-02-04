@@ -3,8 +3,8 @@ description: File a bug report
 body:
   - type: input
     attributes:
-      label: Mod version
-      description: Please note that unless this bug still exists on the latest version, it will not be fixed.
+      label: Mod version (NOT Minecraft version)
+      description: Please note that unless this bug still exists on the latest avaiable Mod version and Minecraft version, it will not be fixed. Versions titled "latest,", "newest," or some other vague indiciator will be closed without comment.
     validations:
       required: true
   - type: textarea
@@ -16,3 +16,5 @@ body:
     attributes:
       label: Log or crash report
       description: Please use [gist](https://gist.github.com/).
+    validations:
+      required: true
