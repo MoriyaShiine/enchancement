@@ -42,11 +42,11 @@ import java.util.Map;
 public class EnchantingTableScreenHandler extends ScreenHandler {
 	public static final Map<Item, Ingredient> ENCHANTING_MATERIAL_MAP = new HashMap<>();
 
-	public List<Enchantment> validEnchantments = null, selectedEnchantments = null;
+	public final List<Enchantment> validEnchantments = new ArrayList<>(), selectedEnchantments = new ArrayList<>();
 	public int viewIndex = 0;
 
-	private ItemStack enchantingStack = null;
-	private Ingredient repairIngredient = null;
+	private ItemStack enchantingStack = ItemStack.EMPTY;
+	private Ingredient repairIngredient = Ingredient.EMPTY;
 	private int cost = 0;
 
 	private final Inventory inventory = new SimpleInventory(3) {
@@ -87,11 +87,11 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 
 			@Override
 			public void onTakeItem(PlayerEntity player, ItemStack stack) {
-				validEnchantments = null;
-				selectedEnchantments = null;
+				validEnchantments.clear();
+				selectedEnchantments.clear();
 				viewIndex = 0;
-				enchantingStack = null;
-				repairIngredient = null;
+				enchantingStack = ItemStack.EMPTY;
+				repairIngredient = Ingredient.EMPTY;
 				cost = 0;
 				player.getInventory().offerOrDrop(slots.get(2).getStack());
 				super.onTakeItem(player, stack);
@@ -232,8 +232,8 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		if (inventory == this.inventory) {
 			ItemStack stack = slots.get(0).getStack();
 			if (enchantingStack != stack) {
-				validEnchantments = new ArrayList<>();
-				selectedEnchantments = new ArrayList<>();
+				validEnchantments.clear();
+				selectedEnchantments.clear();
 				viewIndex = 0;
 				enchantingStack = stack;
 				repairIngredient = getRepairIngredient(stack);
