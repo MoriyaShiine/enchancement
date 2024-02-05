@@ -30,11 +30,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Mixin(Block.class)
 public class BlockMixin {
-	@Inject(method = "getDroppedStacks(Lnet/minecraft/block/BlockState;Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/entity/BlockEntity;Lnet/minecraft/entity/Entity;Lnet/minecraft/item/ItemStack;)Ljava/util/List;", at = @At("RETURN"))
+	@Inject(method = "getDroppedStacks(Lnet/minecraft/block/BlockState;Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/entity/BlockEntity;Lnet/minecraft/entity/Entity;Lnet/minecraft/item/ItemStack;)Ljava/util/List;", at = @At("RETURN"), cancellable = true)
 	private static void enchancement$molten(BlockState state, ServerWorld world, BlockPos pos, @Nullable BlockEntity blockEntity, @Nullable Entity entity, ItemStack stack, CallbackInfoReturnable<List<ItemStack>> cir) {
 		if (entity != null && entity.isSneaking()) {
 			return;
@@ -42,6 +43,7 @@ public class BlockMixin {
 		if (EnchancementUtil.hasEnchantment(ModEnchantments.MOLTEN, stack)) {
 			List<ItemStack> drops = cir.getReturnValue();
 			if (!drops.isEmpty()) {
+				drops = new ArrayList<>(drops);
 				boolean smeltsSelf = state.isIn(ModTags.Blocks.SMELTS_SELF);
 				for (int i = 0; i < drops.size(); i++) {
 					Pair<ItemStack, Float> smelted = getSmeltedStack(world, smeltsSelf ? new ItemStack(state.getBlock()) : drops.get(i));
@@ -52,6 +54,7 @@ public class BlockMixin {
 						AbstractFurnaceBlockEntityAccessor.enchancement$dropExperience(world, entity != null && EnchancementUtil.hasEnchantment(ModEnchantments.EXTRACTING, stack) ? entity.getPos() : Vec3d.of(pos), 1, smelted.getRight());
 					}
 				}
+				cir.setReturnValue(drops);
 			}
 		}
 	}
