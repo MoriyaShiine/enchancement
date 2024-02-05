@@ -14,7 +14,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.EnchantingTableBlock;
 import net.minecraft.block.entity.ChiseledBookshelfBlockEntity;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentLevelEntry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -68,9 +67,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		addSlot(new Slot(inventory, 0, 15, 31) {
 			@Override
 			public boolean canInsert(ItemStack stack) {
-				if (stack.getItem() == Items.BOOK) {
-					return true;
-				} else if (stack.isEnchantable()) {
+				if (stack.isEnchantable()) {
 					for (Enchantment enchantment : Registries.ENCHANTMENT) {
 						if (isEnchantmentAllowed(enchantment, stack)) {
 							return true;
@@ -174,17 +171,8 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 			if (canEnchant(player, player.isCreative())) {
 				context.run((world, pos) -> {
 					ItemStack stack = slots.get(0).getStack();
-					boolean stackChanged = false;
-					if (stack.isOf(Items.BOOK)) {
-						stack = new ItemStack(Items.ENCHANTED_BOOK);
-						for (Enchantment enchantment : selectedEnchantments) {
-							EnchantedBookItem.addEnchantment(stack, new EnchantmentLevelEntry(enchantment, enchantment.getMaxLevel()));
-						}
-						stackChanged = true;
-					} else {
-						for (Enchantment enchantment : selectedEnchantments) {
-							stack.addEnchantment(enchantment, EnchancementUtil.getModifiedMaxLevel(stack, enchantment.getMaxLevel()));
-						}
+					for (Enchantment enchantment : selectedEnchantments) {
+						stack.addEnchantment(enchantment, EnchancementUtil.getModifiedMaxLevel(stack, enchantment.getMaxLevel()));
 					}
 					if (!player.isCreative() && cost > 0) {
 						player.applyEnchantmentCosts(stack, cost);
@@ -197,9 +185,6 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 						if (!getRepairIngredient(slots.get(0).getStack()).isEmpty()) {
 							slots.get(2).getStack().decrement(cost);
 						}
-					}
-					if (stackChanged) {
-						slots.get(0).setStack(stack);
 					}
 					inventory.markDirty();
 				});
@@ -306,8 +291,6 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 			enchantability = armorItem.getEnchantability();
 		} else if (stack.getItem() instanceof ToolItem toolItem) {
 			enchantability = toolItem.getEnchantability();
-		} else if (stack.isOf(Items.BOOK)) {
-			enchantability = 30;
 		}
 		float[] bookshelfCountArray = {0};
 		context.run((world, pos) -> {
@@ -349,7 +332,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 	private static boolean isEnchantmentAllowed(Enchantment enchantment, ItemStack stack) {
 		if (enchantment.isAvailableForRandomSelection()) {
 			if (!enchantment.isTreasure() || ModConfig.allowTreasureEnchantmentsInEnchantingTable) {
-				if (stack.isOf(Items.BOOK) || enchantment.isAcceptableItem(stack)) {
+				if (enchantment.isAcceptableItem(stack)) {
 					return !Registries.ENCHANTMENT.entryOf(Registries.ENCHANTMENT.getKey(enchantment).orElse(null)).isIn(ModTags.Enchantments.UNSELECTABLE);
 				}
 			}
