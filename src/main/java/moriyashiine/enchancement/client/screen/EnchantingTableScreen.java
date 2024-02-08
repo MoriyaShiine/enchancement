@@ -102,7 +102,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 				context.drawTexture(TEXTURE, posX + 154, posY + 66, 192, 32, 16, 16);
 				if (infoTexts == null) {
 					MutableText xpCost = Text.translatable("tooltip." + Enchancement.MOD_ID + ".experience_level_cost", handler.getCost()).formatted(Formatting.GREEN);
-					MutableText lapisCost = Text.translatable("tooltip." + Enchancement.MOD_ID + ".material_cost", handler.getCost(), Text.translatable(Registries.ITEM.getId(Items.LAPIS_LAZULI).toTranslationKey("item"))).formatted(Formatting.GREEN);
+					MutableText lapisCost = Text.translatable("tooltip." + Enchancement.MOD_ID + ".material_cost", handler.getCost(), Text.translatable(Items.LAPIS_LAZULI.getTranslationKey())).formatted(Formatting.GREEN);
 					MutableText repairCost = null;
 					if (!handler.getRepairIngredient().isEmpty()) {
 						Item currentItem = handler.getRepairIngredient().getMatchingStacks()[ingredientIndex].getItem();
