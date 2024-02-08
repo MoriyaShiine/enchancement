@@ -18,7 +18,6 @@ import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -107,7 +106,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 					MutableText repairCost = null;
 					if (!handler.getRepairIngredient().isEmpty()) {
 						Item currentItem = handler.getRepairIngredient().getMatchingStacks()[ingredientIndex].getItem();
-						repairCost = Text.translatable("tooltip." + Enchancement.MOD_ID + ".material_cost", handler.getCost(), Text.translatable(Registries.ITEM.getId(currentItem).toTranslationKey(currentItem instanceof BlockItem ? "block" : "item"))).formatted(Formatting.GREEN);
+						repairCost = Text.translatable("tooltip." + Enchancement.MOD_ID + ".material_cost", handler.getCost(), Text.translatable(currentItem.getTranslationKey())).formatted(Formatting.GREEN);
 					}
 					if (!client.player.isCreative()) {
 						if (client.player.experienceLevel < handler.getCost()) {
