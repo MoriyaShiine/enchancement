@@ -130,15 +130,15 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 			ItemStack stackInSlot = slot.getStack();
 			stack = stackInSlot.copy();
 			if (index == 0 || index == 1 || index == 2) {
-				if (!insertItem(stackInSlot, 2, 38, false)) {
+				if (!insertItem(stackInSlot, 3, 38, false)) {
+					return ItemStack.EMPTY;
+				}
+			} else if (repairIngredient.test(stackInSlot)) {
+				if (!insertItem(stackInSlot, 2, 3, false)) {
 					return ItemStack.EMPTY;
 				}
 			} else if (stackInSlot.isOf(Items.LAPIS_LAZULI)) {
 				if (!insertItem(stackInSlot, 1, 2, false)) {
-					return ItemStack.EMPTY;
-				}
-			} else if (getRepairIngredient(slots.get(0).getStack()).test(stackInSlot)) {
-				if (!insertItem(stackInSlot, 2, 3, false)) {
 					return ItemStack.EMPTY;
 				}
 			} else if (!slots.get(0).hasStack() && slots.get(0).canInsert(stackInSlot)) {
