@@ -66,7 +66,7 @@ Of the core changes, this mod will:
 * Remove most vanilla enchantments from the game. Enchancement tries to make choosing your enchantments more fun and engaging by replacing many of the boring stat change enchantments with enchantments that grant the player unique abilities.
 
 Enchancement also adds some quality of life changes:
-* Attacking an entity for 3 ticks after it leaves your crosshair still applies damage.
+* Add Coyote Bite, which allows attacking an entity for 3 ticks after it leaves your crosshair.
 * Adds descriptions to the tooltip of enchanted items and colors enchantment names green.
 * Fishing Bobbers are accurately thrown instead of having a weird offset.
 * Infinity is allowed on Crossbows.
