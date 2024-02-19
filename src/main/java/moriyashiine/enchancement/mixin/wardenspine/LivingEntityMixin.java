@@ -44,7 +44,7 @@ public abstract class LivingEntityMixin extends Entity {
 					living.damage(getDamageSources().thorns(this), 4);
 					living.addStatusEffect(new StatusEffectInstance(StatusEffects.DARKNESS, level * 150));
 				}
-				return value * (1 - level * 0.4F);
+				return Math.max(0, value * (1 - level * 0.4F));
 			}
 		}
 		return value;

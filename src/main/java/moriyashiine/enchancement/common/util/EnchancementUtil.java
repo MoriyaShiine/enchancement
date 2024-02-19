@@ -223,9 +223,13 @@ public class EnchancementUtil {
 	}
 
 	public static float getMaxBonusBerserkDamage(ItemStack stack, int level) {
+		float divisor = 2F / level;
+		if (divisor <= 1E-3) {
+			return Integer.MAX_VALUE;
+		}
 		float maxBonus = 1;
 		for (EntityAttributeModifier modifier : stack.getAttributeModifiers(EquipmentSlot.MAINHAND).get(EntityAttributes.GENERIC_ATTACK_DAMAGE)) {
-			maxBonus += (float) (modifier.getValue() / (level == 1 ? 2 : 1));
+			maxBonus += (float) (modifier.getValue() / divisor);
 		}
 		return maxBonus / 2;
 	}
@@ -238,7 +242,7 @@ public class EnchancementUtil {
 				float bonus = 0;
 				while (health > living.getHealth()) {
 					health -= 2;
-					bonus += level == 1 ? 0.25F : 0.5F;
+					bonus += level * 0.25F;
 				}
 				return Math.min(bonus, getMaxBonusBerserkDamage(stack, level));
 			}
