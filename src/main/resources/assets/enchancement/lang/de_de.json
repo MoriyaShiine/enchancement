@@ -58,7 +58,7 @@
   "enchantment.enchancement.veil.desc": "Verringert die Erkennungsreichweite von Gegnern und verbirgt Ihren Namen hinter einer Wand.",
   "enchantment.enchancement.amphibious": "Amphibisch",
   "enchantment.enchancement.amphibious.desc": "Erhöht Unterwasserabbau- und Bewegungsgeschwindigkeit. Reduziert den Luftverbrauch unter Wasser und die Zeit, die man im Feuer verbringt. Löscht Sie sofort und ermöglicht die Verwendung von Sog für 5 Sekunden nach dem Verlassen des Gewässer.",
-  "enchantment.enchancement.strafe": "Strafe",
+  "enchantment.enchancement.strafe": "Weichen",
   "enchantment.enchancement.strafe.desc": "Weicht Sie in deine Bewegungsrichtung beim doppelten Drücken von [%s]",
   "enchantment.enchancement.strafe.desc.single": "Weicht Sie in deine Bewegungsrichtung beim Drücken von [%s]",
   "enchantment.enchancement.wardenspine": "Wärterwirbelsäule",
@@ -177,5 +177,5 @@
   "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.NONE": "Keine",
   "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.VANILLA_AND_ENCHANCEMENT": "Vanilla und Enchancement",
   "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.ALL": "Alle",
-  "enchancement.midnightconfig.singlePressStrafe": "Einzeldruck"
+  "enchancement.midnightconfig.singlePressStrafe": "Einzeldruck Weichen"
 }
