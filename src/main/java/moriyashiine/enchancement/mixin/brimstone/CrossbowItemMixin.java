@@ -101,7 +101,7 @@ public abstract class CrossbowItemMixin {
 
 	@ModifyVariable(method = "shoot", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/CrossbowItem;createArrow(Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)Lnet/minecraft/entity/projectile/PersistentProjectileEntity;"))
 	private static ProjectileEntity enchancement$brimstone(ProjectileEntity value, World world, LivingEntity shooter, Hand hand, ItemStack crossbow, ItemStack projectile, float soundPitch, boolean creative, float speed, float divergence, float simulated) {
-		if (ItemStack.areEqual(projectile, EnchancementUtil.BRIMSTONE_STACK)) {
+		if (ItemStack.areEqual(projectile, BrimstoneEntity.BRIMSTONE_STACK)) {
 			boolean damageModified = false;
 			NbtCompound subNbt = crossbow.getSubNbt(Enchancement.MOD_ID);
 			damage = subNbt.getInt("BrimstoneDamage");

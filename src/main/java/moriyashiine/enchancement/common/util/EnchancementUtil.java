@@ -6,7 +6,6 @@ package moriyashiine.enchancement.common.util;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModTags;
@@ -37,16 +36,9 @@ import java.util.Map;
 public class EnchancementUtil {
 	public static final Object2IntMap<PlayerEntity> PACKET_IMMUNITIES = new Object2IntOpenHashMap<>();
 
-	public static final ItemStack BRIMSTONE_STACK;
-
 	public static final int MAXIMUM_MOVEMENT_MULTIPLIER = 4;
 
 	public static boolean shouldCancelTargetDamagedEnchantments = false;
-
-	static {
-		BRIMSTONE_STACK = new ItemStack(Items.LAVA_BUCKET);
-		BRIMSTONE_STACK.getOrCreateSubNbt(Enchancement.MOD_ID).putBoolean("Brimstone", true);
-	}
 
 	public static List<ItemEntity> mergeItemEntities(List<ItemEntity> drops) {
 		for (int i = drops.size() - 1; i >= 0; i--) {

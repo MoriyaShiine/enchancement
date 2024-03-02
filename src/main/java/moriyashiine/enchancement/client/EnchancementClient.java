@@ -15,6 +15,7 @@ import moriyashiine.enchancement.client.render.entity.mob.FrozenPlayerEntityRend
 import moriyashiine.enchancement.client.screen.EnchantingTableScreen;
 import moriyashiine.enchancement.client.util.EnchancementClientUtil;
 import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.entity.projectile.BrimstoneEntity;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
 import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
@@ -68,7 +69,7 @@ public class EnchancementClient implements ClientModInitializer {
 		EntityRendererRegistry.register(ModEntityTypes.TORCH, TorchEntityRenderer::new);
 		EntityRendererRegistry.register(ModEntityTypes.GRAPPLE_FISHING_BOBBER, FishingBobberEntityRenderer::new);
 		ModelPredicateProviderRegistry.register(Items.CROSSBOW, Enchancement.id("brimstone"), (stack, world, entity, seed) -> {
-			if (CrossbowItemAccessor.enchancement$getProjectiles(stack).stream().anyMatch(foundStack -> ItemStack.areEqual(foundStack, EnchancementUtil.BRIMSTONE_STACK))) {
+			if (CrossbowItemAccessor.enchancement$getProjectiles(stack).stream().anyMatch(foundStack -> ItemStack.areEqual(foundStack, BrimstoneEntity.BRIMSTONE_STACK))) {
 				return stack.getSubNbt(Enchancement.MOD_ID).getInt("BrimstoneDamage") / 12F;
 			}
 			return 0;

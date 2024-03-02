@@ -4,6 +4,7 @@
 
 package moriyashiine.enchancement.common.entity.projectile;
 
+import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModDamageTypes;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
 import moriyashiine.enchancement.common.init.ModTags;
@@ -17,6 +18,7 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.predicate.entity.EntityPredicates;
@@ -36,6 +38,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class BrimstoneEntity extends PersistentProjectileEntity {
+	public static final ItemStack BRIMSTONE_STACK;
+
+	static {
+		BRIMSTONE_STACK = new ItemStack(Items.LAVA_BUCKET);
+		BRIMSTONE_STACK.getOrCreateSubNbt(Enchancement.MOD_ID).putBoolean("Brimstone", true);
+	}
+
 	public static final TrackedData<Float> DAMAGE = DataTracker.registerData(BrimstoneEntity.class, TrackedDataHandlerRegistry.FLOAT);
 	public static final TrackedData<Float> FORCED_PITCH = DataTracker.registerData(BrimstoneEntity.class, TrackedDataHandlerRegistry.FLOAT);
 	public static final TrackedData<Float> FORCED_YAW = DataTracker.registerData(BrimstoneEntity.class, TrackedDataHandlerRegistry.FLOAT);
