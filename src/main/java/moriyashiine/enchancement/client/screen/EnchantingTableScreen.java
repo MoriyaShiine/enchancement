@@ -31,11 +31,16 @@ import net.minecraft.util.math.RotationAxis;
 
 import java.util.List;
 
+import static moriyashiine.enchancement.common.screenhandlers.EnchantingTableScreenHandler.PAGE_SIZE;
+
 public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHandler> {
 	public static boolean forceTransparency = false;
+	public static int bookshelfCount = 0;
 
 	private static final Identifier TEXTURE = Enchancement.id("textures/gui/container/enchanting_table.png");
 	private static final Identifier BOOK_TEXTURE = new Identifier("textures/entity/enchanting_table_book.png");
+
+	private static final int BOOKSHELF_Y = 9, UP_Y = 34, DOWN_Y = UP_Y + 17, ENCHANT_Y = 72;
 
 	private BookModel bookModel;
 
@@ -85,20 +90,20 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 				context.setShaderColor(1, 1, 1, 1);
 				forceTransparency = false;
 			}
-			if (handler.validEnchantments.size() > 4) {
+			if (handler.validEnchantments.size() > PAGE_SIZE) {
 				if (isInUpButtonBounds(posX, posY, mouseX, mouseY)) {
-					context.drawTexture(TEXTURE, posX + 154, posY + 28, 192, 0, 16, 16);
+					context.drawTexture(TEXTURE, posX + 154, posY + UP_Y, 192, 0, 16, 16);
 				} else {
-					context.drawTexture(TEXTURE, posX + 154, posY + 28, 176, 0, 16, 16);
+					context.drawTexture(TEXTURE, posX + 154, posY + UP_Y, 176, 0, 16, 16);
 				}
 				if (isInDownButtonBounds(posX, posY, mouseX, mouseY)) {
-					context.drawTexture(TEXTURE, posX + 154, posY + 45, 192, 16, 16, 16);
+					context.drawTexture(TEXTURE, posX + 154, posY + DOWN_Y, 192, 16, 16, 16);
 				} else {
-					context.drawTexture(TEXTURE, posX + 154, posY + 45, 176, 16, 16, 16);
+					context.drawTexture(TEXTURE, posX + 154, posY + DOWN_Y, 176, 16, 16, 16);
 				}
 			}
 			if (isInEnchantButtonBounds(posX, posY, mouseX, mouseY)) {
-				context.drawTexture(TEXTURE, posX + 154, posY + 66, 192, 32, 16, 16);
+				context.drawTexture(TEXTURE, posX + 154, posY + ENCHANT_Y, 192, 32, 16, 16);
 				if (infoTexts == null) {
 					MutableText xpCost = Text.translatable("tooltip." + Enchancement.MOD_ID + ".experience_level_cost", handler.getCost()).formatted(Formatting.GREEN);
 					MutableText lapisCost = Text.translatable("tooltip." + Enchancement.MOD_ID + ".material_cost", handler.getCost(), Text.translatable(Items.LAPIS_LAZULI.getTranslationKey())).formatted(Formatting.GREEN);
@@ -126,13 +131,13 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 				}
 				context.drawTooltip(textRenderer, infoTexts, mouseX, mouseY);
 			} else {
-				context.drawTexture(TEXTURE, posX + 154, posY + 66, 176, 32, 16, 16);
+				context.drawTexture(TEXTURE, posX + 154, posY + ENCHANT_Y, 176, 32, 16, 16);
 				infoTexts = null;
 			}
 			highlightedEnchantmentIndex = -1;
-			for (int i = 0; i < handler.validEnchantments.size() && i < 4; i++) {
+			for (int i = 0; i < handler.validEnchantments.size() && i < PAGE_SIZE; i++) {
 				Enchantment enchantment;
-				if (handler.validEnchantments.size() <= 4) {
+				if (handler.validEnchantments.size() <= PAGE_SIZE) {
 					enchantment = handler.validEnchantments.get(i);
 				} else {
 					enchantment = handler.getEnchantmentFromViewIndex(i);
@@ -168,6 +173,13 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 				context.drawTexture(TEXTURE, startX, startY, 184, 48, 8, 8);
 			}
 		}
+		context.drawItem(Items.BOOKSHELF.getDefaultStack(), posX + 154, posY + BOOKSHELF_Y);
+		context.getMatrices().push();
+		context.getMatrices().scale(0.5F, 0.5F, 0.5F);
+		String bookshelfCountText = bookshelfCount + "/" + 15;
+		context.drawTooltip(client.textRenderer, Text.literal(bookshelfCountText), (posX + 178) * 2, (posY + BOOKSHELF_Y + 20) * 2);
+		context.getMatrices().scale(1, 1, 1);
+		context.getMatrices().pop();
 		drawBook(context, (width - backgroundWidth) / 2, (height - backgroundHeight) / 2, client.getTickDelta());
 	}
 
@@ -205,7 +217,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 			client.interactionManager.clickButton(handler.syncId, 0);
 			return true;
 		}
-		if (handler.validEnchantments.size() > 4) {
+		if (handler.validEnchantments.size() > PAGE_SIZE) {
 			if (isInUpButtonBounds(posX, posY, (int) mouseX, (int) mouseY) && handler.onButtonClick(client.player, 1)) {
 				client.interactionManager.clickButton(handler.syncId, 1);
 				client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1));
@@ -219,8 +231,8 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 				return true;
 			}
 		}
-		if (highlightedEnchantmentIndex >= 0 && handler.onButtonClick(client.player, highlightedEnchantmentIndex + 4)) {
-			client.interactionManager.clickButton(handler.syncId, highlightedEnchantmentIndex + 4);
+		if (highlightedEnchantmentIndex >= 0 && handler.onButtonClick(client.player, highlightedEnchantmentIndex + PAGE_SIZE)) {
+			client.interactionManager.clickButton(handler.syncId, highlightedEnchantmentIndex + PAGE_SIZE);
 			client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1));
 			return true;
 		}
@@ -229,7 +241,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
-		if (handler.validEnchantments.size() > 4) {
+		if (handler.validEnchantments.size() > PAGE_SIZE) {
 			int delta = (amount > 0 ? -1 : 1);
 			handler.updateViewIndex(amount > 0);
 			client.interactionManager.clickButton(handler.syncId, amount > 0 ? 1 : 2);
@@ -263,14 +275,14 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 	}
 
 	private static boolean isInUpButtonBounds(int posX, int posY, int mouseX, int mouseY) {
-		return isInBounds(posX, posY, mouseX, mouseY, 154, 170, 28, 44);
+		return isInBounds(posX, posY, mouseX, mouseY, 154, 170, UP_Y, UP_Y + 16);
 	}
 
 	private static boolean isInDownButtonBounds(int posX, int posY, int mouseX, int mouseY) {
-		return isInBounds(posX, posY, mouseX, mouseY, 154, 170, 45, 61);
+		return isInBounds(posX, posY, mouseX, mouseY, 154, 170, DOWN_Y, DOWN_Y + 16);
 	}
 
 	private static boolean isInEnchantButtonBounds(int posX, int posY, int mouseX, int mouseY) {
-		return isInBounds(posX, posY, mouseX, mouseY, 154, 170, 66, 82);
+		return isInBounds(posX, posY, mouseX, mouseY, 154, 170, ENCHANT_Y, ENCHANT_Y + 16);
 	}
 }

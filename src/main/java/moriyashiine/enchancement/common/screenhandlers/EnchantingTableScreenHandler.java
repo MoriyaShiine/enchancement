@@ -4,6 +4,7 @@
 
 package moriyashiine.enchancement.common.screenhandlers;
 
+import moriyashiine.enchancement.client.packet.SyncEnchantingTableBookshelfCountPacket;
 import moriyashiine.enchancement.client.packet.SyncEnchantingTableCostPacket;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
@@ -40,13 +41,14 @@ import java.util.Map;
 
 public class EnchantingTableScreenHandler extends ScreenHandler {
 	public static final Map<Item, Ingredient> ENCHANTING_MATERIAL_MAP = new HashMap<>();
+	public static final int PAGE_SIZE = 4;
 
 	public final List<Enchantment> validEnchantments = new ArrayList<>(), selectedEnchantments = new ArrayList<>();
 	public int viewIndex = 0;
 
 	private ItemStack enchantingStack = ItemStack.EMPTY;
 	private Ingredient repairIngredient = Ingredient.EMPTY;
-	private int cost = 0;
+	private int bookshelfCount = 0, cost = 0;
 
 	private final Inventory inventory = new SimpleInventory(3) {
 		@Override
@@ -64,6 +66,10 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 	public EnchantingTableScreenHandler(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
 		super(ModScreenHandlerTypes.ENCHANTING_TABLE, syncId);
 		this.context = context;
+		bookshelfCount = calculateBookshelfCount();
+		if (playerInventory.player instanceof ServerPlayerEntity player) {
+			SyncEnchantingTableBookshelfCountPacket.send(player, bookshelfCount);
+		}
 		addSlot(new Slot(inventory, 0, 15, 31) {
 			@Override
 			public boolean canInsert(ItemStack stack) {
@@ -197,7 +203,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 			updateViewIndex(false);
 			return true;
 		} else if (id > 2 && id < 8) {
-			Enchantment enchantment = getEnchantmentFromViewIndex(id - 4);
+			Enchantment enchantment = getEnchantmentFromViewIndex(id - PAGE_SIZE);
 			if (selectedEnchantments.contains(enchantment)) {
 				selectedEnchantments.remove(enchantment);
 			} else {
@@ -234,7 +240,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 	}
 
 	public Enchantment getEnchantmentFromViewIndex(int index) {
-		if (validEnchantments.size() <= 4) {
+		if (validEnchantments.size() <= PAGE_SIZE) {
 			return validEnchantments.get(index);
 		}
 		return validEnchantments.get((index + viewIndex) % validEnchantments.size());
@@ -281,6 +287,20 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		return ingredient;
 	}
 
+	private int calculateBookshelfCount() {
+		float[] bookshelfCountArray = {0};
+		context.run((world, pos) -> {
+			for (BlockPos offset : EnchantingTableBlock.POWER_PROVIDER_OFFSETS) {
+				if (canAccessPowerProvider(world, pos, offset)) {
+					bookshelfCountArray[0]++;
+				} else if (world.getBlockEntity(pos.add(offset)) instanceof ChiseledBookshelfBlockEntity chiseledBookshelfBlockEntity && world.getBlockState(pos.add(offset.getX() / 2, offset.getY(), offset.getZ() / 2)).isIn(BlockTags.ENCHANTMENT_POWER_TRANSMITTER)) {
+					bookshelfCountArray[0] += chiseledBookshelfBlockEntity.getOpenSlotCount() / 3F;
+				}
+			}
+		});
+		return Math.min(15, (int) bookshelfCountArray[0]);
+	}
+
 	public int getCost() {
 		return cost;
 	}
@@ -292,17 +312,6 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		} else if (stack.getItem() instanceof ToolItem toolItem) {
 			enchantability = toolItem.getEnchantability();
 		}
-		float[] bookshelfCountArray = {0};
-		context.run((world, pos) -> {
-			for (BlockPos offset : EnchantingTableBlock.POWER_PROVIDER_OFFSETS) {
-				if (canAccessPowerProvider(world, pos, offset)) {
-					bookshelfCountArray[0]++;
-				} else if (world.getBlockEntity(pos.add(offset)) instanceof ChiseledBookshelfBlockEntity chiseledBookshelfBlockEntity && world.getBlockState(pos.add(offset.getX() / 2, offset.getY(), offset.getZ() / 2)).isIn(BlockTags.ENCHANTMENT_POWER_TRANSMITTER)) {
-					bookshelfCountArray[0] += chiseledBookshelfBlockEntity.getOpenSlotCount() / 3F;
-				}
-			}
-		});
-		int bookshelfCount = Math.min(15, (int) bookshelfCountArray[0]);
 		double cost = 60F / (Math.max(1, enchantability + bookshelfCount));
 		if (bookshelfCount == 15) {
 			cost = MathHelper.floor(cost);
