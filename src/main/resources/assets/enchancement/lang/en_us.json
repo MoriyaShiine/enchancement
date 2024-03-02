@@ -80,7 +80,7 @@
   "enchantment.enchancement.frostbite": "Frostbite",
   "enchantment.enchancement.frostbite.desc": "Freezes attacked mobs. When killed, turns them into ice statues that can be moved or shattered, launching ice shards that freeze other mobs.",
   "enchantment.enchancement.chaos": "Chaos",
-  "enchantment.enchancement.chaos.desc": "Gives normal arrows a random negative potion effect, or positive if sneaking.",
+  "enchantment.enchancement.chaos.desc": "Gives arrows a random negative potion effect, or positive if sneaking.",
   "enchantment.enchancement.delay": "Delay",
   "enchantment.enchancement.delay.desc": "Arrows will not launch immediately after shooting, building up damage over time. Can be launched prematurely by punching, and additionally redirected by sneaking.",
   "enchantment.enchancement.phasing": "Phasing",

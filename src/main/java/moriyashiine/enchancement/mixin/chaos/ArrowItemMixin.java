@@ -19,40 +19,46 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Collections;
+import java.util.*;
 
 @Mixin(ArrowItem.class)
 public class ArrowItemMixin {
 	@Inject(method = "createArrow", at = @At("RETURN"))
 	private void enchancement$chaos(World world, ItemStack stack, LivingEntity shooter, CallbackInfoReturnable<PersistentProjectileEntity> cir) {
-		if (stack.getItem() == Items.ARROW && cir.getReturnValue() instanceof ArrowEntity arrow) {
+		if (cir.getReturnValue() instanceof ArrowEntity arrow) {
 			boolean hasChaos = shooter instanceof PlayerEntity ? EnchancementUtil.hasEnchantment(ModEnchantments.CHAOS, shooter.getActiveItem()) : EnchancementUtil.hasEnchantment(ModEnchantments.CHAOS, shooter);
 			if (hasChaos) {
-				StatusEffect effect = null;
 				int attempts = 0;
-				if (shooter.isSneaking()) {
-					while (effect == null || effect.getCategory() != StatusEffectCategory.BENEFICIAL || Registries.STATUS_EFFECT.entryOf(Registries.STATUS_EFFECT.getKey(effect).orElse(null)).isIn(ModTags.StatusEffects.CHAOS_UNCHOOSABLE)) {
-						effect = Registries.STATUS_EFFECT.get(shooter.getRandom().nextInt(Registries.STATUS_EFFECT.size()));
-						if (++attempts > 128) {
-							return;
-						}
-					}
-				} else {
-					while (effect == null || effect.getCategory() != StatusEffectCategory.HARMFUL || Registries.STATUS_EFFECT.entryOf(Registries.STATUS_EFFECT.getKey(effect).orElse(null)).isIn(ModTags.StatusEffects.CHAOS_UNCHOOSABLE)) {
-						effect = Registries.STATUS_EFFECT.get(shooter.getRandom().nextInt(Registries.STATUS_EFFECT.size()));
-						if (++attempts > 128) {
-							return;
-						}
-					}
+				StatusEffectCategory category = shooter.isSneaking() ? StatusEffectCategory.BENEFICIAL : StatusEffectCategory.HARMFUL;
+				List<StatusEffectInstance> effects = PotionUtil.getPotionEffects(stack);
+				Set<StatusEffect> disallowed = new HashSet<>();
+				for (StatusEffectInstance instance : effects) {
+					disallowed.add(instance.getEffectType());
 				}
-				arrow.initFromStack(PotionUtil.setCustomPotionEffects(new ItemStack(Items.TIPPED_ARROW), Collections.singleton(new StatusEffectInstance(effect, effect.isInstant() ? 1 : 200))));
-				arrow.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
+				while (attempts < 128) {
+					StatusEffect effect = Registries.STATUS_EFFECT.get(shooter.getRandom().nextInt(Registries.STATUS_EFFECT.size()));
+					if (!disallowed.contains(effect)) {
+						Optional<RegistryKey<StatusEffect>> key = Registries.STATUS_EFFECT.getKey(effect);
+						if (key.isPresent() && effect != null && effect.getCategory() == category && !Registries.STATUS_EFFECT.entryOf(key.get()).isIn(ModTags.StatusEffects.CHAOS_UNCHOOSABLE)) {
+							List<StatusEffectInstance> statusEffects = new ArrayList<>();
+							for (StatusEffectInstance instance : effects) {
+								statusEffects.add(new StatusEffectInstance(instance.getEffectType(), Math.max(instance.mapDuration(i -> i / 8), 1), instance.getAmplifier(), instance.isAmbient(), instance.shouldShowParticles()));
+							}
+							statusEffects.add(new StatusEffectInstance(effect, effect.isInstant() ? 1 : 200));
+							arrow.initFromStack(PotionUtil.setCustomPotionEffects(new ItemStack(Items.TIPPED_ARROW), statusEffects));
+							arrow.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
+							return;
+						}
+					}
+					attempts++;
+				}
 			}
 		}
 	}
