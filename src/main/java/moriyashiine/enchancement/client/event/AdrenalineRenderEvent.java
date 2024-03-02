@@ -4,6 +4,7 @@
 
 package moriyashiine.enchancement.client.event;
 
+import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.event.AdrenalineEvent;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
@@ -33,9 +34,13 @@ public class AdrenalineRenderEvent implements ItemTooltipCallback {
 							}
 						}
 						if (last) {
-							float multiplier = AdrenalineEvent.getMultiplier(MinecraftClient.getInstance().player, level);
-							if (multiplier != 1) {
-								lines.add(i + 1, Text.translatable("attribute.modifier.plus.2", ItemStack.MODIFIER_FORMAT.format(multiplier * 100 - 100), Text.translatable(EntityAttributes.GENERIC_MOVEMENT_SPEED.getTranslationKey())).formatted(Formatting.BLUE));
+							float speedMultiplier = AdrenalineEvent.getSpeedMultiplier(MinecraftClient.getInstance().player, level);
+							float damageMultiplier = AdrenalineEvent.getDamageMultiplier(MinecraftClient.getInstance().player, level);
+							if (speedMultiplier != 1) {
+								lines.add(i + 1, Text.translatable("attribute.modifier.plus.2", ItemStack.MODIFIER_FORMAT.format(speedMultiplier * 100 - 100), Text.translatable(EntityAttributes.GENERIC_MOVEMENT_SPEED.getTranslationKey())).formatted(Formatting.BLUE));
+							}
+							if (damageMultiplier != 1) {
+								lines.add(i + 2, Text.translatable("attribute.modifier.plus.2", ItemStack.MODIFIER_FORMAT.format(-(damageMultiplier * 100 - 100)), Text.translatable("tooltip." + Enchancement.MOD_ID + ".damage_resistance")).formatted(Formatting.BLUE));
 							}
 							break;
 						}

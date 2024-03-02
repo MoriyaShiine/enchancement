@@ -9,6 +9,7 @@ import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class AdrenalineEvent implements MultiplyMovementSpeedEvent {
@@ -16,22 +17,22 @@ public class AdrenalineEvent implements MultiplyMovementSpeedEvent {
 	public float multiply(float currentMultiplier, World world, LivingEntity living) {
 		int level = EnchantmentHelper.getEquipmentLevel(ModEnchantments.ADRENALINE, living);
 		if (level > 0) {
-			currentMultiplier = EnchancementUtil.capMovementMultiplier(currentMultiplier * getMultiplier(living, level));
+			currentMultiplier = EnchancementUtil.capMovementMultiplier(currentMultiplier * getSpeedMultiplier(living, level));
 		}
 		return currentMultiplier;
 	}
 
-	public static float getMultiplier(LivingEntity living, int level) {
+	public static float getSpeedMultiplier(LivingEntity living, int level) {
+		return 1 + level * 0.05F * (10 - Math.max(3, getFlooredHealth(living)) + 1);
+	}
+
+	public static float getDamageMultiplier(LivingEntity living, int level) {
+		float value = level * (0.2F / 14) * (10 - Math.max(3, AdrenalineEvent.getFlooredHealth(living)));
+		return Math.max(0, 1 - MathHelper.ceil(value * 100) / 100F);
+	}
+
+	public static int getFlooredHealth(LivingEntity living) {
 		float percentage = living.getHealth() / living.getMaxHealth();
-		return 1 + switch ((int) Math.floor(percentage * 10 + 0.5)) {
-			case 10 -> level * 0.05F;
-			case 9 -> level * 0.1F;
-			case 8 -> level * 0.15F;
-			case 7 -> level * 0.2F;
-			case 6 -> level * 0.25F;
-			case 5 -> level * 0.3F;
-			case 4 -> level * 0.35F;
-			default -> level * 0.4F;
-		};
+		return (int) Math.floor(percentage * 10 + 0.5);
 	}
 }
