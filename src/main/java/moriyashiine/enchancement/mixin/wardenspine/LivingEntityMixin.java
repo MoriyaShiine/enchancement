@@ -14,7 +14,6 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,7 +32,7 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@ModifyVariable(method = "modifyAppliedDamage", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getProtectionAmount(Ljava/lang/Iterable;Lnet/minecraft/entity/damage/DamageSource;)I"), argsOnly = true)
 	private float enchancement$wardenspine(float value, DamageSource source) {
-		if (source.isIn(DamageTypeTags.BYPASSES_ENCHANTMENTS) || source.isOf(DamageTypes.THORNS)) {
+		if (source.isOf(DamageTypes.THORNS)) {
 			return value;
 		}
 		if (source.getSource() != null) {
