@@ -30,8 +30,8 @@ public class RecipeManagerMixin {
 				if (EnchancementUtil.ignoreRecipe(recipe)) {
 					toRemove.add(identifier);
 				}
+			} catch (Exception ignored) {
 			}
-			catch (Exception ignored) {}
 		}
 		toRemove.forEach(value::remove);
 		return value;

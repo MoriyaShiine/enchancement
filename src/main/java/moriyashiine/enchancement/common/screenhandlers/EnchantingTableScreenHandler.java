@@ -230,7 +230,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 				repairIngredient = getRepairIngredient(stack);
 				cost = 0;
 				for (Enchantment enchantment : Registries.ENCHANTMENT) {
-					if (isEnchantmentAllowed(enchantment, stack)) {
+					if (isEnchantmentAllowed(enchantment, stack) && !EnchancementUtil.isDefaultEnchantment(stack, enchantment)) {
 						validEnchantments.add(enchantment);
 					}
 				}

@@ -143,11 +143,14 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 					enchantment = handler.getEnchantmentFromViewIndex(i);
 				}
 				MutableText enchantmentName = Text.translatable(enchantment.getTranslationKey());
-				boolean isAllowed = EnchancementUtil.limitCheck(true, handler.selectedEnchantments.size() < ModConfig.enchantmentLimit);
-				for (Enchantment foundEnchantment : handler.selectedEnchantments) {
-					if (!foundEnchantment.canCombine(enchantment)) {
-						isAllowed = false;
-						break;
+				ItemStack slotStack = handler.getSlot(0).getStack();
+				boolean isAllowed = EnchancementUtil.limitCheck(true, EnchancementUtil.getNonDefaultEnchantmentsSize(slotStack, slotStack.getEnchantments().size() + handler.selectedEnchantments.size()) < ModConfig.enchantmentLimit);
+				if (isAllowed) {
+					for (Enchantment foundEnchantment : handler.selectedEnchantments) {
+						if (!foundEnchantment.canCombine(enchantment)) {
+							isAllowed = false;
+							break;
+						}
 					}
 				}
 				enchantmentName = Text.literal(textRenderer.trimToWidth(enchantmentName.getString(), 80));

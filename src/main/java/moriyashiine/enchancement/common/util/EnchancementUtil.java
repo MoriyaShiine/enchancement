@@ -9,6 +9,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.event.InitializeDefaultEnchantmentsEvent;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModTags;
 import moriyashiine.enchancement.mixin.util.ItemEntityAccessor;
@@ -169,11 +170,35 @@ public class EnchancementUtil {
 		return false;
 	}
 
+	public static boolean isDefaultEnchantment(ItemStack stack, Enchantment enchantment) {
+		Map<Enchantment, Integer> defaultEnchantments = InitializeDefaultEnchantmentsEvent.DEFAULT_ENCHANTMENTS.get(stack.getItem());
+		if (defaultEnchantments != null) {
+			for (Enchantment foundEnchantment : defaultEnchantments.keySet()) {
+				if (foundEnchantment == enchantment) {
+					int level = ModConfig.singleLevelMode ? 1 : EnchantmentHelper.getLevel(enchantment, stack);
+					if (level == defaultEnchantments.get(enchantment)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
 	public static boolean limitCheck(boolean fallback, boolean value) {
 		if (ModConfig.enchantmentLimit == 0) {
 			return fallback;
 		}
 		return value;
+	}
+
+	public static int getNonDefaultEnchantmentsSize(ItemStack stack, int size) {
+		for (Enchantment enchantment : EnchantmentHelper.get(stack).keySet()) {
+			if (isDefaultEnchantment(stack, enchantment)) {
+				size--;
+			}
+		}
+		return size;
 	}
 
 	public static boolean shouldBeUnbreakable(ItemStack stack) {

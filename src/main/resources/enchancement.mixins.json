@@ -64,6 +64,7 @@
 	"torch.PlayerEntityMixin",
 	"util.EnchantmentHelperMixin",
 	"util.ItemEntityAccessor",
+	"util.ItemStackMixin",
 	"util.LivingEntityAccessor",
 	"util.PotionEntityMixin",
 	"util.ServerPlayNetworkHandlerMixin",

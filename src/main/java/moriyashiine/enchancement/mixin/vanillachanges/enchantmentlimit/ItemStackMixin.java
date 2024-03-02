@@ -22,7 +22,7 @@ public abstract class ItemStackMixin {
 
 	@Inject(method = "addEnchantment", at = @At("HEAD"), cancellable = true)
 	private void enchancement$enchantmentLimit(Enchantment enchantment, int level, CallbackInfo ci) {
-		if (EnchancementUtil.limitCheck(false, getEnchantments().size() >= ModConfig.enchantmentLimit)) {
+		if (EnchancementUtil.limitCheck(false, EnchancementUtil.getNonDefaultEnchantmentsSize((ItemStack) (Object) this, getEnchantments().size()) >= ModConfig.enchantmentLimit)) {
 			ci.cancel();
 		}
 	}

@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class EnchantedBookItemMixin {
 	@Inject(method = "addEnchantment", at = @At("HEAD"), cancellable = true)
 	private static void enchancement$enchantmentLimit(ItemStack stack, EnchantmentLevelEntry entry, CallbackInfo ci) {
-		if (EnchancementUtil.limitCheck(false, stack.getEnchantments().size() >= ModConfig.enchantmentLimit)) {
+		if (EnchancementUtil.limitCheck(false, EnchancementUtil.getNonDefaultEnchantmentsSize(stack, stack.getEnchantments().size()) >= ModConfig.enchantmentLimit)) {
 			ci.cancel();
 		}
 	}
