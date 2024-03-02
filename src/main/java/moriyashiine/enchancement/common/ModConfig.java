@@ -44,7 +44,9 @@ public class ModConfig extends MidnightConfig {
 			"minecraft:swift_sneak",
 			"minecraft:thorns",
 			"minecraft:unbreaking",
-			"minecraft:vanishing_curse");
+			"minecraft:vanishing_curse",
+			"spectrum:indestructible",
+			"spectrum:autosmelt");
 	@Entry
 	public static boolean invertedList = false;
 

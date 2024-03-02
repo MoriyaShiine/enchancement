@@ -4,8 +4,10 @@
 
 package moriyashiine.enchancement.common.util;
 
+import de.dafuqs.spectrum.recipe.enchantment_upgrade.EnchantmentUpgradeRecipe;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModTags;
@@ -21,6 +23,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.*;
+import net.minecraft.recipe.Recipe;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.util.Identifier;
@@ -28,10 +31,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EnchancementUtil {
 	public static final Object2IntMap<PlayerEntity> PACKET_IMMUNITIES = new Object2IntOpenHashMap<>();
@@ -137,6 +137,10 @@ public class EnchancementUtil {
 
 	public static boolean isEnchantmentAllowed(Enchantment enchantment) {
 		return isEnchantmentAllowed(Registries.ENCHANTMENT.getId(enchantment));
+	}
+
+	public static boolean ignoreRecipe(Recipe<?> recipe) {
+		return Enchancement.isSpectrumLoaded && ModConfig.singleLevelMode && recipe instanceof EnchantmentUpgradeRecipe;
 	}
 
 	public static boolean isGroundedOrAirborne(LivingEntity living, boolean allowWater) {

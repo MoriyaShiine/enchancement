@@ -63,6 +63,7 @@ dependencies {
     modCompileOnly "maven.modrinth:sodium:${sodium_version}"
     modRuntimeOnly "maven.modrinth:sodium:${sodium_version}"
     implementation "org.joml:joml:1.10.4"
+    modCompileOnly "maven.modrinth:spectrum:${spectrum_version}"
 
     modRuntimeOnly "com.terraformersmc:modmenu:${mod_menu_version}"
 }

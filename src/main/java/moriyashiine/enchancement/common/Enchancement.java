@@ -38,7 +38,7 @@ public class Enchancement implements ModInitializer {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-	public static boolean isApoliLoaded = false;
+	public static boolean isApoliLoaded = false, isSpectrumLoaded = false;
 	public static boolean commonEnchantmentDescriptionsModLoaded = false;
 
 	@Override
@@ -60,6 +60,7 @@ public class Enchancement implements ModInitializer {
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new ExtractingBaseBlockReloadListener());
 		initEvents();
 		isApoliLoaded = FabricLoader.getInstance().isModLoaded("apoli");
+		isSpectrumLoaded = FabricLoader.getInstance().isModLoaded("spectrum");
 		for (String mod : new String[]{"enchdesc", "enchantedtooltips", "idwtialsimmoedm"}) {
 			if (FabricLoader.getInstance().isModLoaded(mod)) {
 				commonEnchantmentDescriptionsModLoaded = true;

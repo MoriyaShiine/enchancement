@@ -30,6 +30,8 @@ public class ModMixinPlugin implements IMixinConfigPlugin {
 			return FabricLoader.getInstance().isModLoaded("geckolib");
 		} else if (mixinClassName.contains("integration.sodium")) {
 			return FabricLoader.getInstance().isModLoaded("sodium");
+		} else if (mixinClassName.contains("integration.spectrum")) {
+			return FabricLoader.getInstance().isModLoaded("spectrum");
 		}
 		return true;
 	}
