@@ -24,6 +24,7 @@ public class ModConfig extends MidnightConfig {
 			"minecraft:fortune",
 			"minecraft:frost_walker",
 			"minecraft:impaling",
+			"minecraft:infinity",
 			"minecraft:knockback",
 			"minecraft:looting",
 			"minecraft:loyalty",
@@ -62,8 +63,6 @@ public class ModConfig extends MidnightConfig {
 
 	@Entry
 	public static boolean accurateFishingBobbers = true;
-	@Entry
-	public static boolean allowInfinityOnCrossbows = true;
 	@Entry
 	public static boolean allTridentsHaveLoyalty = true;
 	@Entry
@@ -137,7 +136,7 @@ public class ModConfig extends MidnightConfig {
 				invertedList +
 				overhaulEnchantingTable + allowTreasureEnchantmentsInEnchantingTable +
 				singleLevelMode + enchantmentLimit +
-				accurateFishingBobbers + allowInfinityOnCrossbows + allTridentsHaveLoyalty +
+				accurateFishingBobbers + allTridentsHaveLoyalty +
 				channelingIgnitesOnMelee + channelingWorksWhenNotThundering + crossbowsPullFromInventory +
 				drownedUseHeldTrident +
 				enchantedChestplatesIncreaseAirMobility +
