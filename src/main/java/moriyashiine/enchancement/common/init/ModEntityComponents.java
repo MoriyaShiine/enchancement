@@ -38,6 +38,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<FrozenComponent> FROZEN = ComponentRegistry.getOrCreate(Enchancement.id("frozen"), FrozenComponent.class);
 	public static final ComponentKey<FrozenSquidComponent> FROZEN_SQUID = ComponentRegistry.getOrCreate(Enchancement.id("frozen_squid"), FrozenSquidComponent.class);
 	//bow
+	public static final ComponentKey<ChaosComponent> CHAOS = ComponentRegistry.getOrCreate(Enchancement.id("chaos"), ChaosComponent.class);
 	public static final ComponentKey<DelayComponent> DELAY = ComponentRegistry.getOrCreate(Enchancement.id("delay"), DelayComponent.class);
 	public static final ComponentKey<PhasingComponent> PHASING = ComponentRegistry.getOrCreate(Enchancement.id("phasing"), PhasingComponent.class);
 	//trident
@@ -64,6 +65,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerForPlayers(GALE, GaleComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(LivingEntity.class, FROZEN, FrozenComponent::new);
 		registry.registerFor(SquidEntity.class, FROZEN_SQUID, FrozenSquidComponent::new);
+		registry.registerFor(ArrowEntity.class, CHAOS, projectile -> new ChaosComponent());
 		registry.registerFor(ArrowEntity.class, DELAY, DelayComponent::new);
 		registry.registerFor(SpectralArrowEntity.class, DELAY, DelayComponent::new);
 		registry.registerFor(ArrowEntity.class, PHASING, PhasingComponent::new);

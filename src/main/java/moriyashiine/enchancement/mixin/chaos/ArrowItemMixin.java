@@ -5,6 +5,7 @@
 package moriyashiine.enchancement.mixin.chaos;
 
 import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.LivingEntity;
@@ -52,8 +53,8 @@ public class ArrowItemMixin {
 								statusEffects.add(new StatusEffectInstance(instance.getEffectType(), Math.max(instance.mapDuration(i -> i / 8), 1), instance.getAmplifier(), instance.isAmbient(), instance.shouldShowParticles()));
 							}
 							statusEffects.add(new StatusEffectInstance(effect, effect.isInstant() ? 1 : 200));
+							ModEntityComponents.CHAOS.get(arrow).setOriginalStack(((PersistentProjectileEntityAccessor) arrow).enchancement$asItemStack());
 							arrow.initFromStack(PotionUtil.setCustomPotionEffects(new ItemStack(Items.TIPPED_ARROW), statusEffects));
-							arrow.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
 							return;
 						}
 					}

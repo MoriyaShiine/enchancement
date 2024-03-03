@@ -66,6 +66,8 @@ public class ModConfig extends MidnightConfig {
 	@Entry
 	public static boolean allTridentsHaveLoyalty = true;
 	@Entry
+	public static boolean arrowsDropOnHit = true;
+	@Entry
 	public static boolean channelingIgnitesOnMelee = true;
 	@Entry
 	public static boolean channelingWorksWhenNotThundering = true;
@@ -136,7 +138,7 @@ public class ModConfig extends MidnightConfig {
 				invertedList +
 				overhaulEnchantingTable + allowTreasureEnchantmentsInEnchantingTable +
 				singleLevelMode + enchantmentLimit +
-				accurateFishingBobbers + allTridentsHaveLoyalty +
+				accurateFishingBobbers + allTridentsHaveLoyalty + arrowsDropOnHit +
 				channelingIgnitesOnMelee + channelingWorksWhenNotThundering + crossbowsPullFromInventory +
 				drownedUseHeldTrident +
 				enchantedChestplatesIncreaseAirMobility +
