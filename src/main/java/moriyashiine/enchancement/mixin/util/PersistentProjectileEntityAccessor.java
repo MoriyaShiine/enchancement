@@ -2,7 +2,7 @@
  * All Rights Reserved (c) MoriyaShiine
  */
 
-package moriyashiine.enchancement.mixin.chaos;
+package moriyashiine.enchancement.mixin.util;
 
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;

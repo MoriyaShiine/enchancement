@@ -4,7 +4,11 @@
 
 package moriyashiine.enchancement.mixin.phasing;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import moriyashiine.enchancement.common.component.entity.PhasingComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.ModSoundEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -63,6 +67,7 @@ public abstract class PersistentProjectileEntityMixin extends Entity {
 						}
 						setNoGravity(false);
 						getWorld().emitGameEvent(GameEvent.TELEPORT, getPos(), GameEvent.Emitter.of(this));
+						getWorld().playSound(null, getBlockPos(), ModSoundEvents.ENTITY_GENERIC_TELEPORT, getSoundCategory(), 0.75F, 1);
 						teleport(end.getX(), end.getY(), end.getZ());
 					} else {
 						for (int i = 0; i < 6; i++) {
@@ -75,5 +80,14 @@ public abstract class PersistentProjectileEntityMixin extends Entity {
 				}
 			}
 		});
+	}
+
+	@WrapOperation(method = "onEntityHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Vec3d;length()D"))
+	private double enchancement$phasing(Vec3d instance, Operation<Double> original) {
+		PhasingComponent phasingComponent = ModEntityComponents.PHASING.getNullable(this);
+		if (phasingComponent != null && phasingComponent.getVelocityLength() != -1) {
+			return phasingComponent.getVelocityLength();
+		}
+		return original.call(instance);
 	}
 }

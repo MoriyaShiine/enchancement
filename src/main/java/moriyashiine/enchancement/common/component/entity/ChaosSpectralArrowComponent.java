@@ -7,7 +7,7 @@ package moriyashiine.enchancement.common.component.entity;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.mixin.chaos.PersistentProjectileEntityAccessor;
+import moriyashiine.enchancement.mixin.util.PersistentProjectileEntityAccessor;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.projectile.SpectralArrowEntity;
 import net.minecraft.nbt.NbtCompound;

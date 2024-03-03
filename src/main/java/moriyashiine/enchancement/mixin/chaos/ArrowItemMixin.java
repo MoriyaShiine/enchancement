@@ -6,6 +6,7 @@ package moriyashiine.enchancement.mixin.chaos;
 
 import moriyashiine.enchancement.common.component.entity.ChaosArrowComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.mixin.util.PersistentProjectileEntityAccessor;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
