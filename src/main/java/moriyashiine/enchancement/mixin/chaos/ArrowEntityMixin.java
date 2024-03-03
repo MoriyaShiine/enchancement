@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.chaos;
 
-import moriyashiine.enchancement.common.component.entity.ChaosComponent;
+import moriyashiine.enchancement.common.component.entity.ChaosArrowComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.item.ItemStack;
@@ -17,9 +17,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class ArrowEntityMixin {
 	@Inject(method = "asItemStack", at = @At("HEAD"), cancellable = true)
 	private void enchancement$chaos(CallbackInfoReturnable<ItemStack> cir) {
-		ChaosComponent chaosComponent = ModEntityComponents.CHAOS.get(this);
-		if (!chaosComponent.getOriginalStack().isEmpty()) {
-			cir.setReturnValue(chaosComponent.getOriginalStack());
+		ChaosArrowComponent chaosArrowComponent = ModEntityComponents.CHAOS_ARROW.get(this);
+		if (!chaosArrowComponent.getOriginalStack().isEmpty()) {
+			cir.setReturnValue(chaosArrowComponent.getOriginalStack());
 		}
 	}
 }

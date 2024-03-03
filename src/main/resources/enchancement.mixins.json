@@ -28,6 +28,8 @@
 	"chaos.ArrowEntityMixin",
 	"chaos.ArrowItemMixin",
 	"chaos.PersistentProjectileEntityAccessor",
+	"chaos.SpectralArrowEntityMixin",
+	"chaos.SpectralArrowItemMixin",
 	"dash.LivingEntityMixin",
 	"delay.BowItemMixin",
 	"delay.DelayArrowItemMixin",
