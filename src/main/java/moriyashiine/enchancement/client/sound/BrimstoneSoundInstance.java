@@ -5,6 +5,7 @@
 package moriyashiine.enchancement.client.sound;
 
 import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.client.sound.MovingSoundInstance;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -31,7 +32,7 @@ public class BrimstoneSoundInstance extends MovingSoundInstance {
 
 	@Override
 	public void tick() {
-		if (entity == null || entity.isRemoved() || (entity instanceof LivingEntity living && living.isDead())) {
+		if (age > 1 && !isEntityUsing(entity)) {
 			setDone();
 			return;
 		}
@@ -42,7 +43,16 @@ public class BrimstoneSoundInstance extends MovingSoundInstance {
 		pitch = MathHelper.lerp(age / 60F, 1F, 2F);
 	}
 
-	public UUID getUuid() {
-		return uuid;
+	private boolean isEntityUsing(Entity entity) {
+		if (entity == null || entity.isRemoved()) {
+			return false;
+		}
+		if (entity instanceof LivingEntity living) {
+			if (living.isDead()) {
+				return false;
+			}
+			return uuid.equals(EnchancementUtil.getBrimstoneUUID(living.getActiveItem()));
+		}
+		return false;
 	}
 }

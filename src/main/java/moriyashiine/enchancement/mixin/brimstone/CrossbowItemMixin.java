@@ -5,7 +5,6 @@
 package moriyashiine.enchancement.mixin.brimstone;
 
 import moriyashiine.enchancement.client.packet.PlayBrimstoneSoundPacket;
-import moriyashiine.enchancement.client.packet.StopBrimstoneSoundsS2CPacket;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.entity.projectile.BrimstoneEntity;
 import moriyashiine.enchancement.common.init.ModDamageTypes;
@@ -65,13 +64,10 @@ public abstract class CrossbowItemMixin {
 	@Inject(method = "onStoppedUsing", at = @At("HEAD"), cancellable = true)
 	private void enchancement$brimstone(ItemStack stack, World world, LivingEntity user, int remainingUseTicks, CallbackInfo ci) {
 		if (EnchancementUtil.hasEnchantment(ModEnchantments.BRIMSTONE, stack) && !CrossbowItem.isCharged(stack)) {
-			NbtCompound subNbt = stack.getSubNbt(Enchancement.MOD_ID);
-			if (!world.isClient) {
-				StopBrimstoneSoundsS2CPacket.stopSounds(user, subNbt.getUuid("BrimstoneUUID"));
-			}
 			int damage = EnchancementUtil.getBrimstoneDamage(getPullProgress(getMaxUseTime(stack) - remainingUseTicks, stack));
 			if (damage > 0 && loadProjectiles(user, stack)) {
 				CrossbowItem.setCharged(stack, true);
+				NbtCompound subNbt = stack.getSubNbt(Enchancement.MOD_ID);
 				subNbt.putInt("BrimstoneDamage", damage);
 				world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ITEM_CROSSBOW_LOADING_END, user instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE, 1, 1 / (world.getRandom().nextFloat() * 0.5F + 1) + 0.2F);
 				ci.cancel();

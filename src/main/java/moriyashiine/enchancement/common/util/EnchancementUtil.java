@@ -24,6 +24,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.*;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.FluidTags;
@@ -276,6 +277,17 @@ public class EnchancementUtil {
 			return MathHelper.ceil(maxLevel / 2F);
 		}
 		return maxLevel;
+	}
+
+	@Nullable
+	public static UUID getBrimstoneUUID(ItemStack stack) {
+		if (stack.hasNbt()) {
+			NbtCompound subNbt = stack.getSubNbt(Enchancement.MOD_ID);
+			if (subNbt != null && subNbt.contains("BrimstoneUUID")) {
+				return subNbt.getUuid("BrimstoneUUID");
+			}
+		}
+		return null;
 	}
 
 	public static int getBrimstoneDamage(float progress) {
