@@ -7,7 +7,7 @@ package moriyashiine.enchancement.common.component.entity;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModTags;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
@@ -47,8 +47,8 @@ public class ChaosArrowComponent implements Component {
 	}
 
 	public static void applyChaos(LivingEntity shooter, ItemStack stack, Consumer<List<StatusEffectInstance>> consumer) {
-		boolean hasChaos = shooter instanceof PlayerEntity ? EnchancementUtil.hasEnchantment(ModEnchantments.CHAOS, shooter.getActiveItem()) : EnchancementUtil.hasEnchantment(ModEnchantments.CHAOS, shooter);
-		if (hasChaos) {
+		int level = shooter instanceof PlayerEntity ? EnchantmentHelper.getLevel(ModEnchantments.CHAOS, shooter.getActiveItem()) : EnchantmentHelper.getEquipmentLevel(ModEnchantments.CHAOS, shooter);
+		if (level > 0) {
 			int attempts = 0;
 			StatusEffectCategory category = shooter.isSneaking() ? StatusEffectCategory.BENEFICIAL : StatusEffectCategory.HARMFUL;
 			List<StatusEffectInstance> effects = PotionUtil.getPotionEffects(stack);
@@ -61,14 +61,14 @@ public class ChaosArrowComponent implements Component {
 			}
 			while (attempts < 128) {
 				StatusEffect effect = Registries.STATUS_EFFECT.get(shooter.getRandom().nextInt(Registries.STATUS_EFFECT.size()));
-				if (!disallowed.contains(effect)) {
+				if (effect != null && !disallowed.contains(effect)) {
 					Optional<RegistryKey<StatusEffect>> key = Registries.STATUS_EFFECT.getKey(effect);
-					if (key.isPresent() && effect != null && effect.getCategory() == category && !Registries.STATUS_EFFECT.entryOf(key.get()).isIn(ModTags.StatusEffects.CHAOS_UNCHOOSABLE)) {
+					if (key.isPresent() && effect.getCategory() == category && !Registries.STATUS_EFFECT.entryOf(key.get()).isIn(ModTags.StatusEffects.CHAOS_UNCHOOSABLE)) {
 						List<StatusEffectInstance> statusEffects = new ArrayList<>();
 						for (StatusEffectInstance instance : effects) {
 							statusEffects.add(new StatusEffectInstance(instance.getEffectType(), Math.max(instance.mapDuration(i -> i / 8), 1), instance.getAmplifier(), instance.isAmbient(), instance.shouldShowParticles()));
 						}
-						statusEffects.add(new StatusEffectInstance(effect, effect.isInstant() ? 1 : 200));
+						statusEffects.add(new StatusEffectInstance(effect, effect.isInstant() ? 1 : level * 100, effect.isInstant() ? level - 1 : 0));
 						consumer.accept(statusEffects);
 						return;
 					}

@@ -6,7 +6,7 @@ package moriyashiine.enchancement.mixin.phasing;
 
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -23,11 +23,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class PhasingArrowItemMixin {
 	@Inject(method = "createArrow", at = @At("RETURN"))
 	private void enchancement$phasing(World world, ItemStack stack, LivingEntity shooter, CallbackInfoReturnable<PersistentProjectileEntity> cir) {
-		boolean hasPhasing = shooter instanceof PlayerEntity ? EnchancementUtil.hasEnchantment(ModEnchantments.PHASING, shooter.getActiveItem()) : EnchancementUtil.hasEnchantment(ModEnchantments.PHASING, shooter);
-		if (hasPhasing) {
+		int level = shooter instanceof PlayerEntity ? EnchantmentHelper.getLevel(ModEnchantments.PHASING, shooter.getActiveItem()) : EnchantmentHelper.getEquipmentLevel(ModEnchantments.PHASING, shooter);
+		if (level > 0) {
 			PersistentProjectileEntity arrow = cir.getReturnValue();
 			ModEntityComponents.PHASING.maybeGet(arrow).ifPresent(phasingComponent -> {
-				phasingComponent.setShouldPhase(true);
+				phasingComponent.setPhasingLevel(level);
 				phasingComponent.sync();
 			});
 			arrow.setNoGravity(true);

@@ -23,7 +23,7 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 	private final PersistentProjectileEntity obj;
 	private ItemStack stackShotFrom = null;
 	private Vec3d storedVelocity = null;
-	private boolean hasDelay = false;
+	private int delayLevel = 0;
 	private float forcedPitch = 0, forcedYaw = 0;
 	private float cachedSpeed = 0, cachedDivergence = 0;
 	private int ticksFloating = 0;
@@ -40,7 +40,7 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 		} else {
 			storedVelocity = null;
 		}
-		hasDelay = tag.getBoolean("HasDelay");
+		delayLevel = tag.getInt("DelayLevel");
 		ticksFloating = tag.getInt("TicksFloating");
 		forcedPitch = tag.getFloat("ForcedPitch");
 		forcedYaw = tag.getFloat("ForcedYaw");
@@ -57,7 +57,7 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 			storedVelocity.putDouble("Z", this.storedVelocity.getZ());
 			tag.put("StoredVelocity", storedVelocity);
 		}
-		tag.putBoolean("HasDelay", hasDelay);
+		tag.putInt("DelayLevel", delayLevel);
 		tag.putInt("TicksFloating", ticksFloating);
 		tag.putFloat("ForcedPitch", forcedPitch);
 		tag.putFloat("ForcedYaw", forcedYaw);
@@ -67,7 +67,7 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 
 	@Override
 	public void tick() {
-		if (hasDelay) {
+		if (hasDelay()) {
 			obj.setVelocity(Vec3d.ZERO);
 			obj.setPitch(forcedPitch);
 			obj.setYaw(forcedYaw);
@@ -77,7 +77,7 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 
 	@Override
 	public void serverTick() {
-		if (hasDelay) {
+		if (hasDelay()) {
 			if (storedVelocity == null) {
 				storedVelocity = obj.getVelocity();
 				forcedPitch = obj.getPitch();
@@ -100,9 +100,9 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 					forcedPitch = MathHelper.wrapDegrees(obj.getPitch() + 180);
 					forcedYaw = MathHelper.wrapDegrees(-(obj.getYaw() + 180));
 				}
-				obj.setDamage(obj.getDamage() * MathHelper.lerp(Math.min(1, ticksFloating / 60F), 1, 2));
+				obj.setDamage(obj.getDamage() * MathHelper.lerp(Math.min(1, ticksFloating / 60F), 1, 1 + delayLevel * 0.5F));
 				obj.setVelocity(storedVelocity);
-				hasDelay = false;
+				delayLevel = 0;
 				sync();
 			}
 		}
@@ -126,11 +126,11 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 	}
 
 	public boolean hasDelay() {
-		return hasDelay;
+		return delayLevel > 0;
 	}
 
-	public void setHasDelay(boolean hasDelay) {
-		this.hasDelay = hasDelay;
+	public void setDelayLevel(int delayLevel) {
+		this.delayLevel = delayLevel;
 	}
 
 	public boolean alwaysHurt() {

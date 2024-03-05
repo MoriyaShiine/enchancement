@@ -15,13 +15,15 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
 
 public class PhasingComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private final PersistentProjectileEntity obj;
-	private boolean shouldPhase = false;
+	private int phasingLevel = 0;
 	private int ticksInAir = 0;
 	private double velocityLength = -1;
+	private Vec3d freezeVelocity = null;
 
 	public PhasingComponent(PersistentProjectileEntity obj) {
 		this.obj = obj;
@@ -29,23 +31,31 @@ public class PhasingComponent implements AutoSyncedComponent, CommonTickingCompo
 
 	@Override
 	public void readFromNbt(NbtCompound tag) {
-		shouldPhase = tag.getBoolean("ShouldPhase");
+		phasingLevel = tag.getInt("PhasingLevel");
 		ticksInAir = tag.getInt("TicksInAir");
 		velocityLength = tag.getDouble("VelocityLength");
 	}
 
 	@Override
 	public void writeToNbt(@NotNull NbtCompound tag) {
-		tag.putBoolean("ShouldPhase", shouldPhase);
+		tag.putInt("PhasingLevel", phasingLevel);
 		tag.putInt("TicksInAir", ticksInAir);
 		tag.putDouble("VelocityLength", velocityLength);
 	}
 
 	@Override
 	public void tick() {
-		if (shouldPhase && !((PersistentProjectileEntityAccessor) obj).enchancement$inGround()) {
+		if (freezeVelocity != null) {
+			obj.setVelocity(freezeVelocity);
+			freezeVelocity = null;
+		}
+		if (shouldPhase()) {
+			if (++ticksInAir >= 200 || ((PersistentProjectileEntityAccessor) obj).enchancement$inGround()) {
+				disablePhasing();
+				return;
+			}
 			LivingEntity closest = null;
-			for (LivingEntity living : obj.getWorld().getEntitiesByClass(LivingEntity.class, new Box(obj.getBlockPos()).expand(1), foundEntity -> foundEntity.isAlive() && EnchancementUtil.shouldHurt(obj.getOwner(), foundEntity))) {
+			for (LivingEntity living : obj.getWorld().getEntitiesByClass(LivingEntity.class, new Box(obj.getBlockPos()).expand(phasingLevel * 0.5), foundEntity -> foundEntity.isAlive() && EnchancementUtil.shouldHurt(obj.getOwner(), foundEntity))) {
 				if (closest == null || closest.distanceTo(obj) > living.distanceTo(obj)) {
 					closest = living;
 				}
@@ -66,29 +76,31 @@ public class PhasingComponent implements AutoSyncedComponent, CommonTickingCompo
 		}
 	}
 
-	@Override
-	public void serverTick() {
-		tick();
-		if (shouldPhase && ticksInAir++ >= 200) {
-			shouldPhase = false;
-			velocityLength = -1;
-			obj.setNoGravity(false);
-		}
-	}
-
 	public void sync() {
 		ModEntityComponents.PHASING.sync(obj);
 	}
 
-	public void setShouldPhase(boolean shouldPhase) {
-		this.shouldPhase = shouldPhase;
+	public int getPhasingLevel() {
+		return phasingLevel;
+	}
+
+	public void setPhasingLevel(int phasingLevel) {
+		this.phasingLevel = phasingLevel;
 	}
 
 	public boolean shouldPhase() {
-		return shouldPhase;
+		return phasingLevel > 0;
 	}
 
 	public double getVelocityLength() {
 		return velocityLength;
+	}
+
+	public void disablePhasing() {
+		setPhasingLevel(0);
+		velocityLength = -1;
+		freezeVelocity = obj.getVelocity();
+		obj.setVelocity(Vec3d.ZERO);
+		obj.setNoGravity(false);
 	}
 }
