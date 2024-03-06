@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
+// todo remove after 24w10a
 @Mixin(GrindstoneScreenHandler.class)
 public class GrindstoneScreenHandlerMixin {
 	@Shadow
