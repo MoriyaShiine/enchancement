@@ -4,35 +4,25 @@
 
 package moriyashiine.enchancement.mixin.delay;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.BowItem;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.ModifyArgs;
-import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(value = BowItem.class, priority = 1001)
 public class BowItemMixin {
-	@Unique
-	private static Args data = null;
-
-	@ModifyArgs(method = "onStoppedUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/PersistentProjectileEntity;setVelocity(Lnet/minecraft/entity/Entity;FFFFF)V"))
-	private void enchancement$delay(Args args) {
-		data = args;
-	}
-
-	@ModifyArg(method = "onStoppedUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z"))
-	private Entity enchancement$delay(Entity value) {
-		ModEntityComponents.DELAY.maybeGet(value).ifPresent(delayComponent -> {
+	@WrapOperation(method = "onStoppedUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/PersistentProjectileEntity;setVelocity(Lnet/minecraft/entity/Entity;FFFFF)V"))
+	private void enchancement$delay(PersistentProjectileEntity instance, Entity shooter, float pitch, float yaw, float roll, float speed, float divergence, Operation<Void> original) {
+		original.call(instance, shooter, pitch, yaw, roll, speed, divergence);
+		ModEntityComponents.DELAY.maybeGet(instance).ifPresent(delayComponent -> {
 			if (delayComponent.hasDelay()) {
-				delayComponent.setCachedSpeed(data.get(4));
-				delayComponent.setCachedDivergence(data.get(5));
+				delayComponent.setCachedSpeed(speed);
+				delayComponent.setCachedDivergence(divergence);
 			}
-			data = null;
 		});
-		return value;
 	}
 }
