@@ -67,8 +67,7 @@ public abstract class CrossbowItemMixin {
 			int damage = EnchancementUtil.getBrimstoneDamage(getPullProgress(getMaxUseTime(stack) - remainingUseTicks, stack));
 			if (damage > 0 && loadProjectiles(user, stack)) {
 				CrossbowItem.setCharged(stack, true);
-				NbtCompound subNbt = stack.getSubNbt(Enchancement.MOD_ID);
-				subNbt.putInt("BrimstoneDamage", damage);
+				stack.getSubNbt(Enchancement.MOD_ID).putInt("BrimstoneDamage", damage);
 				world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ITEM_CROSSBOW_LOADING_END, user instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE, 1, 1 / (world.getRandom().nextFloat() * 0.5F + 1) + 0.2F);
 				ci.cancel();
 			}
@@ -123,8 +122,9 @@ public abstract class CrossbowItemMixin {
 
 	@Inject(method = "getPullTime", at = @At("HEAD"), cancellable = true)
 	private static void enchancement$brimstone(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
-		if (EnchancementUtil.hasEnchantment(ModEnchantments.BRIMSTONE, stack)) {
-			int time = 60;
+		int level = EnchantmentHelper.getLevel(ModEnchantments.BRIMSTONE, stack);
+		if (level > 0) {
+			int time = 120 / level;
 			int quickCharge = EnchantmentHelper.getLevel(Enchantments.QUICK_CHARGE, stack);
 			while (quickCharge > 0) {
 				time -= 10;

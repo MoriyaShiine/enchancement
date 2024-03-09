@@ -26,7 +26,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class TorchEntity extends PersistentProjectileEntity {
-	public boolean shouldPlaceTorch = true;
+	private boolean shouldPlaceTorch = true;
+	private int ignitionTime = 0;
 
 	public TorchEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
 		super(entityType, world);
@@ -53,7 +54,6 @@ public class TorchEntity extends PersistentProjectileEntity {
 
 	@Override
 	protected void onEntityHit(EntityHitResult entityHitResult) {
-		int stuckArrows = 0;
 		Entity entity = entityHitResult.getEntity();
 		if (entity instanceof EnderDragonPart part) {
 			entity = part.owner;
@@ -61,14 +61,10 @@ public class TorchEntity extends PersistentProjectileEntity {
 		if (entity instanceof LivingEntity living) {
 			playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 1, 1);
 			if (!getWorld().isClient) {
-				living.setOnFireFor(Math.min(16, (int) Math.ceil(living.getFireTicks() / 20F) + 2));
-				stuckArrows = living.getStuckArrowCount();
+				living.setOnFireFor(Math.min(16, (int) Math.ceil(living.getFireTicks() / 20F) + ignitionTime));
 			}
 		}
 		super.onEntityHit(entityHitResult);
-		if (!getWorld().isClient && entityHitResult.getEntity() instanceof LivingEntity living && living.getStuckArrowCount() != stuckArrows) {
-			living.setStuckArrowCount(stuckArrows);
-		}
 	}
 
 	@Override
@@ -106,12 +102,14 @@ public class TorchEntity extends PersistentProjectileEntity {
 	public void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
 		shouldPlaceTorch = nbt.getBoolean("ShouldPlaceTorch");
+		ignitionTime = nbt.getInt("IgnitionTime");
 	}
 
 	@Override
 	public void writeCustomDataToNbt(NbtCompound nbt) {
 		super.writeCustomDataToNbt(nbt);
 		nbt.putBoolean("ShouldPlaceTorch", shouldPlaceTorch);
+		nbt.putInt("IgnitionTime", ignitionTime);
 	}
 
 	@Override
@@ -122,5 +120,9 @@ public class TorchEntity extends PersistentProjectileEntity {
 	@Override
 	public boolean doesRenderOnFire() {
 		return false;
+	}
+
+	public void setIgnitionTime(int ignitionTime) {
+		this.ignitionTime = ignitionTime;
 	}
 }

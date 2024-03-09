@@ -7,7 +7,6 @@ package moriyashiine.enchancement.mixin.scatter;
 import moriyashiine.enchancement.common.entity.projectile.AmethystShardEntity;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.CrossbowUser;
@@ -32,32 +31,35 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class CrossbowItemMixin {
 	@Inject(method = "shoot", at = @At("HEAD"), cancellable = true)
 	private static void enchancement$scatter(World world, LivingEntity shooter, Hand hand, ItemStack crossbow, ItemStack projectile, float soundPitch, boolean creative, float speed, float divergence, float simulated, CallbackInfo ci) {
-		if (!world.isClient && EnchancementUtil.hasEnchantment(ModEnchantments.SCATTER, crossbow) && (projectile.isOf(Items.AMETHYST_SHARD) || !(shooter instanceof PlayerEntity))) {
-			speed /= 2;
-			int count = MathHelper.nextInt(world.random, 8, 16);
-			int multishot = EnchantmentHelper.getLevel(Enchantments.MULTISHOT, crossbow);
-			while (multishot > 0) {
-				count = (int) (count * 1.5F);
-				multishot--;
-			}
-			for (int i = 0; i < count; i++) {
-				AmethystShardEntity projectileEntity = new AmethystShardEntity(world, shooter);
-				if (shooter instanceof CrossbowUser crossbowUser) {
-					crossbowUser.shoot(crossbowUser.getTarget(), crossbow, projectileEntity, simulated);
-				} else {
-					Vec3d opposite = shooter.getOppositeRotationVector(1);
-					Vector3f velocity = shooter.getRotationVec(1).toVector3f().rotate(new Quaternionf().setAngleAxis(simulated * ((float) Math.PI / 180), opposite.x, opposite.y, opposite.z));
-					projectileEntity.setVelocity(velocity.x(), velocity.y(), velocity.z(), speed, 0);
+		if (!world.isClient && (projectile.isOf(Items.AMETHYST_SHARD) || !(shooter instanceof PlayerEntity))) {
+			int level = EnchantmentHelper.getLevel(ModEnchantments.SCATTER, crossbow);
+			if (level > 0) {
+				speed /= 2;
+				int count = MathHelper.nextInt(world.random, level * 6, level * 8);
+				int multishot = EnchantmentHelper.getLevel(Enchantments.MULTISHOT, crossbow);
+				while (multishot > 0) {
+					count = (int) (count * 1.5F);
+					multishot--;
 				}
-				projectileEntity.setVelocity(projectileEntity.getVelocity().getX(), projectileEntity.getVelocity().getY(), projectileEntity.getVelocity().getZ(), speed, 16);
-				world.spawnEntity(projectileEntity);
+				for (int i = 0; i < count; i++) {
+					AmethystShardEntity projectileEntity = new AmethystShardEntity(world, shooter);
+					if (shooter instanceof CrossbowUser crossbowUser) {
+						crossbowUser.shoot(crossbowUser.getTarget(), crossbow, projectileEntity, simulated);
+					} else {
+						Vec3d opposite = shooter.getOppositeRotationVector(1);
+						Vector3f velocity = shooter.getRotationVec(1).toVector3f().rotate(new Quaternionf().setAngleAxis(simulated * ((float) Math.PI / 180), opposite.x, opposite.y, opposite.z));
+						projectileEntity.setVelocity(velocity.x(), velocity.y(), velocity.z(), speed, 0);
+					}
+					projectileEntity.setVelocity(projectileEntity.getVelocity().getX(), projectileEntity.getVelocity().getY(), projectileEntity.getVelocity().getZ(), speed, 16);
+					world.spawnEntity(projectileEntity);
+				}
+				crossbow.damage(1, shooter, stackUser -> stackUser.sendToolBreakStatus(hand));
+				world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), ModSoundEvents.ITEM_CROSSBOW_SCATTER, SoundCategory.PLAYERS, 1, soundPitch);
+				if (shooter instanceof PlayerEntity player) {
+					player.getItemCooldownManager().set(crossbow.getItem(), 20);
+				}
+				ci.cancel();
 			}
-			crossbow.damage(1, shooter, stackUser -> stackUser.sendToolBreakStatus(hand));
-			world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), ModSoundEvents.ITEM_CROSSBOW_SCATTER, SoundCategory.PLAYERS, 1, soundPitch);
-			if (shooter instanceof PlayerEntity player) {
-				player.getItemCooldownManager().set(crossbow.getItem(), 20);
-			}
-			ci.cancel();
 		}
 	}
 }
