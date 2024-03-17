@@ -1,7 +1,7 @@
 # Enchancement
 Enchancement is a mod that aims to completely overhaul vanilla Minecraft's enchanting system, along with some other adjacent mechanics.
 
-Enchancement currently adds 29 unique and fun enchantments to the game:
+Enchancement currently adds 30 unique and fun enchantments to the game:
 
 ```
 Helmet Enchantments:
@@ -12,9 +12,10 @@ Helmet Enchantments:
 Chestplate Enchantments:
 * Amphibious: Increases underwater mining and movement speed. Decreases air consumption underwater and time spent on fire. Immediately extinguishes you and allows usage of Riptide for 5 seconds after leaving water.
 * Strafe: Double tapping Left Control (configurable) launches you in your movement direction.
-* Wardenspine: Harms attackers and greatly decreases damage taken from behind.
+* Wardenspine: Harms and blinds attackers and greatly decreases damage taken from behind.
 
 Leggings Enchantments:
+* Adrenaline: Increases movement speed and reduces damage taken proportional to missing health.
 * Dash: Pressing Left Shift (configurable) in the air launches you in your look direction.
 * Slide: Holding Left Control (configurable) while grounded causes you to slide constantly. Pressing Left Control (configurable) in the air causes you to slam towards the ground, knocking back mobs and negating fall damage.
 
@@ -28,9 +29,9 @@ Sword Enchantments:
 * Frostbite: Freezes attacked mobs. When killed, turns them into ice statues that can be moved or shattered, launching ice shards that freeze other mobs.
 
 Bow Enchantments:
-* Chaos: Gives normal arrows a random negative potion effect, or positive if sneaking.
-* Delay: Arrows will not launch immediately after shooting, building up damage over time. Can be launched prematurely by punching, and additionally redirected by sneaking.
-* Phasing: Causes arrows to have no gravity and phase through blocks, upon which they regain gravity.
+* Chaos: Gives arrows a random negative potion effect, or positive if sneaking.
+* Delay: Arrows will pause after shooting, building up damage over time. Can be launched prematurely by punching, and additionally redirected by sneaking.
+* Phasing: Causes arrows to have no gravity and phase through blocks, upon which they regain gravity. Arrows home in on nearby entities.
 
 Crossbow Enchantments:
 * Brimstone: Fires a piercing laser that ignores armor and increases damage with charge and distance. Costs health to fire.
@@ -68,9 +69,10 @@ Of the core changes, this mod will:
 Enchancement also adds some quality of life changes:
 * Add Coyote Bite, which allows attacking an entity for 3 ticks after it leaves your crosshair.
 * Adds descriptions to the tooltip of enchanted items and colors enchantment names green.
+* Allows keybinds (Vanilla and Enchancement by default, configurable) to be bound to the same key without conflicting.
 * Fishing Bobbers are accurately thrown instead of having a weird offset.
-* Infinity is allowed on Crossbows.
 * All Tridents have Loyalty built in as a native effect.
+* Arrows shot from Bows will drop on the ground near the shot entity, allowing recollection.
 * Channeling works during any weather, not just when thundering. Channeling also creates lightning that does not create fire or destroy items, and ignites entities for 3 seconds on melee attack.
 * Crossbows can pull projectiles from your inventory instead of just from your off-hand.
 * Drowned will use the data of their held Trident when throwing it.
@@ -90,12 +92,16 @@ Enchancement also adds some quality of life changes:
 
 **Q: Can I disable any of these changes?**
 
-A: Everything in the mod is configurable down to disabling the entire mod if there are features that you wish to disable. All of the config options are self explanatory except for enchantmentLimit (0 means no limit, greater than 0 means items cannot have more than that number of enchantments) and unbreakingChangesFlag (0 means all items are unbreakable, greater than 0 means items with x level of Unbreaking are unbreakable, and less than 0 means disabled). Items in the `enchancement:retains_durability` tag will ignore these changes and act as normal.
+A: Everything in the mod is configurable down to disabling the entire mod if there are features that you wish to disable. All of the config options are self explanatory except for enchantmentLimit (0 means no limit, greater than 0 means items cannot have more than that number of enchantments) and unbreakingChangesFlag (0 means all items are unbreakable, greater than 0 means items with x level of Unbreaking are unbreakable, and less than 0 means disabled). Items in the `enchancement:retains_durability` tag will ignore these changes and continue to have durability regardless of the setting.
 
 **Q: Why did you remove most of the vanilla enchantments?**
 
-A: I do not like how much of the vanilla enchanting meta relies exclusively on Protection, Sharpness, Power, and other such stat increasing enchantments. I also dislike Fortune because it incentivizes not mining ores until you have Fortune, which I find incredibly dumb.
+A: I do not like how much of the vanilla enchanting meta relies exclusively on Protection, Sharpness, Power, and other such stat increasing enchantments. I also dislike Fortune because it creates a mindset of not mining ores until you have Fortune, which I find incredibly dumb.
 
 **Q: I want to keep every enchantment anyway. How do I do this?**
 
-A: In the configuration file, remove all entries from disallowedEnchantments. Keep in mind that while this shouldn't cause any bugs, any balance concerns created by doing this will not be addressed as it is outside of the scope of the mod's vision.
+A: In the configuration file, remove all entries from disallowedEnchantments.
+
+**Q: I changed the config and now my gear is either too weak or too strong, can you fix this?**
+
+A: Enchancement is heavily designed around using the default configuration file, any balance concerns created by modifying the config will not be addressed as it is outside of the scope of the mod's vision.
