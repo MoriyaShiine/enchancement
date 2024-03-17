@@ -82,7 +82,7 @@
   "enchantment.enchancement.chaos": "Chaos",
   "enchantment.enchancement.chaos.desc": "Gives arrows a random negative potion effect, or positive if sneaking.",
   "enchantment.enchancement.delay": "Delay",
-  "enchantment.enchancement.delay.desc": "Arrows will not launch immediately after shooting, building up damage over time. Can be launched prematurely by punching, and additionally redirected by sneaking.",
+  "enchantment.enchancement.delay.desc": "Arrows will pause after shooting, building up damage over time. Can be launched prematurely by punching, and additionally redirected by sneaking.",
   "enchantment.enchancement.phasing": "Phasing",
   "enchantment.enchancement.phasing.desc": "Causes arrows to have no gravity and phase through blocks, upon which they regain gravity. Arrows home in on nearby entities.",
   "enchantment.enchancement.brimstone": "Brimstone",
