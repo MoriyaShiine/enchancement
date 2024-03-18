@@ -4,62 +4,98 @@
 
 package moriyashiine.enchancement.mixin.scatter;
 
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import moriyashiine.enchancement.common.entity.projectile.AmethystShardEntity;
 import moriyashiine.enchancement.common.init.ModEnchantments;
-import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.CrossbowUser;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.function.Consumer;
+
 @Mixin(CrossbowItem.class)
-public class CrossbowItemMixin {
-	@Inject(method = "shoot", at = @At("HEAD"), cancellable = true)
+public abstract class CrossbowItemMixin {
+	@Unique
+	private static int toShoot = 0;
+
+	@Shadow
+	private static void shoot(World world, LivingEntity shooter, Hand hand, ItemStack crossbow, ItemStack projectile, float soundPitch, boolean creative, float speed, float divergence, float simulated) {
+	}
+
+	@ModifyVariable(method = "createArrow", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/ArrowItem;createArrow(Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/LivingEntity;)Lnet/minecraft/entity/projectile/PersistentProjectileEntity;"))
+	private static PersistentProjectileEntity enchancement$scatter(PersistentProjectileEntity value, World world, LivingEntity entity, ItemStack crossbow, ItemStack arrow) {
+		if (arrow.isOf(Items.AMETHYST_SHARD) || !(entity instanceof PlayerEntity)) {
+			if (EnchancementUtil.hasEnchantment(ModEnchantments.SCATTER, crossbow)) {
+				return new AmethystShardEntity(world, entity);
+			}
+		}
+		return value;
+	}
+
+	@WrapWithCondition(method = "createArrow", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/PersistentProjectileEntity;setCritical(Z)V"))
+	private static boolean enchancement$scatter(PersistentProjectileEntity instance, boolean critical) {
+		return !(instance instanceof AmethystShardEntity);
+	}
+
+	@ModifyVariable(method = "shoot", at = @At("HEAD"), ordinal = 1, argsOnly = true)
+	private static float enchancement$scatterSpeed(float value, World world, LivingEntity shooter, Hand hand, ItemStack crossbow, ItemStack projectile) {
+		if (toShoot == 0 && EnchancementUtil.hasEnchantment(ModEnchantments.SCATTER, crossbow)) {
+			if (projectile.isOf(Items.AMETHYST_SHARD) || !(shooter instanceof PlayerEntity)) {
+				return value / 2;
+			}
+		}
+		return value;
+	}
+
+	@ModifyVariable(method = "shoot", at = @At("HEAD"), ordinal = 2, argsOnly = true)
+	private static float enchancement$scatterDivergence(float value, World world, LivingEntity shooter, Hand hand, ItemStack crossbow, ItemStack projectile) {
+		if (toShoot == 0 && EnchancementUtil.hasEnchantment(ModEnchantments.SCATTER, crossbow)) {
+			if (projectile.isOf(Items.AMETHYST_SHARD) || !(shooter instanceof PlayerEntity)) {
+				return 16;
+			}
+		}
+		return value;
+	}
+
+	@Inject(method = "shoot", at = @At("TAIL"))
 	private static void enchancement$scatter(World world, LivingEntity shooter, Hand hand, ItemStack crossbow, ItemStack projectile, float soundPitch, boolean creative, float speed, float divergence, float simulated, CallbackInfo ci) {
-		if (!world.isClient && (projectile.isOf(Items.AMETHYST_SHARD) || !(shooter instanceof PlayerEntity))) {
+		if (toShoot == 0) {
 			int level = EnchantmentHelper.getLevel(ModEnchantments.SCATTER, crossbow);
 			if (level > 0) {
-				speed /= 2;
-				int count = MathHelper.nextInt(world.random, level * 6, level * 8);
-				int multishot = EnchantmentHelper.getLevel(Enchantments.MULTISHOT, crossbow);
-				while (multishot > 0) {
-					count = (int) (count * 1.5F);
-					multishot--;
-				}
-				for (int i = 0; i < count; i++) {
-					AmethystShardEntity projectileEntity = new AmethystShardEntity(world, shooter);
-					if (shooter instanceof CrossbowUser crossbowUser) {
-						crossbowUser.shoot(crossbowUser.getTarget(), crossbow, projectileEntity, simulated);
-					} else {
-						Vec3d opposite = shooter.getOppositeRotationVector(1);
-						Vector3f velocity = shooter.getRotationVec(1).toVector3f().rotate(new Quaternionf().setAngleAxis(simulated * ((float) Math.PI / 180), opposite.x, opposite.y, opposite.z));
-						projectileEntity.setVelocity(velocity.x(), velocity.y(), velocity.z(), speed, 0);
-					}
-					projectileEntity.setVelocity(projectileEntity.getVelocity().getX(), projectileEntity.getVelocity().getY(), projectileEntity.getVelocity().getZ(), speed, 16);
-					world.spawnEntity(projectileEntity);
-				}
-				crossbow.damage(1, shooter, stackUser -> stackUser.sendToolBreakStatus(hand));
-				world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), ModSoundEvents.ITEM_CROSSBOW_SCATTER, SoundCategory.PLAYERS, 1, soundPitch);
 				if (shooter instanceof PlayerEntity player) {
 					player.getItemCooldownManager().set(crossbow.getItem(), 20);
 				}
-				ci.cancel();
+				for (toShoot = MathHelper.nextInt(world.random, level * 6, level * 8) - 1; toShoot > 0; toShoot--) {
+					shoot(world, shooter, hand, crossbow, projectile, soundPitch, creative, speed, divergence, simulated);
+				}
 			}
 		}
+	}
+
+	@WrapWithCondition(method = "shoot", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;damage(ILnet/minecraft/entity/LivingEntity;Ljava/util/function/Consumer;)V"))
+	private static boolean enchancement$scatterDamage(ItemStack instance, int amount, LivingEntity entity, Consumer<LivingEntity> breakCallback) {
+		return toShoot == 0;
+	}
+
+	@WrapWithCondition(method = "shoot", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;playSound(Lnet/minecraft/entity/player/PlayerEntity;DDDLnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FF)V"))
+	private static boolean enchancement$scatterPlaySound(World instance, PlayerEntity except, double x, double y, double z, SoundEvent sound, SoundCategory category, float volume, float pitch) {
+		return toShoot == 0;
 	}
 }
