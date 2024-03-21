@@ -76,7 +76,7 @@ public abstract class CrossbowItemMixin {
 
 	@Inject(method = "shoot", at = @At("TAIL"))
 	private static void enchancement$scatter(World world, LivingEntity shooter, Hand hand, ItemStack crossbow, ItemStack projectile, float soundPitch, boolean creative, float speed, float divergence, float simulated, CallbackInfo ci) {
-		if (toShoot == 0) {
+		if (toShoot == 0 && projectile.isOf(Items.AMETHYST_SHARD)) {
 			int level = EnchantmentHelper.getLevel(ModEnchantments.SCATTER, crossbow);
 			if (level > 0) {
 				if (shooter instanceof PlayerEntity player) {
