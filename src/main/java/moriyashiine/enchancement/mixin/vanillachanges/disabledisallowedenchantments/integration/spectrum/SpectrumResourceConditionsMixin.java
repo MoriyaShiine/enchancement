@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(value = SpectrumResourceConditions.class, remap = false)
+@Mixin(SpectrumResourceConditions.class)
 public class SpectrumResourceConditionsMixin {
 	@WrapOperation(method = "enchantmentExistsMatch", at = @At(value = "INVOKE", target = "Lnet/minecraft/registry/Registry;get(Lnet/minecraft/util/Identifier;)Ljava/lang/Object;"))
 	private static <T> T enchancement$spectrum$disableDisallowedEnchantments(Registry<T> instance, @Nullable Identifier identifier, Operation<T> original) {

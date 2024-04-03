@@ -5,7 +5,6 @@
 package moriyashiine.enchancement.common;
 
 import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.ModContainer;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -32,22 +31,7 @@ public class ModMixinPlugin implements IMixinConfigPlugin {
 		} else if (mixinClassName.contains("integration.sodium")) {
 			return FabricLoader.getInstance().isModLoaded("sodium");
 		} else if (mixinClassName.contains("integration.spectrum")) {
-			if (FabricLoader.getInstance().isModLoaded("spectrum")) {
-				if (mixinClassName.contains("SpectrumResourceConditionsMixin")) {
-					ModContainer container = FabricLoader.getInstance().getModContainer("spectrum").orElse(null);
-					if (container != null) {
-						String[] version = container.getMetadata().getVersion().getFriendlyString().replace(".", "").split("");
-						if (Integer.parseInt(version[version.length - 1]) > 7) {
-							return true;
-						} else {
-							Enchancement.LOGGER.warn("[{}] Skipping SpectrumResourceConditionsMixin since Spectrum hasn't updated yet. This may cause world loading log spam and cause certain recipes to fail to load, but it will be fixed whenever Spectrum updates.", Enchancement.MOD_ID);
-							return false;
-						}
-					}
-				}
-				return true;
-			}
-			return false;
+			return FabricLoader.getInstance().isModLoaded("spectrum");
 		}
 		return true;
 	}
