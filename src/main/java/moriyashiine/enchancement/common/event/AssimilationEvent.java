@@ -30,7 +30,10 @@ public class AssimilationEvent implements ServerTickEvents.EndTick {
 					food = getMostNeededFood(player);
 				}
 				if (!food.isEmpty()) {
-					player.eatFood(player.getWorld(), food);
+					ItemStack finished = food.finishUsing(player.getWorld(), player);
+					if (!ItemStack.areEqual(food, finished) && !player.giveItemStack(finished)) {
+						player.dropStack(finished);
+					}
 				}
 			}
 		});
