@@ -50,6 +50,8 @@ public class EnchancementClient implements ClientModInitializer {
 	public static final KeyBinding SLIDE_KEYBINDING = registerKeyBinding(() -> KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".slide", GLFW.GLFW_KEY_LEFT_CONTROL, "key.categories." + Enchancement.MOD_ID)));
 	public static final KeyBinding STRAFE_KEYBINDING = registerKeyBinding(() -> KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".strafe", GLFW.GLFW_KEY_LEFT_CONTROL, "key.categories." + Enchancement.MOD_ID)));
 
+	public static boolean betterCombatLoaded = false;
+
 	@Override
 	public void onInitializeClient() {
 		ClientPlayNetworking.registerGlobalReceiver(EnforceConfigMatchPacket.ID, new EnforceConfigMatchPacket.Receiver());
@@ -81,6 +83,7 @@ public class EnchancementClient implements ClientModInitializer {
 		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(Enchancement.id("alternate_dash"), modContainer, ResourcePackActivationType.NORMAL));
 		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(Enchancement.id("alternate_gale"), modContainer, ResourcePackActivationType.NORMAL));
 		initEvents();
+		betterCombatLoaded = FabricLoader.getInstance().isModLoaded("bettercombat");
 	}
 
 	private void initEvents() {

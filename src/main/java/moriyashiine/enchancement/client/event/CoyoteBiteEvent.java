@@ -4,6 +4,7 @@
 
 package moriyashiine.enchancement.client.event;
 
+import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.common.ModConfig;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
@@ -16,7 +17,7 @@ public class CoyoteBiteEvent implements ClientTickEvents.EndWorldTick {
 
 	@Override
 	public void onEndTick(ClientWorld world) {
-		if (ModConfig.coyoteBiteTicks > 0 && MinecraftClient.getInstance().targetedEntity != null) {
+		if (!EnchancementClient.betterCombatLoaded && ModConfig.coyoteBiteTicks > 0 && MinecraftClient.getInstance().targetedEntity != null) {
 			target = MinecraftClient.getInstance().targetedEntity;
 			ticks = ModConfig.coyoteBiteTicks;
 		}
@@ -25,6 +26,7 @@ public class CoyoteBiteEvent implements ClientTickEvents.EndWorldTick {
 		}
 		if (ticks == 0 || target == null || target.isRemoved() || !target.isAlive()) {
 			target = null;
+			ticks = 0;
 		}
 	}
 }
