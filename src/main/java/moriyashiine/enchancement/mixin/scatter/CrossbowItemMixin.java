@@ -56,9 +56,11 @@ public abstract class CrossbowItemMixin {
 
 	@ModifyVariable(method = "shoot", at = @At("HEAD"), ordinal = 1, argsOnly = true)
 	private static float enchancement$scatterSpeed(float value, World world, LivingEntity shooter, Hand hand, ItemStack crossbow, ItemStack projectile) {
-		if (toShoot == 0 && EnchancementUtil.hasEnchantment(ModEnchantments.SCATTER, crossbow)) {
+		if (toShoot == 0) {
 			if (projectile.isOf(Items.AMETHYST_SHARD) || !(shooter instanceof PlayerEntity)) {
-				return value / 2;
+				if (EnchancementUtil.hasEnchantment(ModEnchantments.SCATTER, crossbow)) {
+					return value / 2;
+				}
 			}
 		}
 		return value;
@@ -66,9 +68,11 @@ public abstract class CrossbowItemMixin {
 
 	@ModifyVariable(method = "shoot", at = @At("HEAD"), ordinal = 2, argsOnly = true)
 	private static float enchancement$scatterDivergence(float value, World world, LivingEntity shooter, Hand hand, ItemStack crossbow, ItemStack projectile) {
-		if (toShoot == 0 && EnchancementUtil.hasEnchantment(ModEnchantments.SCATTER, crossbow)) {
+		if (toShoot == 0) {
 			if (projectile.isOf(Items.AMETHYST_SHARD) || !(shooter instanceof PlayerEntity)) {
-				return 16;
+				if (EnchancementUtil.hasEnchantment(ModEnchantments.SCATTER, crossbow)) {
+					return 16;
+				}
 			}
 		}
 		return value;
@@ -76,14 +80,16 @@ public abstract class CrossbowItemMixin {
 
 	@Inject(method = "shoot", at = @At("TAIL"))
 	private static void enchancement$scatter(World world, LivingEntity shooter, Hand hand, ItemStack crossbow, ItemStack projectile, float soundPitch, boolean creative, float speed, float divergence, float simulated, CallbackInfo ci) {
-		if (toShoot == 0 && projectile.isOf(Items.AMETHYST_SHARD)) {
-			int level = EnchantmentHelper.getLevel(ModEnchantments.SCATTER, crossbow);
-			if (level > 0) {
-				if (shooter instanceof PlayerEntity player) {
-					player.getItemCooldownManager().set(crossbow.getItem(), 20);
-				}
-				for (toShoot = MathHelper.nextInt(world.random, level * 6, level * 8) - 1; toShoot > 0; toShoot--) {
-					shoot(world, shooter, hand, crossbow, projectile, soundPitch, creative, speed, divergence, simulated);
+		if (toShoot == 0) {
+			if (projectile.isOf(Items.AMETHYST_SHARD) || !(shooter instanceof PlayerEntity)) {
+				int level = EnchantmentHelper.getLevel(ModEnchantments.SCATTER, crossbow);
+				if (level > 0) {
+					if (shooter instanceof PlayerEntity player) {
+						player.getItemCooldownManager().set(crossbow.getItem(), 20);
+					}
+					for (toShoot = MathHelper.nextInt(world.random, level * 6, level * 8) - 1; toShoot > 0; toShoot--) {
+						shoot(world, shooter, hand, crossbow, projectile, soundPitch, creative, speed, divergence, simulated);
+					}
 				}
 			}
 		}
