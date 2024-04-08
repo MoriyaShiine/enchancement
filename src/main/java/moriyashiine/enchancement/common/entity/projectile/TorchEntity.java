@@ -92,7 +92,7 @@ public class TorchEntity extends PersistentProjectileEntity {
 					}
 				}
 			}
-			if (getOwner() instanceof PlayerEntity) {
+			if (getOwner() instanceof PlayerEntity player && !player.isCreative()) {
 				dropStack(asItemStack(), 0.1F);
 			}
 		}
