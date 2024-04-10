@@ -90,7 +90,7 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 	public void clientTick() {
 		tick();
 		if (hasGale && ((LivingEntityAccessor) obj).enchancement$jumping() && canUse()) {
-			handle(obj, this);
+			use();
 			addGaleParticles(obj);
 			GalePacket.send();
 		}
@@ -133,14 +133,14 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 		return jumpCooldown == 0 && jumpsLeft > 0 && ticksInAir >= (obj.getWorld().isClient ? 10 : 9) && !obj.isOnGround() && EnchancementUtil.isGroundedOrAirborne(obj);
 	}
 
-	public static void handle(PlayerEntity player, GaleComponent galeComponent) {
-		player.jump();
-		player.setVelocity(player.getVelocity().getX(), player.getVelocity().getY() * 1.5, player.getVelocity().getZ());
-		player.playSound(ModSoundEvents.ENTITY_GENERIC_AIR_JUMP, 1, 1);
-		galeComponent.setGaleCooldown(DEFAULT_GALE_COOLDOWN);
-		galeComponent.shouldRefreshGale = false;
-		galeComponent.jumpCooldown = 10;
-		galeComponent.jumpsLeft--;
+	public void use() {
+		obj.jump();
+		obj.setVelocity(obj.getVelocity().getX(), obj.getVelocity().getY() * 1.5, obj.getVelocity().getZ());
+		obj.playSound(ModSoundEvents.ENTITY_GENERIC_AIR_JUMP, 1, 1);
+		setGaleCooldown(DEFAULT_GALE_COOLDOWN);
+		shouldRefreshGale = false;
+		jumpCooldown = 10;
+		jumpsLeft--;
 	}
 
 	public static void addGaleParticles(Entity entity) {

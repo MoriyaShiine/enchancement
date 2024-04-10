@@ -32,7 +32,7 @@ public class GalePacket {
 			server.execute(() -> {
 				GaleComponent galeComponent = ModEntityComponents.GALE.get(player);
 				if (galeComponent.hasGale() && galeComponent.canUse()) {
-					GaleComponent.handle(player, galeComponent);
+					galeComponent.use();
 					PlayerLookup.tracking(player).forEach(foundPlayer -> AddGaleParticlesPacket.send(foundPlayer, player.getId()));
 				}
 			});

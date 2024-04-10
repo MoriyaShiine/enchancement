@@ -32,7 +32,7 @@ public class DashPacket {
 				DashComponent dashComponent = ModEntityComponents.DASH.get(player);
 				if (dashComponent.hasDash() && dashComponent.canUse()) {
 					EnchancementUtil.PACKET_IMMUNITIES.put(player, 20);
-					DashComponent.handle(player, dashComponent);
+					dashComponent.use();
 				}
 			});
 		}

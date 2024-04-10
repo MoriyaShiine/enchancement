@@ -76,7 +76,7 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 					Vec3d inputVelocity = getVelocityFromInput(options);
 					if (inputVelocity != Vec3d.ZERO) {
 						Vec3d velocity = inputVelocity.rotateY((float) Math.toRadians(-(obj.getHeadYaw() + 90)));
-						handle(obj, this, velocity.getX(), velocity.getZ());
+						use(velocity.getX(), velocity.getZ());
 						addStrafeParticles(obj);
 						StrafePacket.send(velocity);
 					}
@@ -109,6 +109,12 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 		return strafeCooldown == 0 && !obj.isSpectator();
 	}
 
+	public void use(double velocityX, double velocityZ) {
+		obj.addVelocity(velocityX, 0, velocityZ);
+		obj.playSound(ModSoundEvents.ENTITY_GENERIC_STRAFE, 1, 1);
+		setStrafeCooldown(DEFAULT_STRAFE_COOLDOWN / strafeLevel);
+	}
+
 	private Vec3d getVelocityFromInput(GameOptions options) {
 		if (options.forwardKey.isPressed()) {
 			return new Vec3d(1, 0, 0);
@@ -123,12 +129,6 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 			return new Vec3d(0, 0, 1);
 		}
 		return Vec3d.ZERO;
-	}
-
-	public static void handle(PlayerEntity player, StrafeComponent strafeComponent, double velocityX, double velocityZ) {
-		player.addVelocity(velocityX, 0, velocityZ);
-		player.playSound(ModSoundEvents.ENTITY_GENERIC_STRAFE, 1, 1);
-		strafeComponent.setStrafeCooldown(DEFAULT_STRAFE_COOLDOWN / strafeComponent.strafeLevel);
 	}
 
 	public static void addStrafeParticles(Entity entity) {

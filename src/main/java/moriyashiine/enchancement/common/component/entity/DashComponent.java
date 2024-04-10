@@ -83,7 +83,7 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 			}
 			boolean pressingDashKey = EnchancementClient.DASH_KEYBINDING.isPressed();
 			if (pressingDashKey && !wasPressingDashKey && canUse()) {
-				handle(obj, this);
+				use();
 				if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || obj != MinecraftClient.getInstance().cameraEntity) {
 					for (int i = 0; i < 8; i++) {
 						obj.getWorld().addParticle(ParticleTypes.CLOUD, obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 0, 0);
@@ -119,21 +119,21 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 		return hasDash;
 	}
 
-	public boolean canUse() {
-		return dashCooldown == 0 && !obj.isOnGround() && EnchancementUtil.isGroundedOrAirborne(obj);
-	}
-
 	public boolean shouldWavedash() {
 		return ticksPressingJump < 2 && wavedashTicks > 0 && obj.isOnGround();
 	}
 
-	public static void handle(PlayerEntity player, DashComponent dashComponent) {
-		player.playSound(ModSoundEvents.ENTITY_GENERIC_DASH, 1, 1);
-		Vec3d velocity = player.getRotationVector().normalize();
-		player.setVelocity(velocity.getX(), velocity.getY(), velocity.getZ());
-		player.fallDistance = 0;
-		dashComponent.setDashCooldown(DEFAULT_DASH_COOLDOWN / dashComponent.dashLevel);
-		dashComponent.shouldRefreshDash = false;
-		dashComponent.wavedashTicks = 3;
+	public boolean canUse() {
+		return dashCooldown == 0 && !obj.isOnGround() && EnchancementUtil.isGroundedOrAirborne(obj);
+	}
+
+	public void use() {
+		obj.playSound(ModSoundEvents.ENTITY_GENERIC_DASH, 1, 1);
+		Vec3d velocity = obj.getRotationVector().normalize();
+		obj.setVelocity(velocity.getX(), velocity.getY(), velocity.getZ());
+		obj.fallDistance = 0;
+		setDashCooldown(DEFAULT_DASH_COOLDOWN / dashLevel);
+		shouldRefreshDash = false;
+		wavedashTicks = 3;
 	}
 }
