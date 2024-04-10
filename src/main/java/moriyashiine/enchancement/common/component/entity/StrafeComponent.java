@@ -64,7 +64,7 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 	@Override
 	public void clientTick() {
 		tick();
-		if (hasStrafe && strafeCooldown == 0 && !obj.isSpectator() && obj == MinecraftClient.getInstance().player) {
+		if (hasStrafe && canUse() && obj == MinecraftClient.getInstance().player) {
 			GameOptions options = MinecraftClient.getInstance().options;
 			boolean pressingStrafeKey = EnchancementClient.STRAFE_KEYBINDING.isPressed();
 			if (ticksLeftToPressActivationKey > 0) {
@@ -103,6 +103,10 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 
 	public boolean hasStrafe() {
 		return hasStrafe;
+	}
+
+	public boolean canUse() {
+		return strafeCooldown == 0 && !obj.isSpectator();
 	}
 
 	private Vec3d getVelocityFromInput(GameOptions options) {

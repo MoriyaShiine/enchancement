@@ -32,7 +32,7 @@ public class BuoyPacket {
 			boolean shouldBoost = buf.readBoolean();
 			server.execute(() -> {
 				BuoyComponent buoyComponent = ModEntityComponents.BUOY.get(player);
-				if (buoyComponent.hasBuoy()) {
+				if (buoyComponent.hasBuoy() && buoyComponent.canUse()) {
 					buoyComponent.setShouldBoost(shouldBoost);
 				}
 			});

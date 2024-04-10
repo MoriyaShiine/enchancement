@@ -18,8 +18,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 
-public class SlideVelocityPacket {
-	public static final Identifier ID = Enchancement.id("slide_velocity");
+public class SlideSetVelocityPacket {
+	public static final Identifier ID = Enchancement.id("slide_set_velocity");
 
 	public static void send(Vec3d velocity) {
 		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
@@ -35,7 +35,7 @@ public class SlideVelocityPacket {
 			float velocityZ = buf.readFloat();
 			server.execute(() -> {
 				SlideComponent slideComponent = ModEntityComponents.SLIDE.get(player);
-				if (slideComponent.hasSlide()) {
+				if (slideComponent.hasSlide() && slideComponent.canSlide()) {
 					slideComponent.setVelocity(new Vec3d(velocityX, 0, velocityZ));
 				}
 			});

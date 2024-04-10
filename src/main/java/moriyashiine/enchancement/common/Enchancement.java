@@ -46,7 +46,8 @@ public class Enchancement implements ModInitializer {
 		ServerPlayNetworking.registerGlobalReceiver(StrafePacket.ID, new StrafePacket.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(DashPacket.ID, new DashPacket.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(SlideSlamPacket.ID, new SlideSlamPacket.Receiver());
-		ServerPlayNetworking.registerGlobalReceiver(SlideVelocityPacket.ID, new SlideVelocityPacket.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(SlideSetVelocityPacket.ID, new SlideSetVelocityPacket.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(SlideResetVelocityPacket.ID, new SlideResetVelocityPacket.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(BuoyPacket.ID, new BuoyPacket.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(GalePacket.ID, new GalePacket.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(SyncFrozenPlayerSlimStatusC2S.ID, new SyncFrozenPlayerSlimStatusC2S.Receiver());

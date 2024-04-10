@@ -30,7 +30,7 @@ public class SlideSlamPacket {
 		public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
 			server.execute(() -> {
 				SlideComponent slideComponent = ModEntityComponents.SLIDE.get(player);
-				if (slideComponent.hasSlide()) {
+				if (slideComponent.hasSlide() && slideComponent.canSlam()) {
 					slideComponent.setShouldSlam(true);
 					slideComponent.setSlamCooldown(SlideComponent.DEFAULT_SLAM_COOLDOWN);
 				}

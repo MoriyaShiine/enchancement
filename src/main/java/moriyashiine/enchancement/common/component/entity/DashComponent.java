@@ -82,7 +82,7 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 				ticksPressingJump = 0;
 			}
 			boolean pressingDashKey = EnchancementClient.DASH_KEYBINDING.isPressed();
-			if (!obj.isOnGround() && dashCooldown == 0 && pressingDashKey && !wasPressingDashKey && EnchancementUtil.isGroundedOrAirborne(obj)) {
+			if (pressingDashKey && !wasPressingDashKey && canUse()) {
 				handle(obj, this);
 				if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || obj != MinecraftClient.getInstance().cameraEntity) {
 					for (int i = 0; i < 8; i++) {
@@ -117,6 +117,10 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 
 	public boolean hasDash() {
 		return hasDash;
+	}
+
+	public boolean canUse() {
+		return dashCooldown == 0 && !obj.isOnGround() && EnchancementUtil.isGroundedOrAirborne(obj);
 	}
 
 	public boolean shouldWavedash() {

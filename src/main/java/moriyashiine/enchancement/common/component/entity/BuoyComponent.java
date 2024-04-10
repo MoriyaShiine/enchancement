@@ -90,7 +90,7 @@ public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponen
 				}
 			}
 			if (((LivingEntityAccessor) obj).enchancement$jumping()) {
-				if (!shouldBoost && EnchancementUtil.isSubmerged(obj, true, true, true)) {
+				if (canUse()) {
 					shouldBoost = true;
 					BuoyPacket.send(true);
 				}
@@ -107,5 +107,9 @@ public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponen
 
 	public boolean hasBuoy() {
 		return hasBuoy;
+	}
+
+	public boolean canUse() {
+		return !shouldBoost && EnchancementUtil.isSubmerged(obj, true, true, true);
 	}
 }

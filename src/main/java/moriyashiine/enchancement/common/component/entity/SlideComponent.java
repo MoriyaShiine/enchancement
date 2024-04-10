@@ -9,8 +9,9 @@ import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.enchancement.common.packet.SlideResetVelocityPacket;
+import moriyashiine.enchancement.common.packet.SlideSetVelocityPacket;
 import moriyashiine.enchancement.common.packet.SlideSlamPacket;
-import moriyashiine.enchancement.common.packet.SlideVelocityPacket;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.slide.EntityAccessor;
 import net.minecraft.block.BlockState;
@@ -159,16 +160,16 @@ public class SlideComponent implements CommonTickingComponent {
 				disallowSlide = false;
 			}
 			if (pressingSlideKey && !obj.isSneaking() && !disallowSlide) {
-				if (!isSliding() && obj.isOnGround() && EnchancementUtil.isGroundedOrAirborne(obj)) {
+				if (canSlide()) {
 					velocity = getVelocityFromInput(options).rotateY((float) Math.toRadians(-(obj.getHeadYaw() + 90)));
-					SlideVelocityPacket.send(velocity);
+					SlideSetVelocityPacket.send(velocity);
 				}
 			} else if (velocity != Vec3d.ZERO) {
 				velocity = Vec3d.ZERO;
-				SlideVelocityPacket.send(velocity);
+				SlideResetVelocityPacket.send();
 			}
 			boolean pressingSlamKey = EnchancementClient.SLAM_KEYBINDING.isPressed();
-			if (slamCooldown == 0 && !obj.isOnGround() && pressingSlamKey && !wasPressingSlamKey && !isSliding() && EnchancementUtil.isGroundedOrAirborne(obj)) {
+			if (pressingSlamKey && !wasPressingSlamKey && canSlam()) {
 				shouldSlam = true;
 				slamCooldown = DEFAULT_SLAM_COOLDOWN;
 				SlideSlamPacket.send();
@@ -214,6 +215,14 @@ public class SlideComponent implements CommonTickingComponent {
 
 	public boolean hasSlide() {
 		return hasSlide;
+	}
+
+	public boolean canSlide() {
+		return !isSliding() && obj.isOnGround() && EnchancementUtil.isGroundedOrAirborne(obj);
+	}
+
+	public boolean canSlam() {
+		return slamCooldown == 0 && !isSliding() && !obj.isOnGround() && EnchancementUtil.isGroundedOrAirborne(obj);
 	}
 
 	private void slamTick(Runnable onLand) {

@@ -31,7 +31,7 @@ public class GalePacket {
 		public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
 			server.execute(() -> {
 				GaleComponent galeComponent = ModEntityComponents.GALE.get(player);
-				if (galeComponent.hasGale()) {
+				if (galeComponent.hasGale() && galeComponent.canUse()) {
 					GaleComponent.handle(player, galeComponent);
 					PlayerLookup.tracking(player).forEach(foundPlayer -> AddGaleParticlesPacket.send(foundPlayer, player.getId()));
 				}

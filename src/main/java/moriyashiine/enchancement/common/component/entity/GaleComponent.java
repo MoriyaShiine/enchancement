@@ -89,7 +89,7 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 	@Override
 	public void clientTick() {
 		tick();
-		if (!obj.isOnGround() && hasGale && jumpCooldown == 0 && jumpsLeft > 0 && ticksInAir >= 10 && EnchancementUtil.isGroundedOrAirborne(obj) && ((LivingEntityAccessor) obj).enchancement$jumping()) {
+		if (hasGale && ((LivingEntityAccessor) obj).enchancement$jumping() && canUse()) {
 			handle(obj, this);
 			addGaleParticles(obj);
 			GalePacket.send();
@@ -127,6 +127,10 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 
 	public boolean hasGale() {
 		return hasGale;
+	}
+
+	public boolean canUse() {
+		return jumpCooldown == 0 && jumpsLeft > 0 && ticksInAir >= (obj.getWorld().isClient ? 10 : 9) && !obj.isOnGround() && EnchancementUtil.isGroundedOrAirborne(obj);
 	}
 
 	public static void handle(PlayerEntity player, GaleComponent galeComponent) {

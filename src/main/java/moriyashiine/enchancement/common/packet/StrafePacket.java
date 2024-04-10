@@ -37,7 +37,7 @@ public class StrafePacket {
 			float velocityZ = buf.readFloat();
 			server.execute(() -> {
 				StrafeComponent strafeComponent = ModEntityComponents.STRAFE.get(player);
-				if (strafeComponent.hasStrafe()) {
+				if (strafeComponent.hasStrafe() && strafeComponent.canUse()) {
 					StrafeComponent.handle(player, strafeComponent, velocityX, velocityZ);
 					PlayerLookup.tracking(player).forEach(foundPlayer -> AddStrafeParticlesPacket.send(foundPlayer, player.getId()));
 				}
