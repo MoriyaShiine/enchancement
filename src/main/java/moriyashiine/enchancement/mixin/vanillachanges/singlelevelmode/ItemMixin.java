@@ -4,6 +4,7 @@
 
 package moriyashiine.enchancement.mixin.vanillachanges.singlelevelmode;
 
+import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class ItemMixin {
 	@Inject(method = "getRarity", at = @At("RETURN"), cancellable = true)
 	private void enchancement$singleLevelMode(ItemStack stack, CallbackInfoReturnable<Rarity> cir) {
-		if (stack.hasEnchantments() && !EnchancementUtil.hasWeakEnchantments(stack)) {
+		if (ModConfig.singleLevelMode && stack.hasEnchantments() && !EnchancementUtil.hasWeakEnchantments(stack)) {
 			cir.setReturnValue(Rarity.values()[Math.min(cir.getReturnValue().ordinal() + 1, Rarity.values().length - 1)]);
 		}
 	}
