@@ -10,7 +10,7 @@ Helmet Enchantments:
 * Veil: Decreases monster detection range and hides your name behind walls.
 
 Chestplate Enchantments:
-* Amphibious: Increases underwater mining and movement speed. Decreases air consumption underwater and time spent on fire. Immediately extinguishes you and allows usage of Riptide for 5 seconds after leaving water.
+* Amphibious: Increases underwater mining and movement speed. Decreases air consumption underwater and time spent on fire. Immediately extinguishes you and allows usage of Riptide for some time after leaving water.
 * Strafe: Double tapping Left Control (configurable) launches you in your movement direction.
 * Wardenspine: Harms and blinds attackers and greatly decreases damage taken from behind.
 
@@ -20,7 +20,7 @@ Leggings Enchantments:
 * Slide: Holding Left Control (configurable) while grounded causes you to slide constantly. Pressing Left Control (configurable) in the air causes you to slam towards the ground, knocking back mobs and negating fall damage.
 
 Boots Enchantments:
-* Buoy: Causes you to walk on fluids, descending via sneaking. Holding jump while submerged rapidly propels you upwards. Prevents floating. Grants a speed boost for 5 seconds after leaving water.
+* Buoy: Causes you to walk on fluids, descending via sneaking. Holding jump while submerged rapidly propels you upwards. Prevents floating. Grants a speed boost for some time after leaving water.
 * Bouncy: Negates fall damage. Launches you upwards upon landing while not sneaking. Sneaking while grounded will charge a super jump.
 * Gale: Allows you to jump more times in the air.
 
