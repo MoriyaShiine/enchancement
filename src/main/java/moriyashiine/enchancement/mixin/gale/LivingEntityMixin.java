@@ -17,7 +17,7 @@ public class LivingEntityMixin {
 	private float enchancement$gale(float value) {
 		GaleComponent galeComponent = ModEntityComponents.GALE.getNullable(this);
 		if (galeComponent != null && galeComponent.hasGale()) {
-			value = Math.max(0, value - (galeComponent.getGaleLevel() - galeComponent.getJumpsLeft()));
+			return Math.max(0, value - (galeComponent.getGaleLevel() - galeComponent.getJumpsLeft()));
 		}
 		return value;
 	}

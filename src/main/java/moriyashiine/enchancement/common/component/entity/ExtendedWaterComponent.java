@@ -4,6 +4,7 @@
 
 package moriyashiine.enchancement.common.component.entity;
 
+import dev.emi.stepheightentityattribute.StepHeightEntityAttributeMain;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.common.init.ModEnchantments;
@@ -11,12 +12,18 @@ import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 
+import java.util.UUID;
+
 public class ExtendedWaterComponent implements AutoSyncedComponent, CommonTickingComponent {
+	private static final EntityAttributeModifier STEP_HEIGHT_INCREASE = new EntityAttributeModifier(UUID.fromString("ffa8a401-83c0-46a2-8510-66a66aed2275"), "Enchantment modifier", 1, EntityAttributeModifier.Operation.ADDITION);
+
 	private final LivingEntity obj;
 	private int ticksWet = 0;
 
@@ -58,8 +65,24 @@ public class ExtendedWaterComponent implements AutoSyncedComponent, CommonTickin
 	@Override
 	public void serverTick() {
 		tick();
-		if (ticksWet > 0 && obj.age % 10 == 0 && !obj.isWet()) {
-			obj.getWorld().playSound(null, obj.getBlockPos(), SoundEvents.BLOCK_POINTED_DRIPSTONE_DRIP_WATER, obj.getSoundCategory(), 1, 1);
+		if (obj.age % 10 == 0) {
+			boolean increase = false;
+			if (ticksWet > 0) {
+				if (hasBuoy) {
+					increase = true;
+				}
+				if (!obj.isWet()) {
+					obj.getWorld().playSound(null, obj.getBlockPos(), SoundEvents.BLOCK_POINTED_DRIPSTONE_DRIP_WATER, obj.getSoundCategory(), 1, 1);
+				}
+			}
+			EntityAttributeInstance attribute = obj.getAttributeInstance(StepHeightEntityAttributeMain.STEP_HEIGHT);
+			if (increase) {
+				if (!attribute.hasModifier(STEP_HEIGHT_INCREASE)) {
+					attribute.addPersistentModifier(STEP_HEIGHT_INCREASE);
+				}
+			} else if (attribute.hasModifier(STEP_HEIGHT_INCREASE)) {
+				attribute.removeModifier(STEP_HEIGHT_INCREASE);
+			}
 		}
 	}
 
