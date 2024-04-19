@@ -16,7 +16,7 @@ import net.minecraft.world.RaycastContext;
 
 public class AirMobilityComponent implements CommonTickingComponent {
 	private final LivingEntity obj;
-	private int ticksInAir = 0;
+	private int resetBypassTicks = 0, ticksInAir = 0;
 
 	public AirMobilityComponent(LivingEntity obj) {
 		this.obj = obj;
@@ -24,28 +24,39 @@ public class AirMobilityComponent implements CommonTickingComponent {
 
 	@Override
 	public void readFromNbt(NbtCompound tag) {
+		resetBypassTicks = tag.getInt("ResetBypassTicks");
 		ticksInAir = tag.getInt("TicksInAir");
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag) {
+		tag.putInt("ResetBypassTicks", resetBypassTicks);
 		tag.putInt("TicksInAir", ticksInAir);
 	}
 
 	@Override
 	public void tick() {
 		if (ModConfig.enchantedChestplatesIncreaseAirMobility && obj.getEquippedStack(EquipmentSlot.CHEST).hasEnchantments() && !(obj.getEquippedStack(EquipmentSlot.CHEST).getItem() instanceof ElytraItem)) {
+			if (resetBypassTicks > 0) {
+				resetBypassTicks--;
+			}
 			if (obj.isOnGround()) {
-				ticksInAir = 0;
+				if (resetBypassTicks == 0) {
+					ticksInAir = 0;
+				}
 			} else if (EnchancementUtil.isGroundedOrAirborne(obj) && obj.getWorld().raycast(new RaycastContext(obj.getPos(), obj.getPos().add(0, -1, 0), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.ANY, obj)).getType() == HitResult.Type.MISS) {
 				ticksInAir++;
 			}
 		} else {
-			ticksInAir = 0;
+			resetBypassTicks = ticksInAir = 0;
 		}
 	}
 
 	public int getTicksInAir() {
 		return ticksInAir;
+	}
+
+	public void enableResetBypass() {
+		resetBypassTicks = 3;
 	}
 }
