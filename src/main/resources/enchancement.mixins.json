@@ -17,7 +17,6 @@
 	"brimstone.CrossbowItemMixin",
 	"brimstone.ItemStackMixin",
 	"brimstone.ServerPlayerInteractionManagerMixin",
-	"buoy.EntityMixin",
 	"buoy.LivingEntityMixin",
 	"buoy.PlayerEntityMixin",
 	"buoy.PowderSnowBlockMixin",

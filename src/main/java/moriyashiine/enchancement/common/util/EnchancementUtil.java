@@ -13,6 +13,8 @@ import moriyashiine.enchancement.common.event.InitializeDefaultEnchantmentsEvent
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModTags;
 import moriyashiine.enchancement.mixin.util.ItemEntityAccessor;
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalFluidTags;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -22,12 +24,10 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
@@ -161,10 +161,16 @@ public class EnchancementUtil {
 		return isGroundedOrAirborne(living, false);
 	}
 
-	public static boolean isSubmerged(Entity entity, boolean allowWater, boolean allowLava, boolean allowPowderSnow) {
+	public static boolean isSubmerged(Entity entity, SubmersionGate gate) {
 		for (int i = 0; i <= 1; i++) {
-			FluidState fluidState = entity.getWorld().getFluidState(entity.getBlockPos().up(i));
-			if ((allowWater && fluidState.isIn(FluidTags.WATER)) || (allowLava && fluidState.isIn(FluidTags.LAVA)) || (allowPowderSnow && entity.getWorld().getBlockState(entity.getBlockPos().up(i)).isOf(Blocks.POWDER_SNOW))) {
+			BlockState blockState = entity.getWorld().getBlockState(entity.getBlockPos().up(i));
+			if (gate.allowsWater() && !blockState.isOf(Blocks.BUBBLE_COLUMN) && blockState.getFluidState().isIn(ConventionalFluidTags.WATER)) {
+				return true;
+			}
+			if (gate.allowsLava() && blockState.getFluidState().isIn(ConventionalFluidTags.LAVA)) {
+				return true;
+			}
+			if (gate.allowsPowderSnow() && blockState.isOf(Blocks.POWDER_SNOW)) {
 				return true;
 			}
 		}

@@ -9,6 +9,7 @@ import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.packet.BuoyPacket;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.enchancement.common.util.SubmersionGate;
 import moriyashiine.enchancement.mixin.util.LivingEntityAccessor;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
@@ -46,7 +47,7 @@ public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponen
 		hasBuoy = buoyLevel > 0;
 		if (hasBuoy) {
 			if (shouldBoost) {
-				if (EnchancementUtil.isSubmerged(obj, true, true, true) && EnchancementUtil.isGroundedOrAirborne(obj, true)) {
+				if (EnchancementUtil.isSubmerged(obj, SubmersionGate.ALL) && EnchancementUtil.isGroundedOrAirborne(obj, true)) {
 					boost = (float) MathHelper.clamp(boost + 0.0025, buoyLevel * 0.075, buoyLevel);
 					obj.addVelocity(0, boost, 0);
 				} else {
@@ -71,11 +72,11 @@ public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponen
 				double y = obj.getY();
 				double z = obj.getZ();
 				ParticleEffect bubbleColumn = ParticleTypes.BUBBLE_COLUMN_UP, splash = ParticleTypes.SPLASH, bubble = ParticleTypes.BUBBLE;
-				if (EnchancementUtil.isSubmerged(obj, false, true, false)) {
+				if (EnchancementUtil.isSubmerged(obj, SubmersionGate.LAVA_ONLY)) {
 					bubbleColumn = ParticleTypes.LAVA;
 					splash = ParticleTypes.LAVA;
 					bubble = ParticleTypes.LAVA;
-				} else if (EnchancementUtil.isSubmerged(obj, false, false, true)) {
+				} else if (EnchancementUtil.isSubmerged(obj, SubmersionGate.POWDER_SNOW_ONLY)) {
 					bubbleColumn = ParticleTypes.SNOWFLAKE;
 					splash = ParticleTypes.SNOWFLAKE;
 					bubble = ParticleTypes.SNOWFLAKE;
@@ -110,6 +111,6 @@ public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponen
 	}
 
 	public boolean canUse() {
-		return !shouldBoost && EnchancementUtil.isSubmerged(obj, true, true, true);
+		return !shouldBoost && EnchancementUtil.isSubmerged(obj, SubmersionGate.ALL);
 	}
 }
