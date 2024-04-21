@@ -24,10 +24,6 @@ repositories {
         url "https://maven.shedaniel.me"
     }
     maven {
-        name "geckolib"
-        url "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven"
-    }
-    maven {
         name "mod menu"
         url "https://maven.terraformersmc.com"
     }
@@ -59,7 +55,6 @@ dependencies {
         exclude(group: "*")
     }
     modCompileOnly "maven.modrinth:architectury-api:${architectury_version}+fabric"
-    modCompileOnly "software.bernie.geckolib:geckolib-fabric-${geckolib_version}"
     modCompileOnly "maven.modrinth:sodium:${sodium_version}"
     modRuntimeOnly "maven.modrinth:sodium:${sodium_version}"
     implementation "org.joml:joml:1.10.4"
