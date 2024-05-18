@@ -4,59 +4,32 @@
 
 package moriyashiine.enchancement.mixin.vanillachanges.singlelevelmode;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.registry.Registries;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EnchantmentHelper.class)
 public class EnchantmentHelperMixin {
-	@ModifyVariable(method = "createNbt", at = @At(value = "HEAD"), argsOnly = true)
-	private static int enchancement$singleLevelModeNbt(int value) {
+	@WrapOperation(method = "forEachEnchantment(Lnet/minecraft/enchantment/EnchantmentHelper$Consumer;Lnet/minecraft/item/ItemStack;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper$Consumer;accept(Lnet/minecraft/enchantment/Enchantment;I)V"))
+	private static void enchancement$singleLevelMode(EnchantmentHelper.Consumer instance, Enchantment enchantment, int i, Operation<Void> original, EnchantmentHelper.Consumer consumer, ItemStack stack) {
 		if (ModConfig.singleLevelMode) {
-			return 1;
+			i = EnchancementUtil.getModifiedMaxLevel(stack, EnchancementUtil.ORIGINAL_MAX_LEVELS.getInt(enchantment));
 		}
-		return value;
-	}
-
-	@Inject(method = "forEachEnchantment(Lnet/minecraft/enchantment/EnchantmentHelper$Consumer;Lnet/minecraft/item/ItemStack;)V", at = @At("HEAD"), cancellable = true)
-	private static void enchancement$singleLevelMode(EnchantmentHelper.Consumer consumer, ItemStack stack, CallbackInfo ci) {
-		if (ModConfig.singleLevelMode) {
-			if (stack.isEmpty()) {
-				return;
-			}
-			NbtList nbtList = stack.getEnchantments();
-			for (int i = 0; i < nbtList.size(); i++) {
-				NbtCompound nbtCompound = nbtList.getCompound(i);
-				Registries.ENCHANTMENT.getOrEmpty(EnchantmentHelper.getIdFromNbt(nbtCompound)).ifPresent(enchantment -> consumer.accept(enchantment, EnchancementUtil.getModifiedMaxLevel(stack, enchantment.getMaxLevel())));
-			}
-			ci.cancel();
-		}
+		original.call(instance, enchantment, i);
 	}
 
 	@Inject(method = "getLevel", at = @At("RETURN"), cancellable = true)
 	private static void enchancement$singleLevelMode(Enchantment enchantment, ItemStack stack, CallbackInfoReturnable<Integer> cir) {
 		if (cir.getReturnValueI() > 0 && ModConfig.singleLevelMode) {
-			cir.setReturnValue(EnchancementUtil.getModifiedMaxLevel(stack, enchantment.getMaxLevel()));
+			cir.setReturnValue(EnchancementUtil.getModifiedMaxLevel(stack, EnchancementUtil.ORIGINAL_MAX_LEVELS.getInt(enchantment)));
 		}
-	}
-
-	@ModifyExpressionValue(method = "getPossibleEntries", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/Enchantment;getMaxLevel()I"))
-	private static int enchancement$singleLevelModeEntries(int value) {
-		if (ModConfig.singleLevelMode) {
-			return 1;
-		}
-		return value;
 	}
 }

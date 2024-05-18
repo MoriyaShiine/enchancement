@@ -4,12 +4,10 @@
 
 package moriyashiine.enchancement.common.component.entity;
 
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.packet.DashPacket;
+import moriyashiine.enchancement.common.payload.DashPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.util.LivingEntityAccessor;
 import net.minecraft.client.MinecraftClient;
@@ -17,7 +15,10 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.Vec3d;
+import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
+import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class DashComponent implements AutoSyncedComponent, CommonTickingComponent {
 	public static final int DEFAULT_DASH_COOLDOWN = 40;
@@ -35,7 +36,7 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag) {
+	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		shouldRefreshDash = tag.getBoolean("ShouldRefreshDash");
 		dashCooldown = tag.getInt("DashCooldown");
 		lastDashCooldown = tag.getInt("LastDashCooldown");
@@ -43,7 +44,7 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag) {
+	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		tag.putBoolean("ShouldRefreshDash", shouldRefreshDash);
 		tag.putInt("DashCooldown", dashCooldown);
 		tag.putInt("LastDashCooldown", lastDashCooldown);
@@ -89,7 +90,7 @@ public class DashComponent implements AutoSyncedComponent, CommonTickingComponen
 						obj.getWorld().addParticle(ParticleTypes.CLOUD, obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 0, 0);
 					}
 				}
-				DashPacket.send();
+				DashPayload.send();
 			}
 			wasPressingDashKey = pressingDashKey;
 		} else {

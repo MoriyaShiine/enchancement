@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(SquidEntityRenderer.class)
 public class SquidEntityRendererMixin<T extends SquidEntity> {
-	@ModifyVariable(method = "setupTransforms(Lnet/minecraft/entity/passive/SquidEntity;Lnet/minecraft/client/util/math/MatrixStack;FFF)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/util/math/MathHelper;lerp(FFF)F", ordinal = 0), ordinal = 3)
+	@ModifyVariable(method = "setupTransforms(Lnet/minecraft/entity/passive/SquidEntity;Lnet/minecraft/client/util/math/MatrixStack;FFFF)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/util/math/MathHelper;lerp(FFF)F", ordinal = 0), ordinal = 3, argsOnly = true)
 	private float enchancement$frostbiteTiltAngle(float value, T entity) {
 		if (ModEntityComponents.FROZEN.get(entity).isFrozen()) {
 			return ModEntityComponents.FROZEN_SQUID.get(entity).getForcedTiltAngle();
@@ -23,7 +23,7 @@ public class SquidEntityRendererMixin<T extends SquidEntity> {
 		return value;
 	}
 
-	@ModifyVariable(method = "setupTransforms(Lnet/minecraft/entity/passive/SquidEntity;Lnet/minecraft/client/util/math/MatrixStack;FFF)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/util/math/MathHelper;lerp(FFF)F", ordinal = 1), ordinal = 4)
+	@ModifyVariable(method = "setupTransforms(Lnet/minecraft/entity/passive/SquidEntity;Lnet/minecraft/client/util/math/MatrixStack;FFFF)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/util/math/MathHelper;lerp(FFF)F", ordinal = 1), ordinal = 4)
 	private float enchancement$frostbiteRollAngle(float value, T entity) {
 		if (ModEntityComponents.FROZEN.get(entity).isFrozen()) {
 			return ModEntityComponents.FROZEN_SQUID.get(entity).getForcedRollAngle();

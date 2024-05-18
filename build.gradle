@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.5-SNAPSHOT'
+    id 'fabric-loom' version '1.6-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -20,10 +20,6 @@ repositories {
         url "https://maven.ladysnake.org/releases"
     }
     maven {
-        name "architectury"
-        url "https://maven.shedaniel.me"
-    }
-    maven {
         name "mod menu"
         url "https://maven.terraformersmc.com"
     }
@@ -42,23 +38,20 @@ dependencies {
     mappings "net.fabricmc:yarn:${yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${loader_version}"
 
-    include modApi("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_version}")
-    include modApi("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}")
-    include modApi("dev.onyxstudios.cardinal-components-api:cardinal-components-world:${cardinal_components_version}")
+    include modApi("org.ladysnake.cardinal-components-api:cardinal-components-base:${cardinal_components_version}")
+    include modApi("org.ladysnake.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}")
+    include modApi("org.ladysnake.cardinal-components-api:cardinal-components-world:${cardinal_components_version}")
     include modApi("maven.modrinth:midnightlib:${midnightlib_version}")
-    include modApi("com.github.emilyploszaj:step-height-entity-attribute:${step_height_entity_attribute_version}")
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     modRuntimeOnly "maven.modrinth:tooltipfix:${tooltipfix_version}"
 
-    modCompileOnly("com.github.apace100:apoli:${apoli_version}") {
-        exclude(group: "*")
-    }
-    modCompileOnly "maven.modrinth:architectury-api:${architectury_version}+fabric"
+//    modCompileOnly("com.github.apace100:apoli:${apoli_version}") {
+//        exclude(group: "*")
+//    }
     modCompileOnly "maven.modrinth:sodium:${sodium_version}"
     modRuntimeOnly "maven.modrinth:sodium:${sodium_version}"
-    implementation "org.joml:joml:1.10.4"
-    modCompileOnly "maven.modrinth:spectrum:${spectrum_version}"
+//    modCompileOnly "maven.modrinth:spectrum:${spectrum_version}"
 
     modRuntimeOnly "com.terraformersmc:modmenu:${mod_menu_version}"
 }
@@ -72,14 +65,14 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.release = 17
+    it.options.release = 21
 }
 
 java {
     withSourcesJar()
 
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 jar {

@@ -27,7 +27,7 @@ public class EnchantCommandMixin {
 
 	@ModifyExpressionValue(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;isCompatible(Ljava/util/Collection;Lnet/minecraft/enchantment/Enchantment;)Z"))
 	private static boolean enchancement$enchantmentLimit(boolean value) {
-		if (EnchancementUtil.limitCheck(false, EnchancementUtil.getNonDefaultEnchantmentsSize(cachedStack, cachedStack.getEnchantments().size()) >= ModConfig.enchantmentLimit)) {
+		if (EnchancementUtil.limitCheck(false, EnchancementUtil.getNonDefaultEnchantmentsSize(cachedStack, cachedStack.getEnchantments().getSize()) >= ModConfig.enchantmentLimit)) {
 			value = false;
 		}
 		cachedStack = null;

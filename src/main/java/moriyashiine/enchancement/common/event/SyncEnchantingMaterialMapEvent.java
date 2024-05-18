@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.event;
 
-import moriyashiine.enchancement.client.packet.SyncEnchantingMaterialMapPacket;
+import moriyashiine.enchancement.client.payload.SyncEnchantingMaterialMapPayload;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
@@ -18,7 +18,7 @@ public class SyncEnchantingMaterialMapEvent {
 	public static class Join implements ServerPlayConnectionEvents.Join {
 		@Override
 		public void onPlayReady(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
-			SyncEnchantingMaterialMapPacket.send(handler.getPlayer());
+			SyncEnchantingMaterialMapPayload.send(handler.getPlayer());
 		}
 	}
 
@@ -27,7 +27,7 @@ public class SyncEnchantingMaterialMapEvent {
 		public void onEndTick(MinecraftServer server) {
 			if (shouldSend) {
 				shouldSend = false;
-				PlayerLookup.all(server).forEach(SyncEnchantingMaterialMapPacket::send);
+				PlayerLookup.all(server).forEach(SyncEnchantingMaterialMapPayload::send);
 			}
 		}
 	}

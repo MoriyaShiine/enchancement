@@ -4,8 +4,8 @@
 
 package moriyashiine.enchancement.client.sound;
 
+import moriyashiine.enchancement.common.init.ModDataComponentTypes;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.client.sound.MovingSoundInstance;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -51,7 +51,7 @@ public class BrimstoneSoundInstance extends MovingSoundInstance {
 			if (living.isDead()) {
 				return false;
 			}
-			return uuid.equals(EnchancementUtil.getBrimstoneUUID(living.getActiveItem()));
+			return uuid.equals(living.getActiveItem().get(ModDataComponentTypes.BRIMSTONE_UUID));
 		}
 		return false;
 	}

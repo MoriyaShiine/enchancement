@@ -21,7 +21,7 @@ public class DrownedEntityMixin extends ZombieEntity {
 		super(entityType, world);
 	}
 
-	@ModifyArg(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/TridentEntity;<init>(Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;)V"))
+	@ModifyArg(method = "shootAt", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/TridentEntity;<init>(Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;)V"))
 	private ItemStack enchancement$drownedUseHeldTrident(ItemStack value) {
 		if (ModConfig.drownedUseHeldTrident) {
 			ItemStack stack = getMainHandStack();

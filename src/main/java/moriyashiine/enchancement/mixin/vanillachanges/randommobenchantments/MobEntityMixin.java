@@ -6,6 +6,8 @@ package moriyashiine.enchancement.mixin.vanillachanges.randommobenchantments;
 
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -26,7 +28,12 @@ public abstract class MobEntityMixin extends LivingEntity {
 	@Inject(method = "enchantMainHandItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/MobEntity;equipStack(Lnet/minecraft/entity/EquipmentSlot;Lnet/minecraft/item/ItemStack;)V", shift = At.Shift.AFTER))
 	private void enchancement$randomMobEnchantments(Random random, float power, CallbackInfo ci) {
 		if (ModConfig.randomMobEnchantments) {
-			EnchantmentHelper.set(EnchancementUtil.getRandomEnchantment(getMainHandStack(), getRandom()), getMainHandStack());
+			Enchantment enchantment = EnchancementUtil.getRandomEnchantment(getMainHandStack(), getRandom());
+			if (enchantment != null) {
+				ItemEnchantmentsComponent.Builder builder = new ItemEnchantmentsComponent.Builder(ItemEnchantmentsComponent.DEFAULT);
+				builder.add(enchantment, random.nextBetween(enchantment.getMinLevel(), enchantment.getMaxLevel()));
+				EnchantmentHelper.set(getMainHandStack(), builder.build());
+			}
 		}
 	}
 }

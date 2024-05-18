@@ -4,8 +4,8 @@
 
 package moriyashiine.enchancement.common.entity.projectile;
 
-import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModDamageTypes;
+import moriyashiine.enchancement.common.init.ModDataComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
 import moriyashiine.enchancement.common.init.ModTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
@@ -42,7 +42,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 
 	static {
 		BRIMSTONE_STACK = new ItemStack(Items.LAVA_BUCKET);
-		BRIMSTONE_STACK.getOrCreateSubNbt(Enchancement.MOD_ID).putBoolean("Brimstone", true);
+		BRIMSTONE_STACK.set(ModDataComponentTypes.BRIMSTONE_DAMAGE, Integer.MAX_VALUE);
 	}
 
 	public static final TrackedData<Float> DAMAGE = DataTracker.registerData(BrimstoneEntity.class, TrackedDataHandlerRegistry.FLOAT);
@@ -59,17 +59,16 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 	public BrimstoneEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
 		super(entityType, world);
 		ignoreCameraFrustum = true;
-
 	}
 
 	public BrimstoneEntity(World world, LivingEntity owner) {
-		super(ModEntityTypes.BRIMSTONE, owner, world);
+		super(ModEntityTypes.BRIMSTONE, owner, world, BRIMSTONE_STACK.copy());
 		setPosition(owner.getX(), owner.getEyeY() - 0.3, owner.getZ());
 	}
 
 	@Override
-	protected ItemStack asItemStack() {
-		return ItemStack.EMPTY;
+	protected ItemStack getDefaultItemStack() {
+		return BRIMSTONE_STACK.copy();
 	}
 
 	@Override
@@ -158,11 +157,11 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 	}
 
 	@Override
-	protected void initDataTracker() {
-		super.initDataTracker();
-		dataTracker.startTracking(DAMAGE, 0F);
-		dataTracker.startTracking(FORCED_PITCH, 0F);
-		dataTracker.startTracking(FORCED_YAW, 0F);
+	protected void initDataTracker(DataTracker.Builder builder) {
+		super.initDataTracker(builder);
+		builder.add(DAMAGE, 0F);
+		builder.add(FORCED_PITCH, 0F);
+		builder.add(FORCED_YAW, 0F);
 	}
 
 	@Override

@@ -4,14 +4,12 @@
 
 package moriyashiine.enchancement.common.component.entity;
 
-import dev.emi.stepheightentityattribute.StepHeightEntityAttributeMain;
-import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.packet.SlideResetVelocityPacket;
-import moriyashiine.enchancement.common.packet.SlideSetVelocityPacket;
-import moriyashiine.enchancement.common.packet.SlideSlamPacket;
+import moriyashiine.enchancement.common.payload.SlideResetVelocityPayload;
+import moriyashiine.enchancement.common.payload.SlideSetVelocityPayload;
+import moriyashiine.enchancement.common.payload.SlideSlamPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.slide.EntityAccessor;
 import net.minecraft.block.BlockState;
@@ -21,20 +19,22 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.*;
 import net.minecraft.world.event.GameEvent;
-import org.jetbrains.annotations.NotNull;
+import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 import java.util.UUID;
 
 public class SlideComponent implements CommonTickingComponent {
 	public static final int DEFAULT_JUMP_BOOST_RESET_TICKS = 5, DEFAULT_SLAM_COOLDOWN = 7;
 
-	private static final EntityAttributeModifier STEP_HEIGHT_INCREASE = new EntityAttributeModifier(UUID.fromString("f95ce6ed-ecf3-433b-a7f0-a9c6092b0cf7"), "Enchantment modifier", 1, EntityAttributeModifier.Operation.ADDITION);
+	private static final EntityAttributeModifier STEP_HEIGHT_INCREASE = new EntityAttributeModifier(UUID.fromString("f95ce6ed-ecf3-433b-a7f0-a9c6092b0cf7"), "Enchantment modifier", 1, EntityAttributeModifier.Operation.ADD_VALUE);
 
 	private final PlayerEntity obj;
 	private Vec3d velocity = Vec3d.ZERO;
@@ -51,7 +51,7 @@ public class SlideComponent implements CommonTickingComponent {
 	}
 
 	@Override
-	public void readFromNbt(@NotNull NbtCompound tag) {
+	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		velocity = new Vec3d(tag.getDouble("VelocityX"), tag.getDouble("VelocityY"), tag.getDouble("VelocityZ"));
 		shouldSlam = tag.getBoolean("ShouldSlam");
 		jumpBoostResetTicks = tag.getInt("JumpBoostResetTicks");
@@ -61,7 +61,7 @@ public class SlideComponent implements CommonTickingComponent {
 	}
 
 	@Override
-	public void writeToNbt(@NotNull NbtCompound tag) {
+	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		tag.putDouble("VelocityX", velocity.getX());
 		tag.putDouble("VelocityY", velocity.getY());
 		tag.putDouble("VelocityZ", velocity.getZ());
@@ -124,7 +124,7 @@ public class SlideComponent implements CommonTickingComponent {
 			});
 			EnchancementUtil.PACKET_IMMUNITIES.put(obj, 20);
 		}
-		EntityAttributeInstance attribute = obj.getAttributeInstance(StepHeightEntityAttributeMain.STEP_HEIGHT);
+		EntityAttributeInstance attribute = obj.getAttributeInstance(EntityAttributes.GENERIC_STEP_HEIGHT);
 		if (hasSlide && isSliding()) {
 			if (!attribute.hasModifier(STEP_HEIGHT_INCREASE)) {
 				attribute.addPersistentModifier(STEP_HEIGHT_INCREASE);
@@ -162,17 +162,17 @@ public class SlideComponent implements CommonTickingComponent {
 			if (pressingSlideKey && !obj.isSneaking() && !disallowSlide) {
 				if (canSlide()) {
 					velocity = getVelocityFromInput(options).rotateY((float) Math.toRadians(-(obj.getHeadYaw() + 90)));
-					SlideSetVelocityPacket.send(velocity);
+					SlideSetVelocityPayload.send(velocity);
 				}
 			} else if (velocity != Vec3d.ZERO) {
 				velocity = Vec3d.ZERO;
-				SlideResetVelocityPacket.send();
+				SlideResetVelocityPayload.send();
 			}
 			boolean pressingSlamKey = EnchancementClient.SLAM_KEYBINDING.isPressed();
 			if (pressingSlamKey && !wasPressingSlamKey && canSlam()) {
 				shouldSlam = true;
 				slamCooldown = DEFAULT_SLAM_COOLDOWN;
-				SlideSlamPacket.send();
+				SlideSlamPayload.send();
 			}
 			wasPressingSlamKey = pressingSlamKey;
 		} else {

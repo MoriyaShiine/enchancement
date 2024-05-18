@@ -4,19 +4,16 @@
 
 package moriyashiine.enchancement.common.enchantment;
 
-import moriyashiine.enchancement.client.packet.ResetFrozenTicksPacket;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.enchancement.client.payload.ResetFrozenTicksPayload;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-public class FrostbiteEnchantment extends EmptyEnchantment {
-	public FrostbiteEnchantment(Rarity weight, EnchantmentTarget type, EquipmentSlot... slotTypes) {
-		super(2, weight, type, slotTypes);
+public class FrostbiteEnchantment extends Enchantment {
+	public FrostbiteEnchantment(Properties properties) {
+		super(properties);
 	}
 
 	@Override
@@ -26,14 +23,14 @@ public class FrostbiteEnchantment extends EmptyEnchantment {
 
 	@Override
 	public void onTargetDamaged(LivingEntity user, Entity target, int level) {
-		if (!target.getWorld().isClient && target instanceof LivingEntity living && EnchancementUtil.hasEnchantment(this, user.getMainHandStack())) {
+		if (!target.getWorld().isClient && target instanceof LivingEntity living) {
 			if (!living.isDead()) {
 				int frozenTicks = level * 120;
 				if (target.getFrozenTicks() < frozenTicks) {
 					target.setFrozenTicks(frozenTicks);
 				}
 			} else if (target instanceof ServerPlayerEntity player) {
-				ResetFrozenTicksPacket.send(player);
+				ResetFrozenTicksPayload.send(player);
 			}
 		}
 	}

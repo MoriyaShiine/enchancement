@@ -11,7 +11,8 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 
 public class BouncyRenderEvent implements HudRenderCallback {
-	private static final Identifier ICONS = new Identifier("textures/gui/icons.png");
+	private static final Identifier JUMP_BAR_BACKGROUND_TEXTURE = new Identifier("hud/jump_bar_background");
+	private static final Identifier JUMP_BAR_PROGRESS_TEXTURE = new Identifier("hud/jump_bar_progress");
 
 	@Override
 	public void onHudRender(DrawContext drawContext, float tickDelta) {
@@ -19,9 +20,9 @@ public class BouncyRenderEvent implements HudRenderCallback {
 			if (bouncyComponent.hasBouncy()) {
 				float boostProgress = bouncyComponent.getBoostProgress();
 				if (boostProgress > 0) {
-					int width = drawContext.getScaledWindowWidth() / 2 - 91, height = drawContext.getScaledWindowHeight() - 32 + 3;
-					drawContext.drawTexture(ICONS, width, height, 0, 84, 182, 5, 256, 256);
-					drawContext.drawTexture(ICONS, width, height, 0, 89, (int) (182 * boostProgress), 5, 256, 256);
+					int x = drawContext.getScaledWindowWidth() / 2 - 91, y = drawContext.getScaledWindowHeight() - 29;
+					drawContext.drawGuiTexture(JUMP_BAR_BACKGROUND_TEXTURE, x, y, 182, 5);
+					drawContext.drawGuiTexture(JUMP_BAR_PROGRESS_TEXTURE, 182, 5, 0, 0, x, y, (int) (182 * boostProgress), 5);
 				}
 			}
 		});

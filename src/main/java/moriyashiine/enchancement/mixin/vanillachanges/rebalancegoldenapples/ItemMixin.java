@@ -20,13 +20,12 @@ import org.spongepowered.asm.mixin.injection.At;
 public class ItemMixin {
 	@WrapOperation(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;canConsume(Z)Z"))
 	private boolean enchancement$rebalanceGoldenApples(PlayerEntity instance, boolean ignoreHunger, Operation<Boolean> original, World world, PlayerEntity user, Hand hand) {
-		boolean alwaysEdible = ignoreHunger;
 		if (ModConfig.rebalanceGoldenApples) {
 			ItemStack stack = user.getStackInHand(hand);
 			if (stack.isOf(Items.GOLDEN_APPLE) || stack.isOf(Items.ENCHANTED_GOLDEN_APPLE)) {
-				alwaysEdible = false;
+				ignoreHunger = false;
 			}
 		}
-		return original.call(instance, alwaysEdible);
+		return original.call(instance, ignoreHunger);
 	}
 }

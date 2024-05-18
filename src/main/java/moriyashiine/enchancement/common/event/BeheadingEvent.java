@@ -8,10 +8,13 @@ import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.util.BeheadingEntry;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ProfileComponent;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
@@ -27,8 +30,8 @@ public class BeheadingEvent implements ServerEntityCombatEvents.AfterKilledOther
 					BeheadingEntry entry = BeheadingEntry.DROP_MAP.get(entityType);
 					if (killedEntity.getRandom().nextFloat() < entry.chance() + (looting * 0.15F)) {
 						ItemStack stack = new ItemStack(entry.drop());
-						if (stack.getItem() == Items.PLAYER_HEAD && killedEntity.getType() == EntityType.PLAYER) {
-							stack.getOrCreateNbt().putString("SkullOwner", killedEntity.getName().getString());
+						if (stack.getItem() == Items.PLAYER_HEAD && killedEntity instanceof PlayerEntity player) {
+							stack.set(DataComponentTypes.PROFILE, new ProfileComponent(player.getGameProfile()));
 						}
 						ItemScatterer.spawn(world, killedEntity.getX(), killedEntity.getY(), killedEntity.getZ(), stack);
 					}

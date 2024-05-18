@@ -6,6 +6,8 @@ package moriyashiine.enchancement.mixin.disarm;
 
 import moriyashiine.enchancement.common.component.entity.DisarmedPlayerComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.*;
 import net.minecraft.entity.mob.EndermanEntity;
 import net.minecraft.entity.mob.MobEntity;
@@ -15,9 +17,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionUtil;
-import net.minecraft.potion.Potions;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.village.Merchant;
 import net.minecraft.world.World;
@@ -85,9 +84,9 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 								enderman.setCarriedBlock(null);
 							}
 							if (entity instanceof WitchEntity) {
-								Potion potion = PotionUtil.getPotion(stack);
-								if (potion != Potions.EMPTY) {
-									ModEntityComponents.DISARMED_WITCH.get(entity).disablePotion(potion);
+								PotionContentsComponent potionContents = stack.getOrDefault(DataComponentTypes.POTION_CONTENTS, null);
+								if (potionContents != null) {
+									potionContents.potion().ifPresent(potion -> ModEntityComponents.DISARMED_WITCH.get(entity).disablePotion(potion.value()));
 								}
 							}
 						}

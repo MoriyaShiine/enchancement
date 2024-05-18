@@ -18,8 +18,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
-import java.util.Map;
-
 @Mixin(PillagerEntity.class)
 public abstract class PillagerEntityMixin extends IllagerEntity {
 	@Unique
@@ -29,16 +27,16 @@ public abstract class PillagerEntityMixin extends IllagerEntity {
 		super(entityType, world);
 	}
 
-	@ModifyArg(method = "addBonusForWave", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;set(Ljava/util/Map;Lnet/minecraft/item/ItemStack;)V"))
-	private Map<Enchantment, Integer> enchancement$randomMobEnchantmentsRaid(Map<Enchantment, Integer> value) {
+	@ModifyArg(method = "addBonusForWave", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;addEnchantment(Lnet/minecraft/enchantment/Enchantment;I)V"))
+	private Enchantment enchancement$randomMobEnchantmentsRaid(Enchantment value) {
 		if (ModConfig.randomMobEnchantments) {
 			return EnchancementUtil.getRandomEnchantment(CROSSBOW, getRandom());
 		}
 		return value;
 	}
 
-	@ModifyArg(method = "enchantMainHandItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;set(Ljava/util/Map;Lnet/minecraft/item/ItemStack;)V"))
-	private Map<Enchantment, Integer> enchancement$randomMobEnchantments(Map<Enchantment, Integer> value) {
+	@ModifyArg(method = "enchantMainHandItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;addEnchantment(Lnet/minecraft/enchantment/Enchantment;I)V"))
+	private Enchantment enchancement$randomMobEnchantments(Enchantment value) {
 		if (ModConfig.randomMobEnchantments) {
 			return EnchancementUtil.getRandomEnchantment(CROSSBOW, getRandom());
 		}

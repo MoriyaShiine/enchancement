@@ -24,9 +24,7 @@ public class ModMixinPlugin implements IMixinConfigPlugin {
 
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-		if (mixinClassName.contains("integration.architectury")) {
-			return FabricLoader.getInstance().isModLoaded("architectury");
-		} else if (mixinClassName.contains("integration.sodium")) {
+		if (mixinClassName.contains("integration.sodium")) {
 			return FabricLoader.getInstance().isModLoaded("sodium");
 		} else if (mixinClassName.contains("integration.spectrum")) {
 			return FabricLoader.getInstance().isModLoaded("spectrum");

@@ -13,8 +13,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
 
 public class BrimstoneEntityRenderer extends ProjectileEntityRenderer<BrimstoneEntity> {
 	private static final Identifier TEXTURE = Enchancement.id("textures/entity/brimstone.png");
@@ -42,7 +40,7 @@ public class BrimstoneEntityRenderer extends ProjectileEntityRenderer<BrimstoneE
 		MatrixStack.Entry entry = matrices.peek();
 		for (int j = 0; j < entity.maxY; j++) {
 			for (int i = 0; i < 360; i += 15) {
-				drawPlane(entry.getPositionMatrix(), entry.getNormalMatrix(), vertices, u, v);
+				drawPlane(entry, vertices, u, v);
 				matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(i));
 			}
 			matrices.translate(0, 1, 0);
@@ -50,19 +48,19 @@ public class BrimstoneEntityRenderer extends ProjectileEntityRenderer<BrimstoneE
 		matrices.pop();
 	}
 
-	private static void drawPlane(Matrix4f positionMatrix, Matrix3f normalMatrix, VertexConsumer vertices, float u, float v) {
-		drawVertex(positionMatrix, normalMatrix, vertices, 1, 0, 1, u);
-		drawVertex(positionMatrix, normalMatrix, vertices, 0, 0, 1, v);
-		drawVertex(positionMatrix, normalMatrix, vertices, 0, 0.25F, 0, v);
-		drawVertex(positionMatrix, normalMatrix, vertices, 1, 0.25F, 0, u);
+	private static void drawPlane(MatrixStack.Entry entry, VertexConsumer vertices, float u, float v) {
+		drawVertex(entry, vertices, 1, 0, 1, u);
+		drawVertex(entry, vertices, 0, 0, 1, v);
+		drawVertex(entry, vertices, 0, 0.25F, 0, v);
+		drawVertex(entry, vertices, 1, 0.25F, 0, u);
 
-		drawVertex(positionMatrix, normalMatrix, vertices, 0, 0.25F, 0, v);
-		drawVertex(positionMatrix, normalMatrix, vertices, 0, 0, 1, v);
-		drawVertex(positionMatrix, normalMatrix, vertices, 1, 0, 1, u);
-		drawVertex(positionMatrix, normalMatrix, vertices, 1, 0.25F, 0, u);
+		drawVertex(entry, vertices, 0, 0.25F, 0, v);
+		drawVertex(entry, vertices, 0, 0, 1, v);
+		drawVertex(entry, vertices, 1, 0, 1, u);
+		drawVertex(entry, vertices, 1, 0.25F, 0, u);
 	}
 
-	private static void drawVertex(Matrix4f positionMatrix, Matrix3f normalMatrix, VertexConsumer vertices, int y, float z, float u, float v) {
-		vertices.vertex(positionMatrix, 0, y, z).color(255, 255, 255, 255).texture(u, v).overlay(OverlayTexture.DEFAULT_UV).light(LightmapTextureManager.MAX_LIGHT_COORDINATE).normal(normalMatrix, 0, 1, 0).next();
+	private static void drawVertex(MatrixStack.Entry entry, VertexConsumer vertices, int y, float z, float u, float v) {
+		vertices.vertex(entry.getPositionMatrix(), 0, y, z).color(255, 255, 255, 255).texture(u, v).overlay(OverlayTexture.DEFAULT_UV).light(LightmapTextureManager.MAX_LIGHT_COORDINATE).normal(entry, 0, 1, 0).next();
 	}
 }

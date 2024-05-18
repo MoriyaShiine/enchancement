@@ -1,27 +1,22 @@
 {
   "replace": false,
   "values": [
-	"#c:dough",
-	"#c:pasta",
-	"#c:raw_beef",
-	"#c:raw_chicken",
-	"#c:raw_fishes",
-	"#c:raw_mutton",
-	"#c:raw_pork",
+	"#c:foods/raw_fishes",
+	"#c:foods/raw_meats",
+	"#c:foods/food_poisoning",
 	"minecraft:chorus_fruit",
 	"minecraft:enchanted_golden_apple",
 	"minecraft:golden_apple",
-	"minecraft:poisonous_potato",
-	"minecraft:pufferfish",
-	"minecraft:rabbit",
-	"minecraft:rotten_flesh",
-	"minecraft:spider_eye",
 	{
-	  "id": "farmersdelight:dog_food",
+	  "id": "#c:foods/doughs",
 	  "required": false
 	},
 	{
-	  "id": "farmersdelight:ham",
+	  "id": "#c:foods/pastas",
+	  "required": false
+	},
+	{
+	  "id": "farmersdelight:dog_food",
 	  "required": false
 	},
 	{

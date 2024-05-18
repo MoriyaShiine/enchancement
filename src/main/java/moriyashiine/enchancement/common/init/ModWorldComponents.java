@@ -4,12 +4,12 @@
 
 package moriyashiine.enchancement.common.init;
 
-import dev.onyxstudios.cca.api.v3.component.ComponentKey;
-import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
-import dev.onyxstudios.cca.api.v3.world.WorldComponentFactoryRegistry;
-import dev.onyxstudios.cca.api.v3.world.WorldComponentInitializer;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.component.world.LumberjackComponent;
+import org.ladysnake.cca.api.v3.component.ComponentKey;
+import org.ladysnake.cca.api.v3.component.ComponentRegistry;
+import org.ladysnake.cca.api.v3.world.WorldComponentFactoryRegistry;
+import org.ladysnake.cca.api.v3.world.WorldComponentInitializer;
 
 public class ModWorldComponents implements WorldComponentInitializer {
 	//axe

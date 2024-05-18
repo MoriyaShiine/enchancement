@@ -4,42 +4,46 @@
 
 package moriyashiine.enchancement.common.util;
 
-import de.dafuqs.spectrum.recipe.enchantment_upgrade.EnchantmentUpgradeRecipe;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.event.InitializeDefaultEnchantmentsEvent;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModTags;
 import moriyashiine.enchancement.mixin.util.ItemEntityAccessor;
-import net.fabricmc.fabric.api.tag.convention.v1.ConventionalFluidTags;
+import net.fabricmc.fabric.api.item.v1.EnchantingContext;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalFluidTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.AttributeModifiersComponent;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.*;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EnchancementUtil {
+	public static final Object2IntMap<Enchantment> ORIGINAL_MAX_LEVELS = new Object2IntOpenHashMap<>();
 	public static final Object2IntMap<PlayerEntity> PACKET_IMMUNITIES = new Object2IntOpenHashMap<>();
 
 	public static final int MAXIMUM_MOVEMENT_MULTIPLIER = 4;
 
-	public static boolean shouldCancelTargetDamagedEnchantments = false;
+	public static boolean hasScatterShot = false, shouldCancelTargetDamagedEnchantments = false;
 
 	public static List<ItemEntity> mergeItemEntities(List<ItemEntity> drops) {
 		for (int i = drops.size() - 1; i >= 0; i--) {
@@ -58,33 +62,34 @@ public class EnchancementUtil {
 		return drops;
 	}
 
-	public static Map<Enchantment, Integer> getRandomEnchantment(ItemStack stack, Random random) {
-		Map<Enchantment, Integer> map = new HashMap<>();
+	@Nullable
+	public static Enchantment getRandomEnchantment(ItemStack stack, Random random) {
 		List<Enchantment> enchantments = new ArrayList<>();
 		for (Enchantment enchantment : Registries.ENCHANTMENT) {
-			if (enchantment.isAcceptableItem(stack)) {
+			if (stack.canBeEnchantedWith(enchantment, EnchantingContext.RANDOM_ENCHANTMENT)) {
 				enchantments.add(enchantment);
 			}
 		}
 		if (!enchantments.isEmpty()) {
-			Enchantment enchantment = enchantments.get(random.nextInt(enchantments.size()));
-			map.put(enchantment, MathHelper.nextInt(random, 1, enchantment.getMaxLevel()));
+			return enchantments.get(random.nextInt(enchantments.size()));
 		}
-		return map;
+		return null;
 	}
 
 	@Nullable
 	public static Enchantment getReplacement(Enchantment enchantment, ItemStack stack) {
 		List<Enchantment> enchantments = new ArrayList<>();
 		for (Enchantment entry : Registries.ENCHANTMENT) {
-			if (stack.isOf(Items.ENCHANTED_BOOK) || entry.isAcceptableItem(stack)) {
-				enchantments.add(entry);
+			if (entry.isEnabled(FeatureFlags.DEFAULT_ENABLED_FEATURES)) {
+				if (stack.isOf(Items.ENCHANTED_BOOK) || stack.canBeEnchantedWith(entry, EnchantingContext.RANDOM_ENCHANTMENT)) {
+					enchantments.add(entry);
+				}
 			}
 		}
 		if (enchantments.isEmpty()) {
 			return null;
 		}
-		int index = Registries.ENCHANTMENT.getId(enchantment).hashCode() % enchantments.size();
+		int index = (enchantment.getTranslationKey().hashCode() + stack.getTranslationKey().hashCode()) % enchantments.size();
 		if (index < 0) {
 			index += enchantments.size();
 		}
@@ -107,13 +112,13 @@ public class EnchancementUtil {
 			return true;
 		}
 		if (stack.getItem() instanceof ArmorItem armorItem) {
-			ArmorMaterial material = armorItem.getMaterial();
-			for (ArmorMaterial mat : ArmorMaterials.values()) {
+			ArmorMaterial material = armorItem.getMaterial().value();
+			for (ArmorMaterial mat : Registries.ARMOR_MATERIAL) {
 				if (material == mat) {
-					return mat == ArmorMaterials.LEATHER || mat == ArmorMaterials.IRON;
+					return mat == ArmorMaterials.LEATHER.value() || mat == ArmorMaterials.IRON.value();
 				}
 			}
-			return material.getEnchantability() <= ArmorMaterials.IRON.getEnchantability();
+			return material.enchantability() <= ArmorMaterials.IRON.value().enchantability();
 		} else if (stack.getItem() instanceof ToolItem toolItem) {
 			ToolMaterial material = toolItem.getMaterial();
 			for (ToolMaterial mat : ToolMaterials.values()) {
@@ -140,8 +145,10 @@ public class EnchancementUtil {
 		return isEnchantmentAllowed(Registries.ENCHANTMENT.getId(enchantment));
 	}
 
-	public static boolean ignoreRecipe(Recipe<?> recipe) {
-		return Enchancement.isSpectrumLoaded && ModConfig.singleLevelMode && recipe instanceof EnchantmentUpgradeRecipe;
+	public static boolean ignoreRecipe(RecipeEntry<?> recipe) {
+		return false;
+		// todo spectrum
+//		return Enchancement.isSpectrumLoaded && ModConfig.singleLevelMode && recipe instanceof EnchantmentUpgradeRecipe;
 	}
 
 	public static boolean isGroundedOrAirborne(LivingEntity living, boolean allowWater) {
@@ -161,7 +168,7 @@ public class EnchancementUtil {
 	}
 
 	public static boolean isSubmerged(Entity entity, SubmersionGate gate) {
-		for (int i = 0; i <= 1; i++) {
+		for (int i = 0; i < MathHelper.ceil(entity.getHeight()); i++) {
 			BlockState blockState = entity.getWorld().getBlockState(entity.getBlockPos().up(i));
 			if (gate.allowsWater() && !blockState.isOf(Blocks.BUBBLE_COLUMN) && blockState.getFluidState().isIn(ConventionalFluidTags.WATER)) {
 				return true;
@@ -177,12 +184,12 @@ public class EnchancementUtil {
 	}
 
 	public static boolean isDefaultEnchantment(ItemStack stack, Enchantment enchantment) {
-		Map<Enchantment, Integer> defaultEnchantments = InitializeDefaultEnchantmentsEvent.DEFAULT_ENCHANTMENTS.get(stack.getItem());
+		ItemEnchantmentsComponent defaultEnchantments = InitializeDefaultEnchantmentsEvent.DEFAULT_ENCHANTMENTS.get(stack.getItem());
 		if (defaultEnchantments != null) {
-			for (Enchantment foundEnchantment : defaultEnchantments.keySet()) {
-				if (foundEnchantment == enchantment) {
+			for (RegistryEntry<Enchantment> foundEnchantment : defaultEnchantments.getEnchantments()) {
+				if (foundEnchantment.value() == enchantment) {
 					int level = ModConfig.singleLevelMode ? 1 : EnchantmentHelper.getLevel(enchantment, stack);
-					if (level == defaultEnchantments.get(enchantment)) {
+					if (level == defaultEnchantments.getLevel(enchantment)) {
 						return true;
 					}
 				}
@@ -199,8 +206,8 @@ public class EnchancementUtil {
 	}
 
 	public static int getNonDefaultEnchantmentsSize(ItemStack stack, int size) {
-		for (Enchantment enchantment : EnchantmentHelper.get(stack).keySet()) {
-			if (isDefaultEnchantment(stack, enchantment)) {
+		for (RegistryEntry<Enchantment> enchantment : EnchantmentHelper.getEnchantments(stack).getEnchantments()) {
+			if (isDefaultEnchantment(stack, enchantment.value())) {
 				size--;
 			}
 		}
@@ -241,15 +248,20 @@ public class EnchancementUtil {
 	}
 
 	public static float getMaxBonusBerserkDamage(ItemStack stack, int level) {
-		float divisor = 2F / level;
-		if (divisor <= 1E-3) {
-			return Integer.MAX_VALUE;
+		if (stack.contains(DataComponentTypes.ATTRIBUTE_MODIFIERS)) {
+			float divisor = 2F / level;
+			if (divisor <= 1E-3) {
+				return Integer.MAX_VALUE;
+			}
+			float maxBonus = 1;
+			for (AttributeModifiersComponent.Entry entry : stack.get(DataComponentTypes.ATTRIBUTE_MODIFIERS).modifiers()) {
+				if (entry.attribute() == EntityAttributes.GENERIC_ATTACK_DAMAGE && entry.slot().matches(EquipmentSlot.MAINHAND)) {
+					maxBonus += (float) (entry.modifier().value() / divisor);
+				}
+			}
+			return maxBonus / 2;
 		}
-		float maxBonus = 1;
-		for (EntityAttributeModifier modifier : stack.getAttributeModifiers(EquipmentSlot.MAINHAND).get(EntityAttributes.GENERIC_ATTACK_DAMAGE)) {
-			maxBonus += (float) (modifier.getValue() / divisor);
-		}
-		return maxBonus / 2;
+		return 0;
 	}
 
 	public static float getBonusBerserkDamage(LivingEntity living, ItemStack stack) {
@@ -273,17 +285,6 @@ public class EnchancementUtil {
 			return MathHelper.ceil(maxLevel / 2F);
 		}
 		return maxLevel;
-	}
-
-	@Nullable
-	public static UUID getBrimstoneUUID(ItemStack stack) {
-		if (stack.hasNbt()) {
-			NbtCompound subNbt = stack.getSubNbt(Enchancement.MOD_ID);
-			if (subNbt != null && subNbt.contains("BrimstoneUUID")) {
-				return subNbt.getUuid("BrimstoneUUID");
-			}
-		}
-		return null;
 	}
 
 	public static int getBrimstoneDamage(float progress) {

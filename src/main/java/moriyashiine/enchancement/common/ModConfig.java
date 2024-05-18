@@ -41,7 +41,7 @@ public class ModConfig extends MidnightConfig {
 			"minecraft:sharpness",
 			"minecraft:smite",
 			"minecraft:soul_speed",
-			"minecraft:sweeping",
+			"minecraft:sweeping_edge",
 			"minecraft:swift_sneak",
 			"minecraft:thorns",
 			"minecraft:unbreaking",

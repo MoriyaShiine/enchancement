@@ -22,4 +22,9 @@ public class DrawContextMixin {
 			EnchancementClientUtil.berserkColor = EnchancementClientUtil.getBerserkColor(entity, stack);
 		}
 	}
+
+	@Inject(method = "drawItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;IIII)V", at = @At("TAIL"))
+	private void enchancement$berserkTail(LivingEntity entity, World world, ItemStack stack, int x, int y, int seed, int z, CallbackInfo ci) {
+		EnchancementClientUtil.berserkColor = -1;
+	}
 }

@@ -40,6 +40,18 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 	private static final Identifier TEXTURE = Enchancement.id("textures/gui/container/enchanting_table.png");
 	private static final Identifier BOOK_TEXTURE = new Identifier("textures/entity/enchanting_table_book.png");
 
+	private static final Identifier UP_ARROW_TEXTURE = Enchancement.id("container/enchanting_table/up_arrow");
+	private static final Identifier UP_ARROW_HIGHLIGHTED_TEXTURE = Enchancement.id("container/enchanting_table/up_arrow_highlighted");
+
+	private static final Identifier DOWN_ARROW_TEXTURE = Enchancement.id("container/enchanting_table/down_arrow");
+	private static final Identifier DOWN_ARROW_HIGHLIGHTED_TEXTURE = Enchancement.id("container/enchanting_table/down_arrow_highlighted");
+
+	private static final Identifier CHECKMARK_TEXTURE = Enchancement.id("container/enchanting_table/checkmark");
+	private static final Identifier CHECKMARK_HIGHLIGHTED_TEXTURE = Enchancement.id("container/enchanting_table/checkmark_highlighted");
+
+	private static final Identifier STRENGTH_TEXTURE = Enchancement.id("container/enchanting_table/strength");
+	private static final Identifier STRENGTH_HIGHLIGHTED_TEXTURE = Enchancement.id("container/enchanting_table/strength_highlighted");
+
 	private static final int BOOKSHELF_Y = 9, UP_Y = 34, DOWN_Y = UP_Y + 17, ENCHANT_Y = 72;
 
 	private BookModel bookModel;
@@ -70,7 +82,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 
 	@Override
 	public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-		renderBackground(context);
+		renderBackground(context, mouseX, mouseY, delta);
 		super.render(context, mouseX, mouseY, delta);
 		drawMouseoverTooltip(context, mouseX, mouseY);
 	}
@@ -92,18 +104,18 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 			}
 			if (handler.validEnchantments.size() > PAGE_SIZE) {
 				if (isInUpButtonBounds(posX, posY, mouseX, mouseY)) {
-					context.drawTexture(TEXTURE, posX + 154, posY + UP_Y, 192, 0, 16, 16);
+					context.drawGuiTexture(UP_ARROW_HIGHLIGHTED_TEXTURE, posX + 154, posY + UP_Y, 16, 16);
 				} else {
-					context.drawTexture(TEXTURE, posX + 154, posY + UP_Y, 176, 0, 16, 16);
+					context.drawGuiTexture(UP_ARROW_TEXTURE, posX + 154, posY + UP_Y, 16, 16);
 				}
 				if (isInDownButtonBounds(posX, posY, mouseX, mouseY)) {
-					context.drawTexture(TEXTURE, posX + 154, posY + DOWN_Y, 192, 16, 16, 16);
+					context.drawGuiTexture(DOWN_ARROW_HIGHLIGHTED_TEXTURE, posX + 154, posY + DOWN_Y, 16, 16);
 				} else {
-					context.drawTexture(TEXTURE, posX + 154, posY + DOWN_Y, 176, 16, 16, 16);
+					context.drawGuiTexture(DOWN_ARROW_TEXTURE, posX + 154, posY + DOWN_Y, 16, 16);
 				}
 			}
 			if (isInEnchantButtonBounds(posX, posY, mouseX, mouseY)) {
-				context.drawTexture(TEXTURE, posX + 154, posY + ENCHANT_Y, 192, 32, 16, 16);
+				context.drawGuiTexture(CHECKMARK_HIGHLIGHTED_TEXTURE, posX + 154, posY + ENCHANT_Y, 16, 16);
 				if (infoTexts == null) {
 					MutableText xpCost = Text.translatable("tooltip." + Enchancement.MOD_ID + ".experience_level_cost", handler.getCost()).formatted(Formatting.GREEN);
 					MutableText lapisCost = Text.translatable("tooltip." + Enchancement.MOD_ID + ".material_cost", handler.getCost(), Text.translatable(Items.LAPIS_LAZULI.getTranslationKey())).formatted(Formatting.GREEN);
@@ -131,7 +143,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 				}
 				context.drawTooltip(textRenderer, infoTexts, mouseX, mouseY);
 			} else {
-				context.drawTexture(TEXTURE, posX + 154, posY + ENCHANT_Y, 176, 32, 16, 16);
+				context.drawGuiTexture(CHECKMARK_TEXTURE, posX + 154, posY + ENCHANT_Y, 16, 16);
 				infoTexts = null;
 			}
 			highlightedEnchantmentIndex = -1;
@@ -144,7 +156,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 				}
 				MutableText enchantmentName = Text.translatable(enchantment.getTranslationKey());
 				ItemStack slotStack = handler.getSlot(0).getStack();
-				boolean isAllowed = EnchancementUtil.limitCheck(true, EnchancementUtil.getNonDefaultEnchantmentsSize(slotStack, slotStack.getEnchantments().size() + handler.selectedEnchantments.size()) < ModConfig.enchantmentLimit);
+				boolean isAllowed = EnchancementUtil.limitCheck(true, EnchancementUtil.getNonDefaultEnchantmentsSize(slotStack, slotStack.getEnchantments().getSize() + handler.selectedEnchantments.size()) < ModConfig.enchantmentLimit);
 				if (isAllowed) {
 					for (Enchantment foundEnchantment : handler.selectedEnchantments) {
 						if (!foundEnchantment.canCombine(enchantment)) {
@@ -171,9 +183,9 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 		for (int i = 2; i > 0; i--) {
 			int startX = posX + 39 + MathHelper.lerp(MathHelper.lerp(delta, pageTurningSpeed, nextPageTurningSpeed), 0, 4);
 			int startY = posY + 41 - (i * 10);
-			context.drawTexture(TEXTURE, startX, startY, 176, 48, 8, 8);
+			context.drawGuiTexture(STRENGTH_TEXTURE, startX, startY, 8, 8);
 			if (i <= strength) {
-				context.drawTexture(TEXTURE, startX, startY, 184, 48, 8, 8);
+				context.drawGuiTexture(STRENGTH_HIGHLIGHTED_TEXTURE, startX, startY, 8, 8);
 			}
 		}
 		context.drawItem(Items.BOOKSHELF.getDefaultStack(), posX + 154, posY + BOOKSHELF_Y);
@@ -197,7 +209,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 		}
 		pageAngle = nextPageAngle;
 		pageTurningSpeed = nextPageTurningSpeed;
-		nextPageTurningSpeed = handler.slots.get(0).getStack().isEnchantable() ? nextPageTurningSpeed + 0.2F : nextPageTurningSpeed - 0.2F;
+		nextPageTurningSpeed = handler.slots.getFirst().getStack().isEnchantable() ? nextPageTurningSpeed + 0.2F : nextPageTurningSpeed - 0.2F;
 		nextPageTurningSpeed = MathHelper.clamp(nextPageTurningSpeed, 0, 1);
 		pageRotationSpeed += (MathHelper.clamp((approximatePageAngle - nextPageAngle) * 0.4F, -0.2F, 0.2F) - pageRotationSpeed) * 0.9F;
 		nextPageAngle += pageRotationSpeed;
@@ -243,15 +255,15 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 	}
 
 	@Override
-	public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+	public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
 		if (handler.validEnchantments.size() > PAGE_SIZE) {
-			int delta = (amount > 0 ? -1 : 1);
-			handler.updateViewIndex(amount > 0);
-			client.interactionManager.clickButton(handler.syncId, amount > 0 ? 1 : 2);
+			int delta = (verticalAmount > 0 ? -1 : 1);
+			handler.updateViewIndex(verticalAmount > 0);
+			client.interactionManager.clickButton(handler.syncId, verticalAmount > 0 ? 1 : 2);
 			nextPageAngle += delta;
 			return true;
 		}
-		return super.mouseScrolled(mouseX, mouseY, amount);
+		return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
 	}
 
 	private void drawBook(DrawContext context, int x, int y, float delta) {

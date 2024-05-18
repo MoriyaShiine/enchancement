@@ -4,12 +4,13 @@
 
 package moriyashiine.enchancement.common.screenhandlers;
 
-import moriyashiine.enchancement.client.packet.SyncEnchantingTableBookshelfCountPacket;
-import moriyashiine.enchancement.client.packet.SyncEnchantingTableCostPacket;
+import moriyashiine.enchancement.client.payload.SyncEnchantingTableBookshelfCountPayload;
+import moriyashiine.enchancement.client.payload.SyncEnchantingTableCostPayload;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
 import moriyashiine.enchancement.common.init.ModTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.EnchantingTableBlock;
@@ -22,6 +23,7 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.*;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
@@ -40,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 
 public class EnchantingTableScreenHandler extends ScreenHandler {
-	public static final Map<Item, Ingredient> ENCHANTING_MATERIAL_MAP = new HashMap<>();
+	public static final Map<RegistryEntry<Item>, Ingredient> ENCHANTING_MATERIAL_MAP = new HashMap<>();
 	public static final int PAGE_SIZE = 4;
 
 	public final List<Enchantment> validEnchantments = new ArrayList<>(), selectedEnchantments = new ArrayList<>();
@@ -68,7 +70,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		this.context = context;
 		bookshelfCount = calculateBookshelfCount();
 		if (playerInventory.player instanceof ServerPlayerEntity player) {
-			SyncEnchantingTableBookshelfCountPacket.send(player, bookshelfCount);
+			SyncEnchantingTableBookshelfCountPayload.send(player, bookshelfCount);
 		}
 		addSlot(new Slot(inventory, 0, 15, 31) {
 			@Override
@@ -109,7 +111,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		addSlot(new Slot(inventory, 2, 25, 51) {
 			@Override
 			public boolean canInsert(ItemStack stack) {
-				return getRepairIngredient(slots.get(0).getStack()).test(stack);
+				return getRepairIngredient(slots.getFirst().getStack()).test(stack);
 			}
 		});
 		int index;
@@ -147,8 +149,8 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 				if (!insertItem(stackInSlot, 1, 2, false)) {
 					return ItemStack.EMPTY;
 				}
-			} else if (!slots.get(0).hasStack() && slots.get(0).canInsert(stackInSlot)) {
-				slots.get(0).setStack(stackInSlot.split(1));
+			} else if (!slots.getFirst().hasStack() && slots.getFirst().canInsert(stackInSlot)) {
+				slots.getFirst().setStack(stackInSlot.split(1));
 			} else {
 				return ItemStack.EMPTY;
 			}
@@ -176,7 +178,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		if (id == 0) {
 			if (canEnchant(player, player.isCreative())) {
 				context.run((world, pos) -> {
-					ItemStack stack = slots.get(0).getStack();
+					ItemStack stack = slots.getFirst().getStack();
 					for (Enchantment enchantment : selectedEnchantments) {
 						stack.addEnchantment(enchantment, EnchancementUtil.getModifiedMaxLevel(stack, enchantment.getMaxLevel()));
 					}
@@ -209,9 +211,9 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 			} else {
 				selectedEnchantments.add(enchantment);
 			}
-			cost = getCost(slots.get(0).getStack());
+			cost = getCost(slots.getFirst().getStack());
 			if (player instanceof ServerPlayerEntity serverPlayer) {
-				SyncEnchantingTableCostPacket.send(serverPlayer, cost);
+				SyncEnchantingTableCostPayload.send(serverPlayer, cost);
 			}
 			return true;
 		}
@@ -221,7 +223,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 	@Override
 	public void onContentChanged(Inventory inventory) {
 		if (inventory == this.inventory) {
-			ItemStack stack = slots.get(0).getStack();
+			ItemStack stack = slots.getFirst().getStack();
 			if (enchantingStack != stack) {
 				validEnchantments.clear();
 				selectedEnchantments.clear();
@@ -270,10 +272,10 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 
 	private Ingredient getRepairIngredient(ItemStack stack) {
 		Item item = stack.getItem();
-		Ingredient ingredient = ENCHANTING_MATERIAL_MAP.getOrDefault(item, Ingredient.EMPTY);
+		Ingredient ingredient = ENCHANTING_MATERIAL_MAP.getOrDefault(Registries.ITEM.getEntry(item), Ingredient.EMPTY);
 		if (ingredient.isEmpty()) {
 			if (item instanceof ArmorItem armorItem) {
-				Ingredient repairIngredient = armorItem.getMaterial().getRepairIngredient();
+				Ingredient repairIngredient = armorItem.getMaterial().value().repairIngredient().get();
 				if (!repairIngredient.isEmpty()) {
 					ingredient = repairIngredient;
 				}
@@ -294,7 +296,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 				if (canAccessPowerProvider(world, pos, offset)) {
 					bookshelfCountArray[0]++;
 				} else if (world.getBlockEntity(pos.add(offset)) instanceof ChiseledBookshelfBlockEntity chiseledBookshelfBlockEntity && world.getBlockState(pos.add(offset.getX() / 2, offset.getY(), offset.getZ() / 2)).isIn(BlockTags.ENCHANTMENT_POWER_TRANSMITTER)) {
-					bookshelfCountArray[0] += chiseledBookshelfBlockEntity.getOpenSlotCount() / 3F;
+					bookshelfCountArray[0] += chiseledBookshelfBlockEntity.getFilledSlotCount() / 3F;
 				}
 			}
 		});
@@ -341,8 +343,8 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 	private static boolean isEnchantmentAllowed(Enchantment enchantment, ItemStack stack) {
 		if (enchantment.isAvailableForRandomSelection()) {
 			if (ModConfig.allowTreasureEnchantmentsInEnchantingTable || !enchantment.isTreasure()) {
-				if (enchantment.isAcceptableItem(stack)) {
-					return !Registries.ENCHANTMENT.entryOf(Registries.ENCHANTMENT.getKey(enchantment).orElse(null)).isIn(ModTags.Enchantments.UNSELECTABLE);
+				if (stack.canBeEnchantedWith(enchantment, EnchantingContext.RANDOM_ENCHANTMENT)) {
+					return !Registries.ENCHANTMENT.getEntry(enchantment).isIn(ModTags.Enchantments.UNSELECTABLE);
 				}
 			}
 		}

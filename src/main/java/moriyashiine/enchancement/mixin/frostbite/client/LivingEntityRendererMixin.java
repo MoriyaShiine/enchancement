@@ -65,7 +65,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
 	protected abstract void scale(T entity, MatrixStack matrices, float amount);
 
 	@Shadow
-	protected abstract void setupTransforms(T entity, MatrixStack matrices, float animationProgress, float bodyYaw, float tickDelta);
+	protected abstract void setupTransforms(T entity, MatrixStack matrices, float animationProgress, float bodyYaw, float tickDelta, float scale);
 
 	@ModifyVariable(method = "getRenderLayer", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/render/entity/LivingEntityRenderer;getTexture(Lnet/minecraft/entity/Entity;)Lnet/minecraft/util/Identifier;"))
 	private Identifier enchancement$frostbite(Identifier value, LivingEntity living) {
@@ -113,7 +113,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
 			if (livingEntity.isBaby()) {
 				limbAngle *= 3;
 			}
-			setupTransforms(livingEntity, matrices, animationProgress, bodyYaw, tickDelta);
+			setupTransforms(livingEntity, matrices, animationProgress, bodyYaw, tickDelta, livingEntity.getScale());
 			matrices.scale(-1, -1, 1);
 			scale(livingEntity, matrices, tickDelta);
 			matrices.translate(0, -1.501F, 0);

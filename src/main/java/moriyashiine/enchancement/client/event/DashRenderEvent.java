@@ -13,16 +13,18 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 
 public class DashRenderEvent implements HudRenderCallback {
-	private static final Identifier DASH_TEXTURE = Enchancement.id("textures/gui/dash.png");
+	private static final Identifier DASH_BACKGROUND_TEXTURE = Enchancement.id("hud/dash_background");
+	private static final Identifier DASH_PROGRESS_TEXTURE = Enchancement.id("hud/dash_progress");
 
 	@Override
 	public void onHudRender(DrawContext drawContext, float tickDelta) {
 		ModEntityComponents.DASH.maybeGet(MinecraftClient.getInstance().cameraEntity).ifPresent(dashComponent -> {
 			if (dashComponent.hasDash() && dashComponent.getDashCooldown() > 0) {
 				RenderSystem.enableBlend();
-				drawContext.drawTexture(DASH_TEXTURE, (int) (drawContext.getScaledWindowWidth() / 2F) - 5, (int) (drawContext.getScaledWindowHeight() / 2F) + 18, 0, 4, 10, 4, 10, 8);
+				int x = drawContext.getScaledWindowWidth() / 2 - 5, y = drawContext.getScaledWindowHeight() / 2 + 18;
+				drawContext.drawGuiTexture(DASH_BACKGROUND_TEXTURE, x, y, 10, 4);
 				if (dashComponent.getDashCooldown() < dashComponent.getLastDashCooldown()) {
-					drawContext.drawTexture(DASH_TEXTURE, (int) (drawContext.getScaledWindowWidth() / 2F) - 5, (int) (drawContext.getScaledWindowHeight() / 2F) + 18, 0, 0, (int) (11 - (dashComponent.getDashCooldown() / (float) dashComponent.getLastDashCooldown()) * 10), 4, 10, 8);
+					drawContext.drawGuiTexture(DASH_PROGRESS_TEXTURE, 10, 4, 0, 0, x, y, (int) (11 - (dashComponent.getDashCooldown() / (float) dashComponent.getLastDashCooldown()) * 10), 4);
 				}
 				RenderSystem.disableBlend();
 			}

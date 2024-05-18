@@ -4,8 +4,6 @@
 
 package moriyashiine.enchancement.common.component.entity;
 
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
@@ -14,9 +12,12 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
+import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
+import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class PhasingComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private final PersistentProjectileEntity obj;
@@ -30,14 +31,14 @@ public class PhasingComponent implements AutoSyncedComponent, CommonTickingCompo
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag) {
+	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		phasingLevel = tag.getInt("PhasingLevel");
 		ticksInAir = tag.getInt("TicksInAir");
 		velocityLength = tag.getDouble("VelocityLength");
 	}
 
 	@Override
-	public void writeToNbt(@NotNull NbtCompound tag) {
+	public void writeToNbt(@NotNull NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		tag.putInt("PhasingLevel", phasingLevel);
 		tag.putInt("TicksInAir", ticksInAir);
 		tag.putDouble("VelocityLength", velocityLength);

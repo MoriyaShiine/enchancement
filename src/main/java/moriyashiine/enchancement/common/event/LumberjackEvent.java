@@ -16,7 +16,6 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
@@ -24,7 +23,6 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class LumberjackEvent implements PlayerBlockBreakEvents.Before {
 	@Override
@@ -34,13 +32,9 @@ public class LumberjackEvent implements PlayerBlockBreakEvents.Before {
 			if (EnchancementUtil.hasEnchantment(ModEnchantments.LUMBERJACK, stack) && state.isIn(BlockTags.LOGS) && player.canHarvest(state)) {
 				List<BlockPos> tree = gatherTree(new ArrayList<>(), world, new BlockPos.Mutable().set(pos), state.getBlock());
 				if (tree.size() > 1 && tree.size() <= ModConfig.maxLumberjackBlocks && isWithinHorizontalBounds(tree)) {
-					ItemStack copy = stack.copy();
-					AtomicBoolean broken = new AtomicBoolean(false);
-					stack.damage(tree.size(), player, stackUser -> {
-						stackUser.setStackInHand(Hand.MAIN_HAND, copy);
-						broken.set(true);
-					});
-					if (!broken.get()) {
+					boolean[] broken = {false};
+					stack.copy().damage(tree.size(), world.getRandom(), null, () -> broken[0] = true);
+					if (!broken[0]) {
 						tree.sort(Comparator.comparingInt(Vec3i::getY).reversed());
 						ModWorldComponents.LUMBERJACK.get(world).addTree(new LumberjackComponent.Tree(tree, pos));
 						return false;

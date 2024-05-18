@@ -6,7 +6,6 @@ package moriyashiine.enchancement.mixin.torch;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import moriyashiine.enchancement.common.entity.projectile.TorchEntity;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -24,7 +23,7 @@ public abstract class PersistentProjectileEntityMixin extends ProjectileEntity {
 
 	@ModifyExpressionValue(method = "onEntityHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/PersistentProjectileEntity;isOnFire()Z"))
 	private boolean enchancement$torch(boolean value) {
-		if ((Object) this instanceof TorchEntity) {
+		if (getType() == ModEntityTypes.TORCH) {
 			return false;
 		}
 		return value;

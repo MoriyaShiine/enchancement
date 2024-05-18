@@ -20,7 +20,7 @@ public class PlayerEntityMixin {
 	private static Predicate<ItemStack> heldItemsPredicate = null;
 
 	@ModifyVariable(method = "getProjectileType", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/RangedWeaponItem;getHeldProjectiles()Ljava/util/function/Predicate;"))
-	private Predicate<ItemStack> enchancement$crossbowsPullFromInventoryStore(Predicate<ItemStack> value) {
+	private Predicate<ItemStack> enchancement$crossbowsPullFromInventory(Predicate<ItemStack> value) {
 		if (ModConfig.crossbowsPullFromInventory) {
 			heldItemsPredicate = value;
 		}

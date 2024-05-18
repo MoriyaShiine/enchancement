@@ -26,7 +26,7 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
 	@ModifyExpressionValue(method = "updateResult", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/Enchantment;canCombine(Lnet/minecraft/enchantment/Enchantment;)Z"))
 	private boolean enchancement$enchantmentLimit(boolean value) {
 		ItemStack stack = input.getStack(0);
-		if (EnchancementUtil.limitCheck(false, EnchancementUtil.getNonDefaultEnchantmentsSize(stack, stack.getEnchantments().size() + 1) > ModConfig.enchantmentLimit)) {
+		if (EnchancementUtil.limitCheck(false, EnchancementUtil.getNonDefaultEnchantmentsSize(stack, stack.getEnchantments().getSize() + 1) > ModConfig.enchantmentLimit)) {
 			return false;
 		}
 		return value;

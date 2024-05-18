@@ -4,17 +4,19 @@
 
 package moriyashiine.enchancement.common.component.entity;
 
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.mixin.util.PersistentProjectileEntityAccessor;
+import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.projectile.SpectralArrowEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.particle.EntityEffectParticleEffect;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.potion.PotionUtil;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.registry.RegistryWrapper;
+import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
+import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,19 +31,22 @@ public class ChaosSpectralArrowComponent implements AutoSyncedComponent, CommonT
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag) {
+	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		if (tag.contains("CustomPotionEffects")) {
-			effects.addAll(PotionUtil.getCustomPotionEffects(tag));
+			NbtList nbtList = tag.getList("CustomPotionEffects", NbtElement.COMPOUND_TYPE);
+			for (int i = 0; i < nbtList.size(); i++) {
+				effects.add(StatusEffectInstance.fromNbt(nbtList.getCompound(i)));
+			}
 			color = tag.getInt("Color");
 		}
 	}
 
 	@Override
-	public void writeToNbt(@NotNull NbtCompound tag) {
+	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		if (!effects.isEmpty()) {
 			NbtList nbtList = new NbtList();
 			for (StatusEffectInstance statusEffectInstance : effects) {
-				nbtList.add(statusEffectInstance.writeNbt(new NbtCompound()));
+				nbtList.add(statusEffectInstance.writeNbt());
 			}
 			tag.put("CustomPotionEffects", nbtList);
 			tag.putInt("Color", color);
@@ -78,7 +83,7 @@ public class ChaosSpectralArrowComponent implements AutoSyncedComponent, CommonT
 
 	public void setEffects(List<StatusEffectInstance> effects) {
 		this.effects = effects;
-		color = PotionUtil.getColor(effects);
+		color = PotionContentsComponent.getColor(effects);
 	}
 
 	public int getColor() {
@@ -90,11 +95,8 @@ public class ChaosSpectralArrowComponent implements AutoSyncedComponent, CommonT
 		if (color == -1 || amount <= 0) {
 			return;
 		}
-		double r = (color >> 16 & 0xFF) / 255D;
-		double g = (color >> 8 & 0xFF) / 255D;
-		double b = (color & 0xFF) / 255D;
 		for (int i = 0; i < amount; i++) {
-			obj.getWorld().addParticle(ParticleTypes.ENTITY_EFFECT, obj.getParticleX(0.5), obj.getRandomBodyY(), obj.getParticleZ(0.5), r, g, b);
+			obj.getWorld().addParticle(EntityEffectParticleEffect.create(ParticleTypes.ENTITY_EFFECT, color), obj.getParticleX(0.5), obj.getRandomBodyY(), obj.getParticleZ(0.5), 0, 0, 0);
 		}
 	}
 }

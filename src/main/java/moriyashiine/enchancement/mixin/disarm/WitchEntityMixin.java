@@ -9,6 +9,7 @@ import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.entity.mob.WitchEntity;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
+import net.minecraft.registry.entry.RegistryEntry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -36,7 +37,7 @@ public class WitchEntityMixin {
 	}
 
 	@Unique
-	private boolean isDisabled(Potion potion) {
+	private boolean isDisabled(RegistryEntry<Potion> potion) {
 		return ModEntityComponents.DISARMED_WITCH.get(this).isDisabled(potion);
 	}
 }

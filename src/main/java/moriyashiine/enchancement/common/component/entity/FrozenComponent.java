@@ -4,8 +4,6 @@
 
 package moriyashiine.enchancement.common.component.entity;
 
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
 import moriyashiine.enchancement.common.init.*;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.Entity;
@@ -15,9 +13,12 @@ import net.minecraft.entity.MovementType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
+import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
+import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
 public class FrozenComponent implements AutoSyncedComponent, ServerTickingComponent {
 	private final LivingEntity obj;
@@ -33,7 +34,7 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag) {
+	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		frozen = tag.getBoolean("Frozen");
 		ticksFrozen = tag.getInt("TicksFrozen");
 		forcedPose = EntityPose.valueOf(tag.getString("ForcedPose"));
@@ -46,7 +47,7 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 	}
 
 	@Override
-	public void writeToNbt(@NotNull NbtCompound tag) {
+	public void writeToNbt(@NotNull NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		tag.putBoolean("Frozen", frozen);
 		tag.putInt("TicksFrozen", ticksFrozen);
 		tag.putString("ForcedPose", forcedPose.toString());
@@ -118,15 +119,11 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 	}
 
 	public float getForcedLimbAngle() {
-		return forcedLimbDistance;
-	}
-
-	public float getForcedLimbDistance() {
 		return forcedLimbAngle;
 	}
 
-	public int getForcedClientAge() {
-		return forcedClientAge;
+	public float getForcedLimbDistance() {
+		return forcedLimbDistance;
 	}
 
 	public boolean shouldFreezeOnDeath(DamageSource source) {

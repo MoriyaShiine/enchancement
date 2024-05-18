@@ -36,7 +36,7 @@ public class MinecraftClientMixin {
 	}
 
 	@Inject(method = "handleBlockBreaking", at = @At("HEAD"), cancellable = true)
-	private void enchancement$cooldownPreventsUsage(boolean bl, CallbackInfo ci) {
+	private void enchancement$cooldownPreventsUsage(boolean breaking, CallbackInfo ci) {
 		if (player != null && ModEntityComponents.DISARMED_PLAYER.get(player).getDisarmedItems().contains(player.getMainHandStack().getItem())) {
 			ci.cancel();
 		}

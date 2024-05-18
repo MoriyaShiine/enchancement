@@ -10,7 +10,7 @@ import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.init.ModTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
-import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBlockTags;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -21,12 +21,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public class ExtractingEvent implements PlayerBlockBreakEvents.Before {
@@ -39,13 +37,9 @@ public class ExtractingEvent implements PlayerBlockBreakEvents.Before {
 			if (EnchancementUtil.hasEnchantment(ModEnchantments.EXTRACTING, stack) && state.isIn(ConventionalBlockTags.ORES) && player.canHarvest(state)) {
 				Set<BlockPos> ores = gatherOres(new HashSet<>(), world, new BlockPos.Mutable().set(pos), state.getBlock());
 				if (!ores.isEmpty() && ores.size() <= ModConfig.maxExtractingBlocks) {
-					ItemStack copy = stack.copy();
-					AtomicBoolean broken = new AtomicBoolean(false);
-					stack.damage(ores.size(), player, stackUser -> {
-						stackUser.setStackInHand(Hand.MAIN_HAND, copy);
-						broken.set(true);
-					});
-					if (!broken.get()) {
+					boolean[] broken = {false};
+					stack.copy().damage(ores.size(), world.getRandom(), null, () -> broken[0] = true);
+					if (!broken[0]) {
 						BlockState replace = getBaseBlock(state).getDefaultState();
 						List<ItemStack> drops = new ArrayList<>();
 						ores.forEach(ore -> {

@@ -4,13 +4,14 @@
 
 package moriyashiine.enchancement.common.component.entity;
 
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.MathHelper;
+import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
+import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class BouncyComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private final PlayerEntity obj;
@@ -24,13 +25,13 @@ public class BouncyComponent implements AutoSyncedComponent, CommonTickingCompon
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag) {
+	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		bounceStrength = tag.getInt("BounceStrength");
 		grappleTimer = tag.getInt("GrappleTimer");
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag) {
+	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		tag.putInt("BounceStrength", bounceStrength);
 		tag.putInt("GrappleTimer", grappleTimer);
 	}

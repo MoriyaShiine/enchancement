@@ -4,15 +4,16 @@
 
 package moriyashiine.enchancement.common.component.entity;
 
-import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ElytraItem;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.RaycastContext;
+import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class AirMobilityComponent implements CommonTickingComponent {
 	private final LivingEntity obj;
@@ -23,13 +24,13 @@ public class AirMobilityComponent implements CommonTickingComponent {
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag) {
+	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		resetBypassTicks = tag.getInt("ResetBypassTicks");
 		ticksInAir = tag.getInt("TicksInAir");
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag) {
+	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		tag.putInt("ResetBypassTicks", resetBypassTicks);
 		tag.putInt("TicksInAir", ticksInAir);
 	}

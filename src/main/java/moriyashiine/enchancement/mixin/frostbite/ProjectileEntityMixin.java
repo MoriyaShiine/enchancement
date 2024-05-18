@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ProjectileEntity.class)
 public class ProjectileEntityMixin {
-	@Inject(method = "canHit", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "canHit(Lnet/minecraft/entity/Entity;)Z", at = @At("HEAD"), cancellable = true)
 	private void enchancement$frostbite(Entity entity, CallbackInfoReturnable<Boolean> cir) {
 		ModEntityComponents.FROZEN.maybeGet(entity).ifPresent(frozenComponent -> {
 			if (frozenComponent.isFrozen()) {

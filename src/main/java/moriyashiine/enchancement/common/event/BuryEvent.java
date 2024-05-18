@@ -63,7 +63,7 @@ public class BuryEvent {
 									world.playSoundFromEntity(null, entity, ModSoundEvents.ENTITY_GENERIC_BURY, entity.getSoundCategory(), 1, 1);
 									world.emitGameEvent(GameEvent.ENTITY_INTERACT, entity.getPos(), GameEvent.Emitter.of(entity, entity.getSteppingBlockState()));
 									player.getItemCooldownManager().set(stack.getItem(), 200);
-									stack.damage(1, player, stackUser -> stackUser.sendToolBreakStatus(hand));
+									stack.damage(1, player, LivingEntity.getSlotForHand(hand));
 									buryComponent.setBuryPos(pos);
 									buryComponent.sync();
 								} else {

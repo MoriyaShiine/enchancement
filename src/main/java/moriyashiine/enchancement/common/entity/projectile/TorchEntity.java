@@ -23,6 +23,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class TorchEntity extends PersistentProjectileEntity {
@@ -33,14 +34,14 @@ public class TorchEntity extends PersistentProjectileEntity {
 		super(entityType, world);
 	}
 
-	public TorchEntity(World world, LivingEntity owner) {
-		super(ModEntityTypes.TORCH, owner, world);
+	public TorchEntity(World world, LivingEntity owner, ItemStack stack) {
+		super(ModEntityTypes.TORCH, owner, world, stack);
 		shouldPlaceTorch = owner.isSneaking();
 	}
 
 	@Override
-	protected ItemStack asItemStack() {
-		return new ItemStack(Items.TORCH);
+	protected ItemStack getDefaultItemStack() {
+		return Items.TORCH.getDefaultStack();
 	}
 
 	@Override
@@ -61,7 +62,7 @@ public class TorchEntity extends PersistentProjectileEntity {
 		if (entity instanceof LivingEntity living) {
 			playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 1, 1);
 			if (!getWorld().isClient) {
-				living.setOnFireFor(Math.min(16, (int) Math.ceil(living.getFireTicks() / 20F) + ignitionTime));
+				living.setOnFireFor(Math.min(16, MathHelper.ceil(living.getFireTicks() / 20F) + ignitionTime));
 			}
 		}
 		super.onEntityHit(entityHitResult);

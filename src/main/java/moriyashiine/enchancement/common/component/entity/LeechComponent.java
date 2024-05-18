@@ -4,8 +4,6 @@
 
 package moriyashiine.enchancement.common.component.entity;
 
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.common.init.ModDamageTypes;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
@@ -18,7 +16,10 @@ import net.minecraft.entity.projectile.TridentEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.Vec3d;
+import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
+import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class LeechComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private final TridentEntity obj;
@@ -33,7 +34,7 @@ public class LeechComponent implements AutoSyncedComponent, CommonTickingCompone
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag) {
+	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		hasLeech = tag.getBoolean("HasLeech");
 		stuckEntityId = tag.getInt("StuckEntityId");
 		ticksLeeching = tag.getInt("TicksLeeching");
@@ -42,7 +43,7 @@ public class LeechComponent implements AutoSyncedComponent, CommonTickingCompone
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag) {
+	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		tag.putBoolean("HasLeech", hasLeech);
 		tag.putInt("StuckEntityId", stuckEntityId);
 		tag.putInt("TicksLeeching", ticksLeeching);

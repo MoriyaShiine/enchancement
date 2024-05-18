@@ -4,10 +4,11 @@
 
 package moriyashiine.enchancement.mixin.brimstone;
 
-import moriyashiine.enchancement.client.packet.PlayBrimstoneSoundPacket;
-import moriyashiine.enchancement.common.Enchancement;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import moriyashiine.enchancement.client.payload.PlayBrimstoneSoundPayload;
 import moriyashiine.enchancement.common.entity.projectile.BrimstoneEntity;
 import moriyashiine.enchancement.common.init.ModDamageTypes;
+import moriyashiine.enchancement.common.init.ModDataComponentTypes;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
@@ -19,12 +20,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -32,7 +31,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -64,10 +62,10 @@ public abstract class CrossbowItemMixin {
 	@Inject(method = "onStoppedUsing", at = @At("HEAD"), cancellable = true)
 	private void enchancement$brimstone(ItemStack stack, World world, LivingEntity user, int remainingUseTicks, CallbackInfo ci) {
 		if (EnchancementUtil.hasEnchantment(ModEnchantments.BRIMSTONE, stack) && !CrossbowItem.isCharged(stack)) {
+			stack.remove(ModDataComponentTypes.BRIMSTONE_UUID);
 			int damage = EnchancementUtil.getBrimstoneDamage(getPullProgress(getMaxUseTime(stack) - remainingUseTicks, stack));
 			if (damage > 0 && loadProjectiles(user, stack)) {
-				CrossbowItem.setCharged(stack, true);
-				stack.getSubNbt(Enchancement.MOD_ID).putInt("BrimstoneDamage", damage);
+				stack.set(ModDataComponentTypes.BRIMSTONE_DAMAGE, damage);
 				world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ITEM_CROSSBOW_LOADING_END, user instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE, 1, 1 / (world.getRandom().nextFloat() * 0.5F + 1) + 0.2F);
 				ci.cancel();
 			}
@@ -77,47 +75,18 @@ public abstract class CrossbowItemMixin {
 	@Inject(method = "usageTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getLevel(Lnet/minecraft/enchantment/Enchantment;Lnet/minecraft/item/ItemStack;)I"))
 	private void enchancement$brimstone(World world, LivingEntity user, ItemStack stack, int remainingUseTicks, CallbackInfo ci) {
 		if (EnchancementUtil.hasEnchantment(ModEnchantments.BRIMSTONE, stack)) {
-			UUID uuid;
-			NbtCompound subNbt = stack.getOrCreateSubNbt(Enchancement.MOD_ID);
-			if (subNbt.contains("BrimstoneUUID")) {
-				uuid = subNbt.getUuid("BrimstoneUUID");
-			} else {
-				uuid = UUID.randomUUID();
-				subNbt.putUuid("BrimstoneUUID", uuid);
+			UUID[] uuid = {stack.get(ModDataComponentTypes.BRIMSTONE_UUID)};
+			if (uuid[0] == null) {
+				uuid[0] = UUID.randomUUID();
+				stack.set(ModDataComponentTypes.BRIMSTONE_UUID, uuid[0]);
 			}
 			if (remainingUseTicks == getMaxUseTime(stack)) {
-				PlayerLookup.tracking(user).forEach(foundPlayer -> PlayBrimstoneSoundPacket.send(foundPlayer, user.getId(), uuid));
+				PlayerLookup.tracking(user).forEach(foundPlayer -> PlayBrimstoneSoundPayload.send(foundPlayer, user.getId(), uuid[0]));
 				if (user instanceof ServerPlayerEntity player) {
-					PlayBrimstoneSoundPacket.send(player, user.getId(), uuid);
+					PlayBrimstoneSoundPayload.send(player, user.getId(), uuid[0]);
 				}
 			}
 		}
-	}
-
-	@ModifyVariable(method = "shoot", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/CrossbowItem;createArrow(Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)Lnet/minecraft/entity/projectile/PersistentProjectileEntity;"))
-	private static ProjectileEntity enchancement$brimstone(ProjectileEntity value, World world, LivingEntity shooter, Hand hand, ItemStack crossbow, ItemStack projectile, float soundPitch, boolean creative, float speed, float divergence, float simulated) {
-		if (ItemStack.areEqual(projectile, BrimstoneEntity.BRIMSTONE_STACK)) {
-			boolean damageModified = false;
-			NbtCompound subNbt = crossbow.getSubNbt(Enchancement.MOD_ID);
-			damage = subNbt.getInt("BrimstoneDamage");
-			if (simulated != 0) {
-				damageModified = true;
-				damage /= 2;
-			}
-			subNbt.remove("BrimstoneDamage");
-			shooter.damage(ModDamageTypes.create(world, ModDamageTypes.LIFE_DRAIN), shooter.getMaxHealth() * (damage / 20F));
-			BrimstoneEntity brimstone = new BrimstoneEntity(world, shooter);
-			brimstone.setDamage(damage);
-			brimstone.getDataTracker().set(BrimstoneEntity.FORCED_PITCH, shooter.getPitch());
-			brimstone.getDataTracker().set(BrimstoneEntity.FORCED_YAW, shooter.getHeadYaw() + simulated / 2);
-			if (damageModified) {
-				damage *= 2;
-			} else if (shooter instanceof PlayerEntity player) {
-				player.getItemCooldownManager().set(crossbow.getItem(), (int) (getPullTime(crossbow) * (damage / 12F)));
-			}
-			return brimstone;
-		}
-		return value;
 	}
 
 	@Inject(method = "getPullTime", at = @At("HEAD"), cancellable = true)
@@ -134,8 +103,27 @@ public abstract class CrossbowItemMixin {
 		}
 	}
 
+	@ModifyReturnValue(method = "createArrowEntity", at = @At("RETURN"))
+	private ProjectileEntity enchancement$brimstone(ProjectileEntity original, World world, LivingEntity shooter, ItemStack weaponStack, ItemStack projectileStack) {
+		if (weaponStack.contains(ModDataComponentTypes.BRIMSTONE_DAMAGE)) {
+			damage = weaponStack.get(ModDataComponentTypes.BRIMSTONE_DAMAGE);
+			weaponStack.remove(ModDataComponentTypes.BRIMSTONE_DAMAGE);
+			shooter.damage(ModDamageTypes.create(world, ModDamageTypes.LIFE_DRAIN), shooter.getMaxHealth() * (damage / 20F));
+			BrimstoneEntity brimstone = new BrimstoneEntity(world, shooter);
+			brimstone.setShotFromCrossbow(true);
+			brimstone.setDamage(damage);
+			brimstone.getDataTracker().set(BrimstoneEntity.FORCED_PITCH, shooter.getPitch());
+			brimstone.getDataTracker().set(BrimstoneEntity.FORCED_YAW, shooter.getHeadYaw());
+			if (shooter instanceof PlayerEntity player) {
+				player.getItemCooldownManager().set(weaponStack.getItem(), (int) (getPullTime(weaponStack) * (damage / 12F)));
+			}
+			return brimstone;
+		}
+		return original;
+	}
+
 	@ModifyArg(method = "shoot", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;playSound(Lnet/minecraft/entity/player/PlayerEntity;DDDLnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FF)V"))
-	private static SoundEvent enchancement$brimstone(SoundEvent value) {
+	private SoundEvent enchancement$brimstone(SoundEvent value) {
 		if (damage >= 0) {
 			SoundEvent sound = getFireSound(damage);
 			damage = -1;

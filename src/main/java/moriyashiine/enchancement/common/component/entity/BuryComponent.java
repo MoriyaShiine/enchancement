@@ -4,14 +4,15 @@
 
 package moriyashiine.enchancement.common.component.entity;
 
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
+import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
+import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
 public class BuryComponent implements AutoSyncedComponent, ServerTickingComponent {
 	private final LivingEntity obj;
@@ -22,7 +23,7 @@ public class BuryComponent implements AutoSyncedComponent, ServerTickingComponen
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag) {
+	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		if (tag.contains("BuryPos")) {
 			buryPos = BlockPos.fromLong(tag.getLong("BuryPos"));
 		} else {
@@ -31,7 +32,7 @@ public class BuryComponent implements AutoSyncedComponent, ServerTickingComponen
 	}
 
 	@Override
-	public void writeToNbt(@NotNull NbtCompound tag) {
+	public void writeToNbt(@NotNull NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		if (buryPos != null) {
 			tag.putLong("BuryPos", buryPos.asLong());
 		}

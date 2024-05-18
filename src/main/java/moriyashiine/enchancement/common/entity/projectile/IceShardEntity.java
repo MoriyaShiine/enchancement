@@ -26,19 +26,19 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
 
 public class IceShardEntity extends PersistentProjectileEntity {
-	private static final ParticleEffect PARTICLE = new ItemStackParticleEffect(ParticleTypes.ITEM, new ItemStack(Items.ICE));
+	private static final ParticleEffect PARTICLE = new ItemStackParticleEffect(ParticleTypes.ITEM, Items.ICE.getDefaultStack());
 
 	public IceShardEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
 		super(entityType, world);
 	}
 
 	public IceShardEntity(World world, LivingEntity owner) {
-		super(ModEntityTypes.ICE_SHARD, owner, world);
+		super(ModEntityTypes.ICE_SHARD, owner, world, Items.ICE.getDefaultStack());
 	}
 
 	@Override
-	protected ItemStack asItemStack() {
-		return ItemStack.EMPTY;
+	protected ItemStack getDefaultItemStack() {
+		return Items.ICE.getDefaultStack();
 	}
 
 	@Override

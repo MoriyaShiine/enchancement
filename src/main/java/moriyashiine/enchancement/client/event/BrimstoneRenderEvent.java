@@ -12,11 +12,11 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 
 public class BrimstoneRenderEvent implements HudRenderCallback {
+	private static final MinecraftClient minecraft = MinecraftClient.getInstance();
 	public static int forcedHeight = -1, health = -1;
 
 	@Override
 	public void onHudRender(DrawContext drawContext, float tickDelta) {
-		MinecraftClient minecraft = MinecraftClient.getInstance();
 		if (EnchancementUtil.hasEnchantment(ModEnchantments.BRIMSTONE, minecraft.player.getActiveItem())) {
 			int scaledWidth = minecraft.getWindow().getScaledWidth(), scaledHeight = minecraft.getWindow().getScaledHeight();
 			forcedHeight = (scaledHeight / 2) + 6;

@@ -5,12 +5,10 @@
 package moriyashiine.enchancement.common;
 
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
+import moriyashiine.enchancement.client.payload.*;
 import moriyashiine.enchancement.common.event.*;
-import moriyashiine.enchancement.common.init.ModEnchantments;
-import moriyashiine.enchancement.common.init.ModEntityTypes;
-import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
-import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.packet.*;
+import moriyashiine.enchancement.common.init.*;
+import moriyashiine.enchancement.common.payload.*;
 import moriyashiine.enchancement.common.reloadlisteners.BeheadingReloadListener;
 import moriyashiine.enchancement.common.reloadlisteners.EnchantingMaterialReloadListener;
 import moriyashiine.enchancement.common.reloadlisteners.ExtractingBaseBlockReloadListener;
@@ -24,6 +22,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -43,14 +42,7 @@ public class Enchancement implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		ServerPlayNetworking.registerGlobalReceiver(StrafePacket.ID, new StrafePacket.Receiver());
-		ServerPlayNetworking.registerGlobalReceiver(DashPacket.ID, new DashPacket.Receiver());
-		ServerPlayNetworking.registerGlobalReceiver(SlideSlamPacket.ID, new SlideSlamPacket.Receiver());
-		ServerPlayNetworking.registerGlobalReceiver(SlideSetVelocityPacket.ID, new SlideSetVelocityPacket.Receiver());
-		ServerPlayNetworking.registerGlobalReceiver(SlideResetVelocityPacket.ID, new SlideResetVelocityPacket.Receiver());
-		ServerPlayNetworking.registerGlobalReceiver(BuoyPacket.ID, new BuoyPacket.Receiver());
-		ServerPlayNetworking.registerGlobalReceiver(GalePacket.ID, new GalePacket.Receiver());
-		ServerPlayNetworking.registerGlobalReceiver(SyncFrozenPlayerSlimStatusC2S.ID, new SyncFrozenPlayerSlimStatusC2S.Receiver());
+		ModDataComponentTypes.init();
 		ModEntityTypes.init();
 		ModEnchantments.init();
 		ModSoundEvents.init();
@@ -59,6 +51,7 @@ public class Enchancement implements ModInitializer {
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new BeheadingReloadListener());
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new ExtractingBaseBlockReloadListener());
 		initEvents();
+		initPayloads();
 		isApoliLoaded = FabricLoader.getInstance().isModLoaded("apoli");
 		isSpectrumLoaded = FabricLoader.getInstance().isModLoaded("spectrum");
 		for (String mod : new String[]{"enchdesc", "enchantedtooltips", "idwtialsimmoedm"}) {
@@ -94,5 +87,37 @@ public class Enchancement implements ModInitializer {
 		PlayerBlockBreakEvents.BEFORE.register(new LumberjackEvent());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new BuryEvent.Unbury());
 		UseEntityCallback.EVENT.register(new BuryEvent.Use());
+	}
+
+	private void initPayloads() {
+		// client payloads
+		PayloadTypeRegistry.playS2C().register(EnforceConfigMatchPayload.ID, EnforceConfigMatchPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(SyncEnchantingMaterialMapPayload.ID, SyncEnchantingMaterialMapPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(SyncEnchantingTableBookshelfCountPayload.ID, SyncEnchantingTableBookshelfCountPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(SyncEnchantingTableCostPayload.ID, SyncEnchantingTableCostPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(AddStrafeParticlesPayload.ID, AddStrafeParticlesPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(AddGaleParticlesPayload.ID, AddGaleParticlesPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(PlayBrimstoneSoundPayload.ID, PlayBrimstoneSoundPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(ResetFrozenTicksPayload.ID, ResetFrozenTicksPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(SyncFrozenPlayerSlimStatusS2CPayload.ID, SyncFrozenPlayerSlimStatusS2CPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(AddMoltenParticlesPayload.ID, AddMoltenParticlesPayload.CODEC);
+		// common payloads
+		PayloadTypeRegistry.playC2S().register(StrafePayload.ID, StrafePayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(DashPayload.ID, DashPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(SlideSlamPayload.ID, SlideSlamPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(SlideSetVelocityPayload.ID, SlideSetVelocityPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(SlideResetVelocityPayload.ID, SlideResetVelocityPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(BuoyPayload.ID, BuoyPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(GalePayload.ID, GalePayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(SyncFrozenPlayerSlimStatusC2SPayload.ID, SyncFrozenPlayerSlimStatusC2SPayload.CODEC);
+		// server receivers
+		ServerPlayNetworking.registerGlobalReceiver(StrafePayload.ID, new StrafePayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(DashPayload.ID, new DashPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(SlideSlamPayload.ID, new SlideSlamPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(SlideSetVelocityPayload.ID, new SlideSetVelocityPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(SlideResetVelocityPayload.ID, new SlideResetVelocityPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(BuoyPayload.ID, new BuoyPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(GalePayload.ID, new GalePayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(SyncFrozenPlayerSlimStatusC2SPayload.ID, new SyncFrozenPlayerSlimStatusC2SPayload.Receiver());
 	}
 }

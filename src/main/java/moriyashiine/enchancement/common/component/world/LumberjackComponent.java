@@ -4,7 +4,6 @@
 
 package moriyashiine.enchancement.common.component.world;
 
-import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.ItemEntity;
@@ -12,9 +11,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,17 +31,17 @@ public class LumberjackComponent implements ServerTickingComponent {
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag) {
+	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		NbtList treesToCut = tag.getList("TreesToCut", NbtElement.COMPOUND_TYPE);
 		for (int i = 0; i < treesToCut.size(); i++) {
-			this.treesToCut.add(Tree.deserialize(treesToCut.getCompound(i)));
+			this.treesToCut.add(Tree.deserialize(registryLookup, treesToCut.getCompound(i)));
 		}
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag) {
+	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		NbtList treesToCut = new NbtList();
-		treesToCut.addAll(this.treesToCut.stream().map(Tree::serialize).toList());
+		treesToCut.addAll(this.treesToCut.stream().map(tree -> tree.serialize(registryLookup)).toList());
 		tag.put("TreesToCut", treesToCut);
 	}
 
@@ -48,7 +49,7 @@ public class LumberjackComponent implements ServerTickingComponent {
 	public void serverTick() {
 		for (int i = treesToCut.size() - 1; i >= 0; i--) {
 			Tree tree = treesToCut.get(i);
-			BlockPos pos = tree.logs.remove(tree.logs.size() - 1);
+			BlockPos pos = tree.logs.removeLast();
 			tree.drops.addAll(Block.getDroppedStacks(obj.getBlockState(pos), (ServerWorld) obj, pos, obj.getBlockEntity(pos)));
 			obj.breakBlock(pos, false);
 			if (tree.logs.isEmpty()) {
@@ -73,21 +74,25 @@ public class LumberjackComponent implements ServerTickingComponent {
 			this.originalPos = originalPos;
 		}
 
-		public NbtCompound serialize() {
+		public NbtCompound serialize(RegistryWrapper.WrapperLookup registryLookup) {
 			NbtCompound compound = new NbtCompound();
 			compound.putLongArray("Logs", logs.stream().map(BlockPos::asLong).toList());
 			NbtList drops = new NbtList();
-			this.drops.forEach(stack -> drops.add(stack.writeNbt(new NbtCompound())));
+			this.drops.forEach(stack -> {
+				if (!stack.isEmpty()) {
+					drops.add(stack.encode(registryLookup));
+				}
+			});
 			compound.put("Drops", drops);
 			compound.putLong("OriginalPos", originalPos.asLong());
 			return compound;
 		}
 
-		public static Tree deserialize(NbtCompound compound) {
+		public static Tree deserialize(RegistryWrapper.WrapperLookup registryLookup, NbtCompound compound) {
 			Tree tree = new Tree(Arrays.stream(compound.getLongArray("Logs")).mapToObj(BlockPos::fromLong).collect(Collectors.toList()), BlockPos.fromLong(compound.getLong("OriginalPos")));
 			NbtList drops = compound.getList("Drops", NbtElement.COMPOUND_TYPE);
 			for (int i = 0; i < drops.size(); i++) {
-				tree.drops.add(ItemStack.fromNbt(drops.getCompound(i)));
+				ItemStack.fromNbt(registryLookup, drops.getCompound(i)).ifPresent(tree.drops::add);
 			}
 			return tree;
 		}

@@ -5,13 +5,11 @@
 package moriyashiine.enchancement.common.enchantment;
 
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.EquipmentSlot;
 
-public class NoSilkTouchEnchantment extends PickaxeEnchantment {
-	public NoSilkTouchEnchantment(Rarity weight, EnchantmentTarget type, EquipmentSlot... slotTypes) {
-		super(weight, type, slotTypes);
+public class NoSilkTouchEnchantment extends Enchantment {
+	public NoSilkTouchEnchantment(Properties properties) {
+		super(properties);
 	}
 
 	@Override

@@ -4,8 +4,6 @@
 
 package moriyashiine.enchancement.common.component.entity;
 
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.command.argument.EntityAnchorArgumentType;
 import net.minecraft.entity.LivingEntity;
@@ -13,11 +11,14 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
+import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
+import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class DelayComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private final PersistentProjectileEntity obj;
@@ -33,7 +34,7 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag) {
+	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		if (tag.contains("StoredVelocity")) {
 			NbtCompound storedVelocity = tag.getCompound("StoredVelocity");
 			this.storedVelocity = new Vec3d(storedVelocity.getDouble("X"), storedVelocity.getDouble("Y"), storedVelocity.getDouble("Z"));
@@ -49,7 +50,7 @@ public class DelayComponent implements AutoSyncedComponent, CommonTickingCompone
 	}
 
 	@Override
-	public void writeToNbt(@NotNull NbtCompound tag) {
+	public void writeToNbt(@NotNull NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		if (storedVelocity != null) {
 			NbtCompound storedVelocity = new NbtCompound();
 			storedVelocity.putDouble("X", this.storedVelocity.getX());

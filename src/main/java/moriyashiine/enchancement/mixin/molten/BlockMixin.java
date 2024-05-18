@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.molten;
 
-import moriyashiine.enchancement.client.packet.AddMoltenParticlesPacket;
+import moriyashiine.enchancement.client.payload.AddMoltenParticlesPayload;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.init.ModTags;
@@ -16,6 +16,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.SmeltingRecipe;
 import net.minecraft.server.world.ServerWorld;
@@ -48,7 +49,7 @@ public class BlockMixin {
 				for (int i = 0; i < drops.size(); i++) {
 					Pair<ItemStack, Float> smelted = getSmeltedStack(world, smeltsSelf ? new ItemStack(state.getBlock()) : drops.get(i));
 					if (smelted != null) {
-						PlayerLookup.tracking(world, pos).forEach(foundPlayer -> AddMoltenParticlesPacket.send(foundPlayer, pos));
+						PlayerLookup.tracking(world, pos).forEach(foundPlayer -> AddMoltenParticlesPayload.send(foundPlayer, pos));
 						world.playSound(null, pos, ModSoundEvents.BLOCK_GENERIC_SMELT, SoundCategory.BLOCKS, 1, 1);
 						drops.set(i, smelted.getLeft());
 						AbstractFurnaceBlockEntityAccessor.enchancement$dropExperience(world, entity != null && EnchancementUtil.hasEnchantment(ModEnchantments.EXTRACTING, stack) ? entity.getPos() : Vec3d.of(pos), 1, smelted.getRight());
@@ -61,10 +62,10 @@ public class BlockMixin {
 
 	@Unique
 	private static Pair<ItemStack, Float> getSmeltedStack(ServerWorld world, ItemStack stack) {
-		for (SmeltingRecipe recipe : world.getRecipeManager().listAllOfType(RecipeType.SMELTING)) {
-			for (Ingredient ingredient : recipe.getIngredients()) {
+		for (RecipeEntry<SmeltingRecipe> recipe : world.getRecipeManager().listAllOfType(RecipeType.SMELTING)) {
+			for (Ingredient ingredient : recipe.value().getIngredients()) {
 				if (ingredient.test(stack)) {
-					return new Pair<>(new ItemStack(recipe.getOutput(world.getRegistryManager()).getItem(), recipe.getOutput(world.getRegistryManager()).getCount() * stack.getCount()), recipe.getExperience());
+					return new Pair<>(new ItemStack(recipe.value().getResult(world.getRegistryManager()).getItem(), recipe.value().getResult(world.getRegistryManager()).getCount() * stack.getCount()), recipe.value().getExperience());
 				}
 			}
 		}

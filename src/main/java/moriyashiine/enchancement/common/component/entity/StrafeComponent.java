@@ -4,13 +4,11 @@
 
 package moriyashiine.enchancement.common.component.entity;
 
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.packet.StrafePacket;
+import moriyashiine.enchancement.common.payload.StrafePayload;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -18,7 +16,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.Vec3d;
+import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
+import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class StrafeComponent implements AutoSyncedComponent, CommonTickingComponent {
 	public static final int DEFAULT_STRAFE_COOLDOWN = 40;
@@ -37,13 +38,13 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag) {
+	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		strafeCooldown = tag.getInt("StrafeCooldown");
 		lastStrafeCooldown = tag.getInt("LastStrafeCooldown");
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag) {
+	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		tag.putInt("StrafeCooldown", strafeCooldown);
 		tag.putInt("LastStrafeCooldown", lastStrafeCooldown);
 	}
@@ -78,7 +79,7 @@ public class StrafeComponent implements AutoSyncedComponent, CommonTickingCompon
 						Vec3d velocity = inputVelocity.rotateY((float) Math.toRadians(-(obj.getHeadYaw() + 90)));
 						use(velocity.getX(), velocity.getZ());
 						addStrafeParticles(obj);
-						StrafePacket.send(velocity);
+						StrafePayload.send(velocity);
 					}
 				} else {
 					ticksLeftToPressActivationKey = 7;

@@ -4,37 +4,31 @@
 
 package moriyashiine.enchancement.mixin.vanillachanges.rebalancearmor;
 
-import moriyashiine.enchancement.common.ModConfig;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterials;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+
+import java.util.EnumMap;
 
 @Mixin(ArmorMaterials.class)
 public class ArmorMaterialsMixin {
-	@Inject(method = "getProtection", at = @At("RETURN"), cancellable = true)
-	private void enchancement$rebalanceArmor(ArmorItem.Type type, CallbackInfoReturnable<Integer> cir) {
-		if (ModConfig.rebalanceArmor) {
-			if (type == ArmorItem.Type.BOOTS) {
-				if ((Object) this == ArmorMaterials.IRON) {
-					cir.setReturnValue(cir.getReturnValueI() + 1);
-				}
-			} else if (type == ArmorItem.Type.CHESTPLATE) {
-				if ((Object) this == ArmorMaterials.GOLD) {
-					cir.setReturnValue(cir.getReturnValueI() - 1);
-				}
-			}
+	@ModifyVariable(method = "register(Ljava/lang/String;Ljava/util/EnumMap;ILnet/minecraft/registry/entry/RegistryEntry;FFLjava/util/function/Supplier;)Lnet/minecraft/registry/entry/RegistryEntry;", at = @At("HEAD"), argsOnly = true)
+	private static EnumMap<ArmorItem.Type, Integer> enchancement$rebalanceArmor(EnumMap<ArmorItem.Type, Integer> value, String id) {
+		if (id.equals("iron")) {
+			value.put(ArmorItem.Type.BOOTS, value.get(ArmorItem.Type.BOOTS) + 1);
+		} else if (id.equals("gold")) {
+			value.put(ArmorItem.Type.CHESTPLATE, value.get(ArmorItem.Type.CHESTPLATE) - 1);
 		}
+		return value;
 	}
 
-	@Inject(method = "getToughness", at = @At("RETURN"), cancellable = true)
-	private void enchancement$rebalanceArmor(CallbackInfoReturnable<Float> cir) {
-		if (ModConfig.rebalanceArmor) {
-			if ((Object) this == ArmorMaterials.IRON) {
-				cir.setReturnValue(cir.getReturnValueF() + 1);
-			}
+	@ModifyVariable(method = "register(Ljava/lang/String;Ljava/util/EnumMap;ILnet/minecraft/registry/entry/RegistryEntry;FFLjava/util/function/Supplier;)Lnet/minecraft/registry/entry/RegistryEntry;", at = @At("HEAD"), ordinal = 0, argsOnly = true)
+	private static float enchancement$rebalanceArmor(float value, String id) {
+		if (id.equals("iron")) {
+			return value + 1;
 		}
+		return value;
 	}
 }

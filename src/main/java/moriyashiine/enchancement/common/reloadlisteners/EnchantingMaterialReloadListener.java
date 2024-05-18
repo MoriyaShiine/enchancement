@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
+import com.mojang.serialization.JsonOps;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.event.SyncEnchantingMaterialMapEvent;
 import moriyashiine.enchancement.common.screenhandlers.EnchantingTableScreenHandler;
@@ -45,12 +46,12 @@ public class EnchantingMaterialReloadListener implements SimpleSynchronousResour
 					}
 					Ingredient ingredient;
 					try {
-						ingredient = Ingredient.fromJson(JsonHelper.getObject(object, "ingredient"));
+						ingredient = Ingredient.DISALLOW_EMPTY_CODEC.decode(JsonOps.INSTANCE, JsonHelper.getObject(object, "ingredient")).getOrThrow().getFirst();
 					} catch (JsonParseException exception) {
 						Enchancement.LOGGER.error(exception.getLocalizedMessage() + " in file '" + identifier + "'");
 						continue;
 					}
-					EnchantingTableScreenHandler.ENCHANTING_MATERIAL_MAP.put(item, ingredient);
+					EnchantingTableScreenHandler.ENCHANTING_MATERIAL_MAP.put(Registries.ITEM.getEntry(item), ingredient);
 				} catch (Exception ignored) {
 				}
 			}

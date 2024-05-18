@@ -11,9 +11,10 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.loot.LootTable;
 import net.minecraft.loot.LootTables;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import java.util.UUID;
@@ -36,7 +37,7 @@ public class FrozenPlayerEntity extends MobEntity {
 	}
 
 	@Override
-	protected Identifier getLootTableId() {
+	protected RegistryKey<LootTable> getLootTableId() {
 		return LootTables.EMPTY;
 	}
 
@@ -58,8 +59,8 @@ public class FrozenPlayerEntity extends MobEntity {
 	}
 
 	@Override
-	protected void initDataTracker() {
-		super.initDataTracker();
-		dataTracker.startTracking(SLIM, false);
+	protected void initDataTracker(DataTracker.Builder builder) {
+		super.initDataTracker(builder);
+		builder.add(SLIM, false);
 	}
 }

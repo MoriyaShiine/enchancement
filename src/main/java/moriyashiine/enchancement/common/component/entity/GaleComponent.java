@@ -4,12 +4,10 @@
 
 package moriyashiine.enchancement.common.component.entity;
 
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.packet.GalePacket;
+import moriyashiine.enchancement.common.payload.GalePayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.util.LivingEntityAccessor;
 import net.minecraft.client.MinecraftClient;
@@ -18,6 +16,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.RegistryWrapper;
+import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
+import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class GaleComponent implements AutoSyncedComponent, CommonTickingComponent {
 	public static final int DEFAULT_GALE_COOLDOWN = 10;
@@ -34,7 +35,7 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag) {
+	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		shouldRefreshGale = tag.getBoolean("ShouldRefreshGale");
 		galeCooldown = tag.getInt("GaleCooldown");
 		lastGaleCooldown = tag.getInt("LastGaleCooldown");
@@ -44,7 +45,7 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag) {
+	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		tag.putBoolean("ShouldRefreshGale", shouldRefreshGale);
 		tag.putInt("GaleCooldown", galeCooldown);
 		tag.putInt("LastGaleCooldown", lastGaleCooldown);
@@ -92,7 +93,7 @@ public class GaleComponent implements AutoSyncedComponent, CommonTickingComponen
 		if (hasGale && ((LivingEntityAccessor) obj).enchancement$jumping() && canUse()) {
 			use();
 			addGaleParticles(obj);
-			GalePacket.send();
+			GalePayload.send();
 		}
 	}
 

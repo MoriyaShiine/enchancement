@@ -4,10 +4,8 @@
 
 package moriyashiine.enchancement.common.component.entity;
 
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.common.init.ModEnchantments;
-import moriyashiine.enchancement.common.packet.BuoyPacket;
+import moriyashiine.enchancement.common.payload.BuoyPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.util.SubmersionGate;
 import moriyashiine.enchancement.mixin.util.LivingEntityAccessor;
@@ -16,7 +14,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.MathHelper;
+import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
+import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private final PlayerEntity obj;
@@ -30,13 +31,13 @@ public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponen
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag) {
+	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		shouldBoost = tag.getBoolean("ShouldBoost");
 		boost = tag.getFloat("Boost");
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag) {
+	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		tag.putBoolean("ShouldBoost", shouldBoost);
 		tag.putFloat("Boost", boost);
 	}
@@ -93,11 +94,11 @@ public class BuoyComponent implements AutoSyncedComponent, CommonTickingComponen
 			if (((LivingEntityAccessor) obj).enchancement$jumping()) {
 				if (canUse()) {
 					shouldBoost = true;
-					BuoyPacket.send(true);
+					BuoyPayload.send(true);
 				}
 			} else if (shouldBoost) {
 				shouldBoost = false;
-				BuoyPacket.send(false);
+				BuoyPayload.send(false);
 			}
 		}
 	}

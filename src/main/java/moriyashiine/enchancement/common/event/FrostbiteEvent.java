@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.event;
 
-import moriyashiine.enchancement.client.packet.SyncFrozenPlayerSlimStatusS2C;
+import moriyashiine.enchancement.client.payload.SyncFrozenPlayerSlimStatusS2CPayload;
 import moriyashiine.enchancement.common.component.entity.FrozenComponent;
 import moriyashiine.enchancement.common.component.entity.FrozenSquidComponent;
 import moriyashiine.enchancement.common.entity.mob.FrozenPlayerEntity;
@@ -40,7 +40,7 @@ public class FrostbiteEvent {
 						frozenPlayer.age = entity.age;
 						frozenPlayer.teleport(entity.getX(), entity.getY(), entity.getZ());
 						ModEntityComponents.FROZEN.get(frozenPlayer).freeze();
-						SyncFrozenPlayerSlimStatusS2C.send(serverPlayer, frozenPlayer.getUuid());
+						SyncFrozenPlayerSlimStatusS2CPayload.send(serverPlayer, frozenPlayer.getUuid());
 						entity.getWorld().spawnEntity(frozenPlayer);
 					}
 				} else {

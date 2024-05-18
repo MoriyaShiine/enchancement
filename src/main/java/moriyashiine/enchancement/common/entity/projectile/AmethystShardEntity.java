@@ -26,19 +26,19 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
 
 public class AmethystShardEntity extends PersistentProjectileEntity {
-	private static final ParticleEffect PARTICLE = new ItemStackParticleEffect(ParticleTypes.ITEM, new ItemStack(Items.AMETHYST_SHARD));
+	private static final ParticleEffect PARTICLE = new ItemStackParticleEffect(ParticleTypes.ITEM, Items.AMETHYST_SHARD.getDefaultStack());
 
 	public AmethystShardEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
 		super(entityType, world);
 	}
 
 	public AmethystShardEntity(World world, LivingEntity owner) {
-		super(ModEntityTypes.AMETHYST_SHARD, owner, world);
+		super(ModEntityTypes.AMETHYST_SHARD, owner, world, Items.AMETHYST_SHARD.getDefaultStack());
 	}
 
 	@Override
-	protected ItemStack asItemStack() {
-		return ItemStack.EMPTY;
+	protected ItemStack getDefaultItemStack() {
+		return Items.AMETHYST_SHARD.getDefaultStack();
 	}
 
 	@Override
@@ -84,6 +84,11 @@ public class AmethystShardEntity extends PersistentProjectileEntity {
 			addParticles();
 			discard();
 		}
+	}
+
+	@Override
+	public void setVelocity(double x, double y, double z, float power, float uncertainty) {
+		super.setVelocity(x, y, z, power / 2, uncertainty);
 	}
 
 	public void addParticles() {

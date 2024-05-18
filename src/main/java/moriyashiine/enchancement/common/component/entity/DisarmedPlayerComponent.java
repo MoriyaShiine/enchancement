@@ -4,8 +4,6 @@
 
 package moriyashiine.enchancement.common.component.entity;
 
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -14,7 +12,10 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Identifier;
+import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
+import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class DisarmedPlayerComponent implements AutoSyncedComponent, CommonTicki
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag) {
+	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		NbtList disarmedItems = tag.getList("DisarmedItems", NbtElement.STRING_TYPE);
 		for (int i = 0; i < disarmedItems.size(); i++) {
 			this.disarmedItems.add(Registries.ITEM.get(Identifier.tryParse(disarmedItems.getString(i))));
@@ -36,7 +37,7 @@ public class DisarmedPlayerComponent implements AutoSyncedComponent, CommonTicki
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag) {
+	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		NbtList disarmedItems = new NbtList();
 		this.disarmedItems.forEach(item -> disarmedItems.add(NbtString.of(Registries.ITEM.getId(item).toString())));
 		tag.put("DisarmedItems", disarmedItems);
