@@ -20,22 +20,11 @@ public class TranslatableTextContentMixin {
 
 	@Unique
 	private static String getRedirect(String key) {
-		if (key.equals("enchantment.minecraft.channeling.desc")) {
-			if (ModConfig.channelingIgnitesOnMelee && ModConfig.channelingWorksWhenNotThundering) {
-				return key + ".redirect_melee_thunderless";
-			} else if (ModConfig.channelingIgnitesOnMelee) {
-				return key + ".redirect_melee";
-			} else if (ModConfig.channelingWorksWhenNotThundering) {
-				return key + ".redirect_thunderless";
-			}
-		}
 		return switch (key) {
-			case "enchantment.minecraft.fire_aspect.desc" ->
-					ModConfig.fireAspectWorksAsFlintAndSteel ? key + ".redirect" : key;
+			case "enchantment.minecraft.channeling.desc" -> ModConfig.rebalanceChanneling ? key + ".redirect" : key;
+			case "enchantment.minecraft.fire_aspect.desc" -> ModConfig.rebalanceFireAspect ? key + ".redirect" : key;
 			case "enchantment.minecraft.luck_of_the_sea.desc" ->
 					ModConfig.luckOfTheSeaHasLure ? key + ".redirect" : key;
-			case "enchantment.minecraft.unbreaking.desc" ->
-					ModConfig.unbreakingChangesFlag > 0 ? key + ".redirect" : key;
 			case "advancements.adventure.two_birds_one_arrow.description" ->
 					!ModConfig.disallowedEnchantments.contains("enchancement:brimstone") ? key + ".redirect" : key;
 			default -> key;

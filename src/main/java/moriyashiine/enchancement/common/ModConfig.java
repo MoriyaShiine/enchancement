@@ -64,23 +64,17 @@ public class ModConfig extends MidnightConfig {
 	@Entry
 	public static boolean accurateFishingBobbers = true;
 	@Entry
-	public static boolean allTridentsHaveLoyalty = true;
-	@Entry
 	public static boolean arrowsDropOnHit = true;
 	@Entry
-	public static boolean channelingIgnitesOnMelee = true;
-	@Entry
-	public static boolean channelingWorksWhenNotThundering = true;
-	@Entry
 	public static boolean crossbowsPullFromInventory = true;
+	@Entry
+	public static boolean disableDurability = true;
 	@Entry
 	public static boolean drownedUseHeldTrident = true;
 	@Entry
 	public static boolean enchantedChestplatesIncreaseAirMobility = true;
 	@Entry
 	public static boolean fasterBows = true;
-	@Entry
-	public static boolean fireAspectWorksAsFlintAndSteel = true;
 	@Entry
 	public static boolean freeEnchantedBookMerging = true;
 	@Entry
@@ -96,15 +90,17 @@ public class ModConfig extends MidnightConfig {
 	@Entry
 	public static boolean rebalanceArmor = true;
 	@Entry
-	public static boolean safeChanneling = true;
+	public static boolean rebalanceChanneling = true;
+	@Entry
+	public static boolean rebalanceFireAspect = true;
+	@Entry
+	public static boolean rebalanceGoldenApples = true;
+	@Entry
+	public static boolean rebalancePotions = true;
+	@Entry
+	public static boolean tridentsHaveInnateLoyalty = true;
 	@Entry
 	public static boolean tridentsReturnFromVoid = true;
-	@Entry
-	public static boolean weakerFireAspect = true;
-	@Entry
-	public static boolean weakerGoldenApple = true;
-	@Entry
-	public static boolean weakerPotions = true;
 
 	@Entry(min = 0, max = 1)
 	public static float weaponEnchantmentCooldownRequirement = 0.7F;
@@ -117,8 +113,6 @@ public class ModConfig extends MidnightConfig {
 	public static int maxLumberjackHorizontalLength = 7;
 	@Entry(min = 0)
 	public static int coyoteBiteTicks = 3;
-	@Entry(min = -1)
-	public static int unbreakingChangesFlag = 0;
 
 	@Entry(category = "client")
 	public static boolean enchantmentDescriptions = true;
@@ -138,22 +132,19 @@ public class ModConfig extends MidnightConfig {
 				invertedList +
 				overhaulEnchantingTable + allowTreasureEnchantmentsInEnchantingTable +
 				singleLevelMode + enchantmentLimit +
-				accurateFishingBobbers + allTridentsHaveLoyalty + arrowsDropOnHit +
-				channelingIgnitesOnMelee + channelingWorksWhenNotThundering + crossbowsPullFromInventory +
-				drownedUseHeldTrident +
+				accurateFishingBobbers + arrowsDropOnHit +
+				crossbowsPullFromInventory +
+				disableDurability + drownedUseHeldTrident +
 				enchantedChestplatesIncreaseAirMobility +
-				fasterBows + fireAspectWorksAsFlintAndSteel + freeEnchantedBookMerging +
+				fasterBows + freeEnchantedBookMerging +
 				luckOfTheSeaHasLure +
 				negateEnderPearlDamage +
 				projectilesBypassCooldown + projectilesNegateVelocity +
-				randomMobEnchantments + rebalanceArmor +
-				safeChanneling +
-				tridentsReturnFromVoid +
-				weakerFireAspect + weakerGoldenApple + weakerPotions +
+				randomMobEnchantments + rebalanceArmor + rebalanceChanneling + rebalanceFireAspect + rebalanceGoldenApples + rebalancePotions +
+				tridentsHaveInnateLoyalty + tridentsReturnFromVoid +
 				weaponEnchantmentCooldownRequirement +
 				maxExtractingBlocks + maxLumberjackBlocks + maxLumberjackHorizontalLength +
-				coyoteBiteTicks +
-				unbreakingChangesFlag;
+				coyoteBiteTicks;
 		return encoding.hashCode();
 	}
 

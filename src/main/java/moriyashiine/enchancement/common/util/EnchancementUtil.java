@@ -18,7 +18,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -209,20 +208,11 @@ public class EnchancementUtil {
 	}
 
 	public static boolean shouldBeUnbreakable(ItemStack stack) {
-		if (!stack.isEmpty()) {
-			int flag = ModConfig.unbreakingChangesFlag;
-			if (flag >= 0 && !stack.isIn(ModTags.Items.RETAINS_DURABILITY)) {
-				if (flag == 0) {
-					return stack.getMaxDamage() > 0;
-				}
-				return EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) >= flag;
-			}
-		}
-		return false;
+		return ModConfig.disableDurability && !stack.isEmpty() && stack.getMaxDamage() > 0 && !stack.isIn(ModTags.Items.RETAINS_DURABILITY);
 	}
 
 	public static boolean shouldDisableLoyalty(PersistentProjectileEntity entity) {
-		if (ModConfig.allTridentsHaveLoyalty) {
+		if (ModConfig.tridentsHaveInnateLoyalty) {
 			if (entity.getType().isIn(ModTags.EntityTypes.NO_LOYALTY)) {
 				return true;
 			}

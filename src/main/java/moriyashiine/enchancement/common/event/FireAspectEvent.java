@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 public class FireAspectEvent implements UseBlockCallback {
 	@Override
 	public ActionResult interact(PlayerEntity player, World world, Hand hand, BlockHitResult hitResult) {
-		if (ModConfig.fireAspectWorksAsFlintAndSteel && player.isSneaking() && EnchancementUtil.hasEnchantment(Enchantments.FIRE_ASPECT, player.getStackInHand(hand))) {
+		if (ModConfig.rebalanceFireAspect && player.isSneaking() && EnchancementUtil.hasEnchantment(Enchantments.FIRE_ASPECT, player.getStackInHand(hand))) {
 			ActionResult result = Items.FLINT_AND_STEEL.useOnBlock(new ItemUsageContext(player, hand, hitResult));
 			if (result != ActionResult.FAIL) {
 				return result;

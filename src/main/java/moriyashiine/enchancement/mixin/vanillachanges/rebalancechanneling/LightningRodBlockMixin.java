@@ -2,7 +2,7 @@
  * All Rights Reserved (c) MoriyaShiine
  */
 
-package moriyashiine.enchancement.mixin.vanillachanges.channelingworkswhennotthundering;
+package moriyashiine.enchancement.mixin.vanillachanges.rebalancechanneling;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import moriyashiine.enchancement.common.ModConfig;
@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(LightningRodBlock.class)
 public class LightningRodBlockMixin {
 	@ModifyExpressionValue(method = "onProjectileHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;isThundering()Z"))
-	private boolean enchancement$channelingWorksWhenNotThundering(boolean value) {
-		return value || ModConfig.channelingWorksWhenNotThundering;
+	private boolean enchancement$rebalanceChanneling(boolean value) {
+		return value || ModConfig.rebalanceChanneling;
 	}
 }

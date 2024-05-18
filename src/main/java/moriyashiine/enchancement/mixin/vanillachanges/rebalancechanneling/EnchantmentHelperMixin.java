@@ -2,7 +2,7 @@
  * All Rights Reserved (c) MoriyaShiine
  */
 
-package moriyashiine.enchancement.mixin.vanillachanges.channelingignitesonmelee;
+package moriyashiine.enchancement.mixin.vanillachanges.rebalancechanneling;
 
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
@@ -17,8 +17,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(EnchantmentHelper.class)
 public class EnchantmentHelperMixin {
 	@Inject(method = "getFireAspect", at = @At("RETURN"), cancellable = true)
-	private static void enchancement$channelingIgnitesOnMelee(LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
-		if (ModConfig.channelingIgnitesOnMelee && cir.getReturnValueI() < 1 && EnchancementUtil.hasEnchantment(Enchantments.CHANNELING, entity.getMainHandStack())) {
+	private static void enchancement$rebalanceChanneling(LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
+		if (ModConfig.rebalanceChanneling && cir.getReturnValueI() < 1 && EnchancementUtil.hasEnchantment(Enchantments.CHANNELING, entity.getMainHandStack())) {
 			cir.setReturnValue(1);
 		}
 	}

@@ -2,7 +2,7 @@
  * All Rights Reserved (c) MoriyaShiine
  */
 
-package moriyashiine.enchancement.mixin.vanillachanges.weakergoldenapple;
+package moriyashiine.enchancement.mixin.vanillachanges.rebalancegoldenapples;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -19,9 +19,9 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(Item.class)
 public class ItemMixin {
 	@WrapOperation(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;canConsume(Z)Z"))
-	private boolean enchancement$weakerGoldenApple(PlayerEntity instance, boolean ignoreHunger, Operation<Boolean> original, World world, PlayerEntity user, Hand hand) {
+	private boolean enchancement$rebalanceGoldenApples(PlayerEntity instance, boolean ignoreHunger, Operation<Boolean> original, World world, PlayerEntity user, Hand hand) {
 		boolean alwaysEdible = ignoreHunger;
-		if (ModConfig.weakerGoldenApple) {
+		if (ModConfig.rebalanceGoldenApples) {
 			ItemStack stack = user.getStackInHand(hand);
 			if (stack.isOf(Items.GOLDEN_APPLE) || stack.isOf(Items.ENCHANTED_GOLDEN_APPLE)) {
 				alwaysEdible = false;

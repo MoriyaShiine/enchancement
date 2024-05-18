@@ -2,7 +2,7 @@
  * All Rights Reserved (c) MoriyaShiine
  */
 
-package moriyashiine.enchancement.mixin.vanillachanges.alltridentshaveloyalty;
+package moriyashiine.enchancement.mixin.vanillachanges.tridentshaveinnateloyalty;
 
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.EntityType;

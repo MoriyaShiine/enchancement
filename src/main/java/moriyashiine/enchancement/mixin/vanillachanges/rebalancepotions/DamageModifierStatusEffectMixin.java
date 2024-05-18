@@ -2,7 +2,7 @@
  * All Rights Reserved (c) MoriyaShiine
  */
 
-package moriyashiine.enchancement.mixin.vanillachanges.weakerpotions;
+package moriyashiine.enchancement.mixin.vanillachanges.rebalancepotions;
 
 import moriyashiine.enchancement.common.ModConfig;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -17,8 +17,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class DamageModifierStatusEffectMixin {
 	@SuppressWarnings("ConstantConditions")
 	@Inject(method = "adjustModifierAmount", at = @At("RETURN"), cancellable = true)
-	private void enchancement$weakerPotions(int amplifier, EntityAttributeModifier modifier, CallbackInfoReturnable<Double> cir) {
-		if (ModConfig.weakerPotions) {
+	private void enchancement$rebalancePotions(int amplifier, EntityAttributeModifier modifier, CallbackInfoReturnable<Double> cir) {
+		if (ModConfig.rebalancePotions) {
 			if ((Object) this == StatusEffects.STRENGTH) {
 				cir.setReturnValue(cir.getReturnValueD() * 1 / 3F);
 			} else if ((Object) this == StatusEffects.WEAKNESS) {
