@@ -232,7 +232,7 @@ public class EnchancementUtil {
 		if (attacker == null || hitEntity == null) {
 			return true;
 		}
-		if (attacker == hitEntity) {
+		if (attacker == hitEntity || attacker.getVehicle() == hitEntity) {
 			return false;
 		}
 		if (hitEntity instanceof PlayerEntity hitPlayer && attacker instanceof PlayerEntity attackingPlayer) {
