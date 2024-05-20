@@ -10,11 +10,16 @@ import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.texture.MissingSprite;
 import net.minecraft.util.Identifier;
 
 public class GaleRenderEvent implements HudRenderCallback {
-	private static final MinecraftClient client = MinecraftClient.getInstance();
+	private static final Identifier[] TEXTURES = new Identifier[16];
+
+	static {
+		for (int i = 0; i < TEXTURES.length; i++) {
+			TEXTURES[i] = Enchancement.id("hud/gale_" + i);
+		}
+	}
 
 	@Override
 	public void onHudRender(DrawContext drawContext, float tickDelta) {
@@ -32,6 +37,7 @@ public class GaleRenderEvent implements HudRenderCallback {
 					} else {
 						drawContext.drawGuiTexture(second, x, y, 9, 9);
 					}
+					drawContext.setShaderColor(1, 1, 1, 1);
 					RenderSystem.disableBlend();
 				}
 			}
@@ -39,10 +45,10 @@ public class GaleRenderEvent implements HudRenderCallback {
 	}
 
 	private static Identifier getTexture(int i) {
-		Identifier id = Enchancement.id("hud/gale_" + i);
-		if (client.getGuiAtlasManager().getSprite(id).equals(client.getGuiAtlasManager().getSprite(MissingSprite.getMissingSpriteId()))) {
-			return Enchancement.id("hud/gale_blank");
+		i %= TEXTURES.length;
+		if (i < 0) {
+			i += TEXTURES.length;
 		}
-		return id;
+		return TEXTURES[i];
 	}
 }
