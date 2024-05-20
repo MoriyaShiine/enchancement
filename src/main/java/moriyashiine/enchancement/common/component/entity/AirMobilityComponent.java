@@ -5,10 +5,11 @@
 package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.init.ModDataComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ElytraItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.hit.HitResult;
@@ -37,7 +38,12 @@ public class AirMobilityComponent implements CommonTickingComponent {
 
 	@Override
 	public void tick() {
-		if (ModConfig.enchantedChestplatesIncreaseAirMobility && obj.getEquippedStack(EquipmentSlot.CHEST).hasEnchantments() && !(obj.getEquippedStack(EquipmentSlot.CHEST).getItem() instanceof ElytraItem)) {
+		ItemStack stack = obj.getEquippedStack(EquipmentSlot.CHEST);
+		if (ModConfig.enchantedChestplatesIncreaseAirMobility && stack.getOrDefault(ModDataComponentTypes.TOGGLEABLE_PASSIVE, false)) {
+			if (!stack.hasEnchantments()) {
+				stack.remove(ModDataComponentTypes.TOGGLEABLE_PASSIVE);
+				return;
+			}
 			if (resetBypassTicks > 0) {
 				resetBypassTicks--;
 			}

@@ -18,6 +18,7 @@ public class ModConfig extends MidnightConfig {
 			"minecraft:binding_curse",
 			"minecraft:blast_protection",
 			"minecraft:depth_strider",
+			"minecraft:efficiency",
 			"minecraft:feather_falling",
 			"minecraft:fire_protection",
 			"minecraft:flame",
@@ -74,6 +75,10 @@ public class ModConfig extends MidnightConfig {
 	@Entry
 	public static boolean enchantedChestplatesIncreaseAirMobility = true;
 	@Entry
+	public static boolean enchantedToolsHaveEfficiency = true;
+	@Entry
+	public static boolean enchantedTridentsHaveLoyalty = true;
+	@Entry
 	public static boolean fasterBows = true;
 	@Entry
 	public static boolean freeEnchantedBookMerging = true;
@@ -97,8 +102,6 @@ public class ModConfig extends MidnightConfig {
 	public static boolean rebalanceGoldenApples = true;
 	@Entry
 	public static boolean rebalancePotions = true;
-	@Entry
-	public static boolean tridentsHaveInnateLoyalty = true;
 	@Entry
 	public static boolean tridentsReturnFromVoid = true;
 
@@ -135,13 +138,13 @@ public class ModConfig extends MidnightConfig {
 				accurateFishingBobbers + arrowsDropOnHit +
 				crossbowsPullFromInventory +
 				disableDurability + drownedUseHeldTrident +
-				enchantedChestplatesIncreaseAirMobility +
+				enchantedChestplatesIncreaseAirMobility + enchantedToolsHaveEfficiency + enchantedTridentsHaveLoyalty +
 				fasterBows + freeEnchantedBookMerging +
 				luckOfTheSeaHasLure +
 				negateEnderPearlDamage +
 				projectilesBypassCooldown + projectilesNegateVelocity +
 				randomMobEnchantments + rebalanceArmor + rebalanceChanneling + rebalanceFireAspect + rebalanceGoldenApples + rebalancePotions +
-				tridentsHaveInnateLoyalty + tridentsReturnFromVoid +
+				tridentsReturnFromVoid +
 				weaponEnchantmentCooldownRequirement +
 				maxExtractingBlocks + maxLumberjackBlocks + maxLumberjackHorizontalLength +
 				coyoteBiteTicks;

@@ -23,6 +23,7 @@ public class ModTags {
 
 	public static class Enchantments {
 		public static final TagKey<Enchantment> UNSELECTABLE = TagKey.of(Registries.ENCHANTMENT.getKey(), Enchancement.id("unselectable"));
+		public static final TagKey<Enchantment> DISALLOWS_TOGGLEABLE_PASSIVE = TagKey.of(Registries.ENCHANTMENT.getKey(), Enchancement.id("disallows_toggleable_passive"));
 	}
 
 	public static class EntityTypes {
