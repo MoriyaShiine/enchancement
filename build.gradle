@@ -58,6 +58,7 @@ dependencies {
     modCompileOnly "maven.modrinth:sodium:${sodium_version}"
     modRuntimeOnly "maven.modrinth:sodium:${sodium_version}"
     implementation "org.joml:joml:1.10.4"
+	implementation "com.demonwav.mcdev:annotations:2.1.0"
     modCompileOnly "maven.modrinth:spectrum:${spectrum_version}"
 
     modRuntimeOnly "com.terraformersmc:modmenu:${mod_menu_version}"
