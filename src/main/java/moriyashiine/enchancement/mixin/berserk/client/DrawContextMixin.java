@@ -16,10 +16,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(DrawContext.class)
 public class DrawContextMixin {
-	@Inject(method = "drawItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;IIII)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;getItemRenderer()Lnet/minecraft/client/render/item/ItemRenderer;", shift = At.Shift.BEFORE, ordinal = 1))
-	private void enchancement$berserk(LivingEntity entity, World world, ItemStack stack, int x, int y, int seed, int z, CallbackInfo ci) {
-		if (entity != null) {
-			EnchancementClientUtil.berserkColor = EnchancementClientUtil.getBerserkColor(entity, stack);
-		}
-	}
+   @Inject(method = "drawItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;IIII)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;getItemRenderer()Lnet/minecraft/client/render/item/ItemRenderer;", shift = At.Shift.BEFORE, ordinal = 1))
+   private void enchancement$berserk(LivingEntity entity, World world, ItemStack stack, int x, int y, int seed, int z, CallbackInfo ci) {
+       if (entity != null) {
+           EnchancementClientUtil.berserkColor = EnchancementClientUtil.getBerserkColor(entity, stack);
+       }
+   }
+
+   @Inject(method = "drawItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;IIII)V", at = @At("TAIL"))
+   private void enchancement$resetColor(LivingEntity entity, World world, ItemStack stack, int x, int y, int seed, int z, CallbackInfo ci) {
+       EnchancementClientUtil.berserkColor = -1; // Reset the 'berserk' effect after drawing the item. - Knewest
+   }
 }
