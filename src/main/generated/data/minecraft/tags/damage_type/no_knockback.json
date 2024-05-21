@@ -1,0 +1,8 @@
+{
+  "values": [
+	{
+	  "id": "enchancement:life_drain",
+	  "required": false
+	}
+  ]
+}

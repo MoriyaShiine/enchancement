@@ -1,7 +1,0 @@
-{
-  "replace": false,
-  "values": [
-	"#minecraft:freeze_immune_entity_types",
-	"#c:bosses"
-  ]
-}

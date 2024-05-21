@@ -1,0 +1,12 @@
+{
+  "values": [
+	{
+	  "id": "#create:sandpaper",
+	  "required": false
+	},
+	{
+	  "id": "create:super_glue",
+	  "required": false
+	}
+  ]
+}

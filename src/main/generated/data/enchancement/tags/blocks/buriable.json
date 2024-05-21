@@ -1,0 +1,15 @@
+{
+  "values": [
+	{
+	  "id": "#minecraft:mineable/shovel",
+	  "required": false
+	},
+	{
+	  "id": "#minecraft:nylium",
+	  "required": false
+	},
+	"minecraft:cobweb",
+	"minecraft:netherrack",
+	"minecraft:powder_snow"
+  ]
+}

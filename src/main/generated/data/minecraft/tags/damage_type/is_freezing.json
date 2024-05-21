@@ -1,0 +1,12 @@
+{
+  "values": [
+	{
+	  "id": "enchancement:frostbite",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:ice_shard",
+	  "required": false
+	}
+  ]
+}

@@ -14,6 +14,10 @@ loom {
     accessWidenerPath = file("src/main/resources/enchancement.accesswidener")
 }
 
+fabricApi {
+    configureDataGeneration()
+}
+
 repositories {
     maven {
         name "cardinal components"

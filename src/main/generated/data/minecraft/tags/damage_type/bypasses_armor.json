@@ -1,0 +1,16 @@
+{
+  "values": [
+	{
+	  "id": "enchancement:brimstone",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:frostbite",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:life_drain",
+	  "required": false
+	}
+  ]
+}

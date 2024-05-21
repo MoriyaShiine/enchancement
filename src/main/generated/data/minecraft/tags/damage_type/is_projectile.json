@@ -1,0 +1,16 @@
+{
+  "values": [
+	{
+	  "id": "enchancement:amethyst_shard",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:brimstone",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:ice_shard",
+	  "required": false
+	}
+  ]
+}

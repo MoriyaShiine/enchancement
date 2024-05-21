@@ -1,0 +1,11 @@
+{
+  "values": [
+	{
+	  "id": "#c:bosses",
+	  "required": false
+	},
+	"minecraft:elder_guardian",
+	"minecraft:warden",
+	"minecraft:vex"
+  ]
+}

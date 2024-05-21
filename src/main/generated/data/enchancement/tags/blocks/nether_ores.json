@@ -1,0 +1,17 @@
+{
+  "values": [
+	{
+	  "id": "#c:ores/netherite_scrap",
+	  "required": false
+	},
+	{
+	  "id": "#c:ores/quartz",
+	  "required": false
+	},
+	"minecraft:nether_gold_ore",
+	{
+	  "id": "cinderscapes:sulfur_ore",
+	  "required": false
+	}
+  ]
+}

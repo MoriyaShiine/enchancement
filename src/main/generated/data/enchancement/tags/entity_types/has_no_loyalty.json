@@ -1,0 +1,12 @@
+{
+  "values": [
+	{
+	  "id": "impaled:pitchfork",
+	  "required": false
+	},
+	{
+	  "id": "impaled:guardian_trident",
+	  "required": false
+	}
+  ]
+}

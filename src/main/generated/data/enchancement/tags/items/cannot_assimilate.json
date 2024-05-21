@@ -1,0 +1,35 @@
+{
+  "values": [
+	{
+	  "id": "#c:foods/raw_fishes",
+	  "required": false
+	},
+	{
+	  "id": "#c:foods/raw_meats",
+	  "required": false
+	},
+	{
+	  "id": "#c:foods/food_poisoning",
+	  "required": false
+	},
+	"minecraft:chorus_fruit",
+	"minecraft:enchanted_golden_apple",
+	"minecraft:golden_apple",
+	{
+	  "id": "#c:foods/doughs",
+	  "required": false
+	},
+	{
+	  "id": "#c:foods/pastas",
+	  "required": false
+	},
+	{
+	  "id": "farmersdelight:dog_food",
+	  "required": false
+	},
+	{
+	  "id": "farmersdelight:pie_crust",
+	  "required": false
+	}
+  ]
+}
