@@ -18,34 +18,37 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public class LumberjackEvent implements PlayerBlockBreakEvents.Before {
+	public static final List<Entry> ENTRIES = new ArrayList<>();
+
 	@Override
 	public boolean beforeBlockBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity blockEntity) {
-		if (!player.isSneaking()) {
-			ItemStack stack = player.getMainHandStack();
-			if (EnchancementUtil.hasEnchantment(ModEnchantments.LUMBERJACK, stack) && state.isIn(BlockTags.LOGS) && player.canHarvest(state)) {
-				List<BlockPos> tree = gatherTree(new ArrayList<>(), world, new BlockPos.Mutable().set(pos), state.getBlock());
-				if (tree.size() > 1 && tree.size() <= ModConfig.maxLumberjackBlocks && isWithinHorizontalBounds(tree)) {
-					boolean[] broken = {false};
-					stack.copy().damage(tree.size(), world.getRandom(), null, () -> broken[0] = true);
-					if (!broken[0]) {
-						tree.sort(Comparator.comparingInt(Vec3i::getY).reversed());
-						ModWorldComponents.LUMBERJACK.get(world).addTree(new LumberjackComponent.Tree(tree, pos));
-						return false;
-					}
+		ItemStack stack = player.getMainHandStack();
+		if (canActivate(player, stack, state)) {
+			Entry entry = Entry.get(player);
+			if (entry != null && isValid(entry.tree())) {
+				boolean[] broken = {false};
+				stack.copy().damage(entry.tree().size(), world.getRandom(), null, () -> broken[0] = true);
+				if (!broken[0]) {
+					entry.tree().sort(Comparator.comparingInt(Vec3i::getY).reversed());
+					ModWorldComponents.LUMBERJACK.get(world).addTree(new LumberjackComponent.Tree(entry.tree(), pos));
+					ENTRIES.remove(entry);
+					return false;
 				}
 			}
 		}
 		return true;
 	}
 
-	private static List<BlockPos> gatherTree(List<BlockPos> tree, World world, BlockPos.Mutable pos, Block original) {
+	public static List<BlockPos> gatherTree(List<BlockPos> tree, BlockView world, BlockPos.Mutable pos, Block original) {
 		if (tree.size() < ModConfig.maxLumberjackBlocks) {
 			int originalX = pos.getX(), originalY = pos.getY(), originalZ = pos.getZ();
 			for (int x = -1; x <= 1; x++) {
@@ -63,7 +66,7 @@ public class LumberjackEvent implements PlayerBlockBreakEvents.Before {
 		return tree;
 	}
 
-	private static boolean isWithinHorizontalBounds(List<BlockPos> tree) {
+	public static boolean isWithinHorizontalBounds(List<BlockPos> tree) {
 		Integer minX = null, maxX = null, minZ = null, maxZ = null;
 		for (BlockPos pos : tree) {
 			if (minX == null || pos.getX() < minX) {
@@ -83,5 +86,25 @@ public class LumberjackEvent implements PlayerBlockBreakEvents.Before {
 			return false;
 		}
 		return Math.abs(maxX - minX) < ModConfig.maxLumberjackHorizontalLength && Math.abs(maxZ - minZ) < ModConfig.maxLumberjackHorizontalLength;
+	}
+
+	public static boolean canActivate(PlayerEntity player, ItemStack stack, BlockState state) {
+		return !player.isSneaking() && EnchancementUtil.hasEnchantment(ModEnchantments.LUMBERJACK, stack) && state.isIn(BlockTags.LOGS) && player.canHarvest(state);
+	}
+
+	public static boolean isValid(List<BlockPos> tree) {
+		return tree.size() > 1 && tree.size() <= ModConfig.maxLumberjackBlocks && isWithinHorizontalBounds(tree);
+	}
+
+	public record Entry(PlayerEntity player, List<BlockPos> tree) {
+		@Nullable
+		public static Entry get(PlayerEntity player) {
+			for (Entry entry : ENTRIES) {
+				if (entry.player == player) {
+					return entry;
+				}
+			}
+			return null;
+		}
 	}
 }

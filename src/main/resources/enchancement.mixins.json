@@ -43,6 +43,8 @@
 	"grapple.FishingBobberEntityMixin",
 	"grapple.FishingRodItemMixin",
 	"leech.TridentEntityMixin",
+	"lumberjack.AbstractBlockMixin",
+	"lumberjack.PlayerEntityMixin",
 	"molten.AbstractFurnaceBlockEntityAccessor",
 	"molten.BlockMixin",
 	"phasing.PersistentProjectileEntityMixin",
