@@ -7,6 +7,7 @@ package moriyashiine.enchancement.mixin.vanillachanges.enchantedtoolshaveefficie
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModDataComponentTypes;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -24,7 +25,7 @@ public class EnchantmentHelperMixin {
 				stack.remove(ModDataComponentTypes.TOGGLEABLE_PASSIVE);
 				return original;
 			}
-			return enchantment.getMaxLevel();
+			return EnchancementUtil.alterLevel(stack, enchantment);
 		}
 		return original;
 	}

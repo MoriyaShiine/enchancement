@@ -4,6 +4,7 @@
 
 package moriyashiine.enchancement.mixin.bouncy.client;
 
+import moriyashiine.enchancement.common.component.entity.BouncyComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
@@ -20,14 +21,11 @@ public class ClientPlayerInteractionManagerMixin {
 	@Final
 	private MinecraftClient client;
 
-	@Inject(method = "hasExperienceBar", at = @At("RETURN"), cancellable = true)
+	@Inject(method = "hasExperienceBar", at = @At("HEAD"), cancellable = true)
 	private void enchancement$bouncy(CallbackInfoReturnable<Boolean> cir) {
-		if (cir.getReturnValueZ()) {
-			ModEntityComponents.BOUNCY.maybeGet(client.getCameraEntity()).ifPresent(bouncyComponent -> {
-				if (bouncyComponent.hasBouncy() && bouncyComponent.getBoostProgress() > 0) {
-					cir.setReturnValue(false);
-				}
-			});
+		BouncyComponent bouncyComponent = ModEntityComponents.BOUNCY.getNullable(client.getCameraEntity());
+		if (bouncyComponent != null && bouncyComponent.hasBouncy() && bouncyComponent.getBoostProgress() > 0) {
+			cir.setReturnValue(false);
 		}
 	}
 }

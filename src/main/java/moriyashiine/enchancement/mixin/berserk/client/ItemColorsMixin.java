@@ -4,25 +4,23 @@
 
 package moriyashiine.enchancement.mixin.berserk.client;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import moriyashiine.enchancement.client.util.EnchancementClientUtil;
 import net.minecraft.client.color.item.ItemColors;
-import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemColors.class)
 public class ItemColorsMixin {
-	@Inject(method = "getColor", at = @At("RETURN"), cancellable = true)
-	private void enchancement$berserk(ItemStack item, int tintIndex, CallbackInfoReturnable<Integer> cir) {
+	@ModifyReturnValue(method = "getColor", at = @At("RETURN"))
+	private int enchancement$berserk(int original) {
 		int color = EnchancementClientUtil.berserkColor;
 		if (color != -1) {
-			int original = cir.getReturnValueI();
 			if (original != -1) {
 				color *= original;
 			}
-			cir.setReturnValue(color);
+			return color;
 		}
+		return original;
 	}
 }

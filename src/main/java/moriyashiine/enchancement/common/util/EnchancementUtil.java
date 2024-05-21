@@ -287,6 +287,18 @@ public class EnchancementUtil {
 		return maxLevel;
 	}
 
+	public static int getOriginalMaxLevel(Enchantment enchantment) {
+		return ORIGINAL_MAX_LEVELS.getOrDefault(enchantment, enchantment.getMaxLevel());
+	}
+
+	public static int alterLevel(ItemStack stack, Enchantment enchantment, int additionalMax) {
+		return getModifiedMaxLevel(stack, getOriginalMaxLevel(enchantment) + additionalMax);
+	}
+
+	public static int alterLevel(ItemStack stack, Enchantment enchantment) {
+		return alterLevel(stack, enchantment, 0);
+	}
+
 	public static int getBrimstoneDamage(float progress) {
 		return (int) (6 * progress) * 2;
 	}

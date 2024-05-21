@@ -4,6 +4,7 @@
 
 package moriyashiine.enchancement.mixin.disarm;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import moriyashiine.enchancement.common.component.entity.DisarmedPlayerComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.component.DataComponentTypes;
@@ -26,7 +27,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(FishingBobberEntity.class)
 public abstract class FishingBobberEntityMixin extends ProjectileEntity {
@@ -107,10 +107,11 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 		}
 	}
 
-	@Inject(method = "use", at = @At(value = "RETURN", ordinal = 1), cancellable = true)
-	private void enchancment$disarm(ItemStack usedItem, CallbackInfoReturnable<Integer> cir) {
-		if (cir.getReturnValueI() > 0 && ModEntityComponents.DISARM.get(this).hasDisarm()) {
-			cir.setReturnValue(1);
+	@ModifyReturnValue(method = "use", at = @At(value = "RETURN", ordinal = 1))
+	private int enchancment$disarm(int original) {
+		if (original > 0 && ModEntityComponents.DISARM.get(this).hasDisarm()) {
+			return 1;
 		}
+		return original;
 	}
 }

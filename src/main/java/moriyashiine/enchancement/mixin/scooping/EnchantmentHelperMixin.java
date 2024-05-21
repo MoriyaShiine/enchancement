@@ -13,8 +13,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EnchantmentHelper.class)
 public class EnchantmentHelperMixin {
@@ -26,11 +24,11 @@ public class EnchantmentHelperMixin {
 		return original;
 	}
 
-	@Inject(method = "getLooting", at = @At("HEAD"), cancellable = true)
-	private static void enchancement$scooping(LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
-		int level = EnchantmentHelper.getLevel(ModEnchantments.SCOOPING, entity.getMainHandStack());
-		if (level > 0) {
-			cir.setReturnValue(EnchancementUtil.getModifiedMaxLevel(entity.getMainHandStack(), Enchantments.LOOTING.getMaxLevel() + 2));
+	@ModifyReturnValue(method = "getLooting", at = @At("RETURN"))
+	private static int enchancement$scooping(int original, LivingEntity entity) {
+		if (EnchancementUtil.hasEnchantment(ModEnchantments.SCOOPING, entity.getMainHandStack())) {
+			return EnchancementUtil.alterLevel(entity.getMainHandStack(), Enchantments.LOOTING, 2);
 		}
+		return original;
 	}
 }

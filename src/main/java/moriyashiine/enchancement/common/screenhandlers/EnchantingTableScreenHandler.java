@@ -180,7 +180,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 				context.run((world, pos) -> {
 					ItemStack stack = slots.getFirst().getStack();
 					for (Enchantment enchantment : selectedEnchantments) {
-						stack.addEnchantment(enchantment, EnchancementUtil.getModifiedMaxLevel(stack, enchantment.getMaxLevel()));
+						stack.addEnchantment(enchantment, EnchancementUtil.alterLevel(stack, enchantment));
 					}
 					if (!player.isCreative() && cost > 0) {
 						player.applyEnchantmentCosts(stack, cost);

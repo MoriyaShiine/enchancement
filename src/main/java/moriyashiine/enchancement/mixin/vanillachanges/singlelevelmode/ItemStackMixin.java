@@ -4,6 +4,7 @@
 
 package moriyashiine.enchancement.mixin.vanillachanges.singlelevelmode;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.item.ItemStack;
@@ -11,9 +12,7 @@ import net.minecraft.util.Rarity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin {
@@ -28,10 +27,11 @@ public abstract class ItemStackMixin {
 		return value;
 	}
 
-	@Inject(method = "getRarity", at = @At("RETURN"), cancellable = true)
-	private void enchancement$singleLevelMode(CallbackInfoReturnable<Rarity> cir) {
+	@ModifyReturnValue(method = "getRarity", at = @At("RETURN"))
+	private Rarity enchancement$singleLevelMode(Rarity original) {
 		if (ModConfig.singleLevelMode && hasEnchantments() && !EnchancementUtil.hasWeakEnchantments((ItemStack) (Object) this)) {
-			cir.setReturnValue(Rarity.values()[Math.min(cir.getReturnValue().ordinal() + 1, Rarity.values().length - 1)]);
+			return Rarity.values()[Math.min(original.ordinal() + 1, Rarity.values().length - 1)];
 		}
+		return original;
 	}
 }

@@ -14,7 +14,6 @@ import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -32,7 +31,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.UUID;
 
@@ -89,21 +87,16 @@ public abstract class CrossbowItemMixin {
 		}
 	}
 
-	@Inject(method = "getPullTime", at = @At("HEAD"), cancellable = true)
-	private static void enchancement$brimstone(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
+	@ModifyReturnValue(method = "getPullTime", at = @At("RETURN"))
+	private static int enchancement$brimstone(int original, ItemStack stack) {
 		int level = EnchantmentHelper.getLevel(ModEnchantments.BRIMSTONE, stack);
 		if (level > 0) {
-			int time = 120 / level;
-			int quickCharge = EnchantmentHelper.getLevel(Enchantments.QUICK_CHARGE, stack);
-			while (quickCharge > 0) {
-				time -= 10;
-				quickCharge--;
-			}
-			cir.setReturnValue(Math.max(1, time));
+			return (int) Math.max(1, original * 4.8F / level);
 		}
+		return original;
 	}
 
-	@ModifyReturnValue(method = "createArrowEntity", at = @At("RETURN"))
+	@ModifyReturnValue(method = "createArrowEntity", at = @At(value = "RETURN", ordinal = 1))
 	private ProjectileEntity enchancement$brimstone(ProjectileEntity original, World world, LivingEntity shooter, ItemStack weaponStack, ItemStack projectileStack) {
 		if (weaponStack.contains(ModDataComponentTypes.BRIMSTONE_DAMAGE)) {
 			damage = weaponStack.get(ModDataComponentTypes.BRIMSTONE_DAMAGE);
