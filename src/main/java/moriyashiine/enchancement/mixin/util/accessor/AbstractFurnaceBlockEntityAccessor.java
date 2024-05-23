@@ -2,7 +2,7 @@
  * All Rights Reserved (c) MoriyaShiine
  */
 
-package moriyashiine.enchancement.mixin.molten;
+package moriyashiine.enchancement.mixin.util.accessor;
 
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.server.world.ServerWorld;

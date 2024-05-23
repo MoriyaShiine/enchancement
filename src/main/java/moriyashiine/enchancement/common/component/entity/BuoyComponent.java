@@ -8,7 +8,7 @@ import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.payload.BuoyPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.util.SubmersionGate;
-import moriyashiine.enchancement.mixin.util.LivingEntityAccessor;
+import moriyashiine.enchancement.mixin.util.accessor.LivingEntityAccessor;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;

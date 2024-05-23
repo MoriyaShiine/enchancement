@@ -9,7 +9,7 @@ import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.payload.GalePayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import moriyashiine.enchancement.mixin.util.LivingEntityAccessor;
+import moriyashiine.enchancement.mixin.util.accessor.LivingEntityAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;

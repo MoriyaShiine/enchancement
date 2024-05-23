@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.mixin.util.PersistentProjectileEntityAccessor;
+import moriyashiine.enchancement.mixin.util.accessor.PersistentProjectileEntityAccessor;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.projectile.SpectralArrowEntity;

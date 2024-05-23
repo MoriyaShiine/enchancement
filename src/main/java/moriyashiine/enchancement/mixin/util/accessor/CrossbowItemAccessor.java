@@ -2,7 +2,7 @@
  * All Rights Reserved (c) MoriyaShiine
  */
 
-package moriyashiine.enchancement.mixin.torch;
+package moriyashiine.enchancement.mixin.util.accessor;
 
 import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.ItemStack;

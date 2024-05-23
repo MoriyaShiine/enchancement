@@ -7,7 +7,7 @@ package moriyashiine.enchancement.mixin.torch.client;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import moriyashiine.enchancement.mixin.torch.CrossbowItemAccessor;
+import moriyashiine.enchancement.mixin.util.accessor.CrossbowItemAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.CrossbowItem;

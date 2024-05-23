@@ -10,7 +10,7 @@ import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.event.InitializeDefaultEnchantmentsEvent;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModTags;
-import moriyashiine.enchancement.mixin.util.ItemEntityAccessor;
+import moriyashiine.enchancement.mixin.util.accessor.ItemEntityAccessor;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalFluidTags;
 import net.minecraft.block.BlockState;

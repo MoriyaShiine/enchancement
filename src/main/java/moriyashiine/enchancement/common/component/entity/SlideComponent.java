@@ -11,7 +11,7 @@ import moriyashiine.enchancement.common.payload.SlideResetVelocityPayload;
 import moriyashiine.enchancement.common.payload.SlideSetVelocityPayload;
 import moriyashiine.enchancement.common.payload.SlideSlamPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import moriyashiine.enchancement.mixin.slide.EntityAccessor;
+import moriyashiine.enchancement.mixin.util.accessor.EntityAccessor;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.GameOptions;

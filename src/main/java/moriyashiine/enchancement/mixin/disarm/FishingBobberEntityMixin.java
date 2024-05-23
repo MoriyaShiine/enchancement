@@ -7,6 +7,7 @@ package moriyashiine.enchancement.mixin.disarm;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import moriyashiine.enchancement.common.component.entity.DisarmedPlayerComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.mixin.util.accessor.PiglinBrainAccessor;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.*;

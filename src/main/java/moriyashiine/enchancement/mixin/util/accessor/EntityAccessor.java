@@ -2,7 +2,7 @@
  * All Rights Reserved (c) MoriyaShiine
  */
 
-package moriyashiine.enchancement.mixin.slide;
+package moriyashiine.enchancement.mixin.util.accessor;
 
 import net.minecraft.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;

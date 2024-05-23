@@ -7,7 +7,7 @@ package moriyashiine.enchancement.common.component.entity;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import moriyashiine.enchancement.mixin.util.PersistentProjectileEntityAccessor;
+import moriyashiine.enchancement.mixin.util.accessor.PersistentProjectileEntityAccessor;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.nbt.NbtCompound;
