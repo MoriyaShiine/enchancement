@@ -62,13 +62,13 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 	}
 
 	public BrimstoneEntity(World world, LivingEntity owner) {
-		super(ModEntityTypes.BRIMSTONE, owner, world, BRIMSTONE_STACK.copy());
+		super(ModEntityTypes.BRIMSTONE, owner, world, ItemStack.EMPTY);
 		setPosition(owner.getX(), owner.getEyeY() - 0.3, owner.getZ());
 	}
 
 	@Override
 	protected ItemStack getDefaultItemStack() {
-		return BRIMSTONE_STACK.copy();
+		return ItemStack.EMPTY;
 	}
 
 	@Override

@@ -23,7 +23,7 @@ public class FrostbiteEnchantment extends Enchantment {
 
 	@Override
 	public void onTargetDamaged(LivingEntity user, Entity target, int level) {
-		if (!target.getWorld().isClient && target instanceof LivingEntity living) {
+		if (!target.getWorld().isClient && target.canFreeze() && target instanceof LivingEntity living) {
 			if (!living.isDead()) {
 				int frozenTicks = level * 120;
 				if (target.getFrozenTicks() < frozenTicks) {

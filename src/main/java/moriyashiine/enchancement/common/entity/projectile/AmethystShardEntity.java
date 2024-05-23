@@ -33,12 +33,12 @@ public class AmethystShardEntity extends PersistentProjectileEntity {
 	}
 
 	public AmethystShardEntity(World world, LivingEntity owner) {
-		super(ModEntityTypes.AMETHYST_SHARD, owner, world, Items.AMETHYST_SHARD.getDefaultStack());
+		super(ModEntityTypes.AMETHYST_SHARD, owner, world, ItemStack.EMPTY);
 	}
 
 	@Override
 	protected ItemStack getDefaultItemStack() {
-		return Items.AMETHYST_SHARD.getDefaultStack();
+		return ItemStack.EMPTY;
 	}
 
 	@Override

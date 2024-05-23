@@ -33,12 +33,12 @@ public class IceShardEntity extends PersistentProjectileEntity {
 	}
 
 	public IceShardEntity(World world, LivingEntity owner) {
-		super(ModEntityTypes.ICE_SHARD, owner, world, Items.ICE.getDefaultStack());
+		super(ModEntityTypes.ICE_SHARD, owner, world, ItemStack.EMPTY);
 	}
 
 	@Override
 	protected ItemStack getDefaultItemStack() {
-		return Items.ICE.getDefaultStack();
+		return ItemStack.EMPTY;
 	}
 
 	@Override
@@ -65,7 +65,9 @@ public class IceShardEntity extends PersistentProjectileEntity {
 			}
 			Entity owner = getOwner();
 			if (EnchancementUtil.shouldHurt(owner, entity) && entity.damage(ModDamageTypes.create(getWorld(), ModDamageTypes.ICE_SHARD, this, owner), 4)) {
-				entity.setFrozenTicks(400);
+				if (entity.canFreeze()) {
+					entity.setFrozenTicks(400);
+				}
 				playSound(getHitSound(), 1, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
 				addParticles();
 				discard();

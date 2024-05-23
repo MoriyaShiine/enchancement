@@ -64,6 +64,7 @@
 	"torch.TorchCrossbowMixin",
 	"util.EnchantmentHelperMixin",
 	"util.ItemStackMixin",
+	"util.PersistentProjectileEntityMixin",
 	"util.PotionEntityMixin",
 	"util.ServerPlayNetworkHandlerMixin",
 	"util.TranslatableTextContentMixin",
