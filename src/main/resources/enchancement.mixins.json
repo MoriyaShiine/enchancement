@@ -75,7 +75,6 @@
 	"util.PotionEntityMixin",
 	"util.ServerPlayNetworkHandlerMixin",
 	"util.TranslatableTextContentMixin",
-	"util.enforceconfigmatch.PlayerManagerMixin",
 	"util.toggleablepassive.GrindstoneScreenHandlerMixin",
 	"util.toggleablepassive.ItemStackMixin",
 	"vanillachanges.accuratefishingbobbers.FishingBobberEntityMixin",
