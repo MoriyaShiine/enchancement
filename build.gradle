@@ -13,7 +13,7 @@ base {
 chenille {
     customLicense = rootProject.file("LICENSE")
     github = new URL("https://github.com/MoriyaShiine/enchancement")
-    javaVersion = 21;
+    javaVersion = 21
     configurePublishing {
         withLadysnakeMaven()
         withGithubRelease()
