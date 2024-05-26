@@ -61,9 +61,9 @@ Fishing Rod Enchantments:
 
 Of the core changes, this mod will:
 * Overhaul the Enchanting Table with a new UI that removes the RNG involved in enchanting; you may simply choose the enchantments you wish to have.
-* Force items to only allow one enchantment.
 * Remove leveling from enchantments, meaning that the max level for all enchantments will be 1. Enchantments that are brought down to this level will act as their original max level counterpart, an example being Riptide I will function the same as Riptide III. Enchantments on gear made from materials easier to obtain will be weaker.
-* Remove durability from most aspects of the game. There is an item tag to allow certain items to keep durability.
+* Force items to only allow one enchantment.
+* Remove durability from most aspects of the game. Items in the `enchancement:retains_durability` tag will continue to have durability.
 * Remove most vanilla enchantments from the game. Enchancement tries to make choosing your enchantments more fun and engaging by replacing many of the boring stat change enchantments with enchantments that grant the player unique abilities.
 
 Enchancement also adds some quality of life changes:
@@ -71,28 +71,29 @@ Enchancement also adds some quality of life changes:
 * Adds descriptions to the tooltip of enchanted items and colors enchantment names green.
 * Allows keybinds (Vanilla and Enchancement by default, configurable) to be bound to the same key without conflicting.
 * Fishing Bobbers are accurately thrown instead of having a weird offset.
-* All Tridents have Loyalty built in as a native effect.
 * Arrows shot from Bows will drop on the ground near the shot entity, allowing recollection.
-* Channeling works during any weather, not just when thundering. Channeling also creates lightning that does not create fire or destroy items, and ignites entities for 3 seconds on melee attack.
 * Crossbows can pull projectiles from your inventory instead of just from your off-hand.
 * Drowned will use the data of their held Trident when throwing it.
-* Enchanted chestplates will increase your air mobility.
+* Enchanted Chestplates increase your air mobility.
+* Enchanted tools have built in Efficiency.
+* Enchanted Tridents have built in Loyalty.
 * Bows are drawn faster and don't decrease your movement speed as much.
-* Fire Aspect is usable as Flint and Steel if you are sneaking, and ignites for less time.
 * Enchanted Books are free to merge with items in an Anvil.
 * Luck of the Sea acts as if the item also has Lure.
 * Ender Pearls no longer deal damage upon landing.
 * Projectiles ignore invulnerability frames (with damage falloff) and negate velocity.
 * Mobs can spawn with any random enchantment.
 * Iron armor has been made stronger and Golden armor has been made slightly weaker.
-* Tridents will automatically return to you if thrown in the void.
+* Channeling works during any weather, not just when thundering. Channeling also creates lightning that does not create fire or destroy items, and ignites entities for 3 seconds on melee attack.
+* Fire Aspect is usable as Flint and Steel if you are sneaking, and ignites for less time.
 * Golden Apples can only be eaten while hungry.
 * Makes a select few potions a bit weaker to account for the removal of some enchantments.
+* Tridents will automatically return to you if thrown in the void.
 * Weapon enchantments such as Fire Aspect or Frostbite will not function unless the player's attack cooldown is >= 70%.
 
 **Q: Can I disable any of these changes?**
 
-A: Everything in the mod is configurable down to disabling the entire mod if there are features that you wish to disable. All of the config options are self explanatory except for enchantmentLimit (0 means no limit, greater than 0 means items cannot have more than that number of enchantments) and unbreakingChangesFlag (0 means all items are unbreakable, greater than 0 means items with x level of Unbreaking are unbreakable, and less than 0 means disabled). Items in the `enchancement:retains_durability` tag will ignore these changes and continue to have durability regardless of the setting.
+A: Everything in the mod is configurable down to disabling the entire mod if there are features that you wish to disable. All of the config options are self explanatory except for enchantmentLimit (0 means no limit, greater than 0 means items cannot have more than that number of enchantments).
 
 **Q: Why did you remove most of the vanilla enchantments?**
 
@@ -105,3 +106,12 @@ A: In the configuration file, remove all entries from disallowedEnchantments.
 **Q: I changed the config and now my gear is either too weak or too strong, can you fix this?**
 
 A: Enchancement is heavily designed around using the default configuration file, any balance concerns created by modifying the config will not be addressed as it is outside of the scope of the mod's vision.
+
+## External Links
+Support me on Ko-fi! I release new versions of my mods early here <3
+
+[![Ko-fi](https://i.imgur.com/6pkJV6h.png)](https://ko-fi.com/moriyashiine)
+
+Join my Discord!
+
+[![Discord](https://i.imgur.com/72QzxP1.png)](https://discord.gg/Am6M8VQ)

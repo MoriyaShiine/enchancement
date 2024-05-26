@@ -1,6 +1,6 @@
 plugins {
     id 'fabric-loom' version '1.6-SNAPSHOT'
-    id 'maven-publish'
+    id 'io.github.ladysnake.chenille' version '0.13.1'
 }
 
 version = project.mod_version
@@ -8,6 +8,28 @@ group = project.maven_group
 
 base {
     archivesName = project.archives_base_name
+}
+
+chenille {
+    customLicense = rootProject.file("LICENSE")
+    github = new URL("https://github.com/MoriyaShiine/enchancement")
+    javaVersion = 21;
+    configurePublishing {
+        withLadysnakeMaven()
+        withGithubRelease()
+        withModrinthRelease()
+        withCurseforgeRelease()
+    }
+}
+
+modrinth {
+    dependencies {
+        required.project "fabric-api"
+        embedded.project "cardinal-components-api"
+        embedded.project "midnightlib"
+        embedded.project "tooltipfix"
+    }
+    syncBodyFrom = rootProject.file("README.md").text
 }
 
 loom {
@@ -19,22 +41,9 @@ fabricApi {
 }
 
 repositories {
-    maven {
-        name "cardinal components"
-        url "https://maven.ladysnake.org/releases"
-    }
-    maven {
-        name "mod menu"
-        url "https://maven.terraformersmc.com"
-    }
-    maven {
-        name "modrinth"
-        url "https://api.modrinth.com/maven"
-    }
-    maven {
-        name "jitpack"
-        url "https://jitpack.io"
-    }
+    chenille.repositories.ladysnake()
+    chenille.repositories.terraformers()
+    chenille.repositories.modrinth()
 }
 
 dependencies {
@@ -42,19 +51,18 @@ dependencies {
     mappings "net.fabricmc:yarn:${yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${loader_version}"
 
-    include modApi("org.ladysnake.cardinal-components-api:cardinal-components-base:${cardinal_components_version}")
-    include modApi("org.ladysnake.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}")
-    include modApi("org.ladysnake.cardinal-components-api:cardinal-components-world:${cardinal_components_version}")
-    include modApi("maven.modrinth:midnightlib:${midnightlib_version}")
+    modIncludeApi "org.ladysnake.cardinal-components-api:cardinal-components-base:${cardinal_components_version}"
+    modIncludeApi "org.ladysnake.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}"
+    modIncludeApi "org.ladysnake.cardinal-components-api:cardinal-components-world:${cardinal_components_version}"
+    modIncludeApi "maven.modrinth:midnightlib:${midnightlib_version}"
+    modIncludeApi "maven.modrinth:tooltipfix:${tooltipfix_version}"
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-    modRuntimeOnly "maven.modrinth:tooltipfix:${tooltipfix_version}"
 
 //    modCompileOnly("com.github.apace100:apoli:${apoli_version}") {
 //        exclude(group: "*")
 //    }
-    modCompileOnly "maven.modrinth:sodium:${sodium_version}"
-    modRuntimeOnly "maven.modrinth:sodium:${sodium_version}"
+    modLocalImplementation "maven.modrinth:sodium:${sodium_version}"
 //    modCompileOnly "maven.modrinth:spectrum:${spectrum_version}"
 
     modRuntimeOnly "com.terraformersmc:modmenu:${mod_menu_version}"
@@ -81,6 +89,6 @@ java {
 
 jar {
     from("LICENSE") {
-        rename { "${it}_${project.archivesBaseName}" }
+        rename { "${it}_${project.base.archivesName.get()}" }
     }
 }
