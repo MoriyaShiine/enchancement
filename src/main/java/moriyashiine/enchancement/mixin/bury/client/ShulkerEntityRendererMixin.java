@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) MoriyaShiine. All Rights Reserved.
+ */
 package moriyashiine.enchancement.mixin.bury.client;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;

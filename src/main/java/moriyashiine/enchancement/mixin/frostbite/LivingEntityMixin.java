@@ -1,7 +1,6 @@
 /*
- * All Rights Reserved (c) MoriyaShiine
+ * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-
 package moriyashiine.enchancement.mixin.frostbite;
 
 import moriyashiine.enchancement.common.component.entity.FrozenComponent;

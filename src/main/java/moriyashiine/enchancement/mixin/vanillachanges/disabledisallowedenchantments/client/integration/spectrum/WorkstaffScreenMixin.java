@@ -1,8 +1,7 @@
+/*
+ * Copyright (c) MoriyaShiine. All Rights Reserved.
+ */
 // todo spectrum
-///*
-// * All Rights Reserved (c) MoriyaShiine
-// */
-//
 //package moriyashiine.enchancement.mixin.vanillachanges.disabledisallowedenchantments.client.integration.spectrum;
 //
 //import de.dafuqs.spectrum.inventories.WorkstaffScreen;

@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) MoriyaShiine. All Rights Reserved.
+ */
 package moriyashiine.enchancement.common.util;
 
 public enum SubmersionGate {

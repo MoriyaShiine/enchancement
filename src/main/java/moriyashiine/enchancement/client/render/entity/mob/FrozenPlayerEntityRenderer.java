@@ -1,7 +1,6 @@
 /*
- * All Rights Reserved (c) MoriyaShiine
+ * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-
 package moriyashiine.enchancement.client.render.entity.mob;
 
 import moriyashiine.enchancement.common.entity.mob.FrozenPlayerEntity;

@@ -1,7 +1,6 @@
 /*
- * All Rights Reserved (c) MoriyaShiine
+ * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-
 package moriyashiine.enchancement.mixin.chaos;
 
 import moriyashiine.enchancement.common.component.entity.ChaosArrowComponent;

@@ -1,7 +1,6 @@
 /*
- * All Rights Reserved (c) MoriyaShiine
+ * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-
 package moriyashiine.enchancement.mixin.util;
 
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;

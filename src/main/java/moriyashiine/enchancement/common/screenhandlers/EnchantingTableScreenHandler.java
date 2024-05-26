@@ -1,7 +1,6 @@
 /*
- * All Rights Reserved (c) MoriyaShiine
+ * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-
 package moriyashiine.enchancement.common.screenhandlers;
 
 import moriyashiine.enchancement.client.payload.SyncEnchantingTableBookshelfCountPayload;

@@ -1,7 +1,6 @@
 /*
- * All Rights Reserved (c) MoriyaShiine
+ * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-
 package moriyashiine.enchancement.client.payload;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
