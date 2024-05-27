@@ -7,9 +7,11 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentLevelEntry;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.util.math.random.Random;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,6 +21,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Mixin(EnchantmentHelper.class)
@@ -43,8 +46,12 @@ public class EnchantmentHelperMixin {
 
 	@ModifyVariable(method = "set", at = @At("HEAD"), argsOnly = true)
 	private static ItemEnchantmentsComponent enchancement$enchantmentLimit(ItemEnchantmentsComponent value) {
+		List<RegistryEntry<Enchantment>> enchantments = new ArrayList<>(value.getEnchantments());
+		while (EnchancementUtil.limitCheck(false, EnchancementUtil.getNonDefaultEnchantmentsSize(cachedStack, enchantments.size()) > ModConfig.enchantmentLimit)) {
+			enchantments.removeFirst();
+		}
 		ItemEnchantmentsComponent.Builder builder = new ItemEnchantmentsComponent.Builder(value);
-		builder.remove(enchantment -> !EnchancementUtil.limitCheck(true, EnchancementUtil.getNonDefaultEnchantmentsSize(cachedStack, value.getEnchantments().size()) < ModConfig.enchantmentLimit));
+		builder.remove(enchantment -> !enchantments.contains(enchantment));
 		cachedStack = null;
 		return builder.build();
 	}
