@@ -36,6 +36,7 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
 		getOrCreateTagBuilder(ModTags.Items.NO_LOYALTY)
 				.addOptional(tryParse("impaled:pitchfork"));
 		getOrCreateTagBuilder(ModTags.Items.RETAINS_DURABILITY)
+				.add(Items.WOLF_ARMOR)
 				.addOptionalTag(tryParse("create:sandpaper"))
 				.addOptional(tryParse("create:super_glue"));
 		getOrCreateTagBuilder(ModTags.Items.WEAKLY_ENCHANTED)

@@ -1,5 +1,6 @@
 {
   "values": [
+	"minecraft:wolf_armor",
 	{
 	  "id": "#create:sandpaper",
 	  "required": false
