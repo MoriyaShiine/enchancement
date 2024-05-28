@@ -71,6 +71,9 @@ public abstract class RangedWeaponItemMixin {
 			for (int i = 0; i < MathHelper.nextInt(world.random, level * 6, level * 8) - 1; i++) {
 				shootAll(world, shooter, hand, stack, projectiles, speed, divergence, critical, target);
 			}
+			if (shooter instanceof PlayerEntity player) {
+				player.getItemCooldownManager().set(stack.getItem(), 20);
+			}
 			EnchancementUtil.hasScatterShot = false;
 		}
 	}
