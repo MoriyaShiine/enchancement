@@ -340,11 +340,16 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 	}
 
 	private static boolean isEnchantmentAllowed(Enchantment enchantment, ItemStack stack) {
-		if (enchantment.isAvailableForRandomSelection()) {
-			if (ModConfig.allowTreasureEnchantmentsInEnchantingTable || !enchantment.isTreasure()) {
-				if (stack.canBeEnchantedWith(enchantment, EnchantingContext.RANDOM_ENCHANTMENT)) {
-					return !Registries.ENCHANTMENT.getEntry(enchantment).isIn(ModTags.Enchantments.UNSELECTABLE);
-				}
+		RegistryEntry<Enchantment> entry = Registries.ENCHANTMENT.getEntry(enchantment);
+		if (entry.isIn(ModTags.Enchantments.NEVER_SELECTABLE)) {
+			return false;
+		}
+		if (stack.canBeEnchantedWith(enchantment, EnchantingContext.RANDOM_ENCHANTMENT)) {
+			if (entry.isIn(ModTags.Enchantments.ALWAYS_SELECTABLE)) {
+				return true;
+			}
+			if (enchantment.isAvailableForRandomSelection()) {
+				return ModConfig.allowTreasureEnchantmentsInEnchantingTable || !enchantment.isTreasure();
 			}
 		}
 		return false;

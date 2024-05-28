@@ -21,8 +21,9 @@ public class ModTags {
 	}
 
 	public static class Enchantments {
-		public static final TagKey<Enchantment> UNSELECTABLE = TagKey.of(Registries.ENCHANTMENT.getKey(), Enchancement.id("unselectable"));
+		public static final TagKey<Enchantment> ALWAYS_SELECTABLE = TagKey.of(Registries.ENCHANTMENT.getKey(), Enchancement.id("always_selectable"));
 		public static final TagKey<Enchantment> DISALLOWS_TOGGLEABLE_PASSIVE = TagKey.of(Registries.ENCHANTMENT.getKey(), Enchancement.id("disallows_toggleable_passive"));
+		public static final TagKey<Enchantment> NEVER_SELECTABLE = TagKey.of(Registries.ENCHANTMENT.getKey(), Enchancement.id("never_selectable"));
 	}
 
 	public static class EntityTypes {

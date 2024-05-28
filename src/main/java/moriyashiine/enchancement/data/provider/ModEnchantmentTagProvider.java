@@ -21,6 +21,10 @@ public class ModEnchantmentTagProvider extends FabricTagProvider.EnchantmentTagP
 
 	@Override
 	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
+		getOrCreateTagBuilder(ModTags.Enchantments.ALWAYS_SELECTABLE)
+				.add(Enchantments.SOUL_SPEED)
+				.add(Enchantments.SWIFT_SNEAK)
+				.add(Enchantments.WIND_BURST);
 		getOrCreateTagBuilder(ModTags.Enchantments.DISALLOWS_TOGGLEABLE_PASSIVE)
 				.add(Enchantments.RIPTIDE)
 				.add(ModEnchantments.LUMBERJACK);
