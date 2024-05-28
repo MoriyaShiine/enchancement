@@ -54,7 +54,7 @@ public class ModConfig extends MidnightConfig {
 	@Entry
 	public static boolean overhaulEnchantingTable = true;
 	@Entry
-	public static boolean allowTreasureEnchantmentsInEnchantingTable = false;
+	public static boolean allowTreasureEnchantmentsInEnchantingTable = true;
 
 	@Entry
 	public static boolean singleLevelMode = true;
