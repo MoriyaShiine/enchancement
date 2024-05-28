@@ -8,7 +8,6 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.function.SetEnchantmentsLootFunction;
-import net.minecraft.resource.featuretoggle.FeatureFlags;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -28,7 +27,7 @@ public class SetEnchantmentsLootFunctionMixin {
 
 	@ModifyArg(method = "method_32410", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/objects/Object2IntMap;put(Ljava/lang/Object;I)I"))
 	private static Object enchancement$disableDisallowedEnchantments(Object value) {
-		if (value instanceof Enchantment enchantment && !enchantment.isEnabled(FeatureFlags.DEFAULT_ENABLED_FEATURES)) {
+		if (value instanceof Enchantment enchantment && !enchantment.isEnabled(enchantment.getRequiredFeatures())) {
 			return EnchancementUtil.getReplacement(enchantment, cachedStack);
 		}
 		return value;

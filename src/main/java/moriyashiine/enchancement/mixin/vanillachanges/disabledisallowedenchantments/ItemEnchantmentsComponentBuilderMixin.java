@@ -6,7 +6,6 @@ package moriyashiine.enchancement.mixin.vanillachanges.disabledisallowedenchantm
 import moriyashiine.enchancement.common.Enchancement;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.resource.featuretoggle.FeatureFlags;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -19,7 +18,7 @@ public class ItemEnchantmentsComponentBuilderMixin {
 		if (enchantment == null) {
 			Enchancement.LOGGER.warn("Attempted to set a null enchantment");
 			ci.cancel();
-		} else if (!enchantment.isEnabled(FeatureFlags.DEFAULT_ENABLED_FEATURES)) {
+		} else if (!enchantment.isEnabled(enchantment.getRequiredFeatures())) {
 			Enchancement.LOGGER.warn("Attempted to set a disabled enchantment {}", enchantment.getTranslationKey());
 			ci.cancel();
 		}
@@ -30,7 +29,7 @@ public class ItemEnchantmentsComponentBuilderMixin {
 		if (enchantment == null) {
 			Enchancement.LOGGER.warn("Attempted to add a null enchantment");
 			ci.cancel();
-		} else if (!enchantment.isEnabled(FeatureFlags.DEFAULT_ENABLED_FEATURES)) {
+		} else if (!enchantment.isEnabled(enchantment.getRequiredFeatures())) {
 			Enchancement.LOGGER.warn("Attempted to add a disabled enchantment {}", enchantment.getTranslationKey());
 			ci.cancel();
 		}

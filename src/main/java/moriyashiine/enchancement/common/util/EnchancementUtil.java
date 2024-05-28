@@ -27,7 +27,6 @@ import net.minecraft.item.*;
 import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
@@ -79,7 +78,7 @@ public class EnchancementUtil {
 	public static Enchantment getReplacement(Enchantment enchantment, ItemStack stack) {
 		List<Enchantment> enchantments = new ArrayList<>();
 		for (Enchantment entry : Registries.ENCHANTMENT) {
-			if (entry.isEnabled(FeatureFlags.DEFAULT_ENABLED_FEATURES)) {
+			if (entry.isEnabled(entry.getRequiredFeatures())) {
 				if (stack.isOf(Items.ENCHANTED_BOOK) || stack.canBeEnchantedWith(entry, EnchantingContext.RANDOM_ENCHANTMENT)) {
 					enchantments.add(entry);
 				}
