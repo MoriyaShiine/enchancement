@@ -3,7 +3,7 @@
  */
 package moriyashiine.enchancement.data.provider;
 
-import moriyashiine.enchancement.common.init.ModTags;
+import moriyashiine.enchancement.common.tag.ModStatusEffectTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.entity.effect.StatusEffect;
@@ -22,7 +22,7 @@ public class ModStatusEffectTagProvider extends FabricTagProvider<StatusEffect> 
 
 	@Override
 	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-		getOrCreateTagBuilder(ModTags.StatusEffects.CHAOS_UNCHOOSABLE)
+		getOrCreateTagBuilder(ModStatusEffectTags.CHAOS_UNCHOOSABLE)
 				.add(StatusEffects.BAD_OMEN.value())
 				.add(StatusEffects.RAID_OMEN.value())
 				.add(StatusEffects.TRIAL_OMEN.value())

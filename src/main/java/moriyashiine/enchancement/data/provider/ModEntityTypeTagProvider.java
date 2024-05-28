@@ -4,7 +4,7 @@
 package moriyashiine.enchancement.data.provider;
 
 import moriyashiine.enchancement.common.init.ModEntityTypes;
-import moriyashiine.enchancement.common.init.ModTags;
+import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEntityTypeTags;
@@ -24,25 +24,25 @@ public class ModEntityTypeTagProvider extends FabricTagProvider.EntityTypeTagPro
 
 	@Override
 	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-		getOrCreateTagBuilder(ModTags.EntityTypes.BRIMSTONE_HITTABLE)
+		getOrCreateTagBuilder(ModEntityTypeTags.BRIMSTONE_HITTABLE)
 				.addOptionalTag(ConventionalEntityTypeTags.BOATS)
 				.addOptionalTag(ConventionalEntityTypeTags.MINECARTS)
 				.add(EntityType.END_CRYSTAL);
-		getOrCreateTagBuilder(ModTags.EntityTypes.BYPASSES_DECREASING_DAMAGE)
+		getOrCreateTagBuilder(ModEntityTypeTags.BYPASSES_DECREASING_DAMAGE)
 				.add(ModEntityTypes.AMETHYST_SHARD)
 				.add(ModEntityTypes.ICE_SHARD);
-		getOrCreateTagBuilder(ModTags.EntityTypes.CANNOT_BURY)
+		getOrCreateTagBuilder(ModEntityTypeTags.CANNOT_BURY)
 				.addOptionalTag(ConventionalEntityTypeTags.BOSSES)
 				.add(EntityType.ELDER_GUARDIAN)
 				.add(EntityType.WARDEN)
 				.add(EntityType.VEX);
-		getOrCreateTagBuilder(ModTags.EntityTypes.CANNOT_FREEZE)
+		getOrCreateTagBuilder(ModEntityTypeTags.CANNOT_FREEZE)
 				.addOptionalTag(ConventionalEntityTypeTags.BOSSES)
 				.addOptionalTag(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES);
-		getOrCreateTagBuilder(ModTags.EntityTypes.NO_LOYALTY)
+		getOrCreateTagBuilder(ModEntityTypeTags.NO_LOYALTY)
 				.addOptional(tryParse("impaled:pitchfork"))
 				.addOptional(tryParse("impaled:guardian_trident"));
-		getOrCreateTagBuilder(ModTags.EntityTypes.VEIL_IMMUNE)
+		getOrCreateTagBuilder(ModEntityTypeTags.VEIL_IMMUNE)
 				.addOptionalTag(ConventionalEntityTypeTags.BOSSES)
 				.add(EntityType.ELDER_GUARDIAN)
 				.add(EntityType.WARDEN);

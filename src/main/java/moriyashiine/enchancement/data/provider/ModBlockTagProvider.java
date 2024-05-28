@@ -3,7 +3,7 @@
  */
 package moriyashiine.enchancement.data.provider;
 
-import moriyashiine.enchancement.common.init.ModTags;
+import moriyashiine.enchancement.common.tag.ModBlockTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
@@ -22,18 +22,18 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 
 	@Override
 	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-		getOrCreateTagBuilder(ModTags.Blocks.BURIABLE)
+		getOrCreateTagBuilder(ModBlockTags.BURIABLE)
 				.addOptionalTag(BlockTags.SHOVEL_MINEABLE)
 				.addOptionalTag(BlockTags.NYLIUM)
 				.add(Blocks.COBWEB)
 				.add(Blocks.NETHERRACK)
 				.add(Blocks.POWDER_SNOW);
-		getOrCreateTagBuilder(ModTags.Blocks.NETHER_ORES)
+		getOrCreateTagBuilder(ModBlockTags.NETHER_ORES)
 				.addOptionalTag(ConventionalBlockTags.NETHERITE_SCRAP_ORES)
 				.addOptionalTag(ConventionalBlockTags.QUARTZ_ORES)
 				.add(Blocks.NETHER_GOLD_ORE)
 				.addOptional(Identifier.tryParse("cinderscapes:sulfur_ore"));
-		getOrCreateTagBuilder(ModTags.Blocks.SMELTS_SELF)
+		getOrCreateTagBuilder(ModBlockTags.SMELTS_SELF)
 				.add(Blocks.NETHER_GOLD_ORE);
 	}
 }

@@ -3,7 +3,11 @@
  */
 package moriyashiine.enchancement.common.component.entity;
 
-import moriyashiine.enchancement.common.init.*;
+import moriyashiine.enchancement.common.init.ModDamageTypes;
+import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityPose;
@@ -126,7 +130,7 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 	}
 
 	public boolean shouldFreezeOnDeath(DamageSource source) {
-		if (!obj.getWorld().isClient && !obj.getType().isIn(ModTags.EntityTypes.CANNOT_FREEZE) && lastFreezingAttacker != null) {
+		if (!obj.getWorld().isClient && !obj.getType().isIn(ModEntityTypeTags.CANNOT_FREEZE) && lastFreezingAttacker != null) {
 			return source.isIn(DamageTypeTags.IS_FREEZING) || isSourceFrostbiteWeapon(source);
 		}
 		return false;

@@ -7,7 +7,7 @@ import moriyashiine.enchancement.client.payload.SyncEnchantingTableBookshelfCoun
 import moriyashiine.enchancement.client.payload.SyncEnchantingTableCostPayload;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
-import moriyashiine.enchancement.common.init.ModTags;
+import moriyashiine.enchancement.common.tag.ModEnchantmentTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.minecraft.advancement.criterion.Criteria;
@@ -341,11 +341,11 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 
 	private static boolean isEnchantmentAllowed(Enchantment enchantment, ItemStack stack) {
 		RegistryEntry<Enchantment> entry = Registries.ENCHANTMENT.getEntry(enchantment);
-		if (entry.isIn(ModTags.Enchantments.NEVER_SELECTABLE)) {
+		if (entry.isIn(ModEnchantmentTags.NEVER_SELECTABLE)) {
 			return false;
 		}
 		if (stack.canBeEnchantedWith(enchantment, EnchantingContext.RANDOM_ENCHANTMENT)) {
-			if (entry.isIn(ModTags.Enchantments.ALWAYS_SELECTABLE)) {
+			if (entry.isIn(ModEnchantmentTags.ALWAYS_SELECTABLE)) {
 				return true;
 			}
 			if (enchantment.isAvailableForRandomSelection()) {

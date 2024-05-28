@@ -6,7 +6,7 @@ package moriyashiine.enchancement.common.event;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.init.ModTags;
+import moriyashiine.enchancement.common.tag.ModBlockTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
@@ -83,9 +83,9 @@ public class ExtractingEvent implements PlayerBlockBreakEvents.Before {
 		if (baseBlock != null) {
 			return baseBlock;
 		}
-		if (state.isIn(ModTags.Blocks.NETHER_ORES)) {
+		if (state.isIn(ModBlockTags.NETHER_ORES)) {
 			return Blocks.NETHERRACK;
-		} else if (state.isIn(ModTags.Blocks.END_ORES)) {
+		} else if (state.isIn(ModBlockTags.END_ORES)) {
 			return Blocks.END_STONE;
 		}
 		return Registries.BLOCK.getId(state.getBlock()).getPath().startsWith("deepslate") ? Blocks.DEEPSLATE : Blocks.STONE;

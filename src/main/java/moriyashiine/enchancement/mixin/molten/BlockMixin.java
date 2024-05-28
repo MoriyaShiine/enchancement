@@ -7,7 +7,7 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import moriyashiine.enchancement.client.payload.AddMoltenParticlesPayload;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.init.ModTags;
+import moriyashiine.enchancement.common.tag.ModBlockTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.util.accessor.AbstractFurnaceBlockEntityAccessor;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
@@ -42,7 +42,7 @@ public class BlockMixin {
 		}
 		if (EnchancementUtil.hasEnchantment(ModEnchantments.MOLTEN, stack) && !original.isEmpty()) {
 			original = new ArrayList<>(original);
-			boolean smeltsSelf = state.isIn(ModTags.Blocks.SMELTS_SELF);
+			boolean smeltsSelf = state.isIn(ModBlockTags.SMELTS_SELF);
 			for (int i = 0; i < original.size(); i++) {
 				Pair<ItemStack, Float> smelted = getSmeltedStack(world, smeltsSelf ? new ItemStack(state.getBlock()) : original.get(i));
 				if (smelted != null) {

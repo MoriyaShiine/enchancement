@@ -7,7 +7,8 @@ import moriyashiine.enchancement.common.component.entity.BuryComponent;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.init.ModTags;
+import moriyashiine.enchancement.common.tag.ModBlockTags;
+import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
@@ -44,7 +45,7 @@ public class BuryEvent {
 	public static class Use implements UseEntityCallback {
 		@Override
 		public ActionResult interact(PlayerEntity player, World world, Hand hand, Entity entity, @Nullable EntityHitResult hitResult) {
-			if (!entity.getType().isIn(ModTags.EntityTypes.CANNOT_BURY) && !entity.isSpectator()) {
+			if (!entity.getType().isIn(ModEntityTypeTags.CANNOT_BURY) && !entity.isSpectator()) {
 				if (entity instanceof LivingEntity living && living.isDead()) {
 					return ActionResult.PASS;
 				} else if (entity instanceof PlayerEntity targetPlayer && targetPlayer.isCreative()) {
@@ -57,7 +58,7 @@ public class BuryEvent {
 						for (int i = 0; i <= 1; i++) {
 							BlockPos pos = entity.getBlockPos().down(i);
 							BlockState state = world.getBlockState(pos);
-							if (state.isIn(ModTags.Blocks.BURIABLE)) {
+							if (state.isIn(ModBlockTags.BURIABLE)) {
 								if (!world.isClient) {
 									world.playSoundFromEntity(null, entity, ModSoundEvents.ENTITY_GENERIC_BURY, entity.getSoundCategory(), 1, 1);
 									world.emitGameEvent(GameEvent.ENTITY_INTERACT, entity.getPos(), GameEvent.Emitter.of(entity, entity.getSteppingBlockState()));

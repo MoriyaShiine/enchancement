@@ -8,7 +8,8 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.event.InitializeDefaultEnchantmentsEvent;
 import moriyashiine.enchancement.common.init.ModEnchantments;
-import moriyashiine.enchancement.common.init.ModTags;
+import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
+import moriyashiine.enchancement.common.tag.ModItemTags;
 import moriyashiine.enchancement.mixin.util.accessor.ItemEntityAccessor;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalFluidTags;
@@ -103,10 +104,10 @@ public class EnchancementUtil {
 	}
 
 	public static boolean hasWeakEnchantments(ItemStack stack) {
-		if (stack.isIn(ModTags.Items.STRONGLY_ENCHANTED)) {
+		if (stack.isIn(ModItemTags.STRONGLY_ENCHANTED)) {
 			return false;
 		}
-		if (stack.isIn(ModTags.Items.WEAKLY_ENCHANTED)) {
+		if (stack.isIn(ModItemTags.WEAKLY_ENCHANTED)) {
 			return true;
 		}
 		if (stack.getItem() instanceof ArmorItem armorItem) {
@@ -213,12 +214,12 @@ public class EnchancementUtil {
 	}
 
 	public static boolean shouldBeUnbreakable(ItemStack stack) {
-		return ModConfig.disableDurability && !stack.isEmpty() && stack.getMaxDamage() > 0 && !stack.isIn(ModTags.Items.RETAINS_DURABILITY);
+		return ModConfig.disableDurability && !stack.isEmpty() && stack.getMaxDamage() > 0 && !stack.isIn(ModItemTags.RETAINS_DURABILITY);
 	}
 
 	public static boolean shouldDisableLoyalty(PersistentProjectileEntity entity) {
 		if (ModConfig.enchantedTridentsHaveLoyalty) {
-			if (entity.getType().isIn(ModTags.EntityTypes.NO_LOYALTY)) {
+			if (entity.getType().isIn(ModEntityTypeTags.NO_LOYALTY)) {
 				return true;
 			}
 			return !(entity.getOwner() instanceof PlayerEntity);

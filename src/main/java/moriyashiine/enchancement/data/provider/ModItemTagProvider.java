@@ -3,7 +3,7 @@
  */
 package moriyashiine.enchancement.data.provider;
 
-import moriyashiine.enchancement.common.init.ModTags;
+import moriyashiine.enchancement.common.tag.ModItemTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
@@ -22,7 +22,7 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
 
 	@Override
 	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-		getOrCreateTagBuilder(ModTags.Items.CANNOT_ASSIMILATE)
+		getOrCreateTagBuilder(ModItemTags.CANNOT_ASSIMILATE)
 				.addOptionalTag(ConventionalItemTags.RAW_FISHES_FOODS)
 				.addOptionalTag(ConventionalItemTags.RAW_MEATS_FOODS)
 				.addOptionalTag(ConventionalItemTags.FOOD_POISONING_FOODS)
@@ -33,13 +33,13 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
 				.addOptionalTag(tryParse("c:foods/pastas"))
 				.addOptional(tryParse("farmersdelight:dog_food"))
 				.addOptional(tryParse("farmersdelight:pie_crust"));
-		getOrCreateTagBuilder(ModTags.Items.NO_LOYALTY)
+		getOrCreateTagBuilder(ModItemTags.NO_LOYALTY)
 				.addOptional(tryParse("impaled:pitchfork"));
-		getOrCreateTagBuilder(ModTags.Items.RETAINS_DURABILITY)
+		getOrCreateTagBuilder(ModItemTags.RETAINS_DURABILITY)
 				.add(Items.WOLF_ARMOR)
 				.addOptionalTag(tryParse("create:sandpaper"))
 				.addOptional(tryParse("create:super_glue"));
-		getOrCreateTagBuilder(ModTags.Items.WEAKLY_ENCHANTED)
+		getOrCreateTagBuilder(ModItemTags.WEAKLY_ENCHANTED)
 				.addOptional(tryParse("impaled:pitchfork"));
 	}
 }

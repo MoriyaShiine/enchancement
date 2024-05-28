@@ -4,7 +4,7 @@
 package moriyashiine.enchancement.data.provider;
 
 import moriyashiine.enchancement.common.init.ModEnchantments;
-import moriyashiine.enchancement.common.init.ModTags;
+import moriyashiine.enchancement.common.tag.ModEnchantmentTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEnchantmentTags;
@@ -21,11 +21,11 @@ public class ModEnchantmentTagProvider extends FabricTagProvider.EnchantmentTagP
 
 	@Override
 	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-		getOrCreateTagBuilder(ModTags.Enchantments.ALWAYS_SELECTABLE)
+		getOrCreateTagBuilder(ModEnchantmentTags.ALWAYS_SELECTABLE)
 				.add(Enchantments.SOUL_SPEED)
 				.add(Enchantments.SWIFT_SNEAK)
 				.add(Enchantments.WIND_BURST);
-		getOrCreateTagBuilder(ModTags.Enchantments.DISALLOWS_TOGGLEABLE_PASSIVE)
+		getOrCreateTagBuilder(ModEnchantmentTags.DISALLOWS_TOGGLEABLE_PASSIVE)
 				.add(Enchantments.RIPTIDE)
 				.add(ModEnchantments.LUMBERJACK);
 

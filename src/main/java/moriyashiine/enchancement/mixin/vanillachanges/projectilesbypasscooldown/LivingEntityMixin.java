@@ -8,7 +8,7 @@ import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.component.entity.DelayComponent;
 import moriyashiine.enchancement.common.component.entity.ProjectileTimerComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.init.ModTags;
+import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -28,7 +28,7 @@ public class LivingEntityMixin {
 					bypass = true;
 				}
 			}
-			if (bypass && !projectile.getType().isIn(ModTags.EntityTypes.BYPASSES_DECREASING_DAMAGE)) {
+			if (bypass && !projectile.getType().isIn(ModEntityTypeTags.BYPASSES_DECREASING_DAMAGE)) {
 				ProjectileTimerComponent projectileTimerComponent = ModEntityComponents.PROJECTILE_TIMER.get(this);
 				projectileTimerComponent.incrementTimesHit();
 				projectileTimerComponent.markAsHit();

@@ -6,7 +6,7 @@ package moriyashiine.enchancement.common.entity.projectile;
 import moriyashiine.enchancement.common.init.ModDamageTypes;
 import moriyashiine.enchancement.common.init.ModDataComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
-import moriyashiine.enchancement.common.init.ModTags;
+import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
@@ -191,7 +191,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 	}
 
 	private boolean canEntityBeHit(Entity owner, Entity entity) {
-		if (entity instanceof LivingEntity || entity.getType().isIn(ModTags.EntityTypes.BRIMSTONE_HITTABLE)) {
+		if (entity instanceof LivingEntity || entity.getType().isIn(ModEntityTypeTags.BRIMSTONE_HITTABLE)) {
 			return !hitEntities.contains(entity) && entity.isAlive() && EnchancementUtil.shouldHurt(owner, entity);
 		}
 		return false;

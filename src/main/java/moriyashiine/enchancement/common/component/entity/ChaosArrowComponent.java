@@ -4,7 +4,7 @@
 package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.common.init.ModEnchantments;
-import moriyashiine.enchancement.common.init.ModTags;
+import moriyashiine.enchancement.common.tag.ModStatusEffectTags;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -66,7 +66,7 @@ public class ChaosArrowComponent implements Component {
 				StatusEffect effect = Registries.STATUS_EFFECT.get(shooter.getRandom().nextInt(Registries.STATUS_EFFECT.size()));
 				if (effect != null && !disallowed.contains(effect)) {
 					Optional<RegistryKey<StatusEffect>> key = Registries.STATUS_EFFECT.getKey(effect);
-					if (key.isPresent() && effect.getCategory() == category && !Registries.STATUS_EFFECT.entryOf(key.get()).isIn(ModTags.StatusEffects.CHAOS_UNCHOOSABLE)) {
+					if (key.isPresent() && effect.getCategory() == category && !Registries.STATUS_EFFECT.entryOf(key.get()).isIn(ModStatusEffectTags.CHAOS_UNCHOOSABLE)) {
 						List<StatusEffectInstance> statusEffects = new ArrayList<>();
 						for (StatusEffectInstance instance : potionContentsComponent.getEffects()) {
 							statusEffects.add(new StatusEffectInstance(instance.getEffectType(), Math.max(instance.mapDuration(i -> i / 8), 1), instance.getAmplifier(), instance.isAmbient(), instance.shouldShowParticles()));
