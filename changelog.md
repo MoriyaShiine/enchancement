@@ -1,4 +1,19 @@
 ------------------------------------------------------
+Version 1.20.6-r4
+------------------------------------------------------
+- merge https://github.com/MoriyaShiine/enchancement/pull/185
+- merge https://github.com/MoriyaShiine/enchancement/pull/186
+- merge https://github.com/MoriyaShiine/enchancement/pull/187
+- merge https://github.com/MoriyaShiine/enchancement/pull/188
+- add enchancement:always_selectable enchantment tag
+- rename enchancement:unselectable enchantment tag to enchancement:never_selectable
+- add mace enchantment descriptions
+- allowTreasureEnchantmentsInEnchantingTable is now set to true by default
+- fix creative crash with enchantments added by feature flags
+- fix scatter not having a cooldown
+- fix sweeping_edge enchantment description key
+
+------------------------------------------------------
 Version 1.20.6-r3
 ------------------------------------------------------
 - fix renaming items in an anvil removing enchantments
