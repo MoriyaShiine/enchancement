@@ -49,7 +49,7 @@ public class ExtendedWaterComponent implements AutoSyncedComponent, CommonTickin
 		hasBuoy = EnchancementUtil.hasEnchantment(ModEnchantments.BUOY, obj);
 		if (shouldCount()) {
 			if (obj.isWet()) {
-				markWet();
+				markWet(200);
 			}
 		} else {
 			ticksWet = 0;
@@ -109,8 +109,10 @@ public class ExtendedWaterComponent implements AutoSyncedComponent, CommonTickin
 		return ticksWet;
 	}
 
-	public void markWet() {
-		ticksWet = 200;
+	public void markWet(int ticks) {
+		if (ticksWet < ticks) {
+			ticksWet = ticks;
+		}
 	}
 
 	public boolean hasAmphibious() {
