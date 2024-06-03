@@ -22,7 +22,8 @@ import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 import java.util.UUID;
 
 public class ExtendedWaterComponent implements AutoSyncedComponent, CommonTickingComponent {
-	private static final EntityAttributeModifier STEP_HEIGHT_INCREASE = new EntityAttributeModifier(UUID.fromString("ffa8a401-83c0-46a2-8510-66a66aed2275"), "Enchantment modifier", 1, EntityAttributeModifier.Operation.ADD_VALUE);
+	private static final EntityAttributeModifier SAFE_FALL_DISTANCE_MODIFIER = new EntityAttributeModifier(UUID.fromString("5a6cc485-ad0c-47d0-941e-a6011801bc34"), "Enchantment modifier", 4, EntityAttributeModifier.Operation.ADD_VALUE);
+	private static final EntityAttributeModifier STEP_HEIGHT_MODIFIER = new EntityAttributeModifier(UUID.fromString("ffa8a401-83c0-46a2-8510-66a66aed2275"), "Enchantment modifier", 1, EntityAttributeModifier.Operation.ADD_VALUE);
 
 	private final LivingEntity obj;
 	private int ticksWet = 0;
@@ -75,13 +76,22 @@ public class ExtendedWaterComponent implements AutoSyncedComponent, CommonTickin
 					obj.getWorld().playSound(null, obj.getBlockPos(), SoundEvents.BLOCK_POINTED_DRIPSTONE_DRIP_WATER, obj.getSoundCategory(), 1, 1);
 				}
 			}
-			EntityAttributeInstance attribute = obj.getAttributeInstance(EntityAttributes.GENERIC_STEP_HEIGHT);
+			EntityAttributeInstance safeFallDistanceAttribute = obj.getAttributeInstance(EntityAttributes.GENERIC_SAFE_FALL_DISTANCE);
+			EntityAttributeInstance stepHeightAttribute = obj.getAttributeInstance(EntityAttributes.GENERIC_STEP_HEIGHT);
 			if (increase) {
-				if (!attribute.hasModifier(STEP_HEIGHT_INCREASE)) {
-					attribute.addPersistentModifier(STEP_HEIGHT_INCREASE);
+				if (!safeFallDistanceAttribute.hasModifier(SAFE_FALL_DISTANCE_MODIFIER)) {
+					safeFallDistanceAttribute.addPersistentModifier(SAFE_FALL_DISTANCE_MODIFIER);
 				}
-			} else if (attribute.hasModifier(STEP_HEIGHT_INCREASE)) {
-				attribute.removeModifier(STEP_HEIGHT_INCREASE);
+				if (!stepHeightAttribute.hasModifier(STEP_HEIGHT_MODIFIER)) {
+					stepHeightAttribute.addPersistentModifier(STEP_HEIGHT_MODIFIER);
+				}
+			} else {
+				if (safeFallDistanceAttribute.hasModifier(SAFE_FALL_DISTANCE_MODIFIER)) {
+					safeFallDistanceAttribute.removeModifier(SAFE_FALL_DISTANCE_MODIFIER);
+				}
+				if (stepHeightAttribute.hasModifier(STEP_HEIGHT_MODIFIER)) {
+					stepHeightAttribute.removeModifier(STEP_HEIGHT_MODIFIER);
+				}
 			}
 		}
 	}

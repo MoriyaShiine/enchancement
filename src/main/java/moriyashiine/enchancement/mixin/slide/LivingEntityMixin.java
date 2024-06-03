@@ -31,15 +31,6 @@ public class LivingEntityMixin {
 		return value;
 	}
 
-	@ModifyVariable(method = "handleFallDamage", at = @At("HEAD"), ordinal = 0, argsOnly = true)
-	private float enchancement$slide(float value) {
-		SlideComponent slideComponent = ModEntityComponents.SLIDE.getNullable(this);
-		if (slideComponent != null && slideComponent.isSliding()) {
-			return Math.max(0, value - 6);
-		}
-		return value;
-	}
-
 	@ModifyVariable(method = "jump", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/LivingEntity;getVelocity()Lnet/minecraft/util/math/Vec3d;", ordinal = 0))
 	private Vec3d enchancement$slide(Vec3d value) {
 		SlideComponent slideComponent = ModEntityComponents.SLIDE.getNullable(this);
