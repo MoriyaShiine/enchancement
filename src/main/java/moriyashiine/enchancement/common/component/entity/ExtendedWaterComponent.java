@@ -110,7 +110,7 @@ public class ExtendedWaterComponent implements AutoSyncedComponent, CommonTickin
 	}
 
 	public void markWet() {
-		ticksWet = 160;
+		ticksWet = 200;
 	}
 
 	public boolean hasAmphibious() {
