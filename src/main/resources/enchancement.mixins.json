@@ -47,6 +47,7 @@
 	"phasing.PersistentProjectileEntityMixin",
 	"phasing.PhasingArrowItemMixin",
 	"scatter.CrossbowItemMixin",
+	"scatter.PlayerEntityMixin",
 	"scatter.RangedWeaponItemMixin",
 	"scatter.ScatterCrossbowMixin",
 	"scatter.ServerPlayerInteractionManagerMixin",
