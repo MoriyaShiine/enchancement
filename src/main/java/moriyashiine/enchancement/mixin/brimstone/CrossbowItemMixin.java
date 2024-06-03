@@ -4,9 +4,9 @@
 package moriyashiine.enchancement.mixin.brimstone;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moriyashiine.enchancement.client.payload.PlayBrimstoneSoundPayload;
-import moriyashiine.enchancement.common.entity.projectile.BrimstoneEntity;
-import moriyashiine.enchancement.common.init.ModDamageTypes;
 import moriyashiine.enchancement.common.init.ModDataComponentTypes;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
@@ -15,29 +15,23 @@ import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.UUID;
 
 @Mixin(CrossbowItem.class)
 public abstract class CrossbowItemMixin {
-	@Unique
-	private static int damage = -1;
-
 	@Shadow
 	public abstract int getMaxUseTime(ItemStack stack);
 
@@ -46,27 +40,17 @@ public abstract class CrossbowItemMixin {
 		throw new UnsupportedOperationException();
 	}
 
-	@Shadow
-	public static int getPullTime(ItemStack stack) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Shadow
-	private static boolean loadProjectiles(LivingEntity shooter, ItemStack projectile) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Inject(method = "onStoppedUsing", at = @At("HEAD"), cancellable = true)
-	private void enchancement$brimstone(ItemStack stack, World world, LivingEntity user, int remainingUseTicks, CallbackInfo ci) {
-		if (EnchancementUtil.hasEnchantment(ModEnchantments.BRIMSTONE, stack) && !CrossbowItem.isCharged(stack)) {
+	@WrapOperation(method = "onStoppedUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/CrossbowItem;getPullProgress(ILnet/minecraft/item/ItemStack;)F"))
+	private float enchancement$brimstone(int useTicks, ItemStack stack, Operation<Float> original, ItemStack stack0, World world, LivingEntity user, int remainingUseTicks) {
+		if (EnchancementUtil.hasEnchantment(ModEnchantments.BRIMSTONE, stack)) {
 			stack.remove(ModDataComponentTypes.BRIMSTONE_UUID);
 			int damage = EnchancementUtil.getBrimstoneDamage(getPullProgress(getMaxUseTime(stack) - remainingUseTicks, stack));
-			if (damage > 0 && loadProjectiles(user, stack)) {
+			if (damage > 0) {
 				stack.set(ModDataComponentTypes.BRIMSTONE_DAMAGE, damage);
-				world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ITEM_CROSSBOW_LOADING_END, user instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE, 1, 1 / (world.getRandom().nextFloat() * 0.5F + 1) + 0.2F);
-				ci.cancel();
+				return 1;
 			}
 		}
+		return original.call(useTicks, stack);
 	}
 
 	@Inject(method = "usageTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getLevel(Lnet/minecraft/enchantment/Enchantment;Lnet/minecraft/item/ItemStack;)I"))
@@ -95,33 +79,13 @@ public abstract class CrossbowItemMixin {
 		return original;
 	}
 
-	@ModifyReturnValue(method = "createArrowEntity", at = @At(value = "RETURN", ordinal = 1))
-	private ProjectileEntity enchancement$brimstone(ProjectileEntity original, World world, LivingEntity shooter, ItemStack weaponStack, ItemStack projectileStack) {
-		if (weaponStack.contains(ModDataComponentTypes.BRIMSTONE_DAMAGE)) {
-			damage = weaponStack.get(ModDataComponentTypes.BRIMSTONE_DAMAGE);
-			weaponStack.remove(ModDataComponentTypes.BRIMSTONE_DAMAGE);
-			shooter.damage(ModDamageTypes.create(world, ModDamageTypes.LIFE_DRAIN), shooter.getMaxHealth() * (damage / 20F));
-			BrimstoneEntity brimstone = new BrimstoneEntity(world, shooter);
-			brimstone.setShotFromCrossbow(true);
-			brimstone.setDamage(damage);
-			brimstone.getDataTracker().set(BrimstoneEntity.FORCED_PITCH, shooter.getPitch());
-			brimstone.getDataTracker().set(BrimstoneEntity.FORCED_YAW, shooter.getHeadYaw());
-			if (shooter instanceof PlayerEntity player) {
-				player.getItemCooldownManager().set(weaponStack.getItem(), (int) (getPullTime(weaponStack) * (damage / 12F)));
-			}
-			return brimstone;
+	@WrapOperation(method = "shoot", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;playSound(Lnet/minecraft/entity/player/PlayerEntity;DDDLnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FF)V"))
+	private void enchancement$brimstone(World instance, PlayerEntity source, double x, double y, double z, SoundEvent sound, SoundCategory category, float volume, float pitch, Operation<Void> original, LivingEntity shooter) {
+		int damage = shooter.getEquippedStack(LivingEntity.getSlotForHand(shooter.getActiveHand())).getOrDefault(ModDataComponentTypes.BRIMSTONE_DAMAGE, 0);
+		if (damage > 0) {
+			sound = getFireSound(damage);
 		}
-		return original;
-	}
-
-	@ModifyArg(method = "shoot", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;playSound(Lnet/minecraft/entity/player/PlayerEntity;DDDLnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FF)V"))
-	private SoundEvent enchancement$brimstone(SoundEvent value) {
-		if (damage >= 0) {
-			SoundEvent sound = getFireSound(damage);
-			damage = -1;
-			return sound;
-		}
-		return value;
+		original.call(instance, source, x, y, z, sound, category, volume, pitch);
 	}
 
 	@Unique

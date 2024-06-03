@@ -63,6 +63,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 	public BrimstoneEntity(World world, LivingEntity owner) {
 		super(ModEntityTypes.BRIMSTONE, owner, world, ItemStack.EMPTY);
 		setPosition(owner.getX(), owner.getEyeY() - 0.3, owner.getZ());
+		ignoreCameraFrustum = true;
 	}
 
 	@Override
@@ -76,7 +77,6 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 			setCritical(false);
 		}
 		setVelocity(Vec3d.ZERO);
-		super.tick();
 		ticksExisted++;
 		maxY = 0;
 		Vec3d start = getPos(), end = start.add(getRotationVector());

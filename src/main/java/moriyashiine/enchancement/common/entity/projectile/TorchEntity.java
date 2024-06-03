@@ -26,7 +26,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class TorchEntity extends PersistentProjectileEntity {
-	private boolean shouldPlaceTorch = true;
+	private boolean canFunction = true, shouldPlaceTorch = true;
 	private int ignitionTime = 0;
 
 	public TorchEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
@@ -35,6 +35,9 @@ public class TorchEntity extends PersistentProjectileEntity {
 
 	public TorchEntity(World world, LivingEntity owner, ItemStack stack) {
 		super(ModEntityTypes.TORCH, owner, world, stack);
+		if (pickupType != PickupPermission.ALLOWED && !(owner instanceof PlayerEntity player && player.isCreative())) {
+			canFunction = false;
+		}
 		shouldPlaceTorch = owner.isSneaking();
 	}
 
@@ -73,27 +76,29 @@ public class TorchEntity extends PersistentProjectileEntity {
 		state.onProjectileHit(getWorld(), state, blockHitResult, this);
 		if (!getWorld().isClient) {
 			discard();
-			if (shouldPlaceTorch && getOwner() instanceof PlayerEntity player && player.getAbilities().allowModifyWorld) {
-				BlockPos pos = blockHitResult.getBlockPos().offset(blockHitResult.getSide());
-				ItemPlacementContext context = new ItemPlacementContext(player, Hand.MAIN_HAND, asItemStack(), blockHitResult);
-				if (context.canPlace()) {
-					state = Blocks.TORCH.getPlacementState(context);
-					if (state != null && state.canPlaceAt(getWorld(), pos)) {
-						getWorld().setBlockState(pos, state);
-						playSound(Blocks.TORCH.getDefaultState().getSoundGroup().getPlaceSound(), 1, 1);
-						return;
-					} else {
-						state = Blocks.WALL_TORCH.getPlacementState(context);
+			if (canFunction) {
+				if (shouldPlaceTorch && getOwner() instanceof PlayerEntity player && player.getAbilities().allowModifyWorld) {
+					BlockPos pos = blockHitResult.getBlockPos().offset(blockHitResult.getSide());
+					ItemPlacementContext context = new ItemPlacementContext(player, Hand.MAIN_HAND, asItemStack(), blockHitResult);
+					if (context.canPlace()) {
+						state = Blocks.TORCH.getPlacementState(context);
 						if (state != null && state.canPlaceAt(getWorld(), pos)) {
 							getWorld().setBlockState(pos, state);
 							playSound(Blocks.TORCH.getDefaultState().getSoundGroup().getPlaceSound(), 1, 1);
 							return;
+						} else {
+							state = Blocks.WALL_TORCH.getPlacementState(context);
+							if (state != null && state.canPlaceAt(getWorld(), pos)) {
+								getWorld().setBlockState(pos, state);
+								playSound(Blocks.TORCH.getDefaultState().getSoundGroup().getPlaceSound(), 1, 1);
+								return;
+							}
 						}
 					}
 				}
-			}
-			if (getOwner() instanceof PlayerEntity player && !player.isCreative()) {
-				dropStack(asItemStack(), 0.1F);
+				if (getOwner() instanceof PlayerEntity player && !player.isCreative()) {
+					dropStack(asItemStack(), 0.1F);
+				}
 			}
 		}
 	}
@@ -101,6 +106,7 @@ public class TorchEntity extends PersistentProjectileEntity {
 	@Override
 	public void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
+		canFunction = nbt.getBoolean("CanFunction");
 		shouldPlaceTorch = nbt.getBoolean("ShouldPlaceTorch");
 		ignitionTime = nbt.getInt("IgnitionTime");
 	}
@@ -108,6 +114,7 @@ public class TorchEntity extends PersistentProjectileEntity {
 	@Override
 	public void writeCustomDataToNbt(NbtCompound nbt) {
 		super.writeCustomDataToNbt(nbt);
+		nbt.putBoolean("CanFunction", canFunction);
 		nbt.putBoolean("ShouldPlaceTorch", shouldPlaceTorch);
 		nbt.putInt("IgnitionTime", ignitionTime);
 	}
