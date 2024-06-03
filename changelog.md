@@ -1,4 +1,13 @@
 ------------------------------------------------------
+Version 1.20.6-r5
+------------------------------------------------------
+- merge https://github.com/MoriyaShiine/enchancement/pull/190
+- fix https://github.com/MoriyaShiine/enchancement/issues/189
+- extended water (amphibious/buoy) now lasts for 10 seconds instead of 8
+- extended water is now applied from all potions, not just splash water, and lasts for 30 seconds
+- scatter in creative mode now automatically charges with amethyst shards
+
+------------------------------------------------------
 Version 1.20.6-r4
 ------------------------------------------------------
 - merge https://github.com/MoriyaShiine/enchancement/pull/185
