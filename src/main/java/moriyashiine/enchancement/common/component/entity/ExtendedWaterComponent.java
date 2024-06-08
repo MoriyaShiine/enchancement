@@ -3,6 +3,7 @@
  */
 package moriyashiine.enchancement.common.component.entity;
 
+import moriyashiine.enchancement.common.event.StepHeightEvent;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
@@ -23,7 +24,6 @@ import java.util.UUID;
 
 public class ExtendedWaterComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private static final EntityAttributeModifier SAFE_FALL_DISTANCE_MODIFIER = new EntityAttributeModifier(UUID.fromString("5a6cc485-ad0c-47d0-941e-a6011801bc34"), "Enchantment modifier", 4, EntityAttributeModifier.Operation.ADD_VALUE);
-	private static final EntityAttributeModifier STEP_HEIGHT_MODIFIER = new EntityAttributeModifier(UUID.fromString("ffa8a401-83c0-46a2-8510-66a66aed2275"), "Enchantment modifier", 1, EntityAttributeModifier.Operation.ADD_VALUE);
 
 	private final LivingEntity obj;
 	private int ticksWet = 0;
@@ -77,20 +77,15 @@ public class ExtendedWaterComponent implements AutoSyncedComponent, CommonTickin
 				}
 			}
 			EntityAttributeInstance safeFallDistanceAttribute = obj.getAttributeInstance(EntityAttributes.GENERIC_SAFE_FALL_DISTANCE);
-			EntityAttributeInstance stepHeightAttribute = obj.getAttributeInstance(EntityAttributes.GENERIC_STEP_HEIGHT);
 			if (increase) {
+				StepHeightEvent.ENTITIES.put(this, obj);
 				if (!safeFallDistanceAttribute.hasModifier(SAFE_FALL_DISTANCE_MODIFIER)) {
 					safeFallDistanceAttribute.addPersistentModifier(SAFE_FALL_DISTANCE_MODIFIER);
 				}
-				if (!stepHeightAttribute.hasModifier(STEP_HEIGHT_MODIFIER)) {
-					stepHeightAttribute.addPersistentModifier(STEP_HEIGHT_MODIFIER);
-				}
 			} else {
+				StepHeightEvent.ENTITIES.remove(this);
 				if (safeFallDistanceAttribute.hasModifier(SAFE_FALL_DISTANCE_MODIFIER)) {
 					safeFallDistanceAttribute.removeModifier(SAFE_FALL_DISTANCE_MODIFIER);
-				}
-				if (stepHeightAttribute.hasModifier(STEP_HEIGHT_MODIFIER)) {
-					stepHeightAttribute.removeModifier(STEP_HEIGHT_MODIFIER);
 				}
 			}
 		}

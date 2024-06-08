@@ -73,6 +73,7 @@ public class Enchancement implements ModInitializer {
 		ServerTickEvents.END_SERVER_TICK.register(new SyncEnchantingMaterialMapEvent.Tick());
 		ServerTickEvents.END_SERVER_TICK.register(server -> EnchancementUtil.tickPacketImmunities());
 		ServerLifecycleEvents.SERVER_STOPPED.register(server -> EnchancementUtil.PACKET_IMMUNITIES.clear());
+		ServerTickEvents.END_SERVER_TICK.register(new StepHeightEvent());
 		MultiplyMovementSpeedEvent.EVENT.register(new EnchantedChestplateAirMobilityEvent());
 		ServerTickEvents.END_SERVER_TICK.register(new AssimilationEvent());
 		MultiplyMovementSpeedEvent.EVENT.register(new AdrenalineEvent());

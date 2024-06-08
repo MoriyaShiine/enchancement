@@ -4,6 +4,7 @@
 package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.client.EnchancementClient;
+import moriyashiine.enchancement.common.event.StepHeightEvent;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.payload.SlideResetVelocityPayload;
@@ -38,7 +39,6 @@ public class SlideComponent implements CommonTickingComponent {
 	public static final int DEFAULT_JUMP_BOOST_RESET_TICKS = 5, DEFAULT_SLAM_COOLDOWN = 7;
 
 	private static final EntityAttributeModifier SAFE_FALL_DISTANCE_MODIFIER = new EntityAttributeModifier(UUID.fromString("72d836d9-33eb-4a26-a12c-3cba2346d296"), "Enchantment modifier", 6, EntityAttributeModifier.Operation.ADD_VALUE);
-	private static final EntityAttributeModifier STEP_HEIGHT_MODIFIER = new EntityAttributeModifier(UUID.fromString("f95ce6ed-ecf3-433b-a7f0-a9c6092b0cf7"), "Enchantment modifier", 1, EntityAttributeModifier.Operation.ADD_VALUE);
 
 	private final PlayerEntity obj;
 	private SlideVelocity velocity = SlideVelocity.ZERO;
@@ -133,21 +133,16 @@ public class SlideComponent implements CommonTickingComponent {
 			EnchancementUtil.PACKET_IMMUNITIES.put(obj, 20);
 		}
 		EntityAttributeInstance safeFallDistanceAttribute = obj.getAttributeInstance(EntityAttributes.GENERIC_SAFE_FALL_DISTANCE);
-		EntityAttributeInstance stepHeightAttribute = obj.getAttributeInstance(EntityAttributes.GENERIC_STEP_HEIGHT);
 		if (hasSlide && isSliding()) {
+			StepHeightEvent.ENTITIES.put(this, obj);
 			if (!safeFallDistanceAttribute.hasModifier(SAFE_FALL_DISTANCE_MODIFIER)) {
 				safeFallDistanceAttribute.addPersistentModifier(SAFE_FALL_DISTANCE_MODIFIER);
 			}
-			if (!stepHeightAttribute.hasModifier(STEP_HEIGHT_MODIFIER)) {
-				stepHeightAttribute.addPersistentModifier(STEP_HEIGHT_MODIFIER);
-			}
 			EnchancementUtil.PACKET_IMMUNITIES.put(obj, 20);
 		} else {
+			StepHeightEvent.ENTITIES.remove(this);
 			if (safeFallDistanceAttribute.hasModifier(SAFE_FALL_DISTANCE_MODIFIER)) {
 				safeFallDistanceAttribute.removeModifier(SAFE_FALL_DISTANCE_MODIFIER);
-			}
-			if (stepHeightAttribute.hasModifier(STEP_HEIGHT_MODIFIER)) {
-				stepHeightAttribute.removeModifier(STEP_HEIGHT_MODIFIER);
 			}
 		}
 	}
