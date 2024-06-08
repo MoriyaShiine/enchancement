@@ -12,7 +12,6 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.util.math.Vec3d;
 
 public record SlideSetVelocityPayload(float velocityX, float velocityZ) implements CustomPayload {
 	public static final CustomPayload.Id<SlideSetVelocityPayload> ID = CustomPayload.id(Enchancement.id("slide_set_velocity").toString());
@@ -23,8 +22,8 @@ public record SlideSetVelocityPayload(float velocityX, float velocityZ) implemen
 		return ID;
 	}
 
-	public static void send(Vec3d velocity) {
-		ClientPlayNetworking.send(new SlideSetVelocityPayload((float) velocity.getX(), (float) velocity.getZ()));
+	public static void send(SlideComponent.SlideVelocity velocity) {
+		ClientPlayNetworking.send(new SlideSetVelocityPayload(velocity.x(), velocity.z()));
 	}
 
 	public static class Receiver implements ServerPlayNetworking.PlayPayloadHandler<SlideSetVelocityPayload> {
@@ -32,7 +31,7 @@ public record SlideSetVelocityPayload(float velocityX, float velocityZ) implemen
 		public void receive(SlideSetVelocityPayload payload, ServerPlayNetworking.Context context) {
 			SlideComponent slideComponent = ModEntityComponents.SLIDE.get(context.player());
 			if (slideComponent.hasSlide() && slideComponent.canSlide()) {
-				slideComponent.setVelocity(new Vec3d(payload.velocityX(), 0, payload.velocityZ()));
+				slideComponent.setVelocity(new SlideComponent.SlideVelocity(payload.velocityX(), payload.velocityZ()));
 			}
 		}
 	}

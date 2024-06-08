@@ -11,8 +11,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.world.RaycastContext;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class AirMobilityComponent implements CommonTickingComponent {
@@ -50,7 +48,7 @@ public class AirMobilityComponent implements CommonTickingComponent {
 				if (resetBypassTicks == 0) {
 					ticksInAir = 0;
 				}
-			} else if (EnchancementUtil.isGroundedOrAirborne(obj) && obj.getWorld().raycast(new RaycastContext(obj.getPos(), obj.getPos().add(0, -1, 0), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.ANY, obj)).getType() == HitResult.Type.MISS) {
+			} else if (EnchancementUtil.isGroundedOrAirborne(obj) && EnchancementUtil.isSufficientlyHigh(obj, 1)) {
 				ticksInAir++;
 			}
 		} else {

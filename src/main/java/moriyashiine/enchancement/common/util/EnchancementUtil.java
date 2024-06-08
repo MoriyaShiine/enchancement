@@ -29,8 +29,10 @@ import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.RaycastContext;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -180,6 +182,10 @@ public class EnchancementUtil {
 			}
 		}
 		return false;
+	}
+
+	public static boolean isSufficientlyHigh(Entity entity, double distanceFromGround) {
+		return entity.getWorld().raycast(new RaycastContext(entity.getPos(), entity.getPos().add(0, -distanceFromGround, 0), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.ANY, entity)).getType() == HitResult.Type.MISS;
 	}
 
 	public static boolean isDefaultEnchantment(ItemStack stack, Enchantment enchantment) {

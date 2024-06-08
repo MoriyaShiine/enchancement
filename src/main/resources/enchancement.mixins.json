@@ -160,6 +160,7 @@
 	"perception.client.MinecraftClientMixin",
 	"scatter.client.ClientPlayerInteractionManagerMixin",
 	"scatter.client.ModelLoaderMixin",
+	"slide.client.CameraMixin",
 	"slide.client.GameRendererMixin",
 	"slide.client.KeyboardInputMixin",
 	"slide.client.PlayerEntityRendererMixin",

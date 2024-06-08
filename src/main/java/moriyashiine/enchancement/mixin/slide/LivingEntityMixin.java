@@ -35,7 +35,7 @@ public class LivingEntityMixin {
 	private Vec3d enchancement$slide(Vec3d value) {
 		SlideComponent slideComponent = ModEntityComponents.SLIDE.getNullable(this);
 		if (slideComponent != null && slideComponent.isSliding()) {
-			slideComponent.setVelocity(Vec3d.ZERO);
+			slideComponent.setVelocity(SlideComponent.SlideVelocity.ZERO);
 			return value.multiply(slideComponent.getJumpBonus());
 		}
 		return value;

@@ -11,7 +11,6 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.util.math.Vec3d;
 
 public record SlideResetVelocityPayload() implements CustomPayload {
 	public static final CustomPayload.Id<SlideResetVelocityPayload> ID = CustomPayload.id(Enchancement.id("slide_reset_velocity").toString());
@@ -31,7 +30,7 @@ public record SlideResetVelocityPayload() implements CustomPayload {
 		public void receive(SlideResetVelocityPayload payload, ServerPlayNetworking.Context context) {
 			SlideComponent slideComponent = ModEntityComponents.SLIDE.get(context.player());
 			if (slideComponent.hasSlide()) {
-				slideComponent.setVelocity(Vec3d.ZERO);
+				slideComponent.setVelocity(SlideComponent.SlideVelocity.ZERO);
 			}
 		}
 	}
