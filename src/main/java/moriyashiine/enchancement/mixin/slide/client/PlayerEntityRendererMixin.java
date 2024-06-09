@@ -22,7 +22,7 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
 
 	@Inject(method = "setModelPose", at = @At("TAIL"))
 	private void enchancement$slide(AbstractClientPlayerEntity player, CallbackInfo ci) {
-		if (ModEntityComponents.SLIDE.get(player).shouldSlam()) {
+		if (ModEntityComponents.SLIDE.get(player).isSlamming()) {
 			getModel().sneaking = true;
 		}
 	}

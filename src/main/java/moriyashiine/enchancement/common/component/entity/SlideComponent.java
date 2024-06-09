@@ -14,6 +14,7 @@ import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.util.accessor.EntityAccessor;
 import moriyashiine.enchancement.mixin.util.accessor.LivingEntityAccessor;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.enums.Thickness;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -26,6 +27,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
@@ -42,7 +44,7 @@ public class SlideComponent implements CommonTickingComponent {
 
 	private final PlayerEntity obj;
 	private SlideVelocity velocity = SlideVelocity.ZERO;
-	private boolean shouldSlam = false;
+	private boolean isSlamming = false;
 	private int jumpBoostResetTicks = DEFAULT_JUMP_BOOST_RESET_TICKS, slamCooldown = DEFAULT_SLAM_COOLDOWN, ticksLeftToJump = 0, ticksSliding = 0;
 
 	private int slideLevel = 0;
@@ -57,7 +59,7 @@ public class SlideComponent implements CommonTickingComponent {
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		velocity = new SlideVelocity(tag.getFloat("VelocityX"), tag.getFloat("VelocityZ"));
-		shouldSlam = tag.getBoolean("ShouldSlam");
+		isSlamming = tag.getBoolean("IsSlamming");
 		jumpBoostResetTicks = tag.getInt("JumpBoostResetTicks");
 		slamCooldown = tag.getInt("SlamCooldown");
 		ticksLeftToJump = tag.getInt("TicksLeftToJump");
@@ -68,7 +70,7 @@ public class SlideComponent implements CommonTickingComponent {
 	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		tag.putFloat("VelocityX", velocity.x());
 		tag.putFloat("VelocityZ", velocity.z());
-		tag.putBoolean("ShouldSlam", shouldSlam);
+		tag.putBoolean("IsSlamming", isSlamming);
 		tag.putInt("JumpBoostResetTicks", jumpBoostResetTicks);
 		tag.putInt("SlamCooldown", slamCooldown);
 		tag.putInt("TicksLeftToJump", ticksLeftToJump);
@@ -110,7 +112,7 @@ public class SlideComponent implements CommonTickingComponent {
 			}
 		} else {
 			velocity = SlideVelocity.ZERO;
-			shouldSlam = false;
+			isSlamming = false;
 			jumpBoostResetTicks = DEFAULT_JUMP_BOOST_RESET_TICKS;
 			slamCooldown = DEFAULT_SLAM_COOLDOWN;
 			ticksLeftToJump = 0;
@@ -121,7 +123,7 @@ public class SlideComponent implements CommonTickingComponent {
 	@Override
 	public void serverTick() {
 		tick();
-		if (hasSlide && shouldSlam) {
+		if (hasSlide && isSlamming) {
 			slamTick(() -> {
 				obj.getWorld().getOtherEntities(obj, new Box(obj.getBlockPos()).expand(5, 1, 5), foundEntity -> foundEntity.isAlive() && foundEntity.distanceTo(obj) < 5).forEach(entity -> {
 					if (entity instanceof LivingEntity living && EnchancementUtil.shouldHurt(obj, living)) {
@@ -129,6 +131,10 @@ public class SlideComponent implements CommonTickingComponent {
 					}
 				});
 				obj.getWorld().emitGameEvent(GameEvent.STEP, obj.getPos(), GameEvent.Emitter.of(obj.getSteppingBlockState()));
+				BlockState state = obj.getWorld().getBlockState(obj.getLandingPos());
+				if (state.contains(Properties.THICKNESS) && state.contains(Properties.VERTICAL_DIRECTION) && state.get(Properties.THICKNESS) == Thickness.TIP && state.get(Properties.VERTICAL_DIRECTION) == Direction.UP) {
+					obj.damage(obj.getDamageSources().stalagmite(), Integer.MAX_VALUE);
+				}
 			});
 			EnchancementUtil.PACKET_IMMUNITIES.put(obj, 20);
 		}
@@ -151,7 +157,7 @@ public class SlideComponent implements CommonTickingComponent {
 	public void clientTick() {
 		tick();
 		if (hasSlide && !obj.isSpectator() && obj == MinecraftClient.getInstance().player) {
-			if (shouldSlam) {
+			if (isSlamming) {
 				slamTick(() -> {
 					BlockPos.Mutable mutable = new BlockPos.Mutable();
 					for (int i = 0; i < 360; i += 15) {
@@ -177,7 +183,7 @@ public class SlideComponent implements CommonTickingComponent {
 			}
 			boolean pressingSlamKey = EnchancementClient.SLAM_KEYBINDING.isPressed();
 			if (pressingSlamKey && !wasPressingSlamKey && canSlam()) {
-				shouldSlam = true;
+				isSlamming = true;
 				slamCooldown = DEFAULT_SLAM_COOLDOWN;
 				SlideSlamPayload.send();
 			}
@@ -191,12 +197,12 @@ public class SlideComponent implements CommonTickingComponent {
 		this.velocity = velocity;
 	}
 
-	public void setShouldSlam(boolean shouldSlam) {
-		this.shouldSlam = shouldSlam;
+	public void setSlamming(boolean slamming) {
+		this.isSlamming = slamming;
 	}
 
-	public boolean shouldSlam() {
-		return shouldSlam;
+	public boolean isSlamming() {
+		return isSlamming;
 	}
 
 	public void setSlamCooldown(int slamCooldown) {
@@ -235,7 +241,7 @@ public class SlideComponent implements CommonTickingComponent {
 		obj.setVelocity(obj.getVelocity().getX() * 0.98, -3, obj.getVelocity().getZ() * 0.98);
 		obj.fallDistance = 0;
 		if (obj.isOnGround()) {
-			shouldSlam = false;
+			isSlamming = false;
 			ticksLeftToJump = 5;
 			obj.playSound(ModSoundEvents.ENTITY_GENERIC_IMPACT, 1, 1);
 			onLand.run();

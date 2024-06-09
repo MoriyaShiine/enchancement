@@ -30,7 +30,7 @@ public record SlideSlamPayload() implements CustomPayload {
 		public void receive(SlideSlamPayload payload, ServerPlayNetworking.Context context) {
 			SlideComponent slideComponent = ModEntityComponents.SLIDE.get(context.player());
 			if (slideComponent.hasSlide() && slideComponent.canSlam()) {
-				slideComponent.setShouldSlam(true);
+				slideComponent.setSlamming(true);
 				slideComponent.setSlamCooldown(SlideComponent.DEFAULT_SLAM_COOLDOWN);
 			}
 		}
