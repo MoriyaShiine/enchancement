@@ -1,4 +1,14 @@
 ------------------------------------------------------
+Version 1.20.6-r6
+------------------------------------------------------
+- slide no longer sets velocity and instead adds velocity; cobwebs, ice, and other blocks now affect sliding
+- slide now skips on water if you have buoy
+- slamming is now followed by sliding if holding slide key and not holding jump key
+- slamming on pointed dripstone now instantly kills you
+- increase sliding camera height slightly
+- fix step height modifiers stacking
+
+------------------------------------------------------
 Version 1.20.6-r5
 ------------------------------------------------------
 - merge https://github.com/MoriyaShiine/enchancement/pull/190
