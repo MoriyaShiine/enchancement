@@ -1,4 +1,9 @@
 ------------------------------------------------------
+Version 1.20.6-r7
+------------------------------------------------------
+- fix https://github.com/MoriyaShiine/enchancement/issues/180
+
+------------------------------------------------------
 Version 1.20.6-r6
 ------------------------------------------------------
 - slide no longer sets velocity and instead adds velocity; cobwebs, ice, and other blocks now affect sliding
