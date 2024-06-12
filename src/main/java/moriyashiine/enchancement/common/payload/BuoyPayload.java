@@ -30,7 +30,7 @@ public record BuoyPayload(boolean shouldBoost) implements CustomPayload {
 		@Override
 		public void receive(BuoyPayload payload, ServerPlayNetworking.Context context) {
 			BuoyComponent buoyComponent = ModEntityComponents.BUOY.get(context.player());
-			if (buoyComponent.hasBuoy() && buoyComponent.canUse()) {
+			if (buoyComponent.hasBuoy() && buoyComponent.canUse(true)) {
 				buoyComponent.setShouldBoost(payload.shouldBoost());
 			}
 		}
