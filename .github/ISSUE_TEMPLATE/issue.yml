@@ -1,10 +1,18 @@
 name: Issue
 description: File a bug report
 body:
+  - type: checkboxes
+    attributes:
+      label: Confirmations
+      options:
+        - label: I can verify that I am running the mod on the latest possible Minecraft version.
+          required: true
+        - label: I can verify that the issue I am reporting exists on the latest possible Mod version.
+          required: true
   - type: input
     attributes:
       label: Mod version (NOT Minecraft version)
-      description: Please note that unless this bug still exists on the latest avaiable Mod version and Minecraft version, it will not be fixed. Versions titled "latest,", "newest," or some other vague indiciator will be closed without comment.
+      description: Please do not put "latest,", "newest," or some other vague indiciator.
     validations:
       required: true
   - type: textarea
