@@ -22,8 +22,10 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.*;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.registry.tag.EnchantmentTags;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
@@ -35,16 +37,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EnchantingTableScreenHandler extends ScreenHandler {
 	public static final Map<RegistryEntry<Item>, Ingredient> ENCHANTING_MATERIAL_MAP = new HashMap<>();
 	public static final int PAGE_SIZE = 4;
 
-	public final List<Enchantment> validEnchantments = new ArrayList<>(), selectedEnchantments = new ArrayList<>();
+	public final List<RegistryEntry<Enchantment>> validEnchantments = new ArrayList<>(), selectedEnchantments = new ArrayList<>();
 	public int viewIndex = 0;
 
 	private ItemStack enchantingStack = ItemStack.EMPTY;
@@ -59,14 +58,16 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		}
 	};
 	private final ScreenHandlerContext context;
+	private final World world;
 
 	public EnchantingTableScreenHandler(int syncId, PlayerInventory playerInventory) {
-		this(syncId, playerInventory, ScreenHandlerContext.EMPTY);
+		this(syncId, playerInventory, ScreenHandlerContext.EMPTY, playerInventory.player.getWorld());
 	}
 
-	public EnchantingTableScreenHandler(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
+	public EnchantingTableScreenHandler(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context, World world) {
 		super(ModScreenHandlerTypes.ENCHANTING_TABLE, syncId);
 		this.context = context;
+		this.world = world;
 		bookshelfCount = calculateBookshelfCount();
 		if (playerInventory.player instanceof ServerPlayerEntity player) {
 			SyncEnchantingTableBookshelfCountPayload.send(player, bookshelfCount);
@@ -75,7 +76,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 			@Override
 			public boolean canInsert(ItemStack stack) {
 				if (stack.isEnchantable()) {
-					for (Enchantment enchantment : Registries.ENCHANTMENT) {
+					for (RegistryEntry<Enchantment> enchantment : getAllEnchantments()) {
 						if (isEnchantmentAllowed(enchantment, stack)) {
 							return true;
 						}
@@ -178,7 +179,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 			if (canEnchant(player, player.isCreative())) {
 				context.run((world, pos) -> {
 					ItemStack stack = slots.getFirst().getStack();
-					for (Enchantment enchantment : selectedEnchantments) {
+					for (RegistryEntry<Enchantment> enchantment : selectedEnchantments) {
 						stack.addEnchantment(enchantment, EnchancementUtil.alterLevel(stack, enchantment));
 					}
 					if (!player.isCreative() && cost > 0) {
@@ -194,6 +195,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 						}
 					}
 					inventory.markDirty();
+					onContentChanged(inventory);
 				});
 				return true;
 			}
@@ -204,7 +206,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 			updateViewIndex(false);
 			return true;
 		} else if (id > 2 && id < 8) {
-			Enchantment enchantment = getEnchantmentFromViewIndex(id - PAGE_SIZE);
+			RegistryEntry<Enchantment> enchantment = getEnchantmentFromViewIndex(id - PAGE_SIZE);
 			if (selectedEnchantments.contains(enchantment)) {
 				selectedEnchantments.remove(enchantment);
 			} else {
@@ -230,17 +232,18 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 				enchantingStack = stack;
 				repairIngredient = getRepairIngredient(stack);
 				cost = 0;
-				for (Enchantment enchantment : Registries.ENCHANTMENT) {
+				for (RegistryEntry<Enchantment> enchantment : getAllEnchantments()) {
 					if (isEnchantmentAllowed(enchantment, stack) && !EnchancementUtil.isDefaultEnchantment(stack, enchantment)) {
 						validEnchantments.add(enchantment);
 					}
 				}
+				validEnchantments.sort(Comparator.comparing(e -> e.getKey().get().getValue().getPath()));
 				super.onContentChanged(inventory);
 			}
 		}
 	}
 
-	public Enchantment getEnchantmentFromViewIndex(int index) {
+	public RegistryEntry<Enchantment> getEnchantmentFromViewIndex(int index) {
 		if (validEnchantments.size() <= PAGE_SIZE) {
 			return validEnchantments.get(index);
 		}
@@ -334,23 +337,24 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		this.cost = cost;
 	}
 
+	private List<RegistryEntry.Reference<Enchantment>> getAllEnchantments() {
+		return world.getRegistryManager().get(RegistryKeys.ENCHANTMENT).streamEntries().toList();
+	}
+
 	// clone of vanilla method because for some reason quilt always returns true
 	private static boolean canAccessPowerProvider(World world, BlockPos tablePos, BlockPos providerOffset) {
 		return world.getBlockState(tablePos.add(providerOffset)).isIn(BlockTags.ENCHANTMENT_POWER_PROVIDER) && world.getBlockState(tablePos.add(providerOffset.getX() / 2, providerOffset.getY(), providerOffset.getZ() / 2)).isIn(BlockTags.ENCHANTMENT_POWER_TRANSMITTER);
 	}
 
-	private static boolean isEnchantmentAllowed(Enchantment enchantment, ItemStack stack) {
-		RegistryEntry<Enchantment> entry = Registries.ENCHANTMENT.getEntry(enchantment);
-		if (entry.isIn(ModEnchantmentTags.NEVER_SELECTABLE)) {
+	private static boolean isEnchantmentAllowed(RegistryEntry<Enchantment> enchantment, ItemStack stack) {
+		if (enchantment.isIn(ModEnchantmentTags.NEVER_SELECTABLE)) {
 			return false;
 		}
-		if (stack.canBeEnchantedWith(enchantment, EnchantingContext.RANDOM_ENCHANTMENT)) {
-			if (entry.isIn(ModEnchantmentTags.ALWAYS_SELECTABLE)) {
+		if (stack.canBeEnchantedWith(enchantment, EnchantingContext.ACCEPTABLE)) {
+			if (enchantment.isIn(ModEnchantmentTags.ALWAYS_SELECTABLE)) {
 				return true;
 			}
-			if (enchantment.isAvailableForRandomSelection()) {
-				return ModConfig.allowTreasureEnchantmentsInEnchantingTable || !enchantment.isTreasure();
-			}
+			return ModConfig.allowTreasureEnchantmentsInEnchantingTable || !enchantment.isIn(EnchantmentTags.TREASURE);
 		}
 		return false;
 	}

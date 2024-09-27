@@ -1,0 +1,12 @@
+{
+  "values": [
+	{
+	  "id": "#minecraft:avoids_guardian_thorns",
+	  "required": false
+	},
+	{
+	  "id": "#minecraft:bypasses_invulnerability",
+	  "required": false
+	}
+  ]
+}

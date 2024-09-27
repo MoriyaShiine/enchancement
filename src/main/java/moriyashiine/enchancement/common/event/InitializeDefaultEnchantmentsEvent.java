@@ -8,13 +8,9 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeEntry;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.registry.Registries;
 import net.minecraft.resource.LifecycledResourceManager;
 import net.minecraft.server.MinecraftServer;
 
@@ -37,18 +33,13 @@ public class InitializeDefaultEnchantmentsEvent {
 		}
 	}
 
-	private static <C extends Inventory, T extends Recipe<C>> void populate(MinecraftServer server) {
+	private static void populate(MinecraftServer server) {
 		DEFAULT_ENCHANTMENTS.clear();
-		for (RecipeType<?> type : Registries.RECIPE_TYPE) {
-			try {
-				for (RecipeEntry<? extends Recipe<?>> recipe : server.getRecipeManager().listAllOfType((RecipeType<T>) type)) {
-					ItemStack stack = recipe.value().getResult(server.getRegistryManager());
-					ItemEnchantmentsComponent enchantments = EnchantmentHelper.getEnchantments(stack);
-					if (!enchantments.isEmpty()) {
-						DEFAULT_ENCHANTMENTS.put(stack.getItem(), enchantments);
-					}
-				}
-			} catch (Exception ignore) {
+		for (RecipeEntry<?> recipe : server.getRecipeManager().sortedValues()) {
+			ItemStack stack = recipe.value().getResult(server.getRegistryManager());
+			ItemEnchantmentsComponent enchantments = EnchantmentHelper.getEnchantments(stack);
+			if (!enchantments.isEmpty()) {
+				DEFAULT_ENCHANTMENTS.put(stack.getItem(), enchantments);
 			}
 		}
 	}

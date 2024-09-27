@@ -3,7 +3,7 @@
  */
 package moriyashiine.enchancement.client.sound;
 
-import moriyashiine.enchancement.common.init.ModDataComponentTypes;
+import moriyashiine.enchancement.common.init.ModComponentTypes;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import net.minecraft.client.sound.MovingSoundInstance;
 import net.minecraft.entity.Entity;
@@ -50,7 +50,7 @@ public class BrimstoneSoundInstance extends MovingSoundInstance {
 			if (living.isDead()) {
 				return false;
 			}
-			return uuid.equals(living.getActiveItem().get(ModDataComponentTypes.BRIMSTONE_UUID));
+			return uuid.equals(living.getActiveItem().get(ModComponentTypes.BRIMSTONE_UUID));
 		}
 		return false;
 	}

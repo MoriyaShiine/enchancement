@@ -20,6 +20,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -37,7 +38,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 	public static int bookshelfCount = 0;
 
 	private static final Identifier TEXTURE = Enchancement.id("textures/gui/container/enchanting_table.png");
-	private static final Identifier BOOK_TEXTURE = new Identifier("textures/entity/enchanting_table_book.png");
+	private static final Identifier BOOK_TEXTURE = Identifier.of("textures/entity/enchanting_table_book.png");
 
 	private static final Identifier UP_ARROW_TEXTURE = Enchancement.id("container/enchanting_table/up_arrow");
 	private static final Identifier UP_ARROW_HIGHLIGHTED_TEXTURE = Enchancement.id("container/enchanting_table/up_arrow_highlighted");
@@ -147,18 +148,18 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 			}
 			highlightedEnchantmentIndex = -1;
 			for (int i = 0; i < handler.validEnchantments.size() && i < PAGE_SIZE; i++) {
-				Enchantment enchantment;
+				RegistryEntry<Enchantment> enchantment;
 				if (handler.validEnchantments.size() <= PAGE_SIZE) {
 					enchantment = handler.validEnchantments.get(i);
 				} else {
 					enchantment = handler.getEnchantmentFromViewIndex(i);
 				}
-				MutableText enchantmentName = Text.translatable(enchantment.getTranslationKey());
+				MutableText enchantmentName = enchantment.value().description().copy();
 				ItemStack slotStack = handler.getSlot(0).getStack();
 				boolean isAllowed = EnchancementUtil.limitCheck(true, EnchancementUtil.getNonDefaultEnchantmentsSize(slotStack, slotStack.getEnchantments().getSize() + handler.selectedEnchantments.size()) < ModConfig.enchantmentLimit);
 				if (isAllowed) {
-					for (Enchantment foundEnchantment : handler.selectedEnchantments) {
-						if (!foundEnchantment.canCombine(enchantment)) {
+					for (RegistryEntry<Enchantment> foundEnchantment : handler.selectedEnchantments) {
+						if (foundEnchantment.value().exclusiveSet().contains(enchantment)) {
 							isAllowed = false;
 							break;
 						}
@@ -171,7 +172,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 						highlightedEnchantmentIndex = i;
 					}
 					if (infoTexts == null) {
-						infoTexts = List.of(Text.translatable(enchantment.getTranslationKey()).formatted(Formatting.GRAY), Text.translatable(enchantment.getTranslationKey() + ".desc").formatted(Formatting.DARK_GRAY));
+						infoTexts = List.of(enchantment.value().description().copy().formatted(Formatting.GRAY), Text.translatable(EnchancementUtil.getTranslationKey(enchantment) + ".desc").formatted(Formatting.DARK_GRAY));
 					}
 					context.drawTooltip(textRenderer, infoTexts, mouseX, mouseY);
 				} else {
@@ -194,7 +195,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 		context.drawTooltip(client.textRenderer, Text.literal(bookshelfCountText), (posX + 178) * 2, (posY + BOOKSHELF_Y + 20) * 2);
 		context.getMatrices().scale(1, 1, 1);
 		context.getMatrices().pop();
-		drawBook(context, (width - backgroundWidth) / 2, (height - backgroundHeight) / 2, client.getTickDelta());
+		drawBook(context, (width - backgroundWidth) / 2, (height - backgroundHeight) / 2, client.getRenderTickCounter().getTickDelta(true));
 	}
 
 	@Override
@@ -278,7 +279,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 		context.getMatrices().multiply(RotationAxis.POSITIVE_X.rotationDegrees(180));
 		bookModel.setPageAngles(0, MathHelper.clamp(MathHelper.fractionalPart(deltaPageangle + 0.25F) * 1.6F - 0.3F, 0, 1), MathHelper.clamp(MathHelper.fractionalPart(deltaPageangle + 0.75F) * 1.6F - 0.3F, 0, 1), deltaTurningSpeed);
 		VertexConsumer vertexConsumer = context.getVertexConsumers().getBuffer(bookModel.getLayer(BOOK_TEXTURE));
-		bookModel.render(context.getMatrices(), vertexConsumer, 0xF000F0, OverlayTexture.DEFAULT_UV, 1, 1, 1, 1);
+		bookModel.render(context.getMatrices(), vertexConsumer, 0xF000F0, OverlayTexture.DEFAULT_UV);
 		context.draw();
 		context.getMatrices().pop();
 		DiffuseLighting.enableGuiDepthLighting();

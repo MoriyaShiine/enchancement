@@ -1,0 +1,36 @@
+{
+  "anvil_cost": 2,
+  "description": {
+	"translate": "enchantment.enchancement.dash"
+  },
+  "effects": {
+	"enchancement:rotation_movement_burst": {
+	  "charge_cooldown": {
+		"type": "minecraft:add",
+		"value": 1.0
+	  },
+	  "strength": {
+		"type": "minecraft:add",
+		"value": {
+		  "type": "minecraft:linear",
+		  "base": 0.75,
+		  "per_level_above_first": 0.1
+		}
+	  }
+	}
+  },
+  "max_cost": {
+	"base": 20,
+	"per_level_above_first": 6
+  },
+  "max_level": 2,
+  "min_cost": {
+	"base": 5,
+	"per_level_above_first": 6
+  },
+  "slots": [
+	"legs"
+  ],
+  "supported_items": "#minecraft:enchantable/leg_armor",
+  "weight": 5
+}

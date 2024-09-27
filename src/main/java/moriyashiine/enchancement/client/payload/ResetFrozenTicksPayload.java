@@ -12,7 +12,7 @@ import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public record ResetFrozenTicksPayload() implements CustomPayload {
-	public static final CustomPayload.Id<ResetFrozenTicksPayload> ID = CustomPayload.id(Enchancement.id("reset_frozen_ticks").toString());
+	public static final CustomPayload.Id<ResetFrozenTicksPayload> ID = new Id<>(Enchancement.id("reset_frozen_ticks"));
 	public static final PacketCodec<PacketByteBuf, ResetFrozenTicksPayload> CODEC = PacketCodec.unit(new ResetFrozenTicksPayload());
 
 	@Override

@@ -12,8 +12,8 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(Enchantment.class)
 public class EnchantmentMixin {
-	@ModifyArg(method = "getName", at = @At(value = "INVOKE", target = "Lnet/minecraft/text/MutableText;formatted(Lnet/minecraft/util/Formatting;)Lnet/minecraft/text/MutableText;", ordinal = 1))
-	private Formatting enchancement$singleLevelMode(Formatting value) {
+	@ModifyArg(method = "getName", at = @At(value = "INVOKE", target = "Lnet/minecraft/text/Style;withColor(Lnet/minecraft/util/Formatting;)Lnet/minecraft/text/Style;", ordinal = 1))
+	private static Formatting enchancement$singleLevelMode(Formatting value) {
 		if (ModConfig.coloredEnchantmentNames) {
 			return Formatting.GREEN;
 		}

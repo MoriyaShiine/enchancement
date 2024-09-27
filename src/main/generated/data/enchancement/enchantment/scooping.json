@@ -1,0 +1,54 @@
+{
+  "anvil_cost": 2,
+  "description": {
+	"translate": "enchantment.enchancement.scooping"
+  },
+  "effects": {
+	"minecraft:damage": [
+	  {
+		"effect": {
+		  "type": "minecraft:add",
+		  "value": {
+			"type": "minecraft:linear",
+			"base": 0.5,
+			"per_level_above_first": 0.5
+		  }
+		}
+	  }
+	],
+	"minecraft:equipment_drops": [
+	  {
+		"effect": {
+		  "type": "minecraft:add",
+		  "value": {
+			"type": "minecraft:linear",
+			"base": 0.01,
+			"per_level_above_first": 0.01
+		  }
+		},
+		"enchanted": "attacker",
+		"requirements": {
+		  "condition": "minecraft:entity_properties",
+		  "entity": "attacker",
+		  "predicate": {
+			"type": "minecraft:player"
+		  }
+		}
+	  }
+	]
+  },
+  "max_cost": {
+	"base": 20,
+	"per_level_above_first": 6
+  },
+  "max_level": 4,
+  "min_cost": {
+	"base": 5,
+	"per_level_above_first": 6
+  },
+  "slots": [
+	"mainhand"
+  ],
+  "supported_items": "#minecraft:shovels",
+  "weight": 5
+}

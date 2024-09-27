@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.6-SNAPSHOT'
+    id 'fabric-loom' version '1.7-SNAPSHOT'
     id 'io.github.ladysnake.chenille' version '0.13.1'
 }
 
@@ -59,9 +59,7 @@ dependencies {
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
-//    modCompileOnly("com.github.apace100:apoli:${apoli_version}") {
-//        exclude(group: "*")
-//    }
+//    modCompileOnly "io.github.apace100:apoli:${apoli_version}"
     modLocalImplementation "maven.modrinth:sodium:${sodium_version}"
 //    modCompileOnly "maven.modrinth:spectrum:${spectrum_version}"
 

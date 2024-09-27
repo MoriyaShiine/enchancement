@@ -14,6 +14,8 @@ import java.util.Comparator;
 import java.util.List;
 
 public interface MultiplyMovementSpeedEvent {
+	int MAXIMUM_MOVEMENT_MULTIPLIER = 4;
+
 	Event<MultiplyMovementSpeedEvent> EVENT = EventFactory.createArrayBacked(MultiplyMovementSpeedEvent.class, listeners -> (currentMultiplier, world, living) -> {
 		List<MultiplyMovementSpeedEvent> events = new ArrayList<>(Arrays.asList(listeners));
 		events.sort(Comparator.comparingInt(MultiplyMovementSpeedEvent::getPriority));
@@ -27,5 +29,9 @@ public interface MultiplyMovementSpeedEvent {
 
 	default int getPriority() {
 		return 1000;
+	}
+
+	static float capMovementMultiplier(float multiplier) {
+		return Math.min(MAXIMUM_MOVEMENT_MULTIPLIER, multiplier);
 	}
 }

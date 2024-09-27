@@ -35,12 +35,12 @@ public class BeheadingReloadListener implements SimpleSynchronousResourceReloadL
 			for (Resource resource : resources) {
 				try (InputStream stream = resource.getInputStream()) {
 					JsonObject object = JsonParser.parseReader(new JsonReader(new InputStreamReader(stream))).getAsJsonObject();
-					Identifier entityId = new Identifier(identifier.getPath().substring(identifier.getPath().indexOf("/") + 1, identifier.getPath().length() - 5).replace("/", ":"));
+					Identifier entityId = Identifier.of(identifier.getPath().substring(identifier.getPath().indexOf("/") + 1, identifier.getPath().length() - 5).replace("/", ":"));
 					EntityType<?> entity_type = Registries.ENTITY_TYPE.get(entityId);
 					if (entity_type == Registries.ENTITY_TYPE.get(Registries.ENTITY_TYPE.getDefaultId()) && !entityId.equals(Registries.ENTITY_TYPE.getDefaultId())) {
 						continue;
 					}
-					Identifier dropId = new Identifier(JsonHelper.getString(object, "drop"));
+					Identifier dropId = Identifier.of(JsonHelper.getString(object, "drop"));
 					Item drop = Registries.ITEM.get(dropId);
 					if (drop == Registries.ITEM.get(Registries.ITEM.getDefaultId()) && !dropId.equals(Registries.ITEM.getDefaultId())) {
 						Enchancement.LOGGER.error("Unknown item '{}' in file '{}'", dropId, identifier);

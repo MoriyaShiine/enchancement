@@ -32,7 +32,7 @@ public class IceShardEntity extends PersistentProjectileEntity {
 	}
 
 	public IceShardEntity(World world, LivingEntity owner) {
-		super(ModEntityTypes.ICE_SHARD, owner, world, ItemStack.EMPTY);
+		super(ModEntityTypes.ICE_SHARD, owner, world, ItemStack.EMPTY, null);
 	}
 
 	@Override

@@ -16,7 +16,7 @@ public class EnchantedChestplateAirMobilityEvent implements MultiplyMovementSpee
 		if (ModConfig.enchantedChestplatesIncreaseAirMobility && !living.isOnGround()) {
 			AirMobilityComponent airMobilityComponent = ModEntityComponents.AIR_MOBILITY.getNullable(living);
 			if (airMobilityComponent != null && airMobilityComponent.getTicksInAir() > 10) {
-				return currentMultiplier * 2;
+				return currentMultiplier * 1.5F;
 			}
 		}
 		return currentMultiplier;

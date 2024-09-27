@@ -1,0 +1,122 @@
+{
+  "anvil_cost": 2,
+  "description": {
+	"translate": "enchantment.enchancement.wardenspine"
+  },
+  "effects": {
+	"minecraft:damage_protection": [
+	  {
+		"effect": {
+		  "type": "minecraft:add",
+		  "value": {
+			"type": "minecraft:linear",
+			"base": 8.0,
+			"per_level_above_first": 8.0
+		  }
+		},
+		"requirements": {
+		  "condition": "minecraft:all_of",
+		  "terms": [
+			{
+			  "condition": "minecraft:damage_source_properties",
+			  "predicate": {
+				"tags": [
+				  {
+					"expected": false,
+					"id": "enchancement:bypasses_wardenspine"
+				  }
+				]
+			  }
+			},
+			{
+			  "condition": "enchancement:attacker_behind"
+			}
+		  ]
+		}
+	  }
+	],
+	"minecraft:post_attack": [
+	  {
+		"affected": "attacker",
+		"effect": {
+		  "type": "minecraft:all_of",
+		  "effects": [
+			{
+			  "type": "minecraft:damage_entity",
+			  "damage_type": "minecraft:thorns",
+			  "max_damage": {
+				"type": "minecraft:linear",
+				"base": 2.0,
+				"per_level_above_first": 2.0
+			  },
+			  "min_damage": {
+				"type": "minecraft:linear",
+				"base": 2.0,
+				"per_level_above_first": 2.0
+			  }
+			},
+			{
+			  "type": "minecraft:apply_mob_effect",
+			  "max_amplifier": 0.0,
+			  "max_duration": {
+				"type": "minecraft:linear",
+				"base": 4.0,
+				"per_level_above_first": 4.0
+			  },
+			  "min_amplifier": 0.0,
+			  "min_duration": {
+				"type": "minecraft:linear",
+				"base": 4.0,
+				"per_level_above_first": 4.0
+			  },
+			  "to_apply": "minecraft:darkness"
+			},
+			{
+			  "type": "minecraft:play_sound",
+			  "pitch": 1.0,
+			  "sound": {
+				"sound_id": "enchancement:entity.generic.wardenspine"
+			  },
+			  "volume": 1.0
+			}
+		  ]
+		},
+		"enchanted": "victim",
+		"requirements": {
+		  "condition": "minecraft:all_of",
+		  "terms": [
+			{
+			  "condition": "minecraft:damage_source_properties",
+			  "predicate": {
+				"tags": [
+				  {
+					"expected": false,
+					"id": "enchancement:bypasses_wardenspine"
+				  }
+				]
+			  }
+			},
+			{
+			  "condition": "enchancement:attacker_behind"
+			}
+		  ]
+		}
+	  }
+	]
+  },
+  "exclusive_set": "#enchancement:exclusive_set/wardenspine",
+  "max_cost": {
+	"base": 20,
+	"per_level_above_first": 6
+  },
+  "max_level": 2,
+  "min_cost": {
+	"base": 5,
+	"per_level_above_first": 6
+  },
+  "slots": [
+	"chest"
+  ],
+  "supported_items": "#minecraft:enchantable/chest_armor",
+  "weight": 5
+}

@@ -25,7 +25,7 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 		super(world, profile);
 	}
 
-	@Inject(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingItem()Z", shift = At.Shift.BY, by = 5))
+	@Inject(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/tutorial/TutorialManager;onMovement(Lnet/minecraft/client/input/Input;)V"))
 	private void enchancement$fasterBows(CallbackInfo ci) {
 		if (ModConfig.fasterBows && getActiveItem().getItem() instanceof BowItem) {
 			input.movementForward *= 3;

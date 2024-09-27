@@ -1,0 +1,30 @@
+{
+  "anvil_cost": 2,
+  "description": {
+	"translate": "enchantment.enchancement.warp"
+  },
+  "effects": {
+	"enchancement:teleport_on_hit": [
+	  {
+		"effect": {
+		  "teleports_on_block_hit": true,
+		  "teleports_on_entity_hit": false
+		}
+	  }
+	]
+  },
+  "max_cost": {
+	"base": 20,
+	"per_level_above_first": 6
+  },
+  "max_level": 1,
+  "min_cost": {
+	"base": 5,
+	"per_level_above_first": 6
+  },
+  "slots": [
+	"mainhand"
+  ],
+  "supported_items": "#minecraft:enchantable/trident",
+  "weight": 5
+}

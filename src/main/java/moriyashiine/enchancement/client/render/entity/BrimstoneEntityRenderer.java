@@ -60,6 +60,6 @@ public class BrimstoneEntityRenderer extends ProjectileEntityRenderer<BrimstoneE
 	}
 
 	private static void drawVertex(MatrixStack.Entry entry, VertexConsumer vertices, int y, float z, float u, float v) {
-		vertices.vertex(entry.getPositionMatrix(), 0, y, z).color(255, 255, 255, 255).texture(u, v).overlay(OverlayTexture.DEFAULT_UV).light(LightmapTextureManager.MAX_LIGHT_COORDINATE).normal(entry, 0, 1, 0).next();
+		vertices.vertex(entry.getPositionMatrix(), 0, y, z).color(255, 255, 255, 255).texture(u, v).overlay(OverlayTexture.DEFAULT_UV).light(LightmapTextureManager.MAX_LIGHT_COORDINATE).normal(entry, 0, 1, 0);
 	}
 }

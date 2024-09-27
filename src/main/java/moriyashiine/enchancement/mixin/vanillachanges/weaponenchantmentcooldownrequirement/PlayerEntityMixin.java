@@ -8,7 +8,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -21,14 +20,6 @@ public class PlayerEntityMixin {
 	@Unique
 	private float attackCooldown = 0;
 
-	@WrapOperation(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getFireAspect(Lnet/minecraft/entity/LivingEntity;)I"))
-	private int enchancement$weaponEnchantmentCooldownRequirement(LivingEntity entity, Operation<Integer> original) {
-		if (attackCooldown < ModConfig.weaponEnchantmentCooldownRequirement) {
-			return 0;
-		}
-		return original.call(entity);
-	}
-
 	@WrapOperation(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getAttackCooldownProgress(F)F"))
 	private float enchancement$weaponEnchantmentCooldownRequirement(PlayerEntity instance, float baseTime, Operation<Float> original) {
 		float cooldown = original.call(instance, baseTime);
@@ -36,15 +27,15 @@ public class PlayerEntityMixin {
 		return cooldown;
 	}
 
-	@Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;onTargetDamaged(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/Entity;)V"))
-	private void enchancement$weaponEnchantmentCooldownRequirementOnTargetDamaged(Entity target, CallbackInfo ci) {
+	@Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;onTargetDamaged(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/damage/DamageSource;)V"))
+	private void enchancement$weaponEnchantmentCooldownRequirement(Entity target, CallbackInfo ci) {
 		if (attackCooldown < ModConfig.weaponEnchantmentCooldownRequirement) {
 			EnchancementUtil.shouldCancelTargetDamagedEnchantments = true;
 		}
 	}
 
 	@Inject(method = "attack", at = @At("TAIL"))
-	private void enchancement$weaponEnchantmentCooldownRequirement(Entity target, CallbackInfo ci) {
+	private void enchancement$weaponEnchantmentCooldownRequirementTail(Entity target, CallbackInfo ci) {
 		attackCooldown = 0;
 	}
 }

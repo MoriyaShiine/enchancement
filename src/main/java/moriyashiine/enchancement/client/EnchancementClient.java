@@ -14,11 +14,10 @@ import moriyashiine.enchancement.client.render.entity.mob.FrozenPlayerEntityRend
 import moriyashiine.enchancement.client.screen.EnchantingTableScreen;
 import moriyashiine.enchancement.client.util.EnchancementClientUtil;
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.init.ModDataComponentTypes;
-import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.enchantment.effect.AllowLoadingProjectileEffect;
+import moriyashiine.enchancement.common.init.ModComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
 import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
@@ -58,9 +57,9 @@ public class EnchancementClient implements ClientModInitializer {
 		EntityRendererRegistry.register(ModEntityTypes.AMETHYST_SHARD, AmethystShardEntityRenderer::new);
 		EntityRendererRegistry.register(ModEntityTypes.TORCH, TorchEntityRenderer::new);
 		EntityRendererRegistry.register(ModEntityTypes.GRAPPLE_FISHING_BOBBER, FishingBobberEntityRenderer::new);
-		ModelPredicateProviderRegistry.register(Items.CROSSBOW, Enchancement.id("brimstone"), (stack, world, entity, seed) -> CrossbowItem.isCharged(stack) && stack.contains(ModDataComponentTypes.BRIMSTONE_DAMAGE) ? stack.get(ModDataComponentTypes.BRIMSTONE_DAMAGE) / 12F : 0);
-		ModelPredicateProviderRegistry.register(Items.CROSSBOW, Enchancement.id("amethyst_shard"), (stack, world, entity, seed) -> stack.contains(DataComponentTypes.CHARGED_PROJECTILES) && stack.get(DataComponentTypes.CHARGED_PROJECTILES).contains(Items.AMETHYST_SHARD) || (CrossbowItem.isCharged(stack) && EnchancementUtil.hasEnchantment(ModEnchantments.SCATTER, stack) && !(entity instanceof PlayerEntity)) ? 1 : 0);
-		ModelPredicateProviderRegistry.register(Items.CROSSBOW, Enchancement.id("torch"), (stack, world, entity, seed) -> stack.contains(DataComponentTypes.CHARGED_PROJECTILES) && stack.get(DataComponentTypes.CHARGED_PROJECTILES).contains(Items.TORCH) || (CrossbowItem.isCharged(stack) && EnchancementUtil.hasEnchantment(ModEnchantments.TORCH, stack) && !(entity instanceof PlayerEntity)) ? 1 : 0);
+		ModelPredicateProviderRegistry.register(Items.CROSSBOW, Enchancement.id("brimstone"), (stack, world, entity, seed) -> CrossbowItem.isCharged(stack) && stack.contains(ModComponentTypes.BRIMSTONE_DAMAGE) ? stack.get(ModComponentTypes.BRIMSTONE_DAMAGE) / 12F : 0);
+		ModelPredicateProviderRegistry.register(Items.CROSSBOW, Enchancement.id("amethyst_shard"), (stack, world, entity, seed) -> stack.contains(DataComponentTypes.CHARGED_PROJECTILES) && stack.get(DataComponentTypes.CHARGED_PROJECTILES).contains(Items.AMETHYST_SHARD) || (CrossbowItem.isCharged(stack) && AllowLoadingProjectileEffect.getItems(stack).contains(Items.AMETHYST_SHARD) && !(entity instanceof PlayerEntity)) ? 1 : 0);
+		ModelPredicateProviderRegistry.register(Items.CROSSBOW, Enchancement.id("torch"), (stack, world, entity, seed) -> stack.contains(DataComponentTypes.CHARGED_PROJECTILES) && stack.get(DataComponentTypes.CHARGED_PROJECTILES).contains(Items.TORCH) || (CrossbowItem.isCharged(stack) && AllowLoadingProjectileEffect.getItems(stack).contains(Items.TORCH) && !(entity instanceof PlayerEntity)) ? 1 : 0);
 		HandledScreens.register(ModScreenHandlerTypes.ENCHANTING_TABLE, EnchantingTableScreen::new);
 		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(FrozenReloadListener.INSTANCE);
 		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(Enchancement.id("alternate_dash"), modContainer, ResourcePackActivationType.NORMAL));
@@ -76,13 +75,13 @@ public class EnchancementClient implements ClientModInitializer {
 		ItemTooltipCallback.EVENT.register(new EnchantedChestplatesIncreaseAirMobilityEvent());
 		ItemTooltipCallback.EVENT.register(new EnchantedToolsHaveEfficiencyEvent());
 		ItemTooltipCallback.EVENT.register(new EnchantedTridentsHaveLoyalty());
-		ItemTooltipCallback.EVENT.register(new AssimilationTooltipEvent());
-//		HudRenderCallback.EVENT.register(new StrafeRenderEvent());
-		ItemTooltipCallback.EVENT.register(new AdrenalineRenderEvent());
-		HudRenderCallback.EVENT.register(new DashRenderEvent());
-		HudRenderCallback.EVENT.register(new BouncyRenderEvent());
-		HudRenderCallback.EVENT.register(new GaleRenderEvent());
+		HudRenderCallback.EVENT.register(new AirJumpRenderEvent());
+		ItemTooltipCallback.EVENT.register(new AutomaticallyFeedsTooltipEvent());
 		HudRenderCallback.EVENT.register(new BrimstoneRenderEvent());
+		HudRenderCallback.EVENT.register(new ChargeJumpRenderEvent());
+		HudRenderCallback.EVENT.register(new DashRenderEvent());
+		ItemTooltipCallback.EVENT.register(new RageRenderEvent());
+//		HudRenderCallback.EVENT.register(new StrafeRenderEvent());
 	}
 
 	private void initPayloads() {
@@ -91,7 +90,7 @@ public class EnchancementClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(SyncEnchantingTableBookshelfCountPayload.ID, new SyncEnchantingTableBookshelfCountPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(SyncEnchantingTableCostPayload.ID, new SyncEnchantingTableCostPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(AddStrafeParticlesPayload.ID, new AddStrafeParticlesPayload.Receiver());
-		ClientPlayNetworking.registerGlobalReceiver(AddGaleParticlesPayload.ID, new AddGaleParticlesPayload.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(AddAirJumpParticlesPayload.ID, new AddAirJumpParticlesPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(PlayBrimstoneSoundPayload.ID, new PlayBrimstoneSoundPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(ResetFrozenTicksPayload.ID, new ResetFrozenTicksPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(SyncFrozenPlayerSlimStatusS2CPayload.ID, new SyncFrozenPlayerSlimStatusS2CPayload.Receiver());

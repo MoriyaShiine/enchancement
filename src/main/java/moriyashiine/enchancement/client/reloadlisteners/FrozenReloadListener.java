@@ -31,7 +31,7 @@ public class FrozenReloadListener implements IdentifiableResourceReloadListener,
 
 	private static final Identifier ID = Enchancement.id("frozen");
 
-	private static final Identifier PACKED_ICE_TEXTURE = new Identifier("textures/block/packed_ice.png");
+	private static final Identifier PACKED_ICE_TEXTURE = Identifier.of("textures/block/packed_ice.png");
 	private static final boolean DEBUG_TEXTURES = Boolean.getBoolean(Enchancement.MOD_ID + ".debug_frozen_textures");
 
 	private final Map<Identifier, Identifier> TEXTURE_CACHE = new HashMap<>();

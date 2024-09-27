@@ -17,7 +17,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 public record EnforceConfigMatchPayload(int encoding) implements CustomPayload {
-	public static final CustomPayload.Id<EnforceConfigMatchPayload> ID = CustomPayload.id(Enchancement.id("enforce_config_match").toString());
+	public static final CustomPayload.Id<EnforceConfigMatchPayload> ID = new Id<>(Enchancement.id("enforce_config_match"));
 	public static final PacketCodec<PacketByteBuf, EnforceConfigMatchPayload> CODEC = PacketCodec.tuple(PacketCodecs.VAR_INT, EnforceConfigMatchPayload::encoding, EnforceConfigMatchPayload::new);
 
 	private static final Text DISCONNECT_TEXT = Text.literal("The server you are attempting to connect to has ")

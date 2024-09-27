@@ -1,0 +1,43 @@
+{
+  "anvil_cost": 2,
+  "description": {
+	"translate": "enchantment.enchancement.frostbite"
+  },
+  "effects": {
+	"minecraft:post_attack": [
+	  {
+		"affected": "victim",
+		"effect": {
+		  "type": "enchancement:freeze",
+		  "duration": {
+			"type": "minecraft:linear",
+			"base": 6.0,
+			"per_level_above_first": 6.0
+		  }
+		},
+		"enchanted": "attacker",
+		"requirements": {
+		  "condition": "minecraft:damage_source_properties",
+		  "predicate": {
+			"is_direct": true
+		  }
+		}
+	  }
+	]
+  },
+  "exclusive_set": "#enchancement:exclusive_set/frostbite",
+  "max_cost": {
+	"base": 20,
+	"per_level_above_first": 6
+  },
+  "max_level": 2,
+  "min_cost": {
+	"base": 5,
+	"per_level_above_first": 6
+  },
+  "slots": [
+	"mainhand"
+  ],
+  "supported_items": "#minecraft:enchantable/sword",
+  "weight": 5
+}

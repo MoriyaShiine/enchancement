@@ -3,8 +3,8 @@
  */
 package moriyashiine.enchancement.common.entity.projectile;
 
+import moriyashiine.enchancement.common.init.ModComponentTypes;
 import moriyashiine.enchancement.common.init.ModDamageTypes;
-import moriyashiine.enchancement.common.init.ModDataComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
 import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
@@ -31,6 +31,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import java.util.HashSet;
@@ -41,7 +42,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 
 	static {
 		BRIMSTONE_STACK = new ItemStack(Items.LAVA_BUCKET);
-		BRIMSTONE_STACK.set(ModDataComponentTypes.BRIMSTONE_DAMAGE, Integer.MAX_VALUE);
+		BRIMSTONE_STACK.set(ModComponentTypes.BRIMSTONE_DAMAGE, Integer.MAX_VALUE);
 	}
 
 	public static final TrackedData<Float> DAMAGE = DataTracker.registerData(BrimstoneEntity.class, TrackedDataHandlerRegistry.FLOAT);
@@ -60,8 +61,8 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 		ignoreCameraFrustum = true;
 	}
 
-	public BrimstoneEntity(World world, LivingEntity owner) {
-		super(ModEntityTypes.BRIMSTONE, owner, world, ItemStack.EMPTY);
+	public BrimstoneEntity(World world, LivingEntity owner, @Nullable ItemStack shotFrom) {
+		super(ModEntityTypes.BRIMSTONE, owner, world, ItemStack.EMPTY, shotFrom);
 		setPosition(owner.getX(), owner.getEyeY() - 0.3, owner.getZ());
 		ignoreCameraFrustum = true;
 	}

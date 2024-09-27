@@ -4,9 +4,10 @@
 package moriyashiine.enchancement.common.entity.projectile;
 
 import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -24,21 +25,19 @@ import net.minecraft.world.World;
 public class GrappleFishingBobberEntity extends FishingBobberEntity {
 	public BlockPos grapplePos = null;
 	public BlockState grappleState = null;
+	private final float strength;
 
-	public GrappleFishingBobberEntity(EntityType<? extends GrappleFishingBobberEntity> type, World world, int luckOfTheSeaLevel, int lureLevel) {
-		super(type, world);
-		ignoreCameraFrustum = true;
-		this.luckOfTheSeaLevel = Math.max(0, luckOfTheSeaLevel);
-		this.lureLevel = Math.max(0, lureLevel);
+	public GrappleFishingBobberEntity(EntityType<? extends GrappleFishingBobberEntity> type, World world, int luckBonus, int waitTimeReductionTicks, float strength) {
+		super(type, world, luckBonus, waitTimeReductionTicks);
+		this.strength = strength;
 	}
 
 	public GrappleFishingBobberEntity(EntityType<? extends GrappleFishingBobberEntity> entityType, World world) {
-		this(entityType, world, 0, 0);
+		this(entityType, world, 0, 0, 0);
 	}
 
-	@SuppressWarnings("SuspiciousNameCombination")
-	public GrappleFishingBobberEntity(PlayerEntity thrower, World world, int luckOfTheSeaLevel, int lureLevel) {
-		this(ModEntityTypes.GRAPPLE_FISHING_BOBBER, world, luckOfTheSeaLevel, lureLevel);
+	public GrappleFishingBobberEntity(PlayerEntity thrower, World world, int luckBonus, int waitTimeReductionTicks, float strength) {
+		this(ModEntityTypes.GRAPPLE_FISHING_BOBBER, world, luckBonus, waitTimeReductionTicks, strength);
 		setOwner(thrower);
 		float throwerPitch = thrower.getPitch();
 		float throwerYaw = thrower.getYaw();
@@ -49,8 +48,8 @@ public class GrappleFishingBobberEntity extends FishingBobberEntity {
 		double length = velocity.length();
 		velocity = velocity.multiply(0.6 / length + random.nextTriangular(0.5, 0.0103365), 0.6 / length + random.nextTriangular(0.5, 0.0103365), 0.6 / length + random.nextTriangular(0.5, 0.0103365)).multiply(2);
 		setVelocity(velocity);
-		setYaw((float) (MathHelper.atan2(velocity.x, velocity.z) * 57.2957763671875));
-		setPitch((float) (MathHelper.atan2(velocity.y, velocity.horizontalLength()) * 57.2957763671875));
+		setYaw((float) Math.toDegrees(MathHelper.atan2(velocity.x, velocity.z)));
+		setPitch((float) Math.toDegrees(MathHelper.atan2(velocity.y, velocity.horizontalLength())));
 		prevYaw = getYaw();
 		prevPitch = getPitch();
 
@@ -88,9 +87,9 @@ public class GrappleFishingBobberEntity extends FishingBobberEntity {
 		Entity owner = getOwner();
 		if (owner != null) {
 			Vec3d vec3d = new Vec3d(owner.getX() - getX(), owner.getY() - getY(), owner.getZ() - getZ()).multiply(0.1);
-			entity.setVelocity(entity.getVelocity().add(vec3d).multiply(2));
-			if (!entity.isOnGround()) {
-				ModEntityComponents.BOUNCY.maybeGet(entity).ifPresent(bouncyComponent -> bouncyComponent.grappleTimer = 30);
+			entity.setVelocity(entity.getVelocity().add(vec3d).multiply(strength));
+			if (!entity.isOnGround() && EnchancementUtil.hasAnyEnchantmentsWith(entity, ModEnchantmentEffectComponentTypes.BOUNCE)) {
+				entity.fallDistance += 6;
 			}
 		}
 	}
@@ -105,11 +104,11 @@ public class GrappleFishingBobberEntity extends FishingBobberEntity {
 					if (getY() > player.getY()) {
 						player.setVelocity(player.getVelocity().getX(), 0, player.getVelocity().getZ());
 					}
-					player.setVelocity(player.getVelocity().add(new Vec3d(Math.min(10, getX() - player.getX()), Math.min(10, getY() - player.getY()), Math.min(10, getZ() - player.getZ())).multiply(0.2)));
+					player.setVelocity(player.getVelocity().add(new Vec3d(Math.min(strength * 4, getX() - player.getX()), Math.min(strength * 4, getY() - player.getY()), Math.min(strength * 4, getZ() - player.getZ())).multiply(0.2)));
 					player.velocityModified = true;
 				}
-				if (!player.isOnGround()) {
-					ModEntityComponents.BOUNCY.get(player).grappleTimer = 30;
+				if (!player.isOnGround() && EnchancementUtil.hasAnyEnchantmentsWith(player, ModEnchantmentEffectComponentTypes.BOUNCE)) {
+					player.fallDistance += 6;
 				}
 			}
 		}

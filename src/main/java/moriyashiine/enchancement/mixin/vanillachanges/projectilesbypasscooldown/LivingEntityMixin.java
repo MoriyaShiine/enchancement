@@ -5,7 +5,7 @@ package moriyashiine.enchancement.mixin.vanillachanges.projectilesbypasscooldown
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.component.entity.DelayComponent;
+import moriyashiine.enchancement.common.component.entity.DelayedLaunchComponent;
 import moriyashiine.enchancement.common.component.entity.ProjectileTimerComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
@@ -23,8 +23,8 @@ public class LivingEntityMixin {
 		if (source.getSource() instanceof ProjectileEntity projectile) {
 			boolean bypass = ModConfig.projectilesBypassCooldown;
 			if (!bypass) {
-				DelayComponent delayComponent = ModEntityComponents.DELAY.getNullable(projectile);
-				if (delayComponent != null && delayComponent.hasDelay()) {
+				DelayedLaunchComponent delayedLaunchComponent = ModEntityComponents.DELAYED_LAUNCH.getNullable(projectile);
+				if (delayedLaunchComponent != null && delayedLaunchComponent.isEnabled()) {
 					bypass = true;
 				}
 			}
@@ -44,7 +44,7 @@ public class LivingEntityMixin {
 		return value;
 	}
 
-	@ModifyExpressionValue(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/damage/DamageSource;isIn(Lnet/minecraft/registry/tag/TagKey;)Z", ordinal = 3))
+	@ModifyExpressionValue(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/damage/DamageSource;isIn(Lnet/minecraft/registry/tag/TagKey;)Z", ordinal = 4))
 	private boolean enchancement$projectilesBypassCooldown(boolean value, DamageSource source) {
 		if (ModConfig.projectilesBypassCooldown && source.getSource() instanceof ProjectileEntity) {
 			return true;

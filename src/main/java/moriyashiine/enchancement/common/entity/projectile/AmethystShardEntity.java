@@ -23,6 +23,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 public class AmethystShardEntity extends PersistentProjectileEntity {
 	private static final ParticleEffect PARTICLE = new ItemStackParticleEffect(ParticleTypes.ITEM, Items.AMETHYST_SHARD.getDefaultStack());
@@ -31,8 +32,8 @@ public class AmethystShardEntity extends PersistentProjectileEntity {
 		super(entityType, world);
 	}
 
-	public AmethystShardEntity(World world, LivingEntity owner) {
-		super(ModEntityTypes.AMETHYST_SHARD, owner, world, ItemStack.EMPTY);
+	public AmethystShardEntity(World world, LivingEntity owner, @Nullable ItemStack shotFrom) {
+		super(ModEntityTypes.AMETHYST_SHARD, owner, world, ItemStack.EMPTY, shotFrom);
 	}
 
 	@Override

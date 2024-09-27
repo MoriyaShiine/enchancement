@@ -4,53 +4,42 @@
 package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.client.EnchancementClient;
-import moriyashiine.enchancement.common.event.StepHeightEvent;
-import moriyashiine.enchancement.common.init.ModEnchantments;
-import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.payload.SlideResetVelocityPayload;
-import moriyashiine.enchancement.common.payload.SlideSetVelocityPayload;
-import moriyashiine.enchancement.common.payload.SlideSlamPayload;
+import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.payload.StartSlidingPayload;
+import moriyashiine.enchancement.common.payload.StopSlidingPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.util.accessor.EntityAccessor;
 import moriyashiine.enchancement.mixin.util.accessor.LivingEntityAccessor;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.enums.Thickness;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.GameOptions;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.particle.BlockStateParticleEffect;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.event.GameEvent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
-import java.util.UUID;
-
 public class SlideComponent implements CommonTickingComponent {
-	public static final int DEFAULT_JUMP_BOOST_RESET_TICKS = 5, DEFAULT_SLAM_COOLDOWN = 7;
+	private static final EntityAttributeModifier SAFE_FALL_DISTANCE_MODIFIER = new EntityAttributeModifier(Enchancement.id("slide_safe_fall_distance"), 6, EntityAttributeModifier.Operation.ADD_VALUE);
+	private static final EntityAttributeModifier STEP_HEIGHT_MODIFIER = new EntityAttributeModifier(Enchancement.id("slide_step_height"), 1, EntityAttributeModifier.Operation.ADD_VALUE);
 
-	private static final EntityAttributeModifier SAFE_FALL_DISTANCE_MODIFIER = new EntityAttributeModifier(UUID.fromString("72d836d9-33eb-4a26-a12c-3cba2346d296"), "Enchantment modifier", 6, EntityAttributeModifier.Operation.ADD_VALUE);
+	private static final int MAX_BOOST_TIME = 40;
 
 	private final PlayerEntity obj;
-	private SlideVelocity velocity = SlideVelocity.ZERO;
-	private boolean isSlamming = false;
-	private int jumpBoostResetTicks = DEFAULT_JUMP_BOOST_RESET_TICKS, slamCooldown = DEFAULT_SLAM_COOLDOWN, ticksLeftToJump = 0, ticksSliding = 0;
+	private SlideVelocity velocity = SlideVelocity.ZERO, adjustedVelocity = SlideVelocity.ZERO;
+	private float cachedYaw = 0;
+	private int ticksSliding = 0;
 
-	private int slideLevel = 0;
+	private float strength = 0;
 	private boolean hasSlide = false;
 
-	private boolean wasPressingSlamKey = false;
+	private int crawlTimer = 0;
 
 	public SlideComponent(PlayerEntity obj) {
 		this.obj = obj;
@@ -58,64 +47,56 @@ public class SlideComponent implements CommonTickingComponent {
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		velocity = new SlideVelocity(tag.getFloat("VelocityX"), tag.getFloat("VelocityZ"));
-		isSlamming = tag.getBoolean("IsSlamming");
-		jumpBoostResetTicks = tag.getInt("JumpBoostResetTicks");
-		slamCooldown = tag.getInt("SlamCooldown");
-		ticksLeftToJump = tag.getInt("TicksLeftToJump");
+		velocity = SlideVelocity.deserialize(tag.getCompound("Velocity"));
+		adjustedVelocity = SlideVelocity.deserialize(tag.getCompound("AdjustedVelocity"));
+		cachedYaw = tag.getFloat("CachedYaw");
 		ticksSliding = tag.getInt("TicksSliding");
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.putFloat("VelocityX", velocity.x());
-		tag.putFloat("VelocityZ", velocity.z());
-		tag.putBoolean("IsSlamming", isSlamming);
-		tag.putInt("JumpBoostResetTicks", jumpBoostResetTicks);
-		tag.putInt("SlamCooldown", slamCooldown);
-		tag.putInt("TicksLeftToJump", ticksLeftToJump);
+		tag.put("Velocity", velocity.serialize());
+		tag.put("AdjustedVelocity", adjustedVelocity.serialize());
+		tag.putFloat("CachedYaw", cachedYaw);
 		tag.putInt("TicksSliding", ticksSliding);
 	}
 
 	@Override
 	public void tick() {
-		boolean hasBuoy = EnchancementUtil.hasEnchantment(ModEnchantments.BUOY, obj);
-		slideLevel = EnchantmentHelper.getEquipmentLevel(ModEnchantments.SLIDE, obj);
-		hasSlide = slideLevel > 0;
+		boolean hasFluidWalking = EnchancementUtil.hasAnyEnchantmentsWith(obj, ModEnchantmentEffectComponentTypes.FLUID_WALKING);
+		strength = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.SLIDE, obj, 0);
+		hasSlide = strength > 0;
+		if (crawlTimer > 0) {
+			crawlTimer--;
+		}
 		if (hasSlide) {
-			if (obj.isSneaking() || (obj.isTouchingWater() && !hasBuoy)) {
-				velocity = SlideVelocity.ZERO;
-			}
-			if (slamCooldown > 0) {
-				slamCooldown--;
-			}
-			if (ticksLeftToJump > 0) {
-				ticksLeftToJump--;
+			if (obj.isSneaking() || (obj.isTouchingWater() && !hasFluidWalking)) {
+				stopSliding();
 			}
 			if (isSliding()) {
+				if (updateCrawl()) {
+					crawlTimer = 3;
+				}
 				((EntityAccessor) obj).enchancement$spawnSprintingParticles();
 				obj.getWorld().emitGameEvent(GameEvent.STEP, obj.getPos(), GameEvent.Emitter.of(obj.getSteppingBlockState()));
-				double dX = velocity.x(), dZ = velocity.z();
+				double dX = adjustedVelocity.x(), dZ = adjustedVelocity.z();
 				if (!obj.isOnGround()) {
 					dX *= 0.2;
 					dZ *= 0.2;
 				}
-				obj.addVelocity(dX, 0, dZ);
-				if (obj.isTouchingWater() && hasBuoy) {
-					obj.setVelocity(obj.getVelocity().getX(), slideLevel * 0.25, obj.getVelocity().getZ());
+				double multiplier = MathHelper.clamp(obj.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED) / obj.getAttributeBaseValue(EntityAttributes.GENERIC_MOVEMENT_SPEED), 0.625F, 1.6F);
+				obj.addVelocity(dX * multiplier, 0, dZ * multiplier);
+				if (obj.isTouchingWater() && hasFluidWalking) {
+					obj.setVelocity(obj.getVelocity().getX(), strength, obj.getVelocity().getZ());
 				}
-				if (ticksSliding < 60) {
+				if (ticksSliding < MAX_BOOST_TIME) {
 					ticksSliding++;
 				}
 			} else if (ticksSliding > 0) {
 				ticksSliding = Math.max(0, ticksSliding - 4);
 			}
 		} else {
-			velocity = SlideVelocity.ZERO;
-			isSlamming = false;
-			jumpBoostResetTicks = DEFAULT_JUMP_BOOST_RESET_TICKS;
-			slamCooldown = DEFAULT_SLAM_COOLDOWN;
-			ticksLeftToJump = 0;
+			stopSliding();
 			ticksSliding = 0;
 		}
 	}
@@ -123,32 +104,22 @@ public class SlideComponent implements CommonTickingComponent {
 	@Override
 	public void serverTick() {
 		tick();
-		if (hasSlide && isSlamming) {
-			slamTick(() -> {
-				obj.getWorld().getOtherEntities(obj, new Box(obj.getBlockPos()).expand(5, 1, 5), foundEntity -> foundEntity.isAlive() && foundEntity.distanceTo(obj) < 5).forEach(entity -> {
-					if (entity instanceof LivingEntity living && EnchancementUtil.shouldHurt(obj, living)) {
-						living.takeKnockback(1, obj.getX() - living.getX(), obj.getZ() - living.getZ());
-					}
-				});
-				obj.getWorld().emitGameEvent(GameEvent.STEP, obj.getPos(), GameEvent.Emitter.of(obj.getSteppingBlockState()));
-				BlockState state = obj.getWorld().getBlockState(obj.getLandingPos());
-				if (state.contains(Properties.THICKNESS) && state.contains(Properties.VERTICAL_DIRECTION) && state.get(Properties.THICKNESS) == Thickness.TIP && state.get(Properties.VERTICAL_DIRECTION) == Direction.UP) {
-					obj.damage(obj.getDamageSources().stalagmite(), Integer.MAX_VALUE);
-				}
-			});
-			EnchancementUtil.PACKET_IMMUNITIES.put(obj, 20);
-		}
 		EntityAttributeInstance safeFallDistanceAttribute = obj.getAttributeInstance(EntityAttributes.GENERIC_SAFE_FALL_DISTANCE);
+		EntityAttributeInstance stepHeightAttribute = obj.getAttributeInstance(EntityAttributes.GENERIC_STEP_HEIGHT);
 		if (hasSlide && isSliding()) {
-			StepHeightEvent.ENTITIES.put(this, obj);
-			if (!safeFallDistanceAttribute.hasModifier(SAFE_FALL_DISTANCE_MODIFIER)) {
+			if (!safeFallDistanceAttribute.hasModifier(SAFE_FALL_DISTANCE_MODIFIER.id())) {
 				safeFallDistanceAttribute.addPersistentModifier(SAFE_FALL_DISTANCE_MODIFIER);
+			}
+			if (!stepHeightAttribute.hasModifier(STEP_HEIGHT_MODIFIER.id())) {
+				stepHeightAttribute.addPersistentModifier(STEP_HEIGHT_MODIFIER);
 			}
 			EnchancementUtil.PACKET_IMMUNITIES.put(obj, 20);
 		} else {
-			StepHeightEvent.ENTITIES.remove(this);
-			if (safeFallDistanceAttribute.hasModifier(SAFE_FALL_DISTANCE_MODIFIER)) {
+			if (safeFallDistanceAttribute.hasModifier(SAFE_FALL_DISTANCE_MODIFIER.id())) {
 				safeFallDistanceAttribute.removeModifier(SAFE_FALL_DISTANCE_MODIFIER);
+			}
+			if (stepHeightAttribute.hasModifier(STEP_HEIGHT_MODIFIER.id())) {
+				stepHeightAttribute.removeModifier(STEP_HEIGHT_MODIFIER);
 			}
 		}
 	}
@@ -157,95 +128,77 @@ public class SlideComponent implements CommonTickingComponent {
 	public void clientTick() {
 		tick();
 		if (hasSlide && !obj.isSpectator() && obj == MinecraftClient.getInstance().player) {
-			if (isSlamming) {
-				slamTick(() -> {
-					BlockPos.Mutable mutable = new BlockPos.Mutable();
-					for (int i = 0; i < 360; i += 15) {
-						for (int j = 1; j < 5; j++) {
-							double x = obj.getX() + MathHelper.sin(i) * j / 2, z = obj.getZ() + MathHelper.cos(i) * j / 2;
-							BlockState state = obj.getWorld().getBlockState(mutable.set(x, Math.round(obj.getY() - 1), z));
-							if (!state.isReplaceable() && obj.getWorld().getBlockState(mutable.move(Direction.UP)).isReplaceable()) {
-								obj.getWorld().addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, state), x, mutable.getY(), z, 0, 0, 0);
-							}
-						}
-					}
-				});
-			}
 			GameOptions options = MinecraftClient.getInstance().options;
 			if (EnchancementClient.SLIDE_KEYBINDING.isPressed() && !obj.isSneaking() && !((LivingEntityAccessor) obj).enchancement$jumping()) {
 				if (canSlide()) {
-					velocity = getVelocityFromInput(options).rotateY((float) Math.toRadians(-(obj.getHeadYaw() + 90)));
-					SlideSetVelocityPayload.send(velocity);
+					velocity = getVelocityFromInput(options);
+					adjustedVelocity = velocity.rotateY((float) Math.toRadians(-(obj.getYaw() + 90)));
+					cachedYaw = obj.getYaw();
+					StartSlidingPayload.send(velocity, adjustedVelocity, cachedYaw);
 				}
 			} else if (velocity != SlideVelocity.ZERO) {
-				velocity = SlideVelocity.ZERO;
-				SlideResetVelocityPayload.send();
+				stopSliding();
+				StopSlidingPayload.send();
 			}
-			boolean pressingSlamKey = EnchancementClient.SLAM_KEYBINDING.isPressed();
-			if (pressingSlamKey && !wasPressingSlamKey && canSlam()) {
-				isSlamming = true;
-				slamCooldown = DEFAULT_SLAM_COOLDOWN;
-				SlideSlamPayload.send();
-			}
-			wasPressingSlamKey = pressingSlamKey;
-		} else {
-			wasPressingSlamKey = false;
 		}
 	}
 
-	public void setVelocity(SlideVelocity velocity) {
+	public SlideVelocity getVelocity() {
+		return velocity;
+	}
+
+	public float getCachedYaw() {
+		return cachedYaw;
+	}
+
+	public void startSliding(SlideVelocity velocity, SlideVelocity adjustedVelocity, float cachedYaw) {
 		this.velocity = velocity;
+		this.adjustedVelocity = adjustedVelocity;
+		this.cachedYaw = cachedYaw;
 	}
 
-	public void setSlamming(boolean slamming) {
-		this.isSlamming = slamming;
-	}
-
-	public boolean isSlamming() {
-		return isSlamming;
-	}
-
-	public void setSlamCooldown(int slamCooldown) {
-		this.slamCooldown = slamCooldown;
+	public void stopSliding() {
+		startSliding(SlideVelocity.ZERO, SlideVelocity.ZERO, 0);
 	}
 
 	public boolean isSliding() {
 		return !velocity.equals(SlideVelocity.ZERO);
 	}
 
-	public boolean shouldBoostJump() {
-		return ticksLeftToJump > 0;
-	}
-
 	public float getJumpBonus() {
-		return MathHelper.lerp(ticksSliding / 60F, 1F, 3F);
-	}
-
-	public int getSlideLevel() {
-		return slideLevel;
+		return MathHelper.lerp(ticksSliding / (float) MAX_BOOST_TIME, 1F, 3F);
 	}
 
 	public boolean hasSlide() {
 		return hasSlide;
 	}
 
+	public boolean shouldCrawl() {
+		return crawlTimer > 0;
+	}
+
 	public boolean canSlide() {
 		return !isSliding() && obj.isOnGround() && EnchancementUtil.isGroundedOrAirborne(obj);
 	}
 
-	public boolean canSlam() {
-		return slamCooldown == 0 && !isSliding() && !obj.isOnGround() && EnchancementUtil.isGroundedOrAirborne(obj);
+	private boolean hitsBlock(BlockPos pos) {
+		return !obj.getWorld().getBlockState(pos).getCollisionShape(obj.getWorld(), pos).isEmpty();
 	}
 
-	private void slamTick(Runnable onLand) {
-		obj.setVelocity(obj.getVelocity().getX() * 0.98, -3, obj.getVelocity().getZ() * 0.98);
-		obj.fallDistance = 0;
-		if (obj.isOnGround()) {
-			isSlamming = false;
-			ticksLeftToJump = 5;
-			obj.playSound(ModSoundEvents.ENTITY_GENERIC_IMPACT, 1, 1);
-			onLand.run();
+	private boolean updateCrawl() {
+		int height = MathHelper.floor(obj.getHeight());
+		if (height > 0) {
+			Vec3d frontPos = obj.getPos().add(0, height, 0).add(obj.getRotationVector(0, cachedYaw));
+			BlockPos.Mutable pos = new BlockPos.Mutable(frontPos.getX(), frontPos.getY(), frontPos.getZ());
+			int y = pos.getY();
+			boolean hitsBelow = hitsBlock(pos.setY(y - 1));
+			if (hitsBlock(pos.setY(y))) {
+				return !hitsBelow;
+			} else if (hitsBelow) {
+				return hitsBlock(pos.setY(y + 1)) || hitsBlock(obj.getBlockPos().up(height + 1));
+			}
 		}
+		return false;
 	}
 
 	private SlideVelocity getVelocityFromInput(GameOptions options) {
@@ -271,11 +224,22 @@ public class SlideComponent implements CommonTickingComponent {
 			sideways = true;
 			z = 1;
 		}
-		return new SlideVelocity(any ? x : 1, z).multiply(forward && sideways ? 0.75F : 1).multiply(slideLevel * 0.25F);
+		return new SlideVelocity(any ? x : 1, z).multiply(forward && sideways ? 2 / 3F : 1).multiply(strength);
 	}
 
 	public record SlideVelocity(float x, float z) {
 		public static final SlideVelocity ZERO = new SlideVelocity(0, 0);
+
+		private static SlideVelocity deserialize(NbtCompound nbt) {
+			return new SlideVelocity(nbt.getFloat("VelocityX"), nbt.getFloat("VelocityZ"));
+		}
+
+		private NbtCompound serialize() {
+			NbtCompound velocity = new NbtCompound();
+			velocity.putFloat("VelocityX", x());
+			velocity.putFloat("VelocityZ", z());
+			return velocity;
+		}
 
 		SlideVelocity multiply(float value) {
 			return new SlideVelocity(x() * value, z() * value);

@@ -1,0 +1,124 @@
+{
+  "values": [
+	{
+	  "id": "enchancement:assimilation",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:perception",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:veil",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:adrenaline",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:amphibious",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:strafe",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:wardenspine",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:dash",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:gale",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:slide",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:bouncy",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:buoy",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:berserk",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:frostbite",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:chaos",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:delay",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:phasing",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:brimstone",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:scatter",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:torch",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:leech",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:warp",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:extracting",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:molten",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:beheading",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:lumberjack",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:bury",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:scooping",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:disarm",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:grapple",
+	  "required": false
+	}
+  ]
+}

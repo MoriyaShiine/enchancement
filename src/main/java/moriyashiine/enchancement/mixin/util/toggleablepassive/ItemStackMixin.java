@@ -3,9 +3,9 @@
  */
 package moriyashiine.enchancement.mixin.util.toggleablepassive;
 
-import moriyashiine.enchancement.common.init.ModDataComponentTypes;
+import moriyashiine.enchancement.common.init.ModComponentTypes;
 import net.minecraft.component.ComponentHolder;
-import net.minecraft.component.DataComponentType;
+import net.minecraft.component.ComponentType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.StackReference;
 import net.minecraft.item.ItemStack;
@@ -23,12 +23,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class ItemStackMixin implements ComponentHolder {
 	@Shadow
 	@Nullable
-	public abstract <T> T set(DataComponentType<? super T> type, @Nullable T value);
+	public abstract <T> T set(ComponentType<? super T> type, @Nullable T value);
 
 	@Inject(method = "onClicked", at = @At("HEAD"), cancellable = true)
 	private void enchancement$toggleablePassive(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference, CallbackInfoReturnable<Boolean> cir) {
-		if (clickType == ClickType.RIGHT && contains(ModDataComponentTypes.TOGGLEABLE_PASSIVE)) {
-			set(ModDataComponentTypes.TOGGLEABLE_PASSIVE, !get(ModDataComponentTypes.TOGGLEABLE_PASSIVE));
+		if (clickType == ClickType.RIGHT && contains(ModComponentTypes.TOGGLEABLE_PASSIVE)) {
+			set(ModComponentTypes.TOGGLEABLE_PASSIVE, !get(ModComponentTypes.TOGGLEABLE_PASSIVE));
 			player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 1, 1);
 			cir.setReturnValue(true);
 		}

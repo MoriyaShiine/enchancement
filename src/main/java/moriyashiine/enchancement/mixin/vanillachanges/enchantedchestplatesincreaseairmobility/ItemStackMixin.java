@@ -4,14 +4,14 @@
 package moriyashiine.enchancement.mixin.vanillachanges.enchantedchestplatesincreaseairmobility;
 
 import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.init.ModDataComponentTypes;
+import moriyashiine.enchancement.common.init.ModComponentTypes;
 import moriyashiine.enchancement.common.tag.ModEnchantmentTags;
 import net.minecraft.component.ComponentHolder;
-import net.minecraft.component.DataComponentType;
+import net.minecraft.component.ComponentType;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
 import org.jetbrains.annotations.Nullable;
@@ -31,12 +31,12 @@ public abstract class ItemStackMixin implements ComponentHolder {
 
 	@Shadow
 	@Nullable
-	public abstract <T> T set(DataComponentType<? super T> type, @Nullable T value);
+	public abstract <T> T set(ComponentType<? super T> type, @Nullable T value);
 
 	@Inject(method = "addEnchantment", at = @At("TAIL"))
-	private void enchancement$enchantedChestplatesIncreaseAirMobility(Enchantment enchantment, int level, CallbackInfo ci) {
-		if (ModConfig.enchantedChestplatesIncreaseAirMobility && hasEnchantments() && isIn(ItemTags.CHEST_ARMOR_ENCHANTABLE) && !Registries.ENCHANTMENT.getEntry(enchantment).isIn(ModEnchantmentTags.DISALLOWS_TOGGLEABLE_PASSIVE) && !contains(ModDataComponentTypes.TOGGLEABLE_PASSIVE)) {
-			set(ModDataComponentTypes.TOGGLEABLE_PASSIVE, true);
+	private void enchancement$enchantedChestplatesIncreaseAirMobility(RegistryEntry<Enchantment> enchantment, int level, CallbackInfo ci) {
+		if (ModConfig.enchantedChestplatesIncreaseAirMobility && hasEnchantments() && isIn(ItemTags.CHEST_ARMOR_ENCHANTABLE) && !enchantment.isIn(ModEnchantmentTags.DISALLOWS_TOGGLEABLE_PASSIVE) && !contains(ModComponentTypes.TOGGLEABLE_PASSIVE)) {
+			set(ModComponentTypes.TOGGLEABLE_PASSIVE, true);
 		}
 	}
 }

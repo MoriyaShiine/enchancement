@@ -4,18 +4,17 @@
 package moriyashiine.enchancement.common.init;
 
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.component.world.LumberjackComponent;
+import moriyashiine.enchancement.common.component.world.FellTreesComponent;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
 import org.ladysnake.cca.api.v3.component.ComponentRegistry;
 import org.ladysnake.cca.api.v3.world.WorldComponentFactoryRegistry;
 import org.ladysnake.cca.api.v3.world.WorldComponentInitializer;
 
 public class ModWorldComponents implements WorldComponentInitializer {
-	//axe
-	public static final ComponentKey<LumberjackComponent> LUMBERJACK = ComponentRegistry.getOrCreate(Enchancement.id("lumberjack"), LumberjackComponent.class);
+	public static final ComponentKey<FellTreesComponent> FELL_TREES = ComponentRegistry.getOrCreate(Enchancement.id("fell_trees"), FellTreesComponent.class);
 
 	@Override
 	public void registerWorldComponentFactories(WorldComponentFactoryRegistry registry) {
-		registry.register(LUMBERJACK, LumberjackComponent::new);
+		registry.register(FELL_TREES, FellTreesComponent::new);
 	}
 }

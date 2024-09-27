@@ -19,7 +19,7 @@ import java.util.List;
 public class LightningEntityMixin {
 	@ModifyVariable(method = "tick", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/World;getOtherEntities(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/Box;Ljava/util/function/Predicate;)Ljava/util/List;"))
 	private List<Entity> enchancement$rebalanceChanneling(List<Entity> list) {
-		if (ModEntityComponents.CHANNELING.get(this).isSafe()) {
+		if (ModEntityComponents.SAFE_LIGHTNING.get(this).isSafe()) {
 			for (int i = list.size() - 1; i >= 0; i--) {
 				if (list.get(i) instanceof ItemEntity) {
 					list.remove(i);
@@ -31,7 +31,7 @@ public class LightningEntityMixin {
 
 	@Inject(method = "spawnFire", at = @At("HEAD"), cancellable = true)
 	private void enchancement$rebalanceChanneling(int spreadAttempts, CallbackInfo ci) {
-		if (ModEntityComponents.CHANNELING.get(this).isSafe()) {
+		if (ModEntityComponents.SAFE_LIGHTNING.get(this).isSafe()) {
 			ci.cancel();
 		}
 	}

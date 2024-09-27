@@ -1,7 +1,16 @@
 {
   "values": [
-	"minecraft:soul_speed",
-	"minecraft:swift_sneak",
-	"minecraft:wind_burst"
+	{
+	  "id": "minecraft:soul_speed",
+	  "required": false
+	},
+	{
+	  "id": "minecraft:swift_sneak",
+	  "required": false
+	},
+	{
+	  "id": "minecraft:wind_burst",
+	  "required": false
+	}
   ]
 }

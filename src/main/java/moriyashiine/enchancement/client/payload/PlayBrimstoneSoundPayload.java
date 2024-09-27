@@ -18,7 +18,7 @@ import net.minecraft.util.Uuids;
 import java.util.UUID;
 
 public record PlayBrimstoneSoundPayload(int entityId, UUID uuid) implements CustomPayload {
-	public static final CustomPayload.Id<PlayBrimstoneSoundPayload> ID = CustomPayload.id(Enchancement.id("play_brimstone_sound").toString());
+	public static final CustomPayload.Id<PlayBrimstoneSoundPayload> ID = new Id<>(Enchancement.id("play_brimstone_sound"));
 	public static final PacketCodec<PacketByteBuf, PlayBrimstoneSoundPayload> CODEC = PacketCodec.tuple(PacketCodecs.VAR_INT, PlayBrimstoneSoundPayload::entityId, Uuids.PACKET_CODEC, PlayBrimstoneSoundPayload::uuid, PlayBrimstoneSoundPayload::new);
 
 	@Override

@@ -4,11 +4,11 @@
 package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.common.init.ModDamageTypes;
-import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.enchancement.common.tag.ModEnchantmentTags;
 import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.LivingEntity;
@@ -152,6 +152,6 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 	}
 
 	public static boolean isSourceFrostbiteWeapon(DamageSource source) {
-		return source.isOf(ModDamageTypes.ICE_SHARD) || (source.getSource() instanceof LivingEntity living && EnchancementUtil.hasEnchantment(ModEnchantments.FROSTBITE, living));
+		return source.isOf(ModDamageTypes.ICE_SHARD) || (source.getSource() instanceof LivingEntity living && EnchantmentHelper.hasAnyEnchantmentsIn(living.getMainHandStack(), ModEnchantmentTags.FREEZES_ENTITIES));
 	}
 }

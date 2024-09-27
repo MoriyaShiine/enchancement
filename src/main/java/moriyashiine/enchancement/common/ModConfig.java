@@ -16,6 +16,8 @@ public class ModConfig extends MidnightConfig {
 			"minecraft:bane_of_arthropods",
 			"minecraft:binding_curse",
 			"minecraft:blast_protection",
+			"minecraft:breach",
+			"minecraft:density",
 			"minecraft:depth_strider",
 			"minecraft:efficiency",
 			"minecraft:feather_falling",
@@ -45,9 +47,7 @@ public class ModConfig extends MidnightConfig {
 			"minecraft:swift_sneak",
 			"minecraft:thorns",
 			"minecraft:unbreaking",
-			"minecraft:vanishing_curse",
-			"spectrum:indestructible",
-			"spectrum:autosmelt");
+			"minecraft:vanishing_curse");
 	@Entry
 	public static boolean invertedList = false;
 
@@ -108,11 +108,11 @@ public class ModConfig extends MidnightConfig {
 	public static float weaponEnchantmentCooldownRequirement = 0.7F;
 
 	@Entry(min = 1)
-	public static int maxExtractingBlocks = 64;
+	public static int maxFellTreesBlocks = 1024;
 	@Entry(min = 1)
-	public static int maxLumberjackBlocks = 1024;
+	public static int maxFellTreesHorizontalLength = 7;
 	@Entry(min = 1)
-	public static int maxLumberjackHorizontalLength = 7;
+	public static int maxMineOreVeinsBlocks = 64;
 	@Entry(min = 0)
 	public static int coyoteBiteTicks = 3;
 
@@ -145,7 +145,7 @@ public class ModConfig extends MidnightConfig {
 				randomMobEnchantments + rebalanceArmor + rebalanceChanneling + rebalanceFireAspect + rebalanceGoldenApples + rebalancePotions +
 				tridentsReturnFromVoid +
 				weaponEnchantmentCooldownRequirement +
-				maxExtractingBlocks + maxLumberjackBlocks + maxLumberjackHorizontalLength +
+				maxFellTreesBlocks + maxFellTreesHorizontalLength + maxMineOreVeinsBlocks +
 				coyoteBiteTicks;
 		return encoding.hashCode();
 	}

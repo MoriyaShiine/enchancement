@@ -21,7 +21,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import java.util.Map;
 
 public record SyncEnchantingMaterialMapPayload(Map<RegistryEntry<Item>, Ingredient> map) implements CustomPayload {
-	public static final CustomPayload.Id<SyncEnchantingMaterialMapPayload> ID = CustomPayload.id(Enchancement.id("sync_enchanting_material_map").toString());
+	public static final CustomPayload.Id<SyncEnchantingMaterialMapPayload> ID = new Id<>(Enchancement.id("sync_enchanting_material_map"));
 	public static final PacketCodec<RegistryByteBuf, SyncEnchantingMaterialMapPayload> CODEC = PacketCodec.tuple(PacketCodecs.map(Object2ObjectOpenHashMap::new, PacketCodecs.registryEntry(RegistryKeys.ITEM), Ingredient.PACKET_CODEC), SyncEnchantingMaterialMapPayload::map, SyncEnchantingMaterialMapPayload::new);
 
 	@Override

@@ -38,7 +38,7 @@ public class EnchantingMaterialReloadListener implements SimpleSynchronousResour
 			for (Resource resource : resources) {
 				try (InputStream stream = resource.getInputStream()) {
 					JsonObject object = JsonParser.parseReader(new JsonReader(new InputStreamReader(stream))).getAsJsonObject();
-					Identifier itemId = new Identifier(identifier.getPath().substring(identifier.getPath().indexOf("/") + 1, identifier.getPath().length() - 5).replace("/", ":"));
+					Identifier itemId = Identifier.of(identifier.getPath().substring(identifier.getPath().indexOf("/") + 1, identifier.getPath().length() - 5).replace("/", ":"));
 					Item item = Registries.ITEM.get(itemId);
 					if (item == Registries.ITEM.get(Registries.ITEM.getDefaultId()) && !itemId.equals(Registries.ITEM.getDefaultId())) {
 						continue;

@@ -1,9 +1,24 @@
 {
   "values": [
-	"enchancement:strafe",
-	"enchancement:dash",
-	"enchancement:slide",
-	"enchancement:buoy",
-	"enchancement:gale"
+	{
+	  "id": "enchancement:strafe",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:dash",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:gale",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:slide",
+	  "required": false
+	},
+	{
+	  "id": "enchancement:buoy",
+	  "required": false
+	}
   ]
 }

@@ -1,0 +1,36 @@
+{
+  "anvil_cost": 2,
+  "description": {
+	"translate": "enchantment.enchancement.strafe"
+  },
+  "effects": {
+	"enchancement:direction_movement_burst": {
+	  "charge_cooldown": {
+		"type": "minecraft:add",
+		"value": 1.0
+	  },
+	  "strength": {
+		"type": "minecraft:add",
+		"value": {
+		  "type": "minecraft:linear",
+		  "base": 0.35,
+		  "per_level_above_first": 0.15
+		}
+	  }
+	}
+  },
+  "max_cost": {
+	"base": 20,
+	"per_level_above_first": 6
+  },
+  "max_level": 2,
+  "min_cost": {
+	"base": 5,
+	"per_level_above_first": 6
+  },
+  "slots": [
+	"chest"
+  ],
+  "supported_items": "#minecraft:enchantable/chest_armor",
+  "weight": 5
+}

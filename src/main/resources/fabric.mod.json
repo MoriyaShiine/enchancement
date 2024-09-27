@@ -43,36 +43,37 @@
   "accessWidener": "enchancement.accesswidener",
   "depends": {
 	"fabricloader": "*",
-	"minecraft": "~1.20.6",
+	"minecraft": "~1.21",
 	"java": ">=21",
-	"fabric-api": "*",
-	"tooltipfix": "*"
+	"fabric-api": "*"
   },
   "custom": {
 	"cardinal-components": [
-	  "enchancement:extended_water",
+	  "enchancement:fell_trees",
 	  "enchancement:air_mobility",
 	  "enchancement:projectile_timer",
-	  "enchancement:strafe",
-	  "enchancement:dash",
+	  "enchancement:safe_lightning",
+	  "enchancement:air_jump",
+	  "enchancement:boost_in_fluid",
+	  "enchancement:bury_entity",
+	  "enchancement:charge_jump",
+	  "enchancement:conditional_attributes",
+	  "enchancement:direction_movement_burst",
+	  "enchancement:extended_water_time",
+	  "enchancement:rotation_movement_burst",
+	  "enchancement:slam",
 	  "enchancement:slide",
-	  "enchancement:bouncy",
-	  "enchancement:buoy",
-	  "enchancement:gale",
-	  "enchancement:frozen",
-	  "enchancement:frozen_squid",
-	  "enchancement:chaos_arrow",
-	  "enchancement:chaos_spectral_arrow",
-	  "enchancement:delay",
-	  "enchancement:phasing",
-	  "enchancement:channeling",
-	  "enchancement:leech",
-	  "enchancement:warp",
-	  "enchancement:bury",
-	  "enchancement:disarm",
+	  "enchancement:apply_random_status_effect",
+	  "enchancement:apply_random_status_effect_spectral",
+	  "enchancement:delayed_launch",
+	  "enchancement:disarming_fishing_bobber",
 	  "enchancement:disarmed_player",
 	  "enchancement:disarmed_witch",
-	  "enchancement:lumberjack"
+	  "enchancement:frozen",
+	  "enchancement:frozen_squid",
+	  "enchancement:leeching_trident",
+	  "enchancement:phase_through_blocks_and_float",
+	  "enchancement:teleport_on_hit"
 	]
   }
 }

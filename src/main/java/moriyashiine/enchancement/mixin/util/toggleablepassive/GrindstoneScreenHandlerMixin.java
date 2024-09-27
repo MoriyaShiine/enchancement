@@ -3,7 +3,7 @@
  */
 package moriyashiine.enchancement.mixin.util.toggleablepassive;
 
-import moriyashiine.enchancement.common.init.ModDataComponentTypes;
+import moriyashiine.enchancement.common.init.ModComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.GrindstoneScreenHandler;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,8 +15,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class GrindstoneScreenHandlerMixin {
 	@Inject(method = "grind", at = @At("TAIL"))
 	private void enchancement$toggleablePassive(ItemStack item, CallbackInfoReturnable<ItemStack> cir) {
-		if (!item.hasEnchantments() && item.contains(ModDataComponentTypes.TOGGLEABLE_PASSIVE)) {
-			item.remove(ModDataComponentTypes.TOGGLEABLE_PASSIVE);
+		if (!item.hasEnchantments() && item.contains(ModComponentTypes.TOGGLEABLE_PASSIVE)) {
+			item.remove(ModComponentTypes.TOGGLEABLE_PASSIVE);
 		}
 	}
 }
