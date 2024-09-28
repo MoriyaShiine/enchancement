@@ -92,6 +92,7 @@
 	"vanillachanges.disabledisallowedenchantments.SimpleRegistryMixin",
 	"vanillachanges.disabledisallowedenchantments.SingleEnchantmentProviderMixin",
 	"vanillachanges.disabledisallowedenchantments.TagGroupLoaderMixin",
+	"vanillachanges.disabledurability.AnvilScreenHandlerMixin",
 	"vanillachanges.disabledurability.ItemStackMixin",
 	"vanillachanges.disabledurability.SetDamageLootFunctionMixin",
 	"vanillachanges.disablevelocitychecks.ServerPlayNetworkHandlerMixin",
