@@ -11,7 +11,6 @@ import moriyashiine.enchancement.common.payload.*;
 import moriyashiine.enchancement.common.reloadlisteners.BeheadingReloadListener;
 import moriyashiine.enchancement.common.reloadlisteners.EnchantingMaterialReloadListener;
 import moriyashiine.enchancement.common.reloadlisteners.ExtractingBaseBlockReloadListener;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
@@ -73,8 +72,6 @@ public class Enchancement implements ModInitializer {
 		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register(new InitializeDefaultEnchantmentsEvent.ReloadResources());
 		ServerPlayConnectionEvents.JOIN.register(new SyncEnchantingMaterialMapEvent.Join());
 		ServerTickEvents.END_SERVER_TICK.register(new SyncEnchantingMaterialMapEvent.Tick());
-		ServerTickEvents.END_SERVER_TICK.register(server -> EnchancementUtil.tickPacketImmunities());
-		ServerLifecycleEvents.SERVER_STOPPED.register(server -> EnchancementUtil.PACKET_IMMUNITIES.clear());
 		MultiplyMovementSpeedEvent.EVENT.register(new EnchantedChestplateAirMobilityEvent());
 		ServerEntityEvents.EQUIPMENT_CHANGE.register(new AirJumpEvent());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new BuryEntityEvent.Unbury());

@@ -48,7 +48,6 @@ public class EnchancementUtil {
 	public static Registry<Enchantment> ENCHANTMENT_REGISTRY = null;
 
 	public static final Object2IntMap<Enchantment> ORIGINAL_MAX_LEVELS = new Object2IntOpenHashMap<>();
-	public static final Object2IntMap<PlayerEntity> PACKET_IMMUNITIES = new Object2IntOpenHashMap<>();
 
 	public static boolean shouldCancelTargetDamagedEnchantments = false;
 
@@ -272,10 +271,6 @@ public class EnchancementUtil {
 
 	public static int alterLevel(ItemStack stack, RegistryEntry<Enchantment> enchantment) {
 		return getModifiedMaxLevel(stack, getOriginalMaxLevel(enchantment));
-	}
-
-	public static void tickPacketImmunities() {
-		PACKET_IMMUNITIES.object2IntEntrySet().removeIf(entry -> entry.setValue(entry.getIntValue() - 1) <= 0);
 	}
 
 	public static boolean hasAnyEnchantmentsIn(Entity entity, TagKey<Enchantment> tag) {

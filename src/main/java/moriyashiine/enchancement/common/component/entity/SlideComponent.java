@@ -113,7 +113,6 @@ public class SlideComponent implements CommonTickingComponent {
 			if (!stepHeightAttribute.hasModifier(STEP_HEIGHT_MODIFIER.id())) {
 				stepHeightAttribute.addPersistentModifier(STEP_HEIGHT_MODIFIER);
 			}
-			EnchancementUtil.PACKET_IMMUNITIES.put(obj, 20);
 		} else {
 			if (safeFallDistanceAttribute.hasModifier(SAFE_FALL_DISTANCE_MODIFIER.id())) {
 				safeFallDistanceAttribute.removeModifier(SAFE_FALL_DISTANCE_MODIFIER);

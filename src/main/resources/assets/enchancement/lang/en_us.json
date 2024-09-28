@@ -158,6 +158,7 @@
   "enchancement.midnightconfig.channelingWorksWhenNotThundering": "Channeling Works When Not Thundering",
   "enchancement.midnightconfig.crossbowsPullFromInventory": "Crossbows Pull From Inventory",
   "enchancement.midnightconfig.disableDurability": "Disable Durability",
+  "enchancement.midnightconfig.disableVelocityChecks": "Disable Velocity Checks",
   "enchancement.midnightconfig.drownedUseHeldTrident": "Drowned Use Held Trident",
   "enchancement.midnightconfig.enchantedChestplatesIncreaseAirMobility": "Enchanted Chestplates Increase Air Mobility",
   "enchancement.midnightconfig.enchantedToolsHaveEfficiency": "Enchanted Tools Have Efficiency",

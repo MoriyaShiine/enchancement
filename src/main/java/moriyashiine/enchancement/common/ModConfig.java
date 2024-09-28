@@ -70,6 +70,8 @@ public class ModConfig extends MidnightConfig {
 	@Entry
 	public static boolean disableDurability = true;
 	@Entry
+	public static boolean disableVelocityChecks = true;
+	@Entry
 	public static boolean drownedUseHeldTrident = true;
 	@Entry
 	public static boolean enchantedChestplatesIncreaseAirMobility = true;
@@ -138,7 +140,7 @@ public class ModConfig extends MidnightConfig {
 				singleLevelMode + enchantmentLimit +
 				accurateFishingBobbers + arrowsDropOnHit +
 				crossbowsPullFromInventory +
-				disableDurability + drownedUseHeldTrident +
+				disableDurability + disableVelocityChecks + drownedUseHeldTrident +
 				enchantedChestplatesIncreaseAirMobility + enchantedToolsHaveEfficiency + enchantedTridentsHaveLoyalty +
 				fasterBows + freeEnchantedBookMerging +
 				luckOfTheSeaHasLure +

@@ -6,7 +6,6 @@ package moriyashiine.enchancement.common.payload;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.component.entity.RotationMovementBurstComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
@@ -31,7 +30,6 @@ public record RotationMovementBurstPayload() implements CustomPayload {
 		public void receive(RotationMovementBurstPayload payload, ServerPlayNetworking.Context context) {
 			RotationMovementBurstComponent rotationMovementBurstComponent = ModEntityComponents.ROTATION_MOVEMENT_BURST.get(context.player());
 			if (rotationMovementBurstComponent.hasRotationMovementBurst() && rotationMovementBurstComponent.canUse()) {
-				EnchancementUtil.PACKET_IMMUNITIES.put(context.player(), 20);
 				rotationMovementBurstComponent.use();
 			}
 		}
