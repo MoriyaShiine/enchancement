@@ -123,6 +123,7 @@
 	"vanillachanges.rebalancegoldenapples.ItemMixin",
 	"vanillachanges.rebalancepotions.InstantHealthOrDamageStatusEffectMixin",
 	"vanillachanges.rebalancepotions.StatusEffectMixin",
+	"vanillachanges.rebalancetools.ToolMaterialsMixin",
 	"vanillachanges.singlelevelmode.EnchantmentHelperMixin",
 	"vanillachanges.singlelevelmode.EnchantmentLevelEntryMixin",
 	"vanillachanges.singlelevelmode.EnchantmentMixin",

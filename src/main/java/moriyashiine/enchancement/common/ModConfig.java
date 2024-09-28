@@ -102,6 +102,8 @@ public class ModConfig extends MidnightConfig {
 	@Entry
 	public static boolean rebalancePotions = true;
 	@Entry
+	public static boolean rebalanceTools = true;
+	@Entry
 	public static boolean tridentsReturnFromVoid = true;
 
 	@Entry(min = 0, max = 1)
@@ -142,7 +144,7 @@ public class ModConfig extends MidnightConfig {
 				luckOfTheSeaHasLure +
 				negateEnderPearlDamage +
 				projectilesBypassCooldown + projectilesNegateVelocity +
-				randomMobEnchantments + rebalanceArmor + rebalanceChanneling + rebalanceFireAspect + rebalanceGoldenApples + rebalancePotions +
+				randomMobEnchantments + rebalanceArmor + rebalanceChanneling + rebalanceFireAspect + rebalanceGoldenApples + rebalancePotions + rebalanceTools +
 				tridentsReturnFromVoid +
 				weaponEnchantmentCooldownRequirement +
 				maxFellTreesBlocks + maxFellTreesHorizontalLength + maxMineOreVeinsBlocks +
