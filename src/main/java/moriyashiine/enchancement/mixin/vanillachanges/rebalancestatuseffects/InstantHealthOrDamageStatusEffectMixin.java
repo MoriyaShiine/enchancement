@@ -1,7 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-package moriyashiine.enchancement.mixin.vanillachanges.rebalancepotions;
+package moriyashiine.enchancement.mixin.vanillachanges.rebalancestatuseffects;
 
 import moriyashiine.enchancement.common.ModConfig;
 import net.minecraft.entity.effect.InstantHealthOrDamageStatusEffect;
@@ -12,32 +12,32 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 @Mixin(InstantHealthOrDamageStatusEffect.class)
 public class InstantHealthOrDamageStatusEffectMixin {
 	@ModifyArg(method = "applyInstantEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;heal(F)V"))
-	private float enchancement$rebalancePotionsInstantHealth(float value) {
-		if (ModConfig.rebalancePotions) {
+	private float enchancement$rebalanceStatusEffectsInstantHealth(float value) {
+		if (ModConfig.rebalanceStatusEffects) {
 			return value * 3 / 4F;
 		}
 		return value;
 	}
 
 	@ModifyArg(method = "applyInstantEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"))
-	private float enchancement$rebalancePotionsInstantDamage(float value) {
-		if (ModConfig.rebalancePotions) {
+	private float enchancement$rebalanceStatusEffectsInstantDamage(float value) {
+		if (ModConfig.rebalanceStatusEffects) {
 			return value / 2F;
 		}
 		return value;
 	}
 
 	@ModifyArg(method = "applyUpdateEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;heal(F)V"))
-	private float enchancement$rebalancePotionsUpdateHealth(float value) {
-		if (ModConfig.rebalancePotions) {
+	private float enchancement$rebalanceStatusEffectsUpdateHealth(float value) {
+		if (ModConfig.rebalanceStatusEffects) {
 			return value * 3 / 4F;
 		}
 		return value;
 	}
 
 	@ModifyArg(method = "applyUpdateEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"))
-	private float enchancement$rebalancePotionsUpdateDamage(float value) {
-		if (ModConfig.rebalancePotions) {
+	private float enchancement$rebalanceStatusEffectsUpdateDamage(float value) {
+		if (ModConfig.rebalanceStatusEffects) {
 			return value / 2F;
 		}
 		return value;
