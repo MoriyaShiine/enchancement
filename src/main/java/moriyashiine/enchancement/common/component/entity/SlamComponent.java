@@ -12,6 +12,7 @@ import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.enums.Thickness;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -19,10 +20,9 @@ import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.state.property.Properties;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.*;
+import net.minecraft.world.RaycastContext;
 import net.minecraft.world.event.GameEvent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
@@ -80,7 +80,7 @@ public class SlamComponent implements CommonTickingComponent {
 		if (hasSlam && isSlamming) {
 			slamTick(() -> {
 				obj.getWorld().getOtherEntities(obj, new Box(obj.getBlockPos()).expand(5, 1, 5), foundEntity -> foundEntity.isAlive() && foundEntity.distanceTo(obj) < 5).forEach(entity -> {
-					if (entity instanceof LivingEntity living && EnchancementUtil.shouldHurt(obj, living)) {
+					if (entity instanceof LivingEntity living && EnchancementUtil.shouldHurt(obj, living) && canSee(entity)) {
 						living.takeKnockback(1, obj.getX() - living.getX(), obj.getZ() - living.getZ());
 					}
 				});
@@ -165,5 +165,12 @@ public class SlamComponent implements CommonTickingComponent {
 			obj.playSound(ModSoundEvents.ENTITY_GENERIC_IMPACT, 1, 1);
 			onLand.run();
 		}
+	}
+
+	private boolean canSee(Entity entity) {
+		if (entity.getWorld() == obj.getWorld()) {
+			return obj.getPos().distanceTo(entity.getPos()) <= 32 && obj.getWorld().raycast(new RaycastContext(obj.getPos(), entity.getPos(), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, obj)).getType() == HitResult.Type.MISS;
+		}
+		return false;
 	}
 }
