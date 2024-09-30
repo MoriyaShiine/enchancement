@@ -31,7 +31,7 @@ public class DisarmedPlayerComponent implements AutoSyncedComponent, CommonTicki
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		NbtList disarmedItems = tag.getList("DisarmedItems", NbtElement.STRING_TYPE);
 		for (int i = 0; i < disarmedItems.size(); i++) {
-			this.disarmedItems.add(Registries.ITEM.get(Identifier.tryParse(disarmedItems.getString(i))));
+			this.disarmedItems.add(Registries.ITEM.get(Identifier.of(disarmedItems.getString(i))));
 		}
 	}
 

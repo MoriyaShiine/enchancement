@@ -11,9 +11,10 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.registry.BuiltinRegistries;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.util.Identifier;
 
 import java.util.concurrent.CompletableFuture;
+
+import static net.minecraft.util.Identifier.of;
 
 public class ModStatusEffectTagProvider extends FabricTagProvider<StatusEffect> {
 	public ModStatusEffectTagProvider(FabricDataOutput output) {
@@ -27,9 +28,9 @@ public class ModStatusEffectTagProvider extends FabricTagProvider<StatusEffect> 
 				.add(StatusEffects.RAID_OMEN.value())
 				.add(StatusEffects.TRIAL_OMEN.value())
 				.add(StatusEffects.HERO_OF_THE_VILLAGE.value())
-				.addOptional(Identifier.tryParse("spectrum:ascension"))
-				.addOptional(Identifier.tryParse("spectrum:divinity"))
-				.addOptional(Identifier.tryParse("bewitchment:mortal_coil"))
-				.addOptional(Identifier.tryParse("bewitchment:wednesday"));
+				.addOptional(of("bewitchment", "mortal_coil"))
+				.addOptional(of("bewitchment", "wednesday"))
+				.addOptional(of("spectrum", "ascension"))
+				.addOptional(of("spectrum", "divinity"));
 	}
 }

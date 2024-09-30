@@ -30,6 +30,10 @@
 	{
 	  "id": "farmersdelight:pie_crust",
 	  "required": false
+	},
+	{
+	  "id": "spelunkery:portal_fluid_bottle",
+	  "required": false
 	}
   ]
 }

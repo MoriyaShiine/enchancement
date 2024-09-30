@@ -13,7 +13,7 @@ import net.minecraft.registry.RegistryWrapper;
 
 import java.util.concurrent.CompletableFuture;
 
-import static net.minecraft.util.Identifier.tryParse;
+import static net.minecraft.util.Identifier.of;
 
 public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
 	public ModItemTagProvider(FabricDataOutput output) {
@@ -29,17 +29,18 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
 				.add(Items.CHORUS_FRUIT)
 				.add(Items.ENCHANTED_GOLDEN_APPLE)
 				.add(Items.GOLDEN_APPLE)
-				.addOptionalTag(tryParse("c:foods/doughs"))
-				.addOptionalTag(tryParse("c:foods/pastas"))
-				.addOptional(tryParse("farmersdelight:dog_food"))
-				.addOptional(tryParse("farmersdelight:pie_crust"));
+				.addOptionalTag(of("c", "foods/doughs"))
+				.addOptionalTag(of("c", "foods/pastas"))
+				.addOptional(of("farmersdelight", "dog_food"))
+				.addOptional(of("farmersdelight", "pie_crust"))
+				.addOptional(of("spelunkery", "portal_fluid_bottle"));
 		getOrCreateTagBuilder(ModItemTags.NO_LOYALTY)
-				.addOptional(tryParse("impaled:pitchfork"));
+				.addOptional(of("impaled", "pitchfork"));
 		getOrCreateTagBuilder(ModItemTags.RETAINS_DURABILITY)
 				.add(Items.WOLF_ARMOR)
-				.addOptionalTag(tryParse("create:sandpaper"))
-				.addOptional(tryParse("create:super_glue"));
+				.addOptionalTag(of("create", "sandpaper"))
+				.addOptional(of("create", "super_glue"));
 		getOrCreateTagBuilder(ModItemTags.WEAKLY_ENCHANTED)
-				.addOptional(tryParse("impaled:pitchfork"));
+				.addOptional(of("impaled", "pitchfork"));
 	}
 }
