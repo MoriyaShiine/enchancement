@@ -7,10 +7,12 @@ import moriyashiine.enchancement.common.enchantment.effect.TeleportOnHitEffect;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.enchancement.mixin.util.accessor.PersistentProjectileEntityAccessor;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -57,6 +59,9 @@ public class TeleportOnHitComponent implements AutoSyncedComponent, ClientTickin
 
 	public void disable() {
 		teleportsOnBlockHit = teleportsOnEntityHit = false;
+		if (obj instanceof PersistentProjectileEntity && obj.getOwner() instanceof PlayerEntity player && !player.isCreative() && player.giveItemStack(((PersistentProjectileEntityAccessor) obj).enchancement$asItemStack())) {
+			obj.discard();
+		}
 	}
 
 	public boolean teleportsOnBlockHit() {
