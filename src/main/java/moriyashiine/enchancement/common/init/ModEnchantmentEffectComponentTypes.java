@@ -20,6 +20,7 @@ import java.util.function.UnaryOperator;
 public class ModEnchantmentEffectComponentTypes {
 	public static final ComponentType<AirJumpEffect> AIR_JUMP = register("air_jump", builder -> builder.codec(AirJumpEffect.CODEC));
 	public static final ComponentType<Unit> ALLOW_CROSSBOW_COOLDOWN_RELOADING = register("allow_crossbow_cooldown_reloading", builder -> builder.codec(Unit.CODEC));
+	public static final ComponentType<Unit> ALLOW_INTERRUPTION = register("allow_interruption", builder -> builder.codec(Unit.CODEC));
 	public static final ComponentType<List<EnchantmentEffectEntry<AllowLoadingProjectileEffect>>> ALLOW_LOADING_PROJECTILE = register("allow_loading_projectile", builder -> builder.codec(EnchantmentEffectEntry.createCodec(AllowLoadingProjectileEffect.CODEC, LootContextTypes.ENCHANTED_ITEM).listOf()));
 	public static final ComponentType<List<EnchantmentEffectEntry<ApplyRandomStatusEffectEffect>>> APPLY_RANDOM_STATUS_EFFECT = register("apply_random_status_effect", builder -> builder.codec(EnchantmentEffectEntry.createCodec(ApplyRandomStatusEffectEffect.CODEC, LootContextTypes.ENCHANTED_ITEM).listOf()));
 	public static final ComponentType<EnchantmentValueEffect> BOOST_IN_FLUID = register("boost_in_fluid", builder -> builder.codec(EnchantmentValueEffect.CODEC));
@@ -43,6 +44,7 @@ public class ModEnchantmentEffectComponentTypes {
 	public static final ComponentType<EnchantmentValueEffect> MODIFY_CONSUMPTION_TIME = register("modify_consumption_time", builder -> builder.codec(EnchantmentValueEffect.CODEC));
 	public static final ComponentType<List<EnchantmentEffectEntry<EnchantmentValueEffect>>> MODIFY_DETECTION_RANGE = register("modify_detection_range", builder -> builder.codec(EnchantmentEffectEntry.createCodec(EnchantmentValueEffect.CODEC, LootContextTypes.ENCHANTED_ENTITY).listOf()));
 	public static final ComponentType<ModifySubmergedMovementSpeedEffect> MODIFY_SUBMERGED_MOVEMENT_SPEED = register("modify_submerged_movement_speed", builder -> builder.codec(ModifySubmergedMovementSpeedEffect.CODEC));
+	public static final ComponentType<MultiplyChargeTimeEffect> MULTIPLY_CHARGE_TIME = register("multiply_charge_time", builder -> builder.codec(MultiplyChargeTimeEffect.CODEC));
 	public static final ComponentType<EnchantmentValueEffect> NIGHT_VISION = register("night_vision", builder -> builder.codec(EnchantmentValueEffect.CODEC));
 	public static final ComponentType<List<EnchantmentEffectEntry<EnchantmentValueEffect>>> PHASE_THROUGH_BLOCKS_AND_FLOAT = register("phase_through_blocks_and_float", builder -> builder.codec(EnchantmentEffectEntry.createCodec(EnchantmentValueEffect.CODEC, LootContextTypes.ENCHANTED_ITEM).listOf()));
 	public static final ComponentType<Unit> PREVENT_SWIMMING = register("prevent_swimming", builder -> builder.codec(Unit.CODEC));

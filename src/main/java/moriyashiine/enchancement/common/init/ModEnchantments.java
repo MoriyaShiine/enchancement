@@ -496,14 +496,25 @@ public class ModEnchantments {
 				}));
 		registerable.register(WARP, create(WARP.getValue(),
 				itemLookup.getOrThrow(ItemTags.TRIDENT_ENCHANTABLE),
-				1,
+				2,
 				AttributeModifierSlot.MAINHAND,
-				builder -> builder.addEffect(
-						ModEnchantmentEffectComponentTypes.TELEPORT_ON_HIT,
-						new TeleportOnHitEffect(
-								true,
-								false)
-				)));
+				builder -> {
+					builder.addEffect(
+							ModEnchantmentEffectComponentTypes.ALLOW_INTERRUPTION
+					);
+					builder.addNonListEffect(
+							ModEnchantmentEffectComponentTypes.MULTIPLY_CHARGE_TIME,
+							new MultiplyChargeTimeEffect(
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(3, -1))
+							)
+					);
+					builder.addEffect(
+							ModEnchantmentEffectComponentTypes.TELEPORT_ON_HIT,
+							new TeleportOnHitEffect(
+									true,
+									false)
+					);
+				}));
 		// pickaxe
 		registerable.register(EXTRACTING, create(EXTRACTING.getValue(),
 				itemLookup.getOrThrow(ItemTags.PICKAXES),

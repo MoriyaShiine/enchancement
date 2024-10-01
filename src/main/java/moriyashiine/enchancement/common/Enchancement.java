@@ -74,6 +74,7 @@ public class Enchancement implements ModInitializer {
 		ServerTickEvents.END_SERVER_TICK.register(new SyncEnchantingMaterialMapEvent.Tick());
 		MultiplyMovementSpeedEvent.EVENT.register(new EnchantedChestplateAirMobilityEvent());
 		ServerEntityEvents.EQUIPMENT_CHANGE.register(new AirJumpEvent());
+		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new AllowInterruptionEvent());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new BuryEntityEvent.Unbury());
 		UseEntityCallback.EVENT.register(new BuryEntityEvent.Use());
 		PlayerBlockBreakEvents.BEFORE.register(new FellTreesEvent());
