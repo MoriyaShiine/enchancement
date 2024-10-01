@@ -1,4 +1,10 @@
 {
+  "entity.brimstone.travel": {
+	"sounds": [
+	  "enchancement:entity/brimstone/travel"
+	],
+	"subtitle": "subtitles.enchancement.entity.brimstone.travel"
+  },
   "entity.shard.shatter": {
 	"sounds": [
 	  "random/glass1",
@@ -128,7 +134,7 @@
   },
   "item.crossbow.loading_brimstone": {
 	"sounds": [
-	  "enchancement:item/crossbow/loading_crossbow"
+	  "enchancement:item/crossbow/loading_brimstone"
 	],
 	"subtitle": "subtitles.item.crossbow.charge"
   },

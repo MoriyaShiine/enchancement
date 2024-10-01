@@ -13,12 +13,12 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.UUID;
 
-public class BrimstoneSoundInstance extends MovingSoundInstance {
+public class BrimstoneFireSoundInstance extends MovingSoundInstance {
 	private final Entity entity;
 	private final UUID uuid;
 	private int age = 0;
 
-	public BrimstoneSoundInstance(Entity entity, UUID uuid, SoundCategory soundCategory) {
+	public BrimstoneFireSoundInstance(Entity entity, UUID uuid, SoundCategory soundCategory) {
 		super(ModSoundEvents.ITEM_CROSSBOW_LOADING_BRIMSTONE, soundCategory, entity.getWorld().random);
 		this.entity = entity;
 		this.uuid = uuid;

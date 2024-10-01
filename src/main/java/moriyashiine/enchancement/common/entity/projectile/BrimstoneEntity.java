@@ -3,11 +3,14 @@
  */
 package moriyashiine.enchancement.common.entity.projectile;
 
+import moriyashiine.enchancement.client.payload.PlayBrimstoneTravelSoundPayload;
 import moriyashiine.enchancement.common.init.ModComponentTypes;
 import moriyashiine.enchancement.common.init.ModDamageTypes;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
+import moriyashiine.enchancement.common.init.ModParticleTypes;
 import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -15,13 +18,16 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.DustParticleEffect;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -39,6 +45,8 @@ import java.util.Set;
 
 public class BrimstoneEntity extends PersistentProjectileEntity {
 	public static final ItemStack BRIMSTONE_STACK;
+	public static final int DISTANCE_PER_TICK = 4, MAX_TICKS = 63;
+	public static boolean ALWAYS_SPAWN_PARTICLES = false;
 
 	static {
 		BRIMSTONE_STACK = new ItemStack(Items.LAVA_BUCKET);
@@ -51,10 +59,9 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 
 	private static final DustParticleEffect PARTICLE = new DustParticleEffect(new Vector3f(1, 0, 0), 1);
 
-	public float maxY = 0;
-	public int ticksExisted = 0;
+	public int distanceTraveled = 0, ticksExisted = 0;
 
-	private final Set<Entity> hitEntities = new HashSet<>(), killedEntities = new HashSet<>();
+	private final Set<Entity> hitEntities = new HashSet<>();
 
 	public BrimstoneEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
 		super(entityType, world);
@@ -74,60 +81,57 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 
 	@Override
 	public void tick() {
+		if (!getWorld().isClient && ticksExisted == 0) {
+			PlayerLookup.all(getWorld().getServer()).forEach(foundPlayer -> PlayBrimstoneTravelSoundPayload.send(foundPlayer, this, getOwner() instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE));
+		}
 		if (isCritical()) {
 			setCritical(false);
 		}
 		setVelocity(Vec3d.ZERO);
-		ticksExisted++;
-		maxY = 0;
-		Vec3d start = getPos(), end = start.add(getRotationVector());
-		while (maxY < 256) {
-			maxY++;
+		for (int i = 0; i < DISTANCE_PER_TICK; i++) {
+			float min = Math.min(distanceTraveled, ticksExisted / 2F);
+			if (min > 0 && min == distanceTraveled) {
+				discard();
+			}
+			Vec3d start = getPos().add(getRotationVector().multiply(distanceTraveled - 1)), end = start.add(getRotationVector());
 			BlockHitResult hitResult = getWorld().raycast(new RaycastContext(start, end, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, this));
 			if (hitResult.getType() == HitResult.Type.BLOCK) {
 				if (getWorld().isClient) {
-					addParticles(hitResult.getPos().getX(), hitResult.getPos().getY(), hitResult.getPos().getZ());
+					addParticles(PARTICLE, hitResult.getPos().getX(), hitResult.getPos().getY(), hitResult.getPos().getZ());
+				} else {
+					getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, hitResult.getPos(), GameEvent.Emitter.of(this));
 				}
 				break;
-			}
-			if (ticksExisted == 3) {
+			} else {
 				Entity owner = getOwner();
 				getWorld().getOtherEntities(owner, Box.from(hitResult.getPos()).expand(0.5), EntityPredicates.EXCEPT_SPECTATOR.and(entity -> canEntityBeHit(owner, entity))).forEach(entity -> {
 					if (getWorld().isClient) {
-						addParticles(entity.getX(), entity.getRandomBodyY(), entity.getZ());
+						addParticles(PARTICLE, entity.getX(), entity.getRandomBodyY(), entity.getZ());
 					} else {
 						double damage = getDamage();
 						if (entity instanceof LivingEntity living) {
 							damage *= living.getMaxHealth() / 20F;
 						}
-						if (maxY < 16) {
-							damage *= MathHelper.lerp(maxY / 16F, 0.25F, 1);
-						} else {
-							damage *= Math.min(2, MathHelper.lerp((maxY - 16) / 200F, 1F, 2F));
-						}
+						damage *= getDamageMultiplier(distanceTraveled);
 						damage = Math.min(50, damage);
 						entity.damage(ModDamageTypes.create(getWorld(), ModDamageTypes.BRIMSTONE, this, owner), (float) damage);
 						hitEntities.add(entity);
-						if (entity instanceof LivingEntity living && living.isDead()) {
-							killedEntities.add(living);
+						if (getOwner() instanceof ServerPlayerEntity player && entity instanceof LivingEntity living) {
+							Criteria.KILLED_BY_CROSSBOW.trigger(player, Set.of(living));
 						}
 					}
 				});
 			}
-			start = end;
-			end = start.add(getRotationVector());
+			distanceTraveled++;
 		}
-		if (!getWorld().isClient) {
-			if (ticksExisted == 3) {
-				getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, end, GameEvent.Emitter.of(this));
-			}
-			if (ticksExisted > 10) {
-				if (getOwner() instanceof ServerPlayerEntity player) {
-					Criteria.KILLED_BY_CROSSBOW.trigger(player, killedEntities);
-				}
-				discard();
-			}
+		if (getWorld().isClient) {
+			Vec3d particlePos = getPos().add(getRotationVector().multiply(distanceTraveled));
+			addParticles(PARTICLE, particlePos.getX(), particlePos.getY(), particlePos.getZ());
+			addParticles(ModParticleTypes.BRIMSTONE_BUBBLE, particlePos.getX(), particlePos.getY(), particlePos.getZ());
+		} else if (ticksExisted > MAX_TICKS) {
+			discard();
 		}
+		ticksExisted++;
 	}
 
 	@Override
@@ -144,6 +148,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 		setDamage(nbt.getFloat("Damage"));
 		dataTracker.set(FORCED_PITCH, nbt.getFloat("ForcedPitch"));
 		dataTracker.set(FORCED_YAW, nbt.getFloat("ForcedYaw"));
+		distanceTraveled = nbt.getInt("DistanceTraveled");
 		ticksExisted = nbt.getInt("TicksExisted");
 	}
 
@@ -153,6 +158,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 		nbt.putFloat("Damage", (float) getDamage());
 		nbt.putFloat("ForcedPitch", getPitch());
 		nbt.putFloat("ForcedYaw", getYaw());
+		nbt.putInt("DistanceTraveled", distanceTraveled);
 		nbt.putInt("TicksExisted", ticksExisted);
 	}
 
@@ -184,11 +190,26 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 		return dataTracker.get(DAMAGE);
 	}
 
-	private void addParticles(double x, double y, double z) {
-		float range = (float) MathHelper.lerp(getDamage() / 12, 0, 0.3F);
-		for (int i = 0; i < 8; i++) {
-			getWorld().addParticle(PARTICLE, x + MathHelper.nextFloat(random, -range, range), y + MathHelper.nextFloat(random, -range, range), z + MathHelper.nextFloat(random, -range, range), MathHelper.nextFloat(random, -1, 1), MathHelper.nextFloat(random, -1, 1), MathHelper.nextFloat(random, -1, 1));
+	public float getDamageMultiplier(int distanceTraveled) {
+		if (distanceTraveled < 16) {
+			return MathHelper.lerp(distanceTraveled / 16F, 0.25F, 1);
 		}
+		return Math.min(2, MathHelper.lerp((distanceTraveled - 16) / 200F, 1F, 2F));
+	}
+
+	private void addParticles(ParticleEffect particle, double x, double y, double z) {
+		ALWAYS_SPAWN_PARTICLES = true;
+		float range = (float) MathHelper.lerp(getDamage() / 12, 0, 0.5F);
+		for (int i = 0; i < 8; i++) {
+			getWorld().addParticle(particle,
+					x + MathHelper.nextFloat(random, -range, range),
+					y + MathHelper.nextFloat(random, -range, range),
+					z + MathHelper.nextFloat(random, -range, range),
+					MathHelper.nextFloat(random, -1, 1),
+					MathHelper.nextFloat(random, -1, 1),
+					MathHelper.nextFloat(random, -1, 1));
+		}
+		ALWAYS_SPAWN_PARTICLES = false;
 	}
 
 	private boolean canEntityBeHit(Entity owner, Entity entity) {

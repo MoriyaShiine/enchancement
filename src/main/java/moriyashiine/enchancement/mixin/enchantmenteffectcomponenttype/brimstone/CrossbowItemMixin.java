@@ -6,7 +6,7 @@ package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.brimstone
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import moriyashiine.enchancement.client.payload.PlayBrimstoneSoundPayload;
+import moriyashiine.enchancement.client.payload.PlayBrimstoneFireSoundPayload;
 import moriyashiine.enchancement.common.enchantment.effect.BrimstoneEffect;
 import moriyashiine.enchancement.common.init.ModComponentTypes;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
@@ -62,9 +62,9 @@ public abstract class CrossbowItemMixin {
 				stack.set(ModComponentTypes.BRIMSTONE_UUID, uuid[0]);
 			}
 			if (remainingUseTicks == getMaxUseTime(stack, user)) {
-				PlayerLookup.tracking(user).forEach(foundPlayer -> PlayBrimstoneSoundPayload.send(foundPlayer, user.getId(), uuid[0]));
+				PlayerLookup.tracking(user).forEach(foundPlayer -> PlayBrimstoneFireSoundPayload.send(foundPlayer, user.getId(), uuid[0]));
 				if (user instanceof ServerPlayerEntity player) {
-					PlayBrimstoneSoundPayload.send(player, user.getId(), uuid[0]);
+					PlayBrimstoneFireSoundPayload.send(player, user.getId(), uuid[0]);
 				}
 			}
 		}

@@ -164,6 +164,7 @@
 	"enchantmenteffectcomponenttype.slide.client.KeyboardInputMixin",
 	"enchantmententityeffecttype.freeze.client.LivingEntityRendererMixin",
 	"enchantmententityeffecttype.freeze.client.SquidEntityRendererMixin",
+	"entity.brimstone.client.WorldRendererMixin",
 	"util.accessor.client.InGameHudAccessor",
 	"util.client.ModelLoaderMixin",
 	"vanillachanges.allowduplicatekeybindings.client.ControlsListWidgetKeyBindingEntryMixin",

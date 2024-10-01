@@ -15,7 +15,7 @@ import net.minecraft.registry.Registry;
 public class ModEntityTypes {
 	public static final EntityType<FrozenPlayerEntity> FROZEN_PLAYER = EntityType.Builder.create(FrozenPlayerEntity::new, SpawnGroup.MISC).dimensions(EntityType.PLAYER.getWidth(), EntityType.PLAYER.getHeight()).build();
 	public static final EntityType<IceShardEntity> ICE_SHARD = EntityType.Builder.<IceShardEntity>create(IceShardEntity::new, SpawnGroup.MISC).dimensions(EntityType.ARROW.getWidth(), EntityType.ARROW.getHeight()).build();
-	public static final EntityType<BrimstoneEntity> BRIMSTONE = EntityType.Builder.<BrimstoneEntity>create(BrimstoneEntity::new, SpawnGroup.MISC).dimensions(EntityType.ARROW.getWidth(), EntityType.ARROW.getHeight()).build();
+	public static final EntityType<BrimstoneEntity> BRIMSTONE = EntityType.Builder.<BrimstoneEntity>create(BrimstoneEntity::new, SpawnGroup.MISC).dimensions(EntityType.ARROW.getWidth(), EntityType.ARROW.getHeight()).maxTrackingRange(64).build();
 	public static final EntityType<AmethystShardEntity> AMETHYST_SHARD = EntityType.Builder.<AmethystShardEntity>create(AmethystShardEntity::new, SpawnGroup.MISC).dimensions(EntityType.ARROW.getWidth(), EntityType.ARROW.getHeight()).build();
 	public static final EntityType<TorchEntity> TORCH = EntityType.Builder.<TorchEntity>create(TorchEntity::new, SpawnGroup.MISC).dimensions(EntityType.ARROW.getWidth(), EntityType.ARROW.getHeight()).build();
 	public static final EntityType<GrappleFishingBobberEntity> GRAPPLE_FISHING_BOBBER = EntityType.Builder.<GrappleFishingBobberEntity>create(GrappleFishingBobberEntity::new, SpawnGroup.MISC).disableSaving().disableSummon().dimensions(EntityType.FISHING_BOBBER.getWidth(), EntityType.FISHING_BOBBER.getHeight()).build();
