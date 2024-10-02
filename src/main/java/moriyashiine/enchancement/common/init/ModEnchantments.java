@@ -57,6 +57,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.floatprovider.ConstantFloatProvider;
 
 public class ModEnchantments {
+	// placeholder
+	public static final RegistryKey<Enchantment> EMPTY_KEY = createKey("empty");
+	public static final Enchantment EMPTY = Enchantment.builder(Enchantment.definition(RegistryEntryList.empty(), 1, 1, Enchantment.constantCost(0), Enchantment.constantCost(0), 0)).build(EMPTY_KEY.getValue());
 	// helmet
 	public static final RegistryKey<Enchantment> ASSIMILATION = createKey("assimilation");
 	public static final RegistryKey<Enchantment> PERCEPTION = createKey("perception");

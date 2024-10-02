@@ -7,6 +7,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.event.InitializeDefaultEnchantmentsEvent;
+import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
 import moriyashiine.enchancement.common.tag.ModItemTags;
 import moriyashiine.enchancement.mixin.util.accessor.ItemEntityAccessor;
@@ -151,6 +152,9 @@ public class EnchancementUtil {
 	}
 
 	public static boolean isEnchantmentAllowed(Identifier identifier) {
+		if (identifier.equals(ModEnchantments.EMPTY_KEY.getValue())) {
+			return false;
+		}
 		if (ModConfig.invertedList) {
 			return ModConfig.disallowedEnchantments.contains(identifier.toString());
 		}
