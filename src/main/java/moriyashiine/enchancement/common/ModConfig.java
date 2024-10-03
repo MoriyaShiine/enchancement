@@ -88,10 +88,6 @@ public class ModConfig extends MidnightConfig {
 	@Entry
 	public static boolean negateEnderPearlDamage = true;
 	@Entry
-	public static boolean projectilesBypassCooldown = true;
-	@Entry
-	public static boolean projectilesNegateVelocity = true;
-	@Entry
 	public static boolean randomMobEnchantments = true;
 	@Entry
 	public static boolean rebalanceArmor = true;
@@ -101,6 +97,8 @@ public class ModConfig extends MidnightConfig {
 	public static boolean rebalanceFireAspect = true;
 	@Entry
 	public static boolean rebalanceGoldenApples = true;
+	@Entry
+	public static boolean rebalanceProjectiles = true;
 	@Entry
 	public static boolean rebalanceStatusEffects = true;
 	@Entry
@@ -145,8 +143,7 @@ public class ModConfig extends MidnightConfig {
 				fasterBows + freeEnchantedBookMerging +
 				luckOfTheSeaHasLure +
 				negateEnderPearlDamage +
-				projectilesBypassCooldown + projectilesNegateVelocity +
-				randomMobEnchantments + rebalanceArmor + rebalanceChanneling + rebalanceFireAspect + rebalanceGoldenApples + rebalanceStatusEffects + rebalanceTools +
+				randomMobEnchantments + rebalanceArmor + rebalanceChanneling + rebalanceFireAspect + rebalanceGoldenApples + rebalanceProjectiles + rebalanceStatusEffects + rebalanceTools +
 				tridentsReturnFromVoid +
 				weaponEnchantmentCooldownRequirement +
 				maxFellTreesBlocks + maxFellTreesHorizontalLength + maxMineOreVeinsBlocks +

@@ -5,7 +5,6 @@ package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.util.accessor.PersistentProjectileEntityAccessor;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -16,10 +15,8 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
@@ -60,26 +57,6 @@ public class PhaseThroughBlocksAndFloatComponent implements AutoSyncedComponent,
 		if (shouldPhase()) {
 			if (++ticksInAir >= 200 || ((PersistentProjectileEntityAccessor) obj).enchancement$inGround()) {
 				disable();
-				return;
-			}
-			LivingEntity closest = null;
-			for (LivingEntity living : obj.getWorld().getEntitiesByClass(LivingEntity.class, new Box(obj.getBlockPos()).expand(maxPhaseBlocks * 0.5), foundEntity -> foundEntity.isAlive() && EnchancementUtil.shouldHurt(obj.getOwner(), foundEntity))) {
-				if (closest == null || closest.distanceTo(obj) > living.distanceTo(obj)) {
-					closest = living;
-				}
-			}
-			if (closest != null) {
-				if (obj.getWorld().isClient) {
-					for (int i = 0; i < 8; i++) {
-						obj.getWorld().addParticle(ParticleTypes.PORTAL, obj.getParticleX(0.5), obj.getRandomBodyY(), obj.getParticleZ(0.5), 0, 0, 0);
-					}
-				} else {
-					if (velocityLength == -1) {
-						velocityLength = obj.getVelocity().length();
-						obj.getWorld().playSound(null, obj.getBlockPos(), ModSoundEvents.ENTITY_GENERIC_TELEPORT, obj.getSoundCategory(), 0.75F, 1);
-					}
-					obj.setVelocity(closest.getX() - obj.getX(), closest.getEyeY() - obj.getEyeY(), closest.getZ() - obj.getZ());
-				}
 			}
 		}
 	}
