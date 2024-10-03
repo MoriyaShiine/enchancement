@@ -1,22 +1,18 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-package moriyashiine.enchancement.mixin.vanillachanges.enchantedtridentshaveloyalty;
+package moriyashiine.enchancement.mixin.vanillachanges.enchantedtoolshaveefficiency;
 
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModComponentTypes;
 import moriyashiine.enchancement.common.tag.ModEnchantmentTags;
-import moriyashiine.enchancement.common.tag.ModItemTags;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.ItemTags;
-import net.minecraft.server.world.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -30,7 +26,7 @@ import java.util.function.Consumer;
 public class EnchantmentHelperMixin {
 	@Unique
 	private static void checkPassive(ItemStack stack, ItemEnchantmentsComponent enchantmentsComponent) {
-		if (ModConfig.enchantedTridentsHaveLoyalty && stack.isIn(ItemTags.TRIDENT_ENCHANTABLE)) {
+		if (ModConfig.enchantedToolsHaveEfficiency && stack.isIn(ItemTags.MINING_ENCHANTABLE)) {
 			if (stack.hasEnchantments()) {
 				if (!stack.contains(ModComponentTypes.TOGGLEABLE_PASSIVE)) {
 					for (RegistryEntry<Enchantment> enchantment : enchantmentsComponent.getEnchantments()) {
@@ -47,24 +43,12 @@ public class EnchantmentHelperMixin {
 	}
 
 	@Inject(method = "apply", at = @At(value = "RETURN", ordinal = 1))
-	private static void enchancement$enchantedTridentsHaveLoyalty(ItemStack stack, Consumer<ItemEnchantmentsComponent.Builder> applier, CallbackInfoReturnable<ItemEnchantmentsComponent> cir, @Local(ordinal = 1) ItemEnchantmentsComponent enchantments) {
+	private static void enchancement$enchantedToolsHaveEfficiency(ItemStack stack, Consumer<ItemEnchantmentsComponent.Builder> applier, CallbackInfoReturnable<ItemEnchantmentsComponent> cir, @Local(ordinal = 1) ItemEnchantmentsComponent enchantments) {
 		checkPassive(stack, enchantments);
 	}
 
 	@Inject(method = "set", at = @At("TAIL"))
-	private static void enchancement$enchantedTridentsHaveLoyalty(ItemStack stack, ItemEnchantmentsComponent enchantments, CallbackInfo ci) {
+	private static void enchancement$enchantedToolsHaveEfficiency(ItemStack stack, ItemEnchantmentsComponent enchantments, CallbackInfo ci) {
 		checkPassive(stack, enchantments);
-	}
-
-	@ModifyReturnValue(method = "getTridentReturnAcceleration", at = @At("RETURN"))
-	private static int enchancement$enchantedTridentsHaveLoyalty(int original, ServerWorld world, ItemStack stack) {
-		if (ModConfig.enchantedTridentsHaveLoyalty && stack.isIn(ItemTags.TRIDENT_ENCHANTABLE) && !stack.isIn(ModItemTags.NO_LOYALTY) && stack.getOrDefault(ModComponentTypes.TOGGLEABLE_PASSIVE, false)) {
-			if (!stack.hasEnchantments()) {
-				stack.remove(ModComponentTypes.TOGGLEABLE_PASSIVE);
-				return original;
-			}
-			return EnchancementUtil.hasWeakEnchantments(stack) ? 1 : 3;
-		}
-		return original;
 	}
 }
