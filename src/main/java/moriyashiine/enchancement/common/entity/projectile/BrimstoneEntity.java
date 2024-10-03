@@ -45,7 +45,7 @@ import java.util.Set;
 
 public class BrimstoneEntity extends PersistentProjectileEntity {
 	public static final ItemStack BRIMSTONE_STACK;
-	public static final int DISTANCE_PER_TICK = 4, MAX_TICKS = 63;
+	public static final int DISTANCE_PER_TICK = 6, MAX_TICKS = 42;
 	public static boolean ALWAYS_SPAWN_PARTICLES = false;
 
 	static {
@@ -89,7 +89,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 		}
 		setVelocity(Vec3d.ZERO);
 		for (int i = 0; i < DISTANCE_PER_TICK; i++) {
-			float min = Math.min(distanceTraveled, ticksExisted / 2F);
+			float min = Math.min(distanceTraveled, ticksExisted);
 			if (min > 0 && min == distanceTraveled) {
 				discard();
 			}

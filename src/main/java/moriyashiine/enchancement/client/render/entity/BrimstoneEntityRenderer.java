@@ -28,7 +28,7 @@ public class BrimstoneEntityRenderer extends ProjectileEntityRenderer<BrimstoneE
 	@Override
 	public void render(BrimstoneEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
 		float scale = MathHelper.lerp((float) entity.getDamage() / 12F, 0.1F, 1);
-		scale *= MathHelper.lerp(MathHelper.clamp((entity.ticksExisted - 50F) / (BrimstoneEntity.MAX_TICKS - 50), 0, 1), 1F, 0);
+		scale *= MathHelper.lerp(MathHelper.clamp((entity.ticksExisted - 32F) / (BrimstoneEntity.MAX_TICKS - 32), 0, 1), 1F, 0);
 		float v = (Math.floorMod(entity.getWorld().getTime(), 40) + tickDelta) / 4;
 		float u = v + 4 * -0.5F / scale;
 		VertexConsumer vertices = vertexConsumers.getBuffer(RenderLayer.getEntityAlpha(TEXTURE));
@@ -38,8 +38,8 @@ public class BrimstoneEntityRenderer extends ProjectileEntityRenderer<BrimstoneE
 		matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees((entity.getWorld().getTime() + entity.ticksExisted + tickDelta) * 12));
 		matrices.scale(scale, 1, scale);
 		MatrixStack.Entry entry = matrices.peek();
-		matrices.translate(0, (entity.ticksExisted + tickDelta) / 2F, 0);
-		for (int j = entity.ticksExisted / 2 + 1; j < entity.distanceTraveled; j++) {
+		matrices.translate(0, entity.ticksExisted + tickDelta, 0);
+		for (int j = entity.ticksExisted + 1; j < entity.distanceTraveled; j++) {
 			renderSection(entity, matrices, entry, vertices, u, v);
 		}
 		matrices.pop();
