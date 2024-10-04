@@ -9,6 +9,7 @@ accessible method net/minecraft/enchantment/Enchantment createEnchantedItemLootC
 accessible method net/minecraft/enchantment/EnchantmentHelper forEachEnchantment (Lnet/minecraft/item/ItemStack;Lnet/minecraft/enchantment/EnchantmentHelper$Consumer;)V
 accessible method net/minecraft/enchantment/EnchantmentHelper forEachEnchantment (Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/enchantment/EnchantmentHelper$ContextAwareConsumer;)V
 accessible method net/minecraft/enchantment/Enchantment modifyValue (Lnet/minecraft/component/ComponentType;Lnet/minecraft/server/world/ServerWorld;ILnet/minecraft/item/ItemStack;Lorg/apache/commons/lang3/mutable/MutableFloat;)V
+accessible method net/minecraft/entity/projectile/TridentEntity isOwnerAlive ()Z
 accessible field net/minecraft/loot/condition/AlternativeLootCondition terms Ljava/util/List;
 accessible field net/minecraft/component/Component value Ljava/lang/Object;
 mutable field net/minecraft/component/Component value Ljava/lang/Object;
@@ -19,4 +20,5 @@ mutable field net/minecraft/enchantment/effect/EnchantmentEffectEntry requiremen
 accessible field net/minecraft/enchantment/effect/TargetedEnchantmentEffect requirements Ljava/util/Optional;
 mutable field net/minecraft/enchantment/effect/TargetedEnchantmentEffect requirements Ljava/util/Optional;
 accessible field net/minecraft/registry/tag/TagEntry id Lnet/minecraft/util/Identifier;
+accessible field net/minecraft/entity/projectile/TridentEntity LOYALTY Lnet/minecraft/entity/data/TrackedData;
 accessible field net/minecraft/client/option/KeyBinding timesPressed I
