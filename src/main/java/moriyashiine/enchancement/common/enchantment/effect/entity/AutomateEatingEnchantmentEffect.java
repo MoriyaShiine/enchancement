@@ -24,7 +24,7 @@ public record AutomateEatingEnchantmentEffect(NumberRange.IntRange hungerRange) 
 
 	@Override
 	public void apply(ServerWorld world, int level, EnchantmentEffectContext context, Entity user, Vec3d pos) {
-		if (user instanceof PlayerEntity player && hungerRange().test(player.getHungerManager().getFoodLevel())) {
+		if (user instanceof PlayerEntity player && player.canConsume(false) && hungerRange().test(player.getHungerManager().getFoodLevel())) {
 			ItemStack food = ItemStack.EMPTY;
 			if (player.getOffHandStack().contains(DataComponentTypes.FOOD)) {
 				if (needsFood(player, player.getOffHandStack().get(DataComponentTypes.FOOD)) && isFoodAllowed(player, player.getOffHandStack())) {
