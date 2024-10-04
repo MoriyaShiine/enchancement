@@ -51,7 +51,7 @@ public record AutomateEatingEnchantmentEffect(NumberRange.IntRange hungerRange) 
 		ItemStack food = ItemStack.EMPTY;
 		for (int i = 0; i < player.getInventory().main.size(); i++) {
 			ItemStack stack = player.getInventory().main.get(i);
-			if (stack.contains(DataComponentTypes.FOOD) && !stack.isIn(ModItemTags.CANNOT_ASSIMILATE)) {
+			if (stack.contains(DataComponentTypes.FOOD) && !stack.isIn(ModItemTags.CANNOT_AUTOMATICALLY_CONSUME)) {
 				FoodComponent component = stack.get(DataComponentTypes.FOOD);
 				if (needsFood(player, component)) {
 					if (food.isEmpty() || food.get(DataComponentTypes.FOOD).nutrition() < component.nutrition()) {

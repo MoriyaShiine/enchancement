@@ -22,7 +22,7 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
 
 	@Override
 	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-		getOrCreateTagBuilder(ModItemTags.CANNOT_ASSIMILATE)
+		getOrCreateTagBuilder(ModItemTags.CANNOT_AUTOMATICALLY_CONSUME)
 				.addOptionalTag(ConventionalItemTags.RAW_FISH_FOODS)
 				.addOptionalTag(ConventionalItemTags.RAW_MEAT_FOODS)
 				.addOptionalTag(ConventionalItemTags.FOOD_POISONING_FOODS)
