@@ -35,7 +35,7 @@ public class FellTreesEvent implements PlayerBlockBreakEvents.Before {
 			Entry entry = Entry.get(player);
 			if (entry != null && isValid(entry.tree()) && stack.getDamage() + entry.tree().size() <= stack.getMaxDamage()) {
 				entry.tree().sort(Comparator.comparingInt(Vec3i::getY).reversed());
-				ModWorldComponents.FELL_TREES.get(world).addTree(new FellTreesComponent.Tree(entry.tree(), pos));
+				ModWorldComponents.FELL_TREES.get(world).addTree(new FellTreesComponent.Tree(entry.tree(), pos, stack));
 				ENTRIES.remove(entry);
 				return false;
 			}

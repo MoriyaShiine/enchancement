@@ -49,7 +49,7 @@ public class FellTreesComponent implements ServerTickingComponent {
 		for (int i = treesToCut.size() - 1; i >= 0; i--) {
 			Tree tree = treesToCut.get(i);
 			BlockPos pos = tree.logs.removeLast();
-			tree.drops.addAll(Block.getDroppedStacks(obj.getBlockState(pos), (ServerWorld) obj, pos, obj.getBlockEntity(pos)));
+			tree.drops.addAll(Block.getDroppedStacks(obj.getBlockState(pos), (ServerWorld) obj, pos, obj.getBlockEntity(pos), null, tree.stack));
 			obj.breakBlock(pos, false);
 			if (tree.logs.isEmpty()) {
 				EnchancementUtil.mergeItemEntities(tree.drops.stream().map(drop -> new ItemEntity(obj, tree.originalPos.getX() + 0.5, tree.originalPos.getY() + 0.5, tree.originalPos.getZ() + 0.5, drop)).collect(Collectors.toList())).forEach(obj::spawnEntity);
@@ -66,11 +66,13 @@ public class FellTreesComponent implements ServerTickingComponent {
 		public final List<BlockPos> logs;
 		public final List<ItemStack> drops;
 		public final BlockPos originalPos;
+		public final ItemStack stack;
 
-		public Tree(List<BlockPos> logs, BlockPos originalPos) {
+		public Tree(List<BlockPos> logs, BlockPos originalPos, ItemStack stack) {
 			this.logs = logs;
 			this.drops = new ArrayList<>();
 			this.originalPos = originalPos;
+			this.stack = stack;
 		}
 
 		public NbtCompound serialize(RegistryWrapper.WrapperLookup registryLookup) {
@@ -84,11 +86,12 @@ public class FellTreesComponent implements ServerTickingComponent {
 			});
 			compound.put("Drops", drops);
 			compound.putLong("OriginalPos", originalPos.asLong());
+			compound.put("Stack", stack.encode(registryLookup));
 			return compound;
 		}
 
 		public static Tree deserialize(RegistryWrapper.WrapperLookup registryLookup, NbtCompound compound) {
-			Tree tree = new Tree(Arrays.stream(compound.getLongArray("Logs")).mapToObj(BlockPos::fromLong).collect(Collectors.toList()), BlockPos.fromLong(compound.getLong("OriginalPos")));
+			Tree tree = new Tree(Arrays.stream(compound.getLongArray("Logs")).mapToObj(BlockPos::fromLong).collect(Collectors.toList()), BlockPos.fromLong(compound.getLong("OriginalPos")), ItemStack.fromNbtOrEmpty(registryLookup, compound.getCompound("Stack")));
 			NbtList drops = compound.getList("Drops", NbtElement.COMPOUND_TYPE);
 			for (int i = 0; i < drops.size(); i++) {
 				ItemStack.fromNbt(registryLookup, drops.getCompound(i)).ifPresent(tree.drops::add);

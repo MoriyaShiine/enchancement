@@ -95,10 +95,10 @@
   "enchantment.enchancement.leech.desc": "Regenerates health when dealing damage. Thrown Tridents will temporarily stick to mobs and deal damage.",
   "enchantment.enchancement.warp": "Warp",
   "enchantment.enchancement.warp.desc": "Teleports you to the location of the Trident if it didn't hit a mob.",
-  "enchantment.enchancement.extracting": "Extracting",
-  "enchantment.enchancement.extracting.desc": "Extracts materials from connected ores, leaving the stone behind. Disabled while sneaking.",
   "enchantment.enchancement.molten": "Molten",
   "enchantment.enchancement.molten.desc": "Smelts mined blocks. Disabled while sneaking.",
+  "enchantment.enchancement.extracting": "Extracting",
+  "enchantment.enchancement.extracting.desc": "Extracts materials from connected ores, leaving the stone behind. Disabled while sneaking.",
   "enchantment.enchancement.beheading": "Beheading",
   "enchantment.enchancement.beheading.desc": "Slain mobs and players have a chance to drop their head.",
   "enchantment.enchancement.lumberjack": "Lumberjack",
@@ -176,7 +176,5 @@
   "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.NONE": "None",
   "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.VANILLA_AND_ENCHANCEMENT": "Vanilla and Enchancement",
   "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.ALL": "All",
-  "enchancement.midnightconfig.singlePressStrafe": "Single Press Strafe",
-  "item.spectrum.workstaff.message.molten": "Switched Enchantment to Molten",
-  "item.spectrum.workstaff.gui.molten": "Switch to Molten"
+  "enchancement.midnightconfig.singlePressStrafe": "Single Press Strafe"
 }

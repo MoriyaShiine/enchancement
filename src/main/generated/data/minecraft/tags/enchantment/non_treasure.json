@@ -89,11 +89,11 @@
 	  "required": false
 	},
 	{
-	  "id": "enchancement:extracting",
+	  "id": "enchancement:molten",
 	  "required": false
 	},
 	{
-	  "id": "enchancement:molten",
+	  "id": "enchancement:extracting",
 	  "required": false
 	},
 	{

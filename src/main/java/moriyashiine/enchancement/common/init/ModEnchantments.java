@@ -90,9 +90,10 @@ public class ModEnchantments {
 	// trident
 	public static final RegistryKey<Enchantment> LEECH = createKey("leech");
 	public static final RegistryKey<Enchantment> WARP = createKey("warp");
+	// mining tool
+	public static final RegistryKey<Enchantment> MOLTEN = createKey("molten");
 	// pickaxe
 	public static final RegistryKey<Enchantment> EXTRACTING = createKey("extracting");
-	public static final RegistryKey<Enchantment> MOLTEN = createKey("molten");
 	// axe
 	public static final RegistryKey<Enchantment> BEHEADING = createKey("beheading");
 	public static final RegistryKey<Enchantment> LUMBERJACK = createKey("lumberjack");
@@ -520,6 +521,16 @@ public class ModEnchantments {
 									false)
 					);
 				}));
+		// mining tool
+		registerable.register(MOLTEN, create(MOLTEN.getValue(),
+				itemLookup.getOrThrow(ItemTags.MINING_ENCHANTABLE),
+				1,
+				AttributeModifierSlot.MAINHAND,
+				builder -> {
+					builder.exclusiveSet(enchantmentLookup.getOrThrow(ModEnchantmentTags.SILK_TOUCH_EXCLUSIVE_SET));
+					builder.addEffect(
+							ModEnchantmentEffectComponentTypes.SMELT_MINED_BLOCKS);
+				}));
 		// pickaxe
 		registerable.register(EXTRACTING, create(EXTRACTING.getValue(),
 				itemLookup.getOrThrow(ItemTags.PICKAXES),
@@ -530,15 +541,6 @@ public class ModEnchantments {
 					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.MINE_ORE_VEINS,
 							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.5F)));
-				}));
-		registerable.register(MOLTEN, create(MOLTEN.getValue(),
-				itemLookup.getOrThrow(ItemTags.PICKAXES),
-				1,
-				AttributeModifierSlot.MAINHAND,
-				builder -> {
-					builder.exclusiveSet(enchantmentLookup.getOrThrow(ModEnchantmentTags.SILK_TOUCH_EXCLUSIVE_SET));
-					builder.addEffect(
-							ModEnchantmentEffectComponentTypes.SMELT_MINED_BLOCKS);
 				}));
 		// axe
 		registerable.register(BEHEADING, create(BEHEADING.getValue(),
