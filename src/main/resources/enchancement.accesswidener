@@ -16,8 +16,6 @@ accessible field net/minecraft/enchantment/Enchantment effects Lnet/minecraft/co
 mutable field net/minecraft/enchantment/Enchantment effects Lnet/minecraft/component/ComponentMap;
 accessible field net/minecraft/enchantment/effect/EnchantmentEffectEntry requirements Ljava/util/Optional;
 mutable field net/minecraft/enchantment/effect/EnchantmentEffectEntry requirements Ljava/util/Optional;
-accessible field net/minecraft/entity/projectile/FishingBobberEntity luckBonus I
-accessible field net/minecraft/entity/projectile/FishingBobberEntity waitTimeReductionTicks I
 accessible field net/minecraft/enchantment/effect/TargetedEnchantmentEffect requirements Ljava/util/Optional;
 mutable field net/minecraft/enchantment/effect/TargetedEnchantmentEffect requirements Ljava/util/Optional;
 accessible field net/minecraft/registry/tag/TagEntry id Lnet/minecraft/util/Identifier;

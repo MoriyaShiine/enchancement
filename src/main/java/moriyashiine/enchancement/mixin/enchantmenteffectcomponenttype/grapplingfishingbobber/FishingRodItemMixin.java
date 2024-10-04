@@ -6,7 +6,7 @@ package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.grappling
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import moriyashiine.enchancement.common.entity.projectile.GrappleFishingBobberEntity;
+import moriyashiine.enchancement.common.entity.projectile.StrengthHolder;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.Entity;
@@ -26,7 +26,7 @@ public class FishingRodItemMixin {
 	private boolean enchancement$grapplingFishingBobber(World instance, Entity entity, Operation<Boolean> original, World world, PlayerEntity user, Hand hand, @Local ItemStack stack) {
 		float grapplingStrength = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.GRAPPLING_FISHING_BOBBER, (ServerWorld) world, stack, 0);
 		if (grapplingStrength != 0 && entity instanceof FishingBobberEntity fishingBobber) {
-			entity = new GrappleFishingBobberEntity(fishingBobber.getPlayerOwner(), fishingBobber.getWorld(), fishingBobber.luckBonus, fishingBobber.waitTimeReductionTicks, grapplingStrength);
+			((StrengthHolder) fishingBobber).setStrength(grapplingStrength);
 		}
 		return original.call(instance, entity);
 	}
