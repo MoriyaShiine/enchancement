@@ -285,6 +285,15 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 					ingredient = repairIngredient;
 				}
 			}
+			Set<ItemStack> stacks = new HashSet<>();
+			for (ItemStack matchingStack : ingredient.getMatchingStacks()) {
+				if (matchingStack.isOf(Items.NETHERITE_INGOT)) {
+					stacks.add(Items.DIAMOND.getDefaultStack());
+				} else {
+					stacks.add(matchingStack);
+				}
+			}
+			ingredient = Ingredient.ofStacks(stacks.stream());
 		}
 		return ingredient;
 	}
