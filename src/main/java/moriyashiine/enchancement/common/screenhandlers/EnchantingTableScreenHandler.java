@@ -9,7 +9,6 @@ import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
 import moriyashiine.enchancement.common.tag.ModEnchantmentTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.EnchantingTableBlock;
@@ -25,7 +24,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.registry.tag.EnchantmentTags;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
@@ -347,15 +345,9 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 	}
 
 	private static boolean isEnchantmentAllowed(RegistryEntry<Enchantment> enchantment, ItemStack stack) {
-		if (enchantment.isIn(ModEnchantmentTags.NEVER_SELECTABLE)) {
+		if (enchantment.isIn(ModEnchantmentTags.UNSELECTABLE)) {
 			return false;
 		}
-		if (stack.canBeEnchantedWith(enchantment, EnchantingContext.ACCEPTABLE)) {
-			if (enchantment.isIn(ModEnchantmentTags.ALWAYS_SELECTABLE)) {
-				return true;
-			}
-			return ModConfig.allowTreasureEnchantmentsInEnchantingTable || !enchantment.isIn(EnchantmentTags.TREASURE);
-		}
-		return false;
+		return stack.canBeEnchantedWith(enchantment, ModConfig.overhaulEnchantingTable.context);
 	}
 }

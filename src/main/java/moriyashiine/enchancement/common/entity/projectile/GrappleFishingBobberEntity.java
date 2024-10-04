@@ -53,7 +53,7 @@ public class GrappleFishingBobberEntity extends FishingBobberEntity {
 		prevYaw = getYaw();
 		prevPitch = getPitch();
 
-		if (ModConfig.accurateFishingBobbers) {
+		if (ModConfig.rebalanceEquipment) {
 			accurateFishingBobbers(this, thrower, 2.75F);
 		}
 	}

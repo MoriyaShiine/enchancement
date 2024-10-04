@@ -74,11 +74,11 @@ public class EnchancementClient implements ClientModInitializer {
 	}
 
 	private void initEvents() {
-		ItemTooltipCallback.EVENT.register(new EnchantmentDescriptionsEvent());
+		// config
 		ClientTickEvents.END_WORLD_TICK.register(new CoyoteBiteEvent());
-		ItemTooltipCallback.EVENT.register(new EnchantedChestplatesIncreaseAirMobilityEvent());
-		ItemTooltipCallback.EVENT.register(new EnchantedToolsHaveEfficiencyEvent());
-		ItemTooltipCallback.EVENT.register(new EnchantedTridentsHaveLoyalty());
+		ItemTooltipCallback.EVENT.register(new EnchantmentDescriptionsEvent());
+		ItemTooltipCallback.EVENT.register(new ToggleablePassivesEvent());
+		// enchantment
 		HudRenderCallback.EVENT.register(new AirJumpRenderEvent());
 		ItemTooltipCallback.EVENT.register(new AutomaticallyFeedsTooltipEvent());
 		HudRenderCallback.EVENT.register(new BrimstoneRenderEvent());
@@ -89,10 +89,12 @@ public class EnchancementClient implements ClientModInitializer {
 	}
 
 	private void initPayloads() {
+		// internal
 		ClientPlayNetworking.registerGlobalReceiver(EnforceConfigMatchPayload.ID, new EnforceConfigMatchPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(SyncEnchantingMaterialMapPayload.ID, new SyncEnchantingMaterialMapPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(SyncEnchantingTableBookshelfCountPayload.ID, new SyncEnchantingTableBookshelfCountPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(SyncEnchantingTableCostPayload.ID, new SyncEnchantingTableCostPayload.Receiver());
+		// enchantment
 		ClientPlayNetworking.registerGlobalReceiver(AddAirJumpParticlesPayload.ID, new AddAirJumpParticlesPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(AddMoltenParticlesPayload.ID, new AddMoltenParticlesPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(AddMovementBurstParticlesPayload.ID, new AddMovementBurstParticlesPayload.Receiver());

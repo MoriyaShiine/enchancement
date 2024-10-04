@@ -8,9 +8,9 @@ import moriyashiine.enchancement.client.payload.*;
 import moriyashiine.enchancement.common.event.*;
 import moriyashiine.enchancement.common.init.*;
 import moriyashiine.enchancement.common.payload.*;
-import moriyashiine.enchancement.common.reloadlisteners.BeheadingReloadListener;
 import moriyashiine.enchancement.common.reloadlisteners.EnchantingMaterialReloadListener;
-import moriyashiine.enchancement.common.reloadlisteners.ExtractingBaseBlockReloadListener;
+import moriyashiine.enchancement.common.reloadlisteners.HeadDropsReloadListener;
+import moriyashiine.enchancement.common.reloadlisteners.MineOreVeinsBaseBlockReloadListener;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
@@ -49,8 +49,8 @@ public class Enchancement implements ModInitializer {
 		ModSoundEvents.init();
 		ModScreenHandlerTypes.init();
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new EnchantingMaterialReloadListener());
-		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new BeheadingReloadListener());
-		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new ExtractingBaseBlockReloadListener());
+		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new HeadDropsReloadListener());
+		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new MineOreVeinsBaseBlockReloadListener());
 		initEvents();
 		initPayloads();
 		isApoliLoaded = FabricLoader.getInstance().isModLoaded("apoli");
@@ -67,13 +67,18 @@ public class Enchancement implements ModInitializer {
 	}
 
 	private void initEvents() {
-		ServerLifecycleEvents.SERVER_STARTED.register(new GatherEnchantmentRegistryEvent());
+		// internal
+		ServerLifecycleEvents.SERVER_STARTED.register(new CacheEnchantmentRegistryEvent());
 		ServerPlayConnectionEvents.JOIN.register(new EnforceConfigMatchEvent());
-		ServerLifecycleEvents.SERVER_STARTED.register(new InitializeDefaultEnchantmentsEvent.ServerStart());
 		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register(new InitializeDefaultEnchantmentsEvent.ReloadResources());
+		ServerLifecycleEvents.SERVER_STARTED.register(new InitializeDefaultEnchantmentsEvent.ServerStart());
 		ServerPlayConnectionEvents.JOIN.register(new SyncEnchantingMaterialMapEvent.Join());
 		ServerTickEvents.END_SERVER_TICK.register(new SyncEnchantingMaterialMapEvent.Tick());
-		MultiplyMovementSpeedEvent.EVENT.register(new EnchantedChestplateAirMobilityEvent());
+		// config
+		ServerLifecycleEvents.SERVER_STARTED.register(new RebalanceEnchantmentsEvent.ServerStarted());
+		UseBlockCallback.EVENT.register(new RebalanceEnchantmentsEvent.UseBlock());
+		MultiplyMovementSpeedEvent.EVENT.register(new ToggleablePassivesEvent());
+		// enchantment
 		ServerEntityEvents.EQUIPMENT_CHANGE.register(new AirJumpEvent());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new AllowInterruptionEvent());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new BuryEntityEvent.Unbury());
@@ -86,8 +91,6 @@ public class Enchancement implements ModInitializer {
 		PlayerBlockBreakEvents.BEFORE.register(new MineOreVeinsEvent());
 		MultiplyMovementSpeedEvent.EVENT.register(new ModifyMovementSpeedEvent());
 		MultiplyMovementSpeedEvent.EVENT.register(new RageEvent());
-		ServerLifecycleEvents.SERVER_STARTED.register(new RebalanceChannelingEvent());
-		UseBlockCallback.EVENT.register(new RebalanceFireAspectEvent());
 	}
 
 	private void initPayloads() {

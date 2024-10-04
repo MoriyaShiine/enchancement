@@ -5,6 +5,7 @@ package moriyashiine.enchancement.common;
 
 import eu.midnightdust.lib.config.MidnightConfig;
 import moriyashiine.enchancement.client.util.AllowDuplicateKeybindingsMode;
+import moriyashiine.enchancement.common.util.OverhaulMode;
 
 import java.util.Arrays;
 import java.util.List;
@@ -52,9 +53,7 @@ public class ModConfig extends MidnightConfig {
 	public static boolean invertedList = false;
 
 	@Entry
-	public static boolean overhaulEnchantingTable = true;
-	@Entry
-	public static boolean allowTreasureEnchantmentsInEnchantingTable = true;
+	public static OverhaulMode overhaulEnchantingTable = OverhaulMode.ACCEPTABLE;
 
 	@Entry
 	public static boolean singleLevelMode = true;
@@ -62,49 +61,25 @@ public class ModConfig extends MidnightConfig {
 	public static int enchantmentLimit = 1;
 
 	@Entry
-	public static boolean accurateFishingBobbers = true;
-	@Entry
-	public static boolean arrowsDropOnHit = true;
-	@Entry
-	public static boolean crossbowsPullFromInventory = true;
-	@Entry
 	public static boolean disableDurability = true;
 	@Entry
 	public static boolean disableVelocityChecks = true;
 	@Entry
-	public static boolean drownedUseHeldTrident = true;
-	@Entry
-	public static boolean enchantedChestplatesIncreaseAirMobility = true;
-	@Entry
-	public static boolean enchantedToolsHaveEfficiency = true;
-	@Entry
-	public static boolean enchantedTridentsHaveLoyalty = true;
-	@Entry
-	public static boolean fasterBows = true;
+	public static boolean enhanceMobs = true;
 	@Entry
 	public static boolean freeEnchantedBookMerging = true;
 	@Entry
-	public static boolean luckOfTheSeaHasLure = true;
+	public static boolean rebalanceConsumables = true;
 	@Entry
-	public static boolean negateEnderPearlDamage = true;
+	public static boolean rebalanceEnchantments = true;
 	@Entry
-	public static boolean randomMobEnchantments = true;
-	@Entry
-	public static boolean rebalanceArmor = true;
-	@Entry
-	public static boolean rebalanceChanneling = true;
-	@Entry
-	public static boolean rebalanceFireAspect = true;
-	@Entry
-	public static boolean rebalanceGoldenApples = true;
+	public static boolean rebalanceEquipment = true;
 	@Entry
 	public static boolean rebalanceProjectiles = true;
 	@Entry
 	public static boolean rebalanceStatusEffects = true;
 	@Entry
-	public static boolean rebalanceTools = true;
-	@Entry
-	public static boolean tridentsReturnFromVoid = true;
+	public static boolean toggleablePassives = true;
 
 	@Entry(min = 0, max = 1)
 	public static float weaponEnchantmentCooldownRequirement = 0.7F;
@@ -134,17 +109,13 @@ public class ModConfig extends MidnightConfig {
 		}
 		String encoding = builder.toString() +
 				invertedList +
-				overhaulEnchantingTable + allowTreasureEnchantmentsInEnchantingTable +
+				overhaulEnchantingTable +
 				singleLevelMode + enchantmentLimit +
-				accurateFishingBobbers + arrowsDropOnHit +
-				crossbowsPullFromInventory +
-				disableDurability + disableVelocityChecks + drownedUseHeldTrident +
-				enchantedChestplatesIncreaseAirMobility + enchantedToolsHaveEfficiency + enchantedTridentsHaveLoyalty +
-				fasterBows + freeEnchantedBookMerging +
-				luckOfTheSeaHasLure +
-				negateEnderPearlDamage +
-				randomMobEnchantments + rebalanceArmor + rebalanceChanneling + rebalanceFireAspect + rebalanceGoldenApples + rebalanceProjectiles + rebalanceStatusEffects + rebalanceTools +
-				tridentsReturnFromVoid +
+				disableDurability + disableVelocityChecks +
+				enhanceMobs +
+				freeEnchantedBookMerging +
+				rebalanceConsumables + rebalanceEnchantments + rebalanceEquipment + rebalanceProjectiles + rebalanceStatusEffects +
+				toggleablePassives +
 				weaponEnchantmentCooldownRequirement +
 				maxFellTreesBlocks + maxFellTreesHorizontalLength + maxMineOreVeinsBlocks +
 				coyoteBiteTicks;
