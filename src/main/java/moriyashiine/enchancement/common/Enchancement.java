@@ -96,30 +96,30 @@ public class Enchancement implements ModInitializer {
 		PayloadTypeRegistry.playS2C().register(SyncEnchantingMaterialMapPayload.ID, SyncEnchantingMaterialMapPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(SyncEnchantingTableBookshelfCountPayload.ID, SyncEnchantingTableBookshelfCountPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(SyncEnchantingTableCostPayload.ID, SyncEnchantingTableCostPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(AddStrafeParticlesPayload.ID, AddStrafeParticlesPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(AddAirJumpParticlesPayload.ID, AddAirJumpParticlesPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(AddMoltenParticlesPayload.ID, AddMoltenParticlesPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(AddMovementBurstParticlesPayload.ID, AddMovementBurstParticlesPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(PlayBrimstoneFireSoundPayload.ID, PlayBrimstoneFireSoundPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(PlayBrimstoneTravelSoundPayload.ID, PlayBrimstoneTravelSoundPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(ResetFrozenTicksPayload.ID, ResetFrozenTicksPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(SyncFrozenPlayerSlimStatusS2CPayload.ID, SyncFrozenPlayerSlimStatusS2CPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(AddMoltenParticlesPayload.ID, AddMoltenParticlesPayload.CODEC);
 		// common payloads
+		PayloadTypeRegistry.playC2S().register(AirJumpPayload.ID, AirJumpPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(BoostInFluidPayload.ID, BoostInFluidPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(DirectionMovementBurstPayload.ID, DirectionMovementBurstPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(RotationMovementBurstPayload.ID, RotationMovementBurstPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(SlamPayload.ID, SlamPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(StartSlidingPayload.ID, StartSlidingPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(StopSlidingPayload.ID, StopSlidingPayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(BoostInFluidPayload.ID, BoostInFluidPayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(AirJumpPayload.ID, AirJumpPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(SyncFrozenPlayerSlimStatusC2SPayload.ID, SyncFrozenPlayerSlimStatusC2SPayload.CODEC);
 		// server receivers
+		ServerPlayNetworking.registerGlobalReceiver(AirJumpPayload.ID, new AirJumpPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(BoostInFluidPayload.ID, new BoostInFluidPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(DirectionMovementBurstPayload.ID, new DirectionMovementBurstPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(RotationMovementBurstPayload.ID, new RotationMovementBurstPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(SlamPayload.ID, new SlamPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(StartSlidingPayload.ID, new StartSlidingPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(StopSlidingPayload.ID, new StopSlidingPayload.Receiver());
-		ServerPlayNetworking.registerGlobalReceiver(BoostInFluidPayload.ID, new BoostInFluidPayload.Receiver());
-		ServerPlayNetworking.registerGlobalReceiver(AirJumpPayload.ID, new AirJumpPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(SyncFrozenPlayerSlimStatusC2SPayload.ID, new SyncFrozenPlayerSlimStatusC2SPayload.Receiver());
 	}
 }

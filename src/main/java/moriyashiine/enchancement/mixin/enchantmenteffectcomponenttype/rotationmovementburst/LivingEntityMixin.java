@@ -4,6 +4,7 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.rotationmovementburst;
 
 import moriyashiine.enchancement.common.component.entity.RotationMovementBurstComponent;
+import moriyashiine.enchancement.common.enchantment.effect.RotationMovementBurstEffect;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.Vec3d;
@@ -18,7 +19,7 @@ public class LivingEntityMixin {
 		RotationMovementBurstComponent rotationMovementBurstComponent = ModEntityComponents.ROTATION_MOVEMENT_BURST.getNullable(this);
 		if (rotationMovementBurstComponent != null && rotationMovementBurstComponent.shouldWavedash()) {
 			rotationMovementBurstComponent.setCooldown(0);
-			return value.multiply(1.5);
+			return value.multiply(RotationMovementBurstEffect.getWavedashStrength((LivingEntity) (Object) this));
 		}
 		return value;
 	}

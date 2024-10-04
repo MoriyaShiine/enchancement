@@ -5,7 +5,7 @@
   },
   "effects": {
 	"enchancement:direction_movement_burst": {
-	  "charge_cooldown": {
+	  "cooldown": {
 		"type": "minecraft:add",
 		"value": 1.0
 	  },

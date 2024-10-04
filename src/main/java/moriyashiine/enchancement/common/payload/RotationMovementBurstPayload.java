@@ -3,10 +3,12 @@
  */
 package moriyashiine.enchancement.common.payload;
 
+import moriyashiine.enchancement.client.payload.AddMovementBurstParticlesPayload;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.component.entity.RotationMovementBurstComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
@@ -31,6 +33,7 @@ public record RotationMovementBurstPayload() implements CustomPayload {
 			RotationMovementBurstComponent rotationMovementBurstComponent = ModEntityComponents.ROTATION_MOVEMENT_BURST.get(context.player());
 			if (rotationMovementBurstComponent.hasRotationMovementBurst() && rotationMovementBurstComponent.canUse()) {
 				rotationMovementBurstComponent.use();
+				PlayerLookup.tracking(context.player()).forEach(foundPlayer -> AddMovementBurstParticlesPayload.send(foundPlayer, context.player().getId()));
 			}
 		}
 	}

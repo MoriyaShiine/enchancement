@@ -4,19 +4,17 @@
 package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.client.EnchancementClient;
+import moriyashiine.enchancement.client.payload.AddMovementBurstParticlesPayload;
 import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.enchantment.effect.MovementBurstEffect;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.enchantment.effect.DirectionMovementBurstEffect;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.payload.DirectionMovementBurstPayload;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.GameOptions;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.Vec3d;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
@@ -49,7 +47,7 @@ public class DirectionMovementBurstComponent implements AutoSyncedComponent, Com
 
 	@Override
 	public void tick() {
-		int entityCooldown = MovementBurstEffect.getCooldown(ModEnchantmentEffectComponentTypes.DIRECTION_MOVEMENT_BURST, obj);
+		int entityCooldown = DirectionMovementBurstEffect.getCooldown(obj);
 		hasDirectionMovementBurst = entityCooldown > 0;
 		if (hasDirectionMovementBurst) {
 			if (cooldown > 0) {
@@ -76,7 +74,7 @@ public class DirectionMovementBurstComponent implements AutoSyncedComponent, Com
 					if (inputVelocity != Vec3d.ZERO) {
 						Vec3d velocity = inputVelocity.rotateY((float) Math.toRadians(-(obj.getHeadYaw() + 90)));
 						use(velocity.getX(), velocity.getZ());
-						addStrafeParticles(obj);
+						AddMovementBurstParticlesPayload.addParticles(obj);
 						DirectionMovementBurstPayload.send(velocity);
 					}
 				} else {
@@ -111,12 +109,12 @@ public class DirectionMovementBurstComponent implements AutoSyncedComponent, Com
 	public void use(double velocityX, double velocityZ) {
 		obj.addVelocity(velocityX, 0, velocityZ);
 		obj.playSound(ModSoundEvents.ENTITY_GENERIC_STRAFE, 1, 1);
-		setCooldown(MovementBurstEffect.getCooldown(ModEnchantmentEffectComponentTypes.DIRECTION_MOVEMENT_BURST, obj));
+		setCooldown(DirectionMovementBurstEffect.getCooldown(obj));
 	}
 
 	@Environment(EnvType.CLIENT)
 	private Vec3d getVelocityFromInput(GameOptions options) {
-		float strength = MovementBurstEffect.getStrength(ModEnchantmentEffectComponentTypes.DIRECTION_MOVEMENT_BURST, MinecraftClient.getInstance().player);
+		float strength = DirectionMovementBurstEffect.getStrength(MinecraftClient.getInstance().player);
 		if (options.forwardKey.isPressed()) {
 			return new Vec3d(strength, 0, 0);
 		}
@@ -130,13 +128,5 @@ public class DirectionMovementBurstComponent implements AutoSyncedComponent, Com
 			return new Vec3d(0, 0, strength);
 		}
 		return Vec3d.ZERO;
-	}
-
-	public static void addStrafeParticles(Entity entity) {
-		if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || entity != MinecraftClient.getInstance().cameraEntity) {
-			for (int i = 0; i < 8; i++) {
-				entity.getWorld().addParticle(ParticleTypes.CLOUD, entity.getParticleX(1), entity.getRandomBodyY(), entity.getParticleZ(1), 0, 0, 0);
-			}
-		}
 	}
 }

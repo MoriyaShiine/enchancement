@@ -5,7 +5,7 @@ package moriyashiine.enchancement.common.enchantment.effect;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.component.ComponentType;
+import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.effect.EnchantmentValueEffect;
 import net.minecraft.entity.LivingEntity;
@@ -13,17 +13,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
-public record MovementBurstEffect(EnchantmentValueEffect cooldown, EnchantmentValueEffect strength) {
-	public static final Codec<MovementBurstEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-					EnchantmentValueEffect.CODEC.fieldOf("charge_cooldown").forGetter(MovementBurstEffect::cooldown),
-					EnchantmentValueEffect.CODEC.fieldOf("strength").forGetter(MovementBurstEffect::strength))
-			.apply(instance, MovementBurstEffect::new));
+public record DirectionMovementBurstEffect(EnchantmentValueEffect cooldown, EnchantmentValueEffect strength) {
+	public static final Codec<DirectionMovementBurstEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+					EnchantmentValueEffect.CODEC.fieldOf("cooldown").forGetter(DirectionMovementBurstEffect::cooldown),
+					EnchantmentValueEffect.CODEC.fieldOf("strength").forGetter(DirectionMovementBurstEffect::strength))
+			.apply(instance, DirectionMovementBurstEffect::new));
 
-	public static int getCooldown(ComponentType<MovementBurstEffect> component, LivingEntity entity) {
+	public static int getCooldown(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
 		for (ItemStack stack : entity.getArmorItems()) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
-				MovementBurstEffect effect = enchantment.value().effects().get(component);
+				DirectionMovementBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.DIRECTION_MOVEMENT_BURST);
 				if (effect != null) {
 					mutableFloat.setValue(effect.cooldown().apply(level, entity.getRandom(), mutableFloat.floatValue()));
 				}
@@ -32,11 +32,11 @@ public record MovementBurstEffect(EnchantmentValueEffect cooldown, EnchantmentVa
 		return MathHelper.floor(mutableFloat.floatValue() * 20);
 	}
 
-	public static float getStrength(ComponentType<MovementBurstEffect> component, LivingEntity entity) {
+	public static float getStrength(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
 		for (ItemStack stack : entity.getArmorItems()) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
-				MovementBurstEffect effect = enchantment.value().effects().get(component);
+				DirectionMovementBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.DIRECTION_MOVEMENT_BURST);
 				if (effect != null) {
 					mutableFloat.setValue(effect.strength().apply(level, entity.getRandom(), mutableFloat.floatValue()));
 				}

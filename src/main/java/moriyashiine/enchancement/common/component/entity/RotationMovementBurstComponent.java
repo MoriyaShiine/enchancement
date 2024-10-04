@@ -4,8 +4,8 @@
 package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.client.EnchancementClient;
-import moriyashiine.enchancement.common.enchantment.effect.MovementBurstEffect;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.client.payload.AddMovementBurstParticlesPayload;
+import moriyashiine.enchancement.common.enchantment.effect.RotationMovementBurstEffect;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.payload.RotationMovementBurstPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
@@ -13,7 +13,6 @@ import moriyashiine.enchancement.mixin.util.accessor.LivingEntityAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.Vec3d;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
@@ -49,7 +48,7 @@ public class RotationMovementBurstComponent implements AutoSyncedComponent, Comm
 
 	@Override
 	public void tick() {
-		int entityCooldown = MovementBurstEffect.getCooldown(ModEnchantmentEffectComponentTypes.ROTATION_MOVEMENT_BURST, obj);
+		int entityCooldown = RotationMovementBurstEffect.getCooldown(obj);
 		hasRotationMovementBurst = entityCooldown > 0;
 		if (hasRotationMovementBurst) {
 			if (!shouldRefresh) {
@@ -81,11 +80,7 @@ public class RotationMovementBurstComponent implements AutoSyncedComponent, Comm
 			boolean pressingDashKey = EnchancementClient.DASH_KEYBINDING.isPressed();
 			if (pressingDashKey && !wasPressingDashKey && canUse()) {
 				use();
-				if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || obj != MinecraftClient.getInstance().cameraEntity) {
-					for (int i = 0; i < 8; i++) {
-						obj.getWorld().addParticle(ParticleTypes.CLOUD, obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 0, 0);
-					}
-				}
+				AddMovementBurstParticlesPayload.addParticles(obj);
 				RotationMovementBurstPayload.send();
 			}
 			wasPressingDashKey = pressingDashKey;
@@ -122,11 +117,11 @@ public class RotationMovementBurstComponent implements AutoSyncedComponent, Comm
 
 	public void use() {
 		obj.playSound(ModSoundEvents.ENTITY_GENERIC_DASH, 1, 1);
-		Vec3d velocity = obj.getRotationVector().normalize().multiply(MovementBurstEffect.getStrength(ModEnchantmentEffectComponentTypes.ROTATION_MOVEMENT_BURST, obj));
+		Vec3d velocity = obj.getRotationVector().normalize().multiply(RotationMovementBurstEffect.getStrength(obj));
 		obj.setVelocity(velocity.getX(), velocity.getY(), velocity.getZ());
 		obj.fallDistance = 0;
-		setCooldown(MovementBurstEffect.getCooldown(ModEnchantmentEffectComponentTypes.ROTATION_MOVEMENT_BURST, obj));
+		setCooldown(RotationMovementBurstEffect.getCooldown(obj));
 		shouldRefresh = false;
-		wavedashTicks = 3;
+		wavedashTicks = RotationMovementBurstEffect.getWavedashTicks(obj);
 	}
 }

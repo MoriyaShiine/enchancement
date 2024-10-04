@@ -5,7 +5,7 @@
   },
   "effects": {
 	"enchancement:rotation_movement_burst": {
-	  "charge_cooldown": {
+	  "cooldown": {
 		"type": "minecraft:add",
 		"value": 1.0
 	  },
@@ -16,6 +16,14 @@
 		  "base": 0.75,
 		  "per_level_above_first": 0.1
 		}
+	  },
+	  "wavedash_strength": {
+		"type": "minecraft:add",
+		"value": 1.5
+	  },
+	  "wavedash_ticks": {
+		"type": "minecraft:add",
+		"value": 3.0
 	  }
 	}
   },

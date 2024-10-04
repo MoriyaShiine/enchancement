@@ -220,7 +220,7 @@ public class ModEnchantments {
 				AttributeModifierSlot.CHEST,
 				builder -> builder.addNonListEffect(
 						ModEnchantmentEffectComponentTypes.DIRECTION_MOVEMENT_BURST,
-						new MovementBurstEffect(
+						new DirectionMovementBurstEffect(
 								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1)),
 								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.35F, 0.15F))))));
 		registerable.register(WARDENSPINE, create(WARDENSPINE.getValue(),
@@ -270,9 +270,11 @@ public class ModEnchantments {
 				AttributeModifierSlot.LEGS,
 				builder -> builder.addNonListEffect(
 						ModEnchantmentEffectComponentTypes.ROTATION_MOVEMENT_BURST,
-						new MovementBurstEffect(
+						new RotationMovementBurstEffect(
 								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1)),
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.75F, 0.1F))))));
+								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.75F, 0.1F)),
+								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(3)),
+								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1.5F))))));
 		registerable.register(GALE, create(GALE.getValue(),
 				itemLookup.getOrThrow(ItemTags.LEG_ARMOR_ENCHANTABLE),
 				2,

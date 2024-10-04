@@ -3,7 +3,7 @@
  */
 package moriyashiine.enchancement.common.payload;
 
-import moriyashiine.enchancement.client.payload.AddStrafeParticlesPayload;
+import moriyashiine.enchancement.client.payload.AddMovementBurstParticlesPayload;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.component.entity.DirectionMovementBurstComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
@@ -35,7 +35,7 @@ public record DirectionMovementBurstPayload(float velocityX, float velocityZ) im
 			DirectionMovementBurstComponent directionMovementBurstComponent = ModEntityComponents.DIRECTION_MOVEMENT_BURST.get(context.player());
 			if (directionMovementBurstComponent.hasDirectionMovementBurst() && directionMovementBurstComponent.canUse()) {
 				directionMovementBurstComponent.use(payload.velocityX(), payload.velocityZ());
-				PlayerLookup.tracking(context.player()).forEach(foundPlayer -> AddStrafeParticlesPayload.send(foundPlayer, context.player().getId()));
+				PlayerLookup.tracking(context.player()).forEach(foundPlayer -> AddMovementBurstParticlesPayload.send(foundPlayer, context.player().getId()));
 			}
 		}
 	}

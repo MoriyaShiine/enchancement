@@ -1,0 +1,77 @@
+/*
+ * Copyright (c) MoriyaShiine. All Rights Reserved.
+ */
+package moriyashiine.enchancement.common.enchantment.effect;
+
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.effect.EnchantmentValueEffect;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
+import org.apache.commons.lang3.mutable.MutableFloat;
+
+public record RotationMovementBurstEffect(EnchantmentValueEffect cooldown, EnchantmentValueEffect strength,
+										  EnchantmentValueEffect wavedashTicks,
+										  EnchantmentValueEffect wavedashStrength) {
+	public static final Codec<RotationMovementBurstEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+					EnchantmentValueEffect.CODEC.fieldOf("cooldown").forGetter(RotationMovementBurstEffect::cooldown),
+					EnchantmentValueEffect.CODEC.fieldOf("strength").forGetter(RotationMovementBurstEffect::strength),
+					EnchantmentValueEffect.CODEC.fieldOf("wavedash_ticks").forGetter(RotationMovementBurstEffect::wavedashTicks),
+					EnchantmentValueEffect.CODEC.fieldOf("wavedash_strength").forGetter(RotationMovementBurstEffect::wavedashStrength))
+			.apply(instance, RotationMovementBurstEffect::new));
+
+	public static int getCooldown(LivingEntity entity) {
+		MutableFloat mutableFloat = new MutableFloat(0);
+		for (ItemStack stack : entity.getArmorItems()) {
+			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
+				RotationMovementBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.ROTATION_MOVEMENT_BURST);
+				if (effect != null) {
+					mutableFloat.setValue(effect.cooldown().apply(level, entity.getRandom(), mutableFloat.floatValue()));
+				}
+			});
+		}
+		return MathHelper.floor(mutableFloat.floatValue() * 20);
+	}
+
+	public static float getStrength(LivingEntity entity) {
+		MutableFloat mutableFloat = new MutableFloat(0);
+		for (ItemStack stack : entity.getArmorItems()) {
+			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
+				RotationMovementBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.ROTATION_MOVEMENT_BURST);
+				if (effect != null) {
+					mutableFloat.setValue(effect.strength().apply(level, entity.getRandom(), mutableFloat.floatValue()));
+				}
+			});
+		}
+		return mutableFloat.floatValue();
+	}
+
+	public static int getWavedashTicks(LivingEntity entity) {
+		MutableFloat mutableFloat = new MutableFloat(0);
+		for (ItemStack stack : entity.getArmorItems()) {
+			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
+				RotationMovementBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.ROTATION_MOVEMENT_BURST);
+				if (effect != null) {
+					mutableFloat.setValue(effect.wavedashTicks().apply(level, entity.getRandom(), mutableFloat.floatValue()));
+				}
+			});
+		}
+		return MathHelper.floor(mutableFloat.floatValue());
+	}
+
+	public static float getWavedashStrength(LivingEntity entity) {
+		MutableFloat mutableFloat = new MutableFloat(0);
+		for (ItemStack stack : entity.getArmorItems()) {
+			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
+				RotationMovementBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.ROTATION_MOVEMENT_BURST);
+				if (effect != null) {
+					mutableFloat.setValue(effect.wavedashStrength().apply(level, entity.getRandom(), mutableFloat.floatValue()));
+				}
+			});
+		}
+		return mutableFloat.floatValue();
+	}
+}
