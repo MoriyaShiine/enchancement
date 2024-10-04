@@ -15,6 +15,7 @@
 	"minecraft:chorus_fruit",
 	"minecraft:enchanted_golden_apple",
 	"minecraft:golden_apple",
+	"minecraft:ominous_bottle",
 	{
 	  "id": "#c:foods/doughs",
 	  "required": false

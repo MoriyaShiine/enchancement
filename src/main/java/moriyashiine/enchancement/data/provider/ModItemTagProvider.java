@@ -29,6 +29,7 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
 				.add(Items.CHORUS_FRUIT)
 				.add(Items.ENCHANTED_GOLDEN_APPLE)
 				.add(Items.GOLDEN_APPLE)
+				.add(Items.OMINOUS_BOTTLE)
 				.addOptionalTag(of("c", "foods/doughs"))
 				.addOptionalTag(of("c", "foods/pastas"))
 				.addOptional(of("farmersdelight", "dog_food"))
