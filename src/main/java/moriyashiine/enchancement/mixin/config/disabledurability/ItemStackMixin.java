@@ -28,14 +28,14 @@ public abstract class ItemStackMixin {
 	@Inject(method = "damage(ILnet/minecraft/server/world/ServerWorld;Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Consumer;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isDamageable()Z"))
 	private <T extends LivingEntity> void enchancement$disableDurability(int amount, ServerWorld world, @Nullable ServerPlayerEntity player, Consumer<Item> breakCallback, CallbackInfo ci) {
 		ItemStack stack = (ItemStack) (Object) this;
-		if (player != null && EnchancementUtil.shouldBeUnbreakable(stack)) {
+		if (player != null && EnchancementUtil.isUnbreakable(stack)) {
 			Criteria.ITEM_DURABILITY_CHANGED.trigger(player, stack, getDamage());
 		}
 	}
 
 	@Inject(method = "isDamageable", at = @At("HEAD"), cancellable = true)
 	private void enchancement$disableDurability(CallbackInfoReturnable<Boolean> cir) {
-		if (EnchancementUtil.shouldBeUnbreakable((ItemStack) (Object) this)) {
+		if (EnchancementUtil.isUnbreakable((ItemStack) (Object) this)) {
 			cir.setReturnValue(false);
 		}
 	}

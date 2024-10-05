@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class SetDamageLootFunctionMixin {
 	@Inject(method = "process", at = @At("HEAD"), cancellable = true)
 	private void enchancement$disableDurability(ItemStack stack, LootContext context, CallbackInfoReturnable<ItemStack> cir) {
-		if (EnchancementUtil.shouldBeUnbreakable(stack)) {
+		if (EnchancementUtil.isUnbreakable(stack)) {
 			cir.setReturnValue(stack);
 		}
 	}

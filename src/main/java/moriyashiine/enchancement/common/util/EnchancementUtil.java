@@ -8,7 +8,6 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.event.InitializeDefaultEnchantmentsEvent;
 import moriyashiine.enchancement.common.init.ModEnchantments;
-import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
 import moriyashiine.enchancement.common.tag.ModItemTags;
 import moriyashiine.enchancement.mixin.util.accessor.ItemEntityAccessor;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
@@ -26,7 +25,6 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Ownable;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -76,6 +74,8 @@ public class EnchancementUtil {
 		throw new IllegalArgumentException("Enchantment " + enchantment.value().description().getString() + " does not have a translation key");
 	}
 
+	// disable disallowed enchantments
+
 	public static List<RegistryEntry.Reference<Enchantment>> getAllEnchantments() {
 		return ENCHANTMENT_REGISTRY.streamEntries().toList();
 	}
@@ -117,6 +117,25 @@ public class EnchancementUtil {
 		return enchantments.get(index);
 	}
 
+	public static boolean isEnchantmentAllowed(RegistryEntry<Enchantment> enchantment) {
+		if (enchantment.getKey().isPresent()) {
+			return isEnchantmentAllowed(enchantment.getKey().get().getValue());
+		}
+		return false;
+	}
+
+	public static boolean isEnchantmentAllowed(Identifier identifier) {
+		if (identifier.equals(ModEnchantments.EMPTY_KEY.getValue())) {
+			return false;
+		}
+		if (ModConfig.invertedList) {
+			return ModConfig.disallowedEnchantments.contains(identifier.toString());
+		}
+		return !ModConfig.disallowedEnchantments.contains(identifier.toString());
+	}
+
+	// single level mode
+
 	public static boolean hasWeakEnchantments(ItemStack stack) {
 		if (stack.isIn(ModItemTags.STRONGLY_ENCHANTED)) {
 			return false;
@@ -144,22 +163,61 @@ public class EnchancementUtil {
 		return false;
 	}
 
-	public static boolean isEnchantmentAllowed(RegistryEntry<Enchantment> enchantment) {
-		if (enchantment.getKey().isPresent()) {
-			return isEnchantmentAllowed(enchantment.getKey().get().getValue());
+	public static int alterLevel(ItemStack stack, RegistryEntry<Enchantment> enchantment) {
+		return getModifiedMaxLevel(stack, getOriginalMaxLevel(enchantment));
+	}
+
+	public static int getModifiedMaxLevel(ItemStack stack, int maxLevel) {
+		if (EnchancementUtil.hasWeakEnchantments(stack)) {
+			return MathHelper.ceil(maxLevel / 2F);
+		}
+		return maxLevel;
+	}
+
+	public static int getOriginalMaxLevel(RegistryEntry<Enchantment> enchantment) {
+		return ORIGINAL_MAX_LEVELS.getOrDefault(enchantment.value(), enchantment.value().getMaxLevel());
+	}
+
+	// enchantment limit
+
+	public static boolean isDefaultEnchantment(ItemStack stack, RegistryEntry<Enchantment> enchantment) {
+		ItemEnchantmentsComponent defaultEnchantments = InitializeDefaultEnchantmentsEvent.DEFAULT_ENCHANTMENTS.get(stack.getItem());
+		if (defaultEnchantments != null) {
+			for (RegistryEntry<Enchantment> foundEnchantment : defaultEnchantments.getEnchantments()) {
+				if (foundEnchantment == enchantment) {
+					int level = ModConfig.singleLevelMode ? 1 : EnchantmentHelper.getLevel(enchantment, stack);
+					if (level == defaultEnchantments.getLevel(enchantment)) {
+						return true;
+					}
+				}
+			}
 		}
 		return false;
 	}
 
-	public static boolean isEnchantmentAllowed(Identifier identifier) {
-		if (identifier.equals(ModEnchantments.EMPTY_KEY.getValue())) {
-			return false;
+	public static boolean limitCheck(boolean fallback, boolean value) {
+		if (ModConfig.enchantmentLimit == 0) {
+			return fallback;
 		}
-		if (ModConfig.invertedList) {
-			return ModConfig.disallowedEnchantments.contains(identifier.toString());
-		}
-		return !ModConfig.disallowedEnchantments.contains(identifier.toString());
+		return value;
 	}
+
+	public static int getNonDefaultEnchantmentsSize(ItemStack stack, int size) {
+		for (RegistryEntry<Enchantment> enchantment : EnchantmentHelper.getEnchantments(stack).getEnchantments()) {
+			if (isDefaultEnchantment(stack, enchantment)) {
+				size--;
+			}
+		}
+		return size;
+	}
+
+	// disable durability
+
+	public static boolean isUnbreakable(ItemStack stack) {
+		return ModConfig.disableDurability && !stack.isEmpty() && stack.getMaxDamage() > 0 && !stack.isIn(ModItemTags.RETAINS_DURABILITY);
+	}
+
+	// misc
 
 	public static boolean isGroundedOrAirborne(LivingEntity living, boolean allowWater) {
 		if (living instanceof PlayerEntity player && player.getAbilities().flying) {
@@ -197,51 +255,6 @@ public class EnchancementUtil {
 		return entity.getWorld().raycast(new RaycastContext(entity.getPos(), entity.getPos().add(0, -distanceFromGround, 0), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.ANY, entity)).getType() == HitResult.Type.MISS;
 	}
 
-	public static boolean isDefaultEnchantment(ItemStack stack, RegistryEntry<Enchantment> enchantment) {
-		ItemEnchantmentsComponent defaultEnchantments = InitializeDefaultEnchantmentsEvent.DEFAULT_ENCHANTMENTS.get(stack.getItem());
-		if (defaultEnchantments != null) {
-			for (RegistryEntry<Enchantment> foundEnchantment : defaultEnchantments.getEnchantments()) {
-				if (foundEnchantment == enchantment) {
-					int level = ModConfig.singleLevelMode ? 1 : EnchantmentHelper.getLevel(enchantment, stack);
-					if (level == defaultEnchantments.getLevel(enchantment)) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
-
-	public static boolean limitCheck(boolean fallback, boolean value) {
-		if (ModConfig.enchantmentLimit == 0) {
-			return fallback;
-		}
-		return value;
-	}
-
-	public static int getNonDefaultEnchantmentsSize(ItemStack stack, int size) {
-		for (RegistryEntry<Enchantment> enchantment : EnchantmentHelper.getEnchantments(stack).getEnchantments()) {
-			if (isDefaultEnchantment(stack, enchantment)) {
-				size--;
-			}
-		}
-		return size;
-	}
-
-	public static boolean shouldBeUnbreakable(ItemStack stack) {
-		return ModConfig.disableDurability && !stack.isEmpty() && stack.getMaxDamage() > 0 && !stack.isIn(ModItemTags.RETAINS_DURABILITY);
-	}
-
-	public static boolean shouldDisableLoyalty(PersistentProjectileEntity entity) {
-		if (ModConfig.toggleablePassives) {
-			if (entity.getType().isIn(ModEntityTypeTags.NO_LOYALTY)) {
-				return true;
-			}
-			return !(entity.getOwner() instanceof PlayerEntity);
-		}
-		return false;
-	}
-
 	public static boolean shouldHurt(Entity attacker, Entity hitEntity) {
 		if (attacker == null || hitEntity == null) {
 			return true;
@@ -262,20 +275,7 @@ public class EnchancementUtil {
 		return (int) Math.floor(percentage * 10 + 0.5);
 	}
 
-	public static int getModifiedMaxLevel(ItemStack stack, int maxLevel) {
-		if (EnchancementUtil.hasWeakEnchantments(stack)) {
-			return MathHelper.ceil(maxLevel / 2F);
-		}
-		return maxLevel;
-	}
-
-	public static int getOriginalMaxLevel(RegistryEntry<Enchantment> enchantment) {
-		return ORIGINAL_MAX_LEVELS.getOrDefault(enchantment.value(), enchantment.value().getMaxLevel());
-	}
-
-	public static int alterLevel(ItemStack stack, RegistryEntry<Enchantment> enchantment) {
-		return getModifiedMaxLevel(stack, getOriginalMaxLevel(enchantment));
-	}
+	// enchantment
 
 	public static boolean hasAnyEnchantmentsIn(Entity entity, TagKey<Enchantment> tag) {
 		if (entity instanceof LivingEntity living) {
