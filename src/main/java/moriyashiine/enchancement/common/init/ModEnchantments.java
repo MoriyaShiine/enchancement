@@ -225,7 +225,7 @@ public class ModEnchantments {
 						ModEnchantmentEffectComponentTypes.DIRECTION_MOVEMENT_BURST,
 						new DirectionMovementBurstEffect(
 								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1)),
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.35F, 0.15F))))));
+								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.45F, 0.25F))))));
 		registerable.register(WARDENSPINE, create(WARDENSPINE.getValue(),
 				itemLookup.getOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
 				2,
@@ -275,7 +275,7 @@ public class ModEnchantments {
 						ModEnchantmentEffectComponentTypes.ROTATION_MOVEMENT_BURST,
 						new RotationMovementBurstEffect(
 								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1)),
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.75F, 0.1F)),
+								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.75F, 0.15F)),
 								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(3)),
 								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1.5F))))));
 		registerable.register(GALE, create(GALE.getValue(),
@@ -286,7 +286,7 @@ public class ModEnchantments {
 						ModEnchantmentEffectComponentTypes.AIR_JUMP,
 						new AirJumpEffect(
 								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(1)),
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1.4F)),
+								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1.45F)),
 								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0.5F)),
 								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0.5F))))));
 		registerable.register(SLIDE, create(SLIDE.getValue(),

@@ -14,7 +14,7 @@
 		"value": {
 		  "type": "minecraft:linear",
 		  "base": 0.75,
-		  "per_level_above_first": 0.1
+		  "per_level_above_first": 0.15
 		}
 	  },
 	  "wavedash_strength": {
