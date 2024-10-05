@@ -44,6 +44,7 @@
 	"config.rebalanceequipment.ArmorMaterialsMixin",
 	"config.rebalanceequipment.BowItemMixin",
 	"config.rebalanceequipment.FishingBobberEntityMixin",
+	"config.rebalanceequipment.MaceItemMixin",
 	"config.rebalanceequipment.PlayerEntityMixin",
 	"config.rebalanceequipment.ToolMaterialsMixin",
 	"config.rebalanceequipment.TridentEntityMixin",
