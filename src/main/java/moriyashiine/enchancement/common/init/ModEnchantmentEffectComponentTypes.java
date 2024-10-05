@@ -27,6 +27,7 @@ public class ModEnchantmentEffectComponentTypes {
 	public static final ComponentType<Unit> BOUNCE = register("bounce", builder -> builder.codec(Unit.CODEC));
 	public static final ComponentType<BrimstoneEffect> BRIMSTONE = register("brimstone", builder -> builder.codec(BrimstoneEffect.CODEC));
 	public static final ComponentType<List<EnchantmentEffectEntry<EnchantmentValueEffect>>> BURY_ENTITY = register("bury_entity", builder -> builder.codec(EnchantmentEffectEntry.createCodec(EnchantmentValueEffect.CODEC, LootContextTypes.ENCHANTED_ITEM).listOf()));
+	public static final ComponentType<List<EnchantmentEffectEntry<EnchantmentValueEffect>>> CHAIN_LIGHTNING = register("chain_lightning", builder -> builder.codec(EnchantmentEffectEntry.createCodec(EnchantmentValueEffect.CODEC, LootContextTypes.ENCHANTED_ITEM).listOf()));
 	public static final ComponentType<ChargeJumpEffect> CHARGE_JUMP = register("charge_jump", builder -> builder.codec(ChargeJumpEffect.CODEC));
 	public static final ComponentType<List<EnchantmentEffectEntry<DelayedLaunchEffect>>> DELAYED_LAUNCH = register("delayed_launch", builder -> builder.codec(EnchantmentEffectEntry.createCodec(DelayedLaunchEffect.CODEC, LootContextTypes.ENCHANTED_ITEM).listOf()));
 	public static final ComponentType<DirectionMovementBurstEffect> DIRECTION_MOVEMENT_BURST = register("direction_movement_burst", builder -> builder.codec(DirectionMovementBurstEffect.CODEC));
@@ -40,11 +41,12 @@ public class ModEnchantmentEffectComponentTypes {
 	public static final ComponentType<List<TargetedEnchantmentEffect<EnchantmentValueEffect>>> HEAD_DROPS = register("head_drops", builder -> builder.codec(TargetedEnchantmentEffect.createEquipmentDropsCodec(EnchantmentValueEffect.CODEC, LootContextTypes.ENCHANTED_DAMAGE).listOf()));
 	public static final ComponentType<Unit> HIDE_LABEL_BEHIND_WALLS = register("hide_label_behind_walls", builder -> builder.codec(Unit.CODEC));
 	public static final ComponentType<List<EnchantmentEffectEntry<LeechingTridentEffect>>> LEECHING_TRIDENT = register("leeching_trident", builder -> builder.codec(EnchantmentEffectEntry.createCodec(LeechingTridentEffect.CODEC, LootContextTypes.ENCHANTED_ITEM).listOf()));
+	public static final ComponentType<LightningDashEffect> LIGHTNING_DASH = register("lightning_dash", builder -> builder.codec(LightningDashEffect.CODEC));
 	public static final ComponentType<EnchantmentValueEffect> MINE_ORE_VEINS = register("mine_ore_veins", builder -> builder.codec(EnchantmentValueEffect.CODEC));
 	public static final ComponentType<EnchantmentValueEffect> MODIFY_CONSUMPTION_TIME = register("modify_consumption_time", builder -> builder.codec(EnchantmentValueEffect.CODEC));
 	public static final ComponentType<List<EnchantmentEffectEntry<EnchantmentValueEffect>>> MODIFY_DETECTION_RANGE = register("modify_detection_range", builder -> builder.codec(EnchantmentEffectEntry.createCodec(EnchantmentValueEffect.CODEC, LootContextTypes.ENCHANTED_ENTITY).listOf()));
 	public static final ComponentType<ModifySubmergedMovementSpeedEffect> MODIFY_SUBMERGED_MOVEMENT_SPEED = register("modify_submerged_movement_speed", builder -> builder.codec(ModifySubmergedMovementSpeedEffect.CODEC));
-	public static final ComponentType<MultiplyChargeTimeEffect> MULTIPLY_CHARGE_TIME = register("multiply_charge_time", builder -> builder.codec(MultiplyChargeTimeEffect.CODEC));
+	public static final ComponentType<EnchantmentValueEffect> MULTIPLY_CHARGE_TIME = register("multiply_charge_time", builder -> builder.codec(EnchantmentValueEffect.CODEC));
 	public static final ComponentType<EnchantmentValueEffect> NIGHT_VISION = register("night_vision", builder -> builder.codec(EnchantmentValueEffect.CODEC));
 	public static final ComponentType<List<EnchantmentEffectEntry<EnchantmentValueEffect>>> PHASE_THROUGH_BLOCKS_AND_FLOAT = register("phase_through_blocks_and_float", builder -> builder.codec(EnchantmentEffectEntry.createCodec(EnchantmentValueEffect.CODEC, LootContextTypes.ENCHANTED_ITEM).listOf()));
 	public static final ComponentType<Unit> PREVENT_SWIMMING = register("prevent_swimming", builder -> builder.codec(Unit.CODEC));

@@ -35,7 +35,7 @@ public record PlayBrimstoneFireSoundPayload(int entityId, UUID uuid) implements 
 		public void receive(PlayBrimstoneFireSoundPayload payload, ClientPlayNetworking.Context context) {
 			Entity entity = context.player().getWorld().getEntityById(payload.entityId());
 			if (entity != null) {
-				context.client().getSoundManager().play(new BrimstoneFireSoundInstance(entity, payload.uuid(), entity.getSoundCategory()));
+				context.client().getSoundManager().play(new BrimstoneFireSoundInstance(entity, payload.uuid()));
 			}
 		}
 	}

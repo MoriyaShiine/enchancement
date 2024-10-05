@@ -89,6 +89,10 @@
 	  "required": false
 	},
 	{
+	  "id": "enchancement:thunderstruck",
+	  "required": false
+	},
+	{
 	  "id": "enchancement:molten",
 	  "required": false
 	},

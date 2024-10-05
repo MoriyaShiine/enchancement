@@ -90,6 +90,8 @@ public class ModEnchantments {
 	// trident
 	public static final RegistryKey<Enchantment> LEECH = createKey("leech");
 	public static final RegistryKey<Enchantment> WARP = createKey("warp");
+	// mace
+	public static final RegistryKey<Enchantment> THUNDERSTRUCK = createKey("thunderstruck");
 	// mining tool
 	public static final RegistryKey<Enchantment> MOLTEN = createKey("molten");
 	// pickaxe
@@ -510,9 +512,7 @@ public class ModEnchantments {
 					);
 					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.MULTIPLY_CHARGE_TIME,
-							new MultiplyChargeTimeEffect(
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(3, -1))
-							)
+							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(3, -1))
 					);
 					builder.addEffect(
 							ModEnchantmentEffectComponentTypes.TELEPORT_ON_HIT,
@@ -520,6 +520,32 @@ public class ModEnchantments {
 									true,
 									false)
 					);
+				}));
+		// mace
+		registerable.register(THUNDERSTRUCK, create(THUNDERSTRUCK.getValue(),
+				itemLookup.getOrThrow(ItemTags.MACE_ENCHANTABLE),
+				2,
+				AttributeModifierSlot.MAINHAND,
+				builder -> {
+					builder.addEffect(
+							ModEnchantmentEffectComponentTypes.ALLOW_INTERRUPTION
+					);
+					builder.addEffect(
+							ModEnchantmentEffectComponentTypes.CHAIN_LIGHTNING,
+							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.35F))
+					);
+					builder.addNonListEffect(
+							ModEnchantmentEffectComponentTypes.MULTIPLY_CHARGE_TIME,
+							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(5, -2))
+					);
+					builder.addNonListEffect(
+							ModEnchantmentEffectComponentTypes.LIGHTNING_DASH,
+							new LightningDashEffect(
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0.5F)),
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(3)),
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(1.25F)),
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.5F))
+							));
 				}));
 		// mining tool
 		registerable.register(MOLTEN, create(MOLTEN.getValue(),

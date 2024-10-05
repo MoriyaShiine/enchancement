@@ -22,6 +22,55 @@
 	],
 	"subtitle": "subtitles.enchancement.entity.fishing_bobber.grapple"
   },
+  "entity.generic.air_jump": {
+	"sounds": [
+	  "dig/sand1",
+	  "dig/sand2",
+	  "dig/sand3",
+	  "dig/sand4"
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.air_jump"
+  },
+  "entity.generic.bury": {
+	"sounds": [
+	  "item/shovel/flatten1",
+	  "item/shovel/flatten2",
+	  "item/shovel/flatten3",
+	  "item/shovel/flatten4"
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.bury"
+  },
+  "entity.generic.dash": {
+	"sounds": [
+	  "dig/sand1",
+	  "dig/sand2",
+	  "dig/sand3",
+	  "dig/sand4"
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.dash"
+  },
+  "entity.generic.freeze": {
+	"sounds": [
+	  "entity/player/hurt/freeze_hurt1",
+	  "entity/player/hurt/freeze_hurt2",
+	  "entity/player/hurt/freeze_hurt3",
+	  "entity/player/hurt/freeze_hurt4",
+	  "entity/player/hurt/freeze_hurt5"
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.freeze"
+  },
+  "entity.generic.impact": {
+	"sounds": [
+	  "enchancement:entity/impact"
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.impact"
+  },
+  "entity.generic.spark": {
+	"sounds": [
+	  "enchancement:entity/spark"
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.spark"
+  },
   "entity.generic.strafe": {
 	"sounds": [
 	  "dig/sand1",
@@ -30,6 +79,13 @@
 	  "dig/sand4"
 	],
 	"subtitle": "subtitles.enchancement.entity.generic.strafe"
+  },
+  "entity.generic.teleport": {
+	"sounds": [
+	  "mob/endermen/portal",
+	  "mob/endermen/portal2"
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.teleport"
   },
   "entity.generic.wardenspine": {
 	"sounds": [
@@ -66,55 +122,11 @@
 	],
 	"subtitle": "subtitles.enchancement.entity.generic.wardenspine"
   },
-  "entity.generic.dash": {
+  "entity.generic.zap": {
 	"sounds": [
-	  "dig/sand1",
-	  "dig/sand2",
-	  "dig/sand3",
-	  "dig/sand4"
+	  "enchancement:entity/zap"
 	],
-	"subtitle": "subtitles.enchancement.entity.generic.dash"
-  },
-  "entity.generic.impact": {
-	"sounds": [
-	  "enchancement:entity/impact"
-	],
-	"subtitle": "subtitles.enchancement.entity.generic.impact"
-  },
-  "entity.generic.air_jump": {
-	"sounds": [
-	  "dig/sand1",
-	  "dig/sand2",
-	  "dig/sand3",
-	  "dig/sand4"
-	],
-	"subtitle": "subtitles.enchancement.entity.generic.air_jump"
-  },
-  "entity.generic.freeze": {
-	"sounds": [
-	  "entity/player/hurt/freeze_hurt1",
-	  "entity/player/hurt/freeze_hurt2",
-	  "entity/player/hurt/freeze_hurt3",
-	  "entity/player/hurt/freeze_hurt4",
-	  "entity/player/hurt/freeze_hurt5"
-	],
-	"subtitle": "subtitles.enchancement.entity.generic.freeze"
-  },
-  "entity.generic.bury": {
-	"sounds": [
-	  "item/shovel/flatten1",
-	  "item/shovel/flatten2",
-	  "item/shovel/flatten3",
-	  "item/shovel/flatten4"
-	],
-	"subtitle": "subtitles.enchancement.entity.generic.bury"
-  },
-  "entity.generic.teleport": {
-	"sounds": [
-	  "mob/endermen/portal",
-	  "mob/endermen/portal2"
-	],
-	"subtitle": "subtitles.enchancement.entity.generic.teleport"
+	"subtitle": "subtitles.enchancement.entity.generic.zap"
   },
   "block.ore.extract": {
 	"sounds": [
@@ -181,5 +193,11 @@
 	  "enchancement:item/crossbow/scatter3"
 	],
 	"subtitle": "subtitles.item.crossbow.shoot"
+  },
+  "item.generic.whoosh": {
+	"sounds": [
+	  "mob/breeze/shoot"
+	],
+	"subtitle": "subtitles.enchancement.item.generic.whoosh"
   }
 }

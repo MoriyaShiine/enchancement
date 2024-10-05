@@ -14,13 +14,11 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundCategory;
 
-public record PlayBrimstoneTravelSoundPayload(int entityId, String soundCategory) implements CustomPayload {
+public record PlayBrimstoneTravelSoundPayload(int entityId) implements CustomPayload {
 	public static final Id<PlayBrimstoneTravelSoundPayload> ID = new Id<>(Enchancement.id("play_brimstone_travel_sound"));
 	public static final PacketCodec<PacketByteBuf, PlayBrimstoneTravelSoundPayload> CODEC = PacketCodec.tuple(
 			PacketCodecs.INTEGER, PlayBrimstoneTravelSoundPayload::entityId,
-			PacketCodecs.STRING, PlayBrimstoneTravelSoundPayload::soundCategory,
 			PlayBrimstoneTravelSoundPayload::new);
 
 	@Override
@@ -28,8 +26,8 @@ public record PlayBrimstoneTravelSoundPayload(int entityId, String soundCategory
 		return ID;
 	}
 
-	public static void send(ServerPlayerEntity player, Entity entity, SoundCategory soundCategory) {
-		ServerPlayNetworking.send(player, new PlayBrimstoneTravelSoundPayload(entity.getId(), soundCategory.name()));
+	public static void send(ServerPlayerEntity player, Entity entity) {
+		ServerPlayNetworking.send(player, new PlayBrimstoneTravelSoundPayload(entity.getId()));
 	}
 
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<PlayBrimstoneTravelSoundPayload> {
@@ -37,7 +35,7 @@ public record PlayBrimstoneTravelSoundPayload(int entityId, String soundCategory
 		public void receive(PlayBrimstoneTravelSoundPayload payload, ClientPlayNetworking.Context context) {
 			Entity entity = context.player().getWorld().getEntityById(payload.entityId());
 			if (entity instanceof BrimstoneEntity brimstone) {
-				context.client().getSoundManager().play(new BrimstoneTravelSoundInstance(brimstone, SoundCategory.valueOf(payload.soundCategory())));
+				context.client().getSoundManager().play(new BrimstoneTravelSoundInstance(brimstone));
 			}
 		}
 	}

@@ -83,11 +83,13 @@ public class Enchancement implements ModInitializer {
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new AllowInterruptionEvent());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new BuryEntityEvent.Unbury());
 		UseEntityCallback.EVENT.register(new BuryEntityEvent.Use());
+		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new ChainLightningEvent());
 		PlayerBlockBreakEvents.BEFORE.register(new FellTreesEvent());
 		ServerLivingEntityEvents.AFTER_DEATH.register(new FreezeEvent.HandleDeath());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new FreezeEvent.HandleDamage());
 		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register(new HeadDropsEvent());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new LeechEvent());
+		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new LightningDashEvent());
 		PlayerBlockBreakEvents.BEFORE.register(new MineOreVeinsEvent());
 		MultiplyMovementSpeedEvent.EVENT.register(new ModifyMovementSpeedEvent());
 		MultiplyMovementSpeedEvent.EVENT.register(new RageEvent());
@@ -104,6 +106,7 @@ public class Enchancement implements ModInitializer {
 		PayloadTypeRegistry.playS2C().register(AddMovementBurstParticlesPayload.ID, AddMovementBurstParticlesPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(PlayBrimstoneFireSoundPayload.ID, PlayBrimstoneFireSoundPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(PlayBrimstoneTravelSoundPayload.ID, PlayBrimstoneTravelSoundPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(PlaySparkSoundPayload.ID, PlaySparkSoundPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(ResetFrozenTicksPayload.ID, ResetFrozenTicksPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(SyncFrozenPlayerSlimStatusS2CPayload.ID, SyncFrozenPlayerSlimStatusS2CPayload.CODEC);
 		// common payloads

@@ -7,18 +7,16 @@ import moriyashiine.enchancement.common.entity.projectile.BrimstoneEntity;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.MovingSoundInstance;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.random.Random;
 
 public class BrimstoneTravelSoundInstance extends MovingSoundInstance {
 	private final BrimstoneEntity entity;
 	private Vec3d previousPos;
 	private float pitchModifier = 0;
 
-	public BrimstoneTravelSoundInstance(BrimstoneEntity entity, SoundCategory soundCategory) {
-		super(ModSoundEvents.ENTITY_BRIMSTONE_TRAVEL, soundCategory, Random.create());
+	public BrimstoneTravelSoundInstance(BrimstoneEntity entity) {
+		super(ModSoundEvents.ENTITY_BRIMSTONE_TRAVEL, entity.getSoundCategory(), entity.getRandom());
 		this.entity = entity;
 		x = entity.getX();
 		y = entity.getY();

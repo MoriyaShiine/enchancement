@@ -3,6 +3,8 @@
  */
 package moriyashiine.enchancement.common.util;
 
+import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import moriyashiine.enchancement.common.ModConfig;
@@ -26,6 +28,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Ownable;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
+import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -33,8 +36,10 @@ import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Util;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.RaycastContext;
 import org.apache.commons.lang3.mutable.MutableFloat;
@@ -47,6 +52,22 @@ public class EnchancementUtil {
 	public static Registry<Enchantment> ENCHANTMENT_REGISTRY = null;
 
 	public static final Object2IntMap<Enchantment> ORIGINAL_MAX_LEVELS = new Object2IntOpenHashMap<>();
+
+	public static final Codec<Vec3d> VEC3D_CODEC = Codec.DOUBLE.listOf().comapFlatMap(list -> Util.decodeFixedLengthList(list, 3).map(listX -> new Vec3d(listX.getFirst(), listX.get(1), listX.get(2))), vec3d -> List.of(vec3d.getX(), vec3d.getY(), vec3d.getZ()));
+
+	public static final PacketCodec<ByteBuf, Vec3d> VEC3D_PACKET_CODEC = new PacketCodec<>() {
+		@Override
+		public Vec3d decode(ByteBuf buf) {
+			return new Vec3d(buf.readDouble(), buf.readDouble(), buf.readDouble());
+		}
+
+		@Override
+		public void encode(ByteBuf buf, Vec3d value) {
+			buf.writeDouble(value.getX());
+			buf.writeDouble(value.getY());
+			buf.writeDouble(value.getZ());
+		}
+	};
 
 	public static boolean shouldCancelTargetDamagedEnchantments = false;
 
@@ -218,6 +239,17 @@ public class EnchancementUtil {
 	}
 
 	// misc
+
+	public static boolean canSee(Entity host, Entity target, int range) {
+		if (target.getWorld() == host.getWorld() && host.getPos().distanceTo(target.getPos()) <= 32) {
+			for (int i = -range; i <= range; i++) {
+				if (host.getWorld().raycast(new RaycastContext(host.getPos().add(0, i, 0), target.getPos().add(0, i, 0), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, host)).getType() == HitResult.Type.MISS) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
 	public static boolean isGroundedOrAirborne(LivingEntity living, boolean allowWater) {
 		if (living instanceof PlayerEntity player && player.getAbilities().flying) {

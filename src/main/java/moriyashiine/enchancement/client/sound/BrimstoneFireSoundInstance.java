@@ -8,7 +8,6 @@ import moriyashiine.enchancement.common.init.ModSoundEvents;
 import net.minecraft.client.sound.MovingSoundInstance;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.UUID;
@@ -18,8 +17,8 @@ public class BrimstoneFireSoundInstance extends MovingSoundInstance {
 	private final UUID uuid;
 	private int age = 0;
 
-	public BrimstoneFireSoundInstance(Entity entity, UUID uuid, SoundCategory soundCategory) {
-		super(ModSoundEvents.ITEM_CROSSBOW_LOADING_BRIMSTONE, soundCategory, entity.getWorld().random);
+	public BrimstoneFireSoundInstance(Entity entity, UUID uuid) {
+		super(ModSoundEvents.ITEM_CROSSBOW_LOADING_BRIMSTONE, entity.getSoundCategory(), entity.getRandom());
 		this.entity = entity;
 		this.uuid = uuid;
 		x = entity.getX();

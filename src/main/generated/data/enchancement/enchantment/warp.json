@@ -6,13 +6,11 @@
   "effects": {
 	"enchancement:allow_interruption": {},
 	"enchancement:multiply_charge_time": {
-	  "multiplier": {
-		"type": "minecraft:add",
-		"value": {
-		  "type": "minecraft:linear",
-		  "base": 3.0,
-		  "per_level_above_first": -1.0
-		}
+	  "type": "minecraft:add",
+	  "value": {
+		"type": "minecraft:linear",
+		"base": 3.0,
+		"per_level_above_first": -1.0
 	  }
 	},
 	"enchancement:teleport_on_hit": [

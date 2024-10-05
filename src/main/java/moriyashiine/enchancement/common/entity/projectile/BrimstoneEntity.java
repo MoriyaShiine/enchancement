@@ -18,7 +18,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -27,7 +26,6 @@ import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -82,7 +80,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 	@Override
 	public void tick() {
 		if (!getWorld().isClient && ticksExisted == 0) {
-			PlayerLookup.all(getWorld().getServer()).forEach(foundPlayer -> PlayBrimstoneTravelSoundPayload.send(foundPlayer, this, getOwner() instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE));
+			PlayerLookup.all(getWorld().getServer()).forEach(foundPlayer -> PlayBrimstoneTravelSoundPayload.send(foundPlayer, this));
 		}
 		if (isCritical()) {
 			setCritical(false);

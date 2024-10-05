@@ -29,6 +29,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<ConditionalAttributesComponent> CONDITIONAL_ATTRIBUTES = ComponentRegistry.getOrCreate(Enchancement.id("conditional_attributes"), ConditionalAttributesComponent.class);
 	public static final ComponentKey<DirectionMovementBurstComponent> DIRECTION_MOVEMENT_BURST = ComponentRegistry.getOrCreate(Enchancement.id("direction_movement_burst"), DirectionMovementBurstComponent.class);
 	public static final ComponentKey<ExtendedWaterTimeComponent> EXTENDED_WATER_TIME = ComponentRegistry.getOrCreate(Enchancement.id("extended_water_time"), ExtendedWaterTimeComponent.class);
+	public static final ComponentKey<LightningDashComponent> LIGHTNING_DASH = ComponentRegistry.getOrCreate(Enchancement.id("lightning_dash"), LightningDashComponent.class);
 	public static final ComponentKey<RotationMovementBurstComponent> ROTATION_MOVEMENT_BURST = ComponentRegistry.getOrCreate(Enchancement.id("rotation_movement_burst"), RotationMovementBurstComponent.class);
 	public static final ComponentKey<SlamComponent> SLAM = ComponentRegistry.getOrCreate(Enchancement.id("slam"), SlamComponent.class);
 	public static final ComponentKey<SlideComponent> SLIDE = ComponentRegistry.getOrCreate(Enchancement.id("slide"), SlideComponent.class);
@@ -59,6 +60,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerFor(LivingEntity.class, CONDITIONAL_ATTRIBUTES, ConditionalAttributesComponent::new);
 		registry.registerForPlayers(DIRECTION_MOVEMENT_BURST, DirectionMovementBurstComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(LivingEntity.class, EXTENDED_WATER_TIME, ExtendedWaterTimeComponent::new);
+		registry.registerFor(LivingEntity.class, LIGHTNING_DASH, LightningDashComponent::new);
 		registry.registerForPlayers(ROTATION_MOVEMENT_BURST, RotationMovementBurstComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(SLAM, SlamComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(SLIDE, SlideComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);

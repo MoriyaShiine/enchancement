@@ -4,7 +4,8 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.multiplychargetime;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import moriyashiine.enchancement.common.enchantment.effect.MultiplyChargeTimeEffect;
+import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -28,6 +29,6 @@ public abstract class LivingEntityMixin extends Entity {
 	private int enchancement$multiplyChargeTime(int original) {
 		ItemStack stack = getActiveItem();
 		int max = stack.getMaxUseTime((LivingEntity) (Object) this);
-		return MathHelper.floor(max - (max - original) / MultiplyChargeTimeEffect.getMultiplier(getRandom(), stack));
+		return MathHelper.floor(max - (max - original) / EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.MULTIPLY_CHARGE_TIME, getRandom(), stack, 1));
 	}
 }
