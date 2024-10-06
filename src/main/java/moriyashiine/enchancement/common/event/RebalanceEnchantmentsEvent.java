@@ -6,6 +6,9 @@ package moriyashiine.enchancement.common.event;
 import moriyashiine.enchancement.common.ModConfig;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.fabricmc.fabric.api.item.v1.EnchantingContext;
+import net.fabricmc.fabric.api.item.v1.EnchantmentEvents;
+import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.component.Component;
 import net.minecraft.component.ComponentMap;
 import net.minecraft.component.EnchantmentEffectComponentTypes;
@@ -22,6 +25,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.Items;
+import net.minecraft.item.MaceItem;
 import net.minecraft.loot.condition.AllOfLootCondition;
 import net.minecraft.loot.condition.DamageSourcePropertiesLootCondition;
 import net.minecraft.loot.condition.LootCondition;
@@ -40,27 +44,13 @@ import java.util.List;
 import java.util.Optional;
 
 public class RebalanceEnchantmentsEvent {
-	public static class UseBlock implements UseBlockCallback {
+	public static class AllowEnchanting implements EnchantmentEvents.AllowEnchanting {
 		@Override
-		public ActionResult interact(PlayerEntity player, World world, Hand hand, BlockHitResult hitResult) {
-			if (ModConfig.rebalanceEnchantments && player.isSneaking() && hasIgnite(player.getStackInHand(hand))) {
-				ActionResult result = Items.FLINT_AND_STEEL.useOnBlock(new ItemUsageContext(player, hand, hitResult));
-				if (result != ActionResult.FAIL) {
-					return result;
-				}
+		public TriState allowEnchanting(RegistryEntry<Enchantment> enchantment, ItemStack target, EnchantingContext enchantingContext) {
+			if (ModConfig.rebalanceEnchantments && target.getItem() instanceof MaceItem && enchantment.matchesKey(Enchantments.FIRE_ASPECT)) {
+				return TriState.FALSE;
 			}
-			return ActionResult.PASS;
-		}
-
-		private static boolean hasIgnite(ItemStack stack) {
-			for (RegistryEntry<Enchantment> enchantment : EnchantmentHelper.getEnchantments(stack).getEnchantments()) {
-				for (TargetedEnchantmentEffect<EnchantmentEntityEffect> targetedEnchantmentEffect : enchantment.value().getEffect(EnchantmentEffectComponentTypes.POST_ATTACK)) {
-					if (targetedEnchantmentEffect.effect() instanceof IgniteEnchantmentEffect) {
-						return true;
-					}
-				}
-			}
-			return false;
+			return TriState.DEFAULT;
 		}
 	}
 
@@ -110,6 +100,30 @@ public class RebalanceEnchantmentsEvent {
 
 		private static <T> void addEffect(Component<T> component, ComponentMap.Builder builder) {
 			builder.add(component.type(), component.value());
+		}
+	}
+
+	public static class UseBlock implements UseBlockCallback {
+		@Override
+		public ActionResult interact(PlayerEntity player, World world, Hand hand, BlockHitResult hitResult) {
+			if (ModConfig.rebalanceEnchantments && player.isSneaking() && hasIgnite(player.getStackInHand(hand))) {
+				ActionResult result = Items.FLINT_AND_STEEL.useOnBlock(new ItemUsageContext(player, hand, hitResult));
+				if (result != ActionResult.FAIL) {
+					return result;
+				}
+			}
+			return ActionResult.PASS;
+		}
+
+		private static boolean hasIgnite(ItemStack stack) {
+			for (RegistryEntry<Enchantment> enchantment : EnchantmentHelper.getEnchantments(stack).getEnchantments()) {
+				for (TargetedEnchantmentEffect<EnchantmentEntityEffect> targetedEnchantmentEffect : enchantment.value().getEffect(EnchantmentEffectComponentTypes.POST_ATTACK)) {
+					if (targetedEnchantmentEffect.effect() instanceof IgniteEnchantmentEffect) {
+						return true;
+					}
+				}
+			}
+			return false;
 		}
 	}
 }
