@@ -14,11 +14,13 @@ import net.minecraft.util.math.random.Random;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 public record LightningDashEffect(EnchantmentValueEffect chargeTime, EnchantmentValueEffect floatTime,
-								  EnchantmentValueEffect dashStrength, EnchantmentValueEffect smashDamageMultiplier) {
+								  EnchantmentValueEffect lungeStrength, EnchantmentValueEffect smashStrength,
+								  EnchantmentValueEffect smashDamageMultiplier) {
 	public static final Codec<LightningDashEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 					EnchantmentValueEffect.CODEC.fieldOf("charge_time").forGetter(LightningDashEffect::chargeTime),
 					EnchantmentValueEffect.CODEC.fieldOf("float_time").forGetter(LightningDashEffect::floatTime),
-					EnchantmentValueEffect.CODEC.fieldOf("dash_strength").forGetter(LightningDashEffect::dashStrength),
+					EnchantmentValueEffect.CODEC.fieldOf("lunge_strength").forGetter(LightningDashEffect::lungeStrength),
+					EnchantmentValueEffect.CODEC.fieldOf("smash_strength").forGetter(LightningDashEffect::smashStrength),
 					EnchantmentValueEffect.CODEC.fieldOf("smash_damage_multiplier").forGetter(LightningDashEffect::smashDamageMultiplier))
 			.apply(instance, LightningDashEffect::new));
 
@@ -44,12 +46,23 @@ public record LightningDashEffect(EnchantmentValueEffect chargeTime, Enchantment
 		return MathHelper.floor(mutableFloat.floatValue() * 20);
 	}
 
-	public static float getDashStrength(Random random, ItemStack stack) {
+	public static float getLungeStrength(Random random, ItemStack stack) {
 		MutableFloat mutableFloat = new MutableFloat(0);
 		EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 			LightningDashEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.LIGHTNING_DASH);
 			if (effect != null) {
-				mutableFloat.setValue(effect.dashStrength().apply(level, random, mutableFloat.floatValue()));
+				mutableFloat.setValue(effect.lungeStrength().apply(level, random, mutableFloat.floatValue()));
+			}
+		});
+		return mutableFloat.floatValue();
+	}
+
+	public static float getSmashStrength(Random random, ItemStack stack) {
+		MutableFloat mutableFloat = new MutableFloat(0);
+		EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
+			LightningDashEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.LIGHTNING_DASH);
+			if (effect != null) {
+				mutableFloat.setValue(effect.smashStrength().apply(level, random, mutableFloat.floatValue()));
 			}
 		});
 		return mutableFloat.floatValue();

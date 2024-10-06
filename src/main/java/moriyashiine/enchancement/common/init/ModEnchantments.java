@@ -190,7 +190,7 @@ public class ModEnchantments {
 					builder.addEffect(
 							EnchantmentEffectComponentTypes.TICK,
 							new SetExtendedWaterTimeEffect(
-									EnchantmentLevelBasedValue.linear(5, 3)),
+									EnchantmentLevelBasedValue.linear(6, 4)),
 							() -> WetLootCondition.INSTANCE);
 					builder.addEffect(
 							EnchantmentEffectComponentTypes.ATTRIBUTES,
@@ -313,7 +313,7 @@ public class ModEnchantments {
 					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.CHARGE_JUMP,
 							new ChargeJumpEffect(
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1.25F)),
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(2)),
 									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.6F, 0.4F))));
 				}));
 		registerable.register(BUOY, create(BUOY.getValue(),
@@ -333,12 +333,12 @@ public class ModEnchantments {
 					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.MODIFY_SUBMERGED_MOVEMENT_SPEED,
 							new ModifySubmergedMovementSpeedEffect(
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.2F)),
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.35F)),
 									SubmersionGate.WATER_ONLY));
 					builder.addEffect(
 							EnchantmentEffectComponentTypes.TICK,
 							new SetExtendedWaterTimeEffect(
-									EnchantmentLevelBasedValue.linear(5, 3)),
+									EnchantmentLevelBasedValue.linear(6, 4)),
 							() -> WetLootCondition.INSTANCE);
 					builder.addEffect(
 							EnchantmentEffectComponentTypes.TICK,
@@ -543,8 +543,9 @@ public class ModEnchantments {
 							new LightningDashEffect(
 									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0.5F)),
 									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(3)),
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(1.25F)),
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.5F))
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.8F, 0.3F)),
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(1)),
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.65F))
 							));
 				}));
 		// mining tool

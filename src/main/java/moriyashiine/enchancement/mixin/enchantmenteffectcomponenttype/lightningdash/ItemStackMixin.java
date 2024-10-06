@@ -49,7 +49,7 @@ public abstract class ItemStackMixin {
 		}
 	}
 
-	@Inject(method = "usageTick", at =@At("HEAD"))
+	@Inject(method = "usageTick", at = @At("HEAD"))
 	private void enchancement$lightningDashTick(World world, LivingEntity user, int remainingUseTicks, CallbackInfo ci) {
 		setUsing(user, canUse(user.getRandom()));
 	}
@@ -63,7 +63,7 @@ public abstract class ItemStackMixin {
 				if (user instanceof PlayerEntity player) {
 					player.incrementStat(Stats.USED.getOrCreateStat(getItem()));
 				}
-				user.setVelocity(user.getRotationVector().multiply(LightningDashEffect.getDashStrength(user.getRandom(), stack)));
+				user.setVelocity(user.getRotationVector().multiply(LightningDashEffect.getLungeStrength(user.getRandom(), stack)));
 				LightningDashComponent lightningDashComponent = ModEntityComponents.LIGHTNING_DASH.get(user);
 				lightningDashComponent.startFloating(LightningDashEffect.getFloatTime(user.getRandom(), stack));
 			}

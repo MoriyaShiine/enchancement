@@ -62,8 +62,8 @@
 		  "type": "enchancement:set_extended_water_time",
 		  "duration": {
 			"type": "minecraft:linear",
-			"base": 5.0,
-			"per_level_above_first": 3.0
+			"base": 6.0,
+			"per_level_above_first": 4.0
 		  }
 		},
 		"requirements": {

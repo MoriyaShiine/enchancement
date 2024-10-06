@@ -76,10 +76,10 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 				cachedHeight = obj.getY();
 				smashTicks = 30;
 				floatTicks = 0;
-				obj.setVelocity(obj.getRotationVector().multiply(LightningDashEffect.getDashStrength(obj.getRandom(), obj.getMainHandStack())));
+				obj.setVelocity(obj.getRotationVector().multiply(LightningDashEffect.getSmashStrength(obj.getRandom(), obj.getMainHandStack())));
 				obj.playSound(ModSoundEvents.ENTITY_GENERIC_ZAP, 2, 1);
 			}
-			if (!EnchancementUtil.isSufficientlyHigh(obj, 1)) {
+			if (!EnchancementUtil.isSufficientlyHigh(obj, 0.25)) {
 				floatTicks = smashTicks = 0;
 			}
 		}
@@ -176,7 +176,7 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 		return floatTicks > 0;
 	}
 
-	public boolean isSmashing() {
+	private boolean isSmashing() {
 		return smashTicks > 0;
 	}
 

@@ -98,7 +98,6 @@
 	"enchantmenteffectcomponenttype.leechingtrident.TridentEntityMixin",
 	"enchantmenteffectcomponenttype.lightningdash.EntityMixin",
 	"enchantmenteffectcomponenttype.lightningdash.ItemStackMixin",
-	"enchantmenteffectcomponenttype.lightningdash.LivingEntityMixin",
 	"enchantmenteffectcomponenttype.mineoreveins.AbstractBlockMixin",
 	"enchantmenteffectcomponenttype.modifyconsumptiontime.LivingEntityMixin",
 	"enchantmenteffectcomponenttype.modifydetectionrange.LivingEntityMixin",

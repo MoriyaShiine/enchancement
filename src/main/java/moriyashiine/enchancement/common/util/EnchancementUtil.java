@@ -20,6 +20,7 @@ import net.minecraft.component.ComponentType;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.enchantment.effect.EnchantmentEffectEntry;
 import net.minecraft.enchantment.effect.EnchantmentValueEffect;
 import net.minecraft.entity.Entity;
@@ -185,6 +186,11 @@ public class EnchancementUtil {
 	}
 
 	public static int alterLevel(ItemStack stack, RegistryEntry<Enchantment> enchantment) {
+		if (ModConfig.singleLevelMode) {
+			if (enchantment.matchesKey(Enchantments.RIPTIDE) || enchantment.matchesKey(Enchantments.WIND_BURST)) {
+				return 1;
+			}
+		}
 		return getModifiedMaxLevel(stack, getOriginalMaxLevel(enchantment));
 	}
 

@@ -8,7 +8,7 @@
 	"enchancement:charge_jump": {
 	  "charge_time": {
 		"type": "minecraft:add",
-		"value": 1.25
+		"value": 2.0
 	  },
 	  "strength": {
 		"type": "minecraft:add",

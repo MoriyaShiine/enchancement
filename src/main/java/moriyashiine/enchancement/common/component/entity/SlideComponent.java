@@ -5,6 +5,10 @@ package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.enchantment.effect.ModifySubmergedMovementSpeedEffect;
+import moriyashiine.enchancement.common.enchantment.effect.RageEffect;
+import moriyashiine.enchancement.common.event.ModifyMovementSpeedEvent;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.payload.StartSlidingPayload;
 import moriyashiine.enchancement.common.payload.StopSlidingPayload;
@@ -17,6 +21,7 @@ import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BowItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.BlockPos;
@@ -84,8 +89,18 @@ public class SlideComponent implements CommonTickingComponent {
 					dX *= 0.2;
 					dZ *= 0.2;
 				}
-				double multiplier = MathHelper.clamp(obj.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED) / obj.getAttributeBaseValue(EntityAttributes.GENERIC_MOVEMENT_SPEED), 0.625F, 1.6F);
-				obj.addVelocity(dX * multiplier, 0, dZ * multiplier);
+				double multiplier = 1 + ModifySubmergedMovementSpeedEffect.getValue(obj);
+				multiplier *= RageEffect.getMovementSpeedModifier(obj);
+				if (obj.isUsingItem()) {
+					if (ModConfig.rebalanceEquipment && obj.getActiveItem().getItem() instanceof BowItem) {
+						multiplier *= 0.6F;
+					} else {
+						multiplier *= 0.2;
+					}
+				}
+				multiplier = Math.min(ModifyMovementSpeedEvent.MAXIMUM_MOVEMENT_MULTIPLIER, multiplier);
+				double ratio = MathHelper.clamp(obj.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED) * multiplier / obj.getAttributeBaseValue(EntityAttributes.GENERIC_MOVEMENT_SPEED), 0.625F, 1.6F);
+				obj.addVelocity(dX * ratio, 0, dZ * ratio);
 				if (obj.isTouchingWater() && hasFluidWalking) {
 					obj.setVelocity(obj.getVelocity().getX(), strength, obj.getVelocity().getZ());
 				}
