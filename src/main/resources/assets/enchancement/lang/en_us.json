@@ -50,6 +50,8 @@
   "enchantment.minecraft.unbreaking.desc": "Decreases durability usage.",
   "enchantment.minecraft.vanishing_curse.desc": "Causes the item to disappear on death.",
   "enchantment.minecraft.wind_burst.desc": "Causes smash attacks to launch you upward.",
+  "enchantment.enchancement.empty": "Empty",
+  "enchantment.enchancement.empty.desc": "I AM ERROR.",
   "enchantment.enchancement.assimilation": "Assimilation",
   "enchantment.enchancement.assimilation.desc": "Automatically consumes food when you're hungry, prioritizing off hand. Food and drinks are consumed faster.",
   "enchantment.enchancement.perception": "Perception",
