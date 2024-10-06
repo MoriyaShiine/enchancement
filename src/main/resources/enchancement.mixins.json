@@ -160,6 +160,7 @@
 	"enchantmenteffectcomponenttype.chargejump.client.ClientPlayerInteractionManagerMixin",
 	"enchantmenteffectcomponenttype.disarmingfishingbobber.client.MinecraftClientMixin",
 	"enchantmenteffectcomponenttype.entityxray.client.MinecraftClientMixin",
+	"enchantmenteffectcomponenttype.fluidwalking.client.ClientPlayerEntityMixin",
 	"enchantmenteffectcomponenttype.hidelabelbehindwalls.client.EntityRendererMixin",
 	"enchantmenteffectcomponenttype.leechingtrident.client.TridentEntityRendererMixin",
 	"enchantmenteffectcomponenttype.lightningdash.client.HeldItemFeatureRendererMixin",
