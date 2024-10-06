@@ -20,6 +20,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
+import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.item.v1.EnchantmentEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
@@ -79,6 +80,7 @@ public class Enchancement implements ModInitializer {
 		EnchantmentEvents.ALLOW_ENCHANTING.register(new RebalanceEnchantmentsEvent.AllowEnchanting());
 		ServerLifecycleEvents.SERVER_STARTED.register(new RebalanceEnchantmentsEvent.ServerStarted());
 		UseBlockCallback.EVENT.register(new RebalanceEnchantmentsEvent.UseBlock());
+		UseItemCallback.EVENT.register(new RebalanceEnchantmentsEvent.UseItem());
 		MultiplyMovementSpeedEvent.EVENT.register(new ToggleablePassivesEvent());
 		// enchantment
 		ServerEntityEvents.EQUIPMENT_CHANGE.register(new AirJumpEvent());
