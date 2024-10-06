@@ -22,10 +22,7 @@ import net.minecraft.enchantment.EnchantmentLevelBasedValue;
 import net.minecraft.enchantment.effect.AllOfEnchantmentEffects;
 import net.minecraft.enchantment.effect.AttributeEnchantmentEffect;
 import net.minecraft.enchantment.effect.EnchantmentEffectTarget;
-import net.minecraft.enchantment.effect.entity.ApplyMobEffectEnchantmentEffect;
-import net.minecraft.enchantment.effect.entity.DamageEntityEnchantmentEffect;
-import net.minecraft.enchantment.effect.entity.PlaySoundEnchantmentEffect;
-import net.minecraft.enchantment.effect.entity.SpawnParticlesEnchantmentEffect;
+import net.minecraft.enchantment.effect.entity.*;
 import net.minecraft.enchantment.effect.value.AddEnchantmentEffect;
 import net.minecraft.enchantment.effect.value.MultiplyEnchantmentEffect;
 import net.minecraft.entity.EntityType;
@@ -43,9 +40,7 @@ import net.minecraft.loot.context.LootContext;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.predicate.NumberRange;
 import net.minecraft.predicate.TagPredicate;
-import net.minecraft.predicate.entity.DamageSourcePredicate;
-import net.minecraft.predicate.entity.EntityPredicate;
-import net.minecraft.predicate.entity.EntityTypePredicate;
+import net.minecraft.predicate.entity.*;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKey;
@@ -55,6 +50,7 @@ import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.floatprovider.ConstantFloatProvider;
+import net.minecraft.util.math.floatprovider.UniformFloatProvider;
 
 public class ModEnchantments {
 	// placeholder
@@ -91,6 +87,7 @@ public class ModEnchantments {
 	public static final RegistryKey<Enchantment> LEECH = createKey("leech");
 	public static final RegistryKey<Enchantment> WARP = createKey("warp");
 	// mace
+	public static final RegistryKey<Enchantment> METEOR = createKey("meteor");
 	public static final RegistryKey<Enchantment> THUNDERSTRUCK = createKey("thunderstruck");
 	// mining tool
 	public static final RegistryKey<Enchantment> MOLTEN = createKey("molten");
@@ -522,6 +519,38 @@ public class ModEnchantments {
 					);
 				}));
 		// mace
+		registerable.register(METEOR, create(METEOR.getValue(),
+				itemLookup.getOrThrow(ItemTags.MACE_ENCHANTABLE),
+				2,
+				AttributeModifierSlot.MAINHAND,
+				builder -> {
+					builder.addEffect(
+							EnchantmentEffectComponentTypes.POST_ATTACK,
+							EnchantmentEffectTarget.ATTACKER,
+							EnchantmentEffectTarget.VICTIM,
+							AllOfEnchantmentEffects.allOf(
+									BuryEffect.INSTANCE,
+									new IgniteEnchantmentEffect(EnchantmentLevelBasedValue.linear(6)),
+									new SmashEffect(EnchantmentLevelBasedValue.linear(2.5F)),
+									new SpawnParticlesWithCountEnchantmentEffect(
+											new SpawnParticlesEnchantmentEffect(
+													ParticleTypes.LAVA,
+													SpawnParticlesEnchantmentEffect.entityPosition(0.5F),
+													SpawnParticlesEnchantmentEffect.entityPosition(0.5F),
+													SpawnParticlesEnchantmentEffect.fixedVelocity(UniformFloatProvider.create(-1, 1)),
+													SpawnParticlesEnchantmentEffect.scaledVelocity(1),
+													ConstantFloatProvider.create(1)
+											),
+											EnchantmentLevelBasedValue.constant(48)
+									)
+							),
+							EntityPropertiesLootCondition.builder(
+									LootContext.EntityTarget.DIRECT_ATTACKER,
+									EntityPredicate.Builder.create()
+											.flags(EntityFlagsPredicate.Builder.create().flying(false))
+											.movement(MovementPredicate.fallDistance(NumberRange.DoubleRange.atLeast(1.5)))
+							));
+				}));
 		registerable.register(THUNDERSTRUCK, create(THUNDERSTRUCK.getValue(),
 				itemLookup.getOrThrow(ItemTags.MACE_ENCHANTABLE),
 				2,

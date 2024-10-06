@@ -1,0 +1,94 @@
+{
+  "anvil_cost": 2,
+  "description": {
+	"translate": "enchantment.enchancement.meteor"
+  },
+  "effects": {
+	"minecraft:post_attack": [
+	  {
+		"affected": "victim",
+		"effect": {
+		  "type": "minecraft:all_of",
+		  "effects": [
+			{
+			  "type": "enchancement:bury"
+			},
+			{
+			  "type": "minecraft:ignite",
+			  "duration": {
+				"type": "minecraft:linear",
+				"base": 6.0,
+				"per_level_above_first": 6.0
+			  }
+			},
+			{
+			  "type": "enchancement:smash",
+			  "strength": {
+				"type": "minecraft:linear",
+				"base": 2.5,
+				"per_level_above_first": 2.5
+			  }
+			},
+			{
+			  "type": "enchancement:spawn_particles_with_count",
+			  "count": 48.0,
+			  "effect": {
+				"horizontal_position": {
+				  "type": "entity_position",
+				  "offset": 0.5
+				},
+				"horizontal_velocity": {
+				  "base": {
+					"type": "minecraft:uniform",
+					"max_exclusive": 1.0,
+					"min_inclusive": -1.0
+				  }
+				},
+				"particle": {
+				  "type": "minecraft:lava"
+				},
+				"speed": 1.0,
+				"vertical_position": {
+				  "type": "entity_position",
+				  "offset": 0.5
+				},
+				"vertical_velocity": {
+				  "movement_scale": 1.0
+				}
+			  }
+			}
+		  ]
+		},
+		"enchanted": "attacker",
+		"requirements": {
+		  "condition": "minecraft:entity_properties",
+		  "entity": "direct_attacker",
+		  "predicate": {
+			"flags": {
+			  "is_flying": false
+			},
+			"movement": {
+			  "fall_distance": {
+				"min": 1.5
+			  }
+			}
+		  }
+		}
+	  }
+	]
+  },
+  "max_cost": {
+	"base": 20,
+	"per_level_above_first": 6
+  },
+  "max_level": 2,
+  "min_cost": {
+	"base": 5,
+	"per_level_above_first": 6
+  },
+  "slots": [
+	"mainhand"
+  ],
+  "supported_items": "#minecraft:enchantable/mace",
+  "weight": 5
+}

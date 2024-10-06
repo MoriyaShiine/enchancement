@@ -89,6 +89,10 @@
 	  "required": false
 	},
 	{
+	  "id": "enchancement:meteor",
+	  "required": false
+	},
+	{
 	  "id": "enchancement:thunderstruck",
 	  "required": false
 	},

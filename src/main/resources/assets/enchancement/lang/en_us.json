@@ -98,6 +98,8 @@
   "enchantment.enchancement.leech.desc": "Regenerates health when dealing damage. Thrown Tridents will temporarily stick to mobs and deal damage.",
   "enchantment.enchancement.warp": "Warp",
   "enchantment.enchancement.warp.desc": "Teleports you to the location of the Trident if it didn't hit a mob.",
+  "enchantment.enchancement.meteor": "Meteor",
+  "enchantment.enchancement.meteor.desc": "Causes smash attacks to ignite attacked mobs and pull them down.",
   "enchantment.enchancement.thunderstruck": "Thunderstruck",
   "enchantment.enchancement.thunderstruck.desc": "Allows charging to launch you forward and briefly float. Punching while floating causes you to dash forward and smash into the ground. Direct hits chain to nearby mobs.",
   "enchantment.enchancement.molten": "Molten",
