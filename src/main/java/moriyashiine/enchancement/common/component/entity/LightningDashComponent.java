@@ -5,6 +5,7 @@ package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.client.payload.PlaySparkSoundPayload;
 import moriyashiine.enchancement.common.enchantment.effect.LightningDashEffect;
+import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.particle.SparkParticleEffect;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
@@ -101,6 +102,9 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 			}
 		}
 		if (chargeTime > 0 && obj.isUsingItem()) {
+			if (ticksUsing == MathHelper.floor(chargeTime * EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.MULTIPLY_CHARGE_TIME, obj.getRandom(), obj.getActiveItem(), 0)) + 3) {
+				obj.playSound(ModSoundEvents.ENTITY_GENERIC_PING, 1, 1);
+			}
 			if (ticksUsing % 18 == 0) {
 				obj.playSound(ModSoundEvents.ITEM_GENERIC_WHOOSH, 0.5F, 1);
 			}

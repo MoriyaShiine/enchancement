@@ -65,6 +65,12 @@
 	],
 	"subtitle": "subtitles.enchancement.entity.generic.impact"
   },
+  "entity.generic.ping": {
+	"sounds": [
+	  "random/orb"
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.ping"
+  },
   "entity.generic.spark": {
 	"sounds": [
 	  "enchancement:entity/spark"

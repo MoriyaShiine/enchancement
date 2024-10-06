@@ -18,6 +18,7 @@ public class ModSoundEvents {
 	public static final SoundEvent ENTITY_GENERIC_DASH = SoundEvent.of(Enchancement.id("entity.generic.dash"));
 	public static final SoundEvent ENTITY_GENERIC_FREEZE = SoundEvent.of(Enchancement.id("entity.generic.freeze"));
 	public static final SoundEvent ENTITY_GENERIC_IMPACT = SoundEvent.of(Enchancement.id("entity.generic.impact"));
+	public static final SoundEvent ENTITY_GENERIC_PING = SoundEvent.of(Enchancement.id("entity.generic.ping"));
 	public static final SoundEvent ENTITY_GENERIC_SPARK = SoundEvent.of(Enchancement.id("entity.generic.spark"));
 	public static final SoundEvent ENTITY_GENERIC_STRAFE = SoundEvent.of(Enchancement.id("entity.generic.strafe"));
 	public static final SoundEvent ENTITY_GENERIC_TELEPORT = SoundEvent.of(Enchancement.id("entity.generic.teleport"));
@@ -47,6 +48,7 @@ public class ModSoundEvents {
 		Registry.register(Registries.SOUND_EVENT, ENTITY_GENERIC_DASH.getId(), ENTITY_GENERIC_DASH);
 		Registry.register(Registries.SOUND_EVENT, ENTITY_GENERIC_FREEZE.getId(), ENTITY_GENERIC_FREEZE);
 		Registry.register(Registries.SOUND_EVENT, ENTITY_GENERIC_IMPACT.getId(), ENTITY_GENERIC_IMPACT);
+		Registry.register(Registries.SOUND_EVENT, ENTITY_GENERIC_PING.getId(), ENTITY_GENERIC_PING);
 		Registry.register(Registries.SOUND_EVENT, ENTITY_GENERIC_SPARK.getId(), ENTITY_GENERIC_SPARK);
 		Registry.register(Registries.SOUND_EVENT, ENTITY_GENERIC_STRAFE.getId(), ENTITY_GENERIC_STRAFE);
 		Registry.register(Registries.SOUND_EVENT, ENTITY_GENERIC_TELEPORT.getId(), ENTITY_GENERIC_TELEPORT);

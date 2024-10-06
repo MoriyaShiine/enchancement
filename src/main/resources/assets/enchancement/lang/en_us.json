@@ -129,6 +129,7 @@
   "subtitles.enchancement.entity.generic.dash": "Entity dashes",
   "subtitles.enchancement.entity.generic.freeze": "Entity freezes",
   "subtitles.enchancement.entity.generic.impact": "Entity impacts",
+  "subtitles.enchancement.entity.generic.ping": "Entity pings",
   "subtitles.enchancement.entity.generic.spark": "Entity sparks",
   "subtitles.enchancement.entity.generic.strafe": "Entity strafes",
   "subtitles.enchancement.entity.generic.teleport": "Entity teleports",
