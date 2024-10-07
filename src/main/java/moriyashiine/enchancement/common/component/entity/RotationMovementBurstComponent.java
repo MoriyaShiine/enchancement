@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.component.entity;
 import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.client.payload.AddMovementBurstParticlesPayload;
 import moriyashiine.enchancement.common.enchantment.effect.RotationMovementBurstEffect;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.payload.RotationMovementBurstPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
@@ -90,6 +91,10 @@ public class RotationMovementBurstComponent implements AutoSyncedComponent, Comm
 		}
 	}
 
+	public void sync() {
+		ModEntityComponents.ROTATION_MOVEMENT_BURST.sync(obj);
+	}
+
 	public int getCooldown() {
 		return cooldown;
 	}
@@ -116,12 +121,16 @@ public class RotationMovementBurstComponent implements AutoSyncedComponent, Comm
 	}
 
 	public void use() {
+		reset();
+		wavedashTicks = RotationMovementBurstEffect.getWavedashTicks(obj);
 		obj.playSound(ModSoundEvents.ENTITY_GENERIC_DASH, 1, 1);
 		Vec3d velocity = obj.getRotationVector().normalize().multiply(RotationMovementBurstEffect.getStrength(obj));
 		obj.setVelocity(velocity.getX(), velocity.getY(), velocity.getZ());
 		obj.fallDistance = 0;
+	}
+
+	public void reset() {
 		setCooldown(RotationMovementBurstEffect.getCooldown(obj));
 		shouldRefresh = false;
-		wavedashTicks = RotationMovementBurstEffect.getWavedashTicks(obj);
 	}
 }

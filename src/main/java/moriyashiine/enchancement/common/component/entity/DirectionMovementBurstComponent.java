@@ -7,6 +7,7 @@ import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.client.payload.AddMovementBurstParticlesPayload;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.enchantment.effect.DirectionMovementBurstEffect;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.payload.DirectionMovementBurstPayload;
 import net.fabricmc.api.EnvType;
@@ -22,7 +23,8 @@ import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class DirectionMovementBurstComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private final PlayerEntity obj;
-	private int cooldown = 0, lastCooldown = 0;
+	private boolean shouldRefresh = false;
+	private int cooldown = 0, lastCooldown = 0, gravityTicks = 0;
 
 	private boolean hasDirectionMovementBurst = false;
 
@@ -35,14 +37,18 @@ public class DirectionMovementBurstComponent implements AutoSyncedComponent, Com
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+		shouldRefresh = tag.getBoolean("ShouldRefresh");
 		cooldown = tag.getInt("Cooldown");
 		lastCooldown = tag.getInt("LastCooldown");
+		gravityTicks = tag.getInt("GravityTicks");
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+		tag.putBoolean("ShouldRefresh", shouldRefresh);
 		tag.putInt("Cooldown", cooldown);
 		tag.putInt("LastCooldown", lastCooldown);
+		tag.putInt("GravityTicks", gravityTicks);
 	}
 
 	@Override
@@ -50,11 +56,20 @@ public class DirectionMovementBurstComponent implements AutoSyncedComponent, Com
 		int entityCooldown = DirectionMovementBurstEffect.getCooldown(obj);
 		hasDirectionMovementBurst = entityCooldown > 0;
 		if (hasDirectionMovementBurst) {
-			if (cooldown > 0) {
+			if (!shouldRefresh) {
+				if (obj.isOnGround()) {
+					shouldRefresh = true;
+				}
+			} else if (cooldown > 0) {
 				cooldown--;
 			}
+			if (gravityTicks > 0) {
+				gravityTicks--;
+			}
 		} else {
+			shouldRefresh = false;
 			setCooldown(0);
+			gravityTicks = 0;
 		}
 	}
 
@@ -85,11 +100,15 @@ public class DirectionMovementBurstComponent implements AutoSyncedComponent, Com
 		}
 	}
 
+	public void sync() {
+		ModEntityComponents.DIRECTION_MOVEMENT_BURST.sync(obj);
+	}
+
 	public int getCooldown() {
 		return cooldown;
 	}
 
-	public void setCooldown(int cooldown) {
+	private void setCooldown(int cooldown) {
 		this.cooldown = cooldown;
 		lastCooldown = cooldown;
 	}
@@ -106,10 +125,21 @@ public class DirectionMovementBurstComponent implements AutoSyncedComponent, Com
 		return cooldown == 0 && !obj.isSpectator();
 	}
 
+	public boolean preventFalling() {
+		return gravityTicks > 0;
+	}
+
 	public void use(double velocityX, double velocityZ) {
-		obj.addVelocity(velocityX, 0, velocityZ);
+		reset();
+		gravityTicks = 2;
+		obj.setVelocity(velocityX, 0, velocityZ);
 		obj.playSound(ModSoundEvents.ENTITY_GENERIC_STRAFE, 1, 1);
+		obj.fallDistance = 0;
+	}
+
+	public void reset() {
 		setCooldown(DirectionMovementBurstEffect.getCooldown(obj));
+		shouldRefresh = false;
 	}
 
 	@Environment(EnvType.CLIENT)

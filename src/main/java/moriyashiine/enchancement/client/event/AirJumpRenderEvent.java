@@ -17,23 +17,23 @@ public class AirJumpRenderEvent implements HudRenderCallback {
 
 	static {
 		for (int i = 0; i < TEXTURES.length; i++) {
-			TEXTURES[i] = Enchancement.id("hud/gale_" + i);
+			TEXTURES[i] = Enchancement.id("hud/air_jump_" + i);
 		}
 	}
 
 	@Override
 	public void onHudRender(DrawContext drawContext, RenderTickCounter tickCounter) {
-		ModEntityComponents.AIR_JUMP.maybeGet(MinecraftClient.getInstance().cameraEntity).ifPresent(galeComponent -> {
-			if (galeComponent.hasAirJump()) {
-				int jumpsLeft = galeComponent.getJumpsLeft();
-				if (jumpsLeft < galeComponent.getMaxJumps()) {
+		ModEntityComponents.AIR_JUMP.maybeGet(MinecraftClient.getInstance().cameraEntity).ifPresent(airJumpComponent -> {
+			if (airJumpComponent.hasAirJump()) {
+				int jumpsLeft = airJumpComponent.getJumpsLeft();
+				if (jumpsLeft < airJumpComponent.getMaxJumps()) {
 					RenderSystem.enableBlend();
 					Identifier first = getTexture(jumpsLeft + 1);
 					Identifier second = getTexture(jumpsLeft);
 					int x = drawContext.getScaledWindowWidth() / 2 - 5, y = drawContext.getScaledWindowHeight() / 2 + 27;
-					if (galeComponent.getCooldown() < galeComponent.getLastCooldown()) {
+					if (airJumpComponent.getCooldown() < airJumpComponent.getLastCooldown()) {
 						drawContext.drawGuiTexture(first, x, y, 9, 9);
-						drawContext.drawGuiTexture(second, 9, 9, 0, 0, x, y, 9, (int) ((galeComponent.getCooldown() / (float) galeComponent.getLastCooldown()) * 9));
+						drawContext.drawGuiTexture(second, 9, 9, 0, 0, x, y, 9, (int) ((airJumpComponent.getCooldown() / (float) airJumpComponent.getLastCooldown()) * 9));
 					} else {
 						drawContext.drawGuiTexture(second, x, y, 9, 9);
 					}

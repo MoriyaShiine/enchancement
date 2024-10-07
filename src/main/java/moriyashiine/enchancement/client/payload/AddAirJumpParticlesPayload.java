@@ -4,14 +4,15 @@
 package moriyashiine.enchancement.client.payload;
 
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.component.entity.AirJumpComponent;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public record AddAirJumpParticlesPayload(int entityId) implements CustomPayload {
@@ -27,12 +28,20 @@ public record AddAirJumpParticlesPayload(int entityId) implements CustomPayload 
 		ServerPlayNetworking.send(player, new AddAirJumpParticlesPayload(id));
 	}
 
+	public static void addParticles(Entity entity) {
+		if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || entity != MinecraftClient.getInstance().cameraEntity) {
+			for (int i = 0; i < 8; i++) {
+				entity.getWorld().addParticle(ParticleTypes.CLOUD, entity.getParticleX(1), entity.getY(), entity.getParticleZ(1), 0, 0, 0);
+			}
+		}
+	}
+
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<AddAirJumpParticlesPayload> {
 		@Override
 		public void receive(AddAirJumpParticlesPayload payload, ClientPlayNetworking.Context context) {
 			Entity entity = context.player().getWorld().getEntityById(payload.entityId());
 			if (entity != null) {
-				AirJumpComponent.addParticles(entity);
+				addParticles(entity);
 			}
 		}
 	}

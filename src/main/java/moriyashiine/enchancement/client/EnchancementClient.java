@@ -66,8 +66,8 @@ public class EnchancementClient implements ClientModInitializer {
 		ModelPredicateProviderRegistry.register(Items.CROSSBOW, Enchancement.id("torch"), (stack, world, entity, seed) -> stack.contains(DataComponentTypes.CHARGED_PROJECTILES) && stack.get(DataComponentTypes.CHARGED_PROJECTILES).contains(Items.TORCH) || (CrossbowItem.isCharged(stack) && AllowLoadingProjectileEffect.getItems(stack).contains(Items.TORCH) && !(entity instanceof PlayerEntity)) ? 1 : 0);
 		HandledScreens.register(ModScreenHandlerTypes.ENCHANTING_TABLE, EnchantingTableScreen::new);
 		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(FrozenReloadListener.INSTANCE);
-		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(Enchancement.id("alternate_dash"), modContainer, ResourcePackActivationType.NORMAL));
-		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(Enchancement.id("alternate_gale"), modContainer, ResourcePackActivationType.NORMAL));
+		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(Enchancement.id("alternate_air_jump"), modContainer, ResourcePackActivationType.NORMAL));
+		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(Enchancement.id("alternate_rotation_movement_burst"), modContainer, ResourcePackActivationType.NORMAL));
 		initEvents();
 		initPayloads();
 		betterCombatLoaded = FabricLoader.getInstance().isModLoaded("bettercombat");
@@ -83,9 +83,9 @@ public class EnchancementClient implements ClientModInitializer {
 		ItemTooltipCallback.EVENT.register(new AutomaticallyFeedsTooltipEvent());
 		HudRenderCallback.EVENT.register(new BrimstoneRenderEvent());
 		HudRenderCallback.EVENT.register(new ChargeJumpRenderEvent());
-		HudRenderCallback.EVENT.register(new DashRenderEvent());
+		HudRenderCallback.EVENT.register(new DirectionMovementBurstRenderEvent());
 		ItemTooltipCallback.EVENT.register(new RageRenderEvent());
-//		HudRenderCallback.EVENT.register(new StrafeRenderEvent());
+		HudRenderCallback.EVENT.register(new RotationMovementBurstRenderEvent());
 	}
 
 	private void initPayloads() {

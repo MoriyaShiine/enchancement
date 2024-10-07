@@ -83,7 +83,7 @@ public class Enchancement implements ModInitializer {
 		UseItemCallback.EVENT.register(new RebalanceEnchantmentsEvent.UseItem());
 		MultiplyMovementSpeedEvent.EVENT.register(new ToggleablePassivesEvent());
 		// enchantment
-		ServerEntityEvents.EQUIPMENT_CHANGE.register(new AirJumpEvent());
+		ServerEntityEvents.EQUIPMENT_CHANGE.register(new EquipmentResetEvent());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new AllowInterruptionEvent());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new BuryEntityEvent.Unbury());
 		UseEntityCallback.EVENT.register(new BuryEntityEvent.Use());

@@ -83,6 +83,7 @@
 	"enchantmenteffectcomponenttype.chargejump.LivingEntityMixin",
 	"enchantmenteffectcomponenttype.delayedlaunch.PersistentProjectileEntityMixin",
 	"enchantmenteffectcomponenttype.delayedlaunch.RangedWeaponItemMixin",
+	"enchantmenteffectcomponenttype.directionmovementburst.EntityMixin",
 	"enchantmenteffectcomponenttype.disarmingfishingbobber.FishingBobberEntityMixin",
 	"enchantmenteffectcomponenttype.disarmingfishingbobber.FishingRodItemMixin",
 	"enchantmenteffectcomponenttype.disarmingfishingbobber.WitchEntityMixin",

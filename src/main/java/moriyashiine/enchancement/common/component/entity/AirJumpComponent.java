@@ -3,17 +3,15 @@
  */
 package moriyashiine.enchancement.common.component.entity;
 
+import moriyashiine.enchancement.client.payload.AddAirJumpParticlesPayload;
 import moriyashiine.enchancement.common.enchantment.effect.AirJumpEffect;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.payload.AirJumpPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.mixin.util.accessor.LivingEntityAccessor;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryWrapper;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
@@ -77,7 +75,7 @@ public class AirJumpComponent implements AutoSyncedComponent, CommonTickingCompo
 			}
 		} else {
 			shouldRefresh = false;
-			cooldown = 0;
+			setCooldown(0);
 			jumpCooldown = 0;
 			jumpsLeft = 0;
 			ticksInAir = 0;
@@ -89,7 +87,7 @@ public class AirJumpComponent implements AutoSyncedComponent, CommonTickingCompo
 		tick();
 		if (hasAirJump && ((LivingEntityAccessor) obj).enchancement$jumping() && canUse()) {
 			use();
-			addParticles(obj);
+			AddAirJumpParticlesPayload.addParticles(obj);
 			AirJumpPayload.send();
 		}
 	}
@@ -98,13 +96,13 @@ public class AirJumpComponent implements AutoSyncedComponent, CommonTickingCompo
 		ModEntityComponents.AIR_JUMP.sync(obj);
 	}
 
-	public void setCooldown(int cooldown) {
-		this.cooldown = cooldown;
-		lastCooldown = cooldown;
-	}
-
 	public int getCooldown() {
 		return cooldown;
+	}
+
+	private void setCooldown(int cooldown) {
+		this.cooldown = cooldown;
+		lastCooldown = cooldown;
 	}
 
 	public int getLastCooldown() {
@@ -113,10 +111,6 @@ public class AirJumpComponent implements AutoSyncedComponent, CommonTickingCompo
 
 	public int getJumpsLeft() {
 		return jumpsLeft;
-	}
-
-	public void setJumpsLeft(int jumpsLeft) {
-		this.jumpsLeft = jumpsLeft;
 	}
 
 	public int getMaxJumps() {
@@ -144,11 +138,8 @@ public class AirJumpComponent implements AutoSyncedComponent, CommonTickingCompo
 		jumpsLeft--;
 	}
 
-	public static void addParticles(Entity entity) {
-		if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || entity != MinecraftClient.getInstance().cameraEntity) {
-			for (int i = 0; i < 8; i++) {
-				entity.getWorld().addParticle(ParticleTypes.CLOUD, entity.getParticleX(1), entity.getY(), entity.getParticleZ(1), 0, 0, 0);
-			}
-		}
+	public void reset() {
+		setCooldown(AirJumpEffect.getChargeCooldown(obj));
+		jumpsLeft = 0;
 	}
 }

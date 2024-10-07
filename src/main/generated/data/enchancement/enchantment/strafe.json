@@ -7,23 +7,19 @@
 	"enchancement:direction_movement_burst": {
 	  "air_strength": {
 		"type": "minecraft:add",
-		"value": {
-		  "type": "minecraft:linear",
-		  "base": 0.45,
-		  "per_level_above_first": 0.25
-		}
+		"value": 0.7
 	  },
 	  "cooldown": {
 		"type": "minecraft:add",
-		"value": 1.0
+		"value": {
+		  "type": "minecraft:linear",
+		  "base": 2.0,
+		  "per_level_above_first": -1.0
+		}
 	  },
 	  "ground_strength": {
 		"type": "minecraft:add",
-		"value": {
-		  "type": "minecraft:linear",
-		  "base": 0.5,
-		  "per_level_above_first": 0.25
-		}
+		"value": 0.75
 	  }
 	}
   },
