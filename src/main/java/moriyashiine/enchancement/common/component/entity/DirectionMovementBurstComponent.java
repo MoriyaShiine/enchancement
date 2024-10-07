@@ -114,7 +114,7 @@ public class DirectionMovementBurstComponent implements AutoSyncedComponent, Com
 
 	@Environment(EnvType.CLIENT)
 	private Vec3d getVelocityFromInput(GameOptions options) {
-		float strength = DirectionMovementBurstEffect.getStrength(MinecraftClient.getInstance().player);
+		float strength = obj.isOnGround() ? DirectionMovementBurstEffect.getGroundStrength(obj) : DirectionMovementBurstEffect.getAirStrength(obj);
 		if (options.forwardKey.isPressed()) {
 			return new Vec3d(strength, 0, 0);
 		}

@@ -222,6 +222,7 @@ public class ModEnchantments {
 						ModEnchantmentEffectComponentTypes.DIRECTION_MOVEMENT_BURST,
 						new DirectionMovementBurstEffect(
 								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1)),
+								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.5F, 0.25F)),
 								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.45F, 0.25F))))));
 		registerable.register(WARDENSPINE, create(WARDENSPINE.getValue(),
 				itemLookup.getOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
