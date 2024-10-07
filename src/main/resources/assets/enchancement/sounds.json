@@ -49,6 +49,12 @@
 	],
 	"subtitle": "subtitles.enchancement.entity.generic.dash"
   },
+  "entity.generic.erupt": {
+	"sounds": [
+	  "enchancement:entity/erupt"
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.erupt"
+  },
   "entity.generic.freeze": {
 	"sounds": [
 	  "entity/player/hurt/freeze_hurt1",

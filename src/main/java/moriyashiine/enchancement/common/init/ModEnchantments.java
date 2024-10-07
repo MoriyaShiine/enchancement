@@ -510,7 +510,7 @@ public class ModEnchantments {
 					);
 					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.MULTIPLY_CHARGE_TIME,
-							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(3, -1))
+							new MultiplyEnchantmentEffect(EnchantmentLevelBasedValue.linear(4, -1))
 					);
 					builder.addEffect(
 							ModEnchantmentEffectComponentTypes.TELEPORT_ON_HIT,
@@ -525,6 +525,21 @@ public class ModEnchantments {
 				2,
 				AttributeModifierSlot.MAINHAND,
 				builder -> {
+					builder.addEffect(
+							ModEnchantmentEffectComponentTypes.ALLOW_INTERRUPTION
+					);
+					builder.addNonListEffect(
+							ModEnchantmentEffectComponentTypes.ERUPTION,
+							new EruptionEffect(
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0.5F)),
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1.35F)),
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(4))
+							)
+					);
+					builder.addNonListEffect(
+							ModEnchantmentEffectComponentTypes.MULTIPLY_CHARGE_TIME,
+							new MultiplyEnchantmentEffect(EnchantmentLevelBasedValue.linear(4, -1))
+					);
 					builder.addEffect(
 							EnchantmentEffectComponentTypes.POST_ATTACK,
 							EnchantmentEffectTarget.ATTACKER,
@@ -566,7 +581,7 @@ public class ModEnchantments {
 					);
 					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.MULTIPLY_CHARGE_TIME,
-							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(5, -2))
+							new MultiplyEnchantmentEffect(EnchantmentLevelBasedValue.linear(4, -1))
 					);
 					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.LIGHTNING_DASH,

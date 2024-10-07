@@ -52,11 +52,11 @@
 	  }
 	},
 	"enchancement:multiply_charge_time": {
-	  "type": "minecraft:add",
-	  "value": {
+	  "type": "minecraft:multiply",
+	  "factor": {
 		"type": "minecraft:linear",
-		"base": 5.0,
-		"per_level_above_first": -2.0
+		"base": 4.0,
+		"per_level_above_first": -1.0
 	  }
 	}
   },

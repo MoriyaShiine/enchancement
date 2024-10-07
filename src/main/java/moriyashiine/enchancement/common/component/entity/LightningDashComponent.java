@@ -29,7 +29,6 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.event.GameEvent;
-import org.jetbrains.annotations.NotNull;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
@@ -55,7 +54,7 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 	}
 
 	@Override
-	public void writeToNbt(@NotNull NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		tag.putBoolean("Using", using);
 		tag.putInt("FloatTicks", floatTicks);
 		tag.putInt("SmashTicks", smashTicks);
@@ -102,7 +101,7 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 			}
 		}
 		if (chargeTime > 0 && obj.isUsingItem()) {
-			if (ticksUsing == MathHelper.floor(chargeTime * EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.MULTIPLY_CHARGE_TIME, obj.getRandom(), obj.getActiveItem(), 0)) + 3) {
+			if (ticksUsing == MathHelper.floor(chargeTime * EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.MULTIPLY_CHARGE_TIME, obj.getRandom(), obj.getActiveItem(), 1)) + 3) {
 				obj.playSound(ModSoundEvents.ENTITY_GENERIC_PING, 1, 1);
 			}
 			if (ticksUsing % 18 == 0) {
@@ -148,11 +147,12 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 			BlockPos.Mutable mutable = new BlockPos.Mutable();
 			for (int i = 0; i < 360; i += 15) {
 				for (int j = 1; j < 10; j++) {
-					for (int k = 0; k < 8; k++) {
-						double x = obj.getX() + MathHelper.sin(i) * j / 2, z = obj.getZ() + MathHelper.cos(i) * j / 2;
-						BlockState state = obj.getWorld().getBlockState(mutable.set(x, Math.round(obj.getY() - 1), z));
-						if (!state.isReplaceable() && obj.getWorld().getBlockState(mutable.move(Direction.UP)).isReplaceable()) {
-							obj.getWorld().addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, state), x, mutable.getY() + 0.5, z, 0, 0, 0);
+					double x = obj.getX() + MathHelper.sin(i) * j / 2, z = obj.getZ() + MathHelper.cos(i) * j / 2;
+					BlockState state = obj.getWorld().getBlockState(mutable.set(x, Math.round(obj.getY() - 1), z));
+					if (!state.isReplaceable() && obj.getWorld().getBlockState(mutable.move(Direction.UP)).isReplaceable()) {
+						BlockStateParticleEffect particle = new BlockStateParticleEffect(ParticleTypes.BLOCK, state);
+						for (int k = 0; k < 8; k++) {
+							obj.getWorld().addParticle(particle, x, mutable.getY() + 0.5, z, 0, 0, 0);
 						}
 					}
 				}

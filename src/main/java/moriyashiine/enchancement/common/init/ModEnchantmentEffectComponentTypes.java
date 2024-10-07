@@ -33,6 +33,7 @@ public class ModEnchantmentEffectComponentTypes {
 	public static final ComponentType<DirectionMovementBurstEffect> DIRECTION_MOVEMENT_BURST = register("direction_movement_burst", builder -> builder.codec(DirectionMovementBurstEffect.CODEC));
 	public static final ComponentType<List<EnchantmentEffectEntry<DisarmingFishingBobberEffect>>> DISARMING_FISHING_BOBBER = register("disarming_fishing_bobber", builder -> builder.codec(EnchantmentEffectEntry.createCodec(DisarmingFishingBobberEffect.CODEC, LootContextTypes.ENCHANTED_ITEM).listOf()));
 	public static final ComponentType<EnchantmentValueEffect> ENTITY_XRAY = register("entity_xray", builder -> builder.codec(EnchantmentValueEffect.CODEC));
+	public static final ComponentType<EruptionEffect> ERUPTION = register("eruption", builder -> builder.codec(EruptionEffect.CODEC));
 	public static final ComponentType<Unit> EXTENDED_WATER_SPIN_ATTACK = register("extended_water_spin_attack", builder -> builder.codec(Unit.CODEC));
 	public static final ComponentType<Unit> EXTEND_WATER_TIME = register("extend_water_time", builder -> builder.codec(Unit.CODEC));
 	public static final ComponentType<EnchantmentValueEffect> FELL_TREES = register("fell_trees", builder -> builder.codec(EnchantmentValueEffect.CODEC));
