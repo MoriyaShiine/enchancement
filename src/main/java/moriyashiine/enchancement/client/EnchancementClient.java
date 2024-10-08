@@ -4,6 +4,7 @@
 package moriyashiine.enchancement.client;
 
 import moriyashiine.enchancement.client.event.*;
+import moriyashiine.enchancement.client.event.integration.appleskin.BrimstoneAppleskinEvent;
 import moriyashiine.enchancement.client.particle.SparkParticle;
 import moriyashiine.enchancement.client.payload.*;
 import moriyashiine.enchancement.client.reloadlisteners.FrozenReloadListener;
@@ -41,6 +42,7 @@ import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.Items;
 import net.minecraft.resource.ResourceType;
 import org.lwjgl.glfw.GLFW;
+import squeek.appleskin.api.event.HUDOverlayEvent;
 
 import java.util.function.Supplier;
 
@@ -71,6 +73,9 @@ public class EnchancementClient implements ClientModInitializer {
 		initEvents();
 		initPayloads();
 		betterCombatLoaded = FabricLoader.getInstance().isModLoaded("bettercombat");
+		if (FabricLoader.getInstance().isModLoaded("appleskin")) {
+			HUDOverlayEvent.HealthRestored.EVENT.register(new BrimstoneAppleskinEvent());
+		}
 	}
 
 	private void initEvents() {

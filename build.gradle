@@ -44,6 +44,10 @@ repositories {
     chenille.repositories.ladysnake()
     chenille.repositories.terraformers()
     chenille.repositories.modrinth()
+    maven {
+        name "appleskin"
+        url "https://maven.ryanliptak.com/"
+    }
 }
 
 dependencies {
@@ -60,6 +64,9 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
 //    modCompileOnly "io.github.apace100:apoli:${apoli_version}"
+    modCompileOnly("squeek.appleskin:appleskin-fabric:${appleskin_version}:api") {
+        transitive = false
+    }
     modLocalImplementation "maven.modrinth:sodium:${sodium_version}"
 //    modCompileOnly "maven.modrinth:spectrum:${spectrum_version}"
 
