@@ -317,7 +317,7 @@ public class EnchancementUtil {
 
 	public static boolean hasAnyEnchantmentsIn(Entity entity, TagKey<Enchantment> tag) {
 		if (entity instanceof LivingEntity living) {
-			for (ItemStack stack : living.getEquippedItems()) {
+			for (ItemStack stack : living.getArmorItems()) {
 				if (EnchantmentHelper.hasAnyEnchantmentsIn(stack, tag)) {
 					return true;
 				}
@@ -328,7 +328,7 @@ public class EnchancementUtil {
 
 	public static boolean hasAnyEnchantmentsWith(Entity entity, ComponentType<?> componentType) {
 		if (entity instanceof LivingEntity living) {
-			for (ItemStack stack : living.getEquippedItems()) {
+			for (ItemStack stack : living.getArmorItems()) {
 				if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, componentType)) {
 					return true;
 				}
