@@ -28,7 +28,7 @@ public class PlayerEntityMixin {
 
 	@ModifyVariable(method = "getProjectileType", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/RangedWeaponItem;getProjectiles()Ljava/util/function/Predicate;"))
 	private Predicate<ItemStack> enchancement$rebalanceEquipment(Predicate<ItemStack> value, ItemStack stack) {
-		if (ModConfig.rebalanceEquipment) {
+		if (heldItemsPredicate != null) {
 			value = value.or(heldItemsPredicate);
 			heldItemsPredicate = null;
 		}
