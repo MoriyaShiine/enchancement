@@ -72,6 +72,10 @@ public class ModEnchantmentTagProvider extends FabricTagProvider.EnchantmentTagP
 				.addOptional(Enchantments.PIERCING);
 		getOrCreateTagBuilder(ModEnchantmentTags.FROSTBITE_EXCLUSIVE_SET)
 				.addOptional(Enchantments.FIRE_ASPECT);
+		getOrCreateTagBuilder(ModEnchantmentTags.MACE_EXCLUSIVE_SET)
+				.addOptional(ModEnchantments.METEOR)
+				.addOptional(ModEnchantments.THUNDERSTRUCK)
+				.addOptional(Enchantments.WIND_BURST);
 		getOrCreateTagBuilder(ModEnchantmentTags.SILK_TOUCH_EXCLUSIVE_SET)
 				.addOptional(Enchantments.SILK_TOUCH);
 		getOrCreateTagBuilder(ModEnchantmentTags.WARDENSPINE_EXCLUSIVE_SET)

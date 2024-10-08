@@ -18,6 +18,7 @@ public class ModEnchantmentTags {
 	public static final TagKey<Enchantment> BOUNCY_EXCLUSIVE_SET = TagKey.of(RegistryKeys.ENCHANTMENT, Enchancement.id("exclusive_set/bouncy"));
 	public static final TagKey<Enchantment> BRIMSTONE_EXCLUSIVE_SET = TagKey.of(RegistryKeys.ENCHANTMENT, Enchancement.id("exclusive_set/brimstone"));
 	public static final TagKey<Enchantment> FROSTBITE_EXCLUSIVE_SET = TagKey.of(RegistryKeys.ENCHANTMENT, Enchancement.id("exclusive_set/frostbite"));
+	public static final TagKey<Enchantment> MACE_EXCLUSIVE_SET = TagKey.of(RegistryKeys.ENCHANTMENT, Enchancement.id("exclusive_set/mace"));
 	public static final TagKey<Enchantment> SILK_TOUCH_EXCLUSIVE_SET = TagKey.of(RegistryKeys.ENCHANTMENT, Enchancement.id("exclusive_set/silk_touch"));
 	public static final TagKey<Enchantment> WARDENSPINE_EXCLUSIVE_SET = TagKey.of(RegistryKeys.ENCHANTMENT, Enchancement.id("exclusive_set/wardenspine"));
 }

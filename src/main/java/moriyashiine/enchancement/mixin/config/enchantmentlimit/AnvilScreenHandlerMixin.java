@@ -4,6 +4,7 @@
 package moriyashiine.enchancement.mixin.config.enchantmentlimit;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.sugar.Local;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.player.PlayerInventory;
@@ -23,11 +24,7 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
 	}
 
 	@ModifyExpressionValue(method = "updateResult", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/Enchantment;canBeCombined(Lnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/registry/entry/RegistryEntry;)Z"))
-	private boolean enchancement$enchantmentLimit(boolean value) {
-		ItemStack stack = input.getStack(0);
-		if (EnchancementUtil.limitCheck(false, EnchancementUtil.getNonDefaultEnchantmentsSize(stack, stack.getEnchantments().getSize() + 1) > ModConfig.enchantmentLimit)) {
-			return false;
-		}
-		return value;
+	private boolean enchancement$enchantmentLimit(boolean value, @Local(ordinal = 0) ItemStack stack) {
+		return value && !EnchancementUtil.limitCheck(false, EnchancementUtil.getNonDefaultEnchantmentsSize(stack, stack.getEnchantments().getSize() + 1) > ModConfig.enchantmentLimit);
 	}
 }

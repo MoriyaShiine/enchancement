@@ -525,6 +525,7 @@ public class ModEnchantments {
 				2,
 				AttributeModifierSlot.MAINHAND,
 				builder -> {
+					builder.exclusiveSet(enchantmentLookup.getOrThrow(ModEnchantmentTags.MACE_EXCLUSIVE_SET));
 					builder.addEffect(
 							ModEnchantmentEffectComponentTypes.ALLOW_INTERRUPTION
 					);
@@ -572,6 +573,7 @@ public class ModEnchantments {
 				2,
 				AttributeModifierSlot.MAINHAND,
 				builder -> {
+					builder.exclusiveSet(enchantmentLookup.getOrThrow(ModEnchantmentTags.MACE_EXCLUSIVE_SET));
 					builder.addEffect(
 							ModEnchantmentEffectComponentTypes.ALLOW_INTERRUPTION
 					);

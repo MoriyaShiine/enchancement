@@ -60,6 +60,7 @@
 	  }
 	}
   },
+  "exclusive_set": "#enchancement:exclusive_set/mace",
   "max_cost": {
 	"base": 20,
 	"per_level_above_first": 6
