@@ -38,8 +38,8 @@
 		"type": "minecraft:add",
 		"value": {
 		  "type": "minecraft:linear",
-		  "base": 0.65,
-		  "per_level_above_first": 0.65
+		  "base": 0.6,
+		  "per_level_above_first": 0.2
 		}
 	  },
 	  "smash_strength": {

@@ -221,9 +221,9 @@ public class ModEnchantments {
 				builder -> builder.addNonListEffect(
 						ModEnchantmentEffectComponentTypes.DIRECTION_MOVEMENT_BURST,
 						new DirectionMovementBurstEffect(
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(2, -1)),
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0.75F)),
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0.7F))))));
+								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(1.25F, -0.5F)),
+								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1.1F)),
+								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0.8F))))));
 		registerable.register(WARDENSPINE, create(WARDENSPINE.getValue(),
 				itemLookup.getOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
 				2,
@@ -363,7 +363,7 @@ public class ModEnchantments {
 				builder -> builder.addNonListEffect(
 						ModEnchantmentEffectComponentTypes.RAGE,
 						new RageEffect(
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.25F)),
+								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.175F)),
 								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0)),
 								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0))
 						)
@@ -474,6 +474,13 @@ public class ModEnchantments {
 				AttributeModifierSlot.MAINHAND,
 				builder -> {
 					builder.addEffect(
+							ModEnchantmentEffectComponentTypes.ALLOW_INTERRUPTION
+					);
+					builder.addNonListEffect(
+							ModEnchantmentEffectComponentTypes.MULTIPLY_CHARGE_TIME,
+							new MultiplyEnchantmentEffect(EnchantmentLevelBasedValue.linear(3, -1))
+					);
+					builder.addEffect(
 							ModEnchantmentEffectComponentTypes.LEECHING_TRIDENT,
 							new LeechingTridentEffect(
 									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1)),
@@ -510,7 +517,7 @@ public class ModEnchantments {
 					);
 					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.MULTIPLY_CHARGE_TIME,
-							new MultiplyEnchantmentEffect(EnchantmentLevelBasedValue.linear(4, -1))
+							new MultiplyEnchantmentEffect(EnchantmentLevelBasedValue.linear(3, -1))
 					);
 					builder.addEffect(
 							ModEnchantmentEffectComponentTypes.TELEPORT_ON_HIT,
@@ -592,7 +599,7 @@ public class ModEnchantments {
 									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(3)),
 									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.8F, 0.3F)),
 									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(1)),
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.65F))
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.6F, 0.2F))
 							));
 				}));
 		// mining tool

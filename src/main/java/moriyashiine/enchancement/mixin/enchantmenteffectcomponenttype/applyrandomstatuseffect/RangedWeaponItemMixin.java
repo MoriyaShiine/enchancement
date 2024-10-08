@@ -32,13 +32,13 @@ public class RangedWeaponItemMixin {
 	@Inject(method = "shootAll", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/RangedWeaponItem;shoot(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/projectile/ProjectileEntity;IFFFLnet/minecraft/entity/LivingEntity;)V"))
 	private void enchancement$teleportOnHit(ServerWorld world, LivingEntity shooter, Hand hand, ItemStack stack, List<ItemStack> projectiles, float speed, float divergence, boolean critical, @Nullable LivingEntity target, CallbackInfo ci, @Local(ordinal = 1) ItemStack projectileStack, @Local ProjectileEntity projectileEntity) {
 		if (projectileEntity instanceof ArrowEntity arrow) {
-			ApplyRandomStatusEffectComponent.maybeSet(shooter, projectileStack, stack, statusEffects -> {
+			ApplyRandomStatusEffectComponent.maybeSet(shooter, projectileStack, ApplyRandomStatusEffectComponent.getDurationMultiplier(speed), stack, statusEffects -> {
 				ModEntityComponents.APPLY_RANDOM_STATUS_EFFECT.get(arrow).setOriginalStack(((PersistentProjectileEntityAccessor) arrow).enchancement$asItemStack());
 				((ArrowEntityAccessor) arrow).enchancement$setPotionContents(new PotionContentsComponent(Optional.empty(), Optional.empty(), statusEffects));
 			});
 		}
 		if (projectileEntity instanceof SpectralArrowEntity spectralArrow) {
-			ApplyRandomStatusEffectComponent.maybeSet(shooter, projectileStack, stack, statusEffects -> {
+			ApplyRandomStatusEffectComponent.maybeSet(shooter, projectileStack, ApplyRandomStatusEffectComponent.getDurationMultiplier(speed), stack, statusEffects -> {
 				ApplyRandomStatusEffectSpectralComponent applyRandomStatusEffectSpectralComponent = ModEntityComponents.APPLY_RANDOM_STATUS_EFFECT_SPECTRAL.get(spectralArrow);
 				applyRandomStatusEffectSpectralComponent.setEffects(statusEffects);
 				applyRandomStatusEffectSpectralComponent.sync();

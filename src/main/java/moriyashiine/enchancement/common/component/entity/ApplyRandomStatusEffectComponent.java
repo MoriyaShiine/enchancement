@@ -54,7 +54,7 @@ public class ApplyRandomStatusEffectComponent implements Component {
 		this.originalStack = originalStack;
 	}
 
-	public static void maybeSet(LivingEntity user, ItemStack arrowStack, @Nullable ItemStack weaponStack, Consumer<List<StatusEffectInstance>> consumer) {
+	public static void maybeSet(LivingEntity user, ItemStack arrowStack, float durationMultiplier, @Nullable ItemStack weaponStack, Consumer<List<StatusEffectInstance>> consumer) {
 		MutableFloat duration = new MutableFloat();
 		AtomicReference<TagKey<StatusEffect>> disallowedTag = new AtomicReference<>();
 		if (weaponStack != null && EnchantmentHelper.hasAnyEnchantmentsWith(weaponStack, ModEnchantmentEffectComponentTypes.APPLY_RANDOM_STATUS_EFFECT)) {
@@ -82,7 +82,7 @@ public class ApplyRandomStatusEffectComponent implements Component {
 						for (StatusEffectInstance instance : potionContentsComponent.getEffects()) {
 							statusEffects.add(new StatusEffectInstance(instance.getEffectType(), Math.max(instance.mapDuration(i -> i / 8), 1), instance.getAmplifier(), instance.isAmbient(), instance.shouldShowParticles()));
 						}
-						statusEffects.add(new StatusEffectInstance(Registries.STATUS_EFFECT.getEntry(effect), MathHelper.floor(duration.floatValue() * 20)));
+						statusEffects.add(new StatusEffectInstance(Registries.STATUS_EFFECT.getEntry(effect), MathHelper.floor(duration.floatValue() * durationMultiplier * 20)));
 						consumer.accept(statusEffects);
 						return;
 					}
@@ -90,5 +90,9 @@ public class ApplyRandomStatusEffectComponent implements Component {
 				attempts++;
 			}
 		}
+	}
+
+	public static float getDurationMultiplier(float speed) {
+		return MathHelper.lerp(speed / 3F, 0F, 1);
 	}
 }

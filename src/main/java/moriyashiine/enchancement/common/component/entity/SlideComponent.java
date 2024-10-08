@@ -99,7 +99,7 @@ public class SlideComponent implements CommonTickingComponent {
 					}
 				}
 				multiplier = Math.min(ModifyMovementSpeedEvent.MAXIMUM_MOVEMENT_MULTIPLIER, multiplier);
-				double ratio = MathHelper.clamp(obj.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED) * multiplier / obj.getAttributeBaseValue(EntityAttributes.GENERIC_MOVEMENT_SPEED), 0.625F, 1.6F);
+				double ratio = MathHelper.clamp(obj.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED) * multiplier / obj.getAttributeBaseValue(EntityAttributes.GENERIC_MOVEMENT_SPEED), 0.715F, 1.4F);
 				obj.addVelocity(dX * ratio, 0, dZ * ratio);
 				if (obj.isTouchingWater() && hasFluidWalking) {
 					obj.setVelocity(obj.getVelocity().getX(), strength, obj.getVelocity().getZ());

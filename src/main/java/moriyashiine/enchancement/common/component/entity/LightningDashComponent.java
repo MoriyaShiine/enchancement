@@ -146,7 +146,7 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 		if (smashTicks == 1 && obj.isOnGround()) {
 			BlockPos.Mutable mutable = new BlockPos.Mutable();
 			for (int i = 0; i < 360; i += 15) {
-				for (int j = 1; j < 10; j++) {
+				for (int j = 1; j < 4; j++) {
 					double x = obj.getX() + MathHelper.sin(i) * j / 2, z = obj.getZ() + MathHelper.cos(i) * j / 2;
 					BlockState state = obj.getWorld().getBlockState(mutable.set(x, Math.round(obj.getY() - 1), z));
 					if (!state.isReplaceable() && obj.getWorld().getBlockState(mutable.move(Direction.UP)).isReplaceable()) {
@@ -189,7 +189,7 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 	}
 
 	private List<LivingEntity> getNearby(int range) {
-		return obj.getWorld().getEntitiesByClass(LivingEntity.class, new Box(obj.getBlockPos()).expand(5, range, 5), foundEntity ->
+		return obj.getWorld().getEntitiesByClass(LivingEntity.class, new Box(obj.getBlockPos()).expand(2, range, 2), foundEntity ->
 				foundEntity.isAlive() && foundEntity.distanceTo(obj) < 10 && EnchancementUtil.shouldHurt(obj, foundEntity) && EnchancementUtil.canSee(obj, foundEntity, range));
 	}
 }

@@ -60,6 +60,10 @@ public class AirMobilityComponent implements CommonTickingComponent {
 		return ticksInAir;
 	}
 
+	public void resetTicksInAir() {
+		ticksInAir = 0;
+	}
+
 	public void enableResetBypass() {
 		resetBypassTicks = 3;
 	}

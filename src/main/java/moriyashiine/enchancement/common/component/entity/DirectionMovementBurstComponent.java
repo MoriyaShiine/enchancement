@@ -10,6 +10,7 @@ import moriyashiine.enchancement.common.enchantment.effect.DirectionMovementBurs
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.payload.DirectionMovementBurstPayload;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -122,7 +123,7 @@ public class DirectionMovementBurstComponent implements AutoSyncedComponent, Com
 	}
 
 	public boolean canUse() {
-		return cooldown == 0 && !obj.isSpectator();
+		return cooldown == 0 && EnchancementUtil.isGroundedOrAirborne(obj);
 	}
 
 	public boolean preventFalling() {
@@ -131,10 +132,11 @@ public class DirectionMovementBurstComponent implements AutoSyncedComponent, Com
 
 	public void use(double velocityX, double velocityZ) {
 		reset();
-		gravityTicks = 2;
+		gravityTicks = 3;
 		obj.setVelocity(velocityX, 0, velocityZ);
 		obj.playSound(ModSoundEvents.ENTITY_GENERIC_STRAFE, 1, 1);
 		obj.fallDistance = 0;
+		ModEntityComponents.AIR_MOBILITY.get(obj).resetTicksInAir();
 	}
 
 	public void reset() {

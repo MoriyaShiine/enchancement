@@ -9,8 +9,8 @@
 		"type": "minecraft:add",
 		"value": {
 		  "type": "minecraft:linear",
-		  "base": 0.25,
-		  "per_level_above_first": 0.25
+		  "base": 0.175,
+		  "per_level_above_first": 0.175
 		}
 	  },
 	  "damage_taken_modifier": {
