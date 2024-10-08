@@ -272,10 +272,10 @@ public class ModEnchantments {
 				builder -> builder.addNonListEffect(
 						ModEnchantmentEffectComponentTypes.ROTATION_MOVEMENT_BURST,
 						new RotationMovementBurstEffect(
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1)),
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.75F, 0.15F)),
+								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(1, -0.25F)),
+								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.85F, 0.2F)),
 								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(3)),
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1.5F))))));
+								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(1.3F, -0.15F))))));
 		registerable.register(GALE, create(GALE.getValue(),
 				itemLookup.getOrThrow(ItemTags.LEG_ARMOR_ENCHANTABLE),
 				2,
