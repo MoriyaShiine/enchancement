@@ -28,7 +28,7 @@ public class BrimstoneEntityRenderer extends ProjectileEntityRenderer<BrimstoneE
 	@Override
 	public void render(BrimstoneEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
 		float scale = MathHelper.lerp((float) entity.getDamage() / 12F, 0.1F, 1);
-		scale *= MathHelper.lerp(MathHelper.clamp((entity.ticksExisted - 32F) / (BrimstoneEntity.MAX_TICKS - 32), 0, 1), 1F, 0);
+		scale *= MathHelper.lerp(MathHelper.clamp((entity.ticksExisted - (BrimstoneEntity.getMaxTicks() - 10F)) / (BrimstoneEntity.getMaxTicks() - (BrimstoneEntity.getMaxTicks() - 10)), 0, 1), 1F, 0);
 		float v = (Math.floorMod(entity.getWorld().getTime(), 40) + tickDelta) / 4;
 		float u = v + 4 * -0.5F / scale;
 		VertexConsumer vertices = vertexConsumers.getBuffer(RenderLayer.getEntityAlpha(TEXTURE));

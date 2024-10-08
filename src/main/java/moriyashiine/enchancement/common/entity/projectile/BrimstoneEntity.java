@@ -43,12 +43,16 @@ import java.util.Set;
 
 public class BrimstoneEntity extends PersistentProjectileEntity {
 	public static final ItemStack BRIMSTONE_STACK;
-	public static final int DISTANCE_PER_TICK = 6, MAX_TICKS = 42;
+	public static final int DISTANCE_PER_TICK = 6;
 	public static boolean ALWAYS_SPAWN_PARTICLES = false;
 
 	static {
 		BRIMSTONE_STACK = new ItemStack(Items.LAVA_BUCKET);
 		BRIMSTONE_STACK.set(ModComponentTypes.BRIMSTONE_DAMAGE, Integer.MAX_VALUE);
+	}
+
+	public static int getMaxTicks() {
+		return MathHelper.floor(256F / DISTANCE_PER_TICK);
 	}
 
 	public static final TrackedData<Float> DAMAGE = DataTracker.registerData(BrimstoneEntity.class, TrackedDataHandlerRegistry.FLOAT);
@@ -126,7 +130,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 			Vec3d particlePos = getPos().add(getRotationVector().multiply(distanceTraveled));
 			addParticles(PARTICLE, particlePos.getX(), particlePos.getY(), particlePos.getZ());
 			addParticles(ModParticleTypes.BRIMSTONE_BUBBLE, particlePos.getX(), particlePos.getY(), particlePos.getZ());
-		} else if (ticksExisted > MAX_TICKS) {
+		} else if (ticksExisted > getMaxTicks()) {
 			discard();
 		}
 		ticksExisted++;
@@ -190,9 +194,9 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 
 	public float getDamageMultiplier(int distanceTraveled) {
 		if (distanceTraveled < 16) {
-			return MathHelper.lerp(distanceTraveled / 16F, 0.25F, 1);
+			return MathHelper.lerp(distanceTraveled / 8F, 0.25F, 1);
 		}
-		return Math.min(2, MathHelper.lerp((distanceTraveled - 16) / 200F, 1F, 2F));
+		return Math.min(2, MathHelper.lerp((distanceTraveled - 8) / 200F, 1F, 2F));
 	}
 
 	private void addParticles(ParticleEffect particle, double x, double y, double z) {
