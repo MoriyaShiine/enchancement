@@ -6,6 +6,7 @@ package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.brimstone
 import moriyashiine.enchancement.client.event.BrimstoneRenderEvent;
 import moriyashiine.enchancement.common.enchantment.effect.BrimstoneEffect;
 import moriyashiine.enchancement.common.init.ModComponentTypes;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.Item;
@@ -36,7 +37,9 @@ public abstract class CrossbowItemMixin {
 
 	@Inject(method = "usageTick", at = @At("HEAD"))
 	private void enchancement$brimstone(World world, LivingEntity user, ItemStack stack, int remainingUseTicks, CallbackInfo ci) {
-		BrimstoneRenderEvent.health = BrimstoneEffect.getBrimstoneDamage(getPullProgress(getMaxUseTime(stack, user) - remainingUseTicks, stack, user));
+		if (user == MinecraftClient.getInstance().player) {
+			BrimstoneRenderEvent.health = BrimstoneEffect.getBrimstoneDamage(getPullProgress(getMaxUseTime(stack, user) - remainingUseTicks, stack, user));
+		}
 	}
 
 	@Inject(method = "appendTooltip", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"), cancellable = true)
