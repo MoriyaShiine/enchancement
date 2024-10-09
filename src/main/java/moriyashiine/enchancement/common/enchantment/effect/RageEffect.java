@@ -51,7 +51,7 @@ public record RageEffect(EnchantmentValueEffect damageDealtModifier, Enchantment
 		float damageBonus = getDamageDealtModifier(living, stack);
 		if (damageBonus > 0) {
 			float other = 1 - damageBonus / getDamageDealtModifierMax(living, stack);
-			return (0xFF << 16) | (((int) (other * 255 + 0.5) & 0xFF) << 8) | ((int) (other * 255 + 0.5) & 0xFF);
+			return (0xFF << 24) | (0xFF << 16) | (((int) (other * 255 + 0.5) & 0xFF) << 8) | ((int) (other * 255 + 0.5) & 0xFF);
 		}
 		return -1;
 	}

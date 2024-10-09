@@ -178,7 +178,7 @@
 	"enchantmenteffectcomponenttype.rage.client.ItemEntityRendererMixin",
 	"enchantmenteffectcomponenttype.rage.client.ItemRendererMixin",
 	"enchantmenteffectcomponenttype.rage.client.ItemStackMixin",
-	"enchantmenteffectcomponenttype.rage.client.integration.sodium.ModelVertexMixin",
+	"enchantmenteffectcomponenttype.rage.client.integration.sodium.EntityVertexMixin",
 	"enchantmenteffectcomponenttype.rapidcrossbowfire.client.MinecraftClientMixin",
 	"enchantmenteffectcomponenttype.slam.client.PlayerEntityRendererMixin",
 	"enchantmenteffectcomponenttype.slide.client.ClientPlayerEntityMixin",

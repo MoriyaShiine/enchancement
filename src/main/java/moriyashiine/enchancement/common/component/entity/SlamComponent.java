@@ -85,7 +85,7 @@ public class SlamComponent implements CommonTickingComponent {
 					}
 				});
 				obj.getWorld().emitGameEvent(GameEvent.STEP, obj.getPos(), GameEvent.Emitter.of(obj.getSteppingBlockState()));
-				BlockState state = obj.getWorld().getBlockState(obj.getLandingPos());
+				@SuppressWarnings("deprecation") BlockState state = obj.getWorld().getBlockState(obj.getLandingPos());
 				if (state.contains(Properties.THICKNESS) && state.contains(Properties.VERTICAL_DIRECTION) && state.get(Properties.THICKNESS) == Thickness.TIP && state.get(Properties.VERTICAL_DIRECTION) == Direction.UP) {
 					obj.damage(obj.getDamageSources().stalagmite(), Integer.MAX_VALUE);
 				}
