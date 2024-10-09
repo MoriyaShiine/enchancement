@@ -3,10 +3,12 @@
  */
 package moriyashiine.enchancement.common.component.entity;
 
+import moriyashiine.enchancement.client.payload.UseEruptionPayload;
 import moriyashiine.enchancement.common.enchantment.effect.EruptionEffect;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
@@ -68,37 +70,42 @@ public class EruptionComponent implements AutoSyncedComponent, CommonTickingComp
 		return using;
 	}
 
-	public static void useServer(LivingEntity living) {
-		living.addVelocity(0, EruptionEffect.getJumpStrength(living.getRandom(), living.getMainHandStack()), 0);
-		living.velocityModified = true;
-		float base = (float) living.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
-		int fireDuration = EruptionEffect.getFireDuration(living.getRandom(), living.getMainHandStack());
-		getNearby(living).forEach(entity -> {
-			DamageSource source = living instanceof PlayerEntity player ? entity.getDamageSources().playerAttack(player) : entity.getDamageSources().mobAttack(living);
-			float damage = EnchantmentHelper.getDamage((ServerWorld) living.getWorld(), living.getMainHandStack(), entity, source, base)
-					+ living.getMainHandStack().getItem().getBonusAttackDamage(entity, base, source);
-			entity.setOnFireFor(fireDuration);
-			if (entity.damage(source, damage)) {
-				entity.takeKnockback(1, living.getX() - entity.getX(), living.getZ() - entity.getZ());
-			}
-		});
+	public void useCommon() {
+		obj.addVelocity(0, EruptionEffect.getJumpStrength(obj.getRandom(), obj.getMainHandStack()), 0);
+		obj.playSound(ModSoundEvents.ENTITY_GENERIC_ERUPT, 1, MathHelper.nextFloat(obj.getRandom(), 0.8F, 1.2F));
 	}
 
-	public static void useClient(LivingEntity living) {
+	public void useClient() {
 		BlockPos.Mutable mutable = new BlockPos.Mutable();
+		double y = Math.round(obj.getY() - 1);
 		for (int i = 0; i < 360; i += 15) {
 			for (int j = 1; j < 4; j++) {
-				double x = living.getX() + MathHelper.sin(i) * j / 2, z = living.getZ() + MathHelper.cos(i) * j / 2;
-				BlockState state = living.getWorld().getBlockState(mutable.set(x, Math.round(living.getY() - 1), z));
-				if (!state.isReplaceable() && living.getWorld().getBlockState(mutable.move(Direction.UP)).isReplaceable()) {
+				double x = obj.getX() + MathHelper.sin(i) * j / 2, z = obj.getZ() + MathHelper.cos(i) * j / 2;
+				BlockState state = obj.getWorld().getBlockState(mutable.set(x, y, z));
+				if (!state.isReplaceable() && obj.getWorld().getBlockState(mutable.move(Direction.UP)).isReplaceable()) {
 					BlockStateParticleEffect particle = new BlockStateParticleEffect(ParticleTypes.BLOCK, state);
 					for (int k = 0; k < 2; k++) {
-						living.getWorld().addParticle(particle, x, mutable.getY() + 0.5, z, 0, 0.5, 0);
-						living.getWorld().addParticle(ParticleTypes.LAVA, x, mutable.getY() + 0.5, z, 0, 2, 0);
+						obj.getWorld().addParticle(particle, x, mutable.getY() + 0.5, z, 0, 0.5, 0);
+						obj.getWorld().addParticle(ParticleTypes.LAVA, x, mutable.getY() + 0.5, z, 0, 2, 0);
 					}
 				}
 			}
 		}
+	}
+
+	public void useServer() {
+		PlayerLookup.tracking(obj).forEach(foundPlayer -> UseEruptionPayload.send(foundPlayer, obj.getId()));
+		float base = (float) obj.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+		int fireDuration = EruptionEffect.getFireDuration(obj.getRandom(), obj.getMainHandStack());
+		getNearby(obj).forEach(entity -> {
+			DamageSource source = obj instanceof PlayerEntity player ? entity.getDamageSources().playerAttack(player) : entity.getDamageSources().mobAttack(obj);
+			float damage = EnchantmentHelper.getDamage((ServerWorld) obj.getWorld(), obj.getMainHandStack(), entity, source, base)
+					+ obj.getMainHandStack().getItem().getBonusAttackDamage(entity, base, source);
+			entity.setOnFireFor(fireDuration);
+			if (entity.damage(source, damage)) {
+				entity.takeKnockback(1, obj.getX() - entity.getX(), obj.getZ() - entity.getZ());
+			}
+		});
 	}
 
 	private static List<LivingEntity> getNearby(LivingEntity living) {

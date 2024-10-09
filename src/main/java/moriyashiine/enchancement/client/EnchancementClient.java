@@ -101,13 +101,15 @@ public class EnchancementClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(SyncEnchantingTableCostPayload.ID, new SyncEnchantingTableCostPayload.Receiver());
 		// enchantment
 		ClientPlayNetworking.registerGlobalReceiver(AddAirJumpParticlesPayload.ID, new AddAirJumpParticlesPayload.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(AddLightningDashParticlesPayload.ID, new AddLightningDashParticlesPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(AddMoltenParticlesPayload.ID, new AddMoltenParticlesPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(AddMovementBurstParticlesPayload.ID, new AddMovementBurstParticlesPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(PlayBrimstoneFireSoundPayload.ID, new PlayBrimstoneFireSoundPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(PlayBrimstoneTravelSoundPayload.ID, new PlayBrimstoneTravelSoundPayload.Receiver());
-		ClientPlayNetworking.registerGlobalReceiver(PlaySparkSoundPayload.ID, new PlaySparkSoundPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(ResetFrozenTicksPayload.ID, new ResetFrozenTicksPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(SyncFrozenPlayerSlimStatusS2CPayload.ID, new SyncFrozenPlayerSlimStatusS2CPayload.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(UseEruptionPayload.ID, new UseEruptionPayload.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(UseLightningDashPayload.ID, new UseLightningDashPayload.Receiver());
 	}
 
 	private static KeyBinding registerKeyBinding(Supplier<KeyBinding> supplier) {

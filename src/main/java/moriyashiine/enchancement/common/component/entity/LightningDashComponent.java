@@ -3,14 +3,18 @@
  */
 package moriyashiine.enchancement.common.component.entity;
 
-import moriyashiine.enchancement.client.payload.PlaySparkSoundPayload;
+import moriyashiine.enchancement.client.payload.AddLightningDashParticlesPayload;
+import moriyashiine.enchancement.client.payload.UseLightningDashPayload;
+import moriyashiine.enchancement.client.sound.SparkSoundInstance;
 import moriyashiine.enchancement.common.enchantment.effect.LightningDashEffect;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.particle.SparkParticleEffect;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
@@ -18,16 +22,12 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.particle.BlockStateParticleEffect;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.event.GameEvent;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
@@ -79,9 +79,6 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 				obj.setVelocity(obj.getRotationVector().multiply(LightningDashEffect.getSmashStrength(obj.getRandom(), obj.getMainHandStack())));
 				obj.playSound(ModSoundEvents.ENTITY_GENERIC_ZAP, 2, 1);
 			}
-			if (!EnchancementUtil.isSufficientlyHigh(obj, 0.25)) {
-				floatTicks = smashTicks = 0;
-			}
 		}
 		if (isSmashing()) {
 			smashTicks--;
@@ -119,7 +116,12 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 	@Override
 	public void serverTick() {
 		tick();
+		if (isFloating() && !EnchancementUtil.isSufficientlyHigh(obj, 0.25)) {
+			floatTicks = smashTicks = 0;
+			sync();
+		}
 		if (smashTicks == 1 && obj.isOnGround()) {
+			PlayerLookup.tracking(obj).forEach(foundPlayer -> AddLightningDashParticlesPayload.send(foundPlayer, obj.getId()));
 			obj.fallDistance = (float) Math.max(0, cachedHeight - obj.getY());
 			float base = (float) obj.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
 			getNearby(1).forEach(entity -> {
@@ -144,20 +146,12 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 			}
 		}
 		if (smashTicks == 1 && obj.isOnGround()) {
-			BlockPos.Mutable mutable = new BlockPos.Mutable();
-			for (int i = 0; i < 360; i += 15) {
-				for (int j = 1; j < 4; j++) {
-					double x = obj.getX() + MathHelper.sin(i) * j / 2, z = obj.getZ() + MathHelper.cos(i) * j / 2;
-					BlockState state = obj.getWorld().getBlockState(mutable.set(x, Math.round(obj.getY() - 1), z));
-					if (!state.isReplaceable() && obj.getWorld().getBlockState(mutable.move(Direction.UP)).isReplaceable()) {
-						BlockStateParticleEffect particle = new BlockStateParticleEffect(ParticleTypes.BLOCK, state);
-						for (int k = 0; k < 8; k++) {
-							obj.getWorld().addParticle(particle, x, mutable.getY() + 0.5, z, 0, 0, 0);
-						}
-					}
-				}
-			}
+			AddLightningDashParticlesPayload.addParticles(obj);
 		}
+	}
+
+	public void sync() {
+		ModEntityComponents.LIGHTNING_DASH.sync(obj);
 	}
 
 	public void setUsing(boolean using) {
@@ -168,12 +162,18 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 		return using;
 	}
 
-	public void startFloating(int floatTicks) {
+	public void useCommon(Vec3d lungeVelocity, int floatTicks) {
+		obj.setVelocity(lungeVelocity);
 		this.floatTicks = floatTicks;
-		if (obj instanceof ServerPlayerEntity player) {
-			PlayerLookup.tracking(obj).forEach(foundPlayer -> PlaySparkSoundPayload.send(foundPlayer, obj.getId()));
-			PlaySparkSoundPayload.send(player, obj.getId());
-		}
+	}
+
+	@Environment(EnvType.CLIENT)
+	public void useClient() {
+		MinecraftClient.getInstance().getSoundManager().play(new SparkSoundInstance(obj));
+	}
+
+	public void useServer(Vec3d lungeVelocity, int floatTicks) {
+		PlayerLookup.tracking(obj).forEach(foundPlayer -> UseLightningDashPayload.send(foundPlayer, obj.getId(), lungeVelocity, floatTicks));
 	}
 
 	public boolean isFloating() {

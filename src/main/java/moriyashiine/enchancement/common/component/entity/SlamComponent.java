@@ -100,10 +100,11 @@ public class SlamComponent implements CommonTickingComponent {
 			if (isSlamming) {
 				slamTick(() -> {
 					BlockPos.Mutable mutable = new BlockPos.Mutable();
+					double y = Math.round(obj.getY() - 1);
 					for (int i = 0; i < 360; i += 15) {
 						for (int j = 1; j < 5; j++) {
 							double x = obj.getX() + MathHelper.sin(i) * j / 2, z = obj.getZ() + MathHelper.cos(i) * j / 2;
-							BlockState state = obj.getWorld().getBlockState(mutable.set(x, Math.round(obj.getY() - 1), z));
+							BlockState state = obj.getWorld().getBlockState(mutable.set(x, y, z));
 							if (!state.isReplaceable() && obj.getWorld().getBlockState(mutable.move(Direction.UP)).isReplaceable()) {
 								obj.getWorld().addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, state), x, mutable.getY(), z, 0, 0, 0);
 							}

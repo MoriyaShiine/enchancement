@@ -106,13 +106,15 @@ public class Enchancement implements ModInitializer {
 		PayloadTypeRegistry.playS2C().register(SyncEnchantingTableBookshelfCountPayload.ID, SyncEnchantingTableBookshelfCountPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(SyncEnchantingTableCostPayload.ID, SyncEnchantingTableCostPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(AddAirJumpParticlesPayload.ID, AddAirJumpParticlesPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(AddLightningDashParticlesPayload.ID, AddLightningDashParticlesPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(AddMoltenParticlesPayload.ID, AddMoltenParticlesPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(AddMovementBurstParticlesPayload.ID, AddMovementBurstParticlesPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(PlayBrimstoneFireSoundPayload.ID, PlayBrimstoneFireSoundPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(PlayBrimstoneTravelSoundPayload.ID, PlayBrimstoneTravelSoundPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(PlaySparkSoundPayload.ID, PlaySparkSoundPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(ResetFrozenTicksPayload.ID, ResetFrozenTicksPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(SyncFrozenPlayerSlimStatusS2CPayload.ID, SyncFrozenPlayerSlimStatusS2CPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(UseEruptionPayload.ID, UseEruptionPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(UseLightningDashPayload.ID, UseLightningDashPayload.CODEC);
 		// common payloads
 		PayloadTypeRegistry.playC2S().register(AirJumpPayload.ID, AirJumpPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(BoostInFluidPayload.ID, BoostInFluidPayload.CODEC);

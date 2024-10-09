@@ -3,6 +3,7 @@
  */
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.lightningdash;
 
+import moriyashiine.enchancement.common.component.entity.LightningDashComponent;
 import moriyashiine.enchancement.common.enchantment.effect.LightningDashEffect;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
@@ -13,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -62,8 +64,15 @@ public abstract class ItemStackMixin {
 				if (user instanceof PlayerEntity player) {
 					player.incrementStat(Stats.USED.getOrCreateStat(getItem()));
 				}
-				user.setVelocity(user.getRotationVector().multiply(LightningDashEffect.getLungeStrength(user.getRandom(), stack)));
-				ModEntityComponents.LIGHTNING_DASH.get(user).startFloating(LightningDashEffect.getFloatTime(user.getRandom(), stack));
+				Vec3d lungeVelocity = user.getRotationVector().multiply(LightningDashEffect.getLungeStrength(user.getRandom(), stack));
+				int floatTicks = LightningDashEffect.getFloatTime(user.getRandom(), stack);
+				LightningDashComponent lightningDashComponent = ModEntityComponents.LIGHTNING_DASH.get(user);
+				lightningDashComponent.useCommon(lungeVelocity, floatTicks);
+				if (world.isClient) {
+					lightningDashComponent.useClient();
+				} else {
+					lightningDashComponent.useServer(lungeVelocity, floatTicks);
+				}
 			}
 			ci.cancel();
 		}

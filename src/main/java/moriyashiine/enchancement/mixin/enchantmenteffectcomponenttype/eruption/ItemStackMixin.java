@@ -6,7 +6,6 @@ package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.eruption;
 import moriyashiine.enchancement.common.component.entity.EruptionComponent;
 import moriyashiine.enchancement.common.enchantment.effect.EruptionEffect;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -65,11 +63,12 @@ public abstract class ItemStackMixin {
 				if (user instanceof PlayerEntity player) {
 					player.incrementStat(Stats.USED.getOrCreateStat(getItem()));
 				}
-				user.playSound(ModSoundEvents.ENTITY_GENERIC_ERUPT, 1, MathHelper.nextFloat(user.getRandom(), 0.8F, 1.2F));
+				EruptionComponent eruptionComponent = ModEntityComponents.ERUPTION.get(user);
+				eruptionComponent.useCommon();
 				if (world.isClient) {
-					EruptionComponent.useClient(user);
+					eruptionComponent.useClient();
 				} else {
-					EruptionComponent.useServer(user);
+					eruptionComponent.useServer();
 				}
 			}
 			ci.cancel();
