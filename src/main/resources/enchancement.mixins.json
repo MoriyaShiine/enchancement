@@ -97,6 +97,8 @@
 	"enchantmenteffectcomponenttype.fluidwalking.PowderSnowBlockMixin",
 	"enchantmenteffectcomponenttype.grapplingfishingbobber.FishingBobberEntityMixin",
 	"enchantmenteffectcomponenttype.grapplingfishingbobber.FishingRodItemMixin",
+	"enchantmenteffectcomponenttype.honeytrail.EntityMixin",
+	"enchantmenteffectcomponenttype.honeytrail.LivingEntityMixin",
 	"enchantmenteffectcomponenttype.leechingtrident.TridentEntityMixin",
 	"enchantmenteffectcomponenttype.lightningdash.EntityMixin",
 	"enchantmenteffectcomponenttype.lightningdash.ItemStackMixin",
@@ -123,6 +125,7 @@
 	"enchantmenteffectcomponenttype.teleportonhit.ProjectileEntityMixin",
 	"enchantmenteffectcomponenttype.teleportonhit.RangedWeaponItemMixin",
 	"enchantmenteffectcomponenttype.teleportonhit.TridentEntityMixin",
+	"enchantmenteffectcomponenttype.walljump.LivingEntityMixin",
 	"enchantmententityeffecttype.conditionalattribute.EnchantmentMixin",
 	"enchantmententityeffecttype.freeze.LivingEntityMixin",
 	"enchantmententityeffecttype.freeze.MobEntityMixin",
@@ -137,10 +140,12 @@
 	"util.accessor.ArrowEntityAccessor",
 	"util.accessor.CrossbowItemAccessor",
 	"util.accessor.EntityAccessor",
+	"util.accessor.HoneyBlockAccessor",
 	"util.accessor.ItemEntityAccessor",
 	"util.accessor.LivingEntityAccessor",
 	"util.accessor.PersistentProjectileEntityAccessor",
-	"util.accessor.PiglinBrainAccessor"
+	"util.accessor.PiglinBrainAccessor",
+	"util.accessor.WorldAccessor"
   ],
   "client": [
 	"config.allowduplicatekeybindings.client.ControlsListWidgetKeyBindingEntryMixin",

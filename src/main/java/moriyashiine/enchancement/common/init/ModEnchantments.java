@@ -72,6 +72,7 @@ public class ModEnchantments {
 	// boots
 	public static final RegistryKey<Enchantment> BOUNCY = createKey("bouncy");
 	public static final RegistryKey<Enchantment> BUOY = createKey("buoy");
+	public static final RegistryKey<Enchantment> STICKY = createKey("sticky");
 	// sword
 	public static final RegistryKey<Enchantment> BERSERK = createKey("berserk");
 	public static final RegistryKey<Enchantment> FROSTBITE = createKey("frostbite");
@@ -354,6 +355,18 @@ public class ModEnchantments {
 											EnchantmentLevelBasedValue.linear(2),
 											EntityAttributeModifier.Operation.ADD_VALUE),
 									HasExtendedWaterTimeLootCondition.INSTANCE));
+				}));
+		registerable.register(STICKY, create(STICKY.getValue(),
+				itemLookup.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
+				2,
+				AttributeModifierSlot.FEET,
+				builder -> {
+					builder.addEffect(
+							ModEnchantmentEffectComponentTypes.HONEY_TRAIL
+					);
+					builder.addNonListEffect(
+							ModEnchantmentEffectComponentTypes.WALL_JUMP,
+							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.5F, 0.2F)));
 				}));
 		// sword
 		registerable.register(BERSERK, create(BERSERK.getValue(),

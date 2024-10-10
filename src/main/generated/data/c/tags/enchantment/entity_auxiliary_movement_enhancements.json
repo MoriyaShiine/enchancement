@@ -19,6 +19,10 @@
 	{
 	  "id": "enchancement:buoy",
 	  "required": false
+	},
+	{
+	  "id": "enchancement:sticky",
+	  "required": false
 	}
   ]
 }

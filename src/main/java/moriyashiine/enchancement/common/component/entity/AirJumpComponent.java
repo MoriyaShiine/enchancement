@@ -80,6 +80,9 @@ public class AirJumpComponent implements AutoSyncedComponent, CommonTickingCompo
 			jumpsLeft = 0;
 			ticksInAir = 0;
 		}
+		if (ModEntityComponents.WALL_JUMP.get(obj).isSliding()) {
+			jumpCooldown = AirJumpEffect.getJumpCooldown(obj);
+		}
 	}
 
 	@Override

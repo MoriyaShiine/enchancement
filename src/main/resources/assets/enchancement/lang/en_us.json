@@ -78,6 +78,8 @@
   "enchantment.enchancement.buoy.desc": "Causes you to walk on fluids, descending via sneaking. Holding jump while submerged rapidly propels you upwards. Prevents floating. Grants a speed boost for some time after leaving water.",
   "enchantment.enchancement.bouncy": "Bouncy",
   "enchantment.enchancement.bouncy.desc": "Negates fall damage. Launches you upwards upon landing while not sneaking. Sneaking while grounded will charge a super jump.",
+  "enchantment.enchancement.sticky": "Sticky",
+  "enchantment.enchancement.sticky.desc": "Allows sliding down and jumping off walls. Leaves a trail of honey where you walk that slows mobs.",
   "enchantment.enchancement.berserk": "Berserk",
   "enchantment.enchancement.berserk.desc": "Increases damage dealt proportional to missing health.",
   "enchantment.enchancement.frostbite": "Frostbite",

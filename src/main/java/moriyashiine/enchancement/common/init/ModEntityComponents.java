@@ -34,6 +34,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<RotationMovementBurstComponent> ROTATION_MOVEMENT_BURST = ComponentRegistry.getOrCreate(Enchancement.id("rotation_movement_burst"), RotationMovementBurstComponent.class);
 	public static final ComponentKey<SlamComponent> SLAM = ComponentRegistry.getOrCreate(Enchancement.id("slam"), SlamComponent.class);
 	public static final ComponentKey<SlideComponent> SLIDE = ComponentRegistry.getOrCreate(Enchancement.id("slide"), SlideComponent.class);
+	public static final ComponentKey<WallJumpComponent> WALL_JUMP = ComponentRegistry.getOrCreate(Enchancement.id("wall_jump"), WallJumpComponent.class);
 	// extra entity data
 	public static final ComponentKey<ApplyRandomStatusEffectComponent> APPLY_RANDOM_STATUS_EFFECT = ComponentRegistry.getOrCreate(Enchancement.id("apply_random_status_effect"), ApplyRandomStatusEffectComponent.class);
 	public static final ComponentKey<ApplyRandomStatusEffectSpectralComponent> APPLY_RANDOM_STATUS_EFFECT_SPECTRAL = ComponentRegistry.getOrCreate(Enchancement.id("apply_random_status_effect_spectral"), ApplyRandomStatusEffectSpectralComponent.class);
@@ -66,6 +67,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerForPlayers(ROTATION_MOVEMENT_BURST, RotationMovementBurstComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(SLAM, SlamComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(SLIDE, SlideComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+		registry.registerForPlayers(WALL_JUMP, WallJumpComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		// extra entity data
 		registry.registerFor(ArrowEntity.class, APPLY_RANDOM_STATUS_EFFECT, projectile -> new ApplyRandomStatusEffectComponent());
 		registry.registerFor(SpectralArrowEntity.class, APPLY_RANDOM_STATUS_EFFECT_SPECTRAL, ApplyRandomStatusEffectSpectralComponent::new);

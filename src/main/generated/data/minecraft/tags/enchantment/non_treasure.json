@@ -49,6 +49,10 @@
 	  "required": false
 	},
 	{
+	  "id": "enchancement:sticky",
+	  "required": false
+	},
+	{
 	  "id": "enchancement:berserk",
 	  "required": false
 	},

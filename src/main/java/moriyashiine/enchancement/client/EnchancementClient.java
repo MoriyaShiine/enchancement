@@ -5,6 +5,7 @@ package moriyashiine.enchancement.client;
 
 import moriyashiine.enchancement.client.event.*;
 import moriyashiine.enchancement.client.event.integration.appleskin.BrimstoneAppleskinEvent;
+import moriyashiine.enchancement.client.particle.HoneyBubbleParticle;
 import moriyashiine.enchancement.client.particle.SparkParticle;
 import moriyashiine.enchancement.client.payload.*;
 import moriyashiine.enchancement.client.reloadlisteners.FrozenReloadListener;
@@ -62,6 +63,7 @@ public class EnchancementClient implements ClientModInitializer {
 		EntityRendererRegistry.register(ModEntityTypes.AMETHYST_SHARD, AmethystShardEntityRenderer::new);
 		EntityRendererRegistry.register(ModEntityTypes.TORCH, TorchEntityRenderer::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.BRIMSTONE_BUBBLE, WaterBubbleParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.HONEY_BUBBLE, HoneyBubbleParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.SPARK, provider -> new SparkParticle.Factory());
 		ModelPredicateProviderRegistry.register(Items.CROSSBOW, Enchancement.id("brimstone"), (stack, world, entity, seed) -> CrossbowItem.isCharged(stack) && stack.contains(ModComponentTypes.BRIMSTONE_DAMAGE) ? stack.get(ModComponentTypes.BRIMSTONE_DAMAGE) / 12F : 0);
 		ModelPredicateProviderRegistry.register(Items.CROSSBOW, Enchancement.id("amethyst_shard"), (stack, world, entity, seed) -> stack.contains(DataComponentTypes.CHARGED_PROJECTILES) && stack.get(DataComponentTypes.CHARGED_PROJECTILES).contains(Items.AMETHYST_SHARD) || (CrossbowItem.isCharged(stack) && AllowLoadingProjectileEffect.getItems(stack).contains(Items.AMETHYST_SHARD) && !(entity instanceof PlayerEntity)) ? 1 : 0);

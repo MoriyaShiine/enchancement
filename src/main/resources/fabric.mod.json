@@ -50,6 +50,7 @@
   "custom": {
 	"cardinal-components": [
 	  "enchancement:fell_trees",
+	  "enchancement:honey_trail",
 	  "enchancement:air_mobility",
 	  "enchancement:projectile_timer",
 	  "enchancement:safe_lightning",
@@ -65,6 +66,7 @@
 	  "enchancement:rotation_movement_burst",
 	  "enchancement:slam",
 	  "enchancement:slide",
+	  "enchancement:wall_jump",
 	  "enchancement:apply_random_status_effect",
 	  "enchancement:apply_random_status_effect_spectral",
 	  "enchancement:delayed_launch",

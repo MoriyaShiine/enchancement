@@ -50,7 +50,8 @@ public class ModEnchantmentTagProvider extends FabricTagProvider.EnchantmentTagP
 				.addOptional(ModEnchantments.DASH)
 				.addOptional(ModEnchantments.GALE)
 				.addOptional(ModEnchantments.SLIDE)
-				.addOptional(ModEnchantments.BUOY);
+				.addOptional(ModEnchantments.BUOY)
+				.addOptional(ModEnchantments.STICKY);
 		getOrCreateTagBuilder(ConventionalEnchantmentTags.ENTITY_DEFENSE_ENHANCEMENTS)
 				.addOptional(ModEnchantments.VEIL)
 				.addOptional(ModEnchantments.AMPHIBIOUS)
