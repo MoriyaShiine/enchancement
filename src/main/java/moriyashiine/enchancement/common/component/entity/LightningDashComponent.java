@@ -79,6 +79,9 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 				obj.setVelocity(obj.getRotationVector().multiply(LightningDashEffect.getSmashStrength(obj.getRandom(), obj.getMainHandStack())));
 				obj.playSound(ModSoundEvents.ENTITY_GENERIC_ZAP, 2, 1);
 			}
+			if (obj.hurtTime != 0) {
+				floatTicks = smashTicks = 0;
+			}
 		}
 		if (isSmashing()) {
 			smashTicks--;
