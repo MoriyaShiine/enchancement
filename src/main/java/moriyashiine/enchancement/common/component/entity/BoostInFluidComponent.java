@@ -7,7 +7,6 @@ import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.payload.BoostInFluidPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.util.SubmersionGate;
-import moriyashiine.enchancement.mixin.util.accessor.LivingEntityAccessor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
@@ -89,7 +88,7 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 					}
 				}
 			}
-			if (((LivingEntityAccessor) obj).enchancement$jumping()) {
+			if (obj.jumping) {
 				if (canUse(false)) {
 					shouldBoost = true;
 					BoostInFluidPayload.send(true);

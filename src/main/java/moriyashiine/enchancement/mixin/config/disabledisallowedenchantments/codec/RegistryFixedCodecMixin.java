@@ -25,6 +25,7 @@ public class RegistryFixedCodecMixin<E> {
 	@Final
 	private RegistryKey<? extends Registry<E>> registry;
 
+	@SuppressWarnings("unchecked")
 	@ModifyReturnValue(method = "decode", at = @At("RETURN"))
 	private <T> DataResult<Pair<RegistryEntry<E>, T>> enchancement$disableDisallowedEnchantments(DataResult<Pair<RegistryEntry<E>, T>> original, DynamicOps<T> ops, T input) {
 		if (!original.hasResultOrPartial() && registry.equals(RegistryKeys.ENCHANTMENT) && ops instanceof RegistryOps<T> registryOps) {

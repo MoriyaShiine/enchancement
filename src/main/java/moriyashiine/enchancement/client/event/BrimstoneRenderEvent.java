@@ -4,7 +4,6 @@
 package moriyashiine.enchancement.client.event;
 
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.mixin.util.accessor.client.InGameHudAccessor;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -20,7 +19,7 @@ public class BrimstoneRenderEvent implements HudRenderCallback {
 		if (EnchantmentHelper.hasAnyEnchantmentsWith(minecraft.player.getActiveItem(), ModEnchantmentEffectComponentTypes.BRIMSTONE)) {
 			int scaledWidth = minecraft.getWindow().getScaledWidth(), scaledHeight = minecraft.getWindow().getScaledHeight();
 			forcedHeight = (scaledHeight / 2) + 6;
-			((InGameHudAccessor) minecraft.inGameHud).enchancement$renderHealthBar(drawContext, minecraft.player, (scaledWidth / 2) - 25, forcedHeight, 1, -1, 12, health, health, 0, false);
+			minecraft.inGameHud.renderHealthBar(drawContext, minecraft.player, (scaledWidth / 2) - 25, forcedHeight, 1, -1, 12, health, health, 0, false);
 			forcedHeight = -1;
 		} else {
 			health = -1;

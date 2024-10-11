@@ -8,11 +8,11 @@ import moriyashiine.enchancement.client.payload.AddMoltenParticlesPayload;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.tag.ModBlockTags;
-import moriyashiine.enchancement.mixin.util.accessor.AbstractFurnaceBlockEntityAccessor;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -49,7 +49,7 @@ public class BlockMixin {
 					PlayerLookup.tracking(world, pos).forEach(foundPlayer -> AddMoltenParticlesPayload.send(foundPlayer, pos));
 					world.playSound(null, pos, ModSoundEvents.BLOCK_GENERIC_SMELT, SoundCategory.BLOCKS, 1, 1);
 					original.set(i, smelted.getLeft());
-					AbstractFurnaceBlockEntityAccessor.enchancement$dropExperience(world, entity != null && EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.MINE_ORE_VEINS) ? entity.getPos() : Vec3d.of(pos), 1, smelted.getRight());
+					FurnaceBlockEntity.dropExperience(world, entity != null && EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.MINE_ORE_VEINS) ? entity.getPos() : Vec3d.of(pos), 1, smelted.getRight());
 				}
 			}
 		}

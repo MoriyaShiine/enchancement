@@ -9,7 +9,6 @@ import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.payload.AirJumpPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import moriyashiine.enchancement.mixin.util.accessor.LivingEntityAccessor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
@@ -88,7 +87,7 @@ public class AirJumpComponent implements AutoSyncedComponent, CommonTickingCompo
 	@Override
 	public void clientTick() {
 		tick();
-		if (hasAirJump && ((LivingEntityAccessor) obj).enchancement$jumping() && canUse()) {
+		if (hasAirJump && obj.jumping && canUse()) {
 			use();
 			AddAirJumpParticlesPayload.addParticles(obj);
 			AirJumpPayload.send();

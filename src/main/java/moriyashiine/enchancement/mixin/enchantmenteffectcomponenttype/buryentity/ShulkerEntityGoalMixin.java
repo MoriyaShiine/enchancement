@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin({ShulkerEntity.ShootBulletGoal.class, ShulkerEntity.PeekGoal.class})
+@Mixin({ShulkerEntity.PeekGoal.class, ShulkerEntity.ShootBulletGoal.class})
 public class ShulkerEntityGoalMixin {
 	@Unique
 	private ShulkerEntity cachedEntity = null;

@@ -3,7 +3,6 @@
  */
 package moriyashiine.enchancement.mixin.config.rebalanceequipment.client;
 
-import moriyashiine.enchancement.mixin.util.accessor.PersistentProjectileEntityAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.ItemEntityRenderer;
@@ -33,7 +32,7 @@ public class TridentEntityRendererMixin {
 	private void enchancement$rebalanceEquipment(TridentEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
 		if (entity.getDataTracker().get(TridentEntity.LOYALTY) > 0 && !entity.isOwnerAlive()) {
 			matrices.push();
-			ItemStack itemStack = ((PersistentProjectileEntityAccessor) entity).enchancement$asItemStack();
+			ItemStack itemStack = entity.asItemStack();
 			random.setSeed(ItemEntityRenderer.getSeed(itemStack));
 			BakedModel model = client.getItemRenderer().getModel(itemStack, entity.getWorld(), null, entity.getId());
 			matrices.translate(0.0F, MathHelper.sin((entity.age + tickDelta) / 10.0F) * 0.1F + 0.1F + 0.25F * model.getTransformation().getTransformation(ModelTransformationMode.GROUND).scale.y(), 0.0F);

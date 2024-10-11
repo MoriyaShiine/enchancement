@@ -7,8 +7,6 @@ import com.llamalad7.mixinextras.sugar.Local;
 import moriyashiine.enchancement.common.component.entity.ApplyRandomStatusEffectComponent;
 import moriyashiine.enchancement.common.component.entity.ApplyRandomStatusEffectSpectralComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.mixin.util.accessor.ArrowEntityAccessor;
-import moriyashiine.enchancement.mixin.util.accessor.PersistentProjectileEntityAccessor;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
@@ -33,8 +31,8 @@ public class RangedWeaponItemMixin {
 	private void enchancement$teleportOnHit(ServerWorld world, LivingEntity shooter, Hand hand, ItemStack stack, List<ItemStack> projectiles, float speed, float divergence, boolean critical, @Nullable LivingEntity target, CallbackInfo ci, @Local(ordinal = 1) ItemStack projectileStack, @Local ProjectileEntity projectileEntity) {
 		if (projectileEntity instanceof ArrowEntity arrow) {
 			ApplyRandomStatusEffectComponent.maybeSet(shooter, projectileStack, ApplyRandomStatusEffectComponent.getDurationMultiplier(speed), stack, statusEffects -> {
-				ModEntityComponents.APPLY_RANDOM_STATUS_EFFECT.get(arrow).setOriginalStack(((PersistentProjectileEntityAccessor) arrow).enchancement$asItemStack());
-				((ArrowEntityAccessor) arrow).enchancement$setPotionContents(new PotionContentsComponent(Optional.empty(), Optional.empty(), statusEffects));
+				ModEntityComponents.APPLY_RANDOM_STATUS_EFFECT.get(arrow).setOriginalStack(arrow.asItemStack());
+				arrow.setPotionContents(new PotionContentsComponent(Optional.empty(), Optional.empty(), statusEffects));
 			});
 		}
 		if (projectileEntity instanceof SpectralArrowEntity spectralArrow) {

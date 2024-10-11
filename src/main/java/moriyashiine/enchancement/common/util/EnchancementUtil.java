@@ -11,7 +11,6 @@ import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.event.InitializeDefaultEnchantmentsEvent;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.tag.ModItemTags;
-import moriyashiine.enchancement.mixin.util.accessor.ItemEntityAccessor;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalFluidTags;
 import net.minecraft.block.BlockState;
@@ -77,7 +76,7 @@ public class EnchancementUtil {
 			if (i < drops.size() - 1) {
 				ItemEntity itemEntity = drops.get(i);
 				ItemEntity other = drops.get(i + 1);
-				((ItemEntityAccessor) itemEntity).enchancement$tryMerge(other);
+				itemEntity.tryMerge(other);
 				if (itemEntity.getStack().isEmpty()) {
 					drops.remove(i);
 				}

@@ -7,7 +7,6 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import moriyashiine.enchancement.common.component.world.HoneyTrailComponent;
 import moriyashiine.enchancement.common.init.ModWorldComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import moriyashiine.enchancement.mixin.util.accessor.WorldAccessor;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -48,7 +47,7 @@ public abstract class EntityMixin {
 	private boolean inHoneySpot() {
 		HoneyTrailComponent honeyTrailComponent = ModWorldComponents.HONEY_TRAIL.get(getWorld());
 		for (HoneyTrailComponent.HoneySpot spot : honeyTrailComponent.getHoneySpots()) {
-			if (spot.getBox().contains(getPos()) && EnchancementUtil.shouldHurt(((WorldAccessor) getWorld()).enchancement$getEntityLookup().get(spot.getOwnerId()), (Entity) (Object) this)) {
+			if (spot.getBox().contains(getPos()) && EnchancementUtil.shouldHurt(getWorld().getEntityLookup().get(spot.getOwnerId()), (Entity) (Object) this)) {
 				return true;
 			}
 		}

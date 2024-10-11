@@ -10,7 +10,6 @@ import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.payload.RotationMovementBurstPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import moriyashiine.enchancement.mixin.util.accessor.LivingEntityAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -73,7 +72,7 @@ public class RotationMovementBurstComponent implements AutoSyncedComponent, Comm
 	public void clientTick() {
 		tick();
 		if (hasRotationMovementBurst && !obj.isSpectator() && obj == MinecraftClient.getInstance().player) {
-			if (((LivingEntityAccessor) obj).enchancement$jumping()) {
+			if (obj.jumping) {
 				ticksPressingJump = Math.min(2, ++ticksPressingJump);
 			} else {
 				ticksPressingJump = 0;

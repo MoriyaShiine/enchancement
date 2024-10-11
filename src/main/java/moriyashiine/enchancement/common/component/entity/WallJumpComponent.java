@@ -7,9 +7,8 @@ import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.payload.WallJumpPayload;
 import moriyashiine.enchancement.common.payload.WallJumpSlidingPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import moriyashiine.enchancement.mixin.util.accessor.HoneyBlockAccessor;
-import moriyashiine.enchancement.mixin.util.accessor.LivingEntityAccessor;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.HoneyBlock;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -54,8 +53,8 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 			slidingPos = null;
 			hasJumped = false;
 		} else if (slidingPos != null) {
-			((HoneyBlockAccessor) Blocks.HONEY_BLOCK).enchancement$addCollisionEffects(obj.getWorld(), obj);
-			((HoneyBlockAccessor) Blocks.HONEY_BLOCK).enchancement$updateSlidingVelocity(obj);
+			((HoneyBlock) Blocks.HONEY_BLOCK).addCollisionEffects(obj.getWorld(), obj);
+			((HoneyBlock) Blocks.HONEY_BLOCK).updateSlidingVelocity(obj);
 		}
 	}
 
@@ -92,9 +91,9 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 					}
 				}
 			}
-			if (slidingPos != null && ((LivingEntityAccessor) obj).enchancement$jumping()) {
+			if (slidingPos != null && obj.jumping) {
 				Vec3d diff = obj.getBlockPos().toCenterPos().subtract(slidingPos.toCenterPos()).normalize().multiply(jumpStrength);
-				Vec3d velocity = new Vec3d(diff.getX(), ((LivingEntityAccessor) obj).enchancement$getJumpVelocity() * jumpStrength * 3, diff.getZ());
+				Vec3d velocity = new Vec3d(diff.getX(), obj.getJumpVelocity() * jumpStrength * 3, diff.getZ());
 				use(velocity);
 				WallJumpPayload.send(velocity);
 				targetPos = null;

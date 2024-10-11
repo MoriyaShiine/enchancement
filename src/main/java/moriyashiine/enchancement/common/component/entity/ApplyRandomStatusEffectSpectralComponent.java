@@ -4,7 +4,6 @@
 package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.mixin.util.accessor.PersistentProjectileEntityAccessor;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.projectile.SpectralArrowEntity;
@@ -54,7 +53,7 @@ public class ApplyRandomStatusEffectSpectralComponent implements AutoSyncedCompo
 
 	@Override
 	public void tick() {
-		if (((PersistentProjectileEntityAccessor) obj).enchancement$inGround() && !effects.isEmpty() && ((PersistentProjectileEntityAccessor) obj).enchancement$inGroundTime() >= 600) {
+		if (obj.inGround && !effects.isEmpty() && obj.inGroundTime >= 600) {
 			effects.clear();
 			color = -1;
 		}
@@ -63,8 +62,8 @@ public class ApplyRandomStatusEffectSpectralComponent implements AutoSyncedCompo
 	@Override
 	public void clientTick() {
 		tick();
-		if (((PersistentProjectileEntityAccessor) obj).enchancement$inGround()) {
-			if (((PersistentProjectileEntityAccessor) obj).enchancement$inGroundTime() % 5 == 0) {
+		if (obj.inGround) {
+			if (obj.inGroundTime % 5 == 0) {
 				spawnParticles(1);
 			}
 		} else {

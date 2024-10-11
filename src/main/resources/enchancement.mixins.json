@@ -137,17 +137,7 @@
 	"entity.torch.LivingEntityMixin",
 	"entity.torch.PersistentProjectileEntityMixin",
 	"util.EnchantedCountIncreaseLootFunctionMixin",
-	"util.PersistentProjectileEntityMixin",
-	"util.accessor.AbstractFurnaceBlockEntityAccessor",
-	"util.accessor.ArrowEntityAccessor",
-	"util.accessor.CrossbowItemAccessor",
-	"util.accessor.EntityAccessor",
-	"util.accessor.HoneyBlockAccessor",
-	"util.accessor.ItemEntityAccessor",
-	"util.accessor.LivingEntityAccessor",
-	"util.accessor.PersistentProjectileEntityAccessor",
-	"util.accessor.PiglinBrainAccessor",
-	"util.accessor.WorldAccessor"
+	"util.PersistentProjectileEntityMixin"
   ],
   "client": [
 	"config.allowduplicatekeybindings.client.ControlsListWidgetKeyBindingEntryMixin",
@@ -193,7 +183,6 @@
 	"enchantmententityeffecttype.freeze.client.LivingEntityRendererMixin",
 	"enchantmententityeffecttype.freeze.client.SquidEntityRendererMixin",
 	"entity.brimstone.client.WorldRendererMixin",
-	"util.accessor.client.InGameHudAccessor",
 	"util.client.ModelLoaderMixin"
   ],
   "injectors": {

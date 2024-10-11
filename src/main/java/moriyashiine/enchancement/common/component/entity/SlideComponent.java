@@ -13,8 +13,6 @@ import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.payload.StartSlidingPayload;
 import moriyashiine.enchancement.common.payload.StopSlidingPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import moriyashiine.enchancement.mixin.util.accessor.EntityAccessor;
-import moriyashiine.enchancement.mixin.util.accessor.LivingEntityAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
@@ -82,7 +80,7 @@ public class SlideComponent implements CommonTickingComponent {
 				if (updateCrawl()) {
 					crawlTimer = 3;
 				}
-				((EntityAccessor) obj).enchancement$spawnSprintingParticles();
+				obj.spawnSprintingParticles();
 				obj.getWorld().emitGameEvent(GameEvent.STEP, obj.getPos(), GameEvent.Emitter.of(obj.getSteppingBlockState()));
 				double dX = adjustedVelocity.x(), dZ = adjustedVelocity.z();
 				if (!obj.isOnGround()) {
@@ -143,7 +141,7 @@ public class SlideComponent implements CommonTickingComponent {
 		tick();
 		if (hasSlide && !obj.isSpectator() && obj == MinecraftClient.getInstance().player) {
 			GameOptions options = MinecraftClient.getInstance().options;
-			if (EnchancementClient.SLIDE_KEYBINDING.isPressed() && !obj.isSneaking() && !((LivingEntityAccessor) obj).enchancement$jumping()) {
+			if (EnchancementClient.SLIDE_KEYBINDING.isPressed() && !obj.isSneaking() && !obj.jumping) {
 				if (canSlide()) {
 					velocity = getVelocityFromInput(options);
 					adjustedVelocity = velocity.rotateY((float) Math.toRadians(-(obj.getYaw() + 90)));

@@ -5,7 +5,6 @@ package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.rapidcros
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.mixin.util.accessor.CrossbowItemAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -27,7 +26,7 @@ public class MinecraftClientMixin {
 		if (player != null) {
 			ItemStack stack = player.getActiveItem();
 			if (stack.getItem() instanceof CrossbowItem && EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.RAPID_CROSSBOW_FIRE)) {
-				float progress = CrossbowItemAccessor.enchancement$getPullProgress(stack.getMaxUseTime(player) - player.getItemUseTimeLeft(), stack, player);
+				float progress = CrossbowItem.getPullProgress(stack.getMaxUseTime(player) - player.getItemUseTimeLeft(), stack, player);
 				if (progress >= 1) {
 					return false;
 				}

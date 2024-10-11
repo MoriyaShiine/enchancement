@@ -6,7 +6,6 @@ package moriyashiine.enchancement.common.component.entity;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import moriyashiine.enchancement.mixin.util.accessor.PersistentProjectileEntityAccessor;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -55,7 +54,7 @@ public class PhaseThroughBlocksAndFloatComponent implements AutoSyncedComponent,
 			freezeVelocity = null;
 		}
 		if (shouldPhase()) {
-			if (++ticksInAir >= 200 || ((PersistentProjectileEntityAccessor) obj).enchancement$inGround()) {
+			if (++ticksInAir >= 200 || (obj instanceof PersistentProjectileEntity persistentProjectile && persistentProjectile.inGround)) {
 				disable();
 			}
 		}

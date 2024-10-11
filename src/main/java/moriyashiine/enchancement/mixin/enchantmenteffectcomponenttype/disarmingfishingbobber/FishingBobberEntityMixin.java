@@ -7,14 +7,10 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import moriyashiine.enchancement.common.component.entity.DisarmedPlayerComponent;
 import moriyashiine.enchancement.common.component.entity.DisarmingFishingBobberComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.mixin.util.accessor.PiglinBrainAccessor;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.*;
-import net.minecraft.entity.mob.EndermanEntity;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.mob.PiglinEntity;
-import net.minecraft.entity.mob.WitchEntity;
+import net.minecraft.entity.mob.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -77,7 +73,7 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 										observer.onInteractionWith(EntityInteraction.VILLAGER_HURT, owner);
 									}
 									if (entity instanceof PiglinEntity piglin) {
-										PiglinBrainAccessor.enchancement$onAttacked(piglin, owner);
+										PiglinBrain.onAttacked(piglin, owner);
 									}
 								}
 								if (entity instanceof Merchant) {
