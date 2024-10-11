@@ -49,7 +49,7 @@ public class HoneyTrailComponent implements AutoSyncedComponent, CommonTickingCo
 	public void tick() {
 		for (int i = honeySpots.size() - 1; i >= 0; i--) {
 			HoneySpot spot = honeySpots.get(i);
-			if (++spot.age == HoneySpot.MAX_AGE) {
+			if (++spot.age >= HoneySpot.MAX_AGE) {
 				honeySpots.remove(i);
 			}
 		}
@@ -91,7 +91,7 @@ public class HoneyTrailComponent implements AutoSyncedComponent, CommonTickingCo
 	}
 
 	public static class HoneySpot {
-		private static final int MAX_AGE = 100;
+		private static final int MAX_AGE = 60;
 
 		private final UUID ownerId;
 		private final Vec3d pos;

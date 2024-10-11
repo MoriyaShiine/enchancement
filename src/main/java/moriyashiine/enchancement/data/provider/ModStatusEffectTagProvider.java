@@ -24,6 +24,8 @@ public class ModStatusEffectTagProvider extends FabricTagProvider<StatusEffect> 
 	@Override
 	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
 		getOrCreateTagBuilder(ModStatusEffectTags.CHAOS_UNCHOOSABLE)
+				.add(StatusEffects.BLINDNESS.value())
+				.add(StatusEffects.DARKNESS.value())
 				.add(StatusEffects.BAD_OMEN.value())
 				.add(StatusEffects.RAID_OMEN.value())
 				.add(StatusEffects.TRIAL_OMEN.value())

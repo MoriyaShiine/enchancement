@@ -18,7 +18,7 @@ public class CrossbowItemMixin {
 	@Inject(method = "getPullTime", at = @At("HEAD"), cancellable = true)
 	private static void enchancement$rapidCrossbowFire(ItemStack stack, LivingEntity user, CallbackInfoReturnable<Integer> cir) {
 		if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.RAPID_CROSSBOW_FIRE)) {
-			cir.setReturnValue(2);
+			cir.setReturnValue(0);
 		}
 	}
 }

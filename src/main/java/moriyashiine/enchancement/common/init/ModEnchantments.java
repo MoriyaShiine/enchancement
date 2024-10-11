@@ -612,7 +612,7 @@ public class ModEnchantments {
 									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(3)),
 									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.8F, 0.3F)),
 									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(1)),
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.6F, 0.2F))
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.7F, 0.3F))
 							));
 				}));
 		// mining tool

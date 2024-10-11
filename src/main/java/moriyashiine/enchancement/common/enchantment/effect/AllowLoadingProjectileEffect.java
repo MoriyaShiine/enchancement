@@ -47,7 +47,7 @@ public record AllowLoadingProjectileEffect(Item projectileItem, boolean onlyAllo
 		PROJECTILE_MAP.put(Items.AMETHYST_SHARD, (world, owner, stack, shotFrom) -> new AmethystShardEntity(world, owner, shotFrom));
 		PROJECTILE_MAP.put(Items.TORCH, (world, owner, stack, shotFrom) -> {
 			TorchEntity torch = new TorchEntity(world, owner, stack, shotFrom);
-			torch.setDamage(torch.getDamage() / 5);
+			torch.setDamage(torch.getDamage() / 2);
 			int level = 0;
 			if (shotFrom != null) {
 				for (RegistryEntry<Enchantment> enchantment : EnchantmentHelper.getEnchantments(shotFrom).getEnchantments()) {
