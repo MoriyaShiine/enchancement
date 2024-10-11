@@ -116,6 +116,7 @@ public class Enchancement implements ModInitializer {
 		PayloadTypeRegistry.playS2C().register(UseEruptionPayload.ID, UseEruptionPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(UseLightningDashPayload.ID, UseLightningDashPayload.CODEC);
 		// common payloads
+		PayloadTypeRegistry.playC2S().register(SyncVelocityPayload.ID, SyncVelocityPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(AirJumpPayload.ID, AirJumpPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(BoostInFluidPayload.ID, BoostInFluidPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(DirectionMovementBurstPayload.ID, DirectionMovementBurstPayload.CODEC);
@@ -127,6 +128,7 @@ public class Enchancement implements ModInitializer {
 		PayloadTypeRegistry.playC2S().register(WallJumpPayload.ID, WallJumpPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(WallJumpSlidingPayload.ID, WallJumpSlidingPayload.CODEC);
 		// server receivers
+		ServerPlayNetworking.registerGlobalReceiver(SyncVelocityPayload.ID, new SyncVelocityPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(AirJumpPayload.ID, new AirJumpPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(BoostInFluidPayload.ID, new BoostInFluidPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(DirectionMovementBurstPayload.ID, new DirectionMovementBurstPayload.Receiver());

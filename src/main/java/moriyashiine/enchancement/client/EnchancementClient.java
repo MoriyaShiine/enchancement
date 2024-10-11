@@ -81,6 +81,8 @@ public class EnchancementClient implements ClientModInitializer {
 	}
 
 	private void initEvents() {
+		// internal
+		ClientTickEvents.START_WORLD_TICK.register(new SyncVelocitiesEvent());
 		// config
 		ClientTickEvents.END_WORLD_TICK.register(new CoyoteBiteEvent());
 		ItemTooltipCallback.EVENT.register(new EnchantmentDescriptionsEvent());
