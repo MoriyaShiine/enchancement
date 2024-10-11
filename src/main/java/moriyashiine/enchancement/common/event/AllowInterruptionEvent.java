@@ -14,11 +14,13 @@ import net.minecraft.item.ItemStack;
 public class AllowInterruptionEvent implements ServerLivingEntityEvents.AllowDamage {
 	@Override
 	public boolean allowDamage(LivingEntity entity, DamageSource source, float amount) {
-		ItemStack stack = entity.getActiveItem();
-		if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.ALLOW_INTERRUPTION)) {
-			entity.stopUsingItem();
-			if (entity instanceof PlayerEntity player) {
-				player.getItemCooldownManager().set(stack.getItem(), 20);
+		if (source.getAttacker() != null) {
+			ItemStack stack = entity.getActiveItem();
+			if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.ALLOW_INTERRUPTION)) {
+				entity.stopUsingItem();
+				if (entity instanceof PlayerEntity player) {
+					player.getItemCooldownManager().set(stack.getItem(), 20);
+				}
 			}
 		}
 		return true;
