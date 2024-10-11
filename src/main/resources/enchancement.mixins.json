@@ -49,6 +49,7 @@
 	"config.rebalanceequipment.TridentEntityMixin",
 	"config.rebalanceprojectiles.LivingEntityMixin",
 	"config.rebalanceprojectiles.PersistentProjectileEntityMixin",
+	"config.rebalanceprojectiles.ProjectileUtilMixin",
 	"config.rebalanceprojectiles.RangedWeaponItemMixin",
 	"config.rebalancestatuseffects.InstantHealthOrDamageStatusEffectMixin",
 	"config.rebalancestatuseffects.StatusEffectMixin",
