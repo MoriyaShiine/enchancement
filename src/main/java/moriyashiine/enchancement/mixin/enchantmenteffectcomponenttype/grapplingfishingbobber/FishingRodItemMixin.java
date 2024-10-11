@@ -26,7 +26,7 @@ public class FishingRodItemMixin {
 	private boolean enchancement$grapplingFishingBobber(World instance, Entity entity, Operation<Boolean> original, World world, PlayerEntity user, Hand hand, @Local ItemStack stack) {
 		float grapplingStrength = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.GRAPPLING_FISHING_BOBBER, (ServerWorld) world, stack, 0);
 		if (grapplingStrength != 0 && entity instanceof FishingBobberEntity fishingBobber) {
-			((StrengthHolder) fishingBobber).setStrength(grapplingStrength);
+			((StrengthHolder) fishingBobber).enchancement$setStrength(grapplingStrength);
 		}
 		return original.call(instance, entity);
 	}

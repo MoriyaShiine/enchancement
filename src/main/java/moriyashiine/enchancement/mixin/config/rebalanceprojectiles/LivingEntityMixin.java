@@ -27,7 +27,7 @@ public abstract class LivingEntityMixin extends Entity {
 		super(type, world);
 	}
 
-	@ModifyVariable(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;wakeUp()V", shift = At.Shift.BY, by = 2), argsOnly = true)
+	@ModifyVariable(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;blockedByShield(Lnet/minecraft/entity/damage/DamageSource;)Z"), argsOnly = true)
 	private float enchancement$rebalanceProjectiles(float value, DamageSource source) {
 		if (source.getSource() instanceof ProjectileEntity projectile) {
 			boolean bypass = ModConfig.rebalanceProjectiles;

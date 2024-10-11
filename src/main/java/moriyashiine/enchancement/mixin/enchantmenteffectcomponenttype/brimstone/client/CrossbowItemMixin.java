@@ -30,15 +30,10 @@ public abstract class CrossbowItemMixin {
 	@Shadow
 	public abstract int getMaxUseTime(ItemStack stack, LivingEntity user);
 
-	@Shadow
-	private static float getPullProgress(int useTicks, ItemStack stack, LivingEntity user) {
-		throw new UnsupportedOperationException();
-	}
-
 	@Inject(method = "usageTick", at = @At("HEAD"))
 	private void enchancement$brimstone(World world, LivingEntity user, ItemStack stack, int remainingUseTicks, CallbackInfo ci) {
 		if (user == MinecraftClient.getInstance().player) {
-			BrimstoneRenderEvent.health = BrimstoneEffect.getBrimstoneDamage(getPullProgress(getMaxUseTime(stack, user) - remainingUseTicks, stack, user));
+			BrimstoneRenderEvent.health = BrimstoneEffect.getBrimstoneDamage(CrossbowItem.getPullProgress(getMaxUseTime(stack, user) - remainingUseTicks, stack, user));
 		}
 	}
 

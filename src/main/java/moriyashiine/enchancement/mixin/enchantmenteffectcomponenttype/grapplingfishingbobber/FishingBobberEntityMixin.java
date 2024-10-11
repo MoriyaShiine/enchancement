@@ -41,7 +41,7 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity implemen
 	@Unique
 	private BlockState grappleState = null;
 	@Unique
-	private static final TrackedData<Float> STRENGTH = DataTracker.registerData(FishingBobberEntity.class, TrackedDataHandlerRegistry.FLOAT);
+	private static final TrackedData<Float> STRENGTH = DataTracker.registerData(FishingBobberEntityMixin.class, TrackedDataHandlerRegistry.FLOAT);
 
 	@Shadow
 	public abstract @Nullable PlayerEntity getPlayerOwner();
@@ -51,7 +51,7 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity implemen
 	}
 
 	@Override
-	public void setStrength(float strength) {
+	public void enchancement$setStrength(float strength) {
 		dataTracker.set(STRENGTH, strength);
 	}
 

@@ -8,7 +8,6 @@ import moriyashiine.enchancement.common.component.world.HoneyTrailComponent;
 import moriyashiine.enchancement.common.init.ModWorldComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,9 +22,6 @@ public abstract class EntityMixin {
 
 	@Shadow
 	public abstract Vec3d getPos();
-
-	@Shadow
-	public abstract BlockPos getBlockPos();
 
 	@ModifyReturnValue(method = "getVelocityMultiplier", at = @At("RETURN"))
 	protected float enchancement$honeyTrail(float original) {

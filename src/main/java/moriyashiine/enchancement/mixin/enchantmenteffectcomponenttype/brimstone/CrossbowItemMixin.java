@@ -35,16 +35,11 @@ public abstract class CrossbowItemMixin {
 	@Shadow
 	public abstract int getMaxUseTime(ItemStack stack, LivingEntity user);
 
-	@Shadow
-	private static float getPullProgress(int useTicks, ItemStack stack, LivingEntity user) {
-		throw new UnsupportedOperationException();
-	}
-
 	@WrapOperation(method = "onStoppedUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/CrossbowItem;getPullProgress(ILnet/minecraft/item/ItemStack;Lnet/minecraft/entity/LivingEntity;)F"))
 	private float enchancement$brimstone(int useTicks, ItemStack stack, LivingEntity user, Operation<Float> original, ItemStack stack0, World world, LivingEntity user0, int remainingUseTicks) {
 		if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.BRIMSTONE)) {
 			stack.remove(ModComponentTypes.BRIMSTONE_UUID);
-			int damage = BrimstoneEffect.getBrimstoneDamage(getPullProgress(getMaxUseTime(stack, user) - remainingUseTicks, stack, user));
+			int damage = BrimstoneEffect.getBrimstoneDamage(CrossbowItem.getPullProgress(getMaxUseTime(stack, user) - remainingUseTicks, stack, user));
 			if (damage > 0) {
 				stack.set(ModComponentTypes.BRIMSTONE_DAMAGE, damage);
 				return 1;

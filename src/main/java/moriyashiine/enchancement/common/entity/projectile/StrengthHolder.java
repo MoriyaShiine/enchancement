@@ -4,5 +4,5 @@
 package moriyashiine.enchancement.common.entity.projectile;
 
 public interface StrengthHolder {
-	void setStrength(float strength);
+	void enchancement$setStrength(float strength);
 }

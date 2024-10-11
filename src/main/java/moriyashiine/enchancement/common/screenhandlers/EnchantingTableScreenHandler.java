@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.screenhandlers;
 import moriyashiine.enchancement.client.payload.SyncEnchantingTableBookshelfCountPayload;
 import moriyashiine.enchancement.client.payload.SyncEnchantingTableCostPayload;
 import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
 import moriyashiine.enchancement.common.tag.ModEnchantmentTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
@@ -235,7 +236,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 						validEnchantments.add(enchantment);
 					}
 				}
-				validEnchantments.sort(Comparator.comparing(e -> e.getKey().get().getValue().getPath()));
+				validEnchantments.sort(Comparator.comparing(e -> e.getKey().orElse(ModEnchantments.EMPTY_KEY).getValue().getPath()));
 				super.onContentChanged(inventory);
 			}
 		}

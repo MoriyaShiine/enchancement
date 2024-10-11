@@ -27,7 +27,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(PersistentProjectileEntity.class)
 public abstract class PersistentProjectileEntityMixin extends ProjectileEntity {
 	@Shadow
-	protected abstract ItemStack asItemStack();
+	public abstract ItemStack asItemStack();
 
 	@Shadow
 	public PersistentProjectileEntity.PickupPermission pickupType;

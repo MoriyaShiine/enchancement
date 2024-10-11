@@ -6,16 +6,11 @@ package moriyashiine.enchancement.mixin.config.disablevelocitychecks;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import moriyashiine.enchancement.common.ModConfig;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ServerPlayNetworkHandler.class)
 public class ServerPlayNetworkHandlerMixin {
-	@Shadow
-	public ServerPlayerEntity player;
-
 	@ModifyExpressionValue(method = "onPlayerMove", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;isHost()Z"))
 	public boolean enchancement$disableVelocityChecksQuickly(boolean value) {
 		if (ModConfig.disableVelocityChecks) {
