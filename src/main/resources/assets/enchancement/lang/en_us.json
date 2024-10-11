@@ -190,5 +190,6 @@
   "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.NONE": "None",
   "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.VANILLA_AND_ENCHANCEMENT": "Vanilla and Enchancement",
   "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.ALL": "All",
+  "enchancement.midnightconfig.directionlessStrafe": "Directionless Strafe",
   "enchancement.midnightconfig.singlePressStrafe": "Single Press Strafe"
 }

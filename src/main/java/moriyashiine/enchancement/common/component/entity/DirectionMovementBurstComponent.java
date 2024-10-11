@@ -147,18 +147,22 @@ public class DirectionMovementBurstComponent implements AutoSyncedComponent, Com
 	@Environment(EnvType.CLIENT)
 	private Vec3d getVelocityFromInput(GameOptions options) {
 		float strength = obj.isOnGround() ? DirectionMovementBurstEffect.getGroundStrength(obj) : DirectionMovementBurstEffect.getAirStrength(obj);
+		Vec3d velocity = Vec3d.ZERO;
 		if (options.forwardKey.isPressed()) {
-			return new Vec3d(strength, 0, 0);
+			velocity = new Vec3d(strength, 0, 0);
 		}
 		if (options.backKey.isPressed()) {
-			return new Vec3d(-strength, 0, 0);
+			velocity = new Vec3d(-strength, 0, 0);
 		}
 		if (options.leftKey.isPressed()) {
-			return new Vec3d(0, 0, -strength);
+			velocity = new Vec3d(0, 0, -strength);
 		}
 		if (options.rightKey.isPressed()) {
-			return new Vec3d(0, 0, strength);
+			velocity = new Vec3d(0, 0, strength);
 		}
-		return Vec3d.ZERO;
+		if (ModConfig.directionlessStrafe && !obj.isOnGround() && velocity.equals(Vec3d.ZERO)) {
+			velocity = new Vec3d(strength, 0, 0);
+		}
+		return velocity;
 	}
 }
