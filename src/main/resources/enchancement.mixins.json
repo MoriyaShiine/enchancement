@@ -18,7 +18,6 @@
 	"config.disabledisallowedenchantments.TagGroupLoaderMixin",
 	"config.disabledisallowedenchantments.codec.BaseMapCodecMixin",
 	"config.disabledisallowedenchantments.codec.RegistryElementCodecMixin",
-	"config.disabledisallowedenchantments.codec.RegistryEntryListCodecMixin",
 	"config.disabledisallowedenchantments.codec.RegistryFixedCodecMixin",
 	"config.disabledurability.AnvilScreenHandlerMixin",
 	"config.disabledurability.ItemStackMixin",
