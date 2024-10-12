@@ -10,4 +10,5 @@ import net.minecraft.registry.tag.TagKey;
 
 public class ModDamageTypeTags {
 	public static final TagKey<DamageType> BYPASSES_WARDENSPINE = TagKey.of(RegistryKeys.DAMAGE_TYPE, Enchancement.id("bypasses_wardenspine"));
+	public static final TagKey<DamageType> DOES_NOT_INTERRUPT = TagKey.of(RegistryKeys.DAMAGE_TYPE, Enchancement.id("does_not_interrupt"));
 }

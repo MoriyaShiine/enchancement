@@ -65,7 +65,7 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 		int chargeTime = LightningDashEffect.getChargeTime(obj.getRandom(), obj.getMainHandStack());
 		if (isFloating() || isSmashing()) {
 			if (chargeTime == 0) {
-				floatTicks = smashTicks = 0;
+				cancel();
 			}
 		}
 		if (isFloating()) {
@@ -78,9 +78,6 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 				floatTicks = 0;
 				obj.setVelocity(obj.getRotationVector().multiply(LightningDashEffect.getSmashStrength(obj.getRandom(), obj.getMainHandStack())));
 				obj.playSound(ModSoundEvents.ENTITY_GENERIC_ZAP, 2, 1);
-			}
-			if (obj.hurtTime != 0) {
-				floatTicks = smashTicks = 0;
 			}
 		}
 		if (isSmashing()) {
@@ -120,7 +117,7 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 	public void serverTick() {
 		tick();
 		if (isFloating() && !EnchancementUtil.isSufficientlyHigh(obj, 0.25)) {
-			floatTicks = smashTicks = 0;
+			cancel();
 			sync();
 		}
 		if (smashTicks == 1 && obj.isOnGround()) {
@@ -189,6 +186,10 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 
 	public boolean hitNoEntity() {
 		return hitEntityTicks == 0;
+	}
+
+	public void cancel() {
+		floatTicks = smashTicks = 0;
 	}
 
 	private List<LivingEntity> getNearby(int range) {

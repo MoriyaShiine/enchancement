@@ -24,6 +24,7 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 	@Override
 	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
 		getOrCreateTagBuilder(ModBlockTags.BURIABLE)
+				.addOptionalTag(BlockTags.HOE_MINEABLE)
 				.addOptionalTag(BlockTags.SHOVEL_MINEABLE)
 				.addOptionalTag(BlockTags.NYLIUM)
 				.add(Blocks.COBWEB)

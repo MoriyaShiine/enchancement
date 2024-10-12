@@ -3,6 +3,7 @@
  */
 package moriyashiine.enchancement.common.component.entity;
 
+import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.payload.WallJumpPayload;
 import moriyashiine.enchancement.common.payload.WallJumpSlidingPayload;
@@ -10,6 +11,9 @@ import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HoneyBlock;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
@@ -21,6 +25,8 @@ import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComponent {
+	private static final EntityAttributeModifier SAFE_FALL_DISTANCE_MODIFIER = new EntityAttributeModifier(Enchancement.id("wall_jump_safe_fall_distance"), 8, EntityAttributeModifier.Operation.ADD_VALUE);
+
 	private final PlayerEntity obj;
 	private BlockPos slidingPos = null;
 
@@ -61,6 +67,14 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 	@Override
 	public void serverTick() {
 		tick();
+		EntityAttributeInstance safeFallDistanceAttribute = obj.getAttributeInstance(EntityAttributes.GENERIC_SAFE_FALL_DISTANCE);
+		if (hasJumped()) {
+			if (!safeFallDistanceAttribute.hasModifier(SAFE_FALL_DISTANCE_MODIFIER.id())) {
+				safeFallDistanceAttribute.addPersistentModifier(SAFE_FALL_DISTANCE_MODIFIER);
+			}
+		} else if (safeFallDistanceAttribute.hasModifier(SAFE_FALL_DISTANCE_MODIFIER.id())) {
+			safeFallDistanceAttribute.removeModifier(SAFE_FALL_DISTANCE_MODIFIER);
+		}
 	}
 
 	@Override

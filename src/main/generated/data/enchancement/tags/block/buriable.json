@@ -1,6 +1,10 @@
 {
   "values": [
 	{
+	  "id": "#minecraft:mineable/hoe",
+	  "required": false
+	},
+	{
 	  "id": "#minecraft:mineable/shovel",
 	  "required": false
 	},

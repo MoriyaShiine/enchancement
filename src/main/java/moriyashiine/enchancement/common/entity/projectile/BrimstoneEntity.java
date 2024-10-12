@@ -193,7 +193,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 	}
 
 	public float getDamageMultiplier(int distanceTraveled) {
-		if (distanceTraveled < 16) {
+		if (distanceTraveled < 8) {
 			return MathHelper.lerp(distanceTraveled / 8F, 0.25F, 1);
 		}
 		return Math.min(2, MathHelper.lerp((distanceTraveled - 8) / 200F, 1F, 2F));

@@ -10,7 +10,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.TridentEntity;
 
-public class LeechEvent implements ServerLivingEntityEvents.AllowDamage {
+public class LeechingTridentEvent implements ServerLivingEntityEvents.AllowDamage {
 	@Override
 	public boolean allowDamage(LivingEntity entity, DamageSource source, float amount) {
 		if (source.getSource() instanceof TridentEntity trident && !entity.blockedByShield(source)) {

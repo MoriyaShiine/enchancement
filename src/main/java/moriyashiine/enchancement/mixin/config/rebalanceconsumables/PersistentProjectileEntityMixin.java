@@ -47,7 +47,7 @@ public abstract class PersistentProjectileEntityMixin extends ProjectileEntity {
 				ItemStack stack = asItemStack();
 				if (stack.isIn(ItemTags.ARROWS)) {
 					ItemEntity drop = living.dropStack(stack, 1);
-					if (drop != null) {
+					if (drop != null && getOwner() != null) {
 						drop.setOwner(getOwner().getUuid());
 					}
 				}

@@ -34,11 +34,12 @@ public abstract class ItemStackMixin {
 
 	@Inject(method = "use", at = @At("HEAD"), cancellable = true)
 	private void enchancement$eruption(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
+		ItemStack stack = user.getStackInHand(hand);
 		setUsing(user, false);
-		if (hand == Hand.MAIN_HAND && !EnchancementUtil.isSufficientlyHigh(user, 0.25) && canUse(user.getRandom())) {
+		if (hand == Hand.MAIN_HAND && !EnchancementUtil.isSufficientlyHigh(user, 0.25) && canUse(user.getRandom(), stack)) {
 			setUsing(user, true);
 			user.setCurrentHand(hand);
-			cir.setReturnValue(TypedActionResult.consume((ItemStack) (Object) this));
+			cir.setReturnValue(TypedActionResult.consume(stack));
 		}
 	}
 
@@ -51,7 +52,7 @@ public abstract class ItemStackMixin {
 
 	@Inject(method = "usageTick", at = @At("HEAD"))
 	private void enchancement$eruptionTick(World world, LivingEntity user, int remainingUseTicks, CallbackInfo ci) {
-		setUsing(user, canUse(user.getRandom()));
+		setUsing(user, canUse(user.getRandom(), (ItemStack) (Object) this));
 	}
 
 	@Inject(method = "onStoppedUsing", at = @At("HEAD"), cancellable = true)
@@ -76,8 +77,8 @@ public abstract class ItemStackMixin {
 	}
 
 	@Unique
-	private boolean canUse(Random random) {
-		return EruptionEffect.getChargeTime(random, (ItemStack) (Object) this) != 0;
+	private boolean canUse(Random random, ItemStack stack) {
+		return EruptionEffect.getChargeTime(random, stack) != 0;
 	}
 
 	@Unique

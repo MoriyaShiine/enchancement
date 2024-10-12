@@ -25,6 +25,9 @@ public class ModDamageTypeTagProvider extends FabricTagProvider<DamageType> {
 		getOrCreateTagBuilder(ModDamageTypeTags.BYPASSES_WARDENSPINE)
 				.addOptionalTag(DamageTypeTags.AVOIDS_GUARDIAN_THORNS)
 				.addOptionalTag(DamageTypeTags.BYPASSES_INVULNERABILITY);
+		getOrCreateTagBuilder(ModDamageTypeTags.DOES_NOT_INTERRUPT)
+				.addOptional(ModDamageTypes.LIFE_DRAIN)
+				.addOptionalTag(DamageTypeTags.BYPASSES_INVULNERABILITY);
 
 		getOrCreateTagBuilder(DamageTypeTags.BYPASSES_ARMOR)
 				.addOptional(ModDamageTypes.BRIMSTONE)
