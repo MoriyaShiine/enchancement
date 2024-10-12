@@ -24,6 +24,8 @@ accessible method net/minecraft/client/gui/hud/InGameHud renderHealthBar (Lnet/m
 accessible field net/minecraft/loot/condition/AlternativeLootCondition terms Ljava/util/List;
 accessible field net/minecraft/component/Component value Ljava/lang/Object;
 mutable field net/minecraft/component/Component value Ljava/lang/Object;
+accessible field net/minecraft/predicate/DamagePredicate dealt Lnet/minecraft/predicate/NumberRange$DoubleRange;
+mutable field net/minecraft/predicate/DamagePredicate dealt Lnet/minecraft/predicate/NumberRange$DoubleRange;
 accessible field net/minecraft/enchantment/Enchantment effects Lnet/minecraft/component/ComponentMap;
 mutable field net/minecraft/enchantment/Enchantment effects Lnet/minecraft/component/ComponentMap;
 accessible field net/minecraft/enchantment/effect/EnchantmentEffectEntry requirements Ljava/util/Optional;

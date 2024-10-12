@@ -20,11 +20,13 @@ public class TranslatableTextContentMixin {
 	@Unique
 	private static String getRedirect(String key) {
 		return switch (key) {
+			case "advancements.adventure.two_birds_one_arrow.description" ->
+					!ModConfig.disallowedEnchantments.contains("enchancement:brimstone") ? key + ".redirect" : key;
+			case "advancements.adventure.overoverkill.description" ->
+					ModConfig.rebalanceEquipment ? key + ".redirect" : key;
 			case "enchantment.minecraft.channeling.desc", "enchantment.minecraft.luck_of_the_sea.desc",
 				 "enchantment.minecraft.fire_aspect.desc", "enchantment.minecraft.wind_burst.desc" ->
 					ModConfig.rebalanceEnchantments ? key + ".redirect" : key;
-			case "advancements.adventure.two_birds_one_arrow.description" ->
-					!ModConfig.disallowedEnchantments.contains("enchancement:brimstone") ? key + ".redirect" : key;
 			default -> key;
 		};
 	}
