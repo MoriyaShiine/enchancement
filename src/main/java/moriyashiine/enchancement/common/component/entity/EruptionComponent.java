@@ -5,7 +5,6 @@ package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.client.payload.UseEruptionPayload;
 import moriyashiine.enchancement.common.enchantment.effect.EruptionEffect;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
@@ -33,7 +32,7 @@ public class EruptionComponent implements AutoSyncedComponent, CommonTickingComp
 	private final LivingEntity obj;
 	private boolean using = false;
 
-	private int ticksUsing = 0;
+	private boolean playedSound = false;
 
 	public EruptionComponent(LivingEntity obj) {
 		this.obj = obj;
@@ -53,12 +52,12 @@ public class EruptionComponent implements AutoSyncedComponent, CommonTickingComp
 	public void tick() {
 		int chargeTime = EruptionEffect.getChargeTime(obj.getRandom(), obj.getMainHandStack());
 		if (chargeTime > 0 && obj.isUsingItem()) {
-			if (ticksUsing == MathHelper.floor(chargeTime * EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.MULTIPLY_CHARGE_TIME, obj.getRandom(), obj.getActiveItem(), 1)) + 3) {
+			if (!playedSound && obj.getItemUseTime() == chargeTime) {
 				obj.playSound(ModSoundEvents.ENTITY_GENERIC_PING, 1, 1);
+				playedSound = true;
 			}
-			ticksUsing++;
 		} else {
-			ticksUsing = 0;
+			playedSound = false;
 		}
 	}
 

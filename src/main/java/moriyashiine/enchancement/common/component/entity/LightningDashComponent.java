@@ -7,7 +7,6 @@ import moriyashiine.enchancement.client.payload.AddLightningDashParticlesPayload
 import moriyashiine.enchancement.client.payload.UseLightningDashPayload;
 import moriyashiine.enchancement.client.sound.SparkSoundInstance;
 import moriyashiine.enchancement.common.enchantment.effect.LightningDashEffect;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.particle.SparkParticleEffect;
@@ -26,7 +25,6 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.event.GameEvent;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
@@ -40,6 +38,7 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 	private double cachedHeight = 0;
 	private int floatTicks = 0, smashTicks = 0;
 
+	private boolean playedSound = false;
 	private int ticksUsing = 0, hitEntityTicks = 0;
 
 	public LightningDashComponent(LivingEntity obj) {
@@ -98,14 +97,16 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 			}
 		}
 		if (chargeTime > 0 && obj.isUsingItem()) {
-			if (ticksUsing == MathHelper.floor(chargeTime * EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.MULTIPLY_CHARGE_TIME, obj.getRandom(), obj.getActiveItem(), 1)) + 3) {
+			if (!playedSound && obj.getItemUseTime() == chargeTime) {
 				obj.playSound(ModSoundEvents.ENTITY_GENERIC_PING, 1, 1);
+				playedSound = true;
 			}
 			if (ticksUsing % 18 == 0) {
 				obj.playSound(ModSoundEvents.ITEM_GENERIC_WHOOSH, 0.5F, 1);
 			}
 			ticksUsing++;
 		} else {
+			playedSound = false;
 			ticksUsing = 0;
 		}
 		if (hitEntityTicks > 0) {
