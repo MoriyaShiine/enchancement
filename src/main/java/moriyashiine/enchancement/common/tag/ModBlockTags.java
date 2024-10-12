@@ -13,4 +13,5 @@ public class ModBlockTags {
 	public static final TagKey<Block> END_ORES = TagKey.of(RegistryKeys.BLOCK, Enchancement.id("end_ores"));
 	public static final TagKey<Block> NETHER_ORES = TagKey.of(RegistryKeys.BLOCK, Enchancement.id("nether_ores"));
 	public static final TagKey<Block> SMELTS_SELF = TagKey.of(RegistryKeys.BLOCK, Enchancement.id("smelts_self"));
+	public static final TagKey<Block> UNSTICKABLE = TagKey.of(RegistryKeys.BLOCK, Enchancement.id("unstickable"));
 }

@@ -7,7 +7,9 @@ import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.payload.WallJumpPayload;
 import moriyashiine.enchancement.common.payload.WallJumpSlidingPayload;
+import moriyashiine.enchancement.common.tag.ModBlockTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HoneyBlock;
 import net.minecraft.block.ShapeContext;
@@ -87,7 +89,8 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 				for (Direction direction : Direction.values()) {
 					if (direction.getAxis().isHorizontal()) {
 						mutable.move(direction);
-						if (!obj.getWorld().getBlockState(mutable).getCollisionShape(obj.getWorld(), mutable, ShapeContext.of(obj)).isEmpty() && !obj.isOnGround() && obj.getVelocity().getY() < -0.1) {
+						BlockState state = obj.getWorld().getBlockState(mutable);
+						if (!state.isIn(ModBlockTags.UNSTICKABLE) && !state.getCollisionShape(obj.getWorld(), mutable, ShapeContext.of(obj)).isEmpty() && !obj.isOnGround() && obj.getVelocity().getY() < -0.1) {
 							double mutableDistance = mutable.getSquaredDistance(obj.getPos());
 							if (targetPos != null && mutableDistance == targetPos.getSquaredDistance(obj.getPos())) {
 								BlockPos p1 = mutable.offset(direction.rotateYClockwise());

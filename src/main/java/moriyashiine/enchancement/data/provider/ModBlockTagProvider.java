@@ -37,5 +37,7 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 				.addOptional(of("cinderscapes", "sulfur_ore"));
 		getOrCreateTagBuilder(ModBlockTags.SMELTS_SELF)
 				.add(Blocks.NETHER_GOLD_ORE);
+		getOrCreateTagBuilder(ModBlockTags.UNSTICKABLE)
+				.addOptionalTag(BlockTags.ICE);
 	}
 }
