@@ -1,4 +1,11 @@
 ------------------------------------------------------
+Version 1.21-r2
+------------------------------------------------------
+- merge https://github.com/MoriyaShiine/enchancement/pull/199
+- fix multiply charge time component with porting lib
+- sticky can no longer slide on ice
+
+------------------------------------------------------
 Version 1.21-r1
 ------------------------------------------------------
 - update to 1.21
