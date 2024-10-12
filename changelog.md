@@ -1,4 +1,21 @@
 ------------------------------------------------------
+Version 1.21-r1
+------------------------------------------------------
+- update to 1.21
+- fix https://github.com/MoriyaShiine/enchancement/issues/184
+- update russian translation (thanks BackupCup!)
+- rebalance a significant amount of the mod, please reread the readme/description and try things out! the following list contains some of the major changes
+- add sticky enchantment
+- add meteor enchantment
+- add thunderstruck enchantment
+- molten can now be applied to all mining tools
+- adrenaline is now a chestplate enchantment
+- gale is now a leggings enchantment
+- brimstone is no longer hitscan and can be heard/seen approaching
+- projectiles are now shot faster and take entity velocity into account to artificially increase target hitboxes
+- condense many config options to reduce clutter
+
+------------------------------------------------------
 Version 1.20.6-r7
 ------------------------------------------------------
 - fix https://github.com/MoriyaShiine/enchancement/issues/180
