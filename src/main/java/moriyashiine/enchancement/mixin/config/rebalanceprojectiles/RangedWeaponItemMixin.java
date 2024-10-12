@@ -17,7 +17,7 @@ public class RangedWeaponItemMixin {
 	@ModifyVariable(method = "shootAll", at = @At("HEAD"), ordinal = 0, argsOnly = true)
 	private float enchancement$rebalanceProjectiles(float value, ServerWorld world, LivingEntity shooter) {
 		if (ModConfig.rebalanceProjectiles && shooter instanceof PlayerEntity) {
-			return value * 1.5F;
+			return value * 1.25F;
 		}
 		return value;
 	}

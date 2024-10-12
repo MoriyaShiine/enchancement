@@ -22,7 +22,7 @@ public class PersistentProjectileEntityMixin {
 	private Vec3d enchancement$rebalanceProjectiles(PersistentProjectileEntity instance, Operation<Vec3d> original, @Local Entity entity) {
 		Vec3d velocity = original.call(instance);
 		if (ModConfig.rebalanceProjectiles && instance.getOwner() instanceof PlayerEntity) {
-			velocity = velocity.multiply(2 / 3F);
+			velocity = velocity.multiply(1 / 1.25);
 			if (entity instanceof LivingEntity living) {
 				velocity = velocity.multiply(MathHelper.lerp(Math.min(20, living.getArmor()) / 20F, 1, 1.5F));
 			}
