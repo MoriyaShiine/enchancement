@@ -68,6 +68,7 @@ dependencies {
         transitive = false
     }
     modLocalImplementation "maven.modrinth:sodium:${sodium_version}"
+    modCompileOnly "maven.modrinth:iris:${iris_version}"
 //    modCompileOnly "maven.modrinth:spectrum:${spectrum_version}"
 
     modRuntimeOnly "com.terraformersmc:modmenu:${mod_menu_version}"

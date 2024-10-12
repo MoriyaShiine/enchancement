@@ -53,7 +53,7 @@ public class EnchancementClient implements ClientModInitializer {
 	public static final KeyBinding SLIDE_KEYBINDING = registerKeyBinding(() -> KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".slide", GLFW.GLFW_KEY_LEFT_CONTROL, "key.categories." + Enchancement.MOD_ID)));
 	public static final KeyBinding STRAFE_KEYBINDING = registerKeyBinding(() -> KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".strafe", GLFW.GLFW_KEY_LEFT_SHIFT, "key.categories." + Enchancement.MOD_ID)));
 
-	public static boolean betterCombatLoaded = false;
+	public static boolean betterCombatLoaded = false, irisLoaded = false;
 
 	@Override
 	public void onInitializeClient() {
@@ -75,6 +75,7 @@ public class EnchancementClient implements ClientModInitializer {
 		initEvents();
 		initPayloads();
 		betterCombatLoaded = FabricLoader.getInstance().isModLoaded("bettercombat");
+		irisLoaded = FabricLoader.getInstance().isModLoaded("iris");
 		if (FabricLoader.getInstance().isModLoaded("appleskin")) {
 			HUDOverlayEvent.HealthRestored.EVENT.register(new BrimstoneAppleskinEvent());
 		}
