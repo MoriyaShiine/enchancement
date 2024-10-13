@@ -1,4 +1,9 @@
 ------------------------------------------------------
+Version 1.21-r4
+------------------------------------------------------
+- don't crash when encountering an enchantment without a translation key
+
+------------------------------------------------------
 Version 1.21-r3
 ------------------------------------------------------
 - fix vaults crashing and add cleaner replacement logic
