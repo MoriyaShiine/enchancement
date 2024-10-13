@@ -1,4 +1,10 @@
 ------------------------------------------------------
+Version 1.21-r3
+------------------------------------------------------
+- fix vaults crashing and add cleaner replacement logic
+- add extracting compat for diamond in the rough, malum, nature's spirit, and spelunkery
+
+------------------------------------------------------
 Version 1.21-r2
 ------------------------------------------------------
 - merge https://github.com/MoriyaShiine/enchancement/pull/199
