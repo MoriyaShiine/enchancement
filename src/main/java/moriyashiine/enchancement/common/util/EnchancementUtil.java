@@ -69,6 +69,8 @@ public class EnchancementUtil {
 		}
 	};
 
+	public static ItemStack cachedApplyStack = null;
+
 	public static boolean shouldCancelTargetDamagedEnchantments = false;
 
 	public static List<ItemEntity> mergeItemEntities(List<ItemEntity> drops) {
@@ -105,7 +107,7 @@ public class EnchancementUtil {
 	public static RegistryEntry<Enchantment> getRandomEnchantment(ItemStack stack, Random random) {
 		List<RegistryEntry<Enchantment>> enchantments = new ArrayList<>();
 		for (RegistryEntry<Enchantment> enchantment : getAllEnchantments()) {
-			if (stack.canBeEnchantedWith(enchantment, EnchantingContext.ACCEPTABLE)) {
+			if (stack.isOf(Items.BOOK) || stack.isOf(Items.ENCHANTED_BOOK) || stack.canBeEnchantedWith(enchantment, EnchantingContext.ACCEPTABLE)) {
 				enchantments.add(enchantment);
 			}
 		}
@@ -123,7 +125,7 @@ public class EnchancementUtil {
 		List<RegistryEntry<Enchantment>> enchantments = new ArrayList<>();
 		for (RegistryEntry<Enchantment> entry : getAllEnchantments()) {
 			if (isEnchantmentAllowed(entry)) {
-				if (stack.isOf(Items.ENCHANTED_BOOK) || stack.canBeEnchantedWith(entry, EnchantingContext.ACCEPTABLE)) {
+				if (stack.isOf(Items.BOOK) || stack.isOf(Items.ENCHANTED_BOOK) || stack.canBeEnchantedWith(entry, EnchantingContext.ACCEPTABLE)) {
 					enchantments.add(entry);
 				}
 			}

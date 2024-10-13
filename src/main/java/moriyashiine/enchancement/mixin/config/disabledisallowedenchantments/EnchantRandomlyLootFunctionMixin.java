@@ -20,7 +20,7 @@ import java.util.Optional;
 public class EnchantRandomlyLootFunctionMixin {
 	@ModifyExpressionValue(method = "process", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Util;getRandomOrEmpty(Ljava/util/List;Lnet/minecraft/util/math/random/Random;)Ljava/util/Optional;"))
 	private Optional<RegistryEntry<Enchantment>> enchancement$disableDisallowedEnchantments(Optional<RegistryEntry<Enchantment>> original, ItemStack stack, @Local Random random) {
-		if (original.isEmpty()) {
+		if (original.isEmpty() || !EnchancementUtil.isEnchantmentAllowed(original.get())) {
 			return Optional.ofNullable(EnchancementUtil.getRandomEnchantment(stack, random));
 		}
 		return original;

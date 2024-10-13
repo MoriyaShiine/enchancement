@@ -12,7 +12,6 @@
 	"config.disabledisallowedenchantments.ItemGroupsMixin",
 	"config.disabledisallowedenchantments.RegistryEntryReferenceArgumentTypeMixin",
 	"config.disabledisallowedenchantments.RegistryLoaderMixin",
-	"config.disabledisallowedenchantments.SetEnchantmentsLootFunctionMixin",
 	"config.disabledisallowedenchantments.SimpleRegistryMixin",
 	"config.disabledisallowedenchantments.SingleEnchantmentProviderMixin",
 	"config.disabledisallowedenchantments.TagGroupLoaderMixin",
