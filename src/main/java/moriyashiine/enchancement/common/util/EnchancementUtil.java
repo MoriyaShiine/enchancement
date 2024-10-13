@@ -94,7 +94,7 @@ public class EnchancementUtil {
 		if (enchantment.value().description().getContent() instanceof TranslatableTextContent translatable) {
 			return translatable.getKey();
 		}
-		throw new IllegalArgumentException("Enchantment " + enchantment.value().description().getString() + " does not have a translation key");
+		return enchantment.value().description().getString();
 	}
 
 	// disable disallowed enchantments
