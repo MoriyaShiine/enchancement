@@ -1,4 +1,10 @@
 ------------------------------------------------------
+Version 1.21-r5
+------------------------------------------------------
+- fix unbound value and missing key crashes
+- projectile damage falloff now applies to tipped arrows with instant health and instant damage
+
+------------------------------------------------------
 Version 1.21-r4
 ------------------------------------------------------
 - don't crash when encountering an enchantment without a translation key
