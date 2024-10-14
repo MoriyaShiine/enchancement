@@ -42,9 +42,7 @@ public abstract class LivingEntityMixin extends Entity {
 				projectileTimerComponent.incrementTimesHit();
 				projectileTimerComponent.markAsHit();
 				boolean aboveOrEqualToOne = value >= 1;
-				for (int i = 1; i < projectileTimerComponent.getTimesHit(); i++) {
-					value *= 0.8F;
-				}
+				value *= (float) Math.pow(0.8, projectileTimerComponent.getTimesHit() - 1);
 				if (aboveOrEqualToOne) {
 					value = Math.max(1, value);
 				}

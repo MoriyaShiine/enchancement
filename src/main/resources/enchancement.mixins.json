@@ -49,6 +49,7 @@
 	"config.rebalanceequipment.ServerAdvancementLoaderMixin",
 	"config.rebalanceequipment.ToolMaterialsMixin",
 	"config.rebalanceequipment.TridentEntityMixin",
+	"config.rebalanceprojectiles.InstantHealthOrDamageStatusEffectMixin",
 	"config.rebalanceprojectiles.LivingEntityMixin",
 	"config.rebalanceprojectiles.PersistentProjectileEntityMixin",
 	"config.rebalanceprojectiles.ProjectileUtilMixin",
