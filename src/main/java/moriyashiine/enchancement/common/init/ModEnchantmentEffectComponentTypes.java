@@ -46,7 +46,7 @@ public class ModEnchantmentEffectComponentTypes {
 	public static final ComponentType<LightningDashEffect> LIGHTNING_DASH = register("lightning_dash", builder -> builder.codec(LightningDashEffect.CODEC));
 	public static final ComponentType<EnchantmentValueEffect> MINE_ORE_VEINS = register("mine_ore_veins", builder -> builder.codec(EnchantmentValueEffect.CODEC));
 	public static final ComponentType<EnchantmentValueEffect> MODIFY_CONSUMPTION_TIME = register("modify_consumption_time", builder -> builder.codec(EnchantmentValueEffect.CODEC));
-	public static final ComponentType<List<EnchantmentEffectEntry<EnchantmentValueEffect>>> MODIFY_DETECTION_RANGE = register("modify_detection_range", builder -> builder.codec(EnchantmentEffectEntry.createCodec(EnchantmentValueEffect.CODEC, LootContextTypes.ENCHANTED_ENTITY).listOf()));
+	public static final ComponentType<EnchantmentValueEffect> MODIFY_DETECTION_RANGE = register("modify_detection_range", builder -> builder.codec(EnchantmentValueEffect.CODEC));
 	public static final ComponentType<ModifySubmergedMovementSpeedEffect> MODIFY_SUBMERGED_MOVEMENT_SPEED = register("modify_submerged_movement_speed", builder -> builder.codec(ModifySubmergedMovementSpeedEffect.CODEC));
 	public static final ComponentType<EnchantmentValueEffect> MULTIPLY_CHARGE_TIME = register("multiply_charge_time", builder -> builder.codec(EnchantmentValueEffect.CODEC));
 	public static final ComponentType<EnchantmentValueEffect> NIGHT_VISION = register("night_vision", builder -> builder.codec(EnchantmentValueEffect.CODEC));

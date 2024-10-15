@@ -155,7 +155,7 @@ public class ModEnchantments {
 				builder -> {
 					builder.addEffect(
 							ModEnchantmentEffectComponentTypes.HIDE_LABEL_BEHIND_WALLS);
-					builder.addEffect(
+					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.MODIFY_DETECTION_RANGE,
 							new MultiplyEnchantmentEffect(new EnchantmentLevelBasedValue.Fraction(EnchantmentLevelBasedValue.constant(1), EnchantmentLevelBasedValue.linear(2))));
 				}));

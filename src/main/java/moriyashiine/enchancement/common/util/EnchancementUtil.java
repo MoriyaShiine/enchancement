@@ -352,14 +352,6 @@ public class EnchancementUtil {
 		return mutableFloat.floatValue();
 	}
 
-	public static float getListValue(ComponentType<List<EnchantmentEffectEntry<EnchantmentValueEffect>>> component, LivingEntity entity, float base) {
-		MutableFloat mutableFloat = new MutableFloat(base);
-		for (ItemStack stack : entity.getArmorItems()) {
-			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> enchantment.value().modifyValue(component, (ServerWorld) entity.getWorld(), level, stack, mutableFloat));
-		}
-		return mutableFloat.floatValue();
-	}
-
 	public static float getValue(ComponentType<List<EnchantmentEffectEntry<EnchantmentValueEffect>>> component, ServerWorld world, ItemStack stack, float base) {
 		MutableFloat mutableFloat = new MutableFloat(base);
 		EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> enchantment.value().modifyValue(component, world, level, stack, mutableFloat));

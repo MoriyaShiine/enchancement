@@ -17,7 +17,7 @@ public class LivingEntityMixin {
 	@ModifyReturnValue(method = "getAttackDistanceScalingFactor", at = @At("RETURN"))
 	private double enchancement$modifyDetectionRange(double original, Entity entity) {
 		if (entity == null || !entity.getType().isIn(ModEntityTypeTags.VEIL_IMMUNE)) {
-			return EnchancementUtil.getListValue(ModEnchantmentEffectComponentTypes.MODIFY_DETECTION_RANGE, (LivingEntity) (Object) this, (float) original);
+			return EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.MODIFY_DETECTION_RANGE, (LivingEntity) (Object) this, (float) original);
 		}
 		return original;
 	}

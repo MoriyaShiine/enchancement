@@ -5,22 +5,18 @@
   },
   "effects": {
 	"enchancement:hide_label_behind_walls": {},
-	"enchancement:modify_detection_range": [
-	  {
-		"effect": {
-		  "type": "minecraft:multiply",
-		  "factor": {
-			"type": "minecraft:fraction",
-			"denominator": {
-			  "type": "minecraft:linear",
-			  "base": 2.0,
-			  "per_level_above_first": 2.0
-			},
-			"numerator": 1.0
-		  }
-		}
+	"enchancement:modify_detection_range": {
+	  "type": "minecraft:multiply",
+	  "factor": {
+		"type": "minecraft:fraction",
+		"denominator": {
+		  "type": "minecraft:linear",
+		  "base": 2.0,
+		  "per_level_above_first": 2.0
+		},
+		"numerator": 1.0
 	  }
-	]
+	}
   },
   "max_cost": {
 	"base": 20,
