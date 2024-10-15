@@ -1,4 +1,9 @@
 ------------------------------------------------------
+Version 1.21-r7
+------------------------------------------------------
+- fix instant damage and instant health being more potent than expected when applied without a tipped arrow
+
+------------------------------------------------------
 Version 1.21-r6
 ------------------------------------------------------
 - fix modify detection range crash
