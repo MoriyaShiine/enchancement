@@ -18,7 +18,7 @@ public class InstantHealthOrDamageStatusEffectMixin {
 	@WrapOperation(method = "applyUpdateEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;heal(F)V"))
 	private void enchancement$enchancement$rebalanceProjectiles(LivingEntity instance, float amount, Operation<Void> original) {
 		if (ModConfig.rebalanceProjectiles) {
-			amount *= (float) Math.pow(0.8, ModEntityComponents.PROJECTILE_TIMER.get(instance).getTimesHit() - 1);
+			amount *= (float) Math.pow(0.8, Math.max(0, ModEntityComponents.PROJECTILE_TIMER.get(instance).getTimesHit() - 1));
 		}
 		original.call(instance, amount);
 	}
@@ -26,7 +26,7 @@ public class InstantHealthOrDamageStatusEffectMixin {
 	@WrapOperation(method = "applyUpdateEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"))
 	private boolean enchancement$enchancement$rebalanceProjectiles(LivingEntity instance, DamageSource source, float amount, Operation<Boolean> original) {
 		if (ModConfig.rebalanceProjectiles) {
-			amount *= (float) Math.pow(0.8, ModEntityComponents.PROJECTILE_TIMER.get(instance).getTimesHit() - 1);
+			amount *= (float) Math.pow(0.8, Math.max(0, ModEntityComponents.PROJECTILE_TIMER.get(instance).getTimesHit() - 1));
 		}
 		return original.call(instance, source, amount);
 	}
