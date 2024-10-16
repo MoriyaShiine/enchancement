@@ -10,6 +10,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -25,6 +26,8 @@ import java.util.UUID;
 public class HoneyTrailComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private final World obj;
 	private final List<HoneySpot> honeySpots = new ArrayList<>();
+
+	private final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
 
 	public HoneyTrailComponent(World obj) {
 		this.obj = obj;
@@ -49,7 +52,7 @@ public class HoneyTrailComponent implements AutoSyncedComponent, CommonTickingCo
 	public void tick() {
 		for (int i = honeySpots.size() - 1; i >= 0; i--) {
 			HoneySpot spot = honeySpots.get(i);
-			if (++spot.age >= HoneySpot.MAX_AGE) {
+			if (++spot.age >= HoneySpot.MAX_AGE || isInFluid(spot.blockPos)) {
 				honeySpots.remove(i);
 			}
 		}
@@ -83,7 +86,19 @@ public class HoneyTrailComponent implements AutoSyncedComponent, CommonTickingCo
 				return;
 			}
 		}
-		honeySpots.add(new HoneySpot(owner.getUuid(), adjustedPos, 0));
+		BlockPos blockPos = BlockPos.ofFloored(adjustedPos);
+		if (!isInFluid(blockPos)) {
+			honeySpots.add(new HoneySpot(owner.getUuid(), adjustedPos, blockPos, 0));
+		}
+	}
+
+	private boolean isInFluid(BlockPos pos) {
+		for (int i = 0; i <= 1; i++) {
+			if (!obj.getFluidState(mutablePos.set(pos.getX(), pos.getY() + i, pos.getZ())).isEmpty()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private static Vec3d getAdjustedPos(LivingEntity owner) {
@@ -95,12 +110,14 @@ public class HoneyTrailComponent implements AutoSyncedComponent, CommonTickingCo
 
 		private final UUID ownerId;
 		private final Vec3d pos;
+		private final BlockPos blockPos;
 		private final Box box;
 		private int age;
 
-		public HoneySpot(UUID ownerId, Vec3d pos, int age) {
+		public HoneySpot(UUID ownerId, Vec3d pos, BlockPos blockPos, int age) {
 			this.ownerId = ownerId;
 			this.pos = pos;
+			this.blockPos = blockPos;
 			this.box = new Box(pos.add(-0.5, 0, -0.5), pos.add(0.5, 0.2, 0.5));
 			this.age = age;
 		}
@@ -119,12 +136,13 @@ public class HoneyTrailComponent implements AutoSyncedComponent, CommonTickingCo
 			compound.putDouble("PosX", pos.getX());
 			compound.putDouble("PosY", pos.getY());
 			compound.putDouble("PosZ", pos.getZ());
+			compound.putLong("BlockPos", blockPos.asLong());
 			compound.putInt("Age", age);
 			return compound;
 		}
 
 		public static HoneySpot deserialize(NbtCompound compound) {
-			return new HoneySpot(compound.getUuid("OwnerId"), new Vec3d(compound.getDouble("PosX"), compound.getDouble("PosY"), compound.getDouble("PosZ")), compound.getInt("Age"));
+			return new HoneySpot(compound.getUuid("OwnerId"), new Vec3d(compound.getDouble("PosX"), compound.getDouble("PosY"), compound.getDouble("PosZ")), BlockPos.fromLong(compound.getLong("BlockPos")), compound.getInt("Age"));
 		}
 	}
 }
