@@ -130,6 +130,7 @@
 	"enchantmenteffectcomponenttype.teleportonhit.RangedWeaponItemMixin",
 	"enchantmenteffectcomponenttype.teleportonhit.TridentEntityMixin",
 	"enchantmententityeffecttype.conditionalattribute.EnchantmentMixin",
+	"enchantmententityeffecttype.freeze.GuardianEntityMixin",
 	"enchantmententityeffecttype.freeze.LivingEntityMixin",
 	"enchantmententityeffecttype.freeze.MobEntityMixin",
 	"enchantmententityeffecttype.freeze.ProjectileEntityMixin",

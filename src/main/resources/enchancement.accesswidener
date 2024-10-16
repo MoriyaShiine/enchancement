@@ -12,6 +12,7 @@ accessible method net/minecraft/enchantment/EnchantmentHelper forEachEnchantment
 accessible method net/minecraft/enchantment/EnchantmentHelper forEachEnchantment (Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/enchantment/EnchantmentHelper$ContextAwareConsumer;)V
 accessible method net/minecraft/enchantment/Enchantment modifyValue (Lnet/minecraft/component/ComponentType;Lnet/minecraft/server/world/ServerWorld;ILnet/minecraft/item/ItemStack;Lorg/apache/commons/lang3/mutable/MutableFloat;)V
 accessible method net/minecraft/entity/Entity spawnSprintingParticles ()V
+accessible method net/minecraft/entity/mob/GuardianEntity setBeamTarget (I)V
 accessible method net/minecraft/block/HoneyBlock addCollisionEffects (Lnet/minecraft/world/World;Lnet/minecraft/entity/Entity;)V
 accessible method net/minecraft/block/HoneyBlock updateSlidingVelocity (Lnet/minecraft/entity/Entity;)V
 accessible method net/minecraft/entity/ItemEntity tryMerge (Lnet/minecraft/entity/ItemEntity;)V

@@ -5,6 +5,7 @@ package moriyashiine.enchancement.common.event;
 
 import moriyashiine.enchancement.client.payload.SyncFrozenPlayerSlimStatusS2CPayload;
 import moriyashiine.enchancement.common.component.entity.FrozenComponent;
+import moriyashiine.enchancement.common.component.entity.FrozenGuardianComponent;
 import moriyashiine.enchancement.common.component.entity.FrozenSquidComponent;
 import moriyashiine.enchancement.common.entity.mob.FrozenPlayerEntity;
 import moriyashiine.enchancement.common.entity.projectile.IceShardEntity;
@@ -15,6 +16,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
+import net.minecraft.entity.mob.GuardianEntity;
 import net.minecraft.entity.passive.SquidEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.Box;
@@ -43,14 +45,20 @@ public class FreezeEvent {
 						entity.getWorld().spawnEntity(frozenPlayer);
 					}
 				} else {
-					frozenComponent.freeze();
-					if (entity instanceof SquidEntity squid) {
+					if (entity instanceof GuardianEntity guardian) {
+						FrozenGuardianComponent frozenGuardianComponent = ModEntityComponents.FROZEN_GUARDIAN.get(guardian);
+						frozenGuardianComponent.setForcedTailAngle(guardian.getTailAngle(1));
+						frozenGuardianComponent.setForcedSpikesExtension(guardian.getRandom().nextFloat());
+						frozenGuardianComponent.sync();
+						guardian.setBeamTarget(0);
+					} else if (entity instanceof SquidEntity squid) {
 						FrozenSquidComponent frozenSquidComponent = ModEntityComponents.FROZEN_SQUID.get(squid);
 						frozenSquidComponent.setForcedRollAngle(squid.rollAngle);
 						frozenSquidComponent.setForcedTentacleAngle(squid.tentacleAngle);
 						frozenSquidComponent.setForcedTiltAngle(squid.tiltAngle);
 						frozenSquidComponent.sync();
 					}
+					frozenComponent.freeze();
 				}
 			}
 		}
