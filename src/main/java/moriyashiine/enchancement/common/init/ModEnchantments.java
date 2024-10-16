@@ -118,6 +118,7 @@ public class ModEnchantments {
 	}
 
 	public static void bootstrap(Registerable<Enchantment> registerable) {
+		registerable.register(EMPTY_KEY, EMPTY);
 		// lookup
 		RegistryEntryLookup<DamageType> damageTypeLookup = registerable.getRegistryLookup(RegistryKeys.DAMAGE_TYPE);
 		RegistryEntryLookup<Enchantment> enchantmentLookup = registerable.getRegistryLookup(RegistryKeys.ENCHANTMENT);

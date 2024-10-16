@@ -3,24 +3,27 @@
  */
 package moriyashiine.enchancement.mixin.config.disabledisallowedenchantments;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import net.minecraft.registry.Registry;
+import com.mojang.serialization.Lifecycle;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.SimpleRegistry;
-import org.spongepowered.asm.mixin.Final;
+import net.minecraft.registry.entry.RegistryEntryOwner;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(SimpleRegistry.class)
-public class SimpleRegistryMixin<T> {
+public abstract class SimpleRegistryMixin<T> {
 	@Shadow
-	@Final
-	RegistryKey<? extends Registry<T>> key;
+	public abstract RegistryEntryOwner<T> getEntryOwner();
 
-	@ModifyExpressionValue(method = "freeze", at = @At(value = "INVOKE", target = "Ljava/util/List;isEmpty()Z"))
-	private boolean enchancement$disableDisallowedEnchantments(boolean original) {
-		return original || key.equals(RegistryKeys.ENCHANTMENT);
+	@Inject(method = "<init>(Lnet/minecraft/registry/RegistryKey;Lcom/mojang/serialization/Lifecycle;Z)V", at = @At("TAIL"))
+	private void enchancement$disableDisallowedEnchantments(RegistryKey<?> key, Lifecycle lifecycle, boolean intrusive, CallbackInfo ci) {
+		if (key.equals(RegistryKeys.ENCHANTMENT)) {
+			EnchancementUtil.ENCHANTMENT_REGISTRY_OWNER = getEntryOwner();
+		}
 	}
 }

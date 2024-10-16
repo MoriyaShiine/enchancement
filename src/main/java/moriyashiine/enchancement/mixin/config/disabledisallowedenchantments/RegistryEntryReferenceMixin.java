@@ -30,22 +30,28 @@ public class RegistryEntryReferenceMixin<T> {
 	@Shadow
 	private @Nullable T value;
 
-	@Inject(method = "registryKey", at = @At("HEAD"), cancellable = true)
-	private void enchancement$disableDisallowedEnchantmentsKey(CallbackInfoReturnable<RegistryKey<T>> cir) {
-		if (isEnchantment() && registryKey == null) {
-			cir.setReturnValue((RegistryKey<T>) ModEnchantments.EMPTY_KEY);
-		}
+	@Inject(method = "hasKeyAndValue", at = @At("HEAD"))
+	private void enchancement$disableDisallowedEnchantments(CallbackInfoReturnable<Boolean> cir) {
+		validate();
 	}
 
-	@Inject(method = "value", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "registryKey", at = @At("HEAD"))
+	private void enchancement$disableDisallowedEnchantmentsKey(CallbackInfoReturnable<RegistryKey<T>> cir) {
+		validate();
+	}
+
+	@Inject(method = "value", at = @At("HEAD"))
 	private void enchancement$disableDisallowedEnchantmentsValue(CallbackInfoReturnable<T> cir) {
-		if (isEnchantment() && value == null) {
-			cir.setReturnValue((T) ModEnchantments.EMPTY);
-		}
+		validate();
 	}
 
 	@Unique
-	private boolean isEnchantment() {
-		return EnchancementUtil.ENCHANTMENT_REGISTRY != null && owner.ownerEquals((RegistryEntryOwner<T>) EnchancementUtil.ENCHANTMENT_REGISTRY.getEntryOwner());
+	private void validate() {
+		if (EnchancementUtil.ENCHANTMENT_REGISTRY_OWNER != null && owner.ownerEquals((RegistryEntryOwner<T>) EnchancementUtil.ENCHANTMENT_REGISTRY_OWNER)) {
+			if (registryKey == null || value == null) {
+				registryKey = (RegistryKey<T>) ModEnchantments.EMPTY_KEY;
+				value = (T) ModEnchantments.EMPTY;
+			}
+		}
 	}
 }

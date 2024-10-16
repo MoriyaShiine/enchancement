@@ -30,8 +30,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.entry.RegistryEntryOwner;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.TranslatableTextContent;
@@ -49,7 +49,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EnchancementUtil {
-	public static Registry<Enchantment> ENCHANTMENT_REGISTRY = null;
+	public static RegistryEntryOwner<?> ENCHANTMENT_REGISTRY_OWNER = null;
+	public static List<RegistryEntry.Reference<Enchantment>> ENCHANTMENTS = new ArrayList<>();
 
 	public static final Object2IntMap<Enchantment> ORIGINAL_MAX_LEVELS = new Object2IntOpenHashMap<>();
 
@@ -99,14 +100,10 @@ public class EnchancementUtil {
 
 	// disable disallowed enchantments
 
-	public static List<RegistryEntry.Reference<Enchantment>> getAllEnchantments() {
-		return ENCHANTMENT_REGISTRY.streamEntries().toList();
-	}
-
 	@Nullable
 	public static RegistryEntry<Enchantment> getRandomEnchantment(ItemStack stack, Random random) {
 		List<RegistryEntry<Enchantment>> enchantments = new ArrayList<>();
-		for (RegistryEntry<Enchantment> enchantment : getAllEnchantments()) {
+		for (RegistryEntry<Enchantment> enchantment : ENCHANTMENTS) {
 			if (stack.isOf(Items.BOOK) || stack.isOf(Items.ENCHANTED_BOOK) || stack.canBeEnchantedWith(enchantment, EnchantingContext.ACCEPTABLE)) {
 				enchantments.add(enchantment);
 			}
@@ -123,7 +120,7 @@ public class EnchancementUtil {
 			return null;
 		}
 		List<RegistryEntry<Enchantment>> enchantments = new ArrayList<>();
-		for (RegistryEntry<Enchantment> entry : getAllEnchantments()) {
+		for (RegistryEntry<Enchantment> entry : ENCHANTMENTS) {
 			if (isEnchantmentAllowed(entry)) {
 				if (stack.isOf(Items.BOOK) || stack.isOf(Items.ENCHANTED_BOOK) || stack.canBeEnchantedWith(entry, EnchantingContext.ACCEPTABLE)) {
 					enchantments.add(entry);

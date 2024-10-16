@@ -11,6 +11,7 @@ import net.minecraft.server.MinecraftServer;
 public class CacheEnchantmentRegistryEvent implements ServerLifecycleEvents.ServerStarted {
 	@Override
 	public void onServerStarted(MinecraftServer server) {
-		EnchancementUtil.ENCHANTMENT_REGISTRY = server.getRegistryManager().get(RegistryKeys.ENCHANTMENT);
+		EnchancementUtil.ENCHANTMENTS.clear();
+		EnchancementUtil.ENCHANTMENTS.addAll(server.getRegistryManager().get(RegistryKeys.ENCHANTMENT).streamEntries().toList());
 	}
 }
