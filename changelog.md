@@ -1,4 +1,11 @@
 ------------------------------------------------------
+Version 1.21-r8
+------------------------------------------------------
+- fix https://github.com/MoriyaShiine/enchancement/issues/201
+- fix frozen guardians acting weird
+- sticky no longer makes (and now clears) honey spots in fluids
+
+------------------------------------------------------
 Version 1.21-r7
 ------------------------------------------------------
 - fix instant damage and instant health being more potent than expected when applied without a tipped arrow
