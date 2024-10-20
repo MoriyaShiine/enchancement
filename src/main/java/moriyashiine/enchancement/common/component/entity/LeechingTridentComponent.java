@@ -3,12 +3,12 @@
  */
 package moriyashiine.enchancement.common.component.entity;
 
+import moriyashiine.enchancement.client.util.EnchancementClientUtil;
 import moriyashiine.enchancement.common.enchantment.effect.LeechingTridentEffect;
 import moriyashiine.enchancement.common.init.ModDamageTypes;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -106,11 +106,9 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 	@Override
 	public void clientTick() {
 		tick();
-		if (stuckEntity != null && stuckEntity.isAlive() && stabTicks == 19 / 20F) {
-			if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || stuckEntity != MinecraftClient.getInstance().cameraEntity) {
-				for (int i = 0; i < 6; i++) {
-					obj.getWorld().addParticle(ParticleTypes.DAMAGE_INDICATOR, stuckEntity.getParticleX(0.5), stuckEntity.getBodyY(0.5), stuckEntity.getParticleZ(0.5), 0, 0, 0);
-				}
+		if (stuckEntity != null && stuckEntity.isAlive() && stabTicks == 19 / 20F && EnchancementClientUtil.shouldAddParticles(stuckEntity)) {
+			for (int i = 0; i < 6; i++) {
+				obj.getWorld().addParticle(ParticleTypes.DAMAGE_INDICATOR, stuckEntity.getParticleX(0.5), stuckEntity.getBodyY(0.5), stuckEntity.getParticleZ(0.5), 0, 0, 0);
 			}
 		}
 	}

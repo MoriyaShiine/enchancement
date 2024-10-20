@@ -3,10 +3,10 @@
  */
 package moriyashiine.enchancement.client.payload;
 
+import moriyashiine.enchancement.client.util.EnchancementClientUtil;
 import moriyashiine.enchancement.common.Enchancement;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
@@ -29,7 +29,7 @@ public record AddMovementBurstParticlesPayload(int entityId) implements CustomPa
 	}
 
 	public static void addParticles(Entity entity) {
-		if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || entity != MinecraftClient.getInstance().cameraEntity) {
+		if (EnchancementClientUtil.shouldAddParticles(entity)) {
 			for (int i = 0; i < 8; i++) {
 				entity.getWorld().addParticle(ParticleTypes.CLOUD, entity.getParticleX(1), entity.getRandomBodyY(), entity.getParticleZ(1), 0, 0, 0);
 			}

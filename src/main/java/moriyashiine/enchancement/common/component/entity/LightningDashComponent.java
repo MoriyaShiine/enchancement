@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.component.entity;
 import moriyashiine.enchancement.client.payload.AddLightningDashParticlesPayload;
 import moriyashiine.enchancement.client.payload.UseLightningDashPayload;
 import moriyashiine.enchancement.client.sound.SparkSoundInstance;
+import moriyashiine.enchancement.client.util.EnchancementClientUtil;
 import moriyashiine.enchancement.common.enchantment.effect.LightningDashEffect;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
@@ -139,11 +140,9 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 	@Override
 	public void clientTick() {
 		tick();
-		if (isFloating()) {
-			if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || obj != MinecraftClient.getInstance().cameraEntity) {
-				for (int i = 0; i <= 4; i++) {
-					obj.getWorld().addParticle(new SparkParticleEffect(obj.getPos().addRandom(obj.getRandom(), 1)), obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 0, 0);
-				}
+		if (isFloating() && EnchancementClientUtil.shouldAddParticles(obj)) {
+			for (int i = 0; i <= 4; i++) {
+				obj.getWorld().addParticle(new SparkParticleEffect(obj.getPos().addRandom(obj.getRandom(), 1)), obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 0, 0);
 			}
 		}
 		if (smashTicks == 1 && obj.isOnGround()) {

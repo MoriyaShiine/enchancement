@@ -3,10 +3,10 @@
  */
 package moriyashiine.enchancement.common.component.entity;
 
+import moriyashiine.enchancement.client.util.EnchancementClientUtil;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -58,16 +58,14 @@ public class ExtendedWaterTimeComponent implements AutoSyncedComponent, CommonTi
 	@Override
 	public void clientTick() {
 		tick();
-		if (ticksWet > 0 && !obj.isInvisible() && !obj.isWet()) {
-			if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || MinecraftClient.getInstance().player != obj) {
-				for (EquipmentSlot slot : EquipmentSlot.values()) {
-					if (slot.isArmorSlot()) {
-						if (EnchantmentHelper.hasAnyEnchantmentsWith(obj.getEquippedStack(slot), ModEnchantmentEffectComponentTypes.EXTEND_WATER_TIME)) {
-							if (slot == EquipmentSlot.FEET) {
-								obj.getWorld().addParticle(ParticleTypes.FALLING_WATER, obj.getParticleX(1), obj.getY() + obj.getHeight() * 0.15, obj.getParticleZ(1), 0, 0, 0);
-							} else {
-								obj.getWorld().addParticle(ParticleTypes.FALLING_WATER, obj.getParticleX(1), obj.getY() + obj.getHeight() * MathHelper.nextDouble(obj.getRandom(), 0.4, 0.8), obj.getParticleZ(1), 0, 0, 0);
-							}
+		if (ticksWet > 0 && !obj.isInvisible() && !obj.isWet() && EnchancementClientUtil.shouldAddParticles(obj)) {
+			for (EquipmentSlot slot : EquipmentSlot.values()) {
+				if (slot.isArmorSlot()) {
+					if (EnchantmentHelper.hasAnyEnchantmentsWith(obj.getEquippedStack(slot), ModEnchantmentEffectComponentTypes.EXTEND_WATER_TIME)) {
+						if (slot == EquipmentSlot.FEET) {
+							obj.getWorld().addParticle(ParticleTypes.FALLING_WATER, obj.getParticleX(1), obj.getY() + obj.getHeight() * 0.15, obj.getParticleZ(1), 0, 0, 0);
+						} else {
+							obj.getWorld().addParticle(ParticleTypes.FALLING_WATER, obj.getParticleX(1), obj.getY() + obj.getHeight() * MathHelper.nextDouble(obj.getRandom(), 0.4, 0.8), obj.getParticleZ(1), 0, 0, 0);
 						}
 					}
 				}
