@@ -85,6 +85,7 @@ public class Enchancement implements ModInitializer {
 		// enchantment
 		ServerEntityEvents.EQUIPMENT_CHANGE.register(new EquipmentResetEvent());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new AllowInterruptionEvent());
+		ServerTickEvents.END_SERVER_TICK.register(new BounceEvent());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new BuryEntityEvent.Unbury());
 		UseEntityCallback.EVENT.register(new BuryEntityEvent.Use());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new ChainLightningEvent());
@@ -124,6 +125,7 @@ public class Enchancement implements ModInitializer {
 		PayloadTypeRegistry.playC2S().register(SlamPayload.ID, SlamPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(StartSlidingPayload.ID, StartSlidingPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(StopSlidingPayload.ID, StopSlidingPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(SyncBounceInvertedStatusPayload.ID, SyncBounceInvertedStatusPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(SyncFrozenPlayerSlimStatusC2SPayload.ID, SyncFrozenPlayerSlimStatusC2SPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(WallJumpPayload.ID, WallJumpPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(WallJumpSlidingPayload.ID, WallJumpSlidingPayload.CODEC);
@@ -136,6 +138,7 @@ public class Enchancement implements ModInitializer {
 		ServerPlayNetworking.registerGlobalReceiver(SlamPayload.ID, new SlamPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(StartSlidingPayload.ID, new StartSlidingPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(StopSlidingPayload.ID, new StopSlidingPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(SyncBounceInvertedStatusPayload.ID, new SyncBounceInvertedStatusPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(SyncFrozenPlayerSlimStatusC2SPayload.ID, new SyncFrozenPlayerSlimStatusC2SPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(WallJumpPayload.ID, new WallJumpPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(WallJumpSlidingPayload.ID, new WallJumpSlidingPayload.Receiver());

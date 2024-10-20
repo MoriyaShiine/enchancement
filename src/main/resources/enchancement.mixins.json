@@ -68,6 +68,7 @@
 	"config.toggleablepassives.TridentEntityMixin",
 	"config.weaponenchantmentcooldownrequirement.EnchantmentHelperMixin",
 	"config.weaponenchantmentcooldownrequirement.PlayerEntityMixin",
+	"enchantment.bouncy.client.TranslatableTextContentMixin",
 	"enchantmenteffectcomponenttype.airjump.LivingEntityMixin",
 	"enchantmenteffectcomponenttype.allowcrossbowcooldownreloading.ServerPlayerInteractionManagerMixin",
 	"enchantmenteffectcomponenttype.allowloadingprojectile.CrossbowMixin",

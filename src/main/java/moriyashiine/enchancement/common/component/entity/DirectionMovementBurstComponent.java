@@ -84,7 +84,7 @@ public class DirectionMovementBurstComponent implements AutoSyncedComponent, Com
 				ticksLeftToPressActivationKey--;
 			}
 			if (pressingStrafeKey && !wasPressingStrafeKey) {
-				if (ticksLeftToPressActivationKey > 0 || ModConfig.singlePressStrafe) {
+				if (!ModConfig.doublePressStrafe || ticksLeftToPressActivationKey > 0) {
 					ticksLeftToPressActivationKey = 0;
 					Vec3d inputVelocity = getVelocityFromInput(options);
 					if (inputVelocity != Vec3d.ZERO) {

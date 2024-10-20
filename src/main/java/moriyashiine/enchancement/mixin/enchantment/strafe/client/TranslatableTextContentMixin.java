@@ -15,8 +15,8 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class TranslatableTextContentMixin {
 	@ModifyVariable(method = "<init>", at = @At("HEAD"), ordinal = 0, argsOnly = true)
 	private static String enchancement$strafe(String key) {
-		if (ModConfig.singlePressStrafe && key.equals("enchantment.enchancement.strafe.desc")) {
-			return key + ".single";
+		if (ModConfig.doublePressStrafe && key.equals("enchantment.enchancement.strafe.desc")) {
+			return key + ".double";
 		}
 		return key;
 	}

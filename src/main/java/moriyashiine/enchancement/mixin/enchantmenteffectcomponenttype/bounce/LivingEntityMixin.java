@@ -5,6 +5,7 @@ package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.bounce;
 
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.payload.SyncBounceInvertedStatusPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -45,14 +46,23 @@ public abstract class LivingEntityMixin extends Entity {
 	@Inject(method = "handleFallDamage", at = @At("HEAD"), cancellable = true)
 	private void enchancement$bounce(float fallDistance, float damageMultiplier, DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
 		if (!damageSource.isOf(DamageTypes.STALAGMITE) && fallDistance > getSafeFallDistance() && EnchancementUtil.hasAnyEnchantmentsWith(this, ModEnchantmentEffectComponentTypes.BOUNCE)) {
-			getWorld().playSoundFromEntity(null, this, SoundEvents.BLOCK_SLIME_BLOCK_FALL, getSoundCategory(), 1, 1);
-			if (!bypassesLandingEffects()) {
+			playSoundIfNotSilent(SoundEvents.BLOCK_SLIME_BLOCK_FALL);
+			if (shouldBounce()) {
 				ModEntityComponents.AIR_MOBILITY.get(this).enableResetBypass();
 				double bounceStrength = Math.log((fallDistance / 7) + 1) / Math.log(1.05) / 16;
-				setVelocity(getVelocity().getX(), bounceStrength, getVelocity().getZ());
+				addVelocity(0, bounceStrength, 0);
 				velocityModified = true;
 			}
 			cir.setReturnValue(false);
 		}
+	}
+
+	@Unique
+	private boolean shouldBounce() {
+		boolean bounce = !bypassesLandingEffects();
+		if (SyncBounceInvertedStatusPayload.ENTITIES_WITH_INVERTED_STATUS.contains(this)) {
+			bounce = !bounce;
+		}
+		return bounce;
 	}
 }

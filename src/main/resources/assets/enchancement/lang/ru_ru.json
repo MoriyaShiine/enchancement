@@ -65,8 +65,8 @@
   "enchantment.enchancement.amphibious": "Амфибия",
   "enchantment.enchancement.amphibious.desc": "Увеличивает скорость копания и движения под водой. Уменьшает расход воздуха под водой и время которое пользователь находится в огне. Сразу тушит пользователя и позволяет использовать Тягун в течение некоторого времени после выхода из воды.",
   "enchantment.enchancement.strafe": "Рывок",
-  "enchantment.enchancement.strafe.desc": "Двойное нажатие [%s] запускает пользователя в направлении его движения.",
-  "enchantment.enchancement.strafe.desc.single": "Нажатие [%s] запускает пользователя в направлении его движения.",
+  "enchantment.enchancement.strafe.desc": "Нажатие [%s] запускает пользователя в направлении его движения.",
+  "enchantment.enchancement.strafe.desc.double": "Двойное нажатие [%s] запускает пользователя в направлении его движения.",
   "enchantment.enchancement.wardenspine": "Дикобраз",
   "enchantment.enchancement.wardenspine.desc": "Наносит урон и ослепляет атакующих, значительно снижает получаемый урон со спины.",
   "enchantment.enchancement.dash": "Рывок",
@@ -79,6 +79,7 @@
   "enchantment.enchancement.buoy.desc": "Позволяет пользователю ходить по жидкостям, опускаясь при приседании. Удерживание прыжка под водой быстро поднимает вверх. Предотвращает всплытие. Даёт ускорение на некоторое время после выхода из воды.",
   "enchantment.enchancement.bouncy": "Пружинистость",
   "enchantment.enchancement.bouncy.desc": "Устраняет урон от падения. Запускает пользователя вверх при приземлении, если он не приседает. Приседание на земле заряжает суперпрыжок.",
+  "enchantment.enchancement.bouncy.desc.inverted": "Отменяет урон от падения. Запускает вас вверх при приземлении во время приседания. Приседание на земле заряжает суперпрыжок.",
   "enchantment.enchancement.sticky": "Липучка",
   "enchantment.enchancement.sticky.desc": "Позволяет скользить по стенам и отталкиваться от них. Оставляет за собой след меда, замедляющий существ.",
   "enchantment.enchancement.berserk": "Берсерк",
@@ -191,6 +192,7 @@
   "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.NONE": "Нет",
   "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.VANILLA_AND_ENCHANCEMENT": "Ванильные и Enchancement",
   "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.ALL": "Все",
+  "enchancement.midnightconfig.invertedBounce": "Инвертированный отскок",
   "enchancement.midnightconfig.directionlessStrafe": "Безнаправленный Боковый Рывок",
-  "enchancement.midnightconfig.singlePressStrafe": "Боковой рывок одним нажатием"
+  "enchancement.midnightconfig.doublePressStrafe": "Боковой Рывок двойным нажатием"
 }

@@ -100,9 +100,11 @@ public class ModConfig extends MidnightConfig {
 	@Entry(category = "client")
 	public static AllowDuplicateKeybindingsMode allowDuplicateKeybindings = AllowDuplicateKeybindingsMode.VANILLA_AND_ENCHANCEMENT;
 	@Entry(category = "client")
+	public static boolean invertedBounce = false;
+	@Entry(category = "client")
 	public static boolean directionlessStrafe = false;
 	@Entry(category = "client")
-	public static boolean singlePressStrafe = false;
+	public static boolean doublePressStrafe = false;
 
 	public static int encode() {
 		StringBuilder builder = new StringBuilder();
