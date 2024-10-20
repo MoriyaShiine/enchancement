@@ -1,4 +1,15 @@
 ------------------------------------------------------
+Version 1.21-r9
+------------------------------------------------------
+- fix crash with empty stacks in enchanting table
+- add default enchanting material
+- strafe now only requires one press to activate by default
+- add inverted bounce option
+- rename some config options, keybindings, and components
+- update Russian translation (thanks BackupCup!)
+- update Turkish translation (thanks Hexasan!)
+
+------------------------------------------------------
 Version 1.21-r8
 ------------------------------------------------------
 - fix https://github.com/MoriyaShiine/enchancement/issues/201
