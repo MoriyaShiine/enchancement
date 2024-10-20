@@ -35,6 +35,8 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
 				.addOptional(of("farmersdelight", "dog_food"))
 				.addOptional(of("farmersdelight", "pie_crust"))
 				.addOptional(of("spelunkery", "portal_fluid_bottle"));
+		getOrCreateTagBuilder(ModItemTags.DEFAULT_ENCHANTING_MATERIAL)
+				.add(Items.AMETHYST_SHARD);
 		getOrCreateTagBuilder(ModItemTags.NO_LOYALTY)
 				.addOptional(of("impaled", "pitchfork"));
 		getOrCreateTagBuilder(ModItemTags.RETAINS_DURABILITY)

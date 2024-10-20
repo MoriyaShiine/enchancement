@@ -9,6 +9,7 @@ import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
 import moriyashiine.enchancement.common.tag.ModEnchantmentTags;
+import moriyashiine.enchancement.common.tag.ModItemTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.Blocks;
@@ -294,7 +295,11 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 					stacks.add(matchingStack);
 				}
 			}
-			ingredient = Ingredient.ofStacks(stacks.stream());
+			if (stacks.isEmpty()) {
+				ingredient = Ingredient.fromTag(ModItemTags.DEFAULT_ENCHANTING_MATERIAL);
+			} else {
+				ingredient = Ingredient.ofStacks(stacks.stream());
+			}
 		}
 		return ingredient;
 	}
