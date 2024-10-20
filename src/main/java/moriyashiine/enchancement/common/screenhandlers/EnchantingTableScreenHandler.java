@@ -355,7 +355,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 	}
 
 	private static boolean isEnchantmentAllowed(RegistryEntry<Enchantment> enchantment, ItemStack stack) {
-		if (enchantment.isIn(ModEnchantmentTags.UNSELECTABLE)) {
+		if (stack.isEmpty() || enchantment.isIn(ModEnchantmentTags.UNSELECTABLE)) {
 			return false;
 		}
 		return stack.canBeEnchantedWith(enchantment, ModConfig.overhaulEnchantingTable.context);
