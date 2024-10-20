@@ -36,7 +36,7 @@ public class SlamComponent implements CommonTickingComponent {
 	private float strength = 0;
 	private boolean hasSlam = false;
 
-	private boolean wasPressingSlamKey = false;
+	private boolean wasPressingKey = false;
 
 	public SlamComponent(PlayerEntity obj) {
 		this.obj = obj;
@@ -112,15 +112,15 @@ public class SlamComponent implements CommonTickingComponent {
 					}
 				});
 			}
-			boolean pressingSlamKey = EnchancementClient.SLAM_KEYBINDING.isPressed();
-			if (pressingSlamKey && !wasPressingSlamKey && canSlam()) {
+			boolean pressingKey = EnchancementClient.SLAM_KEYBINDING.isPressed();
+			if (pressingKey && !wasPressingKey && canSlam()) {
 				isSlamming = true;
 				slamCooldown = DEFAULT_SLAM_COOLDOWN;
 				SlamPayload.send();
 			}
-			wasPressingSlamKey = pressingSlamKey;
+			wasPressingKey = pressingKey;
 		} else {
-			wasPressingSlamKey = false;
+			wasPressingKey = false;
 		}
 	}
 

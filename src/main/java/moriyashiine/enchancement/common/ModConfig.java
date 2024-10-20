@@ -102,9 +102,9 @@ public class ModConfig extends MidnightConfig {
 	@Entry(category = "client")
 	public static boolean invertedBounce = false;
 	@Entry(category = "client")
-	public static boolean directionlessStrafe = false;
+	public static boolean doublePressDirectionBurst = false;
 	@Entry(category = "client")
-	public static boolean doublePressStrafe = false;
+	public static boolean inputlessDirectionBurst = false;
 
 	public static int encode() {
 		StringBuilder builder = new StringBuilder();

@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class TranslatableTextContentMixin {
 	@ModifyVariable(method = "<init>", at = @At("HEAD"), ordinal = 0, argsOnly = true)
 	private static String enchancement$strafe(String key) {
-		if (ModConfig.doublePressStrafe && key.equals("enchantment.enchancement.strafe.desc")) {
+		if (ModConfig.doublePressDirectionBurst && key.equals("enchantment.enchancement.strafe.desc")) {
 			return key + ".double";
 		}
 		return key;
@@ -25,7 +25,7 @@ public class TranslatableTextContentMixin {
 	private static Object[] enchancement$strafe(Object[] value, String key) {
 		if (value.length == 0 && key.startsWith("enchantment.enchancement.strafe.desc")) {
 			value = new Object[1];
-			value[0] = EnchancementClient.STRAFE_KEYBINDING.getBoundKeyLocalizedText().copy().formatted(EnchancementClient.STRAFE_KEYBINDING.isUnbound() ? Formatting.RED : Formatting.GOLD);
+			value[0] = EnchancementClient.DIRECTION_BURST_KEYBINDING.getBoundKeyLocalizedText().copy().formatted(EnchancementClient.DIRECTION_BURST_KEYBINDING.isUnbound() ? Formatting.RED : Formatting.GOLD);
 		}
 		return value;
 	}

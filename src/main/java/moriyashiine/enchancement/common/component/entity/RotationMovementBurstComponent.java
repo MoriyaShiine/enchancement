@@ -23,7 +23,7 @@ public class RotationMovementBurstComponent implements AutoSyncedComponent, Comm
 	private boolean shouldRefresh = false;
 	private int cooldown = 0, lastCooldown = 0, wavedashTicks = 0;
 
-	private boolean hasRotationMovementBurst = false, wasPressingDashKey = false;
+	private boolean hasRotationMovementBurst = false, wasPressingKey = false;
 	private int ticksPressingJump = 0;
 
 	public RotationMovementBurstComponent(PlayerEntity obj) {
@@ -77,15 +77,15 @@ public class RotationMovementBurstComponent implements AutoSyncedComponent, Comm
 			} else {
 				ticksPressingJump = 0;
 			}
-			boolean pressingDashKey = EnchancementClient.DASH_KEYBINDING.isPressed();
-			if (pressingDashKey && !wasPressingDashKey && canUse()) {
+			boolean pressingKey = EnchancementClient.ROTATION_BURST_KEYBINDING.isPressed();
+			if (pressingKey && !wasPressingKey && canUse()) {
 				use();
 				AddMovementBurstParticlesPayload.addParticles(obj);
 				RotationMovementBurstPayload.send();
 			}
-			wasPressingDashKey = pressingDashKey;
+			wasPressingKey = pressingKey;
 		} else {
-			wasPressingDashKey = false;
+			wasPressingKey = false;
 			ticksPressingJump = 0;
 		}
 	}

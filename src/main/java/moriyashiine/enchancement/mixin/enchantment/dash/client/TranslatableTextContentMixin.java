@@ -16,7 +16,7 @@ public class TranslatableTextContentMixin {
 	private static Object[] enchancement$dash(Object[] value, String key) {
 		if (value.length == 0 && key.equals("enchantment.enchancement.dash.desc")) {
 			value = new Object[1];
-			value[0] = EnchancementClient.DASH_KEYBINDING.getBoundKeyLocalizedText().copy().formatted(EnchancementClient.DASH_KEYBINDING.isUnbound() ? Formatting.RED : Formatting.GOLD);
+			value[0] = EnchancementClient.ROTATION_BURST_KEYBINDING.getBoundKeyLocalizedText().copy().formatted(EnchancementClient.ROTATION_BURST_KEYBINDING.isUnbound() ? Formatting.RED : Formatting.GOLD);
 		}
 		return value;
 	}

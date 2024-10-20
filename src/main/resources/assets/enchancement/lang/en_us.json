@@ -150,10 +150,10 @@
   "death.attack.enchancement.life_drain.player": "%1$s had their life drained whilst fighting %2$s",
   "death.attack.freeze.item": "%1$s was frozen to death by %2$s wielding %3$s",
   "key.categories.enchancement": "Enchancement",
-  "key.enchancement.dash": "Dash",
+  "key.enchancement.directionBurst": "Direction Burst",
+  "key.enchancement.rotationBurst": "Rotation Burst",
   "key.enchancement.slam": "Slam",
   "key.enchancement.slide": "Slide",
-  "key.enchancement.strafe": "Strafe",
   "tooltip.enchancement.experience_level_cost": "Experience Cost: %d levels",
   "tooltip.enchancement.material_cost": "Material Cost: %d %s",
   "tooltip.enchancement.cannot_auto_consume": "Cannot Auto-consume",
@@ -193,6 +193,6 @@
   "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.VANILLA_AND_ENCHANCEMENT": "Vanilla and Enchancement",
   "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.ALL": "All",
   "enchancement.midnightconfig.invertedBounce": "Inverted Bounce",
-  "enchancement.midnightconfig.directionlessStrafe": "Directionless Strafe",
-  "enchancement.midnightconfig.doublePressStrafe": "Double Press Strafe"
+  "enchancement.midnightconfig.doublePressDirectionBurst": "Double Press Direction Burst",
+  "enchancement.midnightconfig.inputlessDirectionBurst": "Inputless Direction Burst"
 }

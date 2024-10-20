@@ -29,7 +29,7 @@ public class DirectionMovementBurstComponent implements AutoSyncedComponent, Com
 
 	private boolean hasDirectionMovementBurst = false;
 
-	private boolean wasPressingStrafeKey = false;
+	private boolean wasPressingKey = false;
 	private int ticksLeftToPressActivationKey = 0;
 
 	public DirectionMovementBurstComponent(PlayerEntity obj) {
@@ -79,12 +79,12 @@ public class DirectionMovementBurstComponent implements AutoSyncedComponent, Com
 		tick();
 		if (hasDirectionMovementBurst && canUse() && obj == MinecraftClient.getInstance().player) {
 			GameOptions options = MinecraftClient.getInstance().options;
-			boolean pressingStrafeKey = EnchancementClient.STRAFE_KEYBINDING.isPressed();
+			boolean pressingKey = EnchancementClient.DIRECTION_BURST_KEYBINDING.isPressed();
 			if (ticksLeftToPressActivationKey > 0) {
 				ticksLeftToPressActivationKey--;
 			}
-			if (pressingStrafeKey && !wasPressingStrafeKey) {
-				if (!ModConfig.doublePressStrafe || ticksLeftToPressActivationKey > 0) {
+			if (pressingKey && !wasPressingKey) {
+				if (!ModConfig.doublePressDirectionBurst || ticksLeftToPressActivationKey > 0) {
 					ticksLeftToPressActivationKey = 0;
 					Vec3d inputVelocity = getVelocityFromInput(options);
 					if (inputVelocity != Vec3d.ZERO) {
@@ -97,7 +97,7 @@ public class DirectionMovementBurstComponent implements AutoSyncedComponent, Com
 					ticksLeftToPressActivationKey = 7;
 				}
 			}
-			wasPressingStrafeKey = pressingStrafeKey;
+			wasPressingKey = pressingKey;
 		}
 	}
 
@@ -160,7 +160,7 @@ public class DirectionMovementBurstComponent implements AutoSyncedComponent, Com
 		if (options.rightKey.isPressed()) {
 			velocity = new Vec3d(0, 0, strength);
 		}
-		if (ModConfig.directionlessStrafe && !obj.isOnGround() && velocity.equals(Vec3d.ZERO)) {
+		if (ModConfig.inputlessDirectionBurst && !obj.isOnGround() && velocity.equals(Vec3d.ZERO)) {
 			velocity = new Vec3d(strength, 0, 0);
 		}
 		return velocity;
