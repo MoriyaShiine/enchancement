@@ -4,8 +4,8 @@
 package moriyashiine.enchancement.common.event;
 
 import moriyashiine.enchancement.common.component.entity.AirJumpComponent;
-import moriyashiine.enchancement.common.component.entity.DirectionMovementBurstComponent;
-import moriyashiine.enchancement.common.component.entity.RotationMovementBurstComponent;
+import moriyashiine.enchancement.common.component.entity.DirectionBurstComponent;
+import moriyashiine.enchancement.common.component.entity.RotationBurstComponent;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
@@ -25,18 +25,18 @@ public class EquipmentResetEvent implements ServerEntityEvents.EquipmentChange {
 					airJumpComponent.sync();
 				}
 			}
-			if (EnchantmentHelper.hasAnyEnchantmentsWith(currentStack, ModEnchantmentEffectComponentTypes.DIRECTION_MOVEMENT_BURST)) {
-				DirectionMovementBurstComponent directionMovementBurstComponent = ModEntityComponents.DIRECTION_MOVEMENT_BURST.getNullable(livingEntity);
-				if (directionMovementBurstComponent != null) {
-					directionMovementBurstComponent.reset();
-					directionMovementBurstComponent.sync();
+			if (EnchantmentHelper.hasAnyEnchantmentsWith(currentStack, ModEnchantmentEffectComponentTypes.DIRECTION_BURST)) {
+				DirectionBurstComponent directionBurstComponent = ModEntityComponents.DIRECTION_BURST.getNullable(livingEntity);
+				if (directionBurstComponent != null) {
+					directionBurstComponent.reset();
+					directionBurstComponent.sync();
 				}
 			}
-			if (EnchantmentHelper.hasAnyEnchantmentsWith(currentStack, ModEnchantmentEffectComponentTypes.ROTATION_MOVEMENT_BURST)) {
-				RotationMovementBurstComponent rotationMovementBurstComponent = ModEntityComponents.ROTATION_MOVEMENT_BURST.getNullable(livingEntity);
-				if (rotationMovementBurstComponent != null) {
-					rotationMovementBurstComponent.reset();
-					rotationMovementBurstComponent.sync();
+			if (EnchantmentHelper.hasAnyEnchantmentsWith(currentStack, ModEnchantmentEffectComponentTypes.ROTATION_BURST)) {
+				RotationBurstComponent rotationBurstComponent = ModEntityComponents.ROTATION_BURST.getNullable(livingEntity);
+				if (rotationBurstComponent != null) {
+					rotationBurstComponent.reset();
+					rotationBurstComponent.sync();
 				}
 			}
 		}

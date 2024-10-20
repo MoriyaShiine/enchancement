@@ -4,7 +4,7 @@
 	"translate": "enchantment.enchancement.dash"
   },
   "effects": {
-	"enchancement:rotation_movement_burst": {
+	"enchancement:rotation_burst": {
 	  "cooldown": {
 		"type": "minecraft:add",
 		"value": {

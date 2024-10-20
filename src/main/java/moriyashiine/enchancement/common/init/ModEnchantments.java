@@ -221,8 +221,8 @@ public class ModEnchantments {
 				2,
 				AttributeModifierSlot.CHEST,
 				builder -> builder.addNonListEffect(
-						ModEnchantmentEffectComponentTypes.DIRECTION_MOVEMENT_BURST,
-						new DirectionMovementBurstEffect(
+						ModEnchantmentEffectComponentTypes.DIRECTION_BURST,
+						new DirectionBurstEffect(
 								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(1.25F, -0.5F)),
 								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1.1F)),
 								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0.8F))))));
@@ -272,8 +272,8 @@ public class ModEnchantments {
 				2,
 				AttributeModifierSlot.LEGS,
 				builder -> builder.addNonListEffect(
-						ModEnchantmentEffectComponentTypes.ROTATION_MOVEMENT_BURST,
-						new RotationMovementBurstEffect(
+						ModEnchantmentEffectComponentTypes.ROTATION_BURST,
+						new RotationBurstEffect(
 								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(1, -0.25F)),
 								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.85F, 0.2F)),
 								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(3)),

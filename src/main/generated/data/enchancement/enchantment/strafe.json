@@ -4,7 +4,7 @@
 	"translate": "enchantment.enchancement.strafe"
   },
   "effects": {
-	"enchancement:direction_movement_burst": {
+	"enchancement:direction_burst": {
 	  "air_strength": {
 		"type": "minecraft:add",
 		"value": 0.8

@@ -28,11 +28,11 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<BuryEntityComponent> BURY_ENTITY = ComponentRegistry.getOrCreate(Enchancement.id("bury_entity"), BuryEntityComponent.class);
 	public static final ComponentKey<ChargeJumpComponent> CHARGE_JUMP = ComponentRegistry.getOrCreate(Enchancement.id("charge_jump"), ChargeJumpComponent.class);
 	public static final ComponentKey<ConditionalAttributesComponent> CONDITIONAL_ATTRIBUTES = ComponentRegistry.getOrCreate(Enchancement.id("conditional_attributes"), ConditionalAttributesComponent.class);
-	public static final ComponentKey<DirectionMovementBurstComponent> DIRECTION_MOVEMENT_BURST = ComponentRegistry.getOrCreate(Enchancement.id("direction_movement_burst"), DirectionMovementBurstComponent.class);
+	public static final ComponentKey<DirectionBurstComponent> DIRECTION_BURST = ComponentRegistry.getOrCreate(Enchancement.id("direction_burst"), DirectionBurstComponent.class);
 	public static final ComponentKey<EruptionComponent> ERUPTION = ComponentRegistry.getOrCreate(Enchancement.id("eruption"), EruptionComponent.class);
 	public static final ComponentKey<ExtendedWaterTimeComponent> EXTENDED_WATER_TIME = ComponentRegistry.getOrCreate(Enchancement.id("extended_water_time"), ExtendedWaterTimeComponent.class);
 	public static final ComponentKey<LightningDashComponent> LIGHTNING_DASH = ComponentRegistry.getOrCreate(Enchancement.id("lightning_dash"), LightningDashComponent.class);
-	public static final ComponentKey<RotationMovementBurstComponent> ROTATION_MOVEMENT_BURST = ComponentRegistry.getOrCreate(Enchancement.id("rotation_movement_burst"), RotationMovementBurstComponent.class);
+	public static final ComponentKey<RotationBurstComponent> ROTATION_BURST = ComponentRegistry.getOrCreate(Enchancement.id("rotation_burst"), RotationBurstComponent.class);
 	public static final ComponentKey<SlamComponent> SLAM = ComponentRegistry.getOrCreate(Enchancement.id("slam"), SlamComponent.class);
 	public static final ComponentKey<SlideComponent> SLIDE = ComponentRegistry.getOrCreate(Enchancement.id("slide"), SlideComponent.class);
 	public static final ComponentKey<WallJumpComponent> WALL_JUMP = ComponentRegistry.getOrCreate(Enchancement.id("wall_jump"), WallJumpComponent.class);
@@ -62,11 +62,11 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerFor(LivingEntity.class, BURY_ENTITY, BuryEntityComponent::new);
 		registry.registerForPlayers(CHARGE_JUMP, ChargeJumpComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(LivingEntity.class, CONDITIONAL_ATTRIBUTES, ConditionalAttributesComponent::new);
-		registry.registerForPlayers(DIRECTION_MOVEMENT_BURST, DirectionMovementBurstComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+		registry.registerForPlayers(DIRECTION_BURST, DirectionBurstComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(LivingEntity.class, ERUPTION, EruptionComponent::new);
 		registry.registerFor(LivingEntity.class, EXTENDED_WATER_TIME, ExtendedWaterTimeComponent::new);
 		registry.registerFor(LivingEntity.class, LIGHTNING_DASH, LightningDashComponent::new);
-		registry.registerForPlayers(ROTATION_MOVEMENT_BURST, RotationMovementBurstComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+		registry.registerForPlayers(ROTATION_BURST, RotationBurstComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(SLAM, SlamComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(SLIDE, SlideComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(WALL_JUMP, WallJumpComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);

@@ -30,7 +30,7 @@ public class ModEnchantmentEffectComponentTypes {
 	public static final ComponentType<List<EnchantmentEffectEntry<EnchantmentValueEffect>>> CHAIN_LIGHTNING = register("chain_lightning", builder -> builder.codec(EnchantmentEffectEntry.createCodec(EnchantmentValueEffect.CODEC, LootContextTypes.ENCHANTED_ITEM).listOf()));
 	public static final ComponentType<ChargeJumpEffect> CHARGE_JUMP = register("charge_jump", builder -> builder.codec(ChargeJumpEffect.CODEC));
 	public static final ComponentType<List<EnchantmentEffectEntry<DelayedLaunchEffect>>> DELAYED_LAUNCH = register("delayed_launch", builder -> builder.codec(EnchantmentEffectEntry.createCodec(DelayedLaunchEffect.CODEC, LootContextTypes.ENCHANTED_ITEM).listOf()));
-	public static final ComponentType<DirectionMovementBurstEffect> DIRECTION_MOVEMENT_BURST = register("direction_movement_burst", builder -> builder.codec(DirectionMovementBurstEffect.CODEC));
+	public static final ComponentType<DirectionBurstEffect> DIRECTION_BURST = register("direction_burst", builder -> builder.codec(DirectionBurstEffect.CODEC));
 	public static final ComponentType<List<EnchantmentEffectEntry<DisarmingFishingBobberEffect>>> DISARMING_FISHING_BOBBER = register("disarming_fishing_bobber", builder -> builder.codec(EnchantmentEffectEntry.createCodec(DisarmingFishingBobberEffect.CODEC, LootContextTypes.ENCHANTED_ITEM).listOf()));
 	public static final ComponentType<EnchantmentValueEffect> ENTITY_XRAY = register("entity_xray", builder -> builder.codec(EnchantmentValueEffect.CODEC));
 	public static final ComponentType<EruptionEffect> ERUPTION = register("eruption", builder -> builder.codec(EruptionEffect.CODEC));
@@ -54,7 +54,7 @@ public class ModEnchantmentEffectComponentTypes {
 	public static final ComponentType<Unit> PREVENT_SWIMMING = register("prevent_swimming", builder -> builder.codec(Unit.CODEC));
 	public static final ComponentType<RageEffect> RAGE = register("rage", builder -> builder.codec(RageEffect.CODEC));
 	public static final ComponentType<Unit> RAPID_CROSSBOW_FIRE = register("rapid_crossbow_fire", builder -> builder.codec(Unit.CODEC));
-	public static final ComponentType<RotationMovementBurstEffect> ROTATION_MOVEMENT_BURST = register("rotation_movement_burst", builder -> builder.codec(RotationMovementBurstEffect.CODEC));
+	public static final ComponentType<RotationBurstEffect> ROTATION_BURST = register("rotation_burst", builder -> builder.codec(RotationBurstEffect.CODEC));
 	public static final ComponentType<List<EnchantmentEffectEntry<ScatterShotEffect>>> SCATTER_SHOT = register("scatter_shot", builder -> builder.codec(EnchantmentEffectEntry.createCodec(ScatterShotEffect.CODEC, LootContextTypes.ENCHANTED_ITEM).listOf()));
 	public static final ComponentType<EnchantmentValueEffect> SLAM = register("slam", builder -> builder.codec(EnchantmentValueEffect.CODEC));
 	public static final ComponentType<EnchantmentValueEffect> SLIDE = register("slide", builder -> builder.codec(EnchantmentValueEffect.CODEC));

@@ -13,21 +13,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
-public record RotationMovementBurstEffect(EnchantmentValueEffect cooldown, EnchantmentValueEffect strength,
-										  EnchantmentValueEffect wavedashTicks,
-										  EnchantmentValueEffect wavedashStrength) {
-	public static final Codec<RotationMovementBurstEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-					EnchantmentValueEffect.CODEC.fieldOf("cooldown").forGetter(RotationMovementBurstEffect::cooldown),
-					EnchantmentValueEffect.CODEC.fieldOf("strength").forGetter(RotationMovementBurstEffect::strength),
-					EnchantmentValueEffect.CODEC.fieldOf("wavedash_ticks").forGetter(RotationMovementBurstEffect::wavedashTicks),
-					EnchantmentValueEffect.CODEC.fieldOf("wavedash_strength").forGetter(RotationMovementBurstEffect::wavedashStrength))
-			.apply(instance, RotationMovementBurstEffect::new));
+public record RotationBurstEffect(EnchantmentValueEffect cooldown, EnchantmentValueEffect strength,
+								  EnchantmentValueEffect wavedashTicks,
+								  EnchantmentValueEffect wavedashStrength) {
+	public static final Codec<RotationBurstEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+					EnchantmentValueEffect.CODEC.fieldOf("cooldown").forGetter(RotationBurstEffect::cooldown),
+					EnchantmentValueEffect.CODEC.fieldOf("strength").forGetter(RotationBurstEffect::strength),
+					EnchantmentValueEffect.CODEC.fieldOf("wavedash_ticks").forGetter(RotationBurstEffect::wavedashTicks),
+					EnchantmentValueEffect.CODEC.fieldOf("wavedash_strength").forGetter(RotationBurstEffect::wavedashStrength))
+			.apply(instance, RotationBurstEffect::new));
 
 	public static int getCooldown(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
 		for (ItemStack stack : entity.getArmorItems()) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
-				RotationMovementBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.ROTATION_MOVEMENT_BURST);
+				RotationBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.ROTATION_BURST);
 				if (effect != null) {
 					mutableFloat.setValue(effect.cooldown().apply(level, entity.getRandom(), mutableFloat.floatValue()));
 				}
@@ -40,7 +40,7 @@ public record RotationMovementBurstEffect(EnchantmentValueEffect cooldown, Encha
 		MutableFloat mutableFloat = new MutableFloat(0);
 		for (ItemStack stack : entity.getArmorItems()) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
-				RotationMovementBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.ROTATION_MOVEMENT_BURST);
+				RotationBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.ROTATION_BURST);
 				if (effect != null) {
 					mutableFloat.setValue(effect.strength().apply(level, entity.getRandom(), mutableFloat.floatValue()));
 				}
@@ -53,7 +53,7 @@ public record RotationMovementBurstEffect(EnchantmentValueEffect cooldown, Encha
 		MutableFloat mutableFloat = new MutableFloat(0);
 		for (ItemStack stack : entity.getArmorItems()) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
-				RotationMovementBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.ROTATION_MOVEMENT_BURST);
+				RotationBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.ROTATION_BURST);
 				if (effect != null) {
 					mutableFloat.setValue(effect.wavedashTicks().apply(level, entity.getRandom(), mutableFloat.floatValue()));
 				}
@@ -66,7 +66,7 @@ public record RotationMovementBurstEffect(EnchantmentValueEffect cooldown, Encha
 		MutableFloat mutableFloat = new MutableFloat(0);
 		for (ItemStack stack : entity.getArmorItems()) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
-				RotationMovementBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.ROTATION_MOVEMENT_BURST);
+				RotationBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.ROTATION_BURST);
 				if (effect != null) {
 					mutableFloat.setValue(effect.wavedashStrength().apply(level, entity.getRandom(), mutableFloat.floatValue()));
 				}

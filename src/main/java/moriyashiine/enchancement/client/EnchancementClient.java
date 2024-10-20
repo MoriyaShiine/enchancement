@@ -72,7 +72,7 @@ public class EnchancementClient implements ClientModInitializer {
 		HandledScreens.register(ModScreenHandlerTypes.ENCHANTING_TABLE, EnchantingTableScreen::new);
 		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(FrozenReloadListener.INSTANCE);
 		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(Enchancement.id("alternate_air_jump"), modContainer, ResourcePackActivationType.NORMAL));
-		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(Enchancement.id("alternate_rotation_movement_burst"), modContainer, ResourcePackActivationType.NORMAL));
+		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(Enchancement.id("alternate_burst"), modContainer, ResourcePackActivationType.NORMAL));
 		initEvents();
 		initPayloads();
 		betterCombatLoaded = FabricLoader.getInstance().isModLoaded("bettercombat");
@@ -95,9 +95,9 @@ public class EnchancementClient implements ClientModInitializer {
 		ClientTickEvents.END_WORLD_TICK.register(new BounceEvent.Tick());
 		HudRenderCallback.EVENT.register(new BrimstoneRenderEvent());
 		HudRenderCallback.EVENT.register(new ChargeJumpRenderEvent());
-		HudRenderCallback.EVENT.register(new DirectionMovementBurstRenderEvent());
+		HudRenderCallback.EVENT.register(new DirectionBurstRenderEvent());
 		ItemTooltipCallback.EVENT.register(new RageRenderEvent());
-		HudRenderCallback.EVENT.register(new RotationMovementBurstRenderEvent());
+		HudRenderCallback.EVENT.register(new RotationBurstRenderEvent());
 	}
 
 	private void initPayloads() {

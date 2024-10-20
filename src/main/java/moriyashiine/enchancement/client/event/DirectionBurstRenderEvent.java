@@ -12,19 +12,19 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.util.Identifier;
 
-public class DirectionMovementBurstRenderEvent implements HudRenderCallback {
-	private static final Identifier BACKGROUND_TEXTURE = Enchancement.id("hud/rotation_movement_burst_background");
-	private static final Identifier PROGRESS_TEXTURE = Enchancement.id("hud/rotation_movement_burst_progress");
+public class DirectionBurstRenderEvent implements HudRenderCallback {
+	private static final Identifier BACKGROUND_TEXTURE = Enchancement.id("hud/burst_background");
+	private static final Identifier PROGRESS_TEXTURE = Enchancement.id("hud/burst_progress");
 
 	@Override
 	public void onHudRender(DrawContext drawContext, RenderTickCounter tickCounter) {
-		ModEntityComponents.DIRECTION_MOVEMENT_BURST.maybeGet(MinecraftClient.getInstance().cameraEntity).ifPresent(directionMovementBurstComponent -> {
-			if (directionMovementBurstComponent.hasDirectionMovementBurst() && directionMovementBurstComponent.getCooldown() > 0) {
+		ModEntityComponents.DIRECTION_BURST.maybeGet(MinecraftClient.getInstance().cameraEntity).ifPresent(directionBurstComponent -> {
+			if (directionBurstComponent.hasDirectionBurst() && directionBurstComponent.getCooldown() > 0) {
 				RenderSystem.enableBlend();
 				int x = drawContext.getScaledWindowWidth() / 2 - 5, y = drawContext.getScaledWindowHeight() / 2 - 14;
 				drawContext.drawGuiTexture(BACKGROUND_TEXTURE, x, y, 10, 4);
-				if (directionMovementBurstComponent.getCooldown() < directionMovementBurstComponent.getLastCooldown()) {
-					drawContext.drawGuiTexture(PROGRESS_TEXTURE, 10, 4, 0, 0, x, y, (int) (11 - (directionMovementBurstComponent.getCooldown() / (float) directionMovementBurstComponent.getLastCooldown()) * 10), 4);
+				if (directionBurstComponent.getCooldown() < directionBurstComponent.getLastCooldown()) {
+					drawContext.drawGuiTexture(PROGRESS_TEXTURE, 10, 4, 0, 0, x, y, (int) (11 - (directionBurstComponent.getCooldown() / (float) directionBurstComponent.getLastCooldown()) * 10), 4);
 				}
 				RenderSystem.disableBlend();
 			}

@@ -6,10 +6,10 @@ package moriyashiine.enchancement.common.component.entity;
 import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.client.payload.AddMovementBurstParticlesPayload;
 import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.enchantment.effect.DirectionMovementBurstEffect;
+import moriyashiine.enchancement.common.enchantment.effect.DirectionBurstEffect;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.payload.DirectionMovementBurstPayload;
+import moriyashiine.enchancement.common.payload.DirectionBurstPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -22,17 +22,17 @@ import net.minecraft.util.math.Vec3d;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
-public class DirectionMovementBurstComponent implements AutoSyncedComponent, CommonTickingComponent {
+public class DirectionBurstComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private final PlayerEntity obj;
 	private boolean shouldRefresh = false;
 	private int cooldown = 0, lastCooldown = 0, gravityTicks = 0;
 
-	private boolean hasDirectionMovementBurst = false;
+	private boolean hasDirectionBurst = false;
 
 	private boolean wasPressingKey = false;
 	private int ticksLeftToPressActivationKey = 0;
 
-	public DirectionMovementBurstComponent(PlayerEntity obj) {
+	public DirectionBurstComponent(PlayerEntity obj) {
 		this.obj = obj;
 	}
 
@@ -54,9 +54,9 @@ public class DirectionMovementBurstComponent implements AutoSyncedComponent, Com
 
 	@Override
 	public void tick() {
-		int entityCooldown = DirectionMovementBurstEffect.getCooldown(obj);
-		hasDirectionMovementBurst = entityCooldown > 0;
-		if (hasDirectionMovementBurst) {
+		int entityCooldown = DirectionBurstEffect.getCooldown(obj);
+		hasDirectionBurst = entityCooldown > 0;
+		if (hasDirectionBurst) {
 			if (!shouldRefresh) {
 				if (obj.isOnGround()) {
 					shouldRefresh = true;
@@ -77,7 +77,7 @@ public class DirectionMovementBurstComponent implements AutoSyncedComponent, Com
 	@Override
 	public void clientTick() {
 		tick();
-		if (hasDirectionMovementBurst && canUse() && obj == MinecraftClient.getInstance().player) {
+		if (hasDirectionBurst && canUse() && obj == MinecraftClient.getInstance().player) {
 			GameOptions options = MinecraftClient.getInstance().options;
 			boolean pressingKey = EnchancementClient.DIRECTION_BURST_KEYBINDING.isPressed();
 			if (ticksLeftToPressActivationKey > 0) {
@@ -91,7 +91,7 @@ public class DirectionMovementBurstComponent implements AutoSyncedComponent, Com
 						Vec3d velocity = inputVelocity.rotateY((float) Math.toRadians(-(obj.getHeadYaw() + 90)));
 						use(velocity.getX(), velocity.getZ());
 						AddMovementBurstParticlesPayload.addParticles(obj);
-						DirectionMovementBurstPayload.send(velocity);
+						DirectionBurstPayload.send(velocity);
 					}
 				} else {
 					ticksLeftToPressActivationKey = 7;
@@ -102,7 +102,7 @@ public class DirectionMovementBurstComponent implements AutoSyncedComponent, Com
 	}
 
 	public void sync() {
-		ModEntityComponents.DIRECTION_MOVEMENT_BURST.sync(obj);
+		ModEntityComponents.DIRECTION_BURST.sync(obj);
 	}
 
 	public int getCooldown() {
@@ -118,8 +118,8 @@ public class DirectionMovementBurstComponent implements AutoSyncedComponent, Com
 		return lastCooldown;
 	}
 
-	public boolean hasDirectionMovementBurst() {
-		return hasDirectionMovementBurst;
+	public boolean hasDirectionBurst() {
+		return hasDirectionBurst;
 	}
 
 	public boolean canUse() {
@@ -140,13 +140,13 @@ public class DirectionMovementBurstComponent implements AutoSyncedComponent, Com
 	}
 
 	public void reset() {
-		setCooldown(DirectionMovementBurstEffect.getCooldown(obj));
+		setCooldown(DirectionBurstEffect.getCooldown(obj));
 		shouldRefresh = false;
 	}
 
 	@Environment(EnvType.CLIENT)
 	private Vec3d getVelocityFromInput(GameOptions options) {
-		float strength = obj.isOnGround() ? DirectionMovementBurstEffect.getGroundStrength(obj) : DirectionMovementBurstEffect.getAirStrength(obj);
+		float strength = obj.isOnGround() ? DirectionBurstEffect.getGroundStrength(obj) : DirectionBurstEffect.getAirStrength(obj);
 		Vec3d velocity = Vec3d.ZERO;
 		if (options.forwardKey.isPressed()) {
 			velocity = new Vec3d(strength, 0, 0);

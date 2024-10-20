@@ -5,10 +5,10 @@ package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.client.payload.AddMovementBurstParticlesPayload;
-import moriyashiine.enchancement.common.enchantment.effect.RotationMovementBurstEffect;
+import moriyashiine.enchancement.common.enchantment.effect.RotationBurstEffect;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.payload.RotationMovementBurstPayload;
+import moriyashiine.enchancement.common.payload.RotationBurstPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,15 +18,15 @@ import net.minecraft.util.math.Vec3d;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
-public class RotationMovementBurstComponent implements AutoSyncedComponent, CommonTickingComponent {
+public class RotationBurstComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private final PlayerEntity obj;
 	private boolean shouldRefresh = false;
 	private int cooldown = 0, lastCooldown = 0, wavedashTicks = 0;
 
-	private boolean hasRotationMovementBurst = false, wasPressingKey = false;
+	private boolean hasRotationBurst = false, wasPressingKey = false;
 	private int ticksPressingJump = 0;
 
-	public RotationMovementBurstComponent(PlayerEntity obj) {
+	public RotationBurstComponent(PlayerEntity obj) {
 		this.obj = obj;
 	}
 
@@ -48,9 +48,9 @@ public class RotationMovementBurstComponent implements AutoSyncedComponent, Comm
 
 	@Override
 	public void tick() {
-		int entityCooldown = RotationMovementBurstEffect.getCooldown(obj);
-		hasRotationMovementBurst = entityCooldown > 0;
-		if (hasRotationMovementBurst) {
+		int entityCooldown = RotationBurstEffect.getCooldown(obj);
+		hasRotationBurst = entityCooldown > 0;
+		if (hasRotationBurst) {
 			if (!shouldRefresh) {
 				if (obj.isOnGround()) {
 					shouldRefresh = true;
@@ -71,7 +71,7 @@ public class RotationMovementBurstComponent implements AutoSyncedComponent, Comm
 	@Override
 	public void clientTick() {
 		tick();
-		if (hasRotationMovementBurst && !obj.isSpectator() && obj == MinecraftClient.getInstance().player) {
+		if (hasRotationBurst && !obj.isSpectator() && obj == MinecraftClient.getInstance().player) {
 			if (obj.jumping) {
 				ticksPressingJump = Math.min(2, ++ticksPressingJump);
 			} else {
@@ -81,7 +81,7 @@ public class RotationMovementBurstComponent implements AutoSyncedComponent, Comm
 			if (pressingKey && !wasPressingKey && canUse()) {
 				use();
 				AddMovementBurstParticlesPayload.addParticles(obj);
-				RotationMovementBurstPayload.send();
+				RotationBurstPayload.send();
 			}
 			wasPressingKey = pressingKey;
 		} else {
@@ -91,7 +91,7 @@ public class RotationMovementBurstComponent implements AutoSyncedComponent, Comm
 	}
 
 	public void sync() {
-		ModEntityComponents.ROTATION_MOVEMENT_BURST.sync(obj);
+		ModEntityComponents.ROTATION_BURST.sync(obj);
 	}
 
 	public int getCooldown() {
@@ -107,8 +107,8 @@ public class RotationMovementBurstComponent implements AutoSyncedComponent, Comm
 		return lastCooldown;
 	}
 
-	public boolean hasRotationMovementBurst() {
-		return hasRotationMovementBurst;
+	public boolean hasRotationBurst() {
+		return hasRotationBurst;
 	}
 
 	public boolean shouldWavedash() {
@@ -121,15 +121,15 @@ public class RotationMovementBurstComponent implements AutoSyncedComponent, Comm
 
 	public void use() {
 		reset();
-		wavedashTicks = RotationMovementBurstEffect.getWavedashTicks(obj);
+		wavedashTicks = RotationBurstEffect.getWavedashTicks(obj);
 		obj.playSound(ModSoundEvents.ENTITY_GENERIC_DASH, 1, 1);
-		Vec3d velocity = obj.getRotationVector().normalize().multiply(RotationMovementBurstEffect.getStrength(obj));
+		Vec3d velocity = obj.getRotationVector().normalize().multiply(RotationBurstEffect.getStrength(obj));
 		obj.setVelocity(velocity.getX(), velocity.getY(), velocity.getZ());
 		obj.fallDistance = 0;
 	}
 
 	public void reset() {
-		setCooldown(RotationMovementBurstEffect.getCooldown(obj));
+		setCooldown(RotationBurstEffect.getCooldown(obj));
 		shouldRefresh = false;
 	}
 }
