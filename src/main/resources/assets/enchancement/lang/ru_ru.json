@@ -150,10 +150,10 @@
   "death.attack.enchancement.life_drain.player": "%1$s погиб из-за потери жизненных сил в бою с %2$s",
   "death.attack.freeze.item": "%1$s замерз до смерти от %2$s использующего %3$s",
   "key.categories.enchancement": "Enchancement",
-  "key.enchancement.dash": "Рывок",
+  "key.enchancement.directionBurst": "Рывок в направлении",
+  "key.enchancement.rotationBurst": "Рывок с поворотом",
   "key.enchancement.slam": "Удар",
   "key.enchancement.slide": "Скольжение",
-  "key.enchancement.strafe": "Боковой Рывок",
   "tooltip.enchancement.experience_level_cost": "Стоимость опыта: %d уровней",
   "tooltip.enchancement.material_cost": "Стоимость материала: %d %s",
   "tooltip.enchancement.cannot_auto_consume": "Нельзя автоматически потреблять",
@@ -193,6 +193,6 @@
   "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.VANILLA_AND_ENCHANCEMENT": "Ванильные и Enchancement",
   "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.ALL": "Все",
   "enchancement.midnightconfig.invertedBounce": "Инвертированный отскок",
-  "enchancement.midnightconfig.directionlessStrafe": "Безнаправленный Боковый Рывок",
-  "enchancement.midnightconfig.doublePressStrafe": "Боковой Рывок двойным нажатием"
+  "enchancement.midnightconfig.doublePressDirectionBurst": "Рывок в направлении двойным нажатием",
+  "enchancement.midnightconfig.inputlessDirectionBurst": "Рывок в направлении без нажатия"
 }
