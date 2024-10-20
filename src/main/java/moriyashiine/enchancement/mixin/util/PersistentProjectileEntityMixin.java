@@ -31,7 +31,7 @@ public abstract class PersistentProjectileEntityMixin extends ProjectileEntity {
 	}
 
 	@Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
-	private void enchancement$fixModProjectileSerializationaRead(NbtCompound nbt, CallbackInfo ci) {
+	private void enchancement$fixModProjectileSerializationRead(NbtCompound nbt, CallbackInfo ci) {
 		if (isDisallowed()) {
 			stack = getDefaultItemStack();
 		}
