@@ -1,7 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-package moriyashiine.enchancement.mixin.config.disabledisallowedenchantments;
+package moriyashiine.enchancement.mixin.config.disabledisallowedenchantments.ingame;
 
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.util.EnchancementUtil;

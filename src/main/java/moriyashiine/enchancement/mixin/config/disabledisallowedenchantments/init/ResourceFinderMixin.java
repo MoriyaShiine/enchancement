@@ -1,7 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-package moriyashiine.enchancement.mixin.config.disabledisallowedenchantments;
+package moriyashiine.enchancement.mixin.config.disabledisallowedenchantments.init;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import moriyashiine.enchancement.common.init.ModEnchantments;
