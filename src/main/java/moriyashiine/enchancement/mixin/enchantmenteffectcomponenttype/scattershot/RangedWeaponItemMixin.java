@@ -38,7 +38,7 @@ public abstract class RangedWeaponItemMixin {
 
 	@ModifyVariable(method = "createArrowEntity", at = @At("HEAD"), argsOnly = true)
 	private boolean enchancement$scatterShot(boolean value, World world, LivingEntity shooter, ItemStack weaponStack, ItemStack projectileStack) {
-		if (isScatter(shooter, weaponStack, projectileStack)) {
+		if (shouldApply(shooter, weaponStack, projectileStack)) {
 			return false;
 		}
 		return value;
@@ -68,7 +68,7 @@ public abstract class RangedWeaponItemMixin {
 
 	@Inject(method = "shootAll", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;damage(ILnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/EquipmentSlot;)V"))
 	private void enchancement$scatterShot(ServerWorld world, LivingEntity shooter, Hand hand, ItemStack stack, List<ItemStack> projectiles, float speed, float divergence, boolean critical, @Nullable LivingEntity target, CallbackInfo ci, @Local(ordinal = 1) ItemStack projectileStack) {
-		if (!ScatterShotEffect.hasScatterShot && isScatter(shooter, stack, projectileStack)) {
+		if (!ScatterShotEffect.hasScatterShot && shouldApply(shooter, stack, projectileStack)) {
 			ScatterShotEffect.hasScatterShot = true;
 			for (int i = 0; i < shooter.getRandom().nextBetween(ScatterShotEffect.getMinimum(shooter, stack), ScatterShotEffect.getMaximum(shooter, stack)) - 1; i++) {
 				shootAll(world, shooter, hand, stack, projectiles, speed, divergence, critical, target);
@@ -81,7 +81,7 @@ public abstract class RangedWeaponItemMixin {
 	}
 
 	@Unique
-	private static boolean isScatter(LivingEntity shooter, ItemStack weaponStack, ItemStack projectileStack) {
+	private static boolean shouldApply(LivingEntity shooter, ItemStack weaponStack, ItemStack projectileStack) {
 		Set<Item> allowedProjectiles = ScatterShotEffect.getAllowedProjectiles(shooter, weaponStack);
 		return !(shooter instanceof PlayerEntity) || allowedProjectiles.contains(projectileStack.getItem());
 	}

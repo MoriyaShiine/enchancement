@@ -35,8 +35,8 @@ public class TridentEntityRendererMixin {
 			ItemStack itemStack = entity.asItemStack();
 			random.setSeed(ItemEntityRenderer.getSeed(itemStack));
 			BakedModel model = client.getItemRenderer().getModel(itemStack, entity.getWorld(), null, entity.getId());
-			matrices.translate(0.0F, MathHelper.sin((entity.age + tickDelta) / 10.0F) * 0.1F + 0.1F + 0.25F * model.getTransformation().getTransformation(ModelTransformationMode.GROUND).scale.y(), 0.0F);
-			matrices.multiply(RotationAxis.POSITIVE_Y.rotation((entity.age + tickDelta) / 20F));
+			matrices.translate(0, MathHelper.sin((entity.age + tickDelta) / 10) * 0.1F + 0.1F + 0.25F * model.getTransformation().getTransformation(ModelTransformationMode.GROUND).scale.y(), 0);
+			matrices.multiply(RotationAxis.POSITIVE_Y.rotation((entity.age + tickDelta) / 20));
 			ItemEntityRenderer.renderStack(client.getItemRenderer(), matrices, vertexConsumers, light, itemStack, model, model.hasDepth(), random);
 			matrices.pop();
 			ci.cancel();

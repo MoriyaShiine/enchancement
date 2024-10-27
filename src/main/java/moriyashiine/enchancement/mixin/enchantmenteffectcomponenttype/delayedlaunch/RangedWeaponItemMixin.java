@@ -22,7 +22,7 @@ import java.util.List;
 @Mixin(RangedWeaponItem.class)
 public class RangedWeaponItemMixin {
 	@Inject(method = "shootAll", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/RangedWeaponItem;shoot(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/projectile/ProjectileEntity;IFFFLnet/minecraft/entity/LivingEntity;)V"))
-	private void enchancement$teleportOnHit(ServerWorld world, LivingEntity shooter, Hand hand, ItemStack stack, List<ItemStack> projectiles, float speed, float divergence, boolean critical, @Nullable LivingEntity target, CallbackInfo ci, @Local ProjectileEntity projectileEntity) {
+	private void enchancement$delayedLaunch(ServerWorld world, LivingEntity shooter, Hand hand, ItemStack stack, List<ItemStack> projectiles, float speed, float divergence, boolean critical, @Nullable LivingEntity target, CallbackInfo ci, @Local ProjectileEntity projectileEntity) {
 		DelayedLaunchComponent.maybeSet(shooter, stack, projectileEntity, speed, divergence);
 	}
 }

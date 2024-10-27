@@ -24,6 +24,6 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@ModifyReturnValue(method = "hasStatusEffect", at = @At("RETURN"))
 	private boolean enchancement$nightVision(boolean original, RegistryEntry<StatusEffect> effect) {
-		return original || (effect.equals(StatusEffects.NIGHT_VISION) && EnchancementUtil.hasAnyEnchantmentsWith(this, ModEnchantmentEffectComponentTypes.NIGHT_VISION));
+		return original || (effect.equals(StatusEffects.NIGHT_VISION) && EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.NIGHT_VISION, (LivingEntity) (Object) this, 0) > 0);
 	}
 }

@@ -42,6 +42,7 @@ public abstract class SimpleRegistryMixin<T> {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@ModifyReturnValue(method = "getRawId", at = @At("RETURN"))
 	private int enchancement$disableDisallowedEnchantments(int original) {
 		if (original == -1 && key.equals(RegistryKeys.ENCHANTMENT)) {

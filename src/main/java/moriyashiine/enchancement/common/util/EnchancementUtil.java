@@ -50,7 +50,7 @@ import java.util.List;
 
 public class EnchancementUtil {
 	public static RegistryEntryOwner<?> ENCHANTMENT_REGISTRY_OWNER = null;
-	public static List<RegistryEntry.Reference<Enchantment>> ENCHANTMENTS = new ArrayList<>();
+	public static final List<RegistryEntry.Reference<Enchantment>> ENCHANTMENTS = new ArrayList<>();
 
 	public static final Object2IntMap<Enchantment> ORIGINAL_MAX_LEVELS = new Object2IntOpenHashMap<>();
 

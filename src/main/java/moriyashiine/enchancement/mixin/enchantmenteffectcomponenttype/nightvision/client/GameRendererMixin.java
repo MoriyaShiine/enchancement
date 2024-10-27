@@ -30,14 +30,14 @@ public abstract class GameRendererMixin {
 		if (checkingStrength) {
 			return;
 		}
-		float original = 0;
-		if (entity.getActiveStatusEffects().containsKey(StatusEffects.NIGHT_VISION)) {
-			checkingStrength = true;
-			original = getNightVisionStrength(entity, tickDelta);
-			checkingStrength = false;
-		}
 		float strength = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.NIGHT_VISION, entity, 0);
 		if (strength > 0) {
+			float original = 0;
+			if (entity.getActiveStatusEffects().containsKey(StatusEffects.NIGHT_VISION)) {
+				checkingStrength = true;
+				original = getNightVisionStrength(entity, tickDelta);
+				checkingStrength = false;
+			}
 			cir.setReturnValue(Math.max(original, strength));
 		}
 	}
