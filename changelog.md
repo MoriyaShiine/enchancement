@@ -1,4 +1,14 @@
 ------------------------------------------------------
+Version 1.21-r12
+------------------------------------------------------
+- fix eruption effect fire applying for significantly longer than intended
+- fix `enchancement:always_selectable` enchantment tag not functioning
+- add non-treasure overhaul mode config option
+- apply random status effect now requires less charge for positive effects
+- over-overkill is now more difficult to obtain
+- localize default enchanting material item tag
+
+------------------------------------------------------
 Version 1.21-r11
 ------------------------------------------------------
 - perception now works with shaders and true darkness
