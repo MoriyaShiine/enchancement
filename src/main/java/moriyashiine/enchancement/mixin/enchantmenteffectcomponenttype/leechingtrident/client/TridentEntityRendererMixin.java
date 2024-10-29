@@ -34,6 +34,6 @@ public abstract class TridentEntityRendererMixin extends EntityRenderer<TridentE
 
 	@Inject(method = "render(Lnet/minecraft/entity/projectile/TridentEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("HEAD"), cancellable = true)
 	private void enchancement$leechingTrident(TridentEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-		LeechingTridentEffect.renderLeechTrident(entity, matrices, vertexConsumers, model, getTexture(entity), light, () -> super.render(entity, yaw, tickDelta, matrices, vertexConsumers, light), ci);
+		LeechingTridentEffect.renderLeechTrident(entity, tickDelta, matrices, vertexConsumers, model, getTexture(entity), light, () -> super.render(entity, yaw, tickDelta, matrices, vertexConsumers, light), ci);
 	}
 }

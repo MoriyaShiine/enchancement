@@ -31,8 +31,7 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 	private LeechData leechData = null;
 	private LivingEntity stuckEntity = null;
 	private int stuckEntityId = -1;
-	private int ticksLeeching = 0;
-	private float renderTicks = 0, stabTicks = 0;
+	private int leechingTicks = 0, stabTicks = 0;
 
 	public LeechingTridentComponent(TridentEntity obj) {
 		this.obj = obj;
@@ -44,9 +43,8 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 			leechData = LeechData.deserialize(tag.getCompound("LeechData"));
 		}
 		stuckEntityId = tag.getInt("StuckEntityId");
-		ticksLeeching = tag.getInt("TicksLeeching");
-		renderTicks = tag.getFloat("RenderTicks");
-		stabTicks = tag.getFloat("StabTicks");
+		leechingTicks = tag.getInt("LeechingTicks");
+		stabTicks = tag.getInt("StabTicks");
 	}
 
 	@Override
@@ -55,9 +53,8 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 			tag.put("LeechData", leechData.serialize());
 		}
 		tag.putInt("StuckEntityId", stuckEntityId);
-		tag.putInt("TicksLeeching", ticksLeeching);
-		tag.putFloat("RenderTicks", renderTicks);
-		tag.putFloat("StabTicks", stabTicks);
+		tag.putInt("LeechingTicks", leechingTicks);
+		tag.putInt("StabTicks", stabTicks);
 	}
 
 	@Override
@@ -70,15 +67,15 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 		} else {
 			if (stuckEntity != null && stuckEntity.isAlive()) {
 				obj.setVelocity(Vec3d.ZERO);
-				if (++ticksLeeching > leechData.maxTicks()) {
+				if (++leechingTicks > leechData.maxTicks()) {
 					stuckEntityId = -2;
 				}
-				renderTicks += 1 / 20F;
-				stabTicks = Math.max(0, stabTicks - stabTicks / 20F);
+				if (stabTicks > 0) {
+					stabTicks--;
+				}
 			} else {
 				stuckEntityId = -2;
-				ticksLeeching = 0;
-				renderTicks = 0;
+				leechingTicks = 0;
 				stabTicks = 0;
 			}
 		}
@@ -90,10 +87,10 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 		if (stuckEntity != null && stuckEntity.isAlive()) {
 			if (obj.getOwner() instanceof LivingEntity living && living.isAlive()) {
 				obj.refreshPositionAfterTeleport(stuckEntity.getX(), stuckEntity.getEyeY(), stuckEntity.getZ());
-				if (ticksLeeching % 20 == 0 && stuckEntity.damage(ModDamageTypes.create(obj.getWorld(), ModDamageTypes.LIFE_DRAIN, obj, living), leechData.damage())) {
+				if (leechingTicks % 20 == 0 && stuckEntity.damage(ModDamageTypes.create(obj.getWorld(), ModDamageTypes.LIFE_DRAIN, obj, living), leechData.damage())) {
 					living.heal(leechData.healAmount());
 					stuckEntity.timeUntilRegen = 0;
-					stabTicks = 1;
+					stabTicks = 20;
 					sync();
 				}
 			} else {
@@ -106,8 +103,8 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 	@Override
 	public void clientTick() {
 		tick();
-		if (stuckEntity != null && stuckEntity.isAlive() && stabTicks == 19 / 20F && EnchancementClientUtil.shouldAddParticles(stuckEntity)) {
-			for (int i = 0; i < 6; i++) {
+		if (stuckEntity != null && stuckEntity.isAlive() && stabTicks == 19 && EnchancementClientUtil.shouldAddParticles(stuckEntity)) {
+			for (int i = 0; i < 5; i++) {
 				obj.getWorld().addParticle(ParticleTypes.DAMAGE_INDICATOR, stuckEntity.getParticleX(0.5), stuckEntity.getBodyY(0.5), stuckEntity.getParticleZ(0.5), 0, 0, 0);
 			}
 		}
@@ -129,8 +126,8 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 		this.stuckEntityId = stuckEntityId;
 	}
 
-	public float getRenderTicks() {
-		return renderTicks;
+	public int getLeechingTicks() {
+		return leechingTicks;
 	}
 
 	public float getStabTicks() {

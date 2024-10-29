@@ -51,16 +51,17 @@ public record LeechingTridentEffect(EnchantmentValueEffect damage, EnchantmentVa
 		}
 	}
 
-	public static void renderLeechTrident(TridentEntity entity, MatrixStack matrices, VertexConsumerProvider vertexConsumers, Model model, Identifier texture, int light, Runnable runnable, CallbackInfo ci) {
+	public static void renderLeechTrident(TridentEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, Model model, Identifier texture, int light, Runnable runnable, CallbackInfo ci) {
 		LeechingTridentComponent leechingTridentComponent = ModEntityComponents.LEECHING_TRIDENT.get(entity);
 		LivingEntity stuckEntity = leechingTridentComponent.getStuckEntity();
 		if (stuckEntity != null) {
-			float offsetX = MathHelper.sin(leechingTridentComponent.getRenderTicks()), offsetZ = MathHelper.cos(leechingTridentComponent.getRenderTicks());
+			float renderTicks = (leechingTridentComponent.getLeechingTicks() + tickDelta) / 20F;
+			float offsetX = MathHelper.sin(renderTicks), offsetZ = MathHelper.cos(renderTicks);
 			matrices.push();
 			matrices.translate(offsetX, 0, offsetZ);
 			matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees((float) -MathHelper.wrapDegrees((MathHelper.atan2(stuckEntity.getZ() - entity.getZ() + offsetZ, stuckEntity.getX() - entity.getX() + offsetX) * 57.2957763671875) - 90) + 90));
 			matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(60));
-			matrices.translate(0, -leechingTridentComponent.getStabTicks(), 0);
+			matrices.translate(0, -(leechingTridentComponent.getStabTicks() / 20F), 0);
 			model.render(matrices, ItemRenderer.getDirectItemGlintConsumer(vertexConsumers, model.getLayer(texture), false, entity.isEnchanted()), light, OverlayTexture.DEFAULT_UV);
 			matrices.pop();
 			runnable.run();
