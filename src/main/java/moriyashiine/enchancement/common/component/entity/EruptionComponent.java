@@ -95,7 +95,7 @@ public class EruptionComponent implements AutoSyncedComponent, CommonTickingComp
 	public void useServer() {
 		PlayerLookup.tracking(obj).forEach(foundPlayer -> UseEruptionPayload.send(foundPlayer, obj.getId()));
 		float base = (float) obj.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
-		int fireDuration = EruptionEffect.getFireDuration(obj.getRandom(), obj.getMainHandStack());
+		float fireDuration = EruptionEffect.getFireDuration(obj.getRandom(), obj.getMainHandStack());
 		getNearby(obj).forEach(entity -> {
 			DamageSource source = obj instanceof PlayerEntity player ? entity.getDamageSources().playerAttack(player) : entity.getDamageSources().mobAttack(obj);
 			float damage = EnchantmentHelper.getDamage((ServerWorld) obj.getWorld(), obj.getMainHandStack(), entity, source, base)

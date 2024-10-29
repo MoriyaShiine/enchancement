@@ -43,7 +43,7 @@ public record EruptionEffect(EnchantmentValueEffect chargeTime, EnchantmentValue
 		return mutableFloat.floatValue();
 	}
 
-	public static int getFireDuration(Random random, ItemStack stack) {
+	public static float getFireDuration(Random random, ItemStack stack) {
 		MutableFloat mutableFloat = new MutableFloat(0);
 		EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 			EruptionEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.ERUPTION);
@@ -51,6 +51,6 @@ public record EruptionEffect(EnchantmentValueEffect chargeTime, EnchantmentValue
 				mutableFloat.setValue(effect.fireDuration().apply(level, random, mutableFloat.floatValue()));
 			}
 		});
-		return MathHelper.floor(mutableFloat.floatValue() * 20);
+		return mutableFloat.floatValue();
 	}
 }
