@@ -169,6 +169,7 @@
   "enchancement.midnightconfig.overhaulEnchantingTable": "Переработка стола зачарования",
   "enchancement.midnightconfig.enum.OverhaulMode.ACCEPTABLE": "Приемлемый",
   "enchancement.midnightconfig.enum.OverhaulMode.PRIMARY": "Основной",
+  "enchancement.midnightconfig.enum.OverhaulMode.NON_TREASURE": "Не Сокровище",
   "enchancement.midnightconfig.enum.OverhaulMode.DISABLED": "Отключено",
   "enchancement.midnightconfig.singleLevelMode": "Режим одного уровня",
   "enchancement.midnightconfig.enchantmentLimit": "Лимит зачарований",

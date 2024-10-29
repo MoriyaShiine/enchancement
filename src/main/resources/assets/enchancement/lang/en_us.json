@@ -169,6 +169,7 @@
   "enchancement.midnightconfig.overhaulEnchantingTable": "Overhaul Enchanting Table",
   "enchancement.midnightconfig.enum.OverhaulMode.ACCEPTABLE": "Acceptable",
   "enchancement.midnightconfig.enum.OverhaulMode.PRIMARY": "Primary",
+  "enchancement.midnightconfig.enum.OverhaulMode.NON_TREASURE": "Non-treasure",
   "enchancement.midnightconfig.enum.OverhaulMode.DISABLED": "Disabled",
   "enchancement.midnightconfig.singleLevelMode": "Single Level Mode",
   "enchancement.midnightconfig.enchantmentLimit": "Enchantment Limit",

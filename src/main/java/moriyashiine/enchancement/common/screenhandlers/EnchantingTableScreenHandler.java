@@ -11,6 +11,8 @@ import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
 import moriyashiine.enchancement.common.tag.ModEnchantmentTags;
 import moriyashiine.enchancement.common.tag.ModItemTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.enchancement.common.util.OverhaulMode;
+import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.EnchantingTableBlock;
@@ -26,6 +28,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.registry.tag.EnchantmentTags;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
@@ -363,6 +366,14 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		if (stack.isEmpty() || enchantment.isIn(ModEnchantmentTags.UNSELECTABLE)) {
 			return false;
 		}
-		return stack.canBeEnchantedWith(enchantment, ModConfig.overhaulEnchantingTable.context);
+		if (stack.canBeEnchantedWith(enchantment, EnchantingContext.ACCEPTABLE)) {
+			if (enchantment.isIn(ModEnchantmentTags.ALWAYS_SELECTABLE)) {
+				return true;
+			}
+			if (stack.canBeEnchantedWith(enchantment, ModConfig.overhaulEnchantingTable.context)) {
+				return ModConfig.overhaulEnchantingTable != OverhaulMode.NON_TREASURE || enchantment.isIn(EnchantmentTags.NON_TREASURE);
+			}
+		}
+		return false;
 	}
 }

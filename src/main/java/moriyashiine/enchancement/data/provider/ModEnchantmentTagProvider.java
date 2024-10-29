@@ -33,10 +33,6 @@ public class ModEnchantmentTagProvider extends FabricTagProvider.EnchantmentTagP
 		ALL_ENCHANCEMENT_ENCHANTMENTS.forEach(nonTreasure::addOptional);
 		ALL_ENCHANCEMENT_ENCHANTMENTS.forEach(tooltipOrder::addOptional);
 
-		getOrCreateTagBuilder(ModEnchantmentTags.ALWAYS_SELECTABLE)
-				.addOptional(Enchantments.SOUL_SPEED)
-				.addOptional(Enchantments.SWIFT_SNEAK)
-				.addOptional(Enchantments.WIND_BURST);
 		getOrCreateTagBuilder(ModEnchantmentTags.AUTOMATICALLY_FEEDS)
 				.addOptional(ModEnchantments.ASSIMILATION);
 		getOrCreateTagBuilder(ModEnchantmentTags.DISALLOWS_TOGGLEABLE_PASSIVE)
