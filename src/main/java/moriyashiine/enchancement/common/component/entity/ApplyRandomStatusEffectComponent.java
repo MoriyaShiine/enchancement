@@ -92,7 +92,7 @@ public class ApplyRandomStatusEffectComponent implements Component {
 		}
 	}
 
-	public static float getDurationMultiplier(float speed) {
-		return MathHelper.lerp(speed / 3F, 0F, 1);
+	public static float getDurationMultiplier(LivingEntity user, float speed) {
+		return MathHelper.lerp(Math.min(1, (speed * (user.isSneaking() ? 3 : 1)) / 3F), 0F, 1);
 	}
 }
