@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -75,7 +76,7 @@ public class TorchEntity extends PersistentProjectileEntity {
 	protected void onBlockHit(BlockHitResult blockHitResult) {
 		BlockState state = getWorld().getBlockState(blockHitResult.getBlockPos());
 		state.onProjectileHit(getWorld(), state, blockHitResult, this);
-		if (!getWorld().isClient) {
+		if (getWorld() instanceof ServerWorld serverWorld) {
 			discard();
 			if (canFunction) {
 				if (shouldPlaceTorch && getOwner() instanceof PlayerEntity player && player.getAbilities().allowModifyWorld) {
@@ -98,7 +99,7 @@ public class TorchEntity extends PersistentProjectileEntity {
 					}
 				}
 				if (getOwner() instanceof PlayerEntity player && !player.isCreative()) {
-					dropStack(asItemStack(), 0.1F);
+					dropStack(serverWorld, asItemStack(), 0.1F);
 				}
 			}
 		}

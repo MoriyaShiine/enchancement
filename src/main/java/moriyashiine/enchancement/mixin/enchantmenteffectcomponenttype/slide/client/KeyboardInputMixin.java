@@ -9,6 +9,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.PlayerInput;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -23,11 +24,27 @@ public class KeyboardInputMixin extends Input {
 			SlideComponent slideComponent = ModEntityComponents.SLIDE.get(player);
 			if (slideComponent.isSliding()) {
 				if (slideComponent.getVelocity().x() != 0) {
-					pressingForward = pressingBack = false;
+					playerInput = new PlayerInput(
+							false,
+							false,
+							playerInput.left(),
+							playerInput.right(),
+							playerInput.jump(),
+							playerInput.sneak(),
+							playerInput.sprint()
+					);
 					movementForward = 0;
 				}
 				if (slideComponent.getVelocity().z() != 0) {
-					pressingLeft = pressingRight = false;
+					playerInput = new PlayerInput(
+							playerInput.forward(),
+							playerInput.backward(),
+							false,
+							false,
+							playerInput.jump(),
+							playerInput.sneak(),
+							playerInput.sprint()
+					);
 					movementSideways = 0;
 				}
 			}

@@ -16,6 +16,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
@@ -54,7 +55,7 @@ public class ConditionalAttributesComponent implements ServerTickingComponent {
 
 	@Override
 	public void serverTick() {
-		LootContext ctx = ConditionalAttributeEnchantmentEffect.createContext(obj);
+		LootContext ctx = ConditionalAttributeEnchantmentEffect.createContext((ServerWorld) obj.getWorld(), obj);
 		attributes.removeIf(attribute -> {
 			if (!removeAll && attribute.condition().test(ctx)) {
 				return false;

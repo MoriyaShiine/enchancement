@@ -17,9 +17,9 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ServerPlayerInteractionManager.class)
 public class ServerPlayerInteractionManagerMixin {
-	@ModifyExpressionValue(method = "interactItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ItemCooldownManager;isCoolingDown(Lnet/minecraft/item/Item;)Z"))
-	private boolean enchancement$allowCCrossbowCooldownReloading(boolean value, ServerPlayerEntity player, World world, ItemStack stack) {
-		if (player.getItemCooldownManager().isCoolingDown(stack.getItem()) && stack.isOf(Items.CROSSBOW) && EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.ALLOW_CROSSBOW_COOLDOWN_RELOADING) && !CrossbowItem.isCharged(stack)) {
+	@ModifyExpressionValue(method = "interactItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ItemCooldownManager;isCoolingDown(Lnet/minecraft/item/ItemStack;)Z"))
+	private boolean enchancement$allowCrossbowCooldownReloading(boolean value, ServerPlayerEntity player, World world, ItemStack stack) {
+		if (player.getItemCooldownManager().isCoolingDown(stack) && stack.isOf(Items.CROSSBOW) && EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.ALLOW_CROSSBOW_COOLDOWN_RELOADING) && !CrossbowItem.isCharged(stack)) {
 			return false;
 		}
 		return value;

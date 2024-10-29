@@ -22,21 +22,21 @@ public class MinecraftClientMixin {
 
 	@Inject(method = "doAttack", at = @At("HEAD"), cancellable = true)
 	private void enchancment$disarmingFishingBobber(CallbackInfoReturnable<Boolean> cir) {
-		if (player != null && ModEntityComponents.DISARMED_PLAYER.get(player).getDisarmedItems().contains(player.getMainHandStack().getItem())) {
+		if (player != null && ModEntityComponents.DISARMED_PLAYER.get(player).isDisabled(player.getMainHandStack())) {
 			cir.setReturnValue(false);
 		}
 	}
 
 	@Inject(method = "doItemUse", at = @At("HEAD"), cancellable = true)
 	private void enchancment$disarmingFishingBobber(CallbackInfo ci) {
-		if (player != null && ModEntityComponents.DISARMED_PLAYER.get(player).getDisarmedItems().contains(player.getMainHandStack().getItem())) {
+		if (player != null && ModEntityComponents.DISARMED_PLAYER.get(player).isDisabled(player.getMainHandStack())) {
 			ci.cancel();
 		}
 	}
 
 	@Inject(method = "handleBlockBreaking", at = @At("HEAD"), cancellable = true)
 	private void enchancment$disarmingFishingBobber(boolean breaking, CallbackInfo ci) {
-		if (player != null && ModEntityComponents.DISARMED_PLAYER.get(player).getDisarmedItems().contains(player.getMainHandStack().getItem())) {
+		if (player != null && ModEntityComponents.DISARMED_PLAYER.get(player).isDisabled(player.getMainHandStack())) {
 			ci.cancel();
 		}
 	}

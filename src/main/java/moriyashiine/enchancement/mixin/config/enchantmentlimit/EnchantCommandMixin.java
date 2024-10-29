@@ -5,7 +5,6 @@ package moriyashiine.enchancement.mixin.config.enchantmentlimit;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.EnchantCommand;
@@ -16,6 +15,6 @@ import org.spongepowered.asm.mixin.injection.At;
 public class EnchantCommandMixin {
 	@ModifyExpressionValue(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;isCompatible(Ljava/util/Collection;Lnet/minecraft/registry/entry/RegistryEntry;)Z"))
 	private static boolean enchancement$enchantmentLimit(boolean value, @Local ItemStack stack) {
-		return value && !EnchancementUtil.limitCheck(false, EnchancementUtil.getNonDefaultEnchantmentsSize(stack, stack.getEnchantments().getSize()) >= ModConfig.enchantmentLimit);
+		return value && !EnchancementUtil.exceedsLimit(stack, stack.getEnchantments().getSize() + 1);
 	}
 }

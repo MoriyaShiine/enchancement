@@ -5,8 +5,8 @@ package moriyashiine.enchancement.mixin.enchantmententityeffecttype.freeze;
 
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.mob.WaterCreatureEntity;
 import net.minecraft.entity.passive.SquidEntity;
+import net.minecraft.entity.passive.WaterAnimalEntity;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -17,11 +17,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(SquidEntity.class)
-public class SquidEntityMixin extends WaterCreatureEntity {
+public abstract class SquidEntityMixin extends WaterAnimalEntity {
 	@Shadow
 	private float thrustTimerSpeed;
 
-	protected SquidEntityMixin(EntityType<? extends WaterCreatureEntity> entityType, World world) {
+	protected SquidEntityMixin(EntityType<? extends WaterAnimalEntity> entityType, World world) {
 		super(entityType, world);
 	}
 

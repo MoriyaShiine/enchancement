@@ -11,7 +11,7 @@ import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 
 public class FrozenSquidComponent implements AutoSyncedComponent {
 	private final SquidEntity obj;
-	private float forcedRollAngle = 0, forcedTentacleAngle = 0, forcedTiltAngle = 0;
+	private float forcedTentacleAngle = 0, forcedTiltAngle = 0, forcedRollAngle = 0;
 
 	public FrozenSquidComponent(SquidEntity obj) {
 		this.obj = obj;
@@ -19,28 +19,20 @@ public class FrozenSquidComponent implements AutoSyncedComponent {
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		forcedRollAngle = tag.getFloat("ForcedRollAngle");
 		forcedTentacleAngle = tag.getFloat("ForceTentacleAngle");
 		forcedTiltAngle = tag.getFloat("ForcedTiltAngle");
+		forcedRollAngle = tag.getFloat("ForcedRollAngle");
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.putFloat("ForcedRollAngle", forcedRollAngle);
 		tag.putFloat("ForceTentacleAngle", forcedTentacleAngle);
 		tag.putFloat("ForcedTiltAngle", forcedTiltAngle);
+		tag.putFloat("ForcedRollAngle", forcedRollAngle);
 	}
 
 	public void sync() {
 		ModEntityComponents.FROZEN_SQUID.sync(obj);
-	}
-
-	public float getForcedRollAngle() {
-		return forcedRollAngle;
-	}
-
-	public void setForcedRollAngle(float forcedRollAngle) {
-		this.forcedRollAngle = forcedRollAngle;
 	}
 
 	public float getForcedTentacleAngle() {
@@ -57,5 +49,13 @@ public class FrozenSquidComponent implements AutoSyncedComponent {
 
 	public void setForcedTiltAngle(float forcedTiltAngle) {
 		this.forcedTiltAngle = forcedTiltAngle;
+	}
+
+	public float getForcedRollAngle() {
+		return forcedRollAngle;
+	}
+
+	public void setForcedRollAngle(float forcedRollAngle) {
+		this.forcedRollAngle = forcedRollAngle;
 	}
 }

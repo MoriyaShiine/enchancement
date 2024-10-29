@@ -26,15 +26,15 @@ public class ClientPlayerInteractionManagerMixin {
 	@Unique
 	private static boolean allowUsage = false;
 
-	@Inject(method = "method_41929", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ItemCooldownManager;isCoolingDown(Lnet/minecraft/item/Item;)Z"))
-	private void enchancement$allowCCrossbowCooldownReloading(Hand hand, PlayerEntity player, MutableObject<?> mutableObject, int sequence, CallbackInfoReturnable<Packet<?>> cir, @Local ItemStack stack) {
-		if (player.getItemCooldownManager().isCoolingDown(stack.getItem()) && stack.isOf(Items.CROSSBOW) && EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.ALLOW_CROSSBOW_COOLDOWN_RELOADING) && !CrossbowItem.isCharged(stack)) {
+	@Inject(method = "method_41929", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ItemCooldownManager;isCoolingDown(Lnet/minecraft/item/ItemStack;)Z"))
+	private void enchancement$allowCrossbowCooldownReloading(Hand hand, PlayerEntity player, MutableObject<?> mutableObject, int sequence, CallbackInfoReturnable<Packet<?>> cir, @Local ItemStack stack) {
+		if (player.getItemCooldownManager().isCoolingDown(stack) && stack.isOf(Items.CROSSBOW) && EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.ALLOW_CROSSBOW_COOLDOWN_RELOADING) && !CrossbowItem.isCharged(stack)) {
 			allowUsage = true;
 		}
 	}
 
-	@ModifyExpressionValue(method = "method_41929", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ItemCooldownManager;isCoolingDown(Lnet/minecraft/item/Item;)Z"))
-	private boolean enchancement$allowCCrossbowCooldownReloading(boolean value) {
+	@ModifyExpressionValue(method = "method_41929", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ItemCooldownManager;isCoolingDown(Lnet/minecraft/item/ItemStack;)Z"))
+	private boolean enchancement$allowCrossbowCooldownReloading(boolean value) {
 		if (allowUsage) {
 			allowUsage = false;
 			return false;

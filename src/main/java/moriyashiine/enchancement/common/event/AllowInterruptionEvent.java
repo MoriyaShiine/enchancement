@@ -21,7 +21,7 @@ public class AllowInterruptionEvent implements ServerLivingEntityEvents.AllowDam
 			if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.ALLOW_INTERRUPTION)) {
 				entity.stopUsingItem();
 				if (entity instanceof PlayerEntity player) {
-					player.getItemCooldownManager().set(stack.getItem(), 20);
+					player.getItemCooldownManager().set(stack, 20);
 				}
 				ModEntityComponents.LIGHTNING_DASH.maybeGet(entity).ifPresent(lightningDashComponent -> {
 					lightningDashComponent.cancel();

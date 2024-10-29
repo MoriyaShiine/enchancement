@@ -1,8 +1,8 @@
 {
   "entity.enchancement.frozen_player": "Замороженный Игрок",
-  "entity.enchancement.ice_shard": "Ледяной Осколок",
-  "entity.enchancement.brimstone": "Сера",
   "entity.enchancement.amethyst_shard": "Осколок Аметиста",
+  "entity.enchancement.brimstone": "Сера",
+  "entity.enchancement.ice_shard": "Ледяной Осколок",
   "entity.enchancement.torch": "Факел",
   "enchantment.minecraft.channeling.desc.redirect": "Заставляет Трезубец вызывать молнию при ударе по мобу. Поджигает атакованных мобов.",
   "enchantment.minecraft.fire_aspect.desc.redirect": "Поджигает атакованных существ. Может быть использованно как Огниво при Приседании.",

@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(RenderLayers.class)
 public class RenderLayersMixin {
 	@Inject(method = "getEntityBlockLayer", at = @At("HEAD"), cancellable = true)
-	private static void enchancement$overhaulEnchantingTable(BlockState state, boolean direct, CallbackInfoReturnable<RenderLayer> cir) {
+	private static void enchancement$overhaulEnchantingTable(BlockState state, CallbackInfoReturnable<RenderLayer> cir) {
 		if (EnchantingTableScreen.forceTransparency) {
 			cir.setReturnValue(TexturedRenderLayers.getItemEntityTranslucentCull());
 		}

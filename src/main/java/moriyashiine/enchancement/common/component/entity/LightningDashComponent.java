@@ -123,14 +123,15 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 			sync();
 		}
 		if (smashTicks == 1 && obj.isOnGround()) {
+			ServerWorld serverWorld = (ServerWorld) obj.getWorld();
 			PlayerLookup.tracking(obj).forEach(foundPlayer -> AddLightningDashParticlesPayload.send(foundPlayer, obj.getId()));
 			obj.fallDistance = (float) Math.max(0, cachedHeight - obj.getY());
-			float base = (float) obj.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+			float base = (float) obj.getAttributeValue(EntityAttributes.ATTACK_DAMAGE);
 			getNearby(1).forEach(entity -> {
 				DamageSource source = obj instanceof PlayerEntity player ? entity.getDamageSources().playerAttack(player) : entity.getDamageSources().mobAttack(obj);
-				float damage = EnchantmentHelper.getDamage((ServerWorld) obj.getWorld(), obj.getMainHandStack(), entity, source, base)
+				float damage = EnchantmentHelper.getDamage(serverWorld, obj.getMainHandStack(), entity, source, base)
 						+ obj.getMainHandStack().getItem().getBonusAttackDamage(entity, base, source);
-				if (entity.damage(source, damage * LightningDashEffect.getSmashDamageMultiplier(obj.getRandom(), obj.getMainHandStack()))) {
+				if (entity.damage(serverWorld, source, damage * LightningDashEffect.getSmashDamageMultiplier(obj.getRandom(), obj.getMainHandStack()))) {
 					entity.takeKnockback(1.5, obj.getX() - entity.getX(), obj.getZ() - entity.getZ());
 				}
 			});

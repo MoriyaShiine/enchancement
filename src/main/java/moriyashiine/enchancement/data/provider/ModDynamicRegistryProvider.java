@@ -37,7 +37,7 @@ public class ModDynamicRegistryProvider extends FabricDynamicRegistryProvider {
 
 			@Override
 			public <S> RegistryEntryLookup<S> getRegistryLookup(RegistryKey<? extends Registry<? extends S>> registryRef) {
-				return registries.getWrapperOrThrow(registryRef);
+				return registries.getOrThrow(registryRef);
 			}
 		};
 	}

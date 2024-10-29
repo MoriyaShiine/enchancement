@@ -31,7 +31,7 @@ public abstract class LivingEntityMixin extends Entity implements UseTimeDeltaHo
 		return useTimeDelta;
 	}
 
-	@Inject(method = "tickItemStackUsage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;shouldSpawnConsumptionEffects()Z"), cancellable = true)
+	@Inject(method = "tickItemStackUsage", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;usageTick(Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;I)V", shift = At.Shift.AFTER), cancellable = true)
 	private void enchancement$multiplyChargeTime(ItemStack stack, CallbackInfo ci) {
 		float multiplier = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.MULTIPLY_CHARGE_TIME, getRandom(), stack, 1);
 		if (multiplier != 1) {

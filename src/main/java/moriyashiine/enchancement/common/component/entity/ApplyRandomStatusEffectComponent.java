@@ -42,7 +42,7 @@ public class ApplyRandomStatusEffectComponent implements Component {
 	@Override
 	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		if (!originalStack.isEmpty()) {
-			tag.put("OriginalStack", originalStack.encode(registryLookup));
+			tag.put("OriginalStack", originalStack.toNbt(registryLookup));
 		}
 	}
 
@@ -65,7 +65,7 @@ public class ApplyRandomStatusEffectComponent implements Component {
 		if (duration.floatValue() != 0) {
 			int attempts = 0;
 			StatusEffectCategory category = user.isSneaking() ? StatusEffectCategory.BENEFICIAL : StatusEffectCategory.HARMFUL;
-			PotionContentsComponent potionContentsComponent = arrowStack.getOrDefault(DataComponentTypes.POTION_CONTENTS, new PotionContentsComponent(Optional.empty(), Optional.empty(), new ArrayList<>()));
+			PotionContentsComponent potionContentsComponent = arrowStack.getOrDefault(DataComponentTypes.POTION_CONTENTS, new PotionContentsComponent(Optional.empty(), Optional.empty(), new ArrayList<>(), Optional.empty()));
 			Set<StatusEffect> disallowed = new HashSet<>();
 			if (arrowStack.isOf(Items.SPECTRAL_ARROW)) {
 				disallowed.add(StatusEffects.GLOWING.value());
@@ -77,7 +77,7 @@ public class ApplyRandomStatusEffectComponent implements Component {
 				StatusEffect effect = Registries.STATUS_EFFECT.get(user.getRandom().nextInt(Registries.STATUS_EFFECT.size()));
 				if (effect != null && !disallowed.contains(effect) && !effect.isInstant()) {
 					Optional<RegistryKey<StatusEffect>> key = Registries.STATUS_EFFECT.getKey(effect);
-					if (key.isPresent() && effect.getCategory() == category && !Registries.STATUS_EFFECT.entryOf(key.get()).isIn(disallowedTag.get())) {
+					if (key.isPresent() && effect.getCategory() == category && !Registries.STATUS_EFFECT.getOrThrow(key.get()).isIn(disallowedTag.get())) {
 						List<StatusEffectInstance> statusEffects = new ArrayList<>();
 						for (StatusEffectInstance instance : potionContentsComponent.getEffects()) {
 							statusEffects.add(new StatusEffectInstance(instance.getEffectType(), Math.max(instance.mapDuration(i -> i / 8), 1), instance.getAmplifier(), instance.isAmbient(), instance.shouldShowParticles()));

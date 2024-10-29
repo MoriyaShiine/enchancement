@@ -50,7 +50,7 @@ public class Enchancement implements ModInitializer {
 		ModParticleTypes.init();
 		ModSoundEvents.init();
 		ModScreenHandlerTypes.init();
-		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new EnchantingMaterialReloadListener());
+		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(EnchantingMaterialReloadListener.ID, EnchantingMaterialReloadListener::new);
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new HeadDropsReloadListener());
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new MineOreVeinsBaseBlockReloadListener());
 		initEvents();
@@ -72,8 +72,6 @@ public class Enchancement implements ModInitializer {
 		// internal
 		ServerLifecycleEvents.SERVER_STARTED.register(new CacheEnchantmentRegistryEvent());
 		ServerPlayConnectionEvents.JOIN.register(new EnforceConfigMatchEvent());
-		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register(new InitializeDefaultEnchantmentsEvent.ReloadResources());
-		ServerLifecycleEvents.SERVER_STARTED.register(new InitializeDefaultEnchantmentsEvent.ServerStart());
 		ServerPlayConnectionEvents.JOIN.register(new SyncEnchantingMaterialMapEvent.Join());
 		ServerTickEvents.END_SERVER_TICK.register(new SyncEnchantingMaterialMapEvent.Tick());
 		// config
@@ -112,7 +110,6 @@ public class Enchancement implements ModInitializer {
 		PayloadTypeRegistry.playS2C().register(AddMovementBurstParticlesPayload.ID, AddMovementBurstParticlesPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(PlayBrimstoneFireSoundPayload.ID, PlayBrimstoneFireSoundPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(PlayBrimstoneTravelSoundPayload.ID, PlayBrimstoneTravelSoundPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(ResetFrozenTicksPayload.ID, ResetFrozenTicksPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(SyncFrozenPlayerSlimStatusS2CPayload.ID, SyncFrozenPlayerSlimStatusS2CPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(UseEruptionPayload.ID, UseEruptionPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(UseLightningDashPayload.ID, UseLightningDashPayload.CODEC);

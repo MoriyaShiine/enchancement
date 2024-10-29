@@ -21,7 +21,7 @@ import java.util.List;
 public class AutomaticallyFeedsTooltipEvent implements ItemTooltipCallback {
 	@Override
 	public void getTooltip(ItemStack stack, Item.TooltipContext tooltipContext, TooltipType tooltipType, List<Text> lines) {
-		if (MinecraftClient.getInstance().cameraEntity instanceof PlayerEntity player && stack.isIn(ModItemTags.CANNOT_AUTOMATICALLY_CONSUME) && !stack.equals(player.getOffHandStack()) && EnchancementUtil.hasAnyEnchantmentsIn(player, ModEnchantmentTags.AUTOMATICALLY_FEEDS)) {
+		if (MinecraftClient.getInstance().getCameraEntity() instanceof PlayerEntity player && stack.isIn(ModItemTags.CANNOT_AUTOMATICALLY_CONSUME) && !stack.equals(player.getOffHandStack()) && EnchancementUtil.hasAnyEnchantmentsIn(player, ModEnchantmentTags.AUTOMATICALLY_FEEDS)) {
 			lines.add(1, Text.translatable("tooltip." + Enchancement.MOD_ID + ".cannot_auto_consume").formatted(Formatting.RED));
 		}
 	}

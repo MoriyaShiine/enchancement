@@ -15,6 +15,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.village.Merchant;
 import net.minecraft.world.World;
@@ -34,9 +35,14 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 		super(entityType, world);
 	}
 
+	@Inject(method = "<init>(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/world/World;IILnet/minecraft/item/ItemStack;)V", at = @At("TAIL"))
+	private void enchancement$disarmingFishingBobber(PlayerEntity thrower, World world, int luckBonus, int waitTimeReductionTicks, ItemStack stack, CallbackInfo ci) {
+		DisarmingFishingBobberComponent.maybeSet(thrower, stack, this);
+	}
+
 	@Inject(method = "pullHookedEntity", at = @At("HEAD"), cancellable = true)
 	private void enchancment$disarmingFishingBobber(Entity entity, CallbackInfo ci) {
-		if (!getWorld().isClient && entity instanceof LivingEntity living) {
+		if (getWorld() instanceof ServerWorld serverWorld && entity instanceof LivingEntity living) {
 			DisarmingFishingBobberComponent disarmingFishingBobberComponent = ModEntityComponents.DISARMING_FISHING_BOBBER.get(this);
 			if (disarmingFishingBobberComponent.isEnabled()) {
 				boolean offhand = false;
@@ -52,11 +58,11 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 				}
 				if (!stack.isEmpty()) {
 					if (entity instanceof PlayerEntity player && !disarmingFishingBobberComponent.stealsFromPlayers()) {
-						if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
+						if (!player.getItemCooldownManager().isCoolingDown(stack)) {
 							DisarmedPlayerComponent disarmedPlayerComponent = ModEntityComponents.DISARMED_PLAYER.get(player);
-							disarmedPlayerComponent.getDisarmedItems().add(stack.getItem());
+							disarmedPlayerComponent.getDisarmedStacks().add(stack);
 							disarmedPlayerComponent.sync();
-							player.getItemCooldownManager().set(stack.getItem(), disarmingFishingBobberComponent.getPlayerCooldown());
+							player.getItemCooldownManager().set(stack, disarmingFishingBobberComponent.getPlayerCooldown());
 							player.stopUsingItem();
 						}
 					} else {
@@ -73,7 +79,7 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 										observer.onInteractionWith(EntityInteraction.VILLAGER_HURT, owner);
 									}
 									if (entity instanceof PiglinEntity piglin) {
-										PiglinBrain.onAttacked(piglin, owner);
+										PiglinBrain.onAttacked(serverWorld, piglin, owner);
 									}
 								}
 								if (entity instanceof Merchant) {

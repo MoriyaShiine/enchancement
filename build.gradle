@@ -1,6 +1,6 @@
 plugins {
-    id 'fabric-loom' version '1.7-SNAPSHOT'
-    id 'io.github.ladysnake.chenille' version '0.13.1'
+    id 'fabric-loom' version '1.8-SNAPSHOT'
+    id 'io.github.ladysnake.chenille' version '0.14.0'
 }
 
 version = project.mod_version
@@ -20,16 +20,6 @@ chenille {
         withModrinthRelease()
         withCurseforgeRelease()
     }
-}
-
-modrinth {
-    dependencies {
-        required.project "fabric-api"
-        embedded.project "cardinal-components-api"
-        embedded.project "midnightlib"
-        embedded.project "tooltipfix"
-    }
-    syncBodyFrom = rootProject.file("README.md").text
 }
 
 loom {
@@ -59,7 +49,7 @@ dependencies {
     modIncludeApi "org.ladysnake.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}"
     modIncludeApi "org.ladysnake.cardinal-components-api:cardinal-components-world:${cardinal_components_version}"
     modIncludeApi "maven.modrinth:midnightlib:${midnightlib_version}"
-    modIncludeApi "maven.modrinth:tooltipfix:${tooltipfix_version}"
+//    modIncludeApi "maven.modrinth:tooltipfix:${tooltipfix_version}"
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 

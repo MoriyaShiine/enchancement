@@ -3,6 +3,7 @@
  */
 package moriyashiine.enchancement.mixin.util;
 
+import moriyashiine.enchancement.common.entity.projectile.ShardEntity;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -46,6 +47,6 @@ public abstract class PersistentProjectileEntityMixin extends ProjectileEntity {
 
 	@Unique
 	private boolean isDisallowed() {
-		return getType() == ModEntityTypes.AMETHYST_SHARD || getType() == ModEntityTypes.BRIMSTONE || getType() == ModEntityTypes.ICE_SHARD;
+		return getType() == ModEntityTypes.BRIMSTONE || (Object) this instanceof ShardEntity;
 	}
 }

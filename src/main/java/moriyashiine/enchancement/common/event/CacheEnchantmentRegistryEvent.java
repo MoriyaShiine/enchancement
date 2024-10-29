@@ -12,6 +12,6 @@ public class CacheEnchantmentRegistryEvent implements ServerLifecycleEvents.Serv
 	@Override
 	public void onServerStarted(MinecraftServer server) {
 		EnchancementUtil.ENCHANTMENTS.clear();
-		EnchancementUtil.ENCHANTMENTS.addAll(server.getRegistryManager().get(RegistryKeys.ENCHANTMENT).streamEntries().toList());
+		EnchancementUtil.ENCHANTMENTS.addAll(server.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).streamEntries().toList());
 	}
 }

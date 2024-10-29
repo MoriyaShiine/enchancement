@@ -14,6 +14,7 @@ import moriyashiine.enchancement.common.init.ModEntityTypes;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.mob.GuardianEntity;
@@ -31,7 +32,7 @@ public class FreezeEvent {
 			FrozenComponent frozenComponent = ModEntityComponents.FROZEN.get(entity);
 			if (frozenComponent.shouldFreezeOnDeath(damageSource)) {
 				if (entity instanceof ServerPlayerEntity serverPlayer) {
-					FrozenPlayerEntity frozenPlayer = ModEntityTypes.FROZEN_PLAYER.create(entity.getWorld());
+					FrozenPlayerEntity frozenPlayer = ModEntityTypes.FROZEN_PLAYER.create(entity.getWorld(), SpawnReason.TRIGGERED);
 					if (frozenPlayer != null) {
 						frozenPlayer.setCustomName(entity.getName());
 						frozenPlayer.setPersistent();
@@ -53,9 +54,9 @@ public class FreezeEvent {
 						guardian.setBeamTarget(0);
 					} else if (entity instanceof SquidEntity squid) {
 						FrozenSquidComponent frozenSquidComponent = ModEntityComponents.FROZEN_SQUID.get(squid);
-						frozenSquidComponent.setForcedRollAngle(squid.rollAngle);
 						frozenSquidComponent.setForcedTentacleAngle(squid.tentacleAngle);
 						frozenSquidComponent.setForcedTiltAngle(squid.tiltAngle);
+						frozenSquidComponent.setForcedRollAngle(squid.rollAngle);
 						frozenSquidComponent.sync();
 					}
 					frozenComponent.freeze();
@@ -83,10 +84,9 @@ public class FreezeEvent {
 						for (int i = 0; i < 4; i++) {
 							if (entity.getWorld().getEntitiesByType(ModEntityTypes.ICE_SHARD, new Box(entity.getBlockPos()).expand(2), foundEntity -> true).size() < 64) {
 								for (int j = 0; j < MathHelper.nextInt(entity.getRandom(), 6, 8); j++) {
-									IceShardEntity iceShard = new IceShardEntity(entity.getWorld(), entity);
-									iceShard.setOwner(frozenComponent.getLastFreezingAttacker());
-									iceShard.refreshPositionAfterTeleport(entity.getX(), entity.getEyeY(), entity.getZ());
-									iceShard.setVelocity(new Vec3d(entity.getRandom().nextGaussian(), entity.getRandom().nextGaussian() / 2, entity.getRandom().nextGaussian()).normalize().multiply(0.75));
+									IceShardEntity iceShard = new IceShardEntity(entity.getWorld(), entity, frozenComponent.getLastFreezingAttacker());
+									Vec3d random = new Vec3d(entity.getRandom().nextGaussian(), entity.getRandom().nextGaussian() / 2, entity.getRandom().nextGaussian());
+									iceShard.setVelocity(random.getX(), random.getY(), random.getZ(), 0.75F, 0);
 									entity.getWorld().spawnEntity(iceShard);
 								}
 							}

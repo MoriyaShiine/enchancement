@@ -32,12 +32,12 @@ public class SlideComponent implements CommonTickingComponent {
 	private static final EntityAttributeModifier SAFE_FALL_DISTANCE_MODIFIER = new EntityAttributeModifier(Enchancement.id("slide_safe_fall_distance"), 6, EntityAttributeModifier.Operation.ADD_VALUE);
 	private static final EntityAttributeModifier STEP_HEIGHT_MODIFIER = new EntityAttributeModifier(Enchancement.id("slide_step_height"), 1, EntityAttributeModifier.Operation.ADD_VALUE);
 
-	private static final int MAX_BOOST_TIME = 40;
+	private static final int MAX_SLIDING_TICKS = 40;
 
 	private final PlayerEntity obj;
 	private SlideVelocity velocity = SlideVelocity.ZERO, adjustedVelocity = SlideVelocity.ZERO;
 	private float cachedYaw = 0;
-	private int ticksSliding = 0;
+	private int slidingTicks = 0;
 
 	private float strength = 0;
 	private boolean hasSlide = false;
@@ -53,7 +53,7 @@ public class SlideComponent implements CommonTickingComponent {
 		velocity = SlideVelocity.deserialize(tag.getCompound("Velocity"));
 		adjustedVelocity = SlideVelocity.deserialize(tag.getCompound("AdjustedVelocity"));
 		cachedYaw = tag.getFloat("CachedYaw");
-		ticksSliding = tag.getInt("TicksSliding");
+		slidingTicks = tag.getInt("SlidingTicks");
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class SlideComponent implements CommonTickingComponent {
 		tag.put("Velocity", velocity.serialize());
 		tag.put("AdjustedVelocity", adjustedVelocity.serialize());
 		tag.putFloat("CachedYaw", cachedYaw);
-		tag.putInt("TicksSliding", ticksSliding);
+		tag.putInt("SlidingTicks", slidingTicks);
 	}
 
 	@Override
@@ -97,28 +97,28 @@ public class SlideComponent implements CommonTickingComponent {
 					}
 				}
 				multiplier = Math.min(ModifyMovementSpeedEvent.MAXIMUM_MOVEMENT_MULTIPLIER, multiplier);
-				double ratio = MathHelper.clamp(obj.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED) * multiplier / obj.getAttributeBaseValue(EntityAttributes.GENERIC_MOVEMENT_SPEED), 0.715F, 1.4F);
+				double ratio = MathHelper.clamp(obj.getAttributeValue(EntityAttributes.MOVEMENT_SPEED) * multiplier / obj.getAttributeBaseValue(EntityAttributes.MOVEMENT_SPEED), 0.715F, 1.4F);
 				obj.addVelocity(dX * ratio, 0, dZ * ratio);
 				if (obj.isTouchingWater() && hasFluidWalking) {
 					obj.setVelocity(obj.getVelocity().getX(), strength, obj.getVelocity().getZ());
 				}
-				if (ticksSliding < MAX_BOOST_TIME) {
-					ticksSliding++;
+				if (slidingTicks < MAX_SLIDING_TICKS) {
+					slidingTicks++;
 				}
-			} else if (ticksSliding > 0) {
-				ticksSliding = Math.max(0, ticksSliding - 4);
+			} else if (slidingTicks > 0) {
+				slidingTicks = Math.max(0, slidingTicks - 4);
 			}
 		} else {
 			stopSliding();
-			ticksSliding = 0;
+			slidingTicks = 0;
 		}
 	}
 
 	@Override
 	public void serverTick() {
 		tick();
-		EntityAttributeInstance safeFallDistanceAttribute = obj.getAttributeInstance(EntityAttributes.GENERIC_SAFE_FALL_DISTANCE);
-		EntityAttributeInstance stepHeightAttribute = obj.getAttributeInstance(EntityAttributes.GENERIC_STEP_HEIGHT);
+		EntityAttributeInstance safeFallDistanceAttribute = obj.getAttributeInstance(EntityAttributes.SAFE_FALL_DISTANCE);
+		EntityAttributeInstance stepHeightAttribute = obj.getAttributeInstance(EntityAttributes.STEP_HEIGHT);
 		if (hasSlide && isSliding()) {
 			if (!safeFallDistanceAttribute.hasModifier(SAFE_FALL_DISTANCE_MODIFIER.id())) {
 				safeFallDistanceAttribute.addPersistentModifier(SAFE_FALL_DISTANCE_MODIFIER);
@@ -178,7 +178,7 @@ public class SlideComponent implements CommonTickingComponent {
 	}
 
 	public float getJumpBonus() {
-		return MathHelper.lerp(ticksSliding / (float) MAX_BOOST_TIME, 1F, 3F);
+		return MathHelper.lerp(slidingTicks / (float) MAX_SLIDING_TICKS, 1F, 3F);
 	}
 
 	public boolean hasSlide() {

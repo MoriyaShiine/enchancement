@@ -36,7 +36,7 @@ public class RageRenderEvent implements ItemTooltipCallback {
 						}
 						if (last) {
 							if (speedMultiplier != 1) {
-								lines.add(i + 1, Text.translatable("attribute.modifier.plus.2", AttributeModifiersComponent.DECIMAL_FORMAT.format(speedMultiplier * 100 - 100), Text.translatable(EntityAttributes.GENERIC_MOVEMENT_SPEED.value().getTranslationKey())).formatted(Formatting.BLUE));
+								lines.add(i + 1, Text.translatable("attribute.modifier.plus.2", AttributeModifiersComponent.DECIMAL_FORMAT.format(speedMultiplier * 100 - 100), Text.translatable(EntityAttributes.MOVEMENT_SPEED.value().getTranslationKey())).formatted(Formatting.BLUE));
 							}
 							if (damageMultiplier != 1) {
 								lines.add(i + 1, Text.translatable("attribute.modifier.plus.2", AttributeModifiersComponent.DECIMAL_FORMAT.format(-(damageMultiplier * 100 - 100)), Text.translatable("tooltip." + Enchancement.MOD_ID + ".damage_resistance")).formatted(Formatting.BLUE));

@@ -27,23 +27,23 @@ public class ChainLightningEvent implements ServerLivingEntityEvents.AllowDamage
 			float multiplier = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.CHAIN_LIGHTNING, (ServerWorld) entity.getWorld(), living.getMainHandStack(), 0);
 			if (multiplier != 0) {
 				first = false;
-				chain(new ArrayList<>(), entity, living, amount, multiplier);
+				chain(new ArrayList<>(), (ServerWorld) entity.getWorld(), entity, living, amount, multiplier);
 				first = true;
 			}
 		}
 		return true;
 	}
 
-	private static void chain(List<LivingEntity> hitEntities, LivingEntity target, LivingEntity attacker, float damage, float multiplier) {
+	private static void chain(List<LivingEntity> hitEntities, ServerWorld world, LivingEntity target, LivingEntity attacker, float damage, float multiplier) {
 		if (damage > 1 && !hitEntities.contains(target)) {
 			hitEntities.add(target);
 			getNearest(hitEntities, target, attacker).ifPresent(nearest -> {
 				target.playSound(ModSoundEvents.ENTITY_GENERIC_ZAP);
-				((ServerWorld) target.getWorld()).spawnParticles(new SparkParticleEffect(nearest.getEyePos()), target.getX(), target.getEyeY(), target.getZ(), 1, 0, 0, 0, 0);
+				world.spawnParticles(new SparkParticleEffect(nearest.getEyePos()), target.getX(), target.getEyeY(), target.getZ(), 1, 0, 0, 0, 0);
 				Vec3d random = target.getEyePos().addRandom(target.getRandom(), 1.5F);
-				((ServerWorld) target.getWorld()).spawnParticles(new SparkParticleEffect(target.getEyePos()), random.getX(), random.getY(), random.getZ(), 1, 0, 0, 0, 0);
-				nearest.damage(attacker instanceof PlayerEntity player ? target.getDamageSources().playerAttack(player) : target.getDamageSources().mobAttack(attacker), damage * multiplier);
-				chain(hitEntities, nearest, attacker, damage * multiplier, multiplier);
+				world.spawnParticles(new SparkParticleEffect(target.getEyePos()), random.getX(), random.getY(), random.getZ(), 1, 0, 0, 0, 0);
+				nearest.damage(world, attacker instanceof PlayerEntity player ? target.getDamageSources().playerAttack(player) : target.getDamageSources().mobAttack(attacker), damage * multiplier);
+				chain(hitEntities, world, nearest, attacker, damage * multiplier, multiplier);
 			});
 		}
 	}

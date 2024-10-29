@@ -12,8 +12,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stat.Stats;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,13 +33,13 @@ public abstract class ItemStackMixin {
 	public abstract int getMaxUseTime(LivingEntity user);
 
 	@Inject(method = "use", at = @At("HEAD"), cancellable = true)
-	private void enchancement$eruption(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
+	private void enchancement$eruption(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
 		ItemStack stack = user.getStackInHand(hand);
 		setUsing(user, false);
 		if (hand == Hand.MAIN_HAND && !EnchancementUtil.isSufficientlyHigh(user, 0.25) && canUse(user.getRandom(), stack)) {
 			setUsing(user, true);
 			user.setCurrentHand(hand);
-			cir.setReturnValue(TypedActionResult.consume(stack));
+			cir.setReturnValue(ActionResult.CONSUME);
 		}
 	}
 

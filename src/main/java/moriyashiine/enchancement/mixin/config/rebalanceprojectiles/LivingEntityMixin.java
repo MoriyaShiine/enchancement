@@ -14,6 +14,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -28,7 +29,7 @@ public abstract class LivingEntityMixin extends Entity {
 	}
 
 	@ModifyVariable(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;blockedByShield(Lnet/minecraft/entity/damage/DamageSource;)Z"), argsOnly = true)
-	private float enchancement$rebalanceProjectiles(float value, DamageSource source) {
+	private float enchancement$rebalanceProjectiles(float value, ServerWorld world, DamageSource source) {
 		if (source.getSource() instanceof ProjectileEntity projectile) {
 			boolean bypass = ModConfig.rebalanceProjectiles;
 			if (!bypass) {
@@ -52,7 +53,7 @@ public abstract class LivingEntityMixin extends Entity {
 	}
 
 	@ModifyExpressionValue(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/damage/DamageSource;isIn(Lnet/minecraft/registry/tag/TagKey;)Z", ordinal = 4))
-	private boolean enchancement$rebalanceProjectiles(boolean value, DamageSource source) {
+	private boolean enchancement$rebalanceProjectiles(boolean value, ServerWorld world, DamageSource source) {
 		if (ModConfig.rebalanceProjectiles && source.getSource() instanceof ProjectileEntity) {
 			return true;
 		}
@@ -60,7 +61,7 @@ public abstract class LivingEntityMixin extends Entity {
 	}
 
 	@Inject(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;tiltScreen(DD)V"))
-	private void enchancement$rebalanceProjectiles(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+	private void enchancement$rebalanceProjectiles(ServerWorld world, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
 		if (ModConfig.rebalanceProjectiles && source.getSource() instanceof ProjectileEntity) {
 			setVelocity(0, Math.min(0, getVelocity().getY()), 0);
 			velocityModified = true;

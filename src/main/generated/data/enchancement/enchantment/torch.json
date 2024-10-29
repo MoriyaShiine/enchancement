@@ -7,6 +7,7 @@
 	"enchancement:allow_loading_projectile": [
 	  {
 		"effect": {
+		  "model": "enchancement:crossbow_torch",
 		  "only_allow": true,
 		  "projectile_item": "minecraft:torch"
 		}

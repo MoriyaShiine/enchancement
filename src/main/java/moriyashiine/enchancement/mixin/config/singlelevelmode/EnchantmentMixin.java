@@ -15,8 +15,9 @@ public class EnchantmentMixin {
 	@ModifyReturnValue(method = "getMaxLevel", at = @At("RETURN"))
 	private int enchancement$singleLevelMode(int original) {
 		if (ModConfig.singleLevelMode) {
-			if (!EnchancementUtil.ORIGINAL_MAX_LEVELS.containsKey((Enchantment) (Object) this)) {
-				EnchancementUtil.ORIGINAL_MAX_LEVELS.put((Enchantment) (Object) this, original);
+			Enchantment enchantment = (Enchantment) (Object) this;
+			if (!EnchancementUtil.ORIGINAL_MAX_LEVELS.containsKey(enchantment)) {
+				EnchancementUtil.ORIGINAL_MAX_LEVELS.put(enchantment, original);
 			}
 			return 1;
 		}

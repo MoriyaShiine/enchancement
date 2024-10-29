@@ -48,7 +48,8 @@ public class HeadDropsReloadListener implements SimpleSynchronousResourceReloadL
 					}
 					float chance = JsonHelper.getFloat(object, "chance");
 					BeheadingEntry.DROP_MAP.put(entity_type, new BeheadingEntry(drop, chance));
-				} catch (Exception ignored) {
+				} catch (Exception exception) {
+					Enchancement.LOGGER.error("{} in file '{}'", exception.getLocalizedMessage(), identifier);
 				}
 			}
 		});

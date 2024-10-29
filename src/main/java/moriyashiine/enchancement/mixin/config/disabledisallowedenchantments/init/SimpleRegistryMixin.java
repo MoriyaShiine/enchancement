@@ -23,9 +23,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(SimpleRegistry.class)
 public abstract class SimpleRegistryMixin<T> {
 	@Shadow
-	public abstract RegistryEntryOwner<T> getEntryOwner();
-
-	@Shadow
 	public abstract int getRawId(@Nullable T value);
 
 	@Shadow
@@ -33,12 +30,12 @@ public abstract class SimpleRegistryMixin<T> {
 
 	@Shadow
 	@Final
-	RegistryKey<? extends Registry<T>> key;
+	private RegistryKey<? extends Registry<T>> key;
 
 	@Inject(method = "<init>(Lnet/minecraft/registry/RegistryKey;Lcom/mojang/serialization/Lifecycle;Z)V", at = @At("TAIL"))
 	private void enchancement$disableDisallowedEnchantments(RegistryKey<?> key, Lifecycle lifecycle, boolean intrusive, CallbackInfo ci) {
 		if (key.equals(RegistryKeys.ENCHANTMENT)) {
-			EnchancementUtil.ENCHANTMENT_REGISTRY_OWNER = getEntryOwner();
+			EnchancementUtil.ENCHANTMENT_REGISTRY_OWNER = (RegistryEntryOwner<?>) this;
 		}
 	}
 

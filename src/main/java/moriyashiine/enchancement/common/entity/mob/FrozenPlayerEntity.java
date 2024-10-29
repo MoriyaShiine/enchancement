@@ -10,10 +10,7 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.LootTables;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import java.util.UUID;
@@ -31,13 +28,8 @@ public class FrozenPlayerEntity extends MobEntity {
 	public void tick() {
 		super.tick();
 		if (!getWorld().isClient && SLIM_STATUSES.containsKey(getUuid())) {
-			dataTracker.set(SLIM, SLIM_STATUSES.removeBoolean(getUuid()));
+			setSlim(SLIM_STATUSES.removeBoolean(getUuid()));
 		}
-	}
-
-	@Override
-	protected RegistryKey<LootTable> getLootTableId() {
-		return LootTables.EMPTY;
 	}
 
 	@Override
@@ -48,18 +40,26 @@ public class FrozenPlayerEntity extends MobEntity {
 	@Override
 	public void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
-		dataTracker.set(SLIM, nbt.getBoolean("Slim"));
+		setSlim(nbt.getBoolean("Slim"));
 	}
 
 	@Override
 	public void writeCustomDataToNbt(NbtCompound nbt) {
 		super.writeCustomDataToNbt(nbt);
-		nbt.putBoolean("Slim", dataTracker.get(SLIM));
+		nbt.putBoolean("Slim", isSlim());
 	}
 
 	@Override
 	protected void initDataTracker(DataTracker.Builder builder) {
 		super.initDataTracker(builder);
 		builder.add(SLIM, false);
+	}
+
+	public boolean isSlim() {
+		return dataTracker.get(SLIM);
+	}
+
+	public void setSlim(boolean slim) {
+		dataTracker.set(SLIM, slim);
 	}
 }

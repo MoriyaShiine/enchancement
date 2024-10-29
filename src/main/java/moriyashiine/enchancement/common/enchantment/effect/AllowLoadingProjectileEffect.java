@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.enchantment.effect;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import moriyashiine.enchancement.common.entity.projectile.AmethystShardEntity;
+import moriyashiine.enchancement.common.entity.projectile.IceShardEntity;
 import moriyashiine.enchancement.common.entity.projectile.TorchEntity;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import net.minecraft.enchantment.Enchantment;
@@ -23,14 +24,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public record AllowLoadingProjectileEffect(Item projectileItem, boolean onlyAllow) {
+public record AllowLoadingProjectileEffect(Identifier model, Item projectileItem, boolean onlyAllow) {
 	public static final Codec<AllowLoadingProjectileEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+					Identifier.CODEC.fieldOf("model").forGetter(AllowLoadingProjectileEffect::model),
 					Registries.ITEM.getCodec().fieldOf("projectile_item").forGetter(AllowLoadingProjectileEffect::projectileItem),
 					Codec.BOOL.fieldOf("only_allow").forGetter(AllowLoadingProjectileEffect::onlyAllow))
 			.apply(instance, AllowLoadingProjectileEffect::new));
@@ -38,13 +41,14 @@ public record AllowLoadingProjectileEffect(Item projectileItem, boolean onlyAllo
 	public static final Map<Item, ProjectileBuilder> PROJECTILE_MAP = new HashMap<>();
 
 	static {
-		PROJECTILE_MAP.put(Items.EGG, (world, owner, stack, shotFrom) -> new EggEntity(world, owner));
-		PROJECTILE_MAP.put(Items.ENDER_PEARL, (world, owner, stack, shotFrom) -> new EnderPearlEntity(world, owner));
-		PROJECTILE_MAP.put(Items.EXPERIENCE_BOTTLE, (world, owner, stack, shotFrom) -> new ExperienceBottleEntity(world, owner));
-		PROJECTILE_MAP.put(Items.SNOWBALL, (world, owner, stack, shotFrom) -> new SnowballEntity(world, owner));
+		PROJECTILE_MAP.put(Items.EGG, (world, owner, stack, shotFrom) -> new EggEntity(world, owner, stack));
+		PROJECTILE_MAP.put(Items.ENDER_PEARL, (world, owner, stack, shotFrom) -> new EnderPearlEntity(world, owner, stack));
+		PROJECTILE_MAP.put(Items.EXPERIENCE_BOTTLE, (world, owner, stack, shotFrom) -> new ExperienceBottleEntity(world, owner, stack));
+		PROJECTILE_MAP.put(Items.SNOWBALL, (world, owner, stack, shotFrom) -> new SnowballEntity(world, owner, stack));
 		PROJECTILE_MAP.put(Items.TRIDENT, (world, owner, stack, shotFrom) -> new TridentEntity(world, owner, stack));
 
 		PROJECTILE_MAP.put(Items.AMETHYST_SHARD, (world, owner, stack, shotFrom) -> new AmethystShardEntity(world, owner, shotFrom));
+		PROJECTILE_MAP.put(Items.ICE, ((world, owner, stack, shotFrom) -> new IceShardEntity(world, owner, shotFrom)));
 		PROJECTILE_MAP.put(Items.TORCH, (world, owner, stack, shotFrom) -> {
 			TorchEntity torch = new TorchEntity(world, owner, stack, shotFrom);
 			torch.setDamage(torch.getDamage() / 2);
@@ -59,6 +63,21 @@ public record AllowLoadingProjectileEffect(Item projectileItem, boolean onlyAllo
 			torch.setIgnitionTime(Math.max(1, level));
 			return torch;
 		});
+	}
+
+	public static Identifier getModel(ItemStack stack, Item projectileItem) {
+		final Identifier[] model = {null};
+		EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
+			List<EnchantmentEffectEntry<AllowLoadingProjectileEffect>> effects = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.ALLOW_LOADING_PROJECTILE);
+			if (effects != null) {
+				effects.forEach(effect -> {
+					if (effect.effect().projectileItem() == projectileItem) {
+						model[0] = effect.effect().model();
+					}
+				});
+			}
+		});
+		return model[0];
 	}
 
 	public static Set<Item> getItems(ItemStack stack) {

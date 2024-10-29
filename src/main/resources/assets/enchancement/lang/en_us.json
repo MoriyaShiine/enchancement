@@ -1,8 +1,8 @@
 {
   "entity.enchancement.frozen_player": "Frozen Player",
-  "entity.enchancement.ice_shard": "Ice Shard",
-  "entity.enchancement.brimstone": "Brimstone",
   "entity.enchancement.amethyst_shard": "Amethyst Shard",
+  "entity.enchancement.brimstone": "Brimstone",
+  "entity.enchancement.ice_shard": "Ice Shard",
   "entity.enchancement.torch": "Torch",
   "enchantment.minecraft.channeling.desc.redirect": "Causes the Trident to summon lightning when striking a mob. Ignites attacked mobs.",
   "enchantment.minecraft.fire_aspect.desc.redirect": "Ignites attacked mobs. Usable as Flint and Steel when sneaking.",

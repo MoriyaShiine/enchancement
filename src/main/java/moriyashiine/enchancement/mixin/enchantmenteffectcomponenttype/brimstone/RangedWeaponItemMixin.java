@@ -32,7 +32,9 @@ public class RangedWeaponItemMixin {
 	private ProjectileEntity enchancement$brimstone(ProjectileEntity original, World world, LivingEntity shooter, ItemStack weaponStack) {
 		if (weaponStack.contains(ModComponentTypes.BRIMSTONE_DAMAGE)) {
 			int damage = weaponStack.getOrDefault(ModComponentTypes.BRIMSTONE_DAMAGE, 0);
-			shooter.damage(ModDamageTypes.create(world, ModDamageTypes.LIFE_DRAIN), shooter.getMaxHealth() * (damage / 20F));
+			if (world instanceof ServerWorld serverWorld) {
+				shooter.damage(serverWorld, ModDamageTypes.create(world, ModDamageTypes.LIFE_DRAIN), shooter.getMaxHealth() * (damage / 20F));
+			}
 			BrimstoneEntity brimstone = new BrimstoneEntity(world, shooter, weaponStack);
 			brimstone.setDamage(damage);
 			return brimstone;
@@ -40,7 +42,7 @@ public class RangedWeaponItemMixin {
 		return original;
 	}
 
-	@WrapOperation(method = "shootAll", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/RangedWeaponItem;shoot(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/projectile/ProjectileEntity;IFFFLnet/minecraft/entity/LivingEntity;)V"))
+	@WrapOperation(method = "method_61659", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/RangedWeaponItem;shoot(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/projectile/ProjectileEntity;IFFFLnet/minecraft/entity/LivingEntity;)V"))
 	private void enchancement$brimstone(RangedWeaponItem instance, LivingEntity shooter, ProjectileEntity projectile, int index, float speed, float divergence, float yaw, @Nullable LivingEntity target, Operation<Void> original) {
 		if (projectile instanceof BrimstoneEntity brimstone) {
 			brimstone.getDataTracker().set(BrimstoneEntity.FORCED_PITCH, shooter.getPitch());
@@ -58,7 +60,7 @@ public class RangedWeaponItemMixin {
 		if (damage > 0) {
 			stack.remove(ModComponentTypes.BRIMSTONE_DAMAGE);
 			if (shooter instanceof PlayerEntity player) {
-				player.getItemCooldownManager().set(stack.getItem(), (int) (CrossbowItem.getPullTime(stack, shooter) * (damage / 12F)));
+				player.getItemCooldownManager().set(stack, (int) (CrossbowItem.getPullTime(stack, shooter) * (damage / 12F)));
 			}
 		}
 	}

@@ -5,27 +5,21 @@ package moriyashiine.enchancement.common.entity.projectile;
 
 import moriyashiine.enchancement.common.init.ModDamageTypes;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
-import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.boss.dragon.EnderDragonPart;
+import net.minecraft.entity.damage.DamageType;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class AmethystShardEntity extends PersistentProjectileEntity {
+public class AmethystShardEntity extends ShardEntity {
 	private static final ParticleEffect PARTICLE = new ItemStackParticleEffect(ParticleTypes.ITEM, Items.AMETHYST_SHARD.getDefaultStack());
 
 	public AmethystShardEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
@@ -33,65 +27,28 @@ public class AmethystShardEntity extends PersistentProjectileEntity {
 	}
 
 	public AmethystShardEntity(World world, LivingEntity owner, @Nullable ItemStack shotFrom) {
-		super(ModEntityTypes.AMETHYST_SHARD, owner, world, ItemStack.EMPTY, shotFrom);
+		super(ModEntityTypes.AMETHYST_SHARD, owner, world, shotFrom);
 	}
 
 	@Override
-	protected ItemStack getDefaultItemStack() {
-		return ItemStack.EMPTY;
+	protected ParticleEffect getParticleEffect() {
+		return PARTICLE;
 	}
 
 	@Override
-	public void tick() {
-		super.tick();
-		if (!getWorld().isClient && age > 400) {
-			playSound(getHitSound(), 1, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
-			addParticles();
-			discard();
-		}
+	protected RegistryKey<DamageType> getDamageType() {
+		return ModDamageTypes.AMETHYST_SHARD;
 	}
 
 	@Override
-	protected SoundEvent getHitSound() {
-		return ModSoundEvents.ENTITY_SHARD_SHATTER;
-	}
-
-	@Override
-	protected void onEntityHit(EntityHitResult entityHitResult) {
-		if (!getWorld().isClient) {
-			Entity entity = entityHitResult.getEntity();
-			if (entity instanceof EnderDragonPart part) {
-				entity = part.owner;
-			}
-			Entity owner = getOwner();
-			if (EnchancementUtil.shouldHurt(owner, entity) && entity.damage(ModDamageTypes.create(getWorld(), ModDamageTypes.AMETHYST_SHARD, this, owner), (float) getDamage())) {
-				if (isOnFire()) {
-					entity.setOnFireFor(5);
-				}
-				playSound(getHitSound(), 1, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
-				addParticles();
-				discard();
-			}
-		}
-	}
-
-	@Override
-	protected void onBlockHit(BlockHitResult blockHitResult) {
-		BlockState state = getWorld().getBlockState(blockHitResult.getBlockPos());
-		state.onProjectileHit(getWorld(), state, blockHitResult, this);
-		if (!getWorld().isClient) {
-			playSound(getHitSound(), 1, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
-			addParticles();
-			discard();
+	protected void onTargetHit(Entity entity) {
+		if (isOnFire()) {
+			entity.setOnFireFor(5);
 		}
 	}
 
 	@Override
 	public void setVelocity(double x, double y, double z, float power, float uncertainty) {
 		super.setVelocity(x, y, z, power / 2, uncertainty);
-	}
-
-	public void addParticles() {
-		((ServerWorld) getWorld()).spawnParticles(PARTICLE, getX(), getY(), getZ(), 8, getWidth() / 2, getHeight() / 2, getWidth() / 2, 0);
 	}
 }

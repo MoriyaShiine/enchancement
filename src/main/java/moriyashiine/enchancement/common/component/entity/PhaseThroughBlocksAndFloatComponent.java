@@ -54,7 +54,7 @@ public class PhaseThroughBlocksAndFloatComponent implements AutoSyncedComponent,
 			freezeVelocity = null;
 		}
 		if (shouldPhase()) {
-			if (++ticksInAir >= 200 || (obj instanceof PersistentProjectileEntity persistentProjectile && persistentProjectile.inGround)) {
+			if (++ticksInAir >= 200 || (obj instanceof PersistentProjectileEntity persistentProjectile && persistentProjectile.isInGround())) {
 				disable();
 			}
 		}

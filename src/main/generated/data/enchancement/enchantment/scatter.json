@@ -8,6 +8,7 @@
 	"enchancement:allow_loading_projectile": [
 	  {
 		"effect": {
+		  "model": "enchancement:crossbow_amethyst",
 		  "only_allow": false,
 		  "projectile_item": "minecraft:amethyst_shard"
 		}

@@ -9,6 +9,7 @@ import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.util.Identifier;
 
@@ -23,7 +24,7 @@ public class AirJumpRenderEvent implements HudRenderCallback {
 
 	@Override
 	public void onHudRender(DrawContext drawContext, RenderTickCounter tickCounter) {
-		ModEntityComponents.AIR_JUMP.maybeGet(MinecraftClient.getInstance().cameraEntity).ifPresent(airJumpComponent -> {
+		ModEntityComponents.AIR_JUMP.maybeGet(MinecraftClient.getInstance().getCameraEntity()).ifPresent(airJumpComponent -> {
 			if (airJumpComponent.hasAirJump()) {
 				int jumpsLeft = airJumpComponent.getJumpsLeft();
 				if (jumpsLeft < airJumpComponent.getMaxJumps()) {
@@ -32,12 +33,11 @@ public class AirJumpRenderEvent implements HudRenderCallback {
 					Identifier second = getTexture(jumpsLeft);
 					int x = drawContext.getScaledWindowWidth() / 2 - 5, y = drawContext.getScaledWindowHeight() / 2 + 27;
 					if (airJumpComponent.getCooldown() < airJumpComponent.getLastCooldown()) {
-						drawContext.drawGuiTexture(first, x, y, 9, 9);
-						drawContext.drawGuiTexture(second, 9, 9, 0, 0, x, y, 9, (int) ((airJumpComponent.getCooldown() / (float) airJumpComponent.getLastCooldown()) * 9));
+						drawContext.drawGuiTexture(RenderLayer::getGuiTextured, first, x, y, 9, 9);
+						drawContext.drawGuiTexture(RenderLayer::getGuiTextured, second, 9, 9, 0, 0, x, y, 9, (int) ((airJumpComponent.getCooldown() / (float) airJumpComponent.getLastCooldown()) * 9));
 					} else {
-						drawContext.drawGuiTexture(second, x, y, 9, 9);
+						drawContext.drawGuiTexture(RenderLayer::getGuiTextured, second, x, y, 9, 9);
 					}
-					drawContext.setShaderColor(1, 1, 1, 1);
 					RenderSystem.disableBlend();
 				}
 			}

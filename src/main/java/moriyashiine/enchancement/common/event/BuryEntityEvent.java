@@ -50,17 +50,17 @@ public class BuryEntityEvent {
 					return ActionResult.PASS;
 				}
 				ItemStack stack = player.getStackInHand(hand);
-				if (!player.getItemCooldownManager().isCoolingDown(stack.getItem()) && EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.BURY_ENTITY) && BuryEffect.bury(world, entity, () -> {
+				if (!player.getItemCooldownManager().isCoolingDown(stack) && EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.BURY_ENTITY) && BuryEffect.bury(world, entity, () -> {
 					if (!world.isClient) {
 						int cooldown = MathHelper.floor(EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.BURY_ENTITY, (ServerWorld) world, stack, 0) * 20);
 						if (cooldown > 0) {
-							player.getItemCooldownManager().set(stack.getItem(), cooldown);
+							player.getItemCooldownManager().set(stack, cooldown);
 						}
 						player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
 						stack.damage(1, player, LivingEntity.getSlotForHand(hand));
 					}
 				})) {
-					return ActionResult.success(world.isClient);
+					return ActionResult.SUCCESS;
 				}
 			}
 			return ActionResult.PASS;

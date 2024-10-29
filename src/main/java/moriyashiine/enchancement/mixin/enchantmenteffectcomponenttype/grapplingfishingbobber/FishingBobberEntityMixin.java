@@ -19,7 +19,9 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -58,6 +60,16 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity implemen
 	@Unique
 	private float getStrength() {
 		return dataTracker.get(STRENGTH);
+	}
+
+	@Inject(method = "<init>(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/world/World;IILnet/minecraft/item/ItemStack;)V", at = @At("TAIL"))
+	private void enchancement$grappleFishingBobber(PlayerEntity thrower, World world, int luckBonus, int waitTimeReductionTicks, ItemStack stack, CallbackInfo ci) {
+		if (world instanceof ServerWorld serverWorld) {
+			float grapplingStrength = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.GRAPPLING_FISHING_BOBBER, serverWorld, stack, 0);
+			if (grapplingStrength != 0) {
+				((StrengthHolder) this).enchancement$setStrength(grapplingStrength);
+			}
+		}
 	}
 
 	@Inject(method = "initDataTracker", at = @At("TAIL"))

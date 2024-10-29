@@ -12,7 +12,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.UseAction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -41,7 +40,7 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@Unique
 	private int modifyTimeLeft(int original) {
-		if (activeItemStack.contains(DataComponentTypes.FOOD) || activeItemStack.getUseAction() == UseAction.DRINK) {
+		if (activeItemStack.contains(DataComponentTypes.CONSUMABLE)) {
 			float modifiedTime = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.MODIFY_CONSUMPTION_TIME, ((LivingEntity) (Object) this), original);
 			if (modifiedTime != original) {
 				return Math.max(1, MathHelper.floor(modifiedTime));

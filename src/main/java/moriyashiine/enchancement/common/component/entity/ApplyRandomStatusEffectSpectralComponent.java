@@ -53,7 +53,7 @@ public class ApplyRandomStatusEffectSpectralComponent implements AutoSyncedCompo
 
 	@Override
 	public void tick() {
-		if (obj.inGround && !effects.isEmpty() && obj.inGroundTime >= 600) {
+		if (obj.isInGround() && !effects.isEmpty() && obj.inGroundTime >= 600) {
 			effects.clear();
 			color = -1;
 		}
@@ -62,7 +62,7 @@ public class ApplyRandomStatusEffectSpectralComponent implements AutoSyncedCompo
 	@Override
 	public void clientTick() {
 		tick();
-		if (obj.inGround) {
+		if (obj.isInGround()) {
 			if (obj.inGroundTime % 5 == 0) {
 				spawnParticles(1);
 			}

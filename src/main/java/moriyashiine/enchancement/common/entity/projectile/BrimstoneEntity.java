@@ -26,6 +26,7 @@ import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -36,7 +37,6 @@ import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -59,7 +59,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 	public static final TrackedData<Float> FORCED_PITCH = DataTracker.registerData(BrimstoneEntity.class, TrackedDataHandlerRegistry.FLOAT);
 	public static final TrackedData<Float> FORCED_YAW = DataTracker.registerData(BrimstoneEntity.class, TrackedDataHandlerRegistry.FLOAT);
 
-	private static final DustParticleEffect PARTICLE = new DustParticleEffect(new Vector3f(1, 0, 0), 1);
+	private static final DustParticleEffect PARTICLE = new DustParticleEffect(0xFF0000, 1);
 
 	public int distanceTraveled = 0, ticksExisted = 0;
 
@@ -67,13 +67,11 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 
 	public BrimstoneEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
 		super(entityType, world);
-		ignoreCameraFrustum = true;
 	}
 
 	public BrimstoneEntity(World world, LivingEntity owner, @Nullable ItemStack shotFrom) {
 		super(ModEntityTypes.BRIMSTONE, owner, world, ItemStack.EMPTY, shotFrom);
 		setPosition(owner.getX(), owner.getEyeY() - 0.3, owner.getZ());
-		ignoreCameraFrustum = true;
 	}
 
 	@Override
@@ -107,20 +105,20 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 			} else {
 				Entity owner = getOwner();
 				getWorld().getOtherEntities(owner, Box.from(hitResult.getPos()).expand(0.5), EntityPredicates.EXCEPT_SPECTATOR.and(entity -> canEntityBeHit(owner, entity))).forEach(entity -> {
-					if (getWorld().isClient) {
-						addParticles(PARTICLE, entity.getX(), entity.getRandomBodyY(), entity.getZ());
-					} else {
+					if (getWorld() instanceof ServerWorld serverWorld) {
 						double damage = getDamage();
 						if (entity instanceof LivingEntity living) {
 							damage *= living.getMaxHealth() / 20F;
 						}
 						damage *= getDamageMultiplier(distanceTraveled);
 						damage = Math.min(50, damage);
-						entity.damage(ModDamageTypes.create(getWorld(), ModDamageTypes.BRIMSTONE, this, owner), (float) damage);
+						entity.damage(serverWorld, ModDamageTypes.create(getWorld(), ModDamageTypes.BRIMSTONE, this, owner), (float) damage);
 						hitEntities.add(entity);
 						if (getOwner() instanceof ServerPlayerEntity player && entity instanceof LivingEntity living) {
-							Criteria.KILLED_BY_CROSSBOW.trigger(player, Set.of(living));
+							Criteria.KILLED_BY_ARROW.trigger(player, Set.of(living), getWeaponStack());
 						}
+					} else {
+						addParticles(PARTICLE, entity.getX(), entity.getRandomBodyY(), entity.getZ());
 					}
 				});
 			}

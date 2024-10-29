@@ -45,7 +45,7 @@
 		  "type": "enchancement:conditional_attribute",
 		  "attribute": {
 			"amount": 1.0,
-			"attribute": "minecraft:generic.step_height",
+			"attribute": "minecraft:step_height",
 			"id": "enchancement:enchantment.buoy",
 			"operation": "add_value"
 		  },
@@ -63,7 +63,7 @@
 			  "base": 2.0,
 			  "per_level_above_first": 2.0
 			},
-			"attribute": "minecraft:generic.safe_fall_distance",
+			"attribute": "minecraft:safe_fall_distance",
 			"id": "enchancement:enchantment.buoy",
 			"operation": "add_value"
 		  },

@@ -17,14 +17,19 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.EnchantingTableBlock;
 import net.minecraft.block.entity.ChiseledBookshelfBlockEntity;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemConvertible;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.BlockTags;
@@ -43,14 +48,14 @@ import net.minecraft.world.World;
 import java.util.*;
 
 public class EnchantingTableScreenHandler extends ScreenHandler {
-	public static final Map<RegistryEntry<Item>, Ingredient> ENCHANTING_MATERIAL_MAP = new HashMap<>();
+	public static final Map<Item, EnchantingMaterial> ENCHANTING_MATERIAL_MAP = new HashMap<>();
 	public static final int PAGE_SIZE = 4;
 
 	public final List<RegistryEntry<Enchantment>> validEnchantments = new ArrayList<>(), selectedEnchantments = new ArrayList<>();
 	public int viewIndex = 0;
 
 	private ItemStack enchantingStack = ItemStack.EMPTY;
-	private Ingredient repairIngredient = Ingredient.EMPTY;
+	private EnchantingMaterial enchantingMaterial = EnchantingMaterial.EMPTY;
 	private int bookshelfCount = 0, cost = 0;
 
 	private final Inventory inventory = new SimpleInventory(3) {
@@ -99,7 +104,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 				selectedEnchantments.clear();
 				viewIndex = 0;
 				enchantingStack = ItemStack.EMPTY;
-				repairIngredient = Ingredient.EMPTY;
+				enchantingMaterial = EnchantingMaterial.EMPTY;
 				cost = 0;
 				player.getInventory().offerOrDrop(slots.get(2).getStack());
 				super.onTakeItem(player, stack);
@@ -114,7 +119,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		addSlot(new Slot(inventory, 2, 25, 51) {
 			@Override
 			public boolean canInsert(ItemStack stack) {
-				return getRepairIngredient(slots.getFirst().getStack()).test(stack);
+				return getEnchantingMaterial(slots.getFirst().getStack()).test(stack);
 			}
 		});
 		int index;
@@ -144,7 +149,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 				if (!insertItem(stackInSlot, 3, 38, false)) {
 					return ItemStack.EMPTY;
 				}
-			} else if (repairIngredient.test(stackInSlot)) {
+			} else if (getEnchantingMaterial().test(stackInSlot)) {
 				if (!insertItem(stackInSlot, 2, 3, false)) {
 					return ItemStack.EMPTY;
 				}
@@ -193,7 +198,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 					world.playSound(null, pos, SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, SoundCategory.BLOCKS, 1, world.random.nextFloat() * 0.1F + 0.9F);
 					if (!player.isCreative() && cost > 0) {
 						slots.get(1).getStack().decrement(cost);
-						if (!getRepairIngredient(slots.get(0).getStack()).isEmpty()) {
+						if (!getEnchantingMaterial(slots.get(0).getStack()).isEmpty()) {
 							slots.get(2).getStack().decrement(cost);
 						}
 					}
@@ -233,7 +238,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 				selectedEnchantments.clear();
 				viewIndex = 0;
 				enchantingStack = stack;
-				repairIngredient = getRepairIngredient(stack);
+				enchantingMaterial = getEnchantingMaterial(stack);
 				cost = 0;
 				for (RegistryEntry<Enchantment> enchantment : getAllEnchantments()) {
 					if (isEnchantmentAllowed(enchantment, stack) && !EnchancementUtil.isDefaultEnchantment(stack, enchantment)) {
@@ -262,7 +267,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 				return true;
 			}
 			if (player.experienceLevel >= cost && slots.get(1).getStack().getCount() >= cost) {
-				if (!getRepairIngredient(slots.get(0).getStack()).isEmpty()) {
+				if (!getEnchantingMaterial(slots.get(0).getStack()).isEmpty()) {
 					return slots.get(2).getStack().getCount() >= cost;
 				}
 				return true;
@@ -271,40 +276,24 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		return false;
 	}
 
-	public Ingredient getRepairIngredient() {
-		return repairIngredient;
+	public EnchantingMaterial getEnchantingMaterial() {
+		return enchantingMaterial;
 	}
 
-	private Ingredient getRepairIngredient(ItemStack stack) {
-		Item item = stack.getItem();
-		Ingredient ingredient = ENCHANTING_MATERIAL_MAP.getOrDefault(Registries.ITEM.getEntry(item), Ingredient.EMPTY);
-		if (ingredient.isEmpty()) {
-			if (item instanceof ArmorItem armorItem) {
-				Ingredient repairIngredient = armorItem.getMaterial().value().repairIngredient().get();
-				if (!repairIngredient.isEmpty()) {
-					ingredient = repairIngredient;
-				}
-			} else if (item instanceof ToolItem toolItem) {
-				Ingredient repairIngredient = toolItem.getMaterial().getRepairIngredient();
-				if (!repairIngredient.isEmpty()) {
-					ingredient = repairIngredient;
-				}
+	private EnchantingMaterial getEnchantingMaterial(ItemStack stack) {
+		EnchantingMaterial material = ENCHANTING_MATERIAL_MAP.getOrDefault(stack.getItem(), EnchantingMaterial.EMPTY);
+		if (material.isEmpty()) {
+			Set<ItemConvertible> items = new HashSet<>();
+			if (stack.contains(DataComponentTypes.REPAIRABLE)) {
+				stack.get(DataComponentTypes.REPAIRABLE).items().forEach(item -> items.add(item.value() == Items.NETHERITE_INGOT ? Items.DIAMOND : item.value()));
 			}
-			Set<ItemStack> stacks = new HashSet<>();
-			for (ItemStack matchingStack : ingredient.getMatchingStacks()) {
-				if (matchingStack.isOf(Items.NETHERITE_INGOT)) {
-					stacks.add(Items.DIAMOND.getDefaultStack());
-				} else {
-					stacks.add(matchingStack);
-				}
-			}
-			if (stacks.isEmpty()) {
-				ingredient = Ingredient.fromTag(ModItemTags.DEFAULT_ENCHANTING_MATERIAL);
+			if (items.isEmpty()) {
+				material = new EnchantingMaterial(Ingredient.fromTag(world.getRegistryManager().getOrThrow(RegistryKeys.ITEM).getOrThrow(ModItemTags.DEFAULT_ENCHANTING_MATERIAL)));
 			} else {
-				ingredient = Ingredient.ofStacks(stacks.stream());
+				material = new EnchantingMaterial(Ingredient.ofItems(items.toArray(new ItemConvertible[0])));
 			}
 		}
-		return ingredient;
+		return material;
 	}
 
 	private int calculateBookshelfCount() {
@@ -326,13 +315,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 	}
 
 	private int getCost(ItemStack stack) {
-		int enchantability = 13;
-		if (stack.getItem() instanceof ArmorItem armorItem) {
-			enchantability = armorItem.getEnchantability();
-		} else if (stack.getItem() instanceof ToolItem toolItem) {
-			enchantability = toolItem.getEnchantability();
-		}
-		double cost = 60F / (Math.max(1, enchantability + bookshelfCount));
+		double cost = 60F / (Math.max(1, EnchancementUtil.getEnchantmentValue(stack) + bookshelfCount));
 		if (bookshelfCount == 15) {
 			cost = MathHelper.floor(cost);
 		} else {
@@ -354,7 +337,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 	}
 
 	private List<RegistryEntry.Reference<Enchantment>> getAllEnchantments() {
-		return world.getRegistryManager().get(RegistryKeys.ENCHANTMENT).streamEntries().toList();
+		return world.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).streamEntries().toList();
 	}
 
 	// clone of vanilla method because for some reason quilt always returns true
@@ -375,5 +358,39 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 			}
 		}
 		return false;
+	}
+
+	public static class EnchantingMaterial {
+		public static final PacketCodec<RegistryByteBuf, EnchantingMaterial> PACKET_CODEC = Ingredient.PACKET_CODEC.xmap(EnchantingMaterial::new, material -> material.ingredient);
+
+		public static final EnchantingMaterial EMPTY = new EnchantingMaterial(null);
+
+		private final Ingredient ingredient;
+
+		public EnchantingMaterial(Ingredient ingredient) {
+			this.ingredient = ingredient;
+		}
+
+		public RegistryEntry<Item> get(int index) {
+			return ingredient.getMatchingItems().get(index);
+		}
+
+		public int size() {
+			if (ingredient == null) {
+				return 0;
+			}
+			return ingredient.getMatchingItems().size();
+		}
+
+		public boolean isEmpty() {
+			return size() == 0;
+		}
+
+		public boolean test(ItemStack stack) {
+			if (ingredient == null) {
+				return false;
+			}
+			return ingredient.test(stack);
+		}
 	}
 }

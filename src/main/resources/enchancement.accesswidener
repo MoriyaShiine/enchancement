@@ -18,7 +18,8 @@ accessible method net/minecraft/block/HoneyBlock updateSlidingVelocity (Lnet/min
 accessible method net/minecraft/entity/ItemEntity tryMerge (Lnet/minecraft/entity/ItemEntity;)V
 accessible method net/minecraft/entity/LivingEntity getJumpVelocity ()F
 accessible method net/minecraft/entity/projectile/PersistentProjectileEntity asItemStack ()Lnet/minecraft/item/ItemStack;
-accessible method net/minecraft/entity/mob/PiglinBrain onAttacked (Lnet/minecraft/entity/mob/PiglinEntity;Lnet/minecraft/entity/LivingEntity;)V
+accessible method net/minecraft/entity/projectile/PersistentProjectileEntity isInGround ()Z
+accessible method net/minecraft/entity/mob/PiglinBrain onAttacked (Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/mob/PiglinEntity;Lnet/minecraft/entity/LivingEntity;)V
 accessible method net/minecraft/entity/projectile/TridentEntity isOwnerAlive ()Z
 accessible method net/minecraft/world/World getEntityLookup ()Lnet/minecraft/world/entity/EntityLookup;
 accessible method net/minecraft/client/gui/hud/InGameHud renderHealthBar (Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/entity/player/PlayerEntity;IIIIFIIIZ)V
@@ -32,7 +33,6 @@ mutable field net/minecraft/enchantment/Enchantment effects Lnet/minecraft/compo
 accessible field net/minecraft/enchantment/effect/EnchantmentEffectEntry requirements Ljava/util/Optional;
 mutable field net/minecraft/enchantment/effect/EnchantmentEffectEntry requirements Ljava/util/Optional;
 accessible field net/minecraft/entity/LivingEntity jumping Z
-accessible field net/minecraft/entity/projectile/PersistentProjectileEntity inGround Z
 accessible field net/minecraft/entity/projectile/PersistentProjectileEntity inGroundTime I
 accessible field net/minecraft/enchantment/effect/TargetedEnchantmentEffect requirements Ljava/util/Optional;
 mutable field net/minecraft/enchantment/effect/TargetedEnchantmentEffect requirements Ljava/util/Optional;

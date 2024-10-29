@@ -13,7 +13,7 @@ import moriyashiine.enchancement.client.render.entity.AmethystShardEntityRendere
 import moriyashiine.enchancement.client.render.entity.BrimstoneEntityRenderer;
 import moriyashiine.enchancement.client.render.entity.IceShardEntityRenderer;
 import moriyashiine.enchancement.client.render.entity.TorchEntityRenderer;
-import moriyashiine.enchancement.client.render.entity.mob.FrozenPlayerEntityRenderer;
+import moriyashiine.enchancement.client.render.entity.model.FrozenPlayerEntityModel;
 import moriyashiine.enchancement.client.screen.EnchantingTableScreen;
 import moriyashiine.enchancement.client.util.EnchancementClientUtil;
 import moriyashiine.enchancement.common.Enchancement;
@@ -29,6 +29,7 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -58,16 +59,17 @@ public class EnchancementClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		EntityRendererRegistry.register(ModEntityTypes.FROZEN_PLAYER, FrozenPlayerEntityRenderer::new);
-		EntityRendererRegistry.register(ModEntityTypes.ICE_SHARD, IceShardEntityRenderer::new);
-		EntityRendererRegistry.register(ModEntityTypes.BRIMSTONE, BrimstoneEntityRenderer::new);
+		EntityModelLayerRegistry.registerModelLayer(FrozenPlayerEntityModel.LAYER, () -> FrozenPlayerEntityModel.getTexturedModelData(false));
+		EntityModelLayerRegistry.registerModelLayer(FrozenPlayerEntityModel.LAYER_SLIM, () -> FrozenPlayerEntityModel.getTexturedModelData(true));
 		EntityRendererRegistry.register(ModEntityTypes.AMETHYST_SHARD, AmethystShardEntityRenderer::new);
+		EntityRendererRegistry.register(ModEntityTypes.BRIMSTONE, BrimstoneEntityRenderer::new);
+		EntityRendererRegistry.register(ModEntityTypes.ICE_SHARD, IceShardEntityRenderer::new);
 		EntityRendererRegistry.register(ModEntityTypes.TORCH, TorchEntityRenderer::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.BRIMSTONE_BUBBLE, WaterBubbleParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.HONEY_BUBBLE, HoneyBubbleParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.SPARK, provider -> new SparkParticle.Factory());
-		ModelPredicateProviderRegistry.register(Items.CROSSBOW, Enchancement.id("brimstone"), (stack, world, entity, seed) -> CrossbowItem.isCharged(stack) && stack.contains(ModComponentTypes.BRIMSTONE_DAMAGE) ? stack.get(ModComponentTypes.BRIMSTONE_DAMAGE) / 12F : 0);
 		ModelPredicateProviderRegistry.register(Items.CROSSBOW, Enchancement.id("amethyst_shard"), (stack, world, entity, seed) -> stack.contains(DataComponentTypes.CHARGED_PROJECTILES) && stack.get(DataComponentTypes.CHARGED_PROJECTILES).contains(Items.AMETHYST_SHARD) || (CrossbowItem.isCharged(stack) && AllowLoadingProjectileEffect.getItems(stack).contains(Items.AMETHYST_SHARD) && !(entity instanceof PlayerEntity)) ? 1 : 0);
+		ModelPredicateProviderRegistry.register(Items.CROSSBOW, Enchancement.id("brimstone"), (stack, world, entity, seed) -> CrossbowItem.isCharged(stack) && stack.contains(ModComponentTypes.BRIMSTONE_DAMAGE) ? stack.get(ModComponentTypes.BRIMSTONE_DAMAGE) / 12F : 0);
 		ModelPredicateProviderRegistry.register(Items.CROSSBOW, Enchancement.id("torch"), (stack, world, entity, seed) -> stack.contains(DataComponentTypes.CHARGED_PROJECTILES) && stack.get(DataComponentTypes.CHARGED_PROJECTILES).contains(Items.TORCH) || (CrossbowItem.isCharged(stack) && AllowLoadingProjectileEffect.getItems(stack).contains(Items.TORCH) && !(entity instanceof PlayerEntity)) ? 1 : 0);
 		HandledScreens.register(ModScreenHandlerTypes.ENCHANTING_TABLE, EnchantingTableScreen::new);
 		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(FrozenReloadListener.INSTANCE);
@@ -113,7 +115,6 @@ public class EnchancementClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(AddMovementBurstParticlesPayload.ID, new AddMovementBurstParticlesPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(PlayBrimstoneFireSoundPayload.ID, new PlayBrimstoneFireSoundPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(PlayBrimstoneTravelSoundPayload.ID, new PlayBrimstoneTravelSoundPayload.Receiver());
-		ClientPlayNetworking.registerGlobalReceiver(ResetFrozenTicksPayload.ID, new ResetFrozenTicksPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(SyncFrozenPlayerSlimStatusS2CPayload.ID, new SyncFrozenPlayerSlimStatusS2CPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(UseEruptionPayload.ID, new UseEruptionPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(UseLightningDashPayload.ID, new UseLightningDashPayload.Receiver());

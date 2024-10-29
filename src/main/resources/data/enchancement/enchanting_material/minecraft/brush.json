@@ -1,5 +1,3 @@
 {
-  "ingredient": {
-	"tag": "c:ingots/copper"
-  }
+  "ingredient": "#c:ingots/copper"
 }

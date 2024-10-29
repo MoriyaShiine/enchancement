@@ -1,8 +1,8 @@
 {
   "entity.enchancement.frozen_player": "Donmuş Oyuncu",
-  "entity.enchancement.ice_shard": "Buz Parçası",
-  "entity.enchancement.brimstone": "Sülfür",
   "entity.enchancement.amethyst_shard": "Ametist Parçası",
+  "entity.enchancement.brimstone": "Sülfür",
+  "entity.enchancement.ice_shard": "Buz Parçası",
   "entity.enchancement.torch": "Meşale",
   "enchantment.minecraft.channeling.desc.redirect": "Üçlü mızrağın bir varlığa isabet ettiğinde yıldırım çarptırır. Saldırılan varlığı yakar.",
   "enchantment.minecraft.fire_aspect.desc.redirect": "Saldırılan yaratıkları yakar. Eğilirken Çakmak Taşı ve Çelik olarak kullanılabilir.",

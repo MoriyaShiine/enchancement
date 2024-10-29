@@ -12,9 +12,9 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -22,9 +22,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = LivingEntity.class, priority = 1001)
 public abstract class LivingEntityMixin extends Entity {
-	@Shadow
-	public abstract boolean damage(DamageSource source, float amount);
-
 	public LivingEntityMixin(EntityType<?> type, World world) {
 		super(type, world);
 	}
@@ -52,12 +49,12 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@Inject(method = "pushAwayFrom", at = @At("HEAD"))
 	private void enchancement$freeze(Entity entity, CallbackInfo ci) {
-		if (!getWorld().isClient) {
+		if (getWorld() instanceof ServerWorld serverWorld) {
 			FrozenComponent frozenComponent = ModEntityComponents.FROZEN.get(this);
 			if (frozenComponent.isFrozen()) {
 				Entity lastFreezingAttacker = frozenComponent.getLastFreezingAttacker();
-				if (EnchancementUtil.shouldHurt(lastFreezingAttacker, entity) && entity.damage(ModDamageTypes.create(getWorld(), DamageTypes.FREEZE, lastFreezingAttacker == null ? this : lastFreezingAttacker), 8)) {
-					damage(getDamageSources().generic(), 2);
+				if (EnchancementUtil.shouldHurt(lastFreezingAttacker, entity) && entity.damage(serverWorld, ModDamageTypes.create(getWorld(), DamageTypes.FREEZE, lastFreezingAttacker == null ? this : lastFreezingAttacker), 8)) {
+					damage(serverWorld, getDamageSources().generic(), 2);
 					entity.setFrozenTicks(800);
 				}
 			}

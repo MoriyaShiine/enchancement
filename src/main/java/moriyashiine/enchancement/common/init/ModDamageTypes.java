@@ -19,14 +19,14 @@ public class ModDamageTypes {
 	public static final RegistryKey<DamageType> LIFE_DRAIN = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Enchancement.id("life_drain"));
 
 	public static DamageSource create(World world, RegistryKey<DamageType> key, @Nullable Entity source, @Nullable Entity attacker) {
-		return new DamageSource(world.getRegistryManager().get(RegistryKeys.DAMAGE_TYPE).entryOf(key), source, attacker);
+		return new DamageSource(world.getRegistryManager().getOrThrow(RegistryKeys.DAMAGE_TYPE).getOrThrow(key), source, attacker);
 	}
 
 	public static DamageSource create(World world, RegistryKey<DamageType> key, @Nullable Entity attacker) {
-		return new DamageSource(world.getRegistryManager().get(RegistryKeys.DAMAGE_TYPE).entryOf(key), attacker);
+		return new DamageSource(world.getRegistryManager().getOrThrow(RegistryKeys.DAMAGE_TYPE).getOrThrow(key), attacker);
 	}
 
 	public static DamageSource create(World world, RegistryKey<DamageType> key) {
-		return new DamageSource(world.getRegistryManager().get(RegistryKeys.DAMAGE_TYPE).entryOf(key));
+		return new DamageSource(world.getRegistryManager().getOrThrow(RegistryKeys.DAMAGE_TYPE).getOrThrow(key));
 	}
 }

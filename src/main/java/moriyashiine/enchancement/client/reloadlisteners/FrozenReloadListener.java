@@ -59,8 +59,8 @@ public class FrozenReloadListener implements IdentifiableResourceReloadListener,
 			ResourceManager resourceManager = MinecraftClient.getInstance().getResourceManager();
 			try (NativeImage tex = loadNative(resourceManager, id)) {
 				return generateTexture(resourceManager, tex.getWidth(), tex.getHeight());
-			} catch (IOException e) {
-				Enchancement.LOGGER.warn("Unable to generate frozen texture for " + original, e);
+			} catch (IOException exception) {
+				Enchancement.LOGGER.warn("Unable to generate frozen texture for {}", original, exception);
 				return original;
 			}
 		});
@@ -89,7 +89,7 @@ public class FrozenReloadListener implements IdentifiableResourceReloadListener,
 			// few of these textures on the CPU just fine)
 			for (int dx = 0; dx < width; dx++) {
 				for (int dy = 0; dy < height; dy++) {
-					destTex.setColor(dx, dy, srcTex.getColor(dx % srcTex.getWidth(), dy % srcTex.getHeight()));
+					destTex.setColorArgb(dx, dy, srcTex.getColorArgb(dx % srcTex.getWidth(), dy % srcTex.getHeight()));
 				}
 			}
 			Identifier textureID = Enchancement.id(String.format("textures/generated/frozen_%sx%s", width, height));
@@ -100,9 +100,9 @@ public class FrozenReloadListener implements IdentifiableResourceReloadListener,
 					Files.createDirectories(dir);
 					Path output = dir.resolve(String.format("frozen_%sx%s.png", width, height));
 					destTex.writeTo(output);
-				} catch (IOException e) {
+				} catch (IOException exception) {
 					// print stacktrace but keep the game running
-					e.printStackTrace();
+					Enchancement.LOGGER.warn(exception.getLocalizedMessage());
 				}
 			}
 			MinecraftClient.getInstance().getTextureManager().registerTexture(textureID, new NativeImageBackedTexture(destTex));

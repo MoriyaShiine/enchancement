@@ -8,7 +8,6 @@ import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.event.InitializeDefaultEnchantmentsEvent;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.tag.ModItemTags;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
@@ -16,6 +15,7 @@ import net.fabricmc.fabric.api.tag.convention.v2.ConventionalFluidTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.component.ComponentType;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -27,15 +27,21 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Ownable;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.ToolMaterial;
+import net.minecraft.item.equipment.ArmorMaterials;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryOwner;
+import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.TriState;
 import net.minecraft.util.Util;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.MathHelper;
@@ -46,13 +52,34 @@ import org.apache.commons.lang3.mutable.MutableFloat;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EnchancementUtil {
 	public static RegistryEntryOwner<?> ENCHANTMENT_REGISTRY_OWNER = null;
 	public static final List<RegistryEntry.Reference<Enchantment>> ENCHANTMENTS = new ArrayList<>();
 
 	public static final Object2IntMap<Enchantment> ORIGINAL_MAX_LEVELS = new Object2IntOpenHashMap<>();
+	public static final Map<TagKey<Item>, TriState> VANILLA_ENCHANTMENT_STRENGTH_TAGS = new HashMap<>();
+
+	static {
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.REPAIRS_LEATHER_ARMOR, TriState.TRUE);
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.REPAIRS_CHAIN_ARMOR, TriState.FALSE);
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.REPAIRS_IRON_ARMOR, TriState.TRUE);
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.REPAIRS_GOLD_ARMOR, TriState.FALSE);
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.REPAIRS_DIAMOND_ARMOR, TriState.FALSE);
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.REPAIRS_NETHERITE_ARMOR, TriState.FALSE);
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.REPAIRS_TURTLE_HELMET, TriState.FALSE);
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.REPAIRS_WOLF_ARMOR, TriState.FALSE);
+
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.WOODEN_TOOL_MATERIALS, TriState.TRUE);
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.STONE_TOOL_MATERIALS, TriState.TRUE);
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.IRON_TOOL_MATERIALS, TriState.TRUE);
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.GOLD_TOOL_MATERIALS, TriState.FALSE);
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.DIAMOND_TOOL_MATERIALS, TriState.FALSE);
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.NETHERITE_TOOL_MATERIALS, TriState.FALSE);
+	}
 
 	public static final Codec<Vec3d> VEC3D_CODEC = Codec.DOUBLE.listOf().comapFlatMap(list -> Util.decodeFixedLengthList(list, 3).map(listX -> new Vec3d(listX.getFirst(), listX.get(1), listX.get(2))), vec3d -> List.of(vec3d.getX(), vec3d.getY(), vec3d.getZ()));
 
@@ -163,22 +190,16 @@ public class EnchancementUtil {
 		if (stack.isIn(ModItemTags.WEAKLY_ENCHANTED)) {
 			return true;
 		}
-		if (stack.getItem() instanceof ArmorItem armorItem) {
-			ArmorMaterial material = armorItem.getMaterial().value();
-			for (ArmorMaterial mat : Registries.ARMOR_MATERIAL) {
-				if (material == mat) {
-					return mat == ArmorMaterials.LEATHER.value() || mat == ArmorMaterials.IRON.value();
+		int enchantmentValue = getEnchantmentValue(stack);
+		if (enchantmentValue > 0) {
+			TagKey<Item> repairTag = stack.contains(DataComponentTypes.REPAIRABLE) ? stack.get(DataComponentTypes.REPAIRABLE).items().getTagKey().orElse(null) : null;
+			if (repairTag != null) {
+				TriState triState = VANILLA_ENCHANTMENT_STRENGTH_TAGS.getOrDefault(repairTag, TriState.DEFAULT);
+				if (triState != TriState.DEFAULT) {
+					return triState.asBoolean(false);
 				}
 			}
-			return material.enchantability() <= ArmorMaterials.IRON.value().enchantability();
-		} else if (stack.getItem() instanceof ToolItem toolItem) {
-			ToolMaterial material = toolItem.getMaterial();
-			for (ToolMaterial mat : ToolMaterials.values()) {
-				if (material == mat) {
-					return mat == ToolMaterials.WOOD || mat == ToolMaterials.STONE || mat == ToolMaterials.IRON;
-				}
-			}
-			return material.getEnchantability() <= ToolMaterials.IRON.getEnchantability();
+			return enchantmentValue <= (stack.isIn(ItemTags.ARMOR_ENCHANTABLE) ? ArmorMaterials.IRON.enchantmentValue() : ToolMaterial.IRON.enchantmentValue());
 		}
 		return false;
 	}
@@ -190,6 +211,17 @@ public class EnchancementUtil {
 			}
 		}
 		return getModifiedMaxLevel(stack, getOriginalMaxLevel(enchantment));
+	}
+
+	public static int getEnchantmentValue(ItemStack stack) {
+		if (stack.contains(DataComponentTypes.ENCHANTABLE)) {
+			int value = stack.get(DataComponentTypes.ENCHANTABLE).value();
+			if (value == 1) {
+				value = (stack.isIn(ItemTags.ARMOR_ENCHANTABLE) ? ArmorMaterials.IRON.enchantmentValue() : ToolMaterial.IRON.enchantmentValue()) + 1;
+			}
+			return value;
+		}
+		return 0;
 	}
 
 	public static int getModifiedMaxLevel(ItemStack stack, int maxLevel) {
@@ -206,40 +238,34 @@ public class EnchancementUtil {
 	// enchantment limit
 
 	public static boolean isDefaultEnchantment(ItemStack stack, RegistryEntry<Enchantment> enchantment) {
-		ItemEnchantmentsComponent defaultEnchantments = InitializeDefaultEnchantmentsEvent.DEFAULT_ENCHANTMENTS.get(stack.getItem());
-		if (defaultEnchantments != null) {
-			for (RegistryEntry<Enchantment> foundEnchantment : defaultEnchantments.getEnchantments()) {
-				if (foundEnchantment == enchantment) {
-					int level = ModConfig.singleLevelMode ? 1 : EnchantmentHelper.getLevel(enchantment, stack);
-					if (level == defaultEnchantments.getLevel(enchantment)) {
-						return true;
-					}
+		ItemEnchantmentsComponent defaultEnchantments = stack.getItem().getComponents().getOrDefault(DataComponentTypes.ENCHANTMENTS, ItemEnchantmentsComponent.DEFAULT);
+		for (RegistryEntry<Enchantment> foundEnchantment : defaultEnchantments.getEnchantments()) {
+			if (foundEnchantment == enchantment) {
+				int level = ModConfig.singleLevelMode ? 1 : EnchantmentHelper.getLevel(enchantment, stack);
+				if (level == defaultEnchantments.getLevel(enchantment)) {
+					return true;
 				}
 			}
 		}
 		return false;
 	}
 
-	public static boolean limitCheck(boolean fallback, boolean value) {
+	public static boolean exceedsLimit(ItemStack stack, int size) {
 		if (ModConfig.enchantmentLimit == 0) {
-			return fallback;
+			return false;
 		}
-		return value;
-	}
-
-	public static int getNonDefaultEnchantmentsSize(ItemStack stack, int size) {
 		for (RegistryEntry<Enchantment> enchantment : EnchantmentHelper.getEnchantments(stack).getEnchantments()) {
 			if (isDefaultEnchantment(stack, enchantment)) {
 				size--;
 			}
 		}
-		return size;
+		return size > ModConfig.enchantmentLimit;
 	}
 
 	// disable durability
 
 	public static boolean isUnbreakable(ItemStack stack) {
-		return ModConfig.disableDurability && !stack.isEmpty() && stack.getMaxDamage() > 0 && !stack.isIn(ModItemTags.RETAINS_DURABILITY);
+		return ModConfig.disableDurability && !stack.isEmpty() && stack.contains(DataComponentTypes.MAX_DAMAGE) && !stack.isIn(ModItemTags.RETAINS_DURABILITY);
 	}
 
 	// misc
@@ -264,7 +290,7 @@ public class EnchancementUtil {
 				return false;
 			}
 		}
-		return !living.isFallFlying() && living.getVehicle() == null && !living.isClimbing();
+		return !living.isGliding() && living.getVehicle() == null && !living.isClimbing();
 	}
 
 	public static boolean isGroundedOrAirborne(LivingEntity living) {

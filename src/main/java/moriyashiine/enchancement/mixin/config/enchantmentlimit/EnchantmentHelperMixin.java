@@ -6,7 +6,6 @@ package moriyashiine.enchancement.mixin.config.enchantmentlimit;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
@@ -28,7 +27,7 @@ public class EnchantmentHelperMixin {
 	@Unique
 	private static ItemEnchantmentsComponent removeUntilReady(ItemStack stack, ItemEnchantmentsComponent itemEnchantmentsComponent) {
 		List<RegistryEntry<Enchantment>> enchantments = new ArrayList<>(itemEnchantmentsComponent.getEnchantments());
-		while (EnchancementUtil.limitCheck(false, EnchancementUtil.getNonDefaultEnchantmentsSize(stack, enchantments.size()) > ModConfig.enchantmentLimit)) {
+		while (EnchancementUtil.exceedsLimit(stack, enchantments.size())) {
 			enchantments.removeFirst();
 		}
 		ItemEnchantmentsComponent.Builder builder = new ItemEnchantmentsComponent.Builder(itemEnchantmentsComponent);
@@ -48,10 +47,8 @@ public class EnchantmentHelperMixin {
 
 	@ModifyReturnValue(method = "generateEnchantments", at = @At(value = "RETURN", ordinal = 1))
 	private static List<EnchantmentLevelEntry> enchancement$enchantmentLimit(List<EnchantmentLevelEntry> original, Random random, ItemStack stack) {
-		for (int i = original.size() - 1; i >= 0; i--) {
-			if (EnchancementUtil.limitCheck(false, EnchancementUtil.getNonDefaultEnchantmentsSize(stack, original.size()) > ModConfig.enchantmentLimit)) {
-				original.remove(i);
-			}
+		while (EnchancementUtil.exceedsLimit(stack, original.size())) {
+			original.removeFirst();
 		}
 		return original;
 	}

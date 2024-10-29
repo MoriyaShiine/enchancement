@@ -19,7 +19,7 @@ public class InstantHealthOrDamageStatusEffectMixin {
 		return value;
 	}
 
-	@ModifyArg(method = "applyInstantEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"))
+	@ModifyArg(method = "applyInstantEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;damage(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/damage/DamageSource;F)Z"))
 	private float enchancement$rebalanceStatusEffectsInstantDamage(float value) {
 		if (ModConfig.rebalanceStatusEffects) {
 			return value / 2F;
@@ -35,7 +35,7 @@ public class InstantHealthOrDamageStatusEffectMixin {
 		return value;
 	}
 
-	@ModifyArg(method = "applyUpdateEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"))
+	@ModifyArg(method = "applyUpdateEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;damage(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/damage/DamageSource;F)Z"))
 	private float enchancement$rebalanceStatusEffectsUpdateDamage(float value) {
 		if (ModConfig.rebalanceStatusEffects) {
 			return value / 2F;

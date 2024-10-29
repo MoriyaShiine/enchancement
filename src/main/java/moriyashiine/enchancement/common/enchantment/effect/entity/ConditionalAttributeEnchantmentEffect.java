@@ -13,9 +13,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.loot.condition.LootCondition;
 import net.minecraft.loot.context.LootContext;
-import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.context.LootContextTypes;
+import net.minecraft.loot.context.LootWorldContext;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
@@ -32,7 +32,7 @@ public record ConditionalAttributeEnchantmentEffect(AttributeEnchantmentEffect e
 	@Override
 	public void apply(ServerWorld world, int level, EnchantmentEffectContext context, Entity user, Vec3d pos) {
 		if (user instanceof LivingEntity living) {
-			LootContext ctx = createContext(living);
+			LootContext ctx = createContext(world, living);
 			if (condition().test(ctx)) {
 				Identifier id = effect().id().withSuffixedPath("/" + context.slot().getName());
 				if (!living.getAttributeInstance(effect().attribute()).hasModifier(id)) {
@@ -48,8 +48,8 @@ public record ConditionalAttributeEnchantmentEffect(AttributeEnchantmentEffect e
 		return CODEC;
 	}
 
-	public static LootContext createContext(LivingEntity living) {
-		return new LootContext.Builder(new LootContextParameterSet.Builder((ServerWorld) living.getWorld())
+	public static LootContext createContext(ServerWorld world, LivingEntity living) {
+		return new LootContext.Builder(new LootWorldContext.Builder(world)
 				.add(LootContextParameters.THIS_ENTITY, living)
 				.add(LootContextParameters.ORIGIN, living.getPos())
 				.add(LootContextParameters.DAMAGE_SOURCE, living.getRecentDamageSource())

@@ -18,6 +18,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -87,7 +88,7 @@ public class SlamComponent implements CommonTickingComponent {
 				obj.getWorld().emitGameEvent(GameEvent.STEP, obj.getPos(), GameEvent.Emitter.of(obj.getSteppingBlockState()));
 				@SuppressWarnings("deprecation") BlockState state = obj.getWorld().getBlockState(obj.getLandingPos());
 				if (state.contains(Properties.THICKNESS) && state.contains(Properties.VERTICAL_DIRECTION) && state.get(Properties.THICKNESS) == Thickness.TIP && state.get(Properties.VERTICAL_DIRECTION) == Direction.UP) {
-					obj.damage(obj.getDamageSources().stalagmite(), Integer.MAX_VALUE);
+					obj.damage((ServerWorld) obj.getWorld(), obj.getDamageSources().stalagmite(), Integer.MAX_VALUE);
 				}
 			});
 		}

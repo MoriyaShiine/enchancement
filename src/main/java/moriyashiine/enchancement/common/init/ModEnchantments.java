@@ -122,6 +122,7 @@ public class ModEnchantments {
 		// lookup
 		RegistryEntryLookup<DamageType> damageTypeLookup = registerable.getRegistryLookup(RegistryKeys.DAMAGE_TYPE);
 		RegistryEntryLookup<Enchantment> enchantmentLookup = registerable.getRegistryLookup(RegistryKeys.ENCHANTMENT);
+		RegistryEntryLookup<EntityType<?>> entityTypeLookup = registerable.getRegistryLookup(RegistryKeys.ENTITY_TYPE);
 		RegistryEntryLookup<Item> itemLookup = registerable.getRegistryLookup(RegistryKeys.ITEM);
 		// helmet
 		registerable.register(ASSIMILATION, create(ASSIMILATION.getValue(),
@@ -194,25 +195,25 @@ public class ModEnchantments {
 					builder.addEffect(
 							EnchantmentEffectComponentTypes.ATTRIBUTES,
 							new AttributeEnchantmentEffect(Enchancement.id("enchantment.amphibious"),
-									EntityAttributes.GENERIC_BURNING_TIME,
+									EntityAttributes.BURNING_TIME,
 									EnchantmentLevelBasedValue.linear(-0.25F),
 									EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
 					builder.addEffect(
 							EnchantmentEffectComponentTypes.ATTRIBUTES,
 							new AttributeEnchantmentEffect(Enchancement.id("enchantment.amphibious"),
-									EntityAttributes.GENERIC_OXYGEN_BONUS,
+									EntityAttributes.OXYGEN_BONUS,
 									EnchantmentLevelBasedValue.linear(1.5F),
 									EntityAttributeModifier.Operation.ADD_VALUE));
 					builder.addEffect(
 							EnchantmentEffectComponentTypes.ATTRIBUTES,
 							new AttributeEnchantmentEffect(Enchancement.id("enchantment.amphibious"),
-									EntityAttributes.PLAYER_SUBMERGED_MINING_SPEED,
+									EntityAttributes.SUBMERGED_MINING_SPEED,
 									EnchantmentLevelBasedValue.linear(2),
 									EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 					builder.addEffect(
 							EnchantmentEffectComponentTypes.ATTRIBUTES,
 							new AttributeEnchantmentEffect(Enchancement.id("enchantment.amphibious"),
-									EntityAttributes.GENERIC_WATER_MOVEMENT_EFFICIENCY,
+									EntityAttributes.WATER_MOVEMENT_EFFICIENCY,
 									EnchantmentLevelBasedValue.linear(0.5F),
 									EntityAttributeModifier.Operation.ADD_VALUE));
 				}));
@@ -344,7 +345,7 @@ public class ModEnchantments {
 							EnchantmentEffectComponentTypes.TICK,
 							new ConditionalAttributeEnchantmentEffect(
 									new AttributeEnchantmentEffect(Enchancement.id("enchantment.buoy"),
-											EntityAttributes.GENERIC_STEP_HEIGHT,
+											EntityAttributes.STEP_HEIGHT,
 											EnchantmentLevelBasedValue.constant(1),
 											EntityAttributeModifier.Operation.ADD_VALUE),
 									HasExtendedWaterTimeLootCondition.INSTANCE));
@@ -352,7 +353,7 @@ public class ModEnchantments {
 							EnchantmentEffectComponentTypes.TICK,
 							new ConditionalAttributeEnchantmentEffect(
 									new AttributeEnchantmentEffect(Enchancement.id("enchantment.buoy"),
-											EntityAttributes.GENERIC_SAFE_FALL_DISTANCE,
+											EntityAttributes.SAFE_FALL_DISTANCE,
 											EnchantmentLevelBasedValue.linear(2),
 											EntityAttributeModifier.Operation.ADD_VALUE),
 									HasExtendedWaterTimeLootCondition.INSTANCE));
@@ -453,6 +454,7 @@ public class ModEnchantments {
 					builder.addEffect(
 							ModEnchantmentEffectComponentTypes.ALLOW_LOADING_PROJECTILE,
 							new AllowLoadingProjectileEffect(
+									Enchancement.id("crossbow_amethyst"),
 									Items.AMETHYST_SHARD,
 									false
 							)
@@ -474,6 +476,7 @@ public class ModEnchantments {
 					builder.addEffect(
 							ModEnchantmentEffectComponentTypes.ALLOW_LOADING_PROJECTILE,
 							new AllowLoadingProjectileEffect(
+									Enchancement.id("crossbow_torch"),
 									Items.TORCH,
 									true
 							)
@@ -647,7 +650,7 @@ public class ModEnchantments {
 						EnchantmentEffectTarget.ATTACKER,
 						EnchantmentEffectTarget.VICTIM,
 						new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.5F)),
-						EntityPropertiesLootCondition.builder(LootContext.EntityTarget.ATTACKER, EntityPredicate.Builder.create().type(EntityTypePredicate.create(EntityType.PLAYER)))
+						EntityPropertiesLootCondition.builder(LootContext.EntityTarget.ATTACKER, EntityPredicate.Builder.create().type(EntityTypePredicate.create(entityTypeLookup, EntityType.PLAYER)))
 				)));
 		registerable.register(LUMBERJACK, create(LUMBERJACK.getValue(),
 				itemLookup.getOrThrow(ItemTags.AXES),
@@ -677,7 +680,7 @@ public class ModEnchantments {
 							EnchantmentEffectTarget.ATTACKER,
 							EnchantmentEffectTarget.VICTIM,
 							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.01F)),
-							EntityPropertiesLootCondition.builder(LootContext.EntityTarget.ATTACKER, EntityPredicate.Builder.create().type(EntityTypePredicate.create(EntityType.PLAYER))));
+							EntityPropertiesLootCondition.builder(LootContext.EntityTarget.ATTACKER, EntityPredicate.Builder.create().type(EntityTypePredicate.create(entityTypeLookup, EntityType.PLAYER))));
 				}));
 		// fishing rod
 		registerable.register(DISARM, create(DISARM.getValue(),

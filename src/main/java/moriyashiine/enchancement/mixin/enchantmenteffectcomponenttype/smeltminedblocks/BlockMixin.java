@@ -16,10 +16,11 @@ import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.recipe.ServerRecipeManager;
 import net.minecraft.recipe.SmeltingRecipe;
+import net.minecraft.recipe.input.SingleStackRecipeInput;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Pair;
@@ -32,6 +33,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Mixin(Block.class)
 public class BlockMixin {
@@ -58,12 +60,12 @@ public class BlockMixin {
 
 	@Unique
 	private static Pair<ItemStack, Float> getSmeltedStack(ServerWorld world, ItemStack stack) {
-		for (RecipeEntry<SmeltingRecipe> recipe : world.getRecipeManager().listAllOfType(RecipeType.SMELTING)) {
-			for (Ingredient ingredient : recipe.value().getIngredients()) {
-				if (ingredient.test(stack)) {
-					return new Pair<>(new ItemStack(recipe.value().getResult(world.getRegistryManager()).getItem(), recipe.value().getResult(world.getRegistryManager()).getCount() * stack.getCount()), recipe.value().getExperience());
-				}
-			}
+		SingleStackRecipeInput input = new SingleStackRecipeInput(stack);
+		Optional<RecipeEntry<SmeltingRecipe>> firstMatch = ServerRecipeManager.createCachedMatchGetter(RecipeType.SMELTING).getFirstMatch(input, world);
+		if (firstMatch.isPresent()) {
+			SmeltingRecipe recipe = firstMatch.get().value();
+			ItemStack output = recipe.craft(input, world.getRegistryManager());
+			return new Pair<>(new ItemStack(output.getItem(), output.getCount() * stack.getCount()), recipe.getExperience());
 		}
 		return null;
 	}

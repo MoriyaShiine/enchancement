@@ -24,16 +24,10 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 		super(entityType, world);
 	}
 
-	@Inject(method = "<init>(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/world/World;II)V", at = @At("TAIL"))
-	private void enchancement$rebalanceEquipment(PlayerEntity thrower, World world, int luckOfTheSeaLevel, int lureLevel, CallbackInfo ci) {
+	@Inject(method = "<init>(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/world/World;IILnet/minecraft/item/ItemStack;)V", at = @At("TAIL"))
+	private void enchancement$rebalanceEquipment(PlayerEntity thrower, World world, int luckBonus, int waitTimeReductionTicks, ItemStack stack, CallbackInfo ci) {
 		if (ModConfig.rebalanceEquipment) {
-			float speed = 1.25F;
-			for (ItemStack stack : thrower.getHandItems()) {
-				if (EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.GRAPPLING_FISHING_BOBBER, (ServerWorld) world, stack, 0) != 0) {
-					speed = 2.75F;
-					break;
-				}
-			}
+			float speed = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.GRAPPLING_FISHING_BOBBER, (ServerWorld) world, stack, 0) != 0 ? 2.75F : 1.25F;
 			refreshPositionAndAngles(thrower.getX(), thrower.getEyeY(), thrower.getZ(), thrower.getYaw(), thrower.getPitch());
 			setVelocity(thrower, thrower.getPitch(), thrower.getYaw(), 0, speed, 0);
 		}

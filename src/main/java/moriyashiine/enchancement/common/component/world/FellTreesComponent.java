@@ -81,12 +81,12 @@ public class FellTreesComponent implements ServerTickingComponent {
 			NbtList drops = new NbtList();
 			this.drops.forEach(stack -> {
 				if (!stack.isEmpty()) {
-					drops.add(stack.encode(registryLookup));
+					drops.add(stack.toNbt(registryLookup));
 				}
 			});
 			compound.put("Drops", drops);
 			compound.putLong("OriginalPos", originalPos.asLong());
-			compound.put("Stack", stack.encode(registryLookup));
+			compound.put("Stack", stack.toNbt(registryLookup));
 			return compound;
 		}
 
