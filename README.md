@@ -81,7 +81,6 @@ Everything Enchancement adds is configurable:
 * Disable Velocity Checks
   * Removes the checks to determine if a player is moving too fast, since Enchancement adds many forms of movement that may trigger that.
 * Enhance Mobs
-  * Drowned will use the enchantment of the Trident in their hand.
   * Hostile monsters will spawn with random enchantments.
 * Free Enchanted Book Merging
   * Enchanted Books can be applied to items in an Anvil at no cost.
