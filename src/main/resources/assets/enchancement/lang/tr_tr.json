@@ -123,6 +123,7 @@
   "enchantment.enchancement.grapple": "Kıskaç",
   "enchantment.enchancement.grapple.desc": "Olta bloklara tutunabilir. Oltayı çekerken tuttuğun bloğa doğru fırlarsın. Canlıları daha güçlü çeker.",
   "tag.item.enchancement.cannot_automatically_consume": "Otomatik Tüketilemez",
+  "tag.item.enchancement.default_enchanting_material": "Varsayılan Büyü Materyali",
   "tag.item.enchancement.no_loyalty": "Sadakat Değil",
   "tag.item.enchancement.retains_durability": "Dayanıklılık Kaybetmez",
   "tag.item.enchancement.strongly_enchanted": "Çok Büyülü",

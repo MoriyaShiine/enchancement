@@ -123,6 +123,7 @@
   "enchantment.enchancement.grapple": "Крюк-кошка",
   "enchantment.enchancement.grapple.desc": "Позволяет поплавку цепляться за блоки. Притягивает пользователя к блоку после повторного использования. Притягивает существ с большей силой.",
   "tag.item.enchancement.cannot_automatically_consume": "Нельзя автоматически потреблять",
+  "tag.item.enchancement.default_enchanting_material": "Стандартный Зачаровательный Материал",
   "tag.item.enchancement.no_loyalty": "Без Преданности",
   "tag.item.enchancement.retains_durability": "Не тратит прочность",
   "tag.item.enchancement.strongly_enchanted": "Сильно зачарован",

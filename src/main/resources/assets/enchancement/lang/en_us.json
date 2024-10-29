@@ -123,6 +123,7 @@
   "enchantment.enchancement.grapple": "Grapple",
   "enchantment.enchancement.grapple.desc": "Allows the Fishing Bobber to latch onto blocks. Launches you towards that block upon release. Reels in entities with more strength.",
   "tag.item.enchancement.cannot_automatically_consume": "Cannot Automatically Consume",
+  "tag.item.enchancement.default_enchanting_material": "Default Enchanting Material",
   "tag.item.enchancement.no_loyalty": "No Loyalty",
   "tag.item.enchancement.retains_durability": "Retains Durability",
   "tag.item.enchancement.strongly_enchanted": "Strongly Enchanted",
