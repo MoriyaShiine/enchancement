@@ -25,7 +25,7 @@ public class AbstractBlockMixin {
 	private float enchancement$mineOreVeins(float original, BlockState state, PlayerEntity player, BlockView world, BlockPos pos) {
 		if (MineOreVeinsEvent.canActivate(player, player.getMainHandStack(), state)) {
 			Set<BlockPos> ores = MineOreVeinsEvent.gatherOres(new HashSet<>(), player.getWorld(), new BlockPos.Mutable().set(pos), state.getBlock());
-			if (MineOreVeinsEvent.isValid(ores)) {
+			if (MineOreVeinsEvent.isValid(ores, player.getMainHandStack())) {
 				float mineOreVeinsSpeed = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.MINE_ORE_VEINS, player.getRandom(), player.getMainHandStack(), 0);
 				return original * MathHelper.lerp(Math.min(1, ores.size() / 12F), mineOreVeinsSpeed, mineOreVeinsSpeed * 0.1F);
 			}

@@ -72,7 +72,7 @@ public class FellTreesComponent implements ServerTickingComponent {
 			this.logs = logs;
 			this.drops = new ArrayList<>();
 			this.originalPos = originalPos;
-			this.stack = stack;
+			this.stack = stack.copy();
 		}
 
 		public NbtCompound serialize(RegistryWrapper.WrapperLookup registryLookup) {

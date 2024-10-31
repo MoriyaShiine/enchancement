@@ -15,6 +15,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -35,7 +36,7 @@ public class MineOreVeinsEvent implements PlayerBlockBreakEvents.Before {
 		ItemStack stack = player.getMainHandStack();
 		if (canActivate(player, stack, state)) {
 			Set<BlockPos> ores = gatherOres(new HashSet<>(), world, new BlockPos.Mutable().set(pos), state.getBlock());
-			if (isValid(ores) && stack.getDamage() + ores.size() <= stack.getMaxDamage()) {
+			if (isValid(ores, stack)) {
 				BlockState replace = getBaseBlock(state).getDefaultState();
 				List<ItemStack> drops = new ArrayList<>();
 				ores.forEach(ore -> {
@@ -49,6 +50,7 @@ public class MineOreVeinsEvent implements PlayerBlockBreakEvents.Before {
 				if (!drops.isEmpty()) {
 					EnchancementUtil.mergeItemEntities(drops.stream().map(drop -> new ItemEntity(world, player.getX(), player.getY() + 0.5, player.getZ(), drop)).collect(Collectors.toList())).forEach(world::spawnEntity);
 				}
+				stack.damage(ores.size(), player, EquipmentSlot.MAINHAND);
 				return false;
 			}
 		}
@@ -77,8 +79,11 @@ public class MineOreVeinsEvent implements PlayerBlockBreakEvents.Before {
 		return !player.isSneaking() && EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.MINE_ORE_VEINS) && state.isIn(ConventionalBlockTags.ORES) && player.canHarvest(state);
 	}
 
-	public static boolean isValid(Set<BlockPos> ores) {
-		return !ores.isEmpty() && ores.size() <= ModConfig.maxMineOreVeinsBlocks;
+	public static boolean isValid(Set<BlockPos> ores, ItemStack stack) {
+		if (!stack.isDamageable() || stack.getDamage() + ores.size() <= stack.getMaxDamage()) {
+			return !ores.isEmpty() && ores.size() <= ModConfig.maxMineOreVeinsBlocks;
+		}
+		return false;
 	}
 
 	private static Block getBaseBlock(BlockState state) {

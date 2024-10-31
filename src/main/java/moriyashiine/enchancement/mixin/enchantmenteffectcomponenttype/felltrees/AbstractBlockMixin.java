@@ -28,7 +28,7 @@ public class AbstractBlockMixin {
 				entry = new FellTreesEvent.Entry(player, FellTreesEvent.gatherTree(new ArrayList<>(), world, new BlockPos.Mutable().set(pos), state.getBlock()));
 				FellTreesEvent.ENTRIES.add(entry);
 			}
-			if (FellTreesEvent.isValid(entry.tree())) {
+			if (FellTreesEvent.isValid(entry.tree(), player.getMainHandStack())) {
 				float fellTreesSpeed = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.FELL_TREES, player.getRandom(), player.getMainHandStack(), 0);
 				return original * MathHelper.lerp(Math.min(1, entry.tree().size() / 32F), fellTreesSpeed, fellTreesSpeed * 0.05F);
 			}

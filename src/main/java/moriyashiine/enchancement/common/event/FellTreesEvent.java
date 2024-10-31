@@ -12,6 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.BlockTags;
@@ -33,10 +34,11 @@ public class FellTreesEvent implements PlayerBlockBreakEvents.Before {
 		ItemStack stack = player.getMainHandStack();
 		if (canActivate(player, stack, state)) {
 			Entry entry = Entry.get(player);
-			if (entry != null && isValid(entry.tree()) && stack.getDamage() + entry.tree().size() <= stack.getMaxDamage()) {
+			if (entry != null && isValid(entry.tree(), stack)) {
 				entry.tree().sort(Comparator.comparingInt(Vec3i::getY).reversed());
 				ModWorldComponents.FELL_TREES.get(world).addTree(new FellTreesComponent.Tree(entry.tree(), pos, stack));
 				ENTRIES.remove(entry);
+				stack.damage(entry.tree().size(), player, EquipmentSlot.MAINHAND);
 				return false;
 			}
 		}
@@ -87,8 +89,11 @@ public class FellTreesEvent implements PlayerBlockBreakEvents.Before {
 		return !player.isSneaking() && EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.FELL_TREES) && state.isIn(BlockTags.LOGS) && player.canHarvest(state);
 	}
 
-	public static boolean isValid(List<BlockPos> tree) {
-		return tree.size() > 1 && tree.size() <= ModConfig.maxFellTreesBlocks && isWithinHorizontalBounds(tree);
+	public static boolean isValid(List<BlockPos> tree, ItemStack stack) {
+		if (!stack.isDamageable() || stack.getDamage() + tree.size() <= stack.getMaxDamage()) {
+			return tree.size() > 1 && tree.size() <= ModConfig.maxFellTreesBlocks && isWithinHorizontalBounds(tree);
+		}
+		return false;
 	}
 
 	public record Entry(PlayerEntity player, List<BlockPos> tree) {
