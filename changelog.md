@@ -1,4 +1,10 @@
 ------------------------------------------------------
+Version 1.21.2-r1
+------------------------------------------------------
+- update to 1.21.2
+- fix https://github.com/MoriyaShiine/enchancement/issues/203
+
+------------------------------------------------------
 Version 1.21-r12
 ------------------------------------------------------
 - fix eruption effect fire applying for significantly longer than intended
