@@ -7,6 +7,7 @@ import moriyashiine.enchancement.common.component.entity.TeleportOnHitComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -37,7 +38,7 @@ public abstract class ProjectileEntityMixin {
 				BlockPos pos = blockHitResult.getBlockPos().offset(blockHitResult.getSide());
 				living.getWorld().emitGameEvent(GameEvent.TELEPORT, living.getPos(), GameEvent.Emitter.of(living, living.getSteppingBlockState()));
 				living.requestTeleport(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-				living.getWorld().sendEntityStatus(living, (byte) 46);
+				living.getWorld().sendEntityStatus(living, EntityStatuses.ADD_PORTAL_PARTICLES);
 				if (living instanceof PathAwareEntity pathAware) {
 					pathAware.getNavigation().stop();
 				}
@@ -55,7 +56,7 @@ public abstract class ProjectileEntityMixin {
 				Vec3d pos = entityHitResult.getPos();
 				living.getWorld().emitGameEvent(GameEvent.TELEPORT, living.getPos(), GameEvent.Emitter.of(living, living.getSteppingBlockState()));
 				living.requestTeleport(pos.getX(), pos.getY() + 0.5, pos.getZ());
-				living.getWorld().sendEntityStatus(living, (byte) 46);
+				living.getWorld().sendEntityStatus(living, EntityStatuses.ADD_PORTAL_PARTICLES);
 				if (living instanceof PathAwareEntity pathAware) {
 					pathAware.getNavigation().stop();
 				}
