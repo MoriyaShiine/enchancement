@@ -165,7 +165,9 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 						highlightedEnchantmentIndex = i;
 					}
 					if (infoTexts == null) {
-						infoTexts = List.of(enchantment.value().description().copy().formatted(Formatting.GRAY), Text.translatable(EnchancementUtil.getTranslationKey(enchantment) + ".desc").formatted(Formatting.DARK_GRAY));
+						MutableText name = enchantment.value().description().copy().formatted(Formatting.GRAY);
+						MutableText description = Text.translatable(EnchancementUtil.getTranslationKey(enchantment) + ".desc").formatted(Formatting.DARK_GRAY);
+						infoTexts = description.getString().isEmpty() ? List.of(name) : List.of(name, description);
 					}
 					context.drawTooltip(textRenderer, infoTexts, mouseX, mouseY);
 				} else {

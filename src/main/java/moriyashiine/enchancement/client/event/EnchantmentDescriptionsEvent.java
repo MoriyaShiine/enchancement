@@ -11,6 +11,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
@@ -25,8 +26,11 @@ public class EnchantmentDescriptionsEvent implements ItemTooltipCallback {
 				for (int i = 0; i < lines.size(); i++) {
 					String translationKey = EnchancementUtil.getTranslationKey(enchantment);
 					if (lines.get(i).getContent() instanceof TranslatableTextContent text && text.getKey().equals(translationKey)) {
-						lines.add(i + 1, Text.literal(" - ").formatted(Formatting.GRAY).append(Text.translatable(translationKey + ".desc").formatted(Formatting.DARK_GRAY)));
-						break;
+						MutableText description = Text.translatable(translationKey + ".desc").formatted(Formatting.DARK_GRAY);
+						if (!description.getString().isEmpty()) {
+							lines.add(i + 1, Text.literal(" - ").formatted(Formatting.GRAY).append(description));
+							break;
+						}
 					}
 				}
 			});
