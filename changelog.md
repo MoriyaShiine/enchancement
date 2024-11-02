@@ -1,4 +1,11 @@
 ------------------------------------------------------
+Version 1.21.2-r2
+------------------------------------------------------
+- merge https://github.com/MoriyaShiine/enchancement/pull/204
+- enchantments with empty description translations no longer attempt to render
+- overhauled enchanting table descriptions now append a dash to be consistent with item descriptions
+
+------------------------------------------------------
 Version 1.21.2-r1
 ------------------------------------------------------
 - update to 1.21.2
