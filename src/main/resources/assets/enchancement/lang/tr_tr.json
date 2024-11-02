@@ -166,7 +166,7 @@
   "enchancement.midnightconfig.category.client": "İstemci",
   "enchancement.midnightconfig.disallowedEnchantments": "İzin Verilmeyen Büyüler",
   "enchancement.midnightconfig.invertedList": "Ters Liste",
-  "enchancement.midnightconfig.overhaulEnchantingTable": "Büyü Masasını Yenile",
+  "enchancement.midnightconfig.overhaulEnchantingTable": "Büyü Masasını Değiştir",
   "enchancement.midnightconfig.enum.OverhaulMode.ACCEPTABLE": "Kabul Edilebilir",
   "enchancement.midnightconfig.enum.OverhaulMode.PRIMARY": "Temel",
   "enchancement.midnightconfig.enum.OverhaulMode.NON_TREASURE": "Hazine olmayan",
