@@ -66,7 +66,7 @@
   "enchantment.enchancement.amphibious.desc": "提升水中挖掘和移動速度。降低在水下的空氣消耗和燃燒時間。離開水面後會立即熄滅你身上的火，並允許你在一段時間內使用波濤。",
   "enchantment.enchancement.strafe": "橫移",
   "enchantment.enchancement.strafe.desc": "按下 [%s] 會讓你朝移動方向發射。",
-  "enchantment.enchancement.strafe.desc.double": "雙擊 [%s] 會讓你朝移動方向發射。",
+  "enchantment.enchancement.strafe.desc.double": "按兩下 [%s] 會讓你朝移動方向發射。",
   "enchantment.enchancement.wardenspine": "伏守之刺",
   "enchantment.enchancement.wardenspine.desc": "傷害並致盲攻擊者，並大幅減少從背後受到的傷害。",
   "enchantment.enchancement.dash": "衝刺",
@@ -195,6 +195,6 @@
   "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.VANILLA_AND_ENCHANCEMENT": "原版和增強",
   "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.ALL": "全部",
   "enchancement.midnightconfig.invertedBounce": "反轉彈跳",
-  "enchancement.midnightconfig.doublePressDirectionBurst": "雙擊方向爆發",
+  "enchancement.midnightconfig.doublePressDirectionBurst": "按兩下方向爆發",
   "enchancement.midnightconfig.inputlessDirectionBurst": "無輸入方向爆發"
 }
