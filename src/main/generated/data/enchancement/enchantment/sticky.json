@@ -4,7 +4,14 @@
 	"translate": "enchantment.enchancement.sticky"
   },
   "effects": {
-	"enchancement:honey_trail": {},
+	"enchancement:honey_trail": {
+	  "type": "minecraft:add",
+	  "value": {
+		"type": "minecraft:linear",
+		"base": 1.5,
+		"per_level_above_first": 1.5
+	  }
+	},
 	"enchancement:wall_jump": {
 	  "type": "minecraft:add",
 	  "value": {

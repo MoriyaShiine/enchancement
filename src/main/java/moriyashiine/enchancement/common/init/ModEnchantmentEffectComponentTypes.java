@@ -41,7 +41,7 @@ public class ModEnchantmentEffectComponentTypes {
 	public static final ComponentType<List<EnchantmentEffectEntry<EnchantmentValueEffect>>> GRAPPLING_FISHING_BOBBER = register("grappling_fishing_bobber", builder -> builder.codec(EnchantmentEffectEntry.createCodec(EnchantmentValueEffect.CODEC, LootContextTypes.ENCHANTED_ITEM).listOf()));
 	public static final ComponentType<List<TargetedEnchantmentEffect<EnchantmentValueEffect>>> HEAD_DROPS = register("head_drops", builder -> builder.codec(TargetedEnchantmentEffect.createEquipmentDropsCodec(EnchantmentValueEffect.CODEC, LootContextTypes.ENCHANTED_DAMAGE).listOf()));
 	public static final ComponentType<Unit> HIDE_LABEL_BEHIND_WALLS = register("hide_label_behind_walls", builder -> builder.codec(Unit.CODEC));
-	public static final ComponentType<Unit> HONEY_TRAIL = register("honey_trail", builder -> builder.codec(Unit.CODEC));
+	public static final ComponentType<EnchantmentValueEffect> HONEY_TRAIL = register("honey_trail", builder -> builder.codec(EnchantmentValueEffect.CODEC));
 	public static final ComponentType<List<EnchantmentEffectEntry<LeechingTridentEffect>>> LEECHING_TRIDENT = register("leeching_trident", builder -> builder.codec(EnchantmentEffectEntry.createCodec(LeechingTridentEffect.CODEC, LootContextTypes.ENCHANTED_ITEM).listOf()));
 	public static final ComponentType<LightningDashEffect> LIGHTNING_DASH = register("lightning_dash", builder -> builder.codec(LightningDashEffect.CODEC));
 	public static final ComponentType<EnchantmentValueEffect> MINE_ORE_VEINS = register("mine_ore_veins", builder -> builder.codec(EnchantmentValueEffect.CODEC));

@@ -52,7 +52,7 @@ public class HoneyTrailComponent implements AutoSyncedComponent, CommonTickingCo
 	public void tick() {
 		for (int i = honeySpots.size() - 1; i >= 0; i--) {
 			HoneySpot spot = honeySpots.get(i);
-			if (++spot.age >= HoneySpot.MAX_AGE || isInFluid(spot.blockPos)) {
+			if (++spot.age >= spot.maxAge || isInFluid(spot.blockPos)) {
 				honeySpots.remove(i);
 			}
 		}
@@ -78,7 +78,7 @@ public class HoneyTrailComponent implements AutoSyncedComponent, CommonTickingCo
 		return honeySpots;
 	}
 
-	public void addHoneySpot(LivingEntity owner) {
+	public void addHoneySpot(LivingEntity owner, int maxAge) {
 		Vec3d adjustedPos = getAdjustedPos(owner);
 		for (HoneySpot honeySpot : honeySpots) {
 			if (owner.getUuid().equals(honeySpot.getOwnerId()) && honeySpot.box.contract(0.7).contains(adjustedPos)) {
@@ -88,7 +88,7 @@ public class HoneyTrailComponent implements AutoSyncedComponent, CommonTickingCo
 		}
 		BlockPos blockPos = BlockPos.ofFloored(adjustedPos);
 		if (!isInFluid(blockPos)) {
-			honeySpots.add(new HoneySpot(owner.getUuid(), adjustedPos, blockPos, 0));
+			honeySpots.add(new HoneySpot(owner.getUuid(), adjustedPos, blockPos, 0, maxAge));
 		}
 	}
 
@@ -106,20 +106,20 @@ public class HoneyTrailComponent implements AutoSyncedComponent, CommonTickingCo
 	}
 
 	public static class HoneySpot {
-		private static final int MAX_AGE = 60;
-
 		private final UUID ownerId;
 		private final Vec3d pos;
 		private final BlockPos blockPos;
 		private final Box box;
 		private int age;
+		private final int maxAge;
 
-		public HoneySpot(UUID ownerId, Vec3d pos, BlockPos blockPos, int age) {
+		public HoneySpot(UUID ownerId, Vec3d pos, BlockPos blockPos, int age, int maxAge) {
 			this.ownerId = ownerId;
 			this.pos = pos;
 			this.blockPos = blockPos;
 			this.box = new Box(pos.add(-0.5, 0, -0.5), pos.add(0.5, 0.2, 0.5));
 			this.age = age;
+			this.maxAge = maxAge;
 		}
 
 		public UUID getOwnerId() {
@@ -138,11 +138,12 @@ public class HoneyTrailComponent implements AutoSyncedComponent, CommonTickingCo
 			compound.putDouble("PosZ", pos.getZ());
 			compound.putLong("BlockPos", blockPos.asLong());
 			compound.putInt("Age", age);
+			compound.putInt("MaxAge", maxAge);
 			return compound;
 		}
 
 		public static HoneySpot deserialize(NbtCompound compound) {
-			return new HoneySpot(compound.getUuid("OwnerId"), new Vec3d(compound.getDouble("PosX"), compound.getDouble("PosY"), compound.getDouble("PosZ")), BlockPos.fromLong(compound.getLong("BlockPos")), compound.getInt("Age"));
+			return new HoneySpot(compound.getUuid("OwnerId"), new Vec3d(compound.getDouble("PosX"), compound.getDouble("PosY"), compound.getDouble("PosZ")), BlockPos.fromLong(compound.getLong("BlockPos")), compound.getInt("Age"), compound.getInt("MaxAge"));
 		}
 	}
 }

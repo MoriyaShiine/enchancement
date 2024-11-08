@@ -363,8 +363,9 @@ public class ModEnchantments {
 				2,
 				AttributeModifierSlot.FEET,
 				builder -> {
-					builder.addEffect(
-							ModEnchantmentEffectComponentTypes.HONEY_TRAIL
+					builder.addNonListEffect(
+							ModEnchantmentEffectComponentTypes.HONEY_TRAIL,
+							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(1.5F))
 					);
 					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.WALL_JUMP,
