@@ -1,4 +1,11 @@
 ------------------------------------------------------
+Version 1.21.2-r3
+------------------------------------------------------
+- merge https://github.com/MoriyaShiine/enchancement/pull/205
+- honey trail duration now scales with level
+- slamming is now canceled by flying, gliding, riding a vehicle, or climbing
+
+------------------------------------------------------
 Version 1.21.2-r2
 ------------------------------------------------------
 - merge https://github.com/MoriyaShiine/enchancement/pull/204
