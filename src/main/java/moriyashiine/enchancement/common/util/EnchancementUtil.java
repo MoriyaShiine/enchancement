@@ -290,7 +290,7 @@ public class EnchancementUtil {
 				return false;
 			}
 		}
-		return !living.isGliding() && living.getVehicle() == null && !living.isClimbing();
+		return !living.isGliding() && !living.hasVehicle() && !living.isClimbing();
 	}
 
 	public static boolean isGroundedOrAirborne(LivingEntity living) {

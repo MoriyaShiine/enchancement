@@ -158,6 +158,10 @@ public class SlamComponent implements CommonTickingComponent {
 	}
 
 	private void slamTick(Runnable onLand) {
+		if (!EnchancementUtil.isGroundedOrAirborne(obj, true)) {
+			isSlamming = false;
+			return;
+		}
 		obj.setVelocity(obj.getVelocity().getX() * 0.98, -3, obj.getVelocity().getZ() * 0.98);
 		obj.fallDistance = 0;
 		if (obj.isOnGround()) {
