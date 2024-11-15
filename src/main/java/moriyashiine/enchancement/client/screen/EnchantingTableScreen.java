@@ -17,6 +17,7 @@ import net.minecraft.client.render.entity.model.BookModel;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -148,16 +149,8 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 					enchantment = handler.getEnchantmentFromViewIndex(i);
 				}
 				MutableText enchantmentName = enchantment.value().description().copy();
-				ItemStack slotStack = handler.getSlot(0).getStack();
-				boolean isAllowed = !EnchancementUtil.exceedsLimit(slotStack, slotStack.getEnchantments().getSize() + handler.selectedEnchantments.size() + 1);
-				if (isAllowed) {
-					for (RegistryEntry<Enchantment> foundEnchantment : handler.selectedEnchantments) {
-						if (foundEnchantment.value().exclusiveSet().contains(enchantment)) {
-							isAllowed = false;
-							break;
-						}
-					}
-				}
+				ItemStack stack = handler.getSlot(0).getStack();
+				boolean isAllowed = EnchantmentHelper.isCompatible(handler.selectedEnchantments, enchantment) && !EnchancementUtil.exceedsLimit(stack, stack.getEnchantments().getSize() + handler.selectedEnchantments.size() + 1);
 				enchantmentName = Text.literal(textRenderer.trimToWidth(enchantmentName.getString(), 80));
 				context.drawText(textRenderer, handler.selectedEnchantments.contains(enchantment) ? enchantmentName.formatted(Formatting.DARK_GREEN) : isAllowed ? enchantmentName.formatted(Formatting.BLACK) : enchantmentName.formatted(Formatting.DARK_RED, Formatting.STRIKETHROUGH), posX + 66, posY + 16 + (i * 19), 0xFFFFFF, false);
 				if (isInBounds(posX, posY + 11 + (i * 19), mouseX, mouseY, 64, 67 + textRenderer.getWidth(enchantmentName), 0, 16)) {
