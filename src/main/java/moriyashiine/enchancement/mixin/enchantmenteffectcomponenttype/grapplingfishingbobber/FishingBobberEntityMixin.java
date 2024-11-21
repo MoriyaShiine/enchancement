@@ -67,7 +67,7 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity implemen
 		if (world instanceof ServerWorld serverWorld) {
 			float grapplingStrength = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.GRAPPLING_FISHING_BOBBER, serverWorld, stack, 0);
 			if (grapplingStrength != 0) {
-				((StrengthHolder) this).enchancement$setStrength(grapplingStrength);
+				enchancement$setStrength(grapplingStrength);
 			}
 		}
 	}
