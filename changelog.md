@@ -1,4 +1,12 @@
 ------------------------------------------------------
+Version 1.21.2-r4
+------------------------------------------------------
+- merge https://github.com/MoriyaShiine/enchancement/pull/208
+- merge https://github.com/MoriyaShiine/enchancement/pull/209
+- fix https://github.com/MoriyaShiine/enchancement/issues/206
+- code cleanup
+
+------------------------------------------------------
 Version 1.21.2-r3
 ------------------------------------------------------
 - merge https://github.com/MoriyaShiine/enchancement/pull/205
