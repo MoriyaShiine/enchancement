@@ -22,7 +22,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class EntityRendererMixin<S extends EntityRenderState> {
 	@Inject(method = "renderLabelIfPresent", at = @At("HEAD"), cancellable = true)
 	private void enchancement$hideLabelBehindWalls(S state, Text text, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-		if (MinecraftClient.getInstance().getCameraEntity() instanceof LivingEntity cameraEntity && ((EntityRenderStateAddition) state).enchancement$getEntity() instanceof LivingEntity living && !living.isGlowing() && EnchancementUtil.hasAnyEnchantmentsWith(living, ModEnchantmentEffectComponentTypes.HIDE_LABEL_BEHIND_WALLS) && !EnchancementUtil.hasAnyEnchantmentsWith(cameraEntity, ModEnchantmentEffectComponentTypes.ENTITY_XRAY) && !cameraEntity.canSee(living)) {
+		EntityRenderStateAddition stateAddition = (EntityRenderStateAddition) state;
+		if (!stateAddition.enchancement$canCameraSee() && stateAddition.enchancement$hidesLabels() && !stateAddition.enchancement$isGlowing() && MinecraftClient.getInstance().getCameraEntity() instanceof LivingEntity cameraEntity && !EnchancementUtil.hasAnyEnchantmentsWith(cameraEntity, ModEnchantmentEffectComponentTypes.ENTITY_XRAY)) {
 			ci.cancel();
 		}
 	}
