@@ -38,6 +38,9 @@ public class ModDamageTypeTagProvider extends FabricTagProvider<DamageType> {
 		getOrCreateTagBuilder(DamageTypeTags.BYPASSES_ENCHANTMENTS)
 				.addOptional(ModDamageTypes.BRIMSTONE)
 				.addOptional(ModDamageTypes.LIFE_DRAIN);
+		getOrCreateTagBuilder(DamageTypeTags.BYPASSES_RESISTANCE)
+				.addOptional(ModDamageTypes.BRIMSTONE)
+				.addOptional(ModDamageTypes.LIFE_DRAIN);
 		getOrCreateTagBuilder(DamageTypeTags.IS_FREEZING)
 				.addOptional(ModDamageTypes.ICE_SHARD);
 		getOrCreateTagBuilder(DamageTypeTags.IS_PROJECTILE)
