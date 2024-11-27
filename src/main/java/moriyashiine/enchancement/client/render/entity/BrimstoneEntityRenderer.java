@@ -18,7 +18,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 
 public class BrimstoneEntityRenderer extends ProjectileEntityRenderer<BrimstoneEntity, BrimstoneEntityRenderState> {
-	private static final Identifier TEXTURE = Enchancement.id("textures/entity/brimstone.png");
+	private static final Identifier TEXTURE = Enchancement.id("textures/entity/projectiles/brimstone.png");
 
 	public BrimstoneEntityRenderer(EntityRendererFactory.Context context) {
 		super(context);
