@@ -12,7 +12,7 @@ Helmet Enchantments:
 Chestplate Enchantments:
 * Adrenaline: Increases movement speed and reduces damage taken proportional to missing health.
 * Amphibious: Increases underwater mining and movement speed. Decreases air consumption underwater and time spent on fire. Immediately extinguishes you and allows usage of Riptide for some time after leaving water.
-* Strafe: Double tapping Left Shift (configurable) launches you in your movement direction.
+* Strafe: Pressing Left Shift (configurable) launches you in your movement direction.
 * Wardenspine: Harms and blinds attackers and greatly decreases damage taken from behind.
 
 Leggings Enchantments:
