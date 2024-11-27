@@ -115,7 +115,7 @@
 	"enchantmenteffectcomponenttype.rotationburst.LivingEntityMixin",
 	"enchantmenteffectcomponenttype.scattershot.CrossbowItemMixin",
 	"enchantmenteffectcomponenttype.scattershot.RangedWeaponItemMixin",
-	"enchantmenteffectcomponenttype.slam.EntityMixin",
+	"enchantmenteffectcomponenttype.slam.LivingEntityMixin",
 	"enchantmenteffectcomponenttype.slide.EntityMixin",
 	"enchantmenteffectcomponenttype.slide.LivingEntityMixin",
 	"enchantmenteffectcomponenttype.slide.PlayerEntityMixin",

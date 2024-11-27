@@ -3,6 +3,7 @@
  */
 package moriyashiine.enchancement.common.component.entity;
 
+import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.client.payload.AddMovementBurstParticlesPayload;
 import moriyashiine.enchancement.common.ModConfig;
@@ -88,7 +89,7 @@ public class DirectionBurstComponent implements AutoSyncedComponent, CommonTicki
 					ticksLeftToPressActivationKey = 0;
 					Vec3d inputVelocity = getVelocityFromInput(options);
 					if (inputVelocity != Vec3d.ZERO) {
-						Vec3d velocity = inputVelocity.rotateY((float) Math.toRadians(-(obj.getHeadYaw() + 90)));
+						Vec3d velocity = inputVelocity.rotateY((float) Math.toRadians(-(obj.getHeadYaw() + 90))).multiply(MultiplyMovementSpeedEvent.getMovementMultiplier(obj));
 						use(velocity.getX(), velocity.getZ());
 						AddMovementBurstParticlesPayload.addParticles(obj);
 						DirectionBurstPayload.send(velocity);

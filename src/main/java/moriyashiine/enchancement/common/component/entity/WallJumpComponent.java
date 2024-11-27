@@ -3,6 +3,7 @@
  */
 package moriyashiine.enchancement.common.component.entity;
 
+import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.payload.WallJumpPayload;
@@ -110,7 +111,7 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 			}
 			if (slidingPos != null && obj.jumping) {
 				Vec3d diff = obj.getBlockPos().toCenterPos().subtract(slidingPos.toCenterPos()).normalize().multiply(jumpStrength);
-				Vec3d velocity = new Vec3d(diff.getX(), obj.getJumpVelocity() * jumpStrength * 3, diff.getZ());
+				Vec3d velocity = new Vec3d(diff.getX(), MultiplyMovementSpeedEvent.getJumpStrength(obj, jumpStrength * 3), diff.getZ());
 				use(velocity);
 				WallJumpPayload.send(velocity);
 				targetPos = null;

@@ -3,6 +3,7 @@
  */
 package moriyashiine.enchancement.common.component.entity;
 
+import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.client.payload.AddMovementBurstParticlesPayload;
 import moriyashiine.enchancement.common.enchantment.effect.RotationBurstEffect;
@@ -123,7 +124,7 @@ public class RotationBurstComponent implements AutoSyncedComponent, CommonTickin
 		reset();
 		wavedashTicks = RotationBurstEffect.getWavedashTicks(obj);
 		obj.playSound(ModSoundEvents.ENTITY_GENERIC_DASH, 1, 1);
-		Vec3d velocity = obj.getRotationVector().normalize().multiply(RotationBurstEffect.getStrength(obj));
+		Vec3d velocity = obj.getRotationVector().normalize().multiply(RotationBurstEffect.getStrength(obj)).multiply(MultiplyMovementSpeedEvent.getMovementMultiplier(obj));
 		obj.setVelocity(velocity.getX(), velocity.getY(), velocity.getZ());
 		obj.fallDistance = 0;
 	}

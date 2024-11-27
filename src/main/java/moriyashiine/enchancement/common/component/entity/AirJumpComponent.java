@@ -3,6 +3,7 @@
  */
 package moriyashiine.enchancement.common.component.entity;
 
+import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import moriyashiine.enchancement.client.payload.AddAirJumpParticlesPayload;
 import moriyashiine.enchancement.common.enchantment.effect.AirJumpEffect;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
@@ -12,6 +13,8 @@ import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
@@ -129,8 +132,12 @@ public class AirJumpComponent implements AutoSyncedComponent, CommonTickingCompo
 	}
 
 	public void use() {
-		obj.jump();
-		obj.setVelocity(obj.getVelocity().getX(), obj.getVelocity().getY() * AirJumpEffect.getAirJumpStrength(obj), obj.getVelocity().getZ());
+		obj.setVelocity(obj.getVelocity().getX(), MultiplyMovementSpeedEvent.getJumpStrength(obj, AirJumpEffect.getAirJumpStrength(obj)), obj.getVelocity().getZ());
+		if (obj.isSprinting()) {
+			float rad = (float) Math.toRadians(obj.getYaw());
+			obj.addVelocityInternal(new Vec3d(-MathHelper.sin(rad) * 0.2, 0, MathHelper.cos(rad) * 0.2));
+		}
+		obj.velocityDirty = true;
 		obj.playSound(ModSoundEvents.ENTITY_GENERIC_AIR_JUMP, 1, 1);
 		if (cooldown == 0 || jumpsLeft == maxJumps) {
 			setCooldown(AirJumpEffect.getChargeCooldown(obj));
