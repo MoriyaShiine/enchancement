@@ -300,7 +300,7 @@ public class ModEnchantments {
 							new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0.5F)));
 					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.SLIDE,
-							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.2F, 0.035F)));
+							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.21F, 0.065F)));
 				}));
 		// boots
 		registerable.register(BOUNCY, create(BOUNCY.getValue(),
