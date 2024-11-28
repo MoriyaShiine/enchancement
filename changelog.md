@@ -1,4 +1,12 @@
 ------------------------------------------------------
+Version 1.21.2-r5
+------------------------------------------------------
+- fix mod projectiles not rendering from certain angles
+- brimstone and life drain damage sources now bypass resistance
+- increase slide speed
+- movement enchantments now scale properly with attribute modifiers such as from swiftness or slowness
+
+------------------------------------------------------
 Version 1.21.2-r4
 ------------------------------------------------------
 - merge https://github.com/MoriyaShiine/enchancement/pull/208
