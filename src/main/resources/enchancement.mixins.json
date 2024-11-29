@@ -115,6 +115,7 @@
 	"enchantmenteffectcomponenttype.rotationburst.LivingEntityMixin",
 	"enchantmenteffectcomponenttype.scattershot.CrossbowItemMixin",
 	"enchantmenteffectcomponenttype.scattershot.RangedWeaponItemMixin",
+	"enchantmenteffectcomponenttype.slam.HoneyBlockMixin",
 	"enchantmenteffectcomponenttype.slam.LivingEntityMixin",
 	"enchantmenteffectcomponenttype.slide.EntityMixin",
 	"enchantmenteffectcomponenttype.slide.LivingEntityMixin",
