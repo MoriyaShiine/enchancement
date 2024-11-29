@@ -93,7 +93,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 			if (min > 0 && min == distanceTraveled) {
 				discard();
 			}
-			Vec3d start = getPos().add(getRotationVector().multiply(distanceTraveled - 1)), end = start.add(getRotationVector());
+			Vec3d start = getPos().add(getRotationVector().multiply(distanceTraveled + (ticksExisted > 0 ? -1 : 0))), end = start.add(getRotationVector());
 			BlockHitResult hitResult = getWorld().raycast(new RaycastContext(start, end, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, this));
 			if (hitResult.getType() == HitResult.Type.BLOCK) {
 				if (getWorld().isClient) {
