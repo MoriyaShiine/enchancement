@@ -692,7 +692,8 @@ public class ModEnchantments {
 						ModEnchantmentEffectComponentTypes.DISARMING_FISHING_BOBBER,
 						new DisarmingFishingBobberEffect(
 								false,
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(1.5F))
+								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(2.5F)),
+								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(12, -2))
 						))));
 		registerable.register(GRAPPLE, create(GRAPPLE.getValue(),
 				itemLookup.getOrThrow(ItemTags.FISHING_ENCHANTABLE),

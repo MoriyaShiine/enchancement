@@ -4,7 +4,6 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.disarmingfishingbobber;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import moriyashiine.enchancement.common.component.entity.DisarmedPlayerComponent;
 import moriyashiine.enchancement.common.component.entity.DisarmingFishingBobberComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.component.DataComponentTypes;
@@ -16,7 +15,6 @@ import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.village.Merchant;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -57,54 +55,56 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 					}
 				}
 				if (!stack.isEmpty()) {
+					PlayerEntity owner = getPlayerOwner();
+					int disableTime = 0;
 					if (entity instanceof PlayerEntity player && !disarmingFishingBobberComponent.stealsFromPlayers()) {
-						if (!player.getItemCooldownManager().isCoolingDown(stack)) {
-							DisarmedPlayerComponent disarmedPlayerComponent = ModEntityComponents.DISARMED_PLAYER.get(player);
-							disarmedPlayerComponent.getDisarmedStacks().add(stack);
-							disarmedPlayerComponent.sync();
-							player.getItemCooldownManager().set(stack, disarmingFishingBobberComponent.getPlayerCooldown());
-							player.stopUsingItem();
+						disableTime = disarmingFishingBobberComponent.getPlayerCooldown();
+						if (entity != owner) {
+							disarmingFishingBobberComponent.disableStack(player, stack, disableTime);
 						}
-					} else {
-						PlayerEntity owner = getPlayerOwner();
-						if (owner != null) {
+					} else if (owner != null) {
+						if (entity instanceof MobEntity mob) {
 							if (stack.isDamageable()) {
-								stack.setDamage(MathHelper.nextInt(living.getRandom(), stack.getDamage(), (int) (stack.getMaxDamage() - (stack.getMaxDamage() * 0.05F))));
+								stack.setDamage(mob.getRandom().nextBetween(stack.getDamage() / 2, stack.getDamage()));
 							}
-							if (entity instanceof MobEntity mob) {
-								if (!owner.isCreative()) {
-									mob.setTarget(owner);
-									mob.setAttacker(owner);
-									if (entity instanceof InteractionObserver observer) {
-										observer.onInteractionWith(EntityInteraction.VILLAGER_HURT, owner);
-									}
-									if (entity instanceof PiglinEntity piglin) {
-										PiglinBrain.onAttacked(serverWorld, piglin, owner);
-									}
+							if (!owner.isCreative()) {
+								mob.setTarget(owner);
+								mob.setAttacker(owner);
+								if (entity instanceof InteractionObserver observer) {
+									observer.onInteractionWith(EntityInteraction.VILLAGER_HURT, owner);
 								}
-								if (entity instanceof Merchant) {
-									stack = ItemStack.EMPTY;
-								}
-								if (entity instanceof EndermanEntity enderman) {
-									enderman.setCarriedBlock(null);
-								}
-								if (entity instanceof WitchEntity) {
-									PotionContentsComponent potionContents = stack.getOrDefault(DataComponentTypes.POTION_CONTENTS, null);
-									if (potionContents != null) {
-										potionContents.potion().ifPresent(potion -> ModEntityComponents.DISARMED_WITCH.get(entity).disablePotion(potion.value()));
-									}
+								if (entity instanceof PiglinEntity piglin) {
+									PiglinBrain.onAttacked(serverWorld, piglin, owner);
 								}
 							}
-							if (!stack.isEmpty()) {
-								ItemEntity itemEntity = new ItemEntity(getWorld(), entity.getX(), entity.getBodyY(0.5), entity.getZ(), stack);
-								itemEntity.setToDefaultPickupDelay();
-								double deltaX = owner.getX() - getX();
-								double deltaY = owner.getY() - getY();
-								double deltaZ = owner.getZ() - getZ();
-								itemEntity.setVelocity(deltaX * 0.1, deltaY * 0.1 + Math.sqrt(Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ)) * 0.08, deltaZ * 0.1);
-								getWorld().spawnEntity(itemEntity);
-								living.equipStack(offhand ? EquipmentSlot.OFFHAND : EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+							if (entity instanceof Merchant) {
+								stack = ItemStack.EMPTY;
 							}
+							if (entity instanceof EndermanEntity enderman) {
+								enderman.setCarriedBlock(null);
+							}
+							if (entity instanceof WitchEntity) {
+								PotionContentsComponent potionContents = stack.getOrDefault(DataComponentTypes.POTION_CONTENTS, null);
+								if (potionContents != null) {
+									potionContents.potion().ifPresent(potion -> ModEntityComponents.DISARMED_WITCH.get(entity).disablePotion(potion.value()));
+								}
+							}
+						}
+						if (!stack.isEmpty()) {
+							ItemEntity itemEntity = new ItemEntity(getWorld(), entity.getX(), entity.getBodyY(0.5), entity.getZ(), stack);
+							itemEntity.setToDefaultPickupDelay();
+							double deltaX = owner.getX() - getX();
+							double deltaY = owner.getY() - getY();
+							double deltaZ = owner.getZ() - getZ();
+							itemEntity.setVelocity(deltaX * 0.1, deltaY * 0.1 + Math.sqrt(Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ)) * 0.08, deltaZ * 0.1);
+							getWorld().spawnEntity(itemEntity);
+							living.equipStack(offhand ? EquipmentSlot.OFFHAND : EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+						}
+					}
+					if (owner != null) {
+						disableTime = Math.max(disableTime, disarmingFishingBobberComponent.getUserCooldown());
+						if (disableTime > 0) {
+							disarmingFishingBobberComponent.disableStack(owner, disarmingFishingBobberComponent.getStack(), disableTime);
 						}
 					}
 					ci.cancel();

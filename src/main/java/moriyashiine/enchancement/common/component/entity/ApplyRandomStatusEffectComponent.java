@@ -36,7 +36,7 @@ public class ApplyRandomStatusEffectComponent implements Component {
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		originalStack = ItemStack.fromNbt(registryLookup, tag.getCompound("OriginalStack")).orElse(ItemStack.EMPTY);
+		originalStack = ItemStack.fromNbtOrEmpty(registryLookup, tag.getCompound("OriginalStack"));
 	}
 
 	@Override

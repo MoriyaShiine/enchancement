@@ -23,21 +23,32 @@ import org.ladysnake.cca.api.v3.component.Component;
 import java.util.Collections;
 
 public class DisarmingFishingBobberComponent implements Component {
+	private ItemStack stack = ItemStack.EMPTY;
 	private boolean enabled = false, stealsFromPlayers = false;
-	private int playerCooldown = 0;
+	private int playerCooldown = 0, userCooldown = 0;
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+		stack = ItemStack.fromNbtOrEmpty(registryLookup, tag.getCompound("Stack"));
 		enabled = tag.getBoolean("Enabled");
 		stealsFromPlayers = tag.getBoolean("StealsFromPlayers");
 		playerCooldown = tag.getInt("PlayerCooldown");
+		userCooldown = tag.getInt("UserCooldown");
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+		if (!stack.isEmpty()) {
+			tag.put("Stack", stack.toNbt(registryLookup));
+		}
 		tag.putBoolean("Enabled", enabled);
 		tag.putBoolean("StealsFromPlayers", stealsFromPlayers);
 		tag.putInt("PlayerCooldown", playerCooldown);
+		tag.putInt("UserCooldown", userCooldown);
+	}
+
+	public ItemStack getStack() {
+		return stack;
 	}
 
 	public boolean isEnabled() {
@@ -52,20 +63,34 @@ public class DisarmingFishingBobberComponent implements Component {
 		return playerCooldown;
 	}
 
+	public int getUserCooldown() {
+		return userCooldown;
+	}
+
+	public void disableStack(PlayerEntity player, ItemStack stack, int duration) {
+		DisarmedPlayerComponent disarmedPlayerComponent = ModEntityComponents.DISARMED_PLAYER.get(player);
+		disarmedPlayerComponent.getDisarmedStacks().add(stack);
+		disarmedPlayerComponent.sync();
+		player.getItemCooldownManager().set(stack, duration);
+		player.stopUsingItem();
+	}
+
 	public static void maybeSet(LivingEntity user, ItemStack stack, Entity entity) {
 		if (entity instanceof FishingBobberEntity) {
 			MutableBoolean enabled = new MutableBoolean(), stealsFromPlayers = new MutableBoolean();
-			MutableFloat playerCooldown = new MutableFloat();
+			MutableFloat playerCooldown = new MutableFloat(), userCooldown = new MutableFloat();
 			if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.DISARMING_FISHING_BOBBER)) {
-				DisarmingFishingBobberEffect.setValues(user.getRandom(), enabled, stealsFromPlayers, playerCooldown, Collections.singleton(stack));
+				DisarmingFishingBobberEffect.setValues(user.getRandom(), enabled, stealsFromPlayers, playerCooldown, userCooldown, Collections.singleton(stack));
 			} else if (!(user instanceof PlayerEntity) && EnchancementUtil.hasAnyEnchantmentsWith(user, ModEnchantmentEffectComponentTypes.DISARMING_FISHING_BOBBER)) {
-				DisarmingFishingBobberEffect.setValues(user.getRandom(), enabled, stealsFromPlayers, playerCooldown, user.getEquippedItems());
+				DisarmingFishingBobberEffect.setValues(user.getRandom(), enabled, stealsFromPlayers, playerCooldown, userCooldown, user.getEquippedItems());
 			}
 			if (enabled.booleanValue()) {
 				DisarmingFishingBobberComponent disarmingFishingBobberComponent = ModEntityComponents.DISARMING_FISHING_BOBBER.get(entity);
+				disarmingFishingBobberComponent.stack = stack;
 				disarmingFishingBobberComponent.enabled = true;
 				disarmingFishingBobberComponent.stealsFromPlayers = stealsFromPlayers.booleanValue();
 				disarmingFishingBobberComponent.playerCooldown = MathHelper.floor(playerCooldown.floatValue() * 20);
+				disarmingFishingBobberComponent.userCooldown = MathHelper.floor(userCooldown.floatValue() * 20);
 			}
 		}
 	}

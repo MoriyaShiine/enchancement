@@ -16,13 +16,15 @@ import org.apache.commons.lang3.mutable.MutableFloat;
 
 import java.util.List;
 
-public record DisarmingFishingBobberEffect(boolean stealsFromPlayers, EnchantmentValueEffect playerCooldown) {
+public record DisarmingFishingBobberEffect(boolean stealsFromPlayers, EnchantmentValueEffect playerCooldown,
+										   EnchantmentValueEffect userCooldown) {
 	public static final Codec<DisarmingFishingBobberEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 					Codec.BOOL.fieldOf("steals_from_players").forGetter(DisarmingFishingBobberEffect::stealsFromPlayers),
-					EnchantmentValueEffect.CODEC.fieldOf("player_cooldown").forGetter(DisarmingFishingBobberEffect::playerCooldown))
+					EnchantmentValueEffect.CODEC.fieldOf("player_cooldown").forGetter(DisarmingFishingBobberEffect::playerCooldown),
+					EnchantmentValueEffect.CODEC.fieldOf("user_cooldown").forGetter(DisarmingFishingBobberEffect::userCooldown))
 			.apply(instance, DisarmingFishingBobberEffect::new));
 
-	public static void setValues(Random random, MutableBoolean enabled, MutableBoolean stealsFromPlayers, MutableFloat playerCooldown, Iterable<ItemStack> stacks) {
+	public static void setValues(Random random, MutableBoolean enabled, MutableBoolean stealsFromPlayers, MutableFloat playerCooldown, MutableFloat userCooldown, Iterable<ItemStack> stacks) {
 		for (ItemStack stack : stacks) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				List<EnchantmentEffectEntry<DisarmingFishingBobberEffect>> effects = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.DISARMING_FISHING_BOBBER);
@@ -31,6 +33,7 @@ public record DisarmingFishingBobberEffect(boolean stealsFromPlayers, Enchantmen
 						enabled.setValue(true);
 						stealsFromPlayers.setValue(stealsFromPlayers.booleanValue() || effect.effect().stealsFromPlayers());
 						playerCooldown.setValue(effect.effect().playerCooldown().apply(level, random, playerCooldown.floatValue()));
+						userCooldown.setValue(effect.effect().userCooldown().apply(level, random, userCooldown.floatValue()));
 					});
 				}
 			});
