@@ -130,9 +130,6 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity implemen
 	private void enchancement$grappleFishingBobber(Entity instance, Vec3d velocity, Operation<Void> original) {
 		if (getStrength() != 0) {
 			velocity = velocity.multiply(getStrength());
-			if (!instance.isOnGround() && EnchancementUtil.hasAnyEnchantmentsWith(instance, ModEnchantmentEffectComponentTypes.BOUNCE)) {
-				instance.fallDistance += 6;
-			}
 		}
 		original.call(instance, velocity);
 	}
@@ -149,9 +146,6 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity implemen
 						}
 						player.setVelocity(player.getVelocity().add(new Vec3d(Math.min(getStrength() * 4, getX() - player.getX()), Math.min(getStrength() * 4, getY() - player.getY()), Math.min(getStrength() * 4, getZ() - player.getZ())).multiply(0.2)));
 						player.velocityModified = true;
-					}
-					if (!player.isOnGround() && EnchancementUtil.hasAnyEnchantmentsWith(player, ModEnchantmentEffectComponentTypes.BOUNCE)) {
-						player.fallDistance += 6;
 					}
 				}
 			}
