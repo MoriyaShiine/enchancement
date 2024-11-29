@@ -461,6 +461,10 @@ public class ModEnchantments {
 							)
 					);
 					builder.addEffect(
+							ModEnchantmentEffectComponentTypes.RANGED_SHOOT_COOLDOWN,
+							new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1))
+					);
+					builder.addEffect(
 							ModEnchantmentEffectComponentTypes.SCATTER_SHOT,
 							new ScatterShotEffect(
 									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(6)),

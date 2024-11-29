@@ -14,6 +14,14 @@
 		}
 	  }
 	],
+	"enchancement:ranged_shoot_cooldown": [
+	  {
+		"effect": {
+		  "type": "minecraft:add",
+		  "value": 1.0
+		}
+	  }
+	],
 	"enchancement:scatter_shot": [
 	  {
 		"effect": {

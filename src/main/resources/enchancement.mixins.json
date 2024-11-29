@@ -109,6 +109,7 @@
 	"enchantmenteffectcomponenttype.phasethroughblocksandfloat.TridentEntityMixin",
 	"enchantmenteffectcomponenttype.preventswimming.PlayerEntityMixin",
 	"enchantmenteffectcomponenttype.rage.LivingEntityMixin",
+	"enchantmenteffectcomponenttype.rangedshootcooldown.RangedWeaponItemMixin",
 	"enchantmenteffectcomponenttype.rapidcrossbowfire.CrossbowAttackGoalMixin",
 	"enchantmenteffectcomponenttype.rapidcrossbowfire.CrossbowAttackTaskMixin",
 	"enchantmenteffectcomponenttype.rapidcrossbowfire.CrossbowItemMixin",

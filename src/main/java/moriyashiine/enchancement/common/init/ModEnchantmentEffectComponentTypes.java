@@ -53,6 +53,7 @@ public class ModEnchantmentEffectComponentTypes {
 	public static final ComponentType<List<EnchantmentEffectEntry<EnchantmentValueEffect>>> PHASE_THROUGH_BLOCKS_AND_FLOAT = register("phase_through_blocks_and_float", builder -> builder.codec(EnchantmentEffectEntry.createCodec(EnchantmentValueEffect.CODEC, LootContextTypes.ENCHANTED_ITEM).listOf()));
 	public static final ComponentType<Unit> PREVENT_SWIMMING = register("prevent_swimming", builder -> builder.codec(Unit.CODEC));
 	public static final ComponentType<RageEffect> RAGE = register("rage", builder -> builder.codec(RageEffect.CODEC));
+	public static final ComponentType<List<EnchantmentEffectEntry<EnchantmentValueEffect>>> RANGED_SHOOT_COOLDOWN = register("ranged_shoot_cooldown", builder -> builder.codec(EnchantmentEffectEntry.createCodec(EnchantmentValueEffect.CODEC, LootContextTypes.ENCHANTED_ITEM).listOf()));
 	public static final ComponentType<Unit> RAPID_CROSSBOW_FIRE = register("rapid_crossbow_fire", builder -> builder.codec(Unit.CODEC));
 	public static final ComponentType<RotationBurstEffect> ROTATION_BURST = register("rotation_burst", builder -> builder.codec(RotationBurstEffect.CODEC));
 	public static final ComponentType<List<EnchantmentEffectEntry<ScatterShotEffect>>> SCATTER_SHOT = register("scatter_shot", builder -> builder.codec(EnchantmentEffectEntry.createCodec(ScatterShotEffect.CODEC, LootContextTypes.ENCHANTED_ITEM).listOf()));
