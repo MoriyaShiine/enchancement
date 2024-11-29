@@ -15,6 +15,7 @@ import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Hand;
 import net.minecraft.village.Merchant;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -43,15 +44,24 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 		if (getWorld() instanceof ServerWorld serverWorld && entity instanceof LivingEntity living) {
 			DisarmingFishingBobberComponent disarmingFishingBobberComponent = ModEntityComponents.DISARMING_FISHING_BOBBER.get(this);
 			if (disarmingFishingBobberComponent.isEnabled()) {
-				boolean offhand = false;
-				ItemStack stack;
+				ItemStack stack = ItemStack.EMPTY;
+				EquipmentSlot stackSlot = EquipmentSlot.MAINHAND;
 				if (entity instanceof EndermanEntity enderman && enderman.getCarriedBlock() != null) {
 					stack = new ItemStack(enderman.getCarriedBlock().getBlock());
 				} else {
-					stack = living.getMainHandStack();
+					for (Hand hand : Hand.values()) {
+						ItemStack handStack = living.getStackInHand(hand);
+						if (!handStack.isEmpty() && handStack == living.getActiveItem()) {
+							stack = handStack;
+							stackSlot = LivingEntity.getSlotForHand(hand);
+						}
+					}
 					if (stack.isEmpty()) {
-						offhand = true;
-						stack = living.getOffHandStack();
+						stack = living.getMainHandStack();
+						if (stack.isEmpty()) {
+							stack = living.getOffHandStack();
+							stackSlot = EquipmentSlot.OFFHAND;
+						}
 					}
 				}
 				if (!stack.isEmpty()) {
@@ -98,7 +108,7 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 							double deltaZ = owner.getZ() - getZ();
 							itemEntity.setVelocity(deltaX * 0.1, deltaY * 0.1 + Math.sqrt(Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ)) * 0.08, deltaZ * 0.1);
 							getWorld().spawnEntity(itemEntity);
-							living.equipStack(offhand ? EquipmentSlot.OFFHAND : EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+							living.equipStack(stackSlot, ItemStack.EMPTY);
 						}
 					}
 					if (owner != null) {
