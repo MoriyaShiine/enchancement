@@ -1,4 +1,14 @@
 ------------------------------------------------------
+Version 1.21.2-r6
+------------------------------------------------------
+- fix brimstone not working when backed up against a block
+- disarm now has a cooldown on the user when successfully used, and now applies cooldown on the target for longer
+- disarm now prioritizes active item before mainhand and offhand
+- grapple no longer increases bouncy strength
+- slamming is now canceled by honey effects
+- split scatter shot cooldown into own component
+
+------------------------------------------------------
 Version 1.21.2-r5
 ------------------------------------------------------
 - fix mod projectiles not rendering from certain angles
