@@ -4,13 +4,13 @@
 package moriyashiine.enchancement.client.particle;
 
 import moriyashiine.enchancement.common.particle.SparkParticleEffect;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleFactory;
 import net.minecraft.client.particle.ParticleTextureSheet;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.Vec3d;
@@ -49,9 +49,12 @@ public class SparkParticle extends Particle {
 	}
 
 	@Override
-	public void buildGeometry(VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
-		MatrixStack matrixStack = new MatrixStack();
-		vertexConsumer = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers().getBuffer(RenderLayer.getLightning());
+	public void render(VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
+	}
+
+	@Override
+	public void renderCustom(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Camera camera, float tickDelta) {
+		VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getLightning());
 		Vec3d cameraPos = camera.getPos();
 		for (int i = 1; i < arcs.size(); i++) {
 			Vec3d start = arcs.get(i - 1), end = arcs.get(i);
@@ -64,7 +67,7 @@ public class SparkParticle extends Particle {
 			Vector3f normal = new Vector3f(endX - startX, endY - startY, endZ - startZ).normalize();
 			Vector3f verticalOffset = normal.cross(normal.x(), normal.y(), 0, new Vector3f()).normalize().mul(0.025F);
 			Vector3f horizontalOffset = normal.cross(normal.x(), 0, normal.z(), new Vector3f()).normalize().mul(0.025F);
-			Matrix4f position = matrixStack.peek().getPositionMatrix();
+			Matrix4f position = matrices.peek().getPositionMatrix();
 			drawFace(vertexConsumer, position,
 					startX + verticalOffset.x(), startY + verticalOffset.y(), startZ + verticalOffset.z(),
 					endX + verticalOffset.x(), endY + verticalOffset.y(), endZ + verticalOffset.z(),

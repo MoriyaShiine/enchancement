@@ -78,7 +78,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 	@Override
 	protected void init() {
 		super.init();
-		bookModel = new BookModel(client.getEntityModelLoader().getModelPart(EntityModelLayers.BOOK));
+		bookModel = new BookModel(client.getLoadedEntityModels().getModelPart(EntityModelLayers.BOOK));
 	}
 
 	@Override

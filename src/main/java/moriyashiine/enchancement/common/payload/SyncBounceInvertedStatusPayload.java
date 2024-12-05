@@ -18,7 +18,7 @@ import java.util.Set;
 public record SyncBounceInvertedStatusPayload(boolean inverted) implements CustomPayload {
 	public static final Id<SyncBounceInvertedStatusPayload> ID = new Id<>(Enchancement.id("sync_bounce_inverted_status"));
 	public static final PacketCodec<PacketByteBuf, SyncBounceInvertedStatusPayload> CODEC = PacketCodec.tuple(
-			PacketCodecs.BOOL, SyncBounceInvertedStatusPayload::inverted,
+			PacketCodecs.BOOLEAN, SyncBounceInvertedStatusPayload::inverted,
 			SyncBounceInvertedStatusPayload::new
 	);
 

@@ -19,7 +19,7 @@ public abstract class ShulkerEntityMixin extends Entity {
 		super(type, world);
 	}
 
-	@ModifyReturnValue(method = "calculateBoundingBox()Lnet/minecraft/util/math/Box;", at = @At("RETURN"))
+	@ModifyReturnValue(method = "calculateDefaultBoundingBox", at = @At("RETURN"))
 	private Box enchancement$buryEntity(Box original) {
 		if (age > 0 && ModEntityComponents.BURY_ENTITY.get(this).getBuryPos() != null) {
 			return original.shrink(0, 0.5, 0);

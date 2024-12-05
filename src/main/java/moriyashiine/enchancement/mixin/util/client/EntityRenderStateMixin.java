@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.Unique;
 @Mixin(EntityRenderState.class)
 public class EntityRenderStateMixin implements EntityRenderStateAddition {
 	@Unique
-	private ItemStack activeStack = ItemStack.EMPTY;
+	private ItemStack activeStack = ItemStack.EMPTY, mainHandStack = ItemStack.EMPTY;
 	@Unique
 	private Random random = null;
 	@Unique
@@ -27,6 +27,16 @@ public class EntityRenderStateMixin implements EntityRenderStateAddition {
 	@Override
 	public void enchancement$setActiveStack(ItemStack stack) {
 		this.activeStack = stack;
+	}
+
+	@Override
+	public ItemStack enchancement$getMainHandStack() {
+		return mainHandStack;
+	}
+
+	@Override
+	public void enchancement$setMainHandStack(ItemStack stack) {
+		this.mainHandStack = stack;
 	}
 
 	@Override

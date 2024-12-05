@@ -11,7 +11,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
-import net.minecraft.client.texture.ResourceTexture;
+import net.minecraft.client.texture.TextureContents;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 
@@ -114,6 +114,6 @@ public class FrozenReloadListener implements IdentifiableResourceReloadListener,
 	 * load the NativeImage for a given MC texture
 	 */
 	private static NativeImage loadNative(ResourceManager resourceManager, Identifier identifier) throws IOException {
-		return ResourceTexture.TextureData.load(resourceManager, identifier).getImage();
+		return TextureContents.load(resourceManager, identifier).image();
 	}
 }

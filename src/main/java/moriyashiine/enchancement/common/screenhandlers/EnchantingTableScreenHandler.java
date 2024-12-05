@@ -371,15 +371,17 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 			this.ingredient = ingredient;
 		}
 
+		@SuppressWarnings("deprecation")
 		public RegistryEntry<Item> get(int index) {
-			return ingredient.getMatchingItems().get(index);
+			return ingredient.getMatchingItems().toList().get(index);
 		}
 
+		@SuppressWarnings("deprecation")
 		public int size() {
 			if (ingredient == null) {
 				return 0;
 			}
-			return ingredient.getMatchingItems().size();
+			return ingredient.getMatchingItems().toList().size();
 		}
 
 		public boolean isEmpty() {

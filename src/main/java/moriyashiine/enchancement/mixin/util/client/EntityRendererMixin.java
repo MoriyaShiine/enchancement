@@ -23,6 +23,7 @@ public class EntityRendererMixin<T extends Entity, S extends EntityRenderState> 
 	private void enchancement$livingEntityRenderStateAddition(T entity, S state, float tickDelta, CallbackInfo ci) {
 		EntityRenderStateAddition stateAddition = (EntityRenderStateAddition) state;
 		stateAddition.enchancement$setActiveStack(entity instanceof LivingEntity living ? living.getActiveItem() : ItemStack.EMPTY);
+		stateAddition.enchancement$setMainHandStack(entity instanceof LivingEntity living ? living.getMainHandStack() : ItemStack.EMPTY);
 		stateAddition.enchancement$setRandom(entity.getRandom());
 		stateAddition.enchancement$setCanCameraSee(MinecraftClient.getInstance().getCameraEntity() instanceof LivingEntity living && living.canSee(entity));
 		stateAddition.enchancement$setGlowing(entity.isGlowing());

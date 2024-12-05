@@ -14,6 +14,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -51,7 +52,7 @@ public class EruptionComponent implements AutoSyncedComponent, CommonTickingComp
 	@Override
 	public void tick() {
 		int chargeTime = EruptionEffect.getChargeTime(obj.getRandom(), obj.getMainHandStack());
-		if (chargeTime > 0 && obj.isUsingItem()) {
+		if (chargeTime > 0 && ItemStack.areEqual(obj.getActiveItem(), obj.getMainHandStack())) {
 			if (!playedSound && obj.getItemUseTime() == chargeTime) {
 				obj.playSound(ModSoundEvents.ENTITY_GENERIC_PING, 1, 1);
 				playedSound = true;

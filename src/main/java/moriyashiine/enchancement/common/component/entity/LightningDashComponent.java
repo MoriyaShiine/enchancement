@@ -21,6 +21,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
@@ -97,7 +98,7 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 				}
 			}
 		}
-		if (chargeTime > 0 && obj.isUsingItem()) {
+		if (chargeTime > 0 && ItemStack.areEqual(obj.getActiveItem(), obj.getMainHandStack())) {
 			if (!playedSound && obj.getItemUseTime() == chargeTime) {
 				obj.playSound(ModSoundEvents.ENTITY_GENERIC_PING, 1, 1);
 				playedSound = true;

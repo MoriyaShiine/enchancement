@@ -9,6 +9,7 @@ import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.effect.EnchantmentValueEffect;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
@@ -47,11 +48,13 @@ public record RageEffect(EnchantmentValueEffect damageDealtModifier, Enchantment
 		return 7 * value.floatValue();
 	}
 
-	public static int getColor(LivingEntity living, ItemStack stack) {
-		float damageBonus = getDamageDealtModifier(living, stack);
-		if (damageBonus > 0) {
-			float other = 1 - damageBonus / getDamageDealtModifierMax(living, stack);
-			return (0xFF << 24) | (0xFF << 16) | (((int) (other * 255 + 0.5) & 0xFF) << 8) | ((int) (other * 255 + 0.5) & 0xFF);
+	public static int getColor(Entity entity, ItemStack stack) {
+		if (entity instanceof LivingEntity living) {
+			float damageBonus = getDamageDealtModifier(living, stack);
+			if (damageBonus > 0) {
+				float other = 1 - damageBonus / getDamageDealtModifierMax(living, stack);
+				return (0xFF << 24) | (0xFF << 16) | (((int) (other * 255 + 0.5) & 0xFF) << 8) | ((int) (other * 255 + 0.5) & 0xFF);
+			}
 		}
 		return -1;
 	}

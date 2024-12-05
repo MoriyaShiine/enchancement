@@ -11,6 +11,10 @@ public interface EntityRenderStateAddition {
 
 	void enchancement$setActiveStack(ItemStack stack);
 
+	ItemStack enchancement$getMainHandStack();
+
+	void enchancement$setMainHandStack(ItemStack stack);
+
 	Random enchancement$getRandom();
 
 	void enchancement$setRandom(Random random);

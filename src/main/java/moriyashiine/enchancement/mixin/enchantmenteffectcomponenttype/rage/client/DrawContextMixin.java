@@ -15,15 +15,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(DrawContext.class)
 public class DrawContextMixin {
-	@Inject(method = "drawItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;IIII)V", at = @At("HEAD"))
+	@Inject(method = "drawItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;IIII)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;getItemModelManager()Lnet/minecraft/client/item/ItemModelManager;"))
 	private void enchancement$rage(LivingEntity entity, World world, ItemStack stack, int x, int y, int seed, int z, CallbackInfo ci) {
-		if (entity != null) {
-			RageEffect.color = RageEffect.getColor(entity, stack);
-		}
-	}
-
-	@Inject(method = "drawItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;IIII)V", at = @At("TAIL"))
-	private void enchancement$rageTail(LivingEntity entity, World world, ItemStack stack, int x, int y, int seed, int z, CallbackInfo ci) {
-		RageEffect.color = -1;
+		RageEffect.color = RageEffect.getColor(entity, stack);
 	}
 }

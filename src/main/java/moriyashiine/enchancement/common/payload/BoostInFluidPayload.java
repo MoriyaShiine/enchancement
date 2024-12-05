@@ -15,7 +15,7 @@ import net.minecraft.network.packet.CustomPayload;
 
 public record BoostInFluidPayload(boolean shouldBoost) implements CustomPayload {
 	public static final CustomPayload.Id<BoostInFluidPayload> ID = new Id<>(Enchancement.id("boost_in_fluid"));
-	public static final PacketCodec<PacketByteBuf, BoostInFluidPayload> CODEC = PacketCodec.tuple(PacketCodecs.BOOL, BoostInFluidPayload::shouldBoost, BoostInFluidPayload::new);
+	public static final PacketCodec<PacketByteBuf, BoostInFluidPayload> CODEC = PacketCodec.tuple(PacketCodecs.BOOLEAN, BoostInFluidPayload::shouldBoost, BoostInFluidPayload::new);
 
 	@Override
 	public CustomPayload.Id<? extends CustomPayload> getId() {

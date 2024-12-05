@@ -34,11 +34,6 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 		super(entityType, world);
 	}
 
-	@Inject(method = "<init>(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/world/World;IILnet/minecraft/item/ItemStack;)V", at = @At("TAIL"))
-	private void enchancement$disarmingFishingBobber(PlayerEntity thrower, World world, int luckBonus, int waitTimeReductionTicks, ItemStack stack, CallbackInfo ci) {
-		DisarmingFishingBobberComponent.maybeSet(thrower, stack, this);
-	}
-
 	@Inject(method = "pullHookedEntity", at = @At("HEAD"), cancellable = true)
 	private void enchancment$disarmingFishingBobber(Entity entity, CallbackInfo ci) {
 		if (getWorld() instanceof ServerWorld serverWorld && entity instanceof LivingEntity living) {

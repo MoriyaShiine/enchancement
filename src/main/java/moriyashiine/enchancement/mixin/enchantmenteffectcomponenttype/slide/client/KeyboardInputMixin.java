@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(KeyboardInput.class)
 public class KeyboardInputMixin extends Input {
 	@Inject(method = "tick", at = @At("TAIL"))
-	private void enchancement$slide(boolean slowDown, float slowDownFactor, CallbackInfo ci) {
+	private void enchancement$slide(CallbackInfo ci) {
 		PlayerEntity player = MinecraftClient.getInstance().player;
 		if (player != null) {
 			SlideComponent slideComponent = ModEntityComponents.SLIDE.get(player);

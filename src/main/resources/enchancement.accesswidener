@@ -4,7 +4,6 @@ accessible class net/minecraft/enchantment/EnchantmentHelper$ContextAwareConsume
 accessible class net/minecraft/entity/effect/InstantHealthOrDamageStatusEffect
 accessible class net/minecraft/entity/mob/ShulkerEntity$PeekGoal
 accessible class net/minecraft/entity/mob/ShulkerEntity$ShootBulletGoal
-accessible class net/minecraft/client/texture/ResourceTexture$TextureData
 accessible method net/minecraft/block/entity/AbstractFurnaceBlockEntity dropExperience (Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/math/Vec3d;IF)V
 accessible method net/minecraft/entity/projectile/ArrowEntity setPotionContents (Lnet/minecraft/component/type/PotionContentsComponent;)V
 accessible method net/minecraft/item/CrossbowItem getPullProgress (ILnet/minecraft/item/ItemStack;Lnet/minecraft/entity/LivingEntity;)F

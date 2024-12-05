@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(KeyboardInput.class)
 public class KeyboardInputMixin extends Input {
 	@Inject(method = "tick", at = @At("TAIL"))
-	private void enchancement$buryEntity(boolean slowDown, float slowDownFactor, CallbackInfo ci) {
+	private void enchancement$buryEntity(CallbackInfo ci) {
 		PlayerEntity player = MinecraftClient.getInstance().player;
 		if (player != null && ModEntityComponents.BURY_ENTITY.get(player).getBuryPos() != null) {
 			playerInput = PlayerInput.DEFAULT;

@@ -7,9 +7,7 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moriyashiine.enchancement.common.entity.projectile.StrengthHolder;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -19,9 +17,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -60,16 +56,6 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity implemen
 	@Unique
 	private float getStrength() {
 		return dataTracker.get(STRENGTH);
-	}
-
-	@Inject(method = "<init>(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/world/World;IILnet/minecraft/item/ItemStack;)V", at = @At("TAIL"))
-	private void enchancement$grappleFishingBobber(PlayerEntity thrower, World world, int luckBonus, int waitTimeReductionTicks, ItemStack stack, CallbackInfo ci) {
-		if (world instanceof ServerWorld serverWorld) {
-			float grapplingStrength = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.GRAPPLING_FISHING_BOBBER, serverWorld, stack, 0);
-			if (grapplingStrength != 0) {
-				enchancement$setStrength(grapplingStrength);
-			}
-		}
 	}
 
 	@Inject(method = "initDataTracker", at = @At("TAIL"))

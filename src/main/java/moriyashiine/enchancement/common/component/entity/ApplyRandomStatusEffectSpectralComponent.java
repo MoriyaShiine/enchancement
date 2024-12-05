@@ -81,7 +81,7 @@ public class ApplyRandomStatusEffectSpectralComponent implements AutoSyncedCompo
 
 	public void setEffects(List<StatusEffectInstance> effects) {
 		this.effects = effects;
-		color = PotionContentsComponent.getColor(effects);
+		color = PotionContentsComponent.mixColors(effects).orElse(-1);
 	}
 
 	public int getColor() {

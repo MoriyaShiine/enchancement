@@ -15,7 +15,7 @@ import net.minecraft.util.dynamic.Codecs;
 import java.util.UUID;
 
 public class ModComponentTypes {
-	public static final ComponentType<Boolean> TOGGLEABLE_PASSIVE = new ComponentType.Builder<Boolean>().codec(Codec.BOOL).packetCodec(PacketCodecs.BOOL).build();
+	public static final ComponentType<Boolean> TOGGLEABLE_PASSIVE = new ComponentType.Builder<Boolean>().codec(Codec.BOOL).packetCodec(PacketCodecs.BOOLEAN).build();
 	public static final ComponentType<UUID> BRIMSTONE_UUID = new ComponentType.Builder<UUID>().codec(Uuids.CODEC).packetCodec(Uuids.PACKET_CODEC).build();
 	public static final ComponentType<Integer> BRIMSTONE_DAMAGE = new ComponentType.Builder<Integer>().codec(Codecs.POSITIVE_INT).packetCodec(PacketCodecs.VAR_INT).build();
 
