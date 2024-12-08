@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.8-SNAPSHOT'
+    id 'fabric-loom' version '1.9-SNAPSHOT'
     id 'io.github.ladysnake.chenille' version '0.14.0'
 }
 
@@ -27,7 +27,9 @@ loom {
 }
 
 fabricApi {
-    configureDataGeneration()
+    configureDataGeneration() {
+        client = true
+    }
 }
 
 repositories {
@@ -59,7 +61,6 @@ dependencies {
     }
     modLocalImplementation "maven.modrinth:sodium:${sodium_version}"
     modCompileOnly "maven.modrinth:iris:${iris_version}"
-//    modCompileOnly "maven.modrinth:spectrum:${spectrum_version}"
 
     modRuntimeOnly "com.terraformersmc:modmenu:${mod_menu_version}"
 }
