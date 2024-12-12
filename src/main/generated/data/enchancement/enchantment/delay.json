@@ -1,0 +1,45 @@
+{
+  "anvil_cost": 2,
+  "description": {
+	"translate": "enchantment.enchancement.delay"
+  },
+  "effects": {
+	"enchancement:delayed_launch": [
+	  {
+		"effect": {
+		  "allow_redirect": true,
+		  "max_duration": {
+			"type": "minecraft:add",
+			"value": 10.0
+		  },
+		  "max_multiplier": {
+			"type": "minecraft:add",
+			"value": {
+			  "type": "minecraft:linear",
+			  "base": 0.5,
+			  "per_level_above_first": 0.25
+			}
+		  },
+		  "peak_duration": {
+			"type": "minecraft:add",
+			"value": 3.0
+		  }
+		}
+	  }
+	]
+  },
+  "max_cost": {
+	"base": 20,
+	"per_level_above_first": 6
+  },
+  "max_level": 2,
+  "min_cost": {
+	"base": 5,
+	"per_level_above_first": 6
+  },
+  "slots": [
+	"mainhand"
+  ],
+  "supported_items": "#minecraft:enchantable/bow",
+  "weight": 5
+}

@@ -1,0 +1,78 @@
+{
+  "anvil_cost": 2,
+  "description": {
+	"translate": "enchantment.enchancement.thunderstruck"
+  },
+  "effects": {
+	"enchancement:allow_interruption": {},
+	"enchancement:chain_lightning": [
+	  {
+		"effect": {
+		  "type": "minecraft:add",
+		  "value": {
+			"type": "minecraft:linear",
+			"base": 0.35,
+			"per_level_above_first": 0.35
+		  }
+		}
+	  }
+	],
+	"enchancement:lightning_dash": {
+	  "charge_time": {
+		"type": "minecraft:add",
+		"value": 0.5
+	  },
+	  "float_time": {
+		"type": "minecraft:add",
+		"value": 3.0
+	  },
+	  "lunge_strength": {
+		"type": "minecraft:add",
+		"value": {
+		  "type": "minecraft:linear",
+		  "base": 0.8,
+		  "per_level_above_first": 0.3
+		}
+	  },
+	  "smash_damage_multiplier": {
+		"type": "minecraft:add",
+		"value": {
+		  "type": "minecraft:linear",
+		  "base": 0.7,
+		  "per_level_above_first": 0.3
+		}
+	  },
+	  "smash_strength": {
+		"type": "minecraft:add",
+		"value": {
+		  "type": "minecraft:linear",
+		  "base": 1.0,
+		  "per_level_above_first": 1.0
+		}
+	  }
+	},
+	"enchancement:multiply_charge_time": {
+	  "type": "minecraft:multiply",
+	  "factor": {
+		"type": "minecraft:linear",
+		"base": 4.0,
+		"per_level_above_first": -1.0
+	  }
+	}
+  },
+  "exclusive_set": "#enchancement:exclusive_set/mace",
+  "max_cost": {
+	"base": 20,
+	"per_level_above_first": 6
+  },
+  "max_level": 2,
+  "min_cost": {
+	"base": 5,
+	"per_level_above_first": 6
+  },
+  "slots": [
+	"mainhand"
+  ],
+  "supported_items": "#minecraft:enchantable/mace",
+  "weight": 5
+}

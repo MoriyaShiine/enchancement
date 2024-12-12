@@ -1,13 +1,40 @@
-accessWidener v1 named
+accessWidener v2 named
 accessible class net/minecraft/enchantment/EnchantmentHelper$Consumer
-accessible class net/minecraft/item/ItemGroup$EntriesImpl
+accessible class net/minecraft/enchantment/EnchantmentHelper$ContextAwareConsumer
 accessible class net/minecraft/entity/effect/InstantHealthOrDamageStatusEffect
-accessible class net/minecraft/entity/mob/ShulkerEntity$ShootBulletGoal
 accessible class net/minecraft/entity/mob/ShulkerEntity$PeekGoal
-accessible class net/minecraft/village/TradeOffers$EnchantBookFactory
-accessible class net/minecraft/client/texture/ResourceTexture$TextureData
-accessible field net/minecraft/entity/projectile/FishingBobberEntity luckOfTheSeaLevel I
-mutable field net/minecraft/entity/projectile/FishingBobberEntity luckOfTheSeaLevel I
-accessible field net/minecraft/entity/projectile/FishingBobberEntity lureLevel I
-mutable field net/minecraft/entity/projectile/FishingBobberEntity lureLevel I
+accessible class net/minecraft/entity/mob/ShulkerEntity$ShootBulletGoal
+accessible method net/minecraft/block/entity/AbstractFurnaceBlockEntity dropExperience (Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/math/Vec3d;IF)V
+accessible method net/minecraft/entity/projectile/ArrowEntity setPotionContents (Lnet/minecraft/component/type/PotionContentsComponent;)V
+accessible method net/minecraft/item/CrossbowItem getPullProgress (ILnet/minecraft/item/ItemStack;Lnet/minecraft/entity/LivingEntity;)F
+accessible method net/minecraft/enchantment/EnchantmentHelper forEachEnchantment (Lnet/minecraft/item/ItemStack;Lnet/minecraft/enchantment/EnchantmentHelper$Consumer;)V
+accessible method net/minecraft/enchantment/EnchantmentHelper forEachEnchantment (Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/enchantment/EnchantmentHelper$ContextAwareConsumer;)V
+accessible method net/minecraft/enchantment/Enchantment modifyValue (Lnet/minecraft/component/ComponentType;Lnet/minecraft/server/world/ServerWorld;ILnet/minecraft/item/ItemStack;Lorg/apache/commons/lang3/mutable/MutableFloat;)V
+accessible method net/minecraft/entity/Entity spawnSprintingParticles ()V
+accessible method net/minecraft/entity/mob/GuardianEntity setBeamTarget (I)V
+accessible method net/minecraft/block/HoneyBlock addCollisionEffects (Lnet/minecraft/world/World;Lnet/minecraft/entity/Entity;)V
+accessible method net/minecraft/block/HoneyBlock updateSlidingVelocity (Lnet/minecraft/entity/Entity;)V
+accessible method net/minecraft/entity/ItemEntity tryMerge (Lnet/minecraft/entity/ItemEntity;)V
+accessible method net/minecraft/entity/LivingEntity getJumpVelocity ()F
+accessible method net/minecraft/entity/projectile/PersistentProjectileEntity asItemStack ()Lnet/minecraft/item/ItemStack;
+accessible method net/minecraft/entity/projectile/PersistentProjectileEntity isInGround ()Z
+accessible method net/minecraft/entity/mob/PiglinBrain onAttacked (Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/mob/PiglinEntity;Lnet/minecraft/entity/LivingEntity;)V
+accessible method net/minecraft/entity/projectile/TridentEntity isOwnerAlive ()Z
+accessible method net/minecraft/world/World getEntityLookup ()Lnet/minecraft/world/entity/EntityLookup;
+accessible method net/minecraft/client/gui/hud/InGameHud renderHealthBar (Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/entity/player/PlayerEntity;IIIIFIIIZ)V
+accessible field net/minecraft/loot/condition/AlternativeLootCondition terms Ljava/util/List;
+accessible field net/minecraft/component/Component value Ljava/lang/Object;
+mutable field net/minecraft/component/Component value Ljava/lang/Object;
+accessible field net/minecraft/predicate/DamagePredicate dealt Lnet/minecraft/predicate/NumberRange$DoubleRange;
+mutable field net/minecraft/predicate/DamagePredicate dealt Lnet/minecraft/predicate/NumberRange$DoubleRange;
+accessible field net/minecraft/enchantment/Enchantment effects Lnet/minecraft/component/ComponentMap;
+mutable field net/minecraft/enchantment/Enchantment effects Lnet/minecraft/component/ComponentMap;
+accessible field net/minecraft/enchantment/effect/EnchantmentEffectEntry requirements Ljava/util/Optional;
+mutable field net/minecraft/enchantment/effect/EnchantmentEffectEntry requirements Ljava/util/Optional;
+accessible field net/minecraft/entity/LivingEntity jumping Z
+accessible field net/minecraft/entity/projectile/PersistentProjectileEntity inGroundTime I
+accessible field net/minecraft/enchantment/effect/TargetedEnchantmentEffect requirements Ljava/util/Optional;
+mutable field net/minecraft/enchantment/effect/TargetedEnchantmentEffect requirements Ljava/util/Optional;
+accessible field net/minecraft/registry/tag/TagEntry id Lnet/minecraft/util/Identifier;
+accessible field net/minecraft/entity/projectile/TridentEntity LOYALTY Lnet/minecraft/entity/data/TrackedData;
 accessible field net/minecraft/client/option/KeyBinding timesPressed I

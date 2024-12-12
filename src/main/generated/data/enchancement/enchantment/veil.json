@@ -1,0 +1,35 @@
+{
+  "anvil_cost": 2,
+  "description": {
+	"translate": "enchantment.enchancement.veil"
+  },
+  "effects": {
+	"enchancement:hide_label_behind_walls": {},
+	"enchancement:modify_detection_range": {
+	  "type": "minecraft:multiply",
+	  "factor": {
+		"type": "minecraft:fraction",
+		"denominator": {
+		  "type": "minecraft:linear",
+		  "base": 2.0,
+		  "per_level_above_first": 2.0
+		},
+		"numerator": 1.0
+	  }
+	}
+  },
+  "max_cost": {
+	"base": 20,
+	"per_level_above_first": 6
+  },
+  "max_level": 2,
+  "min_cost": {
+	"base": 5,
+	"per_level_above_first": 6
+  },
+  "slots": [
+	"head"
+  ],
+  "supported_items": "#minecraft:enchantable/head_armor",
+  "weight": 5
+}

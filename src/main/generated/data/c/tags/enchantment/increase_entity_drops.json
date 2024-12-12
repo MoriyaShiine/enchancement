@@ -1,5 +1,8 @@
 {
   "values": [
-	"enchancement:scooping"
+	{
+	  "id": "enchancement:scooping",
+	  "required": false
+	}
   ]
 }

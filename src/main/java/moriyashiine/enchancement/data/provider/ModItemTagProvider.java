@@ -13,7 +13,7 @@ import net.minecraft.registry.RegistryWrapper;
 
 import java.util.concurrent.CompletableFuture;
 
-import static net.minecraft.util.Identifier.tryParse;
+import static net.minecraft.util.Identifier.of;
 
 public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
 	public ModItemTagProvider(FabricDataOutput output) {
@@ -22,24 +22,28 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
 
 	@Override
 	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-		getOrCreateTagBuilder(ModItemTags.CANNOT_ASSIMILATE)
-				.addOptionalTag(ConventionalItemTags.RAW_FISHES_FOODS)
-				.addOptionalTag(ConventionalItemTags.RAW_MEATS_FOODS)
+		getOrCreateTagBuilder(ModItemTags.CANNOT_AUTOMATICALLY_CONSUME)
+				.addOptionalTag(ConventionalItemTags.RAW_FISH_FOODS)
+				.addOptionalTag(ConventionalItemTags.RAW_MEAT_FOODS)
 				.addOptionalTag(ConventionalItemTags.FOOD_POISONING_FOODS)
 				.add(Items.CHORUS_FRUIT)
 				.add(Items.ENCHANTED_GOLDEN_APPLE)
 				.add(Items.GOLDEN_APPLE)
-				.addOptionalTag(tryParse("c:foods/doughs"))
-				.addOptionalTag(tryParse("c:foods/pastas"))
-				.addOptional(tryParse("farmersdelight:dog_food"))
-				.addOptional(tryParse("farmersdelight:pie_crust"));
+				.add(Items.OMINOUS_BOTTLE)
+				.addOptionalTag(of("c", "foods/doughs"))
+				.addOptionalTag(of("c", "foods/pastas"))
+				.addOptional(of("farmersdelight", "dog_food"))
+				.addOptional(of("farmersdelight", "pie_crust"))
+				.addOptional(of("spelunkery", "portal_fluid_bottle"));
+		getOrCreateTagBuilder(ModItemTags.DEFAULT_ENCHANTING_MATERIAL)
+				.add(Items.AMETHYST_SHARD);
 		getOrCreateTagBuilder(ModItemTags.NO_LOYALTY)
-				.addOptional(tryParse("impaled:pitchfork"));
+				.addOptional(of("impaled", "pitchfork"));
 		getOrCreateTagBuilder(ModItemTags.RETAINS_DURABILITY)
 				.add(Items.WOLF_ARMOR)
-				.addOptionalTag(tryParse("create:sandpaper"))
-				.addOptional(tryParse("create:super_glue"));
+				.addOptionalTag(of("create", "sandpaper"))
+				.addOptional(of("create", "super_glue"));
 		getOrCreateTagBuilder(ModItemTags.WEAKLY_ENCHANTED)
-				.addOptional(tryParse("impaled:pitchfork"));
+				.addOptional(of("impaled", "pitchfork"));
 	}
 }

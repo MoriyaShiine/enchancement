@@ -1,0 +1,91 @@
+{
+  "anvil_cost": 2,
+  "description": {
+	"translate": "enchantment.enchancement.buoy"
+  },
+  "effects": {
+	"enchancement:boost_in_fluid": {
+	  "type": "minecraft:add",
+	  "value": {
+		"type": "minecraft:linear",
+		"base": 1.0,
+		"per_level_above_first": 0.5
+	  }
+	},
+	"enchancement:extend_water_time": {},
+	"enchancement:fluid_walking": {},
+	"enchancement:modify_submerged_movement_speed": {
+	  "gate": "WATER_ONLY",
+	  "modifier": {
+		"type": "minecraft:add",
+		"value": {
+		  "type": "minecraft:linear",
+		  "base": 0.35,
+		  "per_level_above_first": 0.35
+		}
+	  }
+	},
+	"enchancement:prevent_swimming": {},
+	"minecraft:tick": [
+	  {
+		"effect": {
+		  "type": "enchancement:set_extended_water_time",
+		  "duration": {
+			"type": "minecraft:linear",
+			"base": 6.0,
+			"per_level_above_first": 4.0
+		  }
+		},
+		"requirements": {
+		  "condition": "enchancement:wet"
+		}
+	  },
+	  {
+		"effect": {
+		  "type": "enchancement:conditional_attribute",
+		  "attribute": {
+			"amount": 1.0,
+			"attribute": "minecraft:step_height",
+			"id": "enchancement:enchantment.buoy",
+			"operation": "add_value"
+		  },
+		  "condition": {
+			"condition": "enchancement:has_extended_water_time"
+		  }
+		}
+	  },
+	  {
+		"effect": {
+		  "type": "enchancement:conditional_attribute",
+		  "attribute": {
+			"amount": {
+			  "type": "minecraft:linear",
+			  "base": 2.0,
+			  "per_level_above_first": 2.0
+			},
+			"attribute": "minecraft:safe_fall_distance",
+			"id": "enchancement:enchantment.buoy",
+			"operation": "add_value"
+		  },
+		  "condition": {
+			"condition": "enchancement:has_extended_water_time"
+		  }
+		}
+	  }
+	]
+  },
+  "max_cost": {
+	"base": 20,
+	"per_level_above_first": 6
+  },
+  "max_level": 2,
+  "min_cost": {
+	"base": 5,
+	"per_level_above_first": 6
+  },
+  "slots": [
+	"feet"
+  ],
+  "supported_items": "#minecraft:enchantable/foot_armor",
+  "weight": 5
+}

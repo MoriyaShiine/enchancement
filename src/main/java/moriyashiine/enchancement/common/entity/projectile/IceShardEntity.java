@@ -5,87 +5,50 @@ package moriyashiine.enchancement.common.entity.projectile;
 
 import moriyashiine.enchancement.common.init.ModDamageTypes;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
-import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.boss.dragon.EnderDragonPart;
+import net.minecraft.entity.damage.DamageType;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
-public class IceShardEntity extends PersistentProjectileEntity {
+public class IceShardEntity extends ShardEntity {
 	private static final ParticleEffect PARTICLE = new ItemStackParticleEffect(ParticleTypes.ITEM, Items.ICE.getDefaultStack());
 
 	public IceShardEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
 		super(entityType, world);
 	}
 
-	public IceShardEntity(World world, LivingEntity owner) {
-		super(ModEntityTypes.ICE_SHARD, owner, world, ItemStack.EMPTY);
+	public IceShardEntity(World world, LivingEntity owner, @Nullable ItemStack shotFrom) {
+		super(ModEntityTypes.ICE_SHARD, owner, world, shotFrom);
+	}
+
+	public IceShardEntity(World world, LivingEntity source, @Nullable Entity owner) {
+		this(world, source, (ItemStack) null);
+		setOwner(owner);
 	}
 
 	@Override
-	protected ItemStack getDefaultItemStack() {
-		return ItemStack.EMPTY;
+	protected ParticleEffect getParticleEffect() {
+		return PARTICLE;
 	}
 
 	@Override
-	public void tick() {
-		super.tick();
-		if (!getWorld().isClient && age > 400) {
-			playSound(getHitSound(), 1, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
-			addParticles();
-			discard();
+	protected RegistryKey<DamageType> getDamageType() {
+		return ModDamageTypes.ICE_SHARD;
+	}
+
+	@Override
+	protected void onTargetHit(Entity entity) {
+		if (entity.canFreeze()) {
+			entity.setFrozenTicks(400);
 		}
-	}
-
-	@Override
-	protected SoundEvent getHitSound() {
-		return ModSoundEvents.ENTITY_SHARD_SHATTER;
-	}
-
-	@Override
-	protected void onEntityHit(EntityHitResult entityHitResult) {
-		if (!getWorld().isClient) {
-			Entity entity = entityHitResult.getEntity();
-			if (entity instanceof EnderDragonPart part) {
-				entity = part.owner;
-			}
-			Entity owner = getOwner();
-			if (EnchancementUtil.shouldHurt(owner, entity) && entity.damage(ModDamageTypes.create(getWorld(), ModDamageTypes.ICE_SHARD, this, owner), 4)) {
-				if (entity.canFreeze()) {
-					entity.setFrozenTicks(400);
-				}
-				playSound(getHitSound(), 1, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
-				addParticles();
-				discard();
-			}
-		}
-	}
-
-	@Override
-	protected void onBlockHit(BlockHitResult blockHitResult) {
-		BlockState state = getWorld().getBlockState(blockHitResult.getBlockPos());
-		state.onProjectileHit(getWorld(), state, blockHitResult, this);
-		if (!getWorld().isClient) {
-			playSound(getHitSound(), 1, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
-			addParticles();
-			discard();
-		}
-	}
-
-	public void addParticles() {
-		((ServerWorld) getWorld()).spawnParticles(PARTICLE, getX(), getY(), getZ(), 8, getWidth() / 2, getHeight() / 2, getWidth() / 2, 0);
 	}
 }

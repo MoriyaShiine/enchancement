@@ -1,0 +1,63 @@
+{
+  "anvil_cost": 2,
+  "description": {
+	"translate": "enchantment.enchancement.scatter"
+  },
+  "effects": {
+	"enchancement:allow_crossbow_cooldown_reloading": {},
+	"enchancement:allow_loading_projectile": [
+	  {
+		"effect": {
+		  "model": "enchancement:crossbow_amethyst",
+		  "only_allow": false,
+		  "projectile_item": "minecraft:amethyst_shard"
+		}
+	  }
+	],
+	"enchancement:ranged_shoot_cooldown": [
+	  {
+		"effect": {
+		  "type": "minecraft:add",
+		  "value": 1.0
+		}
+	  }
+	],
+	"enchancement:scatter_shot": [
+	  {
+		"effect": {
+		  "allowed_projectile": "minecraft:amethyst_shard",
+		  "maximum": {
+			"type": "minecraft:add",
+			"value": {
+			  "type": "minecraft:linear",
+			  "base": 8.0,
+			  "per_level_above_first": 8.0
+			}
+		  },
+		  "minimum": {
+			"type": "minecraft:add",
+			"value": {
+			  "type": "minecraft:linear",
+			  "base": 6.0,
+			  "per_level_above_first": 6.0
+			}
+		  }
+		}
+	  }
+	]
+  },
+  "max_cost": {
+	"base": 20,
+	"per_level_above_first": 6
+  },
+  "max_level": 2,
+  "min_cost": {
+	"base": 5,
+	"per_level_above_first": 6
+  },
+  "slots": [
+	"mainhand"
+  ],
+  "supported_items": "#minecraft:enchantable/crossbow",
+  "weight": 5
+}

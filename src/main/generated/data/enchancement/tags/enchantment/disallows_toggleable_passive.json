@@ -1,6 +1,12 @@
 {
   "values": [
-	"minecraft:riptide",
-	"enchancement:lumberjack"
+	{
+	  "id": "minecraft:efficiency",
+	  "required": false
+	},
+	{
+	  "id": "minecraft:riptide",
+	  "required": false
+	}
   ]
 }

@@ -11,9 +11,10 @@ import net.minecraft.block.Blocks;
 import net.minecraft.registry.BuiltinRegistries;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.util.Identifier;
 
 import java.util.concurrent.CompletableFuture;
+
+import static net.minecraft.util.Identifier.of;
 
 public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 	public ModBlockTagProvider(FabricDataOutput output) {
@@ -23,6 +24,7 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 	@Override
 	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
 		getOrCreateTagBuilder(ModBlockTags.BURIABLE)
+				.addOptionalTag(BlockTags.HOE_MINEABLE)
 				.addOptionalTag(BlockTags.SHOVEL_MINEABLE)
 				.addOptionalTag(BlockTags.NYLIUM)
 				.add(Blocks.COBWEB)
@@ -32,8 +34,10 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 				.addOptionalTag(ConventionalBlockTags.NETHERITE_SCRAP_ORES)
 				.addOptionalTag(ConventionalBlockTags.QUARTZ_ORES)
 				.add(Blocks.NETHER_GOLD_ORE)
-				.addOptional(Identifier.tryParse("cinderscapes:sulfur_ore"));
+				.addOptional(of("cinderscapes", "sulfur_ore"));
 		getOrCreateTagBuilder(ModBlockTags.SMELTS_SELF)
 				.add(Blocks.NETHER_GOLD_ORE);
+		getOrCreateTagBuilder(ModBlockTags.UNSTICKABLE)
+				.addOptionalTag(BlockTags.ICE);
 	}
 }

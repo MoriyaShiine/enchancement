@@ -1,0 +1,45 @@
+{
+  "anvil_cost": 2,
+  "description": {
+	"translate": "enchantment.enchancement.disarm"
+  },
+  "effects": {
+	"enchancement:disarming_fishing_bobber": [
+	  {
+		"effect": {
+		  "player_cooldown": {
+			"type": "minecraft:add",
+			"value": {
+			  "type": "minecraft:linear",
+			  "base": 2.5,
+			  "per_level_above_first": 2.5
+			}
+		  },
+		  "steals_from_players": false,
+		  "user_cooldown": {
+			"type": "minecraft:add",
+			"value": {
+			  "type": "minecraft:linear",
+			  "base": 12.0,
+			  "per_level_above_first": -2.0
+			}
+		  }
+		}
+	  }
+	]
+  },
+  "max_cost": {
+	"base": 20,
+	"per_level_above_first": 6
+  },
+  "max_level": 2,
+  "min_cost": {
+	"base": 5,
+	"per_level_above_first": 6
+  },
+  "slots": [
+	"mainhand"
+  ],
+  "supported_items": "#minecraft:enchantable/fishing",
+  "weight": 5
+}

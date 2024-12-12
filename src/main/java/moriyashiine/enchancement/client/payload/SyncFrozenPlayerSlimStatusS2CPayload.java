@@ -17,7 +17,7 @@ import net.minecraft.util.Uuids;
 import java.util.UUID;
 
 public record SyncFrozenPlayerSlimStatusS2CPayload(UUID uuid) implements CustomPayload {
-	public static final CustomPayload.Id<SyncFrozenPlayerSlimStatusS2CPayload> ID = CustomPayload.id(Enchancement.id("sync_frozen_player_slim_status_s2c").toString());
+	public static final CustomPayload.Id<SyncFrozenPlayerSlimStatusS2CPayload> ID = new Id<>(Enchancement.id("sync_frozen_player_slim_status_s2c"));
 	public static final PacketCodec<PacketByteBuf, SyncFrozenPlayerSlimStatusS2CPayload> CODEC = PacketCodec.tuple(Uuids.PACKET_CODEC, SyncFrozenPlayerSlimStatusS2CPayload::uuid, SyncFrozenPlayerSlimStatusS2CPayload::new);
 
 	@Override

@@ -1,6 +1,6 @@
 plugins {
-    id 'fabric-loom' version '1.6-SNAPSHOT'
-    id 'io.github.ladysnake.chenille' version '0.13.1'
+    id 'fabric-loom' version '1.9-SNAPSHOT'
+    id 'io.github.ladysnake.chenille' version '0.14.0'
 }
 
 version = project.mod_version
@@ -22,28 +22,24 @@ chenille {
     }
 }
 
-modrinth {
-    dependencies {
-        required.project "fabric-api"
-        embedded.project "cardinal-components-api"
-        embedded.project "midnightlib"
-        embedded.project "tooltipfix"
-    }
-    syncBodyFrom = rootProject.file("README.md").text
-}
-
 loom {
     accessWidenerPath = file("src/main/resources/enchancement.accesswidener")
 }
 
 fabricApi {
-    configureDataGeneration()
+    configureDataGeneration() {
+        client = true
+    }
 }
 
 repositories {
     chenille.repositories.ladysnake()
     chenille.repositories.terraformers()
     chenille.repositories.modrinth()
+    maven {
+        name "appleskin"
+        url "https://maven.ryanliptak.com/"
+    }
 }
 
 dependencies {
@@ -55,15 +51,16 @@ dependencies {
     modIncludeApi "org.ladysnake.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}"
     modIncludeApi "org.ladysnake.cardinal-components-api:cardinal-components-world:${cardinal_components_version}"
     modIncludeApi "maven.modrinth:midnightlib:${midnightlib_version}"
-    modIncludeApi "maven.modrinth:tooltipfix:${tooltipfix_version}"
+//    modIncludeApi "maven.modrinth:tooltipfix:${tooltipfix_version}"
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
-//    modCompileOnly("com.github.apace100:apoli:${apoli_version}") {
-//        exclude(group: "*")
-//    }
+//    modCompileOnly "io.github.apace100:apoli:${apoli_version}"
+    modCompileOnly("squeek.appleskin:appleskin-fabric:${appleskin_version}:api") {
+        transitive = false
+    }
     modLocalImplementation "maven.modrinth:sodium:${sodium_version}"
-//    modCompileOnly "maven.modrinth:spectrum:${spectrum_version}"
+    modCompileOnly "maven.modrinth:iris:${iris_version}"
 
     modRuntimeOnly "com.terraformersmc:modmenu:${mod_menu_version}"
 }

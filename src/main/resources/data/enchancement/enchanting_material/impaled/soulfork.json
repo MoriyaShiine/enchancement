@@ -1,5 +1,3 @@
 {
-  "ingredient": {
-	"item": "minecraft:prismarine_shard"
-  }
+  "ingredient": "minecraft:prismarine_shard"
 }

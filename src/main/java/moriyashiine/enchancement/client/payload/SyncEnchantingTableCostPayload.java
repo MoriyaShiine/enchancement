@@ -14,7 +14,7 @@ import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public record SyncEnchantingTableCostPayload(int cost) implements CustomPayload {
-	public static final CustomPayload.Id<SyncEnchantingTableCostPayload> ID = CustomPayload.id(Enchancement.id("sync_enchanting_table_cost").toString());
+	public static final CustomPayload.Id<SyncEnchantingTableCostPayload> ID = new Id<>(Enchancement.id("sync_enchanting_table_cost"));
 	public static final PacketCodec<PacketByteBuf, SyncEnchantingTableCostPayload> CODEC = PacketCodec.tuple(PacketCodecs.VAR_INT, SyncEnchantingTableCostPayload::cost, SyncEnchantingTableCostPayload::new);
 
 	@Override

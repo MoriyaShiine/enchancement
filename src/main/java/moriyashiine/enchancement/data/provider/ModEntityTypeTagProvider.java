@@ -15,7 +15,7 @@ import net.minecraft.registry.tag.EntityTypeTags;
 
 import java.util.concurrent.CompletableFuture;
 
-import static net.minecraft.util.Identifier.tryParse;
+import static net.minecraft.util.Identifier.of;
 
 public class ModEntityTypeTagProvider extends FabricTagProvider.EntityTypeTagProvider {
 	public ModEntityTypeTagProvider(FabricDataOutput output) {
@@ -40,8 +40,8 @@ public class ModEntityTypeTagProvider extends FabricTagProvider.EntityTypeTagPro
 				.addOptionalTag(ConventionalEntityTypeTags.BOSSES)
 				.addOptionalTag(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES);
 		getOrCreateTagBuilder(ModEntityTypeTags.NO_LOYALTY)
-				.addOptional(tryParse("impaled:pitchfork"))
-				.addOptional(tryParse("impaled:guardian_trident"));
+				.addOptional(of("impaled", "pitchfork"))
+				.addOptional(of("impaled", "guardian_trident"));
 		getOrCreateTagBuilder(ModEntityTypeTags.VEIL_IMMUNE)
 				.addOptionalTag(ConventionalEntityTypeTags.BOSSES)
 				.add(EntityType.ELDER_GUARDIAN)

@@ -1,5 +1,3 @@
 {
-  "ingredient": {
-	"item": "minecraft:string"
-  }
+  "ingredient": "minecraft:string"
 }

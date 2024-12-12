@@ -1,0 +1,38 @@
+{
+  "anvil_cost": 2,
+  "description": {
+	"translate": "enchantment.enchancement.perception"
+  },
+  "effects": {
+	"enchancement:entity_xray": {
+	  "type": "minecraft:add",
+	  "value": {
+		"type": "minecraft:linear",
+		"base": 8.0,
+		"per_level_above_first": 8.0
+	  }
+	},
+	"enchancement:night_vision": {
+	  "type": "minecraft:add",
+	  "value": {
+		"type": "minecraft:linear",
+		"base": 0.25,
+		"per_level_above_first": 0.75
+	  }
+	}
+  },
+  "max_cost": {
+	"base": 20,
+	"per_level_above_first": 6
+  },
+  "max_level": 2,
+  "min_cost": {
+	"base": 5,
+	"per_level_above_first": 6
+  },
+  "slots": [
+	"head"
+  ],
+  "supported_items": "#minecraft:enchantable/head_armor",
+  "weight": 5
+}

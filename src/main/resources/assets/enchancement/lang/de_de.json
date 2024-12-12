@@ -70,7 +70,7 @@
   "enchantment.enchancement.slide": "Gleiten",
   "enchantment.enchancement.slide.desc": "Bei der Haltung von [%s] während Sie auf dem Boden sind, gleiten Sie konstant. In der Luft machen Sie einen Aufprall, der Gegner zurückstoßt und Ihren Falschaden negiert, wenn Sie [%s] drücken.",
   "enchantment.enchancement.buoy": "Boje",
-  "enchantment.enchancement.buoy.desc": "Bringt Sie dazu auf Flüssigkeiten zu gehen in die Sie durch Schleichen absteigen können. Um schnell nach oben zu gelangen, halten Sie Sprung gedrückt. Gewährt nach dem Verlassen eines Wassers 5 Sekunden lang einen Geschwindigkeitsschub."
+  "enchantment.enchancement.buoy.desc": "Bringt Sie dazu auf Flüssigkeiten zu gehen in die Sie durch Schleichen absteigen können. Um schnell nach oben zu gelangen, halten Sie Sprung gedrückt. Gewährt nach dem Verlassen eines Wassers 5 Sekunden lang einen Geschwindigkeitsschub.",
   "enchantment.enchancement.bouncy": "Federn",
   "enchantment.enchancement.bouncy.desc": "Negiert Fallschaden. Wirft Sie bei der Landung nach oben, falls Sie nicht schleichen. Das Schleichen auf dem Boden ladet einen Supersprung auf.",
   "enchantment.enchancement.gale": "Sturm",

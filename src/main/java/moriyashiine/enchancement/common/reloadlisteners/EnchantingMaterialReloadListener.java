@@ -3,11 +3,14 @@
  */
 package moriyashiine.enchancement.common.reloadlisteners;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.event.SyncEnchantingMaterialMapEvent;
 import moriyashiine.enchancement.common.screenhandlers.EnchantingTableScreenHandler;
@@ -15,16 +18,28 @@ import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.item.Item;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryOps;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.function.Function;
 
 public class EnchantingMaterialReloadListener implements SimpleSynchronousResourceReloadListener {
-	private static final Identifier ID = Enchancement.id("enchanting_material");
+	private static final Codec<Ingredient> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			Ingredient.CODEC.fieldOf("ingredient").forGetter(Function.identity())
+	).apply(instance, Function.identity()));
+
+	public static final Identifier ID = Enchancement.id("enchanting_material");
+
+	private final RegistryOps<JsonElement> registryOps;
+
+	public EnchantingMaterialReloadListener(RegistryWrapper.WrapperLookup wrapperLookup) {
+		registryOps = wrapperLookup.getOps(JsonOps.INSTANCE);
+	}
 
 	@Override
 	public Identifier getFabricId() {
@@ -38,20 +53,15 @@ public class EnchantingMaterialReloadListener implements SimpleSynchronousResour
 			for (Resource resource : resources) {
 				try (InputStream stream = resource.getInputStream()) {
 					JsonObject object = JsonParser.parseReader(new JsonReader(new InputStreamReader(stream))).getAsJsonObject();
-					Identifier itemId = new Identifier(identifier.getPath().substring(identifier.getPath().indexOf("/") + 1, identifier.getPath().length() - 5).replace("/", ":"));
+					Identifier itemId = Identifier.of(identifier.getPath().substring(identifier.getPath().indexOf("/") + 1, identifier.getPath().length() - 5).replace("/", ":"));
 					Item item = Registries.ITEM.get(itemId);
 					if (item == Registries.ITEM.get(Registries.ITEM.getDefaultId()) && !itemId.equals(Registries.ITEM.getDefaultId())) {
 						continue;
 					}
-					Ingredient ingredient;
-					try {
-						ingredient = Ingredient.DISALLOW_EMPTY_CODEC.decode(JsonOps.INSTANCE, JsonHelper.getObject(object, "ingredient")).getOrThrow().getFirst();
-					} catch (JsonParseException exception) {
-						Enchancement.LOGGER.error(exception.getLocalizedMessage() + " in file '" + identifier + "'");
-						continue;
-					}
-					EnchantingTableScreenHandler.ENCHANTING_MATERIAL_MAP.put(Registries.ITEM.getEntry(item), ingredient);
-				} catch (Exception ignored) {
+					DataResult<Ingredient> ingredient = CODEC.parse(registryOps, object);
+					EnchantingTableScreenHandler.ENCHANTING_MATERIAL_MAP.put(item, new EnchantingTableScreenHandler.EnchantingMaterial(ingredient.getOrThrow()));
+				} catch (Exception exception) {
+					Enchancement.LOGGER.error("{} in file '{}'", exception.getLocalizedMessage(), identifier);
 				}
 			}
 		});

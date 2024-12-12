@@ -7,9 +7,10 @@ import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.entity.projectile.TorchEntity;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.ProjectileEntityRenderer;
+import net.minecraft.client.render.entity.state.ProjectileEntityRenderState;
 import net.minecraft.util.Identifier;
 
-public class TorchEntityRenderer extends ProjectileEntityRenderer<TorchEntity> {
+public class TorchEntityRenderer extends ProjectileEntityRenderer<TorchEntity, ProjectileEntityRenderState> {
 	private static final Identifier TEXTURE = Enchancement.id("textures/entity/projectiles/torch.png");
 
 	public TorchEntityRenderer(EntityRendererFactory.Context context) {
@@ -17,7 +18,12 @@ public class TorchEntityRenderer extends ProjectileEntityRenderer<TorchEntity> {
 	}
 
 	@Override
-	public Identifier getTexture(TorchEntity entity) {
+	public ProjectileEntityRenderState createRenderState() {
+		return new ProjectileEntityRenderState();
+	}
+
+	@Override
+	protected Identifier getTexture(ProjectileEntityRenderState state) {
 		return TEXTURE;
 	}
 }

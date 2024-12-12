@@ -1,0 +1,32 @@
+{
+  "anvil_cost": 2,
+  "description": {
+	"translate": "enchantment.enchancement.torch"
+  },
+  "effects": {
+	"enchancement:allow_loading_projectile": [
+	  {
+		"effect": {
+		  "model": "enchancement:crossbow_torch",
+		  "only_allow": true,
+		  "projectile_item": "minecraft:torch"
+		}
+	  }
+	],
+	"enchancement:rapid_crossbow_fire": {}
+  },
+  "max_cost": {
+	"base": 20,
+	"per_level_above_first": 6
+  },
+  "max_level": 2,
+  "min_cost": {
+	"base": 5,
+	"per_level_above_first": 6
+  },
+  "slots": [
+	"mainhand"
+  ],
+  "supported_items": "#minecraft:enchantable/crossbow",
+  "weight": 5
+}

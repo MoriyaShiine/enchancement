@@ -24,7 +24,7 @@ public class DisarmedWitchComponent implements Component {
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		NbtList disabledPotions = tag.getList("DisabledPotions", NbtElement.STRING_TYPE);
 		for (int i = 0; i < disabledPotions.size(); i++) {
-			this.disabledPotions.add(Registries.POTION.get(Identifier.tryParse(disabledPotions.getString(i))));
+			this.disabledPotions.add(Registries.POTION.get(Identifier.of(disabledPotions.getString(i))));
 		}
 	}
 

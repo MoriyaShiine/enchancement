@@ -4,7 +4,7 @@
 package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.init.ModDataComponentTypes;
+import moriyashiine.enchancement.common.init.ModComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -36,9 +36,9 @@ public class AirMobilityComponent implements CommonTickingComponent {
 	@Override
 	public void tick() {
 		ItemStack stack = obj.getEquippedStack(EquipmentSlot.CHEST);
-		if (ModConfig.enchantedChestplatesIncreaseAirMobility && stack.getOrDefault(ModDataComponentTypes.TOGGLEABLE_PASSIVE, false)) {
+		if (ModConfig.toggleablePassives && stack.getOrDefault(ModComponentTypes.TOGGLEABLE_PASSIVE, false)) {
 			if (!stack.hasEnchantments()) {
-				stack.remove(ModDataComponentTypes.TOGGLEABLE_PASSIVE);
+				stack.remove(ModComponentTypes.TOGGLEABLE_PASSIVE);
 				return;
 			}
 			if (resetBypassTicks > 0) {
@@ -58,6 +58,10 @@ public class AirMobilityComponent implements CommonTickingComponent {
 
 	public int getTicksInAir() {
 		return ticksInAir;
+	}
+
+	public void resetTicksInAir() {
+		ticksInAir = 0;
 	}
 
 	public void enableResetBypass() {

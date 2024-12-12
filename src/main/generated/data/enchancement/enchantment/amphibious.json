@@ -1,0 +1,89 @@
+{
+  "anvil_cost": 2,
+  "description": {
+	"translate": "enchantment.enchancement.amphibious"
+  },
+  "effects": {
+	"enchancement:extend_water_time": {},
+	"enchancement:extended_water_spin_attack": {},
+	"minecraft:attributes": [
+	  {
+		"amount": {
+		  "type": "minecraft:linear",
+		  "base": -0.25,
+		  "per_level_above_first": -0.25
+		},
+		"attribute": "minecraft:burning_time",
+		"id": "enchancement:enchantment.amphibious",
+		"operation": "add_multiplied_base"
+	  },
+	  {
+		"amount": {
+		  "type": "minecraft:linear",
+		  "base": 1.5,
+		  "per_level_above_first": 1.5
+		},
+		"attribute": "minecraft:oxygen_bonus",
+		"id": "enchancement:enchantment.amphibious",
+		"operation": "add_value"
+	  },
+	  {
+		"amount": {
+		  "type": "minecraft:linear",
+		  "base": 2.0,
+		  "per_level_above_first": 2.0
+		},
+		"attribute": "minecraft:submerged_mining_speed",
+		"id": "enchancement:enchantment.amphibious",
+		"operation": "add_multiplied_total"
+	  },
+	  {
+		"amount": {
+		  "type": "minecraft:linear",
+		  "base": 0.5,
+		  "per_level_above_first": 0.5
+		},
+		"attribute": "minecraft:water_movement_efficiency",
+		"id": "enchancement:enchantment.amphibious",
+		"operation": "add_value"
+	  }
+	],
+	"minecraft:tick": [
+	  {
+		"effect": {
+		  "type": "enchancement:extinguish"
+		},
+		"requirements": {
+		  "condition": "enchancement:has_extended_water_time"
+		}
+	  },
+	  {
+		"effect": {
+		  "type": "enchancement:set_extended_water_time",
+		  "duration": {
+			"type": "minecraft:linear",
+			"base": 6.0,
+			"per_level_above_first": 4.0
+		  }
+		},
+		"requirements": {
+		  "condition": "enchancement:wet"
+		}
+	  }
+	]
+  },
+  "max_cost": {
+	"base": 20,
+	"per_level_above_first": 6
+  },
+  "max_level": 2,
+  "min_cost": {
+	"base": 5,
+	"per_level_above_first": 6
+  },
+  "slots": [
+	"chest"
+  ],
+  "supported_items": "#minecraft:enchantable/chest_armor",
+  "weight": 5
+}

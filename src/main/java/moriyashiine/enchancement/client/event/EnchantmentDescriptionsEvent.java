@@ -5,11 +5,13 @@ package moriyashiine.enchancement.client.event;
 
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.minecraft.client.item.TooltipType;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
@@ -22,9 +24,13 @@ public class EnchantmentDescriptionsEvent implements ItemTooltipCallback {
 		if (enableDescriptions()) {
 			EnchantmentHelper.getEnchantments(stack).getEnchantments().forEach(enchantment -> {
 				for (int i = 0; i < lines.size(); i++) {
-					if (lines.get(i).getContent() instanceof TranslatableTextContent text && text.getKey().equals(enchantment.value().getTranslationKey())) {
-						lines.add(i + 1, Text.literal(" - ").formatted(Formatting.GRAY).append(Text.translatable(enchantment.value().getTranslationKey() + ".desc").formatted(Formatting.DARK_GRAY)));
-						break;
+					String translationKey = EnchancementUtil.getTranslationKey(enchantment);
+					if (lines.get(i).getContent() instanceof TranslatableTextContent text && text.getKey().equals(translationKey)) {
+						MutableText description = Text.translatable(translationKey + ".desc").formatted(Formatting.DARK_GRAY);
+						if (!description.getString().isEmpty()) {
+							lines.add(i + 1, Text.literal(" - ").formatted(Formatting.GRAY).append(description));
+							break;
+						}
 					}
 				}
 			});

@@ -16,7 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
 public record AddMoltenParticlesPayload(BlockPos pos) implements CustomPayload {
-	public static final CustomPayload.Id<AddMoltenParticlesPayload> ID = CustomPayload.id(Enchancement.id("add_molten_particles").toString());
+	public static final CustomPayload.Id<AddMoltenParticlesPayload> ID = new Id<>(Enchancement.id("add_molten_particles"));
 	public static final PacketCodec<PacketByteBuf, AddMoltenParticlesPayload> CODEC = PacketCodec.tuple(BlockPos.PACKET_CODEC, AddMoltenParticlesPayload::pos, AddMoltenParticlesPayload::new);
 
 	@Override

@@ -1,0 +1,34 @@
+{
+  "anvil_cost": 2,
+  "description": {
+	"translate": "enchantment.enchancement.slide"
+  },
+  "effects": {
+	"enchancement:slam": {
+	  "type": "minecraft:add",
+	  "value": 0.5
+	},
+	"enchancement:slide": {
+	  "type": "minecraft:add",
+	  "value": {
+		"type": "minecraft:linear",
+		"base": 0.21,
+		"per_level_above_first": 0.065
+	  }
+	}
+  },
+  "max_cost": {
+	"base": 20,
+	"per_level_above_first": 6
+  },
+  "max_level": 2,
+  "min_cost": {
+	"base": 5,
+	"per_level_above_first": 6
+  },
+  "slots": [
+	"legs"
+  ],
+  "supported_items": "#minecraft:enchantable/leg_armor",
+  "weight": 5
+}
