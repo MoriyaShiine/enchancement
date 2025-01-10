@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/crossbow",
   "textures": {
-	"layer0": "enchancement:item/crossbow_brimstone_1"
+	"layer0": "enchancement:item/crossbow_brimstone_5"
   }
 }
