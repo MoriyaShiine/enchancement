@@ -48,13 +48,14 @@ public class FellTreesComponent implements ServerTickingComponent {
 	public void serverTick() {
 		for (int i = treesToCut.size() - 1; i >= 0; i--) {
 			Tree tree = treesToCut.get(i);
-			BlockPos pos = tree.logs.removeLast();
-			tree.drops.addAll(Block.getDroppedStacks(obj.getBlockState(pos), (ServerWorld) obj, pos, obj.getBlockEntity(pos), null, tree.stack));
-			obj.breakBlock(pos, false);
 			if (tree.logs.isEmpty()) {
 				EnchancementUtil.mergeItemEntities(tree.drops.stream().map(drop -> new ItemEntity(obj, tree.originalPos.getX() + 0.5, tree.originalPos.getY() + 0.5, tree.originalPos.getZ() + 0.5, drop)).collect(Collectors.toList())).forEach(obj::spawnEntity);
 				treesToCut.remove(i);
+				continue;
 			}
+			BlockPos pos = tree.logs.removeLast();
+			tree.drops.addAll(Block.getDroppedStacks(obj.getBlockState(pos), (ServerWorld) obj, pos, obj.getBlockEntity(pos), null, tree.stack));
+			obj.breakBlock(pos, false);
 		}
 	}
 
