@@ -28,7 +28,7 @@ public class EnchantedCountIncreaseLootFunctionMixin {
 	@WrapOperation(method = "process", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getEquipmentLevel(Lnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/entity/LivingEntity;)I"))
 	private int enchancement$fixHardcodedLooting(RegistryEntry<Enchantment> enchantmentEntry, LivingEntity entity, Operation<Integer> original, ItemStack stack) {
 		int value = original.call(enchantmentEntry, entity);
-		Registry<Enchantment> registry = entity.getWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT);
+		Registry<Enchantment> registry = entity.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT);
 		for (Enchantment enchantment : registry) {
 			RegistryEntry<Enchantment> entry = registry.getEntry(enchantment);
 			if (entry.isIn(ConventionalEnchantmentTags.INCREASE_ENTITY_DROPS) && !entry.equals(this.enchantment)) {

@@ -20,10 +20,15 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Optional;
+
 @Mixin(SimpleRegistry.class)
 public abstract class SimpleRegistryMixin<T> {
 	@Shadow
 	public abstract int getRawId(@Nullable T value);
+
+	@Shadow
+	public abstract Optional<RegistryKey<T>> getKey(T entry);
 
 	@Shadow
 	public abstract @Nullable T get(@Nullable RegistryKey<T> key);
@@ -44,6 +49,15 @@ public abstract class SimpleRegistryMixin<T> {
 	private int enchancement$disableDisallowedEnchantments(int original) {
 		if (original == -1 && key.equals(RegistryKeys.ENCHANTMENT)) {
 			return getRawId(get((RegistryKey<T>) ModEnchantments.EMPTY_KEY));
+		}
+		return original;
+	}
+
+	@SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "unchecked"})
+	@ModifyReturnValue(method = "getKey(Ljava/lang/Object;)Ljava/util/Optional;", at = @At("RETURN"))
+	private Optional<RegistryKey<T>> enchancement$disableDisallowedEnchantments(Optional<RegistryKey<T>> original) {
+		if (original.isEmpty() && key.equals(RegistryKeys.ENCHANTMENT)) {
+			return getKey(get((RegistryKey<T>) ModEnchantments.EMPTY_KEY));
 		}
 		return original;
 	}
