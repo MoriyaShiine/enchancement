@@ -32,6 +32,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<DirectionBurstComponent> DIRECTION_BURST = ComponentRegistry.getOrCreate(Enchancement.id("direction_burst"), DirectionBurstComponent.class);
 	public static final ComponentKey<EruptionComponent> ERUPTION = ComponentRegistry.getOrCreate(Enchancement.id("eruption"), EruptionComponent.class);
 	public static final ComponentKey<ExtendedWaterTimeComponent> EXTENDED_WATER_TIME = ComponentRegistry.getOrCreate(Enchancement.id("extended_water_time"), ExtendedWaterTimeComponent.class);
+	public static final ComponentKey<GlideComponent> GLIDE = ComponentRegistry.getOrCreate(Enchancement.id("glide"), GlideComponent.class);
 	public static final ComponentKey<LightningDashComponent> LIGHTNING_DASH = ComponentRegistry.getOrCreate(Enchancement.id("lightning_dash"), LightningDashComponent.class);
 	public static final ComponentKey<RotationBurstComponent> ROTATION_BURST = ComponentRegistry.getOrCreate(Enchancement.id("rotation_burst"), RotationBurstComponent.class);
 	public static final ComponentKey<SlamComponent> SLAM = ComponentRegistry.getOrCreate(Enchancement.id("slam"), SlamComponent.class);
@@ -67,6 +68,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerForPlayers(DIRECTION_BURST, DirectionBurstComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(LivingEntity.class, ERUPTION, EruptionComponent::new);
 		registry.registerFor(LivingEntity.class, EXTENDED_WATER_TIME, ExtendedWaterTimeComponent::new);
+		registry.registerFor(LivingEntity.class, GLIDE, GlideComponent::new);
 		registry.registerFor(LivingEntity.class, LIGHTNING_DASH, LightningDashComponent::new);
 		registry.registerForPlayers(ROTATION_BURST, RotationBurstComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(SLAM, SlamComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);

@@ -38,6 +38,7 @@ public class ModEnchantmentEffectComponentTypes {
 	public static final ComponentType<Unit> EXTEND_WATER_TIME = register("extend_water_time", builder -> builder.codec(Unit.CODEC));
 	public static final ComponentType<EnchantmentValueEffect> FELL_TREES = register("fell_trees", builder -> builder.codec(EnchantmentValueEffect.CODEC));
 	public static final ComponentType<Unit> FLUID_WALKING = register("fluid_walking", builder -> builder.codec(Unit.CODEC));
+	public static final ComponentType<GlideEffect> GLIDE = register("glide", builder -> builder.codec(GlideEffect.CODEC));
 	public static final ComponentType<List<EnchantmentEffectEntry<EnchantmentValueEffect>>> GRAPPLING_FISHING_BOBBER = register("grappling_fishing_bobber", builder -> builder.codec(EnchantmentEffectEntry.createCodec(EnchantmentValueEffect.CODEC, LootContextTypes.ENCHANTED_ITEM).listOf()));
 	public static final ComponentType<List<TargetedEnchantmentEffect<EnchantmentValueEffect>>> HEAD_DROPS = register("head_drops", builder -> builder.codec(TargetedEnchantmentEffect.createEquipmentDropsCodec(EnchantmentValueEffect.CODEC, LootContextTypes.ENCHANTED_DAMAGE).listOf()));
 	public static final ComponentType<Unit> HIDE_LABEL_BEHIND_WALLS = register("hide_label_behind_walls", builder -> builder.codec(Unit.CODEC));

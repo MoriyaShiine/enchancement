@@ -72,7 +72,7 @@
   "enchantment.enchancement.dash": "Dash",
   "enchantment.enchancement.dash.desc": "Pressing [%s] in the air launches you forward.",
   "enchantment.enchancement.gale": "Gale",
-  "enchantment.enchancement.gale.desc": "Allows you to jump more times in the air.",
+  "enchantment.enchancement.gale.desc": "Allows you to jump more times in the air. Holding [%s] allows you to briefly glide.",
   "enchantment.enchancement.slide": "Slide",
   "enchantment.enchancement.slide.desc": "Holding [%s] while grounded causes you to slide constantly. Pressing [%s] in the air causes you to slam towards the ground, knocking back mobs and negating fall damage.",
   "enchantment.enchancement.buoy": "Buoy",

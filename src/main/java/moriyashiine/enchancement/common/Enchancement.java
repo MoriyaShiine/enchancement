@@ -107,6 +107,7 @@ public class Enchancement implements ModInitializer {
 		PayloadTypeRegistry.playS2C().register(AddLightningDashParticlesPayload.ID, AddLightningDashParticlesPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(AddMoltenParticlesPayload.ID, AddMoltenParticlesPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(AddMovementBurstParticlesPayload.ID, AddMovementBurstParticlesPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(GlideS2CPayload.ID, GlideS2CPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(PlayBrimstoneFireSoundPayload.ID, PlayBrimstoneFireSoundPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(PlayBrimstoneTravelSoundPayload.ID, PlayBrimstoneTravelSoundPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(SyncFrozenPlayerSlimStatusS2CPayload.ID, SyncFrozenPlayerSlimStatusS2CPayload.CODEC);
@@ -117,6 +118,7 @@ public class Enchancement implements ModInitializer {
 		PayloadTypeRegistry.playC2S().register(AirJumpPayload.ID, AirJumpPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(BoostInFluidPayload.ID, BoostInFluidPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(DirectionBurstPayload.ID, DirectionBurstPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(GlideC2SPayload.ID, GlideC2SPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(RotationBurstPayload.ID, RotationBurstPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(SlamPayload.ID, SlamPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(StartSlidingPayload.ID, StartSlidingPayload.CODEC);
@@ -130,6 +132,7 @@ public class Enchancement implements ModInitializer {
 		ServerPlayNetworking.registerGlobalReceiver(AirJumpPayload.ID, new AirJumpPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(BoostInFluidPayload.ID, new BoostInFluidPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(DirectionBurstPayload.ID, new DirectionBurstPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(GlideC2SPayload.ID, new GlideC2SPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(RotationBurstPayload.ID, new RotationBurstPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(SlamPayload.ID, new SlamPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(StartSlidingPayload.ID, new StartSlidingPayload.Receiver());

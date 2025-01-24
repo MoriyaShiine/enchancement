@@ -26,6 +26,8 @@ public class AirJumpComponent implements AutoSyncedComponent, CommonTickingCompo
 	private int maxJumps = 0;
 	private boolean hasAirJump = false;
 
+	private boolean wasJumping = false;
+
 	public AirJumpComponent(PlayerEntity obj) {
 		this.obj = obj;
 	}
@@ -90,11 +92,12 @@ public class AirJumpComponent implements AutoSyncedComponent, CommonTickingCompo
 	@Override
 	public void clientTick() {
 		tick();
-		if (hasAirJump && obj.jumping && canUse()) {
+		if (hasAirJump && obj.jumping && !wasJumping && canUse()) {
 			use();
 			AddAirJumpParticlesPayload.addParticles(obj);
 			AirJumpPayload.send();
 		}
+		wasJumping = obj.jumping;
 	}
 
 	public void sync() {
@@ -127,8 +130,7 @@ public class AirJumpComponent implements AutoSyncedComponent, CommonTickingCompo
 	}
 
 	public boolean canUse() {
-		int entityJumpCooldown = AirJumpEffect.getJumpCooldown(obj);
-		return jumpCooldown == 0 && jumpsLeft > 0 && ticksInAir >= (obj.getWorld().isClient ? entityJumpCooldown : entityJumpCooldown - 1) && !obj.isOnGround() && EnchancementUtil.isGroundedOrAirborne(obj);
+		return jumpCooldown == 0 && jumpsLeft > 0 && ticksInAir >= 5 && !obj.isOnGround() && EnchancementUtil.isGroundedOrAirborne(obj);
 	}
 
 	public void use() {

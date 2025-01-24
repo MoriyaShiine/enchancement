@@ -25,6 +25,20 @@
 		"type": "minecraft:add",
 		"value": 0.5
 	  }
+	},
+	"enchancement:glide": {
+	  "max_duration": {
+		"type": "minecraft:add",
+		"value": {
+		  "type": "minecraft:linear",
+		  "base": 2.0,
+		  "per_level_above_first": 1.0
+		}
+	  },
+	  "min_duration": {
+		"type": "minecraft:add",
+		"value": 0.6
+	  }
 	}
   },
   "max_cost": {

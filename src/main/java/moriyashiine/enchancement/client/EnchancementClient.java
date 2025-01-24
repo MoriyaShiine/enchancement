@@ -101,6 +101,7 @@ public class EnchancementClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(AddLightningDashParticlesPayload.ID, new AddLightningDashParticlesPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(AddMoltenParticlesPayload.ID, new AddMoltenParticlesPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(AddMovementBurstParticlesPayload.ID, new AddMovementBurstParticlesPayload.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(GlideS2CPayload.ID, new GlideS2CPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(PlayBrimstoneFireSoundPayload.ID, new PlayBrimstoneFireSoundPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(PlayBrimstoneTravelSoundPayload.ID, new PlayBrimstoneTravelSoundPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(SyncFrozenPlayerSlimStatusS2CPayload.ID, new SyncFrozenPlayerSlimStatusS2CPayload.Receiver());

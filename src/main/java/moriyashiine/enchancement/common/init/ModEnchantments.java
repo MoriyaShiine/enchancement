@@ -283,13 +283,21 @@ public class ModEnchantments {
 				itemLookup.getOrThrow(ItemTags.LEG_ARMOR_ENCHANTABLE),
 				2,
 				AttributeModifierSlot.LEGS,
-				builder -> builder.addNonListEffect(
-						ModEnchantmentEffectComponentTypes.AIR_JUMP,
-						new AirJumpEffect(
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(1)),
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1.45F)),
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0.5F)),
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0.5F))))));
+				builder -> {
+					builder.addNonListEffect(
+							ModEnchantmentEffectComponentTypes.AIR_JUMP,
+							new AirJumpEffect(
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(1)),
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1.45F)),
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0.5F)),
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0.5F))));
+					builder.addNonListEffect(
+							ModEnchantmentEffectComponentTypes.GLIDE,
+							new GlideEffect(
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0.6F)),
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(2, 1))
+							));
+				}));
 		registerable.register(SLIDE, create(SLIDE.getValue(),
 				itemLookup.getOrThrow(ItemTags.LEG_ARMOR_ENCHANTABLE),
 				2,
