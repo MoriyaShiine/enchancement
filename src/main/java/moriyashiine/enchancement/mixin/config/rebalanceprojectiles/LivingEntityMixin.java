@@ -14,6 +14,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -43,7 +44,7 @@ public abstract class LivingEntityMixin extends Entity {
 				projectileTimerComponent.incrementTimesHit();
 				projectileTimerComponent.markAsHit();
 				boolean aboveOrEqualToOne = value >= 1;
-				value *= (float) Math.pow(0.8, projectileTimerComponent.getTimesHit() - 1);
+				value *= (float) Math.pow(source.isIn(DamageTypeTags.BYPASSES_ARMOR) ? 0.2 : 0.8, projectileTimerComponent.getTimesHit() - 1);
 				if (aboveOrEqualToOne) {
 					value = Math.max(1, value);
 				}
