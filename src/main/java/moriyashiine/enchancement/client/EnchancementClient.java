@@ -24,7 +24,6 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
@@ -83,8 +82,7 @@ public class EnchancementClient implements ClientModInitializer {
 		// enchantment
 		HudRenderCallback.EVENT.register(new AirJumpRenderEvent());
 		ItemTooltipCallback.EVENT.register(new AutomaticallyFeedsTooltipEvent());
-		ClientPlayConnectionEvents.DISCONNECT.register(new BounceEvent.Disconnect());
-		ClientTickEvents.END_WORLD_TICK.register(new BounceEvent.Tick());
+		ClientTickEvents.END_WORLD_TICK.register(new BounceEvent());
 		HudRenderCallback.EVENT.register(new BrimstoneRenderEvent());
 		HudRenderCallback.EVENT.register(new ChargeJumpRenderEvent());
 		HudRenderCallback.EVENT.register(new DirectionBurstRenderEvent());

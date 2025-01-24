@@ -3,9 +3,9 @@
  */
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.bounce;
 
+import moriyashiine.enchancement.common.component.entity.BounceComponent;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.payload.SyncBounceInvertedStatusPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -60,7 +60,8 @@ public abstract class LivingEntityMixin extends Entity {
 	@Unique
 	private boolean shouldBounce() {
 		boolean bounce = !bypassesLandingEffects();
-		if (SyncBounceInvertedStatusPayload.ENTITIES_WITH_INVERTED_STATUS.contains(this)) {
+		BounceComponent bounceComponent = ModEntityComponents.BOUNCE.getNullable(this);
+		if (bounceComponent != null && bounceComponent.hasInvertedBounce()) {
 			bounce = !bounce;
 		}
 		return bounce;

@@ -56,6 +56,7 @@
 	  "enchancement:safe_lightning",
 	  "enchancement:air_jump",
 	  "enchancement:boost_in_fluid",
+	  "enchancement:bounce",
 	  "enchancement:bury_entity",
 	  "enchancement:charge_jump",
 	  "enchancement:conditional_attributes",

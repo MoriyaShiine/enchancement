@@ -25,6 +25,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	// enchantment component
 	public static final ComponentKey<AirJumpComponent> AIR_JUMP = ComponentRegistry.getOrCreate(Enchancement.id("air_jump"), AirJumpComponent.class);
 	public static final ComponentKey<BoostInFluidComponent> BOOST_IN_FLUID = ComponentRegistry.getOrCreate(Enchancement.id("boost_in_fluid"), BoostInFluidComponent.class);
+	public static final ComponentKey<BounceComponent> BOUNCE = ComponentRegistry.getOrCreate(Enchancement.id("bounce"), BounceComponent.class);
 	public static final ComponentKey<BuryEntityComponent> BURY_ENTITY = ComponentRegistry.getOrCreate(Enchancement.id("bury_entity"), BuryEntityComponent.class);
 	public static final ComponentKey<ChargeJumpComponent> CHARGE_JUMP = ComponentRegistry.getOrCreate(Enchancement.id("charge_jump"), ChargeJumpComponent.class);
 	public static final ComponentKey<ConditionalAttributesComponent> CONDITIONAL_ATTRIBUTES = ComponentRegistry.getOrCreate(Enchancement.id("conditional_attributes"), ConditionalAttributesComponent.class);
@@ -59,6 +60,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		// enchantment component
 		registry.registerForPlayers(AIR_JUMP, AirJumpComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(BOOST_IN_FLUID, BoostInFluidComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+		registry.registerForPlayers(BOUNCE, obj -> new BounceComponent(), RespawnCopyStrategy.ALWAYS_COPY);
 		registry.registerFor(LivingEntity.class, BURY_ENTITY, BuryEntityComponent::new);
 		registry.registerForPlayers(CHARGE_JUMP, ChargeJumpComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(LivingEntity.class, CONDITIONAL_ATTRIBUTES, ConditionalAttributesComponent::new);
