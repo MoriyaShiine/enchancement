@@ -86,4 +86,8 @@ public class ExtendedWaterTimeComponent implements AutoSyncedComponent, CommonTi
 			ticksWet = ticks;
 		}
 	}
+
+	public void decrement(int ticks) {
+		ticksWet = Math.max(0, ticksWet - ticks);
+	}
 }
