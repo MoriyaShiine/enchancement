@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ArmorMaterial.class)
-public class ArmorMaterialsMixin {
+public class ArmorMaterialMixin {
 	@WrapOperation(method = "createAttributeModifiers", at = @At(value = "INVOKE", target = "Lnet/minecraft/component/type/AttributeModifiersComponent$Builder;add(Lnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/entity/attribute/EntityAttributeModifier;Lnet/minecraft/component/type/AttributeModifierSlot;)Lnet/minecraft/component/type/AttributeModifiersComponent$Builder;", ordinal = 0))
 	private AttributeModifiersComponent.Builder enchancement$rebalanceEquipment(AttributeModifiersComponent.Builder instance, RegistryEntry<EntityAttribute> attribute, EntityAttributeModifier modifier, AttributeModifierSlot slot, Operation<AttributeModifiersComponent.Builder> original) {
 		if (ModConfig.rebalanceEquipment) {
