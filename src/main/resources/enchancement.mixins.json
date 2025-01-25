@@ -36,6 +36,7 @@
 	"config.rebalanceenchantments.LightningEntityMixin",
 	"config.rebalanceenchantments.MovementPredicateMixin",
 	"config.rebalanceenchantments.SummonEntityEnchantmentEffectMixin",
+	"config.rebalanceenchantments.TridentItemMixin",
 	"config.rebalanceequipment.ArmorMaterialsMixin",
 	"config.rebalanceequipment.FishingRodItemMixin",
 	"config.rebalanceequipment.MaceItemMixin",

@@ -205,10 +205,8 @@ public class EnchancementUtil {
 	}
 
 	public static int alterLevel(ItemStack stack, RegistryEntry<Enchantment> enchantment) {
-		if (ModConfig.singleLevelMode) {
-			if (enchantment.matchesKey(Enchantments.RIPTIDE) || enchantment.matchesKey(Enchantments.WIND_BURST)) {
-				return 1;
-			}
+		if (ModConfig.singleLevelMode && enchantment.matchesKey(Enchantments.WIND_BURST)) {
+			return 1;
 		}
 		return getModifiedMaxLevel(stack, getOriginalMaxLevel(enchantment));
 	}
