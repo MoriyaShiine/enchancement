@@ -46,7 +46,7 @@ public abstract class LivingEntityMixin extends Entity {
 	@Inject(method = "handleFallDamage", at = @At("HEAD"), cancellable = true)
 	private void enchancement$bounce(float fallDistance, float damageMultiplier, DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
 		if (!damageSource.isOf(DamageTypes.STALAGMITE) && fallDistance > getSafeFallDistance() && EnchancementUtil.hasAnyEnchantmentsWith(this, ModEnchantmentEffectComponentTypes.BOUNCE)) {
-			playSoundIfNotSilent(SoundEvents.BLOCK_SLIME_BLOCK_FALL);
+			getWorld().playSound(null, getX(), getY(), getZ(), SoundEvents.BLOCK_SLIME_BLOCK_FALL, getSoundCategory());
 			if (shouldBounce()) {
 				ModEntityComponents.AIR_MOBILITY.get(this).enableResetBypass();
 				double bounceStrength = Math.log((fallDistance / 7) + 1) / Math.log(1.05) / 16;
