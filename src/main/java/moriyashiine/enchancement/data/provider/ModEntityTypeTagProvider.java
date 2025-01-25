@@ -36,6 +36,8 @@ public class ModEntityTypeTagProvider extends FabricTagProvider.EntityTypeTagPro
 				.add(EntityType.ELDER_GUARDIAN)
 				.add(EntityType.WARDEN)
 				.add(EntityType.VEX);
+		getOrCreateTagBuilder(ModEntityTypeTags.CANNOT_DISARM)
+				.addOptionalTag(ConventionalEntityTypeTags.BOSSES);
 		getOrCreateTagBuilder(ModEntityTypeTags.CANNOT_FREEZE)
 				.addOptionalTag(ConventionalEntityTypeTags.BOSSES)
 				.addOptionalTag(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES);

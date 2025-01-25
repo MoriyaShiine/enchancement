@@ -6,6 +6,7 @@ package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.disarming
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import moriyashiine.enchancement.common.component.entity.DisarmingFishingBobberComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.*;
@@ -36,7 +37,7 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 
 	@Inject(method = "pullHookedEntity", at = @At("HEAD"), cancellable = true)
 	private void enchancment$disarmingFishingBobber(Entity entity, CallbackInfo ci) {
-		if (getWorld() instanceof ServerWorld serverWorld && entity instanceof LivingEntity living) {
+		if (!entity.getType().isIn(ModEntityTypeTags.CANNOT_DISARM) && getWorld() instanceof ServerWorld serverWorld && entity instanceof LivingEntity living) {
 			DisarmingFishingBobberComponent disarmingFishingBobberComponent = ModEntityComponents.DISARMING_FISHING_BOBBER.get(this);
 			if (disarmingFishingBobberComponent.isEnabled()) {
 				ItemStack stack = ItemStack.EMPTY;
