@@ -34,6 +34,7 @@
 	"config.rebalanceenchantments.EnchantmentHelperMixin",
 	"config.rebalanceenchantments.IgniteEnchantmentEffectMixin",
 	"config.rebalanceenchantments.LightningEntityMixin",
+	"config.rebalanceenchantments.LivingEntityMixin",
 	"config.rebalanceenchantments.MovementPredicateMixin",
 	"config.rebalanceenchantments.SummonEntityEnchantmentEffectMixin",
 	"config.rebalanceenchantments.TridentItemMixin",
