@@ -9,8 +9,8 @@ import moriyashiine.enchancement.client.util.EnchancementClientUtil;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModParticleTypes;
-import moriyashiine.enchancement.common.payload.StartSlidingPayload;
-import moriyashiine.enchancement.common.payload.StopSlidingPayload;
+import moriyashiine.enchancement.common.payload.StartSlidingC2SPayload;
+import moriyashiine.enchancement.common.payload.StopSlidingC2SPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.GameOptions;
@@ -136,11 +136,11 @@ public class SlideComponent implements CommonTickingComponent {
 						velocity = getVelocityFromInput(options);
 						adjustedVelocity = velocity.rotateY((float) Math.toRadians(-(obj.getYaw() + 90)));
 						cachedYaw = obj.getYaw();
-						StartSlidingPayload.send(velocity, adjustedVelocity, cachedYaw);
+						StartSlidingC2SPayload.send(velocity, adjustedVelocity, cachedYaw);
 					}
 				} else if (velocity != SlideVelocity.ZERO) {
 					stopSliding();
-					StopSlidingPayload.send();
+					StopSlidingC2SPayload.send();
 				}
 			}
 			if (isSliding() && EnchancementClientUtil.shouldAddParticles(obj)) {

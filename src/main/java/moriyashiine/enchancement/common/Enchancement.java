@@ -110,6 +110,10 @@ public class Enchancement implements ModInitializer {
 		PayloadTypeRegistry.playS2C().register(GlideS2CPayload.ID, GlideS2CPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(PlayBrimstoneFireSoundPayload.ID, PlayBrimstoneFireSoundPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(PlayBrimstoneTravelSoundPayload.ID, PlayBrimstoneTravelSoundPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(StartSlammingS2CPayload.ID, StartSlammingS2CPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(StartSlidingS2CPayload.ID, StartSlidingS2CPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(StopSlammingS2CPayload.ID, StopSlammingS2CPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(StopSlidingS2CPayload.ID, StopSlidingS2CPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(SyncFrozenPlayerSlimStatusS2CPayload.ID, SyncFrozenPlayerSlimStatusS2CPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(UseEruptionPayload.ID, UseEruptionPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(UseLightningDashPayload.ID, UseLightningDashPayload.CODEC);
@@ -120,9 +124,10 @@ public class Enchancement implements ModInitializer {
 		PayloadTypeRegistry.playC2S().register(DirectionBurstPayload.ID, DirectionBurstPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(GlideC2SPayload.ID, GlideC2SPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(RotationBurstPayload.ID, RotationBurstPayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(SlamPayload.ID, SlamPayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(StartSlidingPayload.ID, StartSlidingPayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(StopSlidingPayload.ID, StopSlidingPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(StartSlammingC2SPayload.ID, StartSlammingC2SPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(StartSlidingC2SPayload.ID, StartSlidingC2SPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(StopSlammingC2SPayload.ID, StopSlammingC2SPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(StopSlidingC2SPayload.ID, StopSlidingC2SPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(SyncFrozenPlayerSlimStatusC2SPayload.ID, SyncFrozenPlayerSlimStatusC2SPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(SyncInvertedBounceStatusPayload.ID, SyncInvertedBounceStatusPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(WallJumpPayload.ID, WallJumpPayload.CODEC);
@@ -134,9 +139,10 @@ public class Enchancement implements ModInitializer {
 		ServerPlayNetworking.registerGlobalReceiver(DirectionBurstPayload.ID, new DirectionBurstPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(GlideC2SPayload.ID, new GlideC2SPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(RotationBurstPayload.ID, new RotationBurstPayload.Receiver());
-		ServerPlayNetworking.registerGlobalReceiver(SlamPayload.ID, new SlamPayload.Receiver());
-		ServerPlayNetworking.registerGlobalReceiver(StartSlidingPayload.ID, new StartSlidingPayload.Receiver());
-		ServerPlayNetworking.registerGlobalReceiver(StopSlidingPayload.ID, new StopSlidingPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(StartSlammingC2SPayload.ID, new StartSlammingC2SPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(StartSlidingC2SPayload.ID, new StartSlidingC2SPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(StopSlammingC2SPayload.ID, new StopSlammingC2SPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(StopSlidingC2SPayload.ID, new StopSlidingC2SPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(SyncFrozenPlayerSlimStatusC2SPayload.ID, new SyncFrozenPlayerSlimStatusC2SPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(SyncInvertedBounceStatusPayload.ID, new SyncInvertedBounceStatusPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(WallJumpPayload.ID, new WallJumpPayload.Receiver());

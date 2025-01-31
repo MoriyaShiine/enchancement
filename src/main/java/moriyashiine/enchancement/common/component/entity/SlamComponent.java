@@ -10,7 +10,8 @@ import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModParticleTypes;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.payload.SlamPayload;
+import moriyashiine.enchancement.common.payload.StartSlammingC2SPayload;
+import moriyashiine.enchancement.common.payload.StopSlammingC2SPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.enums.Thickness;
@@ -65,6 +66,14 @@ public class SlamComponent implements CommonTickingComponent {
 		strength = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.SLAM, obj, 0);
 		hasSlam = strength > 0;
 		if (hasSlam) {
+			if (isSlamming) {
+				if (!EnchancementUtil.isGroundedOrAirborne(obj, true)) {
+					isSlamming = false;
+					return;
+				}
+				obj.setVelocity(obj.getVelocity().getX() * 0.98, Math.min(-3, obj.getVelocity().getY()), obj.getVelocity().getZ() * 0.98);
+				obj.fallDistance = 0;
+			}
 			if (slamCooldown > 0) {
 				slamCooldown--;
 			}
@@ -79,55 +88,29 @@ public class SlamComponent implements CommonTickingComponent {
 	}
 
 	@Override
-	public void serverTick() {
-		tick();
-		if (hasSlam && isSlamming) {
-			slamTick(() -> {
-				obj.getWorld().getOtherEntities(obj, new Box(obj.getBlockPos()).expand(3, 1, 3), foundEntity -> foundEntity.isAlive() && foundEntity.distanceTo(obj) < 5).forEach(entity -> {
-					if (entity instanceof LivingEntity living && EnchancementUtil.shouldHurt(obj, living) && EnchancementUtil.canSee(obj, entity, 0)) {
-						living.takeKnockback(1, obj.getX() - living.getX(), obj.getZ() - living.getZ());
-					}
-				});
-				obj.getWorld().emitGameEvent(GameEvent.STEP, obj.getPos(), GameEvent.Emitter.of(obj.getSteppingBlockState()));
-				@SuppressWarnings("deprecation") BlockState state = obj.getWorld().getBlockState(obj.getLandingPos());
-				if (state.contains(Properties.THICKNESS) && state.contains(Properties.VERTICAL_DIRECTION) && state.get(Properties.THICKNESS) == Thickness.TIP && state.get(Properties.VERTICAL_DIRECTION) == Direction.UP) {
-					obj.damage((ServerWorld) obj.getWorld(), obj.getDamageSources().stalagmite(), Integer.MAX_VALUE);
-				}
-			});
-		}
-	}
-
-	@Override
 	public void clientTick() {
 		tick();
-		if (hasSlam && !obj.isSpectator() && obj == MinecraftClient.getInstance().player) {
-			if (isSlamming && EnchancementClientUtil.shouldAddParticles(obj)) {
-				slamTick(() -> {
-					BlockPos.Mutable mutable = new BlockPos.Mutable();
-					double y = Math.round(obj.getY() - 1);
-					for (int i = 0; i < 360; i += 15) {
-						for (int j = 1; j < 5; j++) {
-							double x = obj.getX() + MathHelper.sin(i) * j / 2, z = obj.getZ() + MathHelper.cos(i) * j / 2;
-							BlockState state = obj.getWorld().getBlockState(mutable.set(x, y, z));
-							if (!state.isReplaceable() && obj.getWorld().getBlockState(mutable.move(Direction.UP)).isReplaceable()) {
-								obj.getWorld().addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, state), x, mutable.getY(), z, 0, 0, 0);
-							}
-						}
+		if (hasSlam) {
+			if (isSlamming) {
+				if (EnchancementClientUtil.shouldAddParticles(obj)) {
+					for (int i = 0; i < 4; i++) {
+						obj.getWorld().addParticle(ModParticleTypes.VELOCITY_LINE, obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 1, 0);
 					}
-				});
-				for (int i = 0; i < 4; i++) {
-					obj.getWorld().addParticle(ModParticleTypes.VELOCITY_LINE, obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 1, 0);
 				}
 			}
-			boolean pressingKey = EnchancementClient.SLAM_KEYBINDING.isPressed();
-			if (pressingKey && !wasPressingKey && canSlam()) {
-				isSlamming = true;
-				slamCooldown = DEFAULT_SLAM_COOLDOWN;
-				SlamPayload.send();
+			if (!obj.isSpectator() && obj == MinecraftClient.getInstance().player) {
+				if (isSlamming && obj.isOnGround()) {
+					stopSlammingClient(obj.getY());
+					StopSlammingC2SPayload.send(obj.getY());
+				}
+				boolean pressingKey = EnchancementClient.SLAM_KEYBINDING.isPressed();
+				if (pressingKey && !wasPressingKey && canSlam()) {
+					isSlamming = true;
+					slamCooldown = DEFAULT_SLAM_COOLDOWN;
+					StartSlammingC2SPayload.send();
+				}
+				wasPressingKey = pressingKey;
 			}
-			wasPressingKey = pressingKey;
-		} else {
-			wasPressingKey = false;
 		}
 	}
 
@@ -162,18 +145,38 @@ public class SlamComponent implements CommonTickingComponent {
 		return slamCooldown == 0 && !obj.isOnGround() && EnchancementUtil.isGroundedOrAirborne(obj);
 	}
 
-	private void slamTick(Runnable onLand) {
-		if (!EnchancementUtil.isGroundedOrAirborne(obj, true)) {
-			isSlamming = false;
-			return;
+	private void stopSlamming() {
+		isSlamming = false;
+		ticksLeftToJump = 5;
+		obj.playSound(ModSoundEvents.ENTITY_GENERIC_IMPACT, 1, 1);
+	}
+
+	public void stopSlammingServer() {
+		stopSlamming();
+		obj.getWorld().getOtherEntities(obj, new Box(obj.getBlockPos()).expand(3, 1, 3), foundEntity -> foundEntity.isAlive() && foundEntity.distanceTo(obj) < 5).forEach(foundEntity -> {
+			if (foundEntity instanceof LivingEntity living && EnchancementUtil.shouldHurt(obj, living) && EnchancementUtil.canSee(obj, foundEntity, 0)) {
+				living.takeKnockback(1, obj.getX() - living.getX(), obj.getZ() - living.getZ());
+			}
+		});
+		obj.getWorld().emitGameEvent(GameEvent.STEP, obj.getPos(), GameEvent.Emitter.of(obj.getSteppingBlockState()));
+		@SuppressWarnings("deprecation") BlockState state = obj.getWorld().getBlockState(obj.getLandingPos());
+		if (state.contains(Properties.THICKNESS) && state.contains(Properties.VERTICAL_DIRECTION) && state.get(Properties.THICKNESS) == Thickness.TIP && state.get(Properties.VERTICAL_DIRECTION) == Direction.UP) {
+			obj.damage((ServerWorld) obj.getWorld(), obj.getDamageSources().stalagmite(), Integer.MAX_VALUE);
 		}
-		obj.setVelocity(obj.getVelocity().getX() * 0.98, -3, obj.getVelocity().getZ() * 0.98);
-		obj.fallDistance = 0;
-		if (obj.isOnGround()) {
-			isSlamming = false;
-			ticksLeftToJump = 5;
-			obj.playSound(ModSoundEvents.ENTITY_GENERIC_IMPACT, 1, 1);
-			onLand.run();
+	}
+
+	public void stopSlammingClient(double posY) {
+		stopSlamming();
+		BlockPos.Mutable mutable = new BlockPos.Mutable();
+		double y = Math.round(posY - 1);
+		for (int i = 0; i < 360; i += 15) {
+			for (int j = 1; j < 5; j++) {
+				double x = obj.getX() + MathHelper.sin(i) * j / 2, z = obj.getZ() + MathHelper.cos(i) * j / 2;
+				BlockState state = obj.getWorld().getBlockState(mutable.set(x, y, z));
+				if (!state.isReplaceable() && obj.getWorld().getBlockState(mutable.move(Direction.UP)).isReplaceable()) {
+					obj.getWorld().addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, state), x, mutable.getY(), z, 0, 0, 0);
+				}
+			}
 		}
 	}
 }
