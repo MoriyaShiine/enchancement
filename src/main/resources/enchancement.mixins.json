@@ -72,7 +72,6 @@
 	"enchantmenteffectcomponenttype.allowloadingprojectile.RangedWeaponItemMixin",
 	"enchantmenteffectcomponenttype.applyrandomstatuseffect.PersistentProjectileEntityMixin",
 	"enchantmenteffectcomponenttype.applyrandomstatuseffect.RangedWeaponItemMixin",
-	"enchantmenteffectcomponenttype.applyrandomstatuseffect.SpectralArrowEntityMixin",
 	"enchantmenteffectcomponenttype.bounce.LivingEntityMixin",
 	"enchantmenteffectcomponenttype.brimstone.BrimstoneCrossbowMixin",
 	"enchantmenteffectcomponenttype.brimstone.CrossbowItemMixin",

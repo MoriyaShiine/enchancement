@@ -6,7 +6,7 @@ package moriyashiine.enchancement.common.component.entity;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.projectile.SpectralArrowEntity;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -19,12 +19,12 @@ import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ApplyRandomStatusEffectSpectralComponent implements AutoSyncedComponent, CommonTickingComponent {
-	private final SpectralArrowEntity obj;
+public class ApplyRandomStatusEffectGenericComponent implements AutoSyncedComponent, CommonTickingComponent {
+	private final PersistentProjectileEntity obj;
 	private List<StatusEffectInstance> effects = new ArrayList<>();
 	private int color = -1;
 
-	public ApplyRandomStatusEffectSpectralComponent(SpectralArrowEntity obj) {
+	public ApplyRandomStatusEffectGenericComponent(PersistentProjectileEntity obj) {
 		this.obj = obj;
 	}
 
@@ -72,7 +72,7 @@ public class ApplyRandomStatusEffectSpectralComponent implements AutoSyncedCompo
 	}
 
 	public void sync() {
-		ModEntityComponents.APPLY_RANDOM_STATUS_EFFECT_SPECTRAL.sync(obj);
+		ModEntityComponents.APPLY_RANDOM_STATUS_EFFECT_GENERIC.sync(obj);
 	}
 
 	public List<StatusEffectInstance> getEffects() {

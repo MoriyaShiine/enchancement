@@ -6,13 +6,13 @@ package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.applyrand
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import moriyashiine.enchancement.common.component.entity.ApplyRandomStatusEffectComponent;
-import moriyashiine.enchancement.common.component.entity.ApplyRandomStatusEffectSpectralComponent;
+import moriyashiine.enchancement.common.component.entity.ApplyRandomStatusEffectGenericComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.entity.projectile.SpectralArrowEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.RangedWeaponItem;
 import net.minecraft.server.world.ServerWorld;
@@ -32,12 +32,11 @@ public class RangedWeaponItemMixin {
 				ModEntityComponents.APPLY_RANDOM_STATUS_EFFECT.get(arrow).setOriginalStack(arrow.asItemStack());
 				arrow.setPotionContents(new PotionContentsComponent(Optional.empty(), Optional.empty(), statusEffects, Optional.empty()));
 			});
-		}
-		if (original instanceof SpectralArrowEntity spectralArrow) {
+		} else if (original instanceof PersistentProjectileEntity projectile) {
 			ApplyRandomStatusEffectComponent.maybeSet(shooter, projectileStack, ApplyRandomStatusEffectComponent.getDurationMultiplier(shooter, speed), stack, statusEffects -> {
-				ApplyRandomStatusEffectSpectralComponent applyRandomStatusEffectSpectralComponent = ModEntityComponents.APPLY_RANDOM_STATUS_EFFECT_SPECTRAL.get(spectralArrow);
-				applyRandomStatusEffectSpectralComponent.setEffects(statusEffects);
-				applyRandomStatusEffectSpectralComponent.sync();
+				ApplyRandomStatusEffectGenericComponent applyRandomStatusEffectGenericComponent = ModEntityComponents.APPLY_RANDOM_STATUS_EFFECT_GENERIC.get(projectile);
+				applyRandomStatusEffectGenericComponent.setEffects(statusEffects);
+				applyRandomStatusEffectGenericComponent.sync();
 			});
 		}
 		return original;

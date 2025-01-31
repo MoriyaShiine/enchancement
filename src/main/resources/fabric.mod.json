@@ -70,7 +70,7 @@
 	  "enchancement:slide",
 	  "enchancement:wall_jump",
 	  "enchancement:apply_random_status_effect",
-	  "enchancement:apply_random_status_effect_spectral",
+	  "enchancement:apply_random_status_effect_generic",
 	  "enchancement:delayed_launch",
 	  "enchancement:disarming_fishing_bobber",
 	  "enchancement:disarmed_player",

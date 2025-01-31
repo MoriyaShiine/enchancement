@@ -40,7 +40,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<WallJumpComponent> WALL_JUMP = ComponentRegistry.getOrCreate(Enchancement.id("wall_jump"), WallJumpComponent.class);
 	// extra entity data
 	public static final ComponentKey<ApplyRandomStatusEffectComponent> APPLY_RANDOM_STATUS_EFFECT = ComponentRegistry.getOrCreate(Enchancement.id("apply_random_status_effect"), ApplyRandomStatusEffectComponent.class);
-	public static final ComponentKey<ApplyRandomStatusEffectSpectralComponent> APPLY_RANDOM_STATUS_EFFECT_SPECTRAL = ComponentRegistry.getOrCreate(Enchancement.id("apply_random_status_effect_spectral"), ApplyRandomStatusEffectSpectralComponent.class);
+	public static final ComponentKey<ApplyRandomStatusEffectGenericComponent> APPLY_RANDOM_STATUS_EFFECT_GENERIC = ComponentRegistry.getOrCreate(Enchancement.id("apply_random_status_effect_generic"), ApplyRandomStatusEffectGenericComponent.class);
 	public static final ComponentKey<DelayedLaunchComponent> DELAYED_LAUNCH = ComponentRegistry.getOrCreate(Enchancement.id("delayed_launch"), DelayedLaunchComponent.class);
 	public static final ComponentKey<DisarmingFishingBobberComponent> DISARMING_FISHING_BOBBER = ComponentRegistry.getOrCreate(Enchancement.id("disarming_fishing_bobber"), DisarmingFishingBobberComponent.class);
 	public static final ComponentKey<DisarmedPlayerComponent> DISARMED_PLAYER = ComponentRegistry.getOrCreate(Enchancement.id("disarmed_player"), DisarmedPlayerComponent.class);
@@ -76,7 +76,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerForPlayers(WALL_JUMP, WallJumpComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		// extra entity data
 		registry.registerFor(ArrowEntity.class, APPLY_RANDOM_STATUS_EFFECT, projectile -> new ApplyRandomStatusEffectComponent());
-		registry.registerFor(SpectralArrowEntity.class, APPLY_RANDOM_STATUS_EFFECT_SPECTRAL, ApplyRandomStatusEffectSpectralComponent::new);
+		registry.registerFor(PersistentProjectileEntity.class, APPLY_RANDOM_STATUS_EFFECT_GENERIC, ApplyRandomStatusEffectGenericComponent::new);
 		registry.registerFor(ArrowEntity.class, DELAYED_LAUNCH, DelayedLaunchComponent::new);
 		registry.registerFor(SpectralArrowEntity.class, DELAYED_LAUNCH, DelayedLaunchComponent::new);
 		registry.registerFor(FishingBobberEntity.class, DISARMING_FISHING_BOBBER, fishingBobber -> new DisarmingFishingBobberComponent());
