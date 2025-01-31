@@ -5,8 +5,10 @@ package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import moriyashiine.enchancement.client.EnchancementClient;
+import moriyashiine.enchancement.client.util.EnchancementClientUtil;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.ModParticleTypes;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.payload.SlamPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
@@ -99,7 +101,7 @@ public class SlamComponent implements CommonTickingComponent {
 	public void clientTick() {
 		tick();
 		if (hasSlam && !obj.isSpectator() && obj == MinecraftClient.getInstance().player) {
-			if (isSlamming) {
+			if (isSlamming && EnchancementClientUtil.shouldAddParticles(obj)) {
 				slamTick(() -> {
 					BlockPos.Mutable mutable = new BlockPos.Mutable();
 					double y = Math.round(obj.getY() - 1);
@@ -113,6 +115,9 @@ public class SlamComponent implements CommonTickingComponent {
 						}
 					}
 				});
+				for (int i = 0; i < 4; i++) {
+					obj.getWorld().addParticle(ModParticleTypes.VELOCITY_LINE, obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 1, 0);
+				}
 			}
 			boolean pressingKey = EnchancementClient.SLAM_KEYBINDING.isPressed();
 			if (pressingKey && !wasPressingKey && canSlam()) {

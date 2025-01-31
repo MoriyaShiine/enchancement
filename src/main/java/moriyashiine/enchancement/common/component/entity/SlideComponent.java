@@ -5,8 +5,10 @@ package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import moriyashiine.enchancement.client.EnchancementClient;
+import moriyashiine.enchancement.client.util.EnchancementClientUtil;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.ModParticleTypes;
 import moriyashiine.enchancement.common.payload.StartSlidingPayload;
 import moriyashiine.enchancement.common.payload.StopSlidingPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
@@ -22,6 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.event.GameEvent;
+import org.joml.Vector2d;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class SlideComponent implements CommonTickingComponent {
@@ -125,18 +128,27 @@ public class SlideComponent implements CommonTickingComponent {
 	@Override
 	public void clientTick() {
 		tick();
-		if (hasSlide && !obj.isSpectator() && obj == MinecraftClient.getInstance().player) {
-			GameOptions options = MinecraftClient.getInstance().options;
-			if (EnchancementClient.SLIDE_KEYBINDING.isPressed() && !obj.isSneaking() && !obj.jumping) {
-				if (canSlide()) {
-					velocity = getVelocityFromInput(options);
-					adjustedVelocity = velocity.rotateY((float) Math.toRadians(-(obj.getYaw() + 90)));
-					cachedYaw = obj.getYaw();
-					StartSlidingPayload.send(velocity, adjustedVelocity, cachedYaw);
+		if (hasSlide) {
+			if (!obj.isSpectator() && obj == MinecraftClient.getInstance().player) {
+				GameOptions options = MinecraftClient.getInstance().options;
+				if (EnchancementClient.SLIDE_KEYBINDING.isPressed() && !obj.isSneaking() && !obj.jumping) {
+					if (canSlide()) {
+						velocity = getVelocityFromInput(options);
+						adjustedVelocity = velocity.rotateY((float) Math.toRadians(-(obj.getYaw() + 90)));
+						cachedYaw = obj.getYaw();
+						StartSlidingPayload.send(velocity, adjustedVelocity, cachedYaw);
+					}
+				} else if (velocity != SlideVelocity.ZERO) {
+					stopSliding();
+					StopSlidingPayload.send();
 				}
-			} else if (velocity != SlideVelocity.ZERO) {
-				stopSliding();
-				StopSlidingPayload.send();
+			}
+			if (isSliding() && EnchancementClientUtil.shouldAddParticles(obj)) {
+				Vector2d vec = new Vector2d(adjustedVelocity.x(), adjustedVelocity.z());
+				vec.normalize();
+				vec.mul(obj.getWidth() / 2);
+				obj.getWorld().addParticle(ModParticleTypes.VELOCITY_LINE, obj.getX() - vec.y(), obj.getY() + obj.getHeight() / 2 + MathHelper.nextFloat(obj.getRandom(), -obj.getHeight() / 3, obj.getHeight() / 3), obj.getZ() + vec.x(), adjustedVelocity.x(), 0, adjustedVelocity.z());
+				obj.getWorld().addParticle(ModParticleTypes.VELOCITY_LINE, obj.getX() + vec.y(), obj.getY() + obj.getHeight() / 2 + MathHelper.nextFloat(obj.getRandom(), -obj.getHeight() / 3, obj.getHeight() / 3), obj.getZ() - vec.x(), adjustedVelocity.x(), 0, adjustedVelocity.z());
 			}
 		}
 	}

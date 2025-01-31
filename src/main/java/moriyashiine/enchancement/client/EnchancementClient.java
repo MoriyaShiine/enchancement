@@ -7,6 +7,7 @@ import moriyashiine.enchancement.client.event.*;
 import moriyashiine.enchancement.client.event.integration.appleskin.BrimstoneAppleskinEvent;
 import moriyashiine.enchancement.client.particle.HoneyBubbleParticle;
 import moriyashiine.enchancement.client.particle.SparkParticle;
+import moriyashiine.enchancement.client.particle.VelocityLineParticle;
 import moriyashiine.enchancement.client.payload.*;
 import moriyashiine.enchancement.client.reloadlisteners.FrozenReloadListener;
 import moriyashiine.enchancement.client.render.entity.AmethystShardEntityRenderer;
@@ -60,6 +61,7 @@ public class EnchancementClient implements ClientModInitializer {
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.BRIMSTONE_BUBBLE, WaterBubbleParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.HONEY_BUBBLE, HoneyBubbleParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.SPARK, provider -> new SparkParticle.Factory());
+		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.VELOCITY_LINE, VelocityLineParticle.Factory::new);
 		HandledScreens.register(ModScreenHandlerTypes.ENCHANTING_TABLE, EnchantingTableScreen::new);
 		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(FrozenReloadListener.INSTANCE);
 		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(Enchancement.id("alternate_air_jump"), modContainer, ResourcePackActivationType.NORMAL));
