@@ -187,7 +187,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 		if (!handler.getEnchantingMaterial().isEmpty()) {
 			forceTransparency = true;
 			RenderSystem.setShaderColor(1, 1, 1, 0.5F);
-			context.drawItem(handler.getEnchantingMaterial().get(materialIndex).value().getDefaultStack(), (width - backgroundWidth) / 2 + 25, (height - backgroundHeight) / 2 + 51);
+			context.drawItem(handler.getEnchantingMaterial().get(Math.min(materialIndex, handler.getEnchantingMaterial().size() - 1)).value().getDefaultStack(), (width - backgroundWidth) / 2 + 25, (height - backgroundHeight) / 2 + 51);
 			RenderSystem.setShaderColor(1, 1, 1, 1);
 			forceTransparency = false;
 		}
