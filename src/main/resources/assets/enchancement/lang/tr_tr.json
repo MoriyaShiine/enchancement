@@ -72,7 +72,7 @@
   "enchantment.enchancement.dash": "Atılma",
   "enchantment.enchancement.dash.desc": "Havada [%s] tuşuna basmak sizi ileri fırlatır.",
   "enchantment.enchancement.gale": "Bora",
-  "enchantment.enchancement.gale.desc": "Havada daha fazla zıplayabilmenizi sağlar.",
+  "enchantment.enchancement.gale.desc": "Havada daha çok kez zıplayabilmenizi sağlar. [%s] tuşunu basılı tutmak kısa süreliğine süzülmenizi sağlar.",
   "enchantment.enchancement.slide": "Kayma",
   "enchantment.enchancement.slide.desc": "Yerdeyken [%s] tuşuna basılı tutmak sürekli kaymanızı sağlar. Havadayken [%s] tuşuna basmak hızlıca yere çakılarak canlıları savurmanızı ve düşme hasarı almamanızı sağlar.",
   "enchantment.enchancement.buoy": "Hacıbatmaz",
