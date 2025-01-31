@@ -29,7 +29,7 @@ public class MaceItemMixin {
 	@ModifyReturnValue(method = "getBonusAttackDamage", at = @At(value = "RETURN", ordinal = 2))
 	private float enchancement$rebalanceEquipment(float original, Entity target, float baseAttackDamage, DamageSource damageSource, @Local LivingEntity living) {
 		if (ModConfig.rebalanceEquipment) {
-			float damage = (float) (4 * Math.log(living.fallDistance + 1));
+			float damage = (float) (6 * Math.log(living.fallDistance + 1));
 			if (target.getWorld() instanceof ServerWorld serverWorld) {
 				float bonus = EnchantmentHelper.getSmashDamagePerFallenBlock(serverWorld, living.getWeaponStack(), target, damageSource, 0);
 				return damage + bonus * 2;
