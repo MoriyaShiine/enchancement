@@ -461,6 +461,9 @@ public class ModEnchantments {
 					builder.addEffect(
 							ModEnchantmentEffectComponentTypes.ALLOW_CROSSBOW_COOLDOWN_RELOADING);
 					builder.addEffect(
+							ModEnchantmentEffectComponentTypes.ALLOW_INTERRUPTION
+					);
+					builder.addEffect(
 							ModEnchantmentEffectComponentTypes.ALLOW_LOADING_PROJECTILE,
 							new AllowLoadingProjectileEffect(
 									Enchancement.id("crossbow_amethyst"),

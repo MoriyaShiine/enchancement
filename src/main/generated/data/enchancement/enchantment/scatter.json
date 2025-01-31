@@ -5,6 +5,7 @@
   },
   "effects": {
 	"enchancement:allow_crossbow_cooldown_reloading": {},
+	"enchancement:allow_interruption": {},
 	"enchancement:allow_loading_projectile": [
 	  {
 		"effect": {
