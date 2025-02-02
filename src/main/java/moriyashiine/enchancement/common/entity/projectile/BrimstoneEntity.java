@@ -63,7 +63,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 
 	public int distanceTraveled = 0, ticksExisted = 0;
 
-	private final Set<Entity> hitEntities = new HashSet<>();
+	private final Set<Entity> hitEntities = new HashSet<>(), killedEntities = new HashSet<>();
 
 	public BrimstoneEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
 		super(entityType, world);
@@ -114,8 +114,8 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 						damage = Math.min(50, damage);
 						entity.damage(serverWorld, ModDamageTypes.create(getWorld(), ModDamageTypes.BRIMSTONE, this, owner), (float) damage);
 						hitEntities.add(entity);
-						if (getOwner() instanceof ServerPlayerEntity player && entity instanceof LivingEntity living) {
-							Criteria.KILLED_BY_ARROW.trigger(player, Set.of(living), getWeaponStack());
+						if (entity instanceof LivingEntity living && living.isDead()) {
+							killedEntities.add(living);
 						}
 					} else {
 						addParticles(PARTICLE, entity.getX(), entity.getRandomBodyY(), entity.getZ());
@@ -188,6 +188,14 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 	@Override
 	public double getDamage() {
 		return dataTracker.get(DAMAGE);
+	}
+
+	@Override
+	public void remove(RemovalReason reason) {
+		super.remove(reason);
+		if (reason.shouldDestroy() && getOwner() instanceof ServerPlayerEntity player) {
+			Criteria.KILLED_BY_ARROW.trigger(player, killedEntities, getWeaponStack());
+		}
 	}
 
 	public float getDamageMultiplier(int distanceTraveled) {
