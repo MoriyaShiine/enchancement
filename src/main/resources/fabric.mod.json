@@ -81,6 +81,9 @@
 	  "enchancement:leeching_trident",
 	  "enchancement:phase_through_blocks_and_float",
 	  "enchancement:teleport_on_hit"
-	]
+	],
+	"lithium:options": {
+	  "mixin.shapes.lazy_shape_context": false
+	}
   }
 }

@@ -93,6 +93,7 @@
 	"enchantmenteffectcomponenttype.extendwatertime.PotionEntityMixin",
 	"enchantmenteffectcomponenttype.felltrees.AbstractBlockMixin",
 	"enchantmenteffectcomponenttype.felltrees.PlayerEntityMixin",
+	"enchantmenteffectcomponenttype.fluidwalking.AbstractBlockStateMixin",
 	"enchantmenteffectcomponenttype.fluidwalking.EntityMixin",
 	"enchantmenteffectcomponenttype.fluidwalking.LivingEntityMixin",
 	"enchantmenteffectcomponenttype.fluidwalking.PlayerEntityMixin",
