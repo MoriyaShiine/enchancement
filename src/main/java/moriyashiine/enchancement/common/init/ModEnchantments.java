@@ -128,7 +128,7 @@ public class ModEnchantments {
 		registerable.register(ASSIMILATION, create(ASSIMILATION.getValue(),
 				itemLookup.getOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.HEAD,
+				AttributeModifierSlot.ARMOR,
 				builder -> {
 					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.MODIFY_CONSUMPTION_TIME,
@@ -141,7 +141,7 @@ public class ModEnchantments {
 		registerable.register(PERCEPTION, create(PERCEPTION.getValue(),
 				itemLookup.getOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.HEAD,
+				AttributeModifierSlot.ARMOR,
 				builder -> {
 					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.ENTITY_XRAY,
@@ -153,7 +153,7 @@ public class ModEnchantments {
 		registerable.register(VEIL, create(VEIL.getValue(),
 				itemLookup.getOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.HEAD,
+				AttributeModifierSlot.ARMOR,
 				builder -> {
 					builder.addEffect(
 							ModEnchantmentEffectComponentTypes.HIDE_LABEL_BEHIND_WALLS);
@@ -165,7 +165,7 @@ public class ModEnchantments {
 		registerable.register(ADRENALINE, create(ADRENALINE.getValue(),
 				itemLookup.getOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.CHEST,
+				AttributeModifierSlot.ARMOR,
 				builder -> builder.addNonListEffect(
 						ModEnchantmentEffectComponentTypes.RAGE,
 						new RageEffect(
@@ -177,7 +177,7 @@ public class ModEnchantments {
 		registerable.register(AMPHIBIOUS, create(AMPHIBIOUS.getValue(),
 				itemLookup.getOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.CHEST,
+				AttributeModifierSlot.ARMOR,
 				builder -> {
 					builder.addEffect(
 							ModEnchantmentEffectComponentTypes.EXTEND_WATER_TIME);
@@ -220,7 +220,7 @@ public class ModEnchantments {
 		registerable.register(STRAFE, create(STRAFE.getValue(),
 				itemLookup.getOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.CHEST,
+				AttributeModifierSlot.ARMOR,
 				builder -> builder.addNonListEffect(
 						ModEnchantmentEffectComponentTypes.DIRECTION_BURST,
 						new DirectionBurstEffect(
@@ -230,7 +230,7 @@ public class ModEnchantments {
 		registerable.register(WARDENSPINE, create(WARDENSPINE.getValue(),
 				itemLookup.getOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.CHEST,
+				AttributeModifierSlot.ARMOR,
 				builder -> {
 					builder.exclusiveSet(enchantmentLookup.getOrThrow(ModEnchantmentTags.WARDENSPINE_EXCLUSIVE_SET));
 					builder.addEffect(
@@ -271,7 +271,7 @@ public class ModEnchantments {
 		registerable.register(DASH, create(DASH.getValue(),
 				itemLookup.getOrThrow(ItemTags.LEG_ARMOR_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.LEGS,
+				AttributeModifierSlot.ARMOR,
 				builder -> builder.addNonListEffect(
 						ModEnchantmentEffectComponentTypes.ROTATION_BURST,
 						new RotationBurstEffect(
@@ -282,7 +282,7 @@ public class ModEnchantments {
 		registerable.register(GALE, create(GALE.getValue(),
 				itemLookup.getOrThrow(ItemTags.LEG_ARMOR_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.LEGS,
+				AttributeModifierSlot.ARMOR,
 				builder -> {
 					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.AIR_JUMP,
@@ -301,7 +301,7 @@ public class ModEnchantments {
 		registerable.register(SLIDE, create(SLIDE.getValue(),
 				itemLookup.getOrThrow(ItemTags.LEG_ARMOR_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.LEGS,
+				AttributeModifierSlot.ARMOR,
 				builder -> {
 					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.SLAM,
@@ -314,7 +314,7 @@ public class ModEnchantments {
 		registerable.register(BOUNCY, create(BOUNCY.getValue(),
 				itemLookup.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.FEET,
+				AttributeModifierSlot.ARMOR,
 				builder -> {
 					builder.exclusiveSet(enchantmentLookup.getOrThrow(ModEnchantmentTags.BOUNCY_EXCLUSIVE_SET));
 					builder.addEffect(
@@ -328,7 +328,7 @@ public class ModEnchantments {
 		registerable.register(BUOY, create(BUOY.getValue(),
 				itemLookup.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.FEET,
+				AttributeModifierSlot.ARMOR,
 				builder -> {
 					builder.addEffect(
 							ModEnchantmentEffectComponentTypes.EXTEND_WATER_TIME);
@@ -369,7 +369,7 @@ public class ModEnchantments {
 		registerable.register(STICKY, create(STICKY.getValue(),
 				itemLookup.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.FEET,
+				AttributeModifierSlot.ARMOR,
 				builder -> {
 					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.HONEY_TRAIL,

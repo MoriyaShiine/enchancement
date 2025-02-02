@@ -10,6 +10,7 @@ import net.minecraft.registry.tag.TagKey;
 
 public class ModEnchantmentTags {
 	public static final TagKey<Enchantment> ALWAYS_SELECTABLE = TagKey.of(RegistryKeys.ENCHANTMENT, Enchancement.id("always_selectable"));
+	public static final TagKey<Enchantment> ANIMAL_ARMOR_ENCHANTMENTS = TagKey.of(RegistryKeys.ENCHANTMENT, Enchancement.id("animal_armor_enchantments"));
 	public static final TagKey<Enchantment> AUTOMATICALLY_FEEDS = TagKey.of(RegistryKeys.ENCHANTMENT, Enchancement.id("automatically_feeds"));
 	public static final TagKey<Enchantment> DISALLOWS_TOGGLEABLE_PASSIVE = TagKey.of(RegistryKeys.ENCHANTMENT, Enchancement.id("disallows_toggleable_passive"));
 	public static final TagKey<Enchantment> FREEZES_ENTITIES = TagKey.of(RegistryKeys.ENCHANTMENT, Enchancement.id("freezes_entities"));

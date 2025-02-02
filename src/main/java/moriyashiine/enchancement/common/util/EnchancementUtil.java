@@ -8,6 +8,7 @@ import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.tag.ModItemTags;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
@@ -26,6 +27,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Ownable;
+import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -295,6 +298,16 @@ public class EnchancementUtil {
 		return isGroundedOrAirborne(living, false);
 	}
 
+	public static boolean isSneakingOrSitting(Entity entity, boolean sneaking) {
+		if (sneaking) {
+			return true;
+		}
+		if (entity instanceof TameableEntity tameable && tameable.isSitting()) {
+			return true;
+		}
+		return entity instanceof MobEntity && entity.getControllingPassenger() instanceof PlayerEntity player && player.isSneaking();
+	}
+
 	public static boolean isSubmerged(Entity entity, SubmersionGate gate) {
 		for (int i = 0; i < MathHelper.ceil(entity.getHeight()); i++) {
 			BlockState blockState = entity.getWorld().getBlockState(entity.getBlockPos().up(i));
@@ -322,6 +335,9 @@ public class EnchancementUtil {
 		if (attacker == hitEntity || attacker.getVehicle() == hitEntity) {
 			return false;
 		}
+		if (attacker.isTeammate(hitEntity) || hitEntity.isTeammate(attacker)) {
+			return false;
+		}
 		if (hitEntity instanceof PlayerEntity hitPlayer && attacker instanceof PlayerEntity attackingPlayer) {
 			return attackingPlayer.shouldDamagePlayer(hitPlayer);
 		} else if (hitEntity instanceof Ownable ownable) {
@@ -339,7 +355,7 @@ public class EnchancementUtil {
 
 	public static boolean hasAnyEnchantmentsIn(Entity entity, TagKey<Enchantment> tag) {
 		if (entity instanceof LivingEntity living) {
-			for (ItemStack stack : living.getArmorItems()) {
+			for (ItemStack stack : living.getAllArmorItems()) {
 				if (EnchantmentHelper.hasAnyEnchantmentsIn(stack, tag)) {
 					return true;
 				}
@@ -350,7 +366,7 @@ public class EnchancementUtil {
 
 	public static boolean hasAnyEnchantmentsWith(Entity entity, ComponentType<?> componentType) {
 		if (entity instanceof LivingEntity living) {
-			for (ItemStack stack : living.getArmorItems()) {
+			for (ItemStack stack : living.getAllArmorItems()) {
 				if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, componentType)) {
 					return true;
 				}
@@ -367,7 +383,7 @@ public class EnchancementUtil {
 
 	public static float getValue(ComponentType<EnchantmentValueEffect> component, LivingEntity entity, float base) {
 		MutableFloat mutableFloat = new MutableFloat(base);
-		for (ItemStack stack : entity.getArmorItems()) {
+		for (ItemStack stack : entity.getAllArmorItems()) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> enchantment.value().modifyValue(component, entity.getRandom(), level, mutableFloat));
 		}
 		return mutableFloat.floatValue();
@@ -377,5 +393,11 @@ public class EnchancementUtil {
 		MutableFloat mutableFloat = new MutableFloat(base);
 		EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> enchantment.value().modifyValue(component, world, level, stack, mutableFloat));
 		return mutableFloat.floatValue();
+	}
+
+	// specific enchantment
+
+	public static boolean shouldFluidWalk(Entity entity) {
+		return !isSneakingOrSitting(entity, entity.isSneaking()) && hasAnyEnchantmentsWith(entity, ModEnchantmentEffectComponentTypes.FLUID_WALKING);
 	}
 }

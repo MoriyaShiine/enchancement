@@ -44,6 +44,8 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
 				.addOptionalTag(of("create", "sandpaper"))
 				.addOptional(of("create", "super_glue"));
 		getOrCreateTagBuilder(ModItemTags.WEAKLY_ENCHANTED)
+				.add(Items.LEATHER_HORSE_ARMOR)
+				.add(Items.IRON_HORSE_ARMOR)
 				.addOptional(of("impaled", "pitchfork"));
 	}
 }

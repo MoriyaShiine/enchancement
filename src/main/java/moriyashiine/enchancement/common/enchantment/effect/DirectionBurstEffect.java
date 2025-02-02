@@ -23,7 +23,7 @@ public record DirectionBurstEffect(EnchantmentValueEffect cooldown, EnchantmentV
 
 	public static int getCooldown(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : entity.getArmorItems()) {
+		for (ItemStack stack : entity.getAllArmorItems()) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				DirectionBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.DIRECTION_BURST);
 				if (effect != null) {
@@ -36,7 +36,7 @@ public record DirectionBurstEffect(EnchantmentValueEffect cooldown, EnchantmentV
 
 	public static float getGroundStrength(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : entity.getArmorItems()) {
+		for (ItemStack stack : entity.getAllArmorItems()) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				DirectionBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.DIRECTION_BURST);
 				if (effect != null) {
@@ -49,7 +49,7 @@ public record DirectionBurstEffect(EnchantmentValueEffect cooldown, EnchantmentV
 
 	public static float getAirStrength(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : entity.getArmorItems()) {
+		for (ItemStack stack : entity.getAllArmorItems()) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				DirectionBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.DIRECTION_BURST);
 				if (effect != null) {

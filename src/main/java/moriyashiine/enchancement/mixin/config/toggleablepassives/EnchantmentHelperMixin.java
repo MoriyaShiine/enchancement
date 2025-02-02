@@ -13,6 +13,7 @@ import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.item.AnimalArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.ItemTags;
@@ -30,7 +31,7 @@ import java.util.function.Consumer;
 public class EnchantmentHelperMixin {
 	@Unique
 	private static void checkPassive(ItemStack stack, ItemEnchantmentsComponent enchantmentsComponent) {
-		if (ModConfig.toggleablePassives && isInApplicableTag(stack)) {
+		if (ModConfig.toggleablePassives && isApplicable(stack)) {
 			if (stack.hasEnchantments()) {
 				if (!stack.contains(ModComponentTypes.TOGGLEABLE_PASSIVE)) {
 					for (RegistryEntry<Enchantment> enchantment : enchantmentsComponent.getEnchantments()) {
@@ -47,8 +48,8 @@ public class EnchantmentHelperMixin {
 	}
 
 	@Unique
-	private static boolean isInApplicableTag(ItemStack stack) {
-		return stack.isIn(ItemTags.CHEST_ARMOR_ENCHANTABLE) || stack.isIn(ItemTags.MINING_ENCHANTABLE) || stack.isIn(ItemTags.TRIDENT_ENCHANTABLE);
+	private static boolean isApplicable(ItemStack stack) {
+		return stack.getItem() instanceof AnimalArmorItem || stack.isIn(ItemTags.CHEST_ARMOR_ENCHANTABLE) || stack.isIn(ItemTags.MINING_ENCHANTABLE) || stack.isIn(ItemTags.TRIDENT_ENCHANTABLE);
 	}
 
 	@Inject(method = "apply", at = @At(value = "RETURN", ordinal = 1))

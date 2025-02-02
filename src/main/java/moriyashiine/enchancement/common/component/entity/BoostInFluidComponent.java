@@ -7,6 +7,7 @@ import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.payload.BoostInFluidPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.util.SubmersionGate;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
@@ -17,13 +18,13 @@ import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class BoostInFluidComponent implements AutoSyncedComponent, CommonTickingComponent {
-	private final PlayerEntity obj;
+	private final LivingEntity obj;
 	private boolean shouldBoost = false;
 	private float boost = 0;
 
 	private boolean hasBoost = false;
 
-	public BoostInFluidComponent(PlayerEntity obj) {
+	public BoostInFluidComponent(LivingEntity obj) {
 		this.obj = obj;
 	}
 
@@ -46,8 +47,10 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 		if (hasBoost) {
 			if (shouldBoost) {
 				if (EnchancementUtil.isSubmerged(obj, SubmersionGate.ALL) && EnchancementUtil.isGroundedOrAirborne(obj, true)) {
-					boost = (float) MathHelper.clamp(boost + 0.0025, boostStrength * 0.075, boostStrength);
-					obj.addVelocity(0, boost, 0);
+					if (shouldAddVelocity()) {
+						boost = (float) MathHelper.clamp(boost + 0.0025, boostStrength * 0.075, boostStrength);
+						obj.addVelocity(0, boost, 0);
+					}
 				} else {
 					shouldBoost = false;
 					boost = 0;
@@ -88,14 +91,14 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 					}
 				}
 			}
-			if (obj.jumping) {
+			if ((obj.getControllingPassenger() instanceof PlayerEntity player ? player : obj).jumping && EnchancementUtil.isGroundedOrAirborne(obj, true)) {
 				if (canUse(false)) {
 					shouldBoost = true;
-					BoostInFluidPayload.send(true);
+					BoostInFluidPayload.send(obj, true);
 				}
 			} else if (shouldBoost) {
 				shouldBoost = false;
-				BoostInFluidPayload.send(false);
+				BoostInFluidPayload.send(obj, false);
 			}
 		}
 	}
@@ -110,5 +113,12 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 
 	public boolean canUse(boolean ignoreBoost) {
 		return (ignoreBoost || !shouldBoost) && EnchancementUtil.isSubmerged(obj, SubmersionGate.ALL);
+	}
+
+	private boolean shouldAddVelocity() {
+		if (obj.getControllingPassenger() instanceof PlayerEntity) {
+			return obj.getWorld().isClient;
+		}
+		return true;
 	}
 }

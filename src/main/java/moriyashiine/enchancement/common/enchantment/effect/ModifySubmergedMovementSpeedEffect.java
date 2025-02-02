@@ -23,7 +23,7 @@ public record ModifySubmergedMovementSpeedEffect(EnchantmentValueEffect modifier
 
 	public static float getValue(LivingEntity living) {
 		MutableFloat value = new MutableFloat();
-		for (ItemStack stack : living.getArmorItems()) {
+		for (ItemStack stack : living.getAllArmorItems()) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				ModifySubmergedMovementSpeedEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.MODIFY_SUBMERGED_MOVEMENT_SPEED);
 				if (effect != null && (living.isWet() || ModEntityComponents.EXTENDED_WATER_TIME.get(living).getTicksWet() > 0 || EnchancementUtil.isSubmerged(living, effect.gate()))) {

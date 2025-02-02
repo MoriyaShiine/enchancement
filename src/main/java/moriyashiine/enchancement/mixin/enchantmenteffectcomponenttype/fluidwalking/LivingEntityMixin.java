@@ -3,7 +3,7 @@
  */
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.fluidwalking;
 
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.Entity;
@@ -22,9 +22,9 @@ public abstract class LivingEntityMixin extends Entity {
 		super(type, world);
 	}
 
-	@ModifyReturnValue(method = "canWalkOnFluid", at = @At("RETURN"))
+	@ModifyExpressionValue(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;canWalkOnFluid(Lnet/minecraft/fluid/FluidState;)Z"))
 	protected boolean enchancement$fluidWalking(boolean original) {
-		return original;
+		return original || EnchancementUtil.shouldFluidWalk(this);
 	}
 
 	@Inject(method = "handleFallDamage", at = @At("HEAD"), cancellable = true)

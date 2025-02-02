@@ -35,6 +35,10 @@ public class ModEnchantmentTagProvider extends FabricTagProvider.EnchantmentTagP
 
 		getOrCreateTagBuilder(ModEnchantmentTags.AUTOMATICALLY_FEEDS)
 				.addOptional(ModEnchantments.ASSIMILATION);
+		getOrCreateTagBuilder(ModEnchantmentTags.ANIMAL_ARMOR_ENCHANTMENTS)
+				.addOptional(ModEnchantments.BOUNCY)
+				.addOptional(ModEnchantments.BUOY)
+				.addOptional(ModEnchantments.STICKY);
 		getOrCreateTagBuilder(ModEnchantmentTags.DISALLOWS_TOGGLEABLE_PASSIVE)
 				.addOptional(Enchantments.EFFICIENCY)
 				.addOptional(Enchantments.RIPTIDE);

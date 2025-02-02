@@ -73,7 +73,7 @@ public record RageEffect(EnchantmentValueEffect damageDealtModifier, Enchantment
 
 	public static float getDamageTakenModifier(LivingEntity living) {
 		float value = 1;
-		for (ItemStack stack : living.getArmorItems()) {
+		for (ItemStack stack : living.getAllArmorItems()) {
 			value *= getDamageTakenModifier(living, stack);
 		}
 		return Math.max(0, value);
@@ -93,7 +93,7 @@ public record RageEffect(EnchantmentValueEffect damageDealtModifier, Enchantment
 
 	public static float getMovementSpeedModifier(LivingEntity living) {
 		float value = 1;
-		for (ItemStack stack : living.getArmorItems()) {
+		for (ItemStack stack : living.getAllArmorItems()) {
 			value += getMovementSpeedModifier(living, stack);
 		}
 		return value;

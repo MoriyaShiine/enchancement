@@ -21,7 +21,7 @@ public record ChargeJumpEffect(EnchantmentValueEffect chargeTime, EnchantmentVal
 
 	public static int getChargeTime(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : entity.getArmorItems()) {
+		for (ItemStack stack : entity.getAllArmorItems()) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				ChargeJumpEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.CHARGE_JUMP);
 				if (effect != null) {
@@ -34,7 +34,7 @@ public record ChargeJumpEffect(EnchantmentValueEffect chargeTime, EnchantmentVal
 
 	public static float getStrength(LivingEntity entity, float base) {
 		MutableFloat mutableFloat = new MutableFloat(base);
-		for (ItemStack stack : entity.getArmorItems()) {
+		for (ItemStack stack : entity.getAllArmorItems()) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				ChargeJumpEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.CHARGE_JUMP);
 				if (effect != null) {

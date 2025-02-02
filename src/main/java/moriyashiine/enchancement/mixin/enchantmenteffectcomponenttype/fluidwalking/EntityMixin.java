@@ -3,6 +3,7 @@
  */
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.fluidwalking;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.Entity;
@@ -18,5 +19,11 @@ public class EntityMixin {
 			seconds /= 6;
 		}
 		return seconds;
+	}
+
+	@SuppressWarnings("ConstantValue")
+	@ModifyReturnValue(method = "shouldDismountUnderwater", at = @At("RETURN"))
+	private boolean enchancement$fluidWalking(boolean original) {
+		return original && !EnchancementUtil.hasAnyEnchantmentsWith((Entity) (Object) this, ModEnchantmentEffectComponentTypes.FLUID_WALKING);
 	}
 }

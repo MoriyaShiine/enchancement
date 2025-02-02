@@ -6,6 +6,7 @@ package moriyashiine.enchancement.client.event;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModComponentTypes;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import net.minecraft.item.AnimalArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
@@ -32,7 +33,7 @@ public class ToggleablePassivesEvent implements ItemTooltipCallback {
 	public void getTooltip(ItemStack stack, Item.TooltipContext tooltipContext, TooltipType tooltipType, List<Text> lines) {
 		if (ModConfig.toggleablePassives && stack.hasEnchantments() && stack.contains(ModComponentTypes.TOGGLEABLE_PASSIVE)) {
 			KEY_MAP.forEach((tag, key) -> {
-				if (stack.isIn(tag)) {
+				if (stack.isIn(tag) || (tag.equals(ItemTags.CHEST_ARMOR_ENCHANTABLE) && stack.getItem() instanceof AnimalArmorItem)) {
 					MutableText icon = Text.literal("× ");
 					Formatting formatting = Formatting.DARK_RED;
 					if (stack.get(ModComponentTypes.TOGGLEABLE_PASSIVE)) {

@@ -14,6 +14,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HoneyBlock;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -30,14 +31,14 @@ import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private static final EntityAttributeModifier SAFE_FALL_DISTANCE_MODIFIER = new EntityAttributeModifier(Enchancement.id("wall_jump_safe_fall_distance"), 8, EntityAttributeModifier.Operation.ADD_VALUE);
 
-	private final PlayerEntity obj;
+	private final LivingEntity obj;
 	private BlockPos slidingPos = null;
 
 	private final BlockPos.Mutable mutable = new BlockPos.Mutable();
 	private float jumpStrength = 0;
 	private boolean hasJumped = false;
 
-	public WallJumpComponent(PlayerEntity obj) {
+	public WallJumpComponent(LivingEntity obj) {
 		this.obj = obj;
 	}
 
@@ -109,17 +110,17 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 					}
 				}
 			}
-			if (slidingPos != null && obj.jumping) {
+			if (slidingPos != null && (obj.getControllingPassenger() instanceof PlayerEntity player ? player : obj).jumping) {
 				Vec3d diff = obj.getBlockPos().toCenterPos().subtract(slidingPos.toCenterPos()).normalize().multiply(jumpStrength);
 				Vec3d velocity = new Vec3d(diff.getX(), MultiplyMovementSpeedEvent.getJumpStrength(obj, jumpStrength * 3), diff.getZ());
 				use(velocity);
-				WallJumpPayload.send(velocity);
+				WallJumpPayload.send(obj, velocity);
 				targetPos = null;
 			}
 		}
 		if (slidingPos != targetPos) {
 			slidingPos = targetPos;
-			WallJumpSlidingPayload.send(slidingPos);
+			WallJumpSlidingPayload.send(obj, slidingPos);
 		}
 	}
 

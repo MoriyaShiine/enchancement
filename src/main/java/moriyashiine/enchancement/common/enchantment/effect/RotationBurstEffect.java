@@ -25,7 +25,7 @@ public record RotationBurstEffect(EnchantmentValueEffect cooldown, EnchantmentVa
 
 	public static int getCooldown(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : entity.getArmorItems()) {
+		for (ItemStack stack : entity.getAllArmorItems()) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				RotationBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.ROTATION_BURST);
 				if (effect != null) {
@@ -38,7 +38,7 @@ public record RotationBurstEffect(EnchantmentValueEffect cooldown, EnchantmentVa
 
 	public static float getStrength(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : entity.getArmorItems()) {
+		for (ItemStack stack : entity.getAllArmorItems()) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				RotationBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.ROTATION_BURST);
 				if (effect != null) {
@@ -51,7 +51,7 @@ public record RotationBurstEffect(EnchantmentValueEffect cooldown, EnchantmentVa
 
 	public static int getWavedashTicks(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : entity.getArmorItems()) {
+		for (ItemStack stack : entity.getAllArmorItems()) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				RotationBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.ROTATION_BURST);
 				if (effect != null) {
@@ -64,7 +64,7 @@ public record RotationBurstEffect(EnchantmentValueEffect cooldown, EnchantmentVa
 
 	public static float getWavedashStrength(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : entity.getArmorItems()) {
+		for (ItemStack stack : entity.getAllArmorItems()) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				RotationBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.ROTATION_BURST);
 				if (effect != null) {

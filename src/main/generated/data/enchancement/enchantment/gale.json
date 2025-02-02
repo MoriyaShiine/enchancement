@@ -51,7 +51,7 @@
 	"per_level_above_first": 6
   },
   "slots": [
-	"legs"
+	"armor"
   ],
   "supported_items": "#minecraft:enchantable/leg_armor",
   "weight": 5

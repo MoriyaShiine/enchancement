@@ -21,7 +21,7 @@ public record GlideEffect(EnchantmentValueEffect minDuration, EnchantmentValueEf
 
 	public static int getMinDuration(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : entity.getArmorItems()) {
+		for (ItemStack stack : entity.getAllArmorItems()) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				GlideEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.GLIDE);
 				if (effect != null) {
@@ -34,7 +34,7 @@ public record GlideEffect(EnchantmentValueEffect minDuration, EnchantmentValueEf
 
 	public static int getMaxDuration(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : entity.getArmorItems()) {
+		for (ItemStack stack : entity.getAllArmorItems()) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				GlideEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.GLIDE);
 				if (effect != null) {

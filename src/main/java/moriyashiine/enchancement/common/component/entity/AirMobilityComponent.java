@@ -36,6 +36,9 @@ public class AirMobilityComponent implements CommonTickingComponent {
 	@Override
 	public void tick() {
 		ItemStack stack = obj.getEquippedStack(EquipmentSlot.CHEST);
+		if (stack.isEmpty()) {
+			stack = obj.getEquippedStack(EquipmentSlot.BODY);
+		}
 		if (ModConfig.toggleablePassives && stack.getOrDefault(ModComponentTypes.TOGGLEABLE_PASSIVE, false)) {
 			if (!stack.hasEnchantments()) {
 				stack.remove(ModComponentTypes.TOGGLEABLE_PASSIVE);

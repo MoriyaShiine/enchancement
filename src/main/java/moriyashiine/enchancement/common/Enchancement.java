@@ -21,6 +21,7 @@ import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.fabricmc.fabric.api.item.v1.DefaultItemComponentEvents;
 import net.fabricmc.fabric.api.item.v1.EnchantmentEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
@@ -81,8 +82,11 @@ public class Enchancement implements ModInitializer {
 		UseItemCallback.EVENT.register(new RebalanceEnchantmentsEvent.UseItem());
 		MultiplyMovementSpeedEvent.EVENT.register(new ToggleablePassivesEvent());
 		// enchantment
+		DefaultItemComponentEvents.MODIFY.register(new AnimalArmorEnchantmentEvent.AllowComponent());
+		EnchantmentEvents.ALLOW_ENCHANTING.register(new AnimalArmorEnchantmentEvent.AllowEnchanting());
 		ServerEntityEvents.EQUIPMENT_CHANGE.register(new EquipmentResetEvent());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new AllowInterruptionEvent());
+		ServerTickEvents.END_SERVER_TICK.register(new BounceEvent());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new BuryEntityEvent.Unbury());
 		UseEntityCallback.EVENT.register(new BuryEntityEvent.Use());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new ChainLightningEvent());

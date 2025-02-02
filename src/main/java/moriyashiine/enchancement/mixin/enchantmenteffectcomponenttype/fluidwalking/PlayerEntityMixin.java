@@ -3,22 +3,29 @@
  */
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.fluidwalking;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.enchancement.common.util.SubmersionGate;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(PlayerEntity.class)
-public abstract class PlayerEntityMixin extends LivingEntityMixin {
+public abstract class PlayerEntityMixin extends LivingEntity {
 	protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
 		super(entityType, world);
 	}
 
-	@Override
-	protected boolean enchancement$fluidWalking(boolean original) {
-		return super.enchancement$fluidWalking(original) || (!isSneaking() && EnchancementUtil.hasAnyEnchantmentsWith((LivingEntity) (Object) this, ModEnchantmentEffectComponentTypes.FLUID_WALKING));
+	@ModifyReturnValue(method = "shouldDismount", at = @At("RETURN"))
+	private boolean enchancement$fluidWalking(boolean original) {
+		if (original && getVehicle() instanceof MobEntity mob && EnchancementUtil.hasAnyEnchantmentsWith(mob, ModEnchantmentEffectComponentTypes.FLUID_WALKING) && EnchancementUtil.isSubmerged(mob, SubmersionGate.ALL)) {
+			return false;
+		}
+		return original;
 	}
 }

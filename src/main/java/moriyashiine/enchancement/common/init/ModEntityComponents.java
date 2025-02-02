@@ -60,8 +60,8 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerFor(LightningEntity.class, SAFE_LIGHTNING, lightning -> new SafeLightningComponent());
 		// enchantment component
 		registry.registerForPlayers(AIR_JUMP, AirJumpComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
-		registry.registerForPlayers(BOOST_IN_FLUID, BoostInFluidComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
-		registry.registerForPlayers(BOUNCE, obj -> new BounceComponent(), RespawnCopyStrategy.ALWAYS_COPY);
+		registry.registerFor(LivingEntity.class, BOOST_IN_FLUID, BoostInFluidComponent::new);
+		registry.beginRegistration(LivingEntity.class, BOUNCE).respawnStrategy(RespawnCopyStrategy.ALWAYS_COPY).end(BounceComponent::new);
 		registry.registerFor(LivingEntity.class, BURY_ENTITY, BuryEntityComponent::new);
 		registry.registerForPlayers(CHARGE_JUMP, ChargeJumpComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(LivingEntity.class, CONDITIONAL_ATTRIBUTES, ConditionalAttributesComponent::new);
@@ -73,7 +73,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerForPlayers(ROTATION_BURST, RotationBurstComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(SLAM, SlamComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(SLIDE, SlideComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
-		registry.registerForPlayers(WALL_JUMP, WallJumpComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+		registry.registerFor(LivingEntity.class, WALL_JUMP, WallJumpComponent::new);
 		// extra entity data
 		registry.registerFor(ArrowEntity.class, APPLY_RANDOM_STATUS_EFFECT, projectile -> new ApplyRandomStatusEffectComponent());
 		registry.registerFor(PersistentProjectileEntity.class, APPLY_RANDOM_STATUS_EFFECT_GENERIC, ApplyRandomStatusEffectGenericComponent::new);

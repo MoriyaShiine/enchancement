@@ -82,7 +82,7 @@
 	"per_level_above_first": 6
   },
   "slots": [
-	"chest"
+	"armor"
   ],
   "supported_items": "#minecraft:enchantable/chest_armor",
   "weight": 5

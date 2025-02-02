@@ -24,7 +24,7 @@ public record AirJumpEffect(EnchantmentValueEffect airJumps, EnchantmentValueEff
 
 	public static int getAirJumps(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : entity.getArmorItems()) {
+		for (ItemStack stack : entity.getAllArmorItems()) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				AirJumpEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.AIR_JUMP);
 				if (effect != null) {
@@ -37,7 +37,7 @@ public record AirJumpEffect(EnchantmentValueEffect airJumps, EnchantmentValueEff
 
 	public static float getAirJumpStrength(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : entity.getArmorItems()) {
+		for (ItemStack stack : entity.getAllArmorItems()) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				AirJumpEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.AIR_JUMP);
 				if (effect != null) {
@@ -50,7 +50,7 @@ public record AirJumpEffect(EnchantmentValueEffect airJumps, EnchantmentValueEff
 
 	public static int getChargeCooldown(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : entity.getArmorItems()) {
+		for (ItemStack stack : entity.getAllArmorItems()) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				AirJumpEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.AIR_JUMP);
 				if (effect != null) {
@@ -63,7 +63,7 @@ public record AirJumpEffect(EnchantmentValueEffect airJumps, EnchantmentValueEff
 
 	public static int getJumpCooldown(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : entity.getArmorItems()) {
+		for (ItemStack stack : entity.getAllArmorItems()) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				AirJumpEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.AIR_JUMP);
 				if (effect != null) {
