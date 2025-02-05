@@ -125,7 +125,7 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 		}
 		if (smashTicks == 1 && obj.isOnGround()) {
 			ServerWorld serverWorld = (ServerWorld) obj.getWorld();
-			PlayerLookup.tracking(obj).forEach(foundPlayer -> AddLightningDashParticlesPayload.send(foundPlayer, obj.getId()));
+			PlayerLookup.tracking(obj).forEach(foundPlayer -> AddLightningDashParticlesPayload.send(foundPlayer, obj));
 			obj.fallDistance = (float) Math.max(0, cachedHeight - obj.getY());
 			float base = (float) obj.getAttributeValue(EntityAttributes.ATTACK_DAMAGE);
 			getNearby(1).forEach(entity -> {
@@ -175,7 +175,7 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 	}
 
 	public void useServer(Vec3d lungeVelocity, int floatTicks) {
-		PlayerLookup.tracking(obj).forEach(foundPlayer -> UseLightningDashPayload.send(foundPlayer, obj.getId(), lungeVelocity, floatTicks));
+		PlayerLookup.tracking(obj).forEach(foundPlayer -> UseLightningDashPayload.send(foundPlayer, obj, lungeVelocity, floatTicks));
 	}
 
 	public boolean isFloating() {

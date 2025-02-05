@@ -29,8 +29,8 @@ public record UseLightningDashPayload(int entityId, Vec3d lungeVelocity, int flo
 		return ID;
 	}
 
-	public static void send(ServerPlayerEntity player, int entityId, Vec3d lungeVelocity, int floatTicks) {
-		ServerPlayNetworking.send(player, new UseLightningDashPayload(entityId, lungeVelocity, floatTicks));
+	public static void send(ServerPlayerEntity player, Entity entity, Vec3d lungeVelocity, int floatTicks) {
+		ServerPlayNetworking.send(player, new UseLightningDashPayload(entity.getId(), lungeVelocity, floatTicks));
 	}
 
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<UseLightningDashPayload> {

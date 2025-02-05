@@ -26,8 +26,8 @@ public record PlayBrimstoneFireSoundPayload(int entityId, UUID uuid) implements 
 		return ID;
 	}
 
-	public static void send(ServerPlayerEntity player, int entityId, UUID uuid) {
-		ServerPlayNetworking.send(player, new PlayBrimstoneFireSoundPayload(entityId, uuid));
+	public static void send(ServerPlayerEntity player, Entity entity, UUID uuid) {
+		ServerPlayNetworking.send(player, new PlayBrimstoneFireSoundPayload(entity.getId(), uuid));
 	}
 
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<PlayBrimstoneFireSoundPayload> {

@@ -25,8 +25,8 @@ public record UseEruptionPayload(int entityId) implements CustomPayload {
 		return ID;
 	}
 
-	public static void send(ServerPlayerEntity player, int entityId) {
-		ServerPlayNetworking.send(player, new UseEruptionPayload(entityId));
+	public static void send(ServerPlayerEntity player, Entity entity) {
+		ServerPlayNetworking.send(player, new UseEruptionPayload(entity.getId()));
 	}
 
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<UseEruptionPayload> {

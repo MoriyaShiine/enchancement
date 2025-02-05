@@ -35,7 +35,7 @@ public record DirectionBurstPayload(float velocityX, float velocityZ) implements
 			DirectionBurstComponent directionBurstComponent = ModEntityComponents.DIRECTION_BURST.get(context.player());
 			if (directionBurstComponent.hasDirectionBurst() && directionBurstComponent.canUse()) {
 				directionBurstComponent.use(payload.velocityX(), payload.velocityZ());
-				PlayerLookup.tracking(context.player()).forEach(foundPlayer -> AddMovementBurstParticlesPayload.send(foundPlayer, context.player().getId()));
+				PlayerLookup.tracking(context.player()).forEach(foundPlayer -> AddMovementBurstParticlesPayload.send(foundPlayer, context.player()));
 			}
 		}
 	}

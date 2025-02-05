@@ -24,8 +24,8 @@ public record AddAirJumpParticlesPayload(int entityId) implements CustomPayload 
 		return ID;
 	}
 
-	public static void send(ServerPlayerEntity player, int id) {
-		ServerPlayNetworking.send(player, new AddAirJumpParticlesPayload(id));
+	public static void send(ServerPlayerEntity player, Entity entity) {
+		ServerPlayNetworking.send(player, new AddAirJumpParticlesPayload(entity.getId()));
 	}
 
 	public static void addParticles(Entity entity) {

@@ -33,7 +33,7 @@ public record RotationBurstPayload() implements CustomPayload {
 			RotationBurstComponent rotationBurstComponent = ModEntityComponents.ROTATION_BURST.get(context.player());
 			if (rotationBurstComponent.hasRotationBurst() && rotationBurstComponent.canUse()) {
 				rotationBurstComponent.use();
-				PlayerLookup.tracking(context.player()).forEach(foundPlayer -> AddMovementBurstParticlesPayload.send(foundPlayer, context.player().getId()));
+				PlayerLookup.tracking(context.player()).forEach(foundPlayer -> AddMovementBurstParticlesPayload.send(foundPlayer, context.player()));
 			}
 		}
 	}

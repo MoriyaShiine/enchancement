@@ -95,7 +95,7 @@ public class EruptionComponent implements AutoSyncedComponent, CommonTickingComp
 
 	public void useServer() {
 		ServerWorld serverWorld = (ServerWorld) obj.getWorld();
-		PlayerLookup.tracking(obj).forEach(foundPlayer -> UseEruptionPayload.send(foundPlayer, obj.getId()));
+		PlayerLookup.tracking(obj).forEach(foundPlayer -> UseEruptionPayload.send(foundPlayer, obj));
 		float base = (float) obj.getAttributeValue(EntityAttributes.ATTACK_DAMAGE);
 		float fireDuration = EruptionEffect.getFireDuration(obj.getRandom(), obj.getMainHandStack());
 		getNearby(obj).forEach(entity -> {

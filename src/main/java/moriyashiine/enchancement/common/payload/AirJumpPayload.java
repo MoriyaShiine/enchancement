@@ -33,7 +33,7 @@ public record AirJumpPayload() implements CustomPayload {
 			AirJumpComponent airJumpComponent = ModEntityComponents.AIR_JUMP.get(context.player());
 			if (airJumpComponent.hasAirJump() && airJumpComponent.canUse()) {
 				airJumpComponent.use();
-				PlayerLookup.tracking(context.player()).forEach(foundPlayer -> AddAirJumpParticlesPayload.send(foundPlayer, context.player().getId()));
+				PlayerLookup.tracking(context.player()).forEach(foundPlayer -> AddAirJumpParticlesPayload.send(foundPlayer, context.player()));
 			}
 		}
 	}

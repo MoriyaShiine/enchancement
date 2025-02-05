@@ -31,8 +31,8 @@ public record AddLightningDashParticlesPayload(int entityId) implements CustomPa
 		return ID;
 	}
 
-	public static void send(ServerPlayerEntity player, int entityId) {
-		ServerPlayNetworking.send(player, new AddLightningDashParticlesPayload(entityId));
+	public static void send(ServerPlayerEntity player, Entity entity) {
+		ServerPlayNetworking.send(player, new AddLightningDashParticlesPayload(entity.getId()));
 	}
 
 	public static void addParticles(Entity entity) {

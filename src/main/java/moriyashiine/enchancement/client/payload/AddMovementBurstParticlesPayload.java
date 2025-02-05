@@ -24,8 +24,8 @@ public record AddMovementBurstParticlesPayload(int entityId) implements CustomPa
 		return ID;
 	}
 
-	public static void send(ServerPlayerEntity player, int id) {
-		ServerPlayNetworking.send(player, new AddMovementBurstParticlesPayload(id));
+	public static void send(ServerPlayerEntity player, Entity entity) {
+		ServerPlayNetworking.send(player, new AddMovementBurstParticlesPayload(entity.getId()));
 	}
 
 	public static void addParticles(Entity entity) {
