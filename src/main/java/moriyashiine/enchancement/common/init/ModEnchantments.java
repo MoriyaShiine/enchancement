@@ -322,7 +322,7 @@ public class ModEnchantments {
 					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.CHARGE_JUMP,
 							new ChargeJumpEffect(
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(2)),
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1.5F)),
 									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.6F, 0.4F))));
 				}));
 		registerable.register(BUOY, create(BUOY.getValue(),
