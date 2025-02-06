@@ -4,9 +4,10 @@
 package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.payload.BoostInFluidPayload;
+import moriyashiine.enchancement.common.payload.BoostInFluidC2SPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.util.SubmersionGate;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -91,14 +92,17 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 					}
 				}
 			}
-			if ((obj.getControllingPassenger() instanceof PlayerEntity player ? player : obj).jumping && EnchancementUtil.isGroundedOrAirborne(obj, true)) {
-				if (canUse(false)) {
-					shouldBoost = true;
-					BoostInFluidPayload.send(obj, true);
+			LivingEntity entity = obj.getControllingPassenger() instanceof PlayerEntity player ? player : obj;
+			if (entity == MinecraftClient.getInstance().player) {
+				if (entity.jumping && EnchancementUtil.isGroundedOrAirborne(obj, true)) {
+					if (canUse(false)) {
+						shouldBoost = true;
+						BoostInFluidC2SPayload.send(obj, true);
+					}
+				} else if (shouldBoost) {
+					shouldBoost = false;
+					BoostInFluidC2SPayload.send(obj, false);
 				}
-			} else if (shouldBoost) {
-				shouldBoost = false;
-				BoostInFluidPayload.send(obj, false);
 			}
 		}
 	}
