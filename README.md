@@ -85,34 +85,34 @@ Everything Enchancement adds is configurable:
 * Free Enchanted Book Merging
   * Enchanted Books can be applied to items in an Anvil at no cost.
 * Rebalance Consumables
+  * Arrows shot by players will drop on the ground after hitting an entity.
   * Ender Pearls deal no damage upon use.
   * (Enchanted) Golden Apples can only be consumed when hungry.
-  * Arrows shot by players will drop on the ground after hitting an entity.
 * Rebalance Enchantments
-  * Maces cannot have Fire Aspect.
+  * Fire Aspect can be used like Flint and Steel while sneaking.
+  * Ignite enchantment effects apply for less time.
   * Channeling ignites entities with melee attacks.
   * Channeling can be activated without thunder.
   * Lightning spawned from Channeling will not destroy items or cause fire.
-  * Fire Aspect can be used like Flint and Steel while sneaking.
-  * Wind Burst can launch Wind Charges on use.
-  * Luck of the Sea also reduces fishing time.
-  * Ignite enchantment effects apply for less time.
   * Trident Spin Attack enchantment effects are weaker.
   * Trident Spin Attack enchantment effects have no water drag.
+  * Maces cannot have Fire Aspect.
   * Mace enchantments can be applied with less fall distance.
+  * Wind Burst can launch Wind Charges on use.
+  * Luck of the Sea also reduces fishing time.
 * Rebalance Equipment
-  * Bows slow you down less when charging.
   * Enchanted armor has additional damage reduction.
   * Iron armor has slightly more armor, and gains armor toughness.
   * Golden armor has slightly less armor.
   * Animal armor can be enchanted with boots enchantments.
-  * Fishing Bobbers are thrown more accurately.
+  * Bows slow you down less when charging.
+  * Crossbows pull unique ammunition from your inventory instead of only from off-hand.
+  * Tridents with Loyalty linger in the world if the owner is dead instead of dropping on the ground.
+  * Tridents with Loyalty that are thrown into the void will automatically return to their owner.
   * Maces have slightly faster attack speed.
   * Maces deal less damage per block fallen using a logarithmic function.
-  * Crossbows pull unique ammunition from your inventory instead of only from off-hand.
   * Golden tools have the mining speed of Diamond tools, Diamond tools have the mining speed of Netherite tools, and Netherite tools have the mining speed of Golden tools.
-  * Tridents with Loyalty linger in the world if the owner is dead instead of dropping on the ground. 
-  * Tridents with Loyalty that are thrown into the void will automatically return to their owner.
+  * Fishing Bobbers are thrown more accurately.
 * Rebalance Projectiles
   * Projectiles ignore invulnerability frames and deal less damage per hit that would have been blocked.
   * Projectiles negate velocity on hit.
