@@ -1,4 +1,37 @@
 ------------------------------------------------------
+Version 1.21.4-r3
+------------------------------------------------------
+- merge https://github.com/MoriyaShiine/enchancement/pull/222
+- fix https://github.com/MoriyaShiine/enchancement/issues/223
+- fix https://github.com/MoriyaShiine/enchancement/issues/227
+- fix https://github.com/MoriyaShiine/enchancement/issues/228
+- fix trailing lolcat comma
+- fix desyncs with several enchantments
+- fix slam sometimes not negating fall damage
+- fix bounce sound not playing
+- fix brimstone not triggering entity killed advancements
+- fix rare crash with fell trees component combined with other tree felling mods
+- migrate inverted bounce status to component
+- projectiles that bypass armor now have much greater damage falloff when bypassing invulnerability frames
+- assimilation no longer eats disallowed food while in offhand
+- amphibious now reduces wet timer when using riptide by 3 seconds
+- dash is now slightly weaker
+- gale no longer automatically activates when holding jump
+- gale now allows you to briefly glide when holding jump
+- sliding and slamming now have visual indicators
+- bounce now charges slightly faster
+- buoy now negates fall damage when landing on any fluid
+- buoy now reduces fire time from lava (15 -> 2 seconds)
+- chaos now works with all persistent projectiles
+- riptide is now slightly stronger with single level mode enabled
+- riptide no longer has water drag
+- scatter can now be interrupted
+- bosses can no longer be disarmed
+- maces now deal more damage per block fallen
+- animal armor can now be enchanted with boots enchantments
+- enchanted armor now has additional damage reduction
+
+------------------------------------------------------
 Version 1.21.4-r2
 ------------------------------------------------------
 - merge https://github.com/MoriyaShiine/enchancement/pull/215
