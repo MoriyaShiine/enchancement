@@ -17,7 +17,7 @@ Chestplate Enchantments:
 
 Leggings Enchantments:
 * Dash: Pressing Left Control (configurable) in the air launches you forward.
-* Gale: Allows you to jump more times in the air.
+* Gale: Allows you to jump more times in the air. Holding Space (configurable) allows you to briefly glide.
 * Slide: Holding Left Control (configurable) while grounded causes you to slide constantly. Pressing Left Control (configurable) in the air causes you to slam towards the ground, knocking back mobs and negating fall damage.
 
 Boots Enchantments:
@@ -97,11 +97,15 @@ Everything Enchancement adds is configurable:
   * Wind Burst can launch Wind Charges on use.
   * Luck of the Sea also reduces fishing time.
   * Ignite enchantment effects apply for less time.
+  * Trident Spin Attack enchantment effects are weaker.
+  * Trident Spin Attack enchantment effects have no water drag.
   * Mace enchantments can be applied with less fall distance.
 * Rebalance Equipment
   * Bows slow you down less when charging.
+  * Enchanted armor has additional damage reduction.
   * Iron armor has slightly more armor, and gains armor toughness.
   * Golden armor has slightly less armor.
+  * Animal armor can be enchanted with boots enchantments.
   * Fishing Bobbers are thrown more accurately.
   * Maces have slightly faster attack speed.
   * Maces deal less damage per block fallen using a logarithmic function.
