@@ -71,6 +71,8 @@ Everything Enchancement adds is configurable:
   * Remove most vanilla enchantments from the game. Enchancement tries to make choosing your enchantments more fun and engaging by replacing many of the stat change enchantments with enchantments that grant the player unique abilities.
 * Overhaul Enchanting Table
   * Replaces the Enchanting Table UI with a new version that removes the RNG involved in enchanting; you may simply choose the enchantments you wish to have.
+  * To balance the ability to freely choose enchantments, enchanting items now has an additional material cost, such as Diamonds for Diamond equipment.
+  * Bookshelves now reduce the experience, lapis, and material cost of enchanting.
 * Single Level Mode
   * Remove leveling from enchantments, meaning that the max level for all enchantments will be 1. Enchantments that are brought down to this level will act as their original max level counterpart, an example being Luck of the Sea I will function the same as Luck of the Sea III. Enchantments on gear made from materials easier to obtain will be weaker.
 * Enchantment Limit
