@@ -1,4 +1,9 @@
 ------------------------------------------------------
+Version 1.21.4-r4
+------------------------------------------------------
+- massively optimize projectile loading model replacement rendering
+
+------------------------------------------------------
 Version 1.21.4-r3
 ------------------------------------------------------
 - merge https://github.com/MoriyaShiine/enchancement/pull/222
