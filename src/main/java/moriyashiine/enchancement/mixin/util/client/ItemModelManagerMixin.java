@@ -12,7 +12,6 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ChargedProjectilesComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -34,8 +33,8 @@ public class ItemModelManagerMixin {
 	@Unique
 	@Nullable
 	private static Identifier getChargedModel(ItemStack stack) {
-		for (Item item : Registries.ITEM) {
-			@Nullable Identifier chargedModel = getChargedModel(stack, item);
+		for (ItemStack projectile : stack.getOrDefault(DataComponentTypes.CHARGED_PROJECTILES, ChargedProjectilesComponent.DEFAULT).getProjectiles()) {
+			@Nullable Identifier chargedModel = getChargedModel(stack, projectile.getItem());
 			if (chargedModel != null) {
 				return chargedModel;
 			}
@@ -46,12 +45,12 @@ public class ItemModelManagerMixin {
 	@Unique
 	@Nullable
 	private static Identifier getChargedModel(ItemStack stack, Item item) {
-		if (stack.getOrDefault(DataComponentTypes.CHARGED_PROJECTILES, ChargedProjectilesComponent.DEFAULT).contains(item) && AllowLoadingProjectileEffect.getItems(stack).contains(item)) {
-			return AllowLoadingProjectileEffect.getModel(stack, item);
-		}
 		int brimstoneDamage = stack.getOrDefault(ModComponentTypes.BRIMSTONE_DAMAGE, 0);
 		if (brimstoneDamage > 0) {
 			return Enchancement.id("crossbow_brimstone_" + (brimstoneDamage / 2 - 1));
+		}
+		if (AllowLoadingProjectileEffect.getItems(stack).contains(item)) {
+			return AllowLoadingProjectileEffect.getModel(stack, item);
 		}
 		return null;
 	}
