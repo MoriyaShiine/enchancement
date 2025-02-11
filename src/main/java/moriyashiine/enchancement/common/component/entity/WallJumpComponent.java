@@ -22,14 +22,16 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComponent {
-	private static final EntityAttributeModifier SAFE_FALL_DISTANCE_MODIFIER = new EntityAttributeModifier(Enchancement.id("wall_jump_safe_fall_distance"), 8, EntityAttributeModifier.Operation.ADD_VALUE);
+	private static final Identifier SAFE_FALL_DISTANCE_ID = Enchancement.id("wall_jump_safe_fall_distance");
 
 	private final LivingEntity obj;
 	private BlockPos slidingPos = null;
@@ -73,11 +75,12 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 		tick();
 		EntityAttributeInstance safeFallDistanceAttribute = obj.getAttributeInstance(EntityAttributes.SAFE_FALL_DISTANCE);
 		if (hasJumped()) {
-			if (!safeFallDistanceAttribute.hasModifier(SAFE_FALL_DISTANCE_MODIFIER.id())) {
-				safeFallDistanceAttribute.addPersistentModifier(SAFE_FALL_DISTANCE_MODIFIER);
+			if (!safeFallDistanceAttribute.hasModifier(SAFE_FALL_DISTANCE_ID)) {
+				int reduction = MathHelper.floor(MultiplyMovementSpeedEvent.getJumpStrength(obj, jumpStrength * 3) * 10);
+				safeFallDistanceAttribute.addPersistentModifier(new EntityAttributeModifier(SAFE_FALL_DISTANCE_ID, reduction, EntityAttributeModifier.Operation.ADD_VALUE));
 			}
-		} else if (safeFallDistanceAttribute.hasModifier(SAFE_FALL_DISTANCE_MODIFIER.id())) {
-			safeFallDistanceAttribute.removeModifier(SAFE_FALL_DISTANCE_MODIFIER);
+		} else if (safeFallDistanceAttribute.hasModifier(SAFE_FALL_DISTANCE_ID)) {
+			safeFallDistanceAttribute.removeModifier(SAFE_FALL_DISTANCE_ID);
 		}
 	}
 
