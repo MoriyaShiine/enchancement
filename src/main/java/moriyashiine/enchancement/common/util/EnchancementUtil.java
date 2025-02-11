@@ -26,7 +26,6 @@ import net.minecraft.enchantment.effect.EnchantmentValueEffect;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.Ownable;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -328,20 +327,18 @@ public class EnchancementUtil {
 		return entity.getWorld().raycast(new RaycastContext(entity.getPos(), entity.getPos().add(0, -distanceFromGround, 0), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.ANY, entity)).getType() == HitResult.Type.MISS;
 	}
 
-	public static boolean shouldHurt(Entity attacker, Entity hitEntity) {
-		if (attacker == null || hitEntity == null) {
+	public static boolean shouldHurt(Entity attacker, Entity target) {
+		if (attacker == null || target == null) {
 			return true;
 		}
-		if (attacker == hitEntity || attacker.getVehicle() == hitEntity) {
+		if (attacker == target || attacker.hasPassenger(target) || target.hasPassenger(attacker)) {
 			return false;
 		}
-		if (attacker.isTeammate(hitEntity) || hitEntity.isTeammate(attacker)) {
+		if (attacker.isTeammate(target) || target.isTeammate(attacker)) {
 			return false;
 		}
-		if (hitEntity instanceof PlayerEntity hitPlayer && attacker instanceof PlayerEntity attackingPlayer) {
-			return attackingPlayer.shouldDamagePlayer(hitPlayer);
-		} else if (hitEntity instanceof Ownable ownable) {
-			return shouldHurt(attacker, ownable.getOwner());
+		if (attacker instanceof PlayerEntity attackingPlayer && target instanceof PlayerEntity targetPlayer) {
+			return attackingPlayer.shouldDamagePlayer(targetPlayer);
 		}
 		return true;
 	}
