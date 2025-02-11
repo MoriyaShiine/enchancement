@@ -7,7 +7,6 @@ import moriyashiine.enchancement.common.component.entity.BuryEntityComponent;
 import moriyashiine.enchancement.common.enchantment.effect.entity.BuryEffect;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
@@ -43,25 +42,18 @@ public class BuryEntityEvent {
 	public static class Use implements UseEntityCallback {
 		@Override
 		public ActionResult interact(PlayerEntity player, World world, Hand hand, Entity entity, @Nullable EntityHitResult hitResult) {
-			if (!entity.getType().isIn(ModEntityTypeTags.CANNOT_BURY) && !entity.isSpectator()) {
-				if (entity instanceof LivingEntity living && living.isDead()) {
-					return ActionResult.PASS;
-				} else if (entity instanceof PlayerEntity targetPlayer && targetPlayer.isCreative()) {
-					return ActionResult.PASS;
-				}
-				ItemStack stack = player.getStackInHand(hand);
-				if (!player.getItemCooldownManager().isCoolingDown(stack) && EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.BURY_ENTITY) && BuryEffect.bury(world, entity, () -> {
-					if (!world.isClient) {
-						int cooldown = MathHelper.floor(EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.BURY_ENTITY, (ServerWorld) world, stack, 0) * 20);
-						if (cooldown > 0) {
-							player.getItemCooldownManager().set(stack, cooldown);
-						}
-						player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
-						stack.damage(1, player, LivingEntity.getSlotForHand(hand));
+			ItemStack stack = player.getStackInHand(hand);
+			if (!player.getItemCooldownManager().isCoolingDown(stack) && EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.BURY_ENTITY) && BuryEffect.bury(world, entity, () -> {
+				if (!world.isClient) {
+					int cooldown = MathHelper.floor(EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.BURY_ENTITY, (ServerWorld) world, stack, 0) * 20);
+					if (cooldown > 0) {
+						player.getItemCooldownManager().set(stack, cooldown);
 					}
-				})) {
-					return ActionResult.SUCCESS;
+					player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
+					stack.damage(1, player, LivingEntity.getSlotForHand(hand));
 				}
+			})) {
+				return ActionResult.SUCCESS;
 			}
 			return ActionResult.PASS;
 		}

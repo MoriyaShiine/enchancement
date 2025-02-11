@@ -8,10 +8,13 @@ import moriyashiine.enchancement.common.component.entity.BuryEntityComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.tag.ModBlockTags;
+import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.EnchantmentEffectContext;
 import net.minecraft.enchantment.effect.EnchantmentEntityEffect;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
@@ -39,6 +42,13 @@ public class BuryEffect implements EnchantmentEntityEffect {
 	}
 
 	public static boolean bury(World world, Entity entity, Runnable post) {
+		if (entity.getType().isIn(ModEntityTypeTags.CANNOT_BURY) || entity.isSpectator()) {
+			return false;
+		} else if (entity instanceof LivingEntity living && living.isDead()) {
+			return false;
+		} else if (entity instanceof PlayerEntity targetPlayer && targetPlayer.isCreative()) {
+			return false;
+		}
 		BuryEntityComponent buryEntityComponent = ModEntityComponents.BURY_ENTITY.getNullable(entity);
 		if (buryEntityComponent != null && buryEntityComponent.getBuryPos() == null) {
 			for (int i = 0; i <= 1; i++) {
