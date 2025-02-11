@@ -4,21 +4,21 @@
 package moriyashiine.enchancement.client.event;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import moriyashiine.enchancement.api.event.client.HudAddition;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.util.Identifier;
 
-public class RotationBurstRenderEvent implements HudRenderCallback {
+public class RotationBurstRenderEvent implements HudAddition {
 	private static final Identifier BACKGROUND_TEXTURE = Enchancement.id("hud/burst_background");
 	private static final Identifier PROGRESS_TEXTURE = Enchancement.id("hud/burst_progress");
 
 	@Override
-	public void onHudRender(DrawContext drawContext, RenderTickCounter tickCounter) {
+	public void render(DrawContext drawContext, RenderTickCounter tickCounter) {
 		ModEntityComponents.ROTATION_BURST.maybeGet(MinecraftClient.getInstance().getCameraEntity()).ifPresent(rotationBurstComponent -> {
 			if (rotationBurstComponent.hasRotationBurst() && rotationBurstComponent.getCooldown() > 0) {
 				RenderSystem.enableBlend();

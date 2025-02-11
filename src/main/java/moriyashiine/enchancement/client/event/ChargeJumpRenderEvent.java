@@ -3,20 +3,20 @@
  */
 package moriyashiine.enchancement.client.event;
 
+import moriyashiine.enchancement.api.event.client.HudAddition;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.util.Identifier;
 
-public class ChargeJumpRenderEvent implements HudRenderCallback {
+public class ChargeJumpRenderEvent implements HudAddition {
 	private static final Identifier BACKGROUND_TEXTURE = Identifier.of("hud/jump_bar_background");
 	private static final Identifier PROGRESS_TEXTURE = Identifier.of("hud/jump_bar_progress");
 
 	@Override
-	public void onHudRender(DrawContext drawContext, RenderTickCounter tickCounter) {
+	public void render(DrawContext drawContext, RenderTickCounter tickCounter) {
 		ModEntityComponents.CHARGE_JUMP.maybeGet(MinecraftClient.getInstance().getCameraEntity()).ifPresent(chargeJumpComponent -> {
 			if (chargeJumpComponent.hasChargeJump()) {
 				float boostProgress = chargeJumpComponent.getChargeProgress();
