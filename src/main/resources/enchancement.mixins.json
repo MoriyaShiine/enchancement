@@ -123,6 +123,7 @@
 	"enchantmenteffectcomponenttype.rapidcrossbowfire.CrossbowAttackTaskMixin",
 	"enchantmenteffectcomponenttype.rapidcrossbowfire.CrossbowItemMixin",
 	"enchantmenteffectcomponenttype.rotationburst.LivingEntityMixin",
+	"enchantmenteffectcomponenttype.rotationburst.PlayerEntityMixin",
 	"enchantmenteffectcomponenttype.scattershot.CrossbowItemMixin",
 	"enchantmenteffectcomponenttype.scattershot.RangedWeaponItemMixin",
 	"enchantmenteffectcomponenttype.slam.HoneyBlockMixin",

@@ -25,7 +25,7 @@ public class RotationBurstComponent implements AutoSyncedComponent, CommonTickin
 	private int cooldown = 0, lastCooldown = 0, wavedashTicks = 0;
 
 	private boolean hasRotationBurst = false, wasPressingKey = false;
-	private int ticksPressingJump = 0;
+	private int resetDelayTicks = 0, ticksPressingJump = 0;
 
 	public RotationBurstComponent(PlayerEntity obj) {
 		this.obj = obj;
@@ -61,6 +61,9 @@ public class RotationBurstComponent implements AutoSyncedComponent, CommonTickin
 			}
 			if (wavedashTicks > 0) {
 				wavedashTicks--;
+			}
+			if (resetDelayTicks > 0) {
+				resetDelayTicks--;
 			}
 		} else {
 			shouldRefresh = false;
@@ -117,7 +120,7 @@ public class RotationBurstComponent implements AutoSyncedComponent, CommonTickin
 	}
 
 	public boolean canUse() {
-		return cooldown == 0 && !obj.isOnGround() && EnchancementUtil.isGroundedOrAirborne(obj);
+		return Math.max(cooldown, resetDelayTicks) == 0 && !obj.isOnGround() && EnchancementUtil.isGroundedOrAirborne(obj);
 	}
 
 	public void use() {
@@ -132,5 +135,9 @@ public class RotationBurstComponent implements AutoSyncedComponent, CommonTickin
 	public void reset() {
 		setCooldown(RotationBurstEffect.getCooldown(obj));
 		shouldRefresh = false;
+	}
+
+	public void markDelay() {
+		resetDelayTicks = 3;
 	}
 }
