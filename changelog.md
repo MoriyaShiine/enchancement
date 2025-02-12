@@ -1,4 +1,12 @@
 ------------------------------------------------------
+Version 1.21.4-r5
+------------------------------------------------------
+- fix https://github.com/MoriyaShiine/enchancement/issues/229
+- fix infinite dash exploit
+- fix meteor ignoring bury conditions
+- sticky wall jump fall reduction is now dependent on the strength of the jump
+
+------------------------------------------------------
 Version 1.21.4-r4
 ------------------------------------------------------
 - massively optimize projectile loading model replacement rendering
