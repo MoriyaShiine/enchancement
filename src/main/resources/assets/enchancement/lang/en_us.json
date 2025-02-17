@@ -4,7 +4,7 @@
   "entity.enchancement.brimstone": "Brimstone",
   "entity.enchancement.ice_shard": "Ice Shard",
   "entity.enchancement.torch": "Torch",
-  "enchantment.minecraft.channeling.desc.redirect": "Causes the Trident to summon lightning when striking a mob. Ignites attacked mobs.",
+  "enchantment.minecraft.channeling.desc.redirect": "Causes the Trident to summon lightning when striking a mob. Ignites attacked mobs. Attacks chain to nearby mobs.",
   "enchantment.minecraft.fire_aspect.desc.redirect": "Ignites attacked mobs. Usable as Flint and Steel when sneaking.",
   "enchantment.minecraft.luck_of_the_sea.desc.redirect": "Increases the quality of fishing loot and decreases the time required for fish to bite.",
   "enchantment.minecraft.wind_burst.desc.redirect": "Causes smash attacks to launch you upward. Using launches a Wind Charge.",

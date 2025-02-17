@@ -8,9 +8,11 @@ import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.particle.SparkParticleEffect;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
 
@@ -23,32 +25,40 @@ public class ChainLightningEvent implements ServerLivingEntityEvents.AllowDamage
 
 	@Override
 	public boolean allowDamage(LivingEntity entity, DamageSource source, float amount) {
-		if (first && source.getSource() instanceof LivingEntity living) {
-			float multiplier = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.CHAIN_LIGHTNING, (ServerWorld) entity.getWorld(), living.getMainHandStack(), 0);
+		if (first) {
+			float multiplier = 0;
+			if (source.getSource() instanceof LivingEntity living) {
+				multiplier = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.CHAIN_LIGHTNING, (ServerWorld) entity.getWorld(), living.getMainHandStack(), 0);
+			} else if (source.getSource() instanceof PersistentProjectileEntity projectile) {
+				multiplier = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.CHAIN_LIGHTNING, (ServerWorld) entity.getWorld(), projectile.asItemStack(), 0);
+			}
 			if (multiplier != 0) {
 				first = false;
-				chain(new ArrayList<>(), (ServerWorld) entity.getWorld(), entity, living, amount, multiplier);
+				chain(new ArrayList<>(), (ServerWorld) entity.getWorld(), entity, source, amount, multiplier);
 				first = true;
 			}
 		}
 		return true;
 	}
 
-	private static void chain(List<LivingEntity> hitEntities, ServerWorld world, LivingEntity target, LivingEntity attacker, float damage, float multiplier) {
+	private static void chain(List<LivingEntity> hitEntities, ServerWorld world, LivingEntity target, DamageSource source, float damage, float multiplier) {
 		if (damage > 1 && !hitEntities.contains(target)) {
 			hitEntities.add(target);
-			getNearest(hitEntities, target, attacker).ifPresent(nearest -> {
+			getNearest(hitEntities, target, source.getSource()).ifPresent(nearest -> {
 				target.playSound(ModSoundEvents.ENTITY_GENERIC_ZAP);
 				world.spawnParticles(new SparkParticleEffect(nearest.getEyePos()), target.getX(), target.getEyeY(), target.getZ(), 1, 0, 0, 0, 0);
 				Vec3d random = target.getEyePos().addRandom(target.getRandom(), 1.5F);
 				world.spawnParticles(new SparkParticleEffect(target.getEyePos()), random.getX(), random.getY(), random.getZ(), 1, 0, 0, 0, 0);
-				nearest.damage(world, attacker instanceof PlayerEntity player ? target.getDamageSources().playerAttack(player) : target.getDamageSources().mobAttack(attacker), damage * multiplier);
-				chain(hitEntities, world, nearest, attacker, damage * multiplier, multiplier);
+				nearest.damage(world, source, damage * multiplier);
+				chain(hitEntities, world, nearest, source, damage * multiplier, multiplier);
 			});
 		}
 	}
 
-	private static Optional<LivingEntity> getNearest(List<LivingEntity> hitEntities, LivingEntity target, LivingEntity attacker) {
+	private static Optional<LivingEntity> getNearest(List<LivingEntity> hitEntities, LivingEntity target, Entity attacker) {
+		if (attacker == null) {
+			return Optional.empty();
+		}
 		List<LivingEntity> nearby = target.getWorld().getEntitiesByClass(LivingEntity.class, target.getBoundingBox().expand(3, 1, 3), foundEntity ->
 						!hitEntities.contains(foundEntity) && foundEntity.distanceTo(attacker) < 8 && !(foundEntity instanceof PlayerEntity) && EnchancementUtil.shouldHurt(attacker, foundEntity))
 				.stream().sorted((e1, e2) -> Float.compare(e1.distanceTo(attacker), e2.distanceTo(attacker))).toList();

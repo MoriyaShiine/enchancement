@@ -4,6 +4,7 @@
 package moriyashiine.enchancement.common.event;
 
 import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
@@ -22,6 +23,7 @@ import net.minecraft.enchantment.effect.EnchantmentEffectTarget;
 import net.minecraft.enchantment.effect.EnchantmentEntityEffect;
 import net.minecraft.enchantment.effect.TargetedEnchantmentEffect;
 import net.minecraft.enchantment.effect.entity.IgniteEnchantmentEffect;
+import net.minecraft.enchantment.effect.value.AddEnchantmentEffect;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.WindChargeEntity;
@@ -99,6 +101,10 @@ public class RebalanceEnchantmentsEvent {
 						}
 						addEffect(effect, builder);
 					}
+					builder.add(
+							ModEnchantmentEffectComponentTypes.CHAIN_LIGHTNING,
+							List.of(new EnchantmentEffectEntry<>(new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.35F)), Optional.empty()))
+					);
 					channeling.effects = builder.build();
 				}
 			}
