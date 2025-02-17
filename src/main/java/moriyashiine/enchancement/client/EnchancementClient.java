@@ -29,7 +29,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.HudLayerRegistrationCallback;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
@@ -82,14 +82,14 @@ public class EnchancementClient implements ClientModInitializer {
 		ClientTickEvents.START_WORLD_TICK.register(new SyncVelocitiesEvent());
 		ItemTooltipCallback.EVENT.register(new ToggleablePassivesEvent());
 		// enchantment
-		HudRenderCallback.EVENT.register(new AirJumpRenderEvent());
+		HudLayerRegistrationCallback.EVENT.register(new AirJumpRenderEvent());
 		ItemTooltipCallback.EVENT.register(new AutomaticallyFeedsTooltipEvent());
 		ClientTickEvents.END_WORLD_TICK.register(new BounceEvent());
-		HudRenderCallback.EVENT.register(new BrimstoneRenderEvent());
-		HudRenderCallback.EVENT.register(new ChargeJumpRenderEvent());
-		HudRenderCallback.EVENT.register(new DirectionBurstRenderEvent());
+		HudLayerRegistrationCallback.EVENT.register(new BrimstoneRenderEvent());
+		HudLayerRegistrationCallback.EVENT.register(new ChargeJumpRenderEvent());
+		HudLayerRegistrationCallback.EVENT.register(new DirectionBurstRenderEvent());
 		ItemTooltipCallback.EVENT.register(new RageRenderEvent());
-		HudRenderCallback.EVENT.register(new RotationBurstRenderEvent());
+		HudLayerRegistrationCallback.EVENT.register(new RotationBurstRenderEvent());
 	}
 
 	private void initPayloads() {
