@@ -8,6 +8,7 @@ import moriyashiine.enchancement.common.enchantment.effect.*;
 import moriyashiine.enchancement.common.enchantment.effect.entity.*;
 import moriyashiine.enchancement.common.lootcondition.AttackerBehindLootCondition;
 import moriyashiine.enchancement.common.lootcondition.HasExtendedWaterTimeLootCondition;
+import moriyashiine.enchancement.common.lootcondition.InCombatLootCondition;
 import moriyashiine.enchancement.common.lootcondition.WetLootCondition;
 import moriyashiine.enchancement.common.tag.ModDamageTypeTags;
 import moriyashiine.enchancement.common.tag.ModEnchantmentTags;
@@ -36,6 +37,7 @@ import net.minecraft.item.Items;
 import net.minecraft.loot.condition.AllOfLootCondition;
 import net.minecraft.loot.condition.DamageSourcePropertiesLootCondition;
 import net.minecraft.loot.condition.EntityPropertiesLootCondition;
+import net.minecraft.loot.condition.InvertedLootCondition;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.predicate.NumberRange;
@@ -136,7 +138,10 @@ public class ModEnchantments {
 					builder.addEffect(
 							EnchantmentEffectComponentTypes.TICK,
 							new AutomateEatingEnchantmentEffect(NumberRange.IntRange.atMost(14)),
-							EntityPropertiesLootCondition.builder(LootContext.EntityTarget.THIS, EntityPredicate.Builder.create().periodicTick(20)));
+							AllOfLootCondition.builder(
+									EntityPropertiesLootCondition.builder(LootContext.EntityTarget.THIS, EntityPredicate.Builder.create().periodicTick(20)),
+									() -> InvertedLootCondition.builder(() -> InCombatLootCondition.INSTANCE).build()
+							));
 				}));
 		registerable.register(PERCEPTION, create(PERCEPTION.getValue(),
 				itemLookup.getOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),

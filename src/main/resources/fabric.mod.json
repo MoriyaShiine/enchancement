@@ -78,6 +78,7 @@
 	  "enchancement:frozen",
 	  "enchancement:frozen_guardian",
 	  "enchancement:frozen_squid",
+	  "enchancement:in_combat",
 	  "enchancement:leeching_trident",
 	  "enchancement:phase_through_blocks_and_float",
 	  "enchancement:teleport_on_hit"

@@ -48,6 +48,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<FrozenComponent> FROZEN = ComponentRegistry.getOrCreate(Enchancement.id("frozen"), FrozenComponent.class);
 	public static final ComponentKey<FrozenGuardianComponent> FROZEN_GUARDIAN = ComponentRegistry.getOrCreate(Enchancement.id("frozen_guardian"), FrozenGuardianComponent.class);
 	public static final ComponentKey<FrozenSquidComponent> FROZEN_SQUID = ComponentRegistry.getOrCreate(Enchancement.id("frozen_squid"), FrozenSquidComponent.class);
+	public static final ComponentKey<InCombatComponent> IN_COMBAT = ComponentRegistry.getOrCreate(Enchancement.id("in_combat"), InCombatComponent.class);
 	public static final ComponentKey<LeechingTridentComponent> LEECHING_TRIDENT = ComponentRegistry.getOrCreate(Enchancement.id("leeching_trident"), LeechingTridentComponent.class);
 	public static final ComponentKey<PhaseThroughBlocksAndFloatComponent> PHASE_THROUGH_BLOCKS_AND_FLOAT = ComponentRegistry.getOrCreate(Enchancement.id("phase_through_blocks_and_float"), PhaseThroughBlocksAndFloatComponent.class);
 	public static final ComponentKey<TeleportOnHitComponent> TELEPORT_ON_HIT = ComponentRegistry.getOrCreate(Enchancement.id("teleport_on_hit"), TeleportOnHitComponent.class);
@@ -85,6 +86,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerFor(LivingEntity.class, FROZEN, FrozenComponent::new);
 		registry.registerFor(GuardianEntity.class, FROZEN_GUARDIAN, FrozenGuardianComponent::new);
 		registry.registerFor(SquidEntity.class, FROZEN_SQUID, FrozenSquidComponent::new);
+		registry.registerFor(LivingEntity.class, IN_COMBAT, InCombatComponent::new);
 		registry.registerFor(TridentEntity.class, LEECHING_TRIDENT, LeechingTridentComponent::new);
 		registry.registerFor(PersistentProjectileEntity.class, PHASE_THROUGH_BLOCKS_AND_FLOAT, PhaseThroughBlocksAndFloatComponent::new);
 		registry.registerFor(ProjectileEntity.class, TELEPORT_ON_HIT, TeleportOnHitComponent::new);

@@ -55,7 +55,7 @@
   "enchantment.enchancement.empty": "Empty",
   "enchantment.enchancement.empty.desc": "I AM ERROR.",
   "enchantment.enchancement.assimilation": "Assimilation",
-  "enchantment.enchancement.assimilation.desc": "Automatically consumes food when you're hungry, prioritizing off hand. Food and drinks are consumed faster.",
+  "enchantment.enchancement.assimilation.desc": "Automatically consumes food when you're hungry while out of combat, prioritizing off hand. Food and drinks are consumed faster.",
   "enchantment.enchancement.perception": "Perception",
   "enchantment.enchancement.perception.desc": "Increases visibility in the dark and causes mobs to be seen through walls.",
   "enchantment.enchancement.veil": "Veil",
