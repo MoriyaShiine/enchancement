@@ -584,7 +584,7 @@ public class ModEnchantments {
 					);
 					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.MULTIPLY_CHARGE_TIME,
-							new MultiplyEnchantmentEffect(EnchantmentLevelBasedValue.linear(4, -1))
+							new MultiplyEnchantmentEffect(EnchantmentLevelBasedValue.linear(3, -1))
 					);
 					builder.addEffect(
 							EnchantmentEffectComponentTypes.POST_ATTACK,
@@ -628,7 +628,7 @@ public class ModEnchantments {
 					);
 					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.MULTIPLY_CHARGE_TIME,
-							new MultiplyEnchantmentEffect(EnchantmentLevelBasedValue.linear(4, -1))
+							new MultiplyEnchantmentEffect(EnchantmentLevelBasedValue.linear(3, -1))
 					);
 					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.LIGHTNING_DASH,
