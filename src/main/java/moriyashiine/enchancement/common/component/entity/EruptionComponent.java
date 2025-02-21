@@ -71,7 +71,7 @@ public class EruptionComponent implements AutoSyncedComponent, CommonTickingComp
 	}
 
 	public void useCommon() {
-		obj.addVelocity(0, EruptionEffect.getJumpStrength(obj.getRandom(), obj.getMainHandStack()), 0);
+		obj.setVelocity(obj.getVelocity().getX(), EruptionEffect.getJumpStrength(obj.getRandom(), obj.getMainHandStack()), obj.getVelocity().getZ());
 		obj.playSound(ModSoundEvents.ENTITY_GENERIC_ERUPT, 1, MathHelper.nextFloat(obj.getRandom(), 0.8F, 1.2F));
 	}
 

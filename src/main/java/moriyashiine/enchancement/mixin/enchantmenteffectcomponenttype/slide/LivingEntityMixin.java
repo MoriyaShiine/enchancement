@@ -24,7 +24,7 @@ public class LivingEntityMixin {
 			if ((Object) this instanceof PlayerEntity player && player.getWorld().isClient) {
 				StopSlidingC2SPayload.send();
 			}
-			return value.multiply(slideComponent.getJumpBonus());
+			return value.multiply(slideComponent.getJumpBonus(), 1, slideComponent.getJumpBonus());
 		}
 		return value;
 	}
