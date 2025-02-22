@@ -39,7 +39,7 @@ public record AddLightningDashParticlesPayload(int entityId) implements CustomPa
 		BlockPos.Mutable mutable = new BlockPos.Mutable();
 		double y = Math.round(entity.getWorld().raycast(new RaycastContext(entity.getPos(), entity.getPos().add(entity.getRotationVector().multiply(4)), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.ANY, entity)).getPos().getY() - 1);
 		for (int i = 0; i < 360; i += 15) {
-			for (int j = 1; j < 4; j++) {
+			for (int j = 1; j < 7; j++) {
 				double x = entity.getX() + MathHelper.sin(i) * j / 2, z = entity.getZ() + MathHelper.cos(i) * j / 2;
 				BlockState state = entity.getWorld().getBlockState(mutable.set(x, y, z));
 				if (!state.isReplaceable() && entity.getWorld().getBlockState(mutable.move(Direction.UP)).isReplaceable()) {

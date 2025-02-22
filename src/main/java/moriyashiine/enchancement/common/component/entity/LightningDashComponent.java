@@ -128,7 +128,7 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 			PlayerLookup.tracking(obj).forEach(foundPlayer -> AddLightningDashParticlesPayload.send(foundPlayer, obj));
 			obj.fallDistance = (float) Math.max(0, cachedHeight - obj.getY());
 			float base = (float) obj.getAttributeValue(EntityAttributes.ATTACK_DAMAGE);
-			getNearby(1).forEach(entity -> {
+			getNearby(3).forEach(entity -> {
 				DamageSource source = obj instanceof PlayerEntity player ? entity.getDamageSources().playerAttack(player) : entity.getDamageSources().mobAttack(obj);
 				float damage = EnchantmentHelper.getDamage(serverWorld, obj.getMainHandStack(), entity, source, base)
 						+ obj.getMainHandStack().getItem().getBonusAttackDamage(entity, base, source);
@@ -194,8 +194,14 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 		floatTicks = smashTicks = 0;
 	}
 
+	@SuppressWarnings("SameParameterValue")
 	private List<LivingEntity> getNearby(int range) {
-		return obj.getWorld().getEntitiesByClass(LivingEntity.class, new Box(obj.getBlockPos()).expand(2, range, 2), foundEntity ->
+		return obj.getWorld().getEntitiesByClass(LivingEntity.class,
+				new Box(
+						obj.getX() - 0.5 - range, obj.getY() - 1.5, obj.getZ() - 0.5 - range,
+						obj.getX() + 0.5 + range, obj.getY() + 0.5 + range, obj.getZ() + 0.5 + range
+				), 
+				foundEntity ->
 				foundEntity.isAlive() && foundEntity.distanceTo(obj) < 10 && EnchancementUtil.shouldHurt(obj, foundEntity) && EnchancementUtil.canSee(obj, foundEntity, range));
 	}
 }
