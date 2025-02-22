@@ -1,0 +1,45 @@
+{
+  "anvil_cost": 2,
+  "description": {
+	"translate": "enchantment.enchancement.apex"
+  },
+  "effects": {
+	"enchancement:critical_tipper": [
+	  {
+		"effect": {
+		  "distance_leniency": {
+			"type": "minecraft:add",
+			"value": 0.5
+		  },
+		  "particle_type": "enchancement:critical_tipper"
+		}
+	  }
+	],
+	"minecraft:damage": [
+	  {
+		"effect": {
+		  "type": "minecraft:add",
+		  "value": {
+			"type": "minecraft:linear",
+			"base": 0.25,
+			"per_level_above_first": 0.25
+		  }
+		}
+	  }
+	]
+  },
+  "max_cost": {
+	"base": 20,
+	"per_level_above_first": 6
+  },
+  "max_level": 2,
+  "min_cost": {
+	"base": 5,
+	"per_level_above_first": 6
+  },
+  "slots": [
+	"mainhand"
+  ],
+  "supported_items": "#minecraft:hoes",
+  "weight": 5
+}

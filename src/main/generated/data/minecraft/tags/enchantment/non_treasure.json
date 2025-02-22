@@ -125,6 +125,10 @@
 	  "required": false
 	},
 	{
+	  "id": "enchancement:apex",
+	  "required": false
+	},
+	{
 	  "id": "enchancement:disarm",
 	  "required": false
 	},

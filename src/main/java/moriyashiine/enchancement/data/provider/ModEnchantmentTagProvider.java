@@ -65,7 +65,8 @@ public class ModEnchantmentTagProvider extends FabricTagProvider.EnchantmentTagP
 		getOrCreateTagBuilder(ConventionalEnchantmentTags.WEAPON_DAMAGE_ENHANCEMENTS)
 				.addOptional(ModEnchantments.BERSERK)
 				.addOptional(ModEnchantments.DELAY)
-				.addOptional(ModEnchantments.SCOOPING);
+				.addOptional(ModEnchantments.SCOOPING)
+				.addOptional(ModEnchantments.APEX);
 
 		getOrCreateTagBuilder(ModEnchantmentTags.BOUNCY_EXCLUSIVE_SET)
 				.addOptional(Enchantments.FEATHER_FALLING);

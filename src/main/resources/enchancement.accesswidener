@@ -21,6 +21,7 @@ accessible method net/minecraft/entity/projectile/PersistentProjectileEntity isI
 accessible method net/minecraft/entity/mob/PiglinBrain onAttacked (Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/mob/PiglinEntity;Lnet/minecraft/entity/LivingEntity;)V
 accessible method net/minecraft/entity/projectile/TridentEntity isOwnerAlive ()Z
 accessible method net/minecraft/world/World getEntityLookup ()Lnet/minecraft/world/entity/EntityLookup;
+accessible method net/minecraft/client/particle/DamageParticle <init> (Lnet/minecraft/client/world/ClientWorld;DDDDDD)V
 accessible method net/minecraft/client/gui/hud/InGameHud renderHealthBar (Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/entity/player/PlayerEntity;IIIIFIIIZ)V
 accessible field net/minecraft/loot/condition/AlternativeLootCondition terms Ljava/util/List;
 accessible field net/minecraft/component/Component value Ljava/lang/Object;

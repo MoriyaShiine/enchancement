@@ -102,6 +102,8 @@ public class ModEnchantments {
 	// shovel
 	public static final RegistryKey<Enchantment> BURY = createKey("bury");
 	public static final RegistryKey<Enchantment> SCOOPING = createKey("scooping");
+	// hoe
+	public static final RegistryKey<Enchantment> APEX = createKey("apex");
 	// fishing rod
 	public static final RegistryKey<Enchantment> DISARM = createKey("disarm");
 	public static final RegistryKey<Enchantment> GRAPPLE = createKey("grapple");
@@ -702,6 +704,23 @@ public class ModEnchantments {
 							EnchantmentEffectTarget.VICTIM,
 							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.01F)),
 							EntityPropertiesLootCondition.builder(LootContext.EntityTarget.ATTACKER, EntityPredicate.Builder.create().type(EntityTypePredicate.create(entityTypeLookup, EntityType.PLAYER))));
+				}));
+		// hoe
+		registerable.register(APEX, create(APEX.getValue(),
+				itemLookup.getOrThrow(ItemTags.HOES),
+				2,
+				AttributeModifierSlot.MAINHAND,
+				builder -> {
+					builder.addEffect(
+							ModEnchantmentEffectComponentTypes.CRITICAL_TIPPER,
+							new CriticalTipperEffect(
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0.5F)),
+									ModParticleTypes.CRITICAL_TIPPER
+							)
+					);
+					builder.addEffect(
+							EnchantmentEffectComponentTypes.DAMAGE,
+							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.25F)));
 				}));
 		// fishing rod
 		registerable.register(DISARM, create(DISARM.getValue(),

@@ -11,6 +11,10 @@
 	{
 	  "id": "enchancement:scooping",
 	  "required": false
+	},
+	{
+	  "id": "enchancement:apex",
+	  "required": false
 	}
   ]
 }

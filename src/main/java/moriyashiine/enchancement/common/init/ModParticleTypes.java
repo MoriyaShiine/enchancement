@@ -14,12 +14,14 @@ import net.minecraft.registry.Registry;
 
 public class ModParticleTypes {
 	public static final SimpleParticleType BRIMSTONE_BUBBLE = FabricParticleTypes.simple();
+	public static final SimpleParticleType CRITICAL_TIPPER = FabricParticleTypes.simple();
 	public static final ParticleType<HoneyBubbleParticleEffect> HONEY_BUBBLE = FabricParticleTypes.complex(HoneyBubbleParticleEffect.CODEC, HoneyBubbleParticleEffect.PACKET_CODEC);
 	public static final ParticleType<SparkParticleEffect> SPARK = FabricParticleTypes.complex(SparkParticleEffect.CODEC, SparkParticleEffect.PACKET_CODEC);
 	public static final SimpleParticleType VELOCITY_LINE = FabricParticleTypes.simple();
 
 	public static void init() {
 		Registry.register(Registries.PARTICLE_TYPE, Enchancement.id("brimstone_bubble"), BRIMSTONE_BUBBLE);
+		Registry.register(Registries.PARTICLE_TYPE, Enchancement.id("critical_tipper"), CRITICAL_TIPPER);
 		Registry.register(Registries.PARTICLE_TYPE, Enchancement.id("honey_bubble"), HONEY_BUBBLE);
 		Registry.register(Registries.PARTICLE_TYPE, Enchancement.id("spark"), SPARK);
 		Registry.register(Registries.PARTICLE_TYPE, Enchancement.id("velocity_line"), VELOCITY_LINE);

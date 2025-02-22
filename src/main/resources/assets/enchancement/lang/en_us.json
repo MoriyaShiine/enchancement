@@ -118,6 +118,8 @@
   "enchantment.enchancement.bury.desc": "Using on a mob will bury it if the ground below is soft enough.",
   "enchantment.enchancement.scooping": "Scooping",
   "enchantment.enchancement.scooping.desc": "Deals extra damage and increases mob loot drops.",
+  "enchantment.enchancement.apex": "Apex",
+  "enchantment.enchancement.apex.desc": "Deals extra damage. Attacking from a distance always results in a critical hit.",
   "enchantment.enchancement.disarm": "Disarm",
   "enchantment.enchancement.disarm.desc": "Steals or disables a latched entity's held item.",
   "enchantment.enchancement.grapple": "Grapple",

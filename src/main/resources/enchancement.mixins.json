@@ -84,6 +84,7 @@
 	"enchantmenteffectcomponenttype.buryentity.ShulkerEntityMixin",
 	"enchantmenteffectcomponenttype.chargejump.AbstractHorseEntityMixin",
 	"enchantmenteffectcomponenttype.chargejump.LivingEntityMixin",
+	"enchantmenteffectcomponenttype.criticaltipper.PlayerEntityMixin",
 	"enchantmenteffectcomponenttype.delayedlaunch.LivingEntityMixin",
 	"enchantmenteffectcomponenttype.delayedlaunch.PersistentProjectileEntityMixin",
 	"enchantmenteffectcomponenttype.delayedlaunch.RangedWeaponItemMixin",
