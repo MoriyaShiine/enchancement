@@ -74,7 +74,7 @@
   "enchantment.enchancement.gale": "Bora",
   "enchantment.enchancement.gale.desc": "Havada çok kez zıplayabilmenizi sağlar. [%s] tuşunu basılı tutmak kısa süreliğine süzülmenizi sağlar.",
   "enchantment.enchancement.slide": "Kayma",
-  "enchantment.enchancement.slide.desc": "Yerdeyken [%s] tuşunu basılı tutmak sürekli kaymanızı sağlar. Havadayken [%s] tuşuna basmak hızlıca yere çakılarak düşme hasarı almadan yakındaki canlıları savurmanızı sağlar.",
+  "enchantment.enchancement.slide.desc": "Yerdeyken [%s] tuşuna basılı tutmak sürekli kaymanızı sağlar. Havadayken [%s] tuşuna basmak hızlıca yere çakılarak canlıları savurmanızı ve düşme hasarı almamanızı sağlar.",
   "enchantment.enchancement.buoy": "Hacıbatmaz",
   "enchantment.enchancement.buoy.desc": "Sıvılar üzerinde yürümenizi sağlar, eğilerek alçalırsınız. Zıplamaya basarak sıvı içinde hızlıca yukarı çıkarsınız. Asılı kalmayı engeller. Sudan çıktıktan sonra bir süre ek hız verir.",
   "enchantment.enchancement.bouncy": "Seksek",
