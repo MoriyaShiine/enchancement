@@ -96,7 +96,6 @@ public class Enchancement implements ModInitializer {
 		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register(new HeadDropsEvent());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new InCombatEvent());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new LeechingTridentEvent());
-		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new LightningDashEvent());
 		PlayerBlockBreakEvents.BEFORE.register(new MineOreVeinsEvent());
 		MultiplyMovementSpeedEvent.EVENT.register(new ModifyMovementSpeedEvent());
 		MultiplyMovementSpeedEvent.EVENT.register(new RageEvent());

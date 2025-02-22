@@ -41,7 +41,9 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 	private int floatTicks = 0, smashTicks = 0;
 
 	private boolean playedSound = false;
-	private int ticksUsing = 0, hitEntityTicks = 0;
+	private int ticksUsing = 0;
+
+	private float nextTickFallDistance = 0;
 
 	public LightningDashComponent(LivingEntity obj) {
 		this.obj = obj;
@@ -83,9 +85,6 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 		}
 		if (isSmashing()) {
 			smashTicks--;
-			if (!getNearby(3).isEmpty()) {
-				hitEntityTicks = 2;
-			}
 			if (obj.isOnGround()) {
 				if (smashTicks > 1) {
 					smashTicks = 1;
@@ -93,8 +92,6 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 				if (smashTicks == 1) {
 					obj.playSound(SoundEvents.ITEM_MACE_SMASH_GROUND_HEAVY, 1, 1);
 					obj.getWorld().emitGameEvent(GameEvent.STEP, obj.getPos(), GameEvent.Emitter.of(obj.getSteppingBlockState()));
-				} else {
-					obj.fallDistance = 0;
 				}
 			}
 		}
@@ -111,8 +108,9 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 			playedSound = false;
 			ticksUsing = 0;
 		}
-		if (hitEntityTicks > 0) {
-			hitEntityTicks--;
+		if (nextTickFallDistance != 0) {
+			obj.handleFallDamage(nextTickFallDistance, 1, obj.getDamageSources().fall());
+			nextTickFallDistance = 0;
 		}
 	}
 
@@ -128,14 +126,20 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 			PlayerLookup.tracking(obj).forEach(foundPlayer -> AddLightningDashParticlesPayload.send(foundPlayer, obj));
 			obj.fallDistance = (float) Math.max(0, cachedHeight - obj.getY());
 			float base = (float) obj.getAttributeValue(EntityAttributes.ATTACK_DAMAGE);
+			boolean[] hurt = {true};
 			getNearby(3).forEach(entity -> {
 				DamageSource source = obj instanceof PlayerEntity player ? entity.getDamageSources().playerAttack(player) : entity.getDamageSources().mobAttack(obj);
 				float damage = EnchantmentHelper.getDamage(serverWorld, obj.getMainHandStack(), entity, source, base)
 						+ obj.getMainHandStack().getItem().getBonusAttackDamage(entity, base, source);
 				if (entity.damage(serverWorld, source, damage * LightningDashEffect.getSmashDamageMultiplier(obj.getRandom(), obj.getMainHandStack()))) {
 					entity.takeKnockback(1.5, obj.getX() - entity.getX(), obj.getZ() - entity.getZ());
+					hurt[0] = false;
 				}
 			});
+			if (hurt[0] && !obj.isTouchingWater()) {
+				nextTickFallDistance = obj.fallDistance;
+			}
+			obj.fallDistance = 0;
 		}
 	}
 
@@ -182,12 +186,8 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 		return floatTicks > 0;
 	}
 
-	private boolean isSmashing() {
+	public boolean isSmashing() {
 		return smashTicks > 0;
-	}
-
-	public boolean hitNoEntity() {
-		return hitEntityTicks == 0;
 	}
 
 	public void cancel() {
@@ -200,8 +200,6 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 				new Box(
 						obj.getX() - 0.5 - range, obj.getY() - 1.5, obj.getZ() - 0.5 - range,
 						obj.getX() + 0.5 + range, obj.getY() + 0.5 + range, obj.getZ() + 0.5 + range
-				), 
-				foundEntity ->
-				foundEntity.isAlive() && foundEntity.distanceTo(obj) < 10 && EnchancementUtil.shouldHurt(obj, foundEntity) && EnchancementUtil.canSee(obj, foundEntity, range));
+				), foundEntity -> foundEntity.isAlive() && foundEntity.distanceTo(obj) < 10 && EnchancementUtil.shouldHurt(obj, foundEntity) && EnchancementUtil.canSee(obj, foundEntity, range));
 	}
 }
