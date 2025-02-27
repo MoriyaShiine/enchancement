@@ -72,7 +72,8 @@ public class Enchancement implements ModInitializer {
 	private void initEvents() {
 		// internal
 		ServerLifecycleEvents.SERVER_STARTED.register(new CacheEnchantmentRegistryEvent());
-		ServerPlayConnectionEvents.JOIN.register(new EnforceConfigMatchEvent());
+		ServerPlayConnectionEvents.JOIN.register(new EnforceConfigMatchEvent.Join());
+		ServerTickEvents.END_SERVER_TICK.register(new EnforceConfigMatchEvent.Tick());
 		ServerPlayConnectionEvents.JOIN.register(new SyncEnchantingMaterialMapEvent.Join());
 		ServerTickEvents.END_SERVER_TICK.register(new SyncEnchantingMaterialMapEvent.Tick());
 		// config
