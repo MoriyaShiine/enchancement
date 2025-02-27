@@ -4,6 +4,7 @@
 package moriyashiine.enchancement.common.event;
 
 import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.entity.WindBurstHolder;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
@@ -144,11 +145,14 @@ public class RebalanceEnchantmentsEvent {
 		public ActionResult interact(PlayerEntity player, World world, Hand hand) {
 			ItemStack stack = player.getStackInHand(hand);
 			if (ModConfig.rebalanceEnchantments && !player.getItemCooldownManager().isCoolingDown(stack) && stack.getItem() instanceof MaceItem && EnchantmentHelper.getEnchantments(stack).getEnchantments().stream().anyMatch(entry -> entry.matchesKey(Enchantments.WIND_BURST))) {
-				player.getItemCooldownManager().set(stack, 60);
-				WindChargeEntity windChargeEntity = new WindChargeEntity(player, world, player.getPos().getX(), player.getEyePos().getY(), player.getPos().getZ());
-				windChargeEntity.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, 1.5F, 1.0F);
-				world.spawnEntity(windChargeEntity);
+				if (!world.isClient) {
+					WindChargeEntity windChargeEntity = new WindChargeEntity(player, world, player.getPos().getX(), player.getEyePos().getY(), player.getPos().getZ());
+					windChargeEntity.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, 1.5F, 1.0F);
+					((WindBurstHolder) windChargeEntity).enchancement$setFromWindBurst(true);
+					world.spawnEntity(windChargeEntity);
+				}
 				world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_WIND_CHARGE_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F));
+				player.getItemCooldownManager().set(stack, 60);
 				player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
 				stack.damage(1, player, LivingEntity.getSlotForHand(hand));
 				return ActionResult.SUCCESS;
