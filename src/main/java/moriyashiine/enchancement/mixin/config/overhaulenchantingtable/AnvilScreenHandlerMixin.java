@@ -5,11 +5,14 @@ package moriyashiine.enchancement.mixin.config.overhaulenchantingtable;
 
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.util.OverhaulMode;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.screen.*;
 import net.minecraft.screen.slot.ForgingSlotsManager;
+import net.minecraft.util.StringHelper;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,6 +28,9 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
 	@Final
 	private Property levelCost;
 
+	@Shadow
+	private @Nullable String newItemName;
+
 	public AnvilScreenHandlerMixin(@Nullable ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, ScreenHandlerContext context, ForgingSlotsManager forgingSlotsManager) {
 		super(type, syncId, playerInventory, context, forgingSlotsManager);
 	}
@@ -38,8 +44,19 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
 
 	@Inject(method = "updateResult", at = @At("TAIL"))
 	private void enchancement$overhaulEnchantingTable(CallbackInfo ci) {
-		if (ModConfig.overhaulEnchantingTable != OverhaulMode.DISABLED && input.getStack(1).isOf(Items.ENCHANTED_BOOK)) {
-			levelCost.set(0);
+		if (ModConfig.overhaulEnchantingTable != OverhaulMode.DISABLED) {
+			if (input.getStack(1).isOf(Items.ENCHANTED_BOOK)) {
+				if (newItemName == null || StringHelper.isBlank(newItemName) || input.getStack(0).getName().getString().equals(newItemName)) {
+					levelCost.set(0);
+				} else {
+					levelCost.set(1);
+				}
+			}
+			ItemStack outputStack = output.getStack(0);
+			if (outputStack.contains(DataComponentTypes.REPAIR_COST)) {
+				outputStack.set(DataComponentTypes.REPAIR_COST, 0);
+			}
+			sendContentUpdates();
 		}
 	}
 }
