@@ -26,7 +26,7 @@
 	"config.enhancemobs.MobEntityMixin",
 	"config.enhancemobs.PillagerEntityMixin",
 	"config.enhancemobs.VindicatorEntityMixin",
-	"config.freeenchantedbookmerging.AnvilScreenHandlerMixin",
+	"config.overhaulenchantingtable.AnvilScreenHandlerMixin",
 	"config.overhaulenchantingtable.EnchantingTableBlockMixin",
 	"config.rebalanceconsumables.ConsumableComponentMixin",
 	"config.rebalanceconsumables.EnderPearlEntityMixin",

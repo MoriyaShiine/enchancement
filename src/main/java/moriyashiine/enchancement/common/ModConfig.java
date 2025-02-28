@@ -67,8 +67,6 @@ public class ModConfig extends MidnightConfig {
 	@Entry
 	public static boolean enhanceMobs = true;
 	@Entry
-	public static boolean freeEnchantedBookMerging = true;
-	@Entry
 	public static boolean rebalanceConsumables = true;
 	@Entry
 	public static boolean rebalanceEnchantments = true;
@@ -117,7 +115,6 @@ public class ModConfig extends MidnightConfig {
 				singleLevelMode + enchantmentLimit +
 				disableDurability + disableVelocityChecks +
 				enhanceMobs +
-				freeEnchantedBookMerging +
 				rebalanceConsumables + rebalanceEnchantments + rebalanceEquipment + rebalanceProjectiles + rebalanceStatusEffects +
 				toggleablePassives +
 				weaponEnchantmentCooldownRequirement +

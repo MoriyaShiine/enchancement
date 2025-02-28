@@ -1,9 +1,10 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-package moriyashiine.enchancement.mixin.config.freeenchantedbookmerging;
+package moriyashiine.enchancement.mixin.config.overhaulenchantingtable;
 
 import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.util.OverhaulMode;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Items;
@@ -29,15 +30,15 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
 	}
 
 	@Inject(method = "canTakeOutput", at = @At("HEAD"), cancellable = true)
-	private void enchancement$freeEnchantedBookMerging(PlayerEntity player, boolean present, CallbackInfoReturnable<Boolean> cir) {
-		if (ModConfig.freeEnchantedBookMerging && input.getStack(1).isOf(Items.ENCHANTED_BOOK)) {
+	private void enchancement$overhaulEnchantingTable(PlayerEntity player, boolean present, CallbackInfoReturnable<Boolean> cir) {
+		if (ModConfig.overhaulEnchantingTable != OverhaulMode.DISABLED && input.getStack(1).isOf(Items.ENCHANTED_BOOK)) {
 			cir.setReturnValue(true);
 		}
 	}
 
 	@Inject(method = "updateResult", at = @At("TAIL"))
-	private void enchancement$freeEnchantedBookMerging(CallbackInfo ci) {
-		if (ModConfig.freeEnchantedBookMerging && input.getStack(1).isOf(Items.ENCHANTED_BOOK)) {
+	private void enchancement$overhaulEnchantingTable(CallbackInfo ci) {
+		if (ModConfig.overhaulEnchantingTable != OverhaulMode.DISABLED && input.getStack(1).isOf(Items.ENCHANTED_BOOK)) {
 			levelCost.set(0);
 		}
 	}
