@@ -72,7 +72,7 @@ public class SlamComponent implements CommonTickingComponent {
 					return;
 				}
 				obj.setVelocity(obj.getVelocity().getX() * 0.98, Math.min(-3, obj.getVelocity().getY()), obj.getVelocity().getZ() * 0.98);
-				obj.fallDistance = 0;
+				EnchancementUtil.resetFallDistance(obj);
 			}
 			if (slamCooldown > 0) {
 				slamCooldown--;

@@ -136,7 +136,7 @@ public class DirectionBurstComponent implements AutoSyncedComponent, CommonTicki
 		gravityTicks = 3;
 		obj.setVelocity(velocityX, 0, velocityZ);
 		obj.playSound(ModSoundEvents.ENTITY_GENERIC_STRAFE, 1, 1);
-		obj.fallDistance = 0;
+		EnchancementUtil.resetFallDistance(obj);
 		ModEntityComponents.AIR_MOBILITY.get(obj).resetTicksInAir();
 	}
 

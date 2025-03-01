@@ -73,7 +73,7 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 		}
 		if (isFloating()) {
 			floatTicks--;
-			obj.fallDistance = 0;
+			obj.onLanding();
 			obj.setVelocity(obj.getVelocity().multiply(0.9));
 			if (obj.handSwinging && obj.getPitch() > -15) {
 				cachedHeight = obj.getY();

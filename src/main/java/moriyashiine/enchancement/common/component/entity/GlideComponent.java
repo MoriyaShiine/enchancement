@@ -43,7 +43,7 @@ public class GlideComponent implements AutoSyncedComponent, CommonTickingCompone
 		minDuration = GlideEffect.getMinDuration(obj);
 		if (canGlide()) {
 			if (gliding) {
-				obj.fallDistance = 0;
+				EnchancementUtil.resetFallDistance(obj);
 			}
 			if (obj.isOnGround()) {
 				airTicks = 0;

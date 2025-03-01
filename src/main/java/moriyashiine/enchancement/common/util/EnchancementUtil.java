@@ -8,8 +8,10 @@ import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.component.entity.LightningDashComponent;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.tag.ModItemTags;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalFluidTags;
@@ -325,6 +327,11 @@ public class EnchancementUtil {
 
 	public static boolean isSufficientlyHigh(Entity entity, double distanceFromGround) {
 		return entity.getWorld().raycast(new RaycastContext(entity.getPos(), entity.getPos().add(0, -distanceFromGround, 0), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.ANY, entity)).getType() == HitResult.Type.MISS;
+	}
+
+	public static void resetFallDistance(Entity entity) {
+		entity.onLanding();
+		ModEntityComponents.LIGHTNING_DASH.maybeGet(entity).ifPresent(LightningDashComponent::cancel);
 	}
 
 	public static boolean shouldHurt(Entity attacker, Entity target) {
