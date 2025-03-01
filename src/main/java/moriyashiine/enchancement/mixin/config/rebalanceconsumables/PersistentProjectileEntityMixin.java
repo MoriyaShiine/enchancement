@@ -14,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.EntityHitResult;
@@ -46,6 +47,9 @@ public abstract class PersistentProjectileEntityMixin extends ProjectileEntity {
 			}
 			if (entity instanceof LivingEntity living) {
 				ItemStack stack = asItemStack();
+				if (stack.isOf(Items.TIPPED_ARROW)) {
+					stack = Items.ARROW.getDefaultStack();
+				}
 				if (stack.isIn(ItemTags.ARROWS)) {
 					ItemEntity drop = living.dropStack(serverWorld, stack, 1);
 					if (drop != null && getOwner() != null) {
