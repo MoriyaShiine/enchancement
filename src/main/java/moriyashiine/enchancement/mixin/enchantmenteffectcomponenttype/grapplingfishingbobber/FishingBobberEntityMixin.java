@@ -4,12 +4,9 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.grapplingfishingbobber;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moriyashiine.enchancement.common.entity.projectile.StrengthHolder;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -29,6 +26,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -112,12 +110,12 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity implemen
 		}
 	}
 
-	@WrapOperation(method = "pullHookedEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;setVelocity(Lnet/minecraft/util/math/Vec3d;)V"))
-	private void enchancement$grappleFishingBobber(Entity instance, Vec3d velocity, Operation<Void> original) {
+	@ModifyArg(method = "pullHookedEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Vec3d;multiply(D)Lnet/minecraft/util/math/Vec3d;"))
+	private double enchancement$grappleFishingBobber(double value) {
 		if (getStrength() != 0) {
-			velocity = velocity.multiply(getStrength());
+			return value * getStrength();
 		}
-		original.call(instance, velocity);
+		return value;
 	}
 
 	@ModifyReturnValue(method = "use", at = @At("RETURN"))

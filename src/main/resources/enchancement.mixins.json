@@ -42,6 +42,7 @@
 	"config.rebalanceenchantments.WindBurstEntityMixin",
 	"config.rebalanceequipment.ArmorMaterialMixin",
 	"config.rebalanceequipment.DamageUtilMixin",
+	"config.rebalanceequipment.FishingBobberEntityMixin",
 	"config.rebalanceequipment.FishingRodItemMixin",
 	"config.rebalanceequipment.HoeItemMixin",
 	"config.rebalanceequipment.MaceItemMixin",
