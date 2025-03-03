@@ -32,6 +32,9 @@ public abstract class PersistentProjectileEntityMixin extends ProjectileEntity {
 	public abstract ItemStack asItemStack();
 
 	@Shadow
+	public abstract byte getPierceLevel();
+
+	@Shadow
 	public PersistentProjectileEntity.PickupPermission pickupType;
 
 	public PersistentProjectileEntityMixin(EntityType<? extends ProjectileEntity> entityType, World world) {
@@ -67,6 +70,6 @@ public abstract class PersistentProjectileEntityMixin extends ProjectileEntity {
 
 	@Unique
 	private boolean shouldApply() {
-		return ModConfig.rebalanceConsumables && pickupType == PersistentProjectileEntity.PickupPermission.ALLOWED && getOwner() instanceof PlayerEntity;
+		return ModConfig.rebalanceConsumables && pickupType == PersistentProjectileEntity.PickupPermission.ALLOWED && getPierceLevel() == 0 && getOwner() instanceof PlayerEntity;
 	}
 }
