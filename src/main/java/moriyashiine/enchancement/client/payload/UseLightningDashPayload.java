@@ -5,7 +5,6 @@ package moriyashiine.enchancement.client.payload;
 
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
@@ -20,7 +19,7 @@ public record UseLightningDashPayload(int entityId, Vec3d lungeVelocity, int flo
 	public static final Id<UseLightningDashPayload> ID = new Id<>(Enchancement.id("use_lightning_dash"));
 	public static final PacketCodec<PacketByteBuf, UseLightningDashPayload> CODEC = PacketCodec.tuple(
 			PacketCodecs.VAR_INT, UseLightningDashPayload::entityId,
-			EnchancementUtil.VEC3D_PACKET_CODEC, UseLightningDashPayload::lungeVelocity,
+			Vec3d.PACKET_CODEC, UseLightningDashPayload::lungeVelocity,
 			PacketCodecs.VAR_INT, UseLightningDashPayload::floatTicks,
 			UseLightningDashPayload::new);
 

@@ -5,7 +5,6 @@ package moriyashiine.enchancement.common.payload;
 
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
@@ -20,7 +19,7 @@ public record WallJumpPayload(int entityId, Vec3d velocity) implements CustomPay
 	public static final Id<WallJumpPayload> ID = new Id<>(Enchancement.id("wall_jump"));
 	public static final PacketCodec<PacketByteBuf, WallJumpPayload> CODEC = PacketCodec.tuple(
 			PacketCodecs.VAR_INT, WallJumpPayload::entityId,
-			EnchancementUtil.VEC3D_PACKET_CODEC, WallJumpPayload::velocity,
+			Vec3d.PACKET_CODEC, WallJumpPayload::velocity,
 			WallJumpPayload::new
 	);
 

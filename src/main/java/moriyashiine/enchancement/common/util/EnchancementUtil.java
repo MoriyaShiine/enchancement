@@ -3,8 +3,6 @@
  */
 package moriyashiine.enchancement.common.util;
 
-import com.mojang.serialization.Codec;
-import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import moriyashiine.enchancement.common.ModConfig;
@@ -36,7 +34,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.equipment.ArmorMaterials;
-import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryOwner;
@@ -46,10 +43,8 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TriState;
-import net.minecraft.util.Util;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.RaycastContext;
 import org.apache.commons.lang3.mutable.MutableFloat;
@@ -84,22 +79,6 @@ public class EnchancementUtil {
 		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.DIAMOND_TOOL_MATERIALS, TriState.FALSE);
 		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.NETHERITE_TOOL_MATERIALS, TriState.FALSE);
 	}
-
-	public static final Codec<Vec3d> VEC3D_CODEC = Codec.DOUBLE.listOf().comapFlatMap(list -> Util.decodeFixedLengthList(list, 3).map(listX -> new Vec3d(listX.getFirst(), listX.get(1), listX.get(2))), vec3d -> List.of(vec3d.getX(), vec3d.getY(), vec3d.getZ()));
-
-	public static final PacketCodec<ByteBuf, Vec3d> VEC3D_PACKET_CODEC = new PacketCodec<>() {
-		@Override
-		public Vec3d decode(ByteBuf buf) {
-			return new Vec3d(buf.readDouble(), buf.readDouble(), buf.readDouble());
-		}
-
-		@Override
-		public void encode(ByteBuf buf, Vec3d value) {
-			buf.writeDouble(value.getX());
-			buf.writeDouble(value.getY());
-			buf.writeDouble(value.getZ());
-		}
-	};
 
 	public static ItemStack cachedApplyStack = null;
 

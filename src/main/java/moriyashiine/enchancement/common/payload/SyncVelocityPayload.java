@@ -5,7 +5,6 @@ package moriyashiine.enchancement.common.payload;
 
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.event.SyncVelocitiesEvent;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
@@ -16,7 +15,7 @@ import net.minecraft.util.math.Vec3d;
 public record SyncVelocityPayload(Vec3d velocity) implements CustomPayload {
 	public static final Id<SyncVelocityPayload> ID = new Id<>(Enchancement.id("sync_velocity"));
 	public static final PacketCodec<PacketByteBuf, SyncVelocityPayload> CODEC = PacketCodec.tuple(
-			EnchancementUtil.VEC3D_PACKET_CODEC, SyncVelocityPayload::velocity,
+			Vec3d.PACKET_CODEC, SyncVelocityPayload::velocity,
 			SyncVelocityPayload::new
 	);
 
