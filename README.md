@@ -1,7 +1,7 @@
 # Enchancement
 Enchancement is a mod that aims to completely overhaul vanilla Minecraft's enchanting system, along with some other adjacent mechanics.
 
-Enchancement currently adds 33 unique and fun enchantments to the game:
+Enchancement currently adds 34 unique and fun enchantments to the game:
 
 ```
 Helmet Enchantments:
@@ -61,6 +61,9 @@ Shovel Enchantments:
 * Bury: Using on a mob will bury it if the ground below is soft enough.
 * Scooping: Deals extra damage and increases mob loot drops.
 
+Hoe Enchantments:
+* Apex: Deals extra damage. Attacking from a distance always results in a critical hit.
+
 Fishing Rod Enchantments:
 * Disarm: Steals or disables a latched entity's held item.
 * Grapple: Allows the Fishing Bobber to latch onto blocks. Launches you towards that block upon release. Reels in entities with more strength.
@@ -73,6 +76,7 @@ Everything Enchancement adds is configurable:
   * Replaces the Enchanting Table UI with a new version that removes the RNG involved in enchanting; you may simply choose the enchantments you wish to have.
   * To balance the ability to freely choose enchantments, enchanting items now has an additional material cost, such as Diamonds for Diamond equipment.
   * Bookshelves now reduce the experience, lapis, and material cost of enchanting.
+  * Enchanted Books can be applied to items in an Anvil at no cost.
 * Single Level Mode
   * Remove leveling from enchantments, meaning that the max level for all enchantments will be 1. Enchantments that are brought down to this level will act as their original max level counterpart, an example being Luck of the Sea I will function the same as Luck of the Sea III. Enchantments on gear made from materials easier to obtain will be weaker.
 * Enchantment Limit
@@ -84,8 +88,6 @@ Everything Enchancement adds is configurable:
   * Removes the checks to determine if a player is moving too fast, since Enchancement adds many forms of movement that may trigger that.
 * Enhance Mobs
   * Hostile monsters will spawn with random enchantments.
-* Free Enchanted Book Merging
-  * Enchanted Books can be applied to items in an Anvil at no cost.
 * Rebalance Consumables
   * Arrows shot by players will drop on the ground after hitting an entity.
   * Ender Pearls deal no damage upon use.
@@ -95,6 +97,7 @@ Everything Enchancement adds is configurable:
   * Ignite enchantment effects apply for less time.
   * Channeling ignites entities with melee attacks.
   * Channeling can be activated without thunder.
+  * Channeling chains lightning to nearby entities.
   * Lightning spawned from Channeling will not destroy items or cause fire.
   * Trident Spin Attack enchantment effects are weaker.
   * Trident Spin Attack enchantment effects have no water drag.
@@ -114,12 +117,14 @@ Everything Enchancement adds is configurable:
   * Maces have slightly faster attack speed.
   * Maces deal less damage per block fallen using a logarithmic function.
   * Golden tools have the mining speed of Diamond tools, Diamond tools have the mining speed of Netherite tools, and Netherite tools have the mining speed of Golden tools.
+  * Hoes have slower attack speed but more attack damage and attack reach.
   * Fishing Bobbers are thrown more accurately.
+  * Fishing Bobbers pull the root vehicle of the hooked entity.
 * Rebalance Projectiles
   * Projectiles ignore invulnerability frames and deal less damage per hit that would have been blocked.
   * Projectiles negate velocity on hit.
-  * Projectiles shot by players take target velocity into account to artificially increase their hitbox, making them easier to hit when moving fast.
-  * Projectiles are shot with higher velocity.
+  * Projectiles take target velocity into account to artificially increase their hitbox, making fast moving entities easier to hit.
+  * Projectiles shot by players have higher velocity (damage is scaled properly to be normal).
 * Rebalance Status Effects
   * Instant Health, Instant Damage, Strength, and Weakness are less potent.
   * Wither Skulls apply Wither for less time.
