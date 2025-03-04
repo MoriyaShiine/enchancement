@@ -1,4 +1,28 @@
 ------------------------------------------------------
+Version 1.21.4-r6
+------------------------------------------------------
+- merge https://github.com/MoriyaShiine/enchancement/pull/231
+- add apex hoe enchantment
+- - "Deals extra damage. Attacking from a distance always results in a critical hit."
+- rebalance hoe stats to have less attack speed, more attack damage, and a bit of attack reach
+- assimilation no longer automatically eats food while in combat
+- armadillos now get scared from sliding players
+- slightly adjust velocity for slide jumping and using meteor
+- channeling now chains lightning on melee and ranged attack
+- meteor and thunderstruck now charge faster
+- buff thunderstruck range and damage
+- fix thunderstruck sometimes damaging you anyway even if you hit an entity
+- using fall damage negating enchantments now cancels thunderstruck
+- fix wind burst always granting fall immunity
+- remove impaled enchanting material overrides since the mod is dead
+- enforce config match packet now runs every 5 seconds
+- merge freeEnchantingBookMerging config into overhaulEnchantingTable config
+- fix level inconsistencies with item renaming
+- fix arrow dupe when piercing is enabled
+- tipped arrows now convert into regular arrows when dropping as an item after hitting an entity
+- fishing bobbers now pull the root vehicle of hooked entities
+
+------------------------------------------------------
 Version 1.21.4-r5
 ------------------------------------------------------
 - fix https://github.com/MoriyaShiine/enchancement/issues/229
