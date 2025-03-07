@@ -17,6 +17,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.ParticleType;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -44,7 +45,12 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 	@WrapOperation(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;addCritParticles(Lnet/minecraft/entity/Entity;)V"))
 	private void enchancement$criticalTipper(PlayerEntity instance, Entity target, Operation<Void> original) {
 		if (particleType != null) {
-			PlayerLookup.tracking(target).forEach(foundPlayer -> AddEmitterParticlePayload.send(foundPlayer, target, particleType));
+			if (!target.getWorld().isClient) {
+				PlayerLookup.tracking(target).forEach(foundPlayer -> AddEmitterParticlePayload.send(foundPlayer, target, particleType));
+				if (target instanceof ServerPlayerEntity player) {
+					AddEmitterParticlePayload.send(player, target, particleType);
+				}
+			}
 			particleType = null;
 		} else {
 			original.call(instance, target);
