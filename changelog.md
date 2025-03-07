@@ -1,4 +1,10 @@
 ------------------------------------------------------
+Version 1.21.4-r7
+------------------------------------------------------
+- merge https://github.com/MoriyaShiine/enchancement/pull/234
+- fix https://github.com/MoriyaShiine/enchancement/issues/235
+
+------------------------------------------------------
 Version 1.21.4-r6
 ------------------------------------------------------
 - merge https://github.com/MoriyaShiine/enchancement/pull/231
