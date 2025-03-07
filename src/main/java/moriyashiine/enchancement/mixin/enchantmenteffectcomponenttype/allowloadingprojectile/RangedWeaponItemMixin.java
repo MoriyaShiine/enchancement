@@ -25,6 +25,7 @@ public class RangedWeaponItemMixin {
 		Set<Item> items = AllowLoadingProjectileEffect.getItems(weaponStack);
 		for (Item item : items) {
 			if (projectileStack.isOf(item) || !(shooter instanceof PlayerEntity)) {
+				AllowLoadingProjectileEffect.cachedSoundEvent = AllowLoadingProjectileEffect.getSoundEvent(weaponStack, projectileStack.getItem());
 				ProjectileEntity projectile = AllowLoadingProjectileEffect.PROJECTILE_MAP.get(item).getProjectile(world, shooter, projectileStack, weaponStack);
 				if (critical && projectile instanceof PersistentProjectileEntity persistentProjectile) {
 					persistentProjectile.setCritical(true);

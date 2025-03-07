@@ -50,6 +50,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.floatprovider.ConstantFloatProvider;
 import net.minecraft.util.math.floatprovider.UniformFloatProvider;
@@ -474,6 +475,7 @@ public class ModEnchantments {
 							ModEnchantmentEffectComponentTypes.ALLOW_LOADING_PROJECTILE,
 							new AllowLoadingProjectileEffect(
 									Enchancement.id("crossbow_amethyst"),
+									ModSoundEvents.ITEM_CROSSBOW_SCATTER,
 									Items.AMETHYST_SHARD,
 									false
 							)
@@ -500,6 +502,7 @@ public class ModEnchantments {
 							ModEnchantmentEffectComponentTypes.ALLOW_LOADING_PROJECTILE,
 							new AllowLoadingProjectileEffect(
 									Enchancement.id("crossbow_torch"),
+									SoundEvents.ITEM_CROSSBOW_SHOOT,
 									Items.TORCH,
 									true
 							)

@@ -9,7 +9,8 @@
 		"effect": {
 		  "model": "enchancement:crossbow_torch",
 		  "only_allow": true,
-		  "projectile_item": "minecraft:torch"
+		  "projectile_item": "minecraft:torch",
+		  "sound_event": "minecraft:item.crossbow.shoot"
 		}
 	  }
 	],

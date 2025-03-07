@@ -11,7 +11,8 @@
 		"effect": {
 		  "model": "enchancement:crossbow_amethyst",
 		  "only_allow": false,
-		  "projectile_item": "minecraft:amethyst_shard"
+		  "projectile_item": "minecraft:amethyst_shard",
+		  "sound_event": "enchancement:item.crossbow.scatter"
 		}
 	  }
 	],

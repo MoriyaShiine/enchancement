@@ -24,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.mutable.MutableBoolean;
@@ -31,14 +32,18 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public record AllowLoadingProjectileEffect(Identifier model, Item projectileItem, boolean onlyAllow) {
+public record AllowLoadingProjectileEffect(Identifier model, SoundEvent soundEvent, Item projectileItem,
+										   boolean onlyAllow) {
 	public static final Codec<AllowLoadingProjectileEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 					Identifier.CODEC.fieldOf("model").forGetter(AllowLoadingProjectileEffect::model),
+					Registries.SOUND_EVENT.getCodec().fieldOf("sound_event").forGetter(AllowLoadingProjectileEffect::soundEvent),
 					Registries.ITEM.getCodec().fieldOf("projectile_item").forGetter(AllowLoadingProjectileEffect::projectileItem),
 					Codec.BOOL.fieldOf("only_allow").forGetter(AllowLoadingProjectileEffect::onlyAllow))
 			.apply(instance, AllowLoadingProjectileEffect::new));
 
 	public static final Map<Item, ProjectileBuilder> PROJECTILE_MAP = new HashMap<>();
+
+	public static @Nullable SoundEvent cachedSoundEvent = null;
 
 	static {
 		PROJECTILE_MAP.put(Items.EGG, (world, owner, stack, shotFrom) -> new EggEntity(world, owner, stack));
@@ -65,6 +70,7 @@ public record AllowLoadingProjectileEffect(Identifier model, Item projectileItem
 		});
 	}
 
+	@Nullable
 	public static Identifier getModel(ItemStack stack, Item projectileItem) {
 		final Identifier[] model = {null};
 		EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
@@ -78,6 +84,22 @@ public record AllowLoadingProjectileEffect(Identifier model, Item projectileItem
 			}
 		});
 		return model[0];
+	}
+
+	@Nullable
+	public static SoundEvent getSoundEvent(ItemStack stack, Item projectileItem) {
+		final SoundEvent[] soundEvent = {null};
+		EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
+			List<EnchantmentEffectEntry<AllowLoadingProjectileEffect>> effects = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.ALLOW_LOADING_PROJECTILE);
+			if (effects != null) {
+				effects.forEach(effect -> {
+					if (effect.effect().projectileItem() == projectileItem) {
+						soundEvent[0] = effect.effect().soundEvent();
+					}
+				});
+			}
+		});
+		return soundEvent[0];
 	}
 
 	public static Set<Item> getItems(ItemStack stack) {

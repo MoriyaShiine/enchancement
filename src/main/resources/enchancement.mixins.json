@@ -71,6 +71,8 @@
 	"config.weaponenchantmentcooldownrequirement.PlayerEntityMixin",
 	"enchantmenteffectcomponenttype.airjump.LivingEntityMixin",
 	"enchantmenteffectcomponenttype.allowcrossbowcooldownreloading.ServerPlayerInteractionManagerMixin",
+	"enchantmenteffectcomponenttype.allowloadingprojectile.BowItemMixin",
+	"enchantmenteffectcomponenttype.allowloadingprojectile.CrossbowItemMixin",
 	"enchantmenteffectcomponenttype.allowloadingprojectile.CrossbowMixin",
 	"enchantmenteffectcomponenttype.allowloadingprojectile.PlayerEntityMixin",
 	"enchantmenteffectcomponenttype.allowloadingprojectile.RangedWeaponItemMixin",
