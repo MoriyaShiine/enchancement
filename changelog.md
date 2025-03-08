@@ -1,4 +1,11 @@
 ------------------------------------------------------
+Version 1.21.4-r8
+------------------------------------------------------
+- fix https://github.com/MoriyaShiine/enchancement/issues/237
+- fix https://github.com/MoriyaShiine/enchancement/issues/238
+- delay now works with all persistent projectiles and not just arrows
+
+------------------------------------------------------
 Version 1.21.4-r7
 ------------------------------------------------------
 - merge https://github.com/MoriyaShiine/enchancement/pull/234
