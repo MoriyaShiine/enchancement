@@ -61,8 +61,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerFor(LivingEntity.class, BURY_ENTITY, BuryEntityComponent::new);
 		registry.registerForPlayers(CHARGE_JUMP, ChargeJumpComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(LivingEntity.class, CONDITIONAL_ATTRIBUTES, ConditionalAttributesComponent::new);
-		registry.registerFor(ArrowEntity.class, DELAYED_LAUNCH, DelayedLaunchComponent::new);
-		registry.registerFor(SpectralArrowEntity.class, DELAYED_LAUNCH, DelayedLaunchComponent::new);
+		registry.registerFor(PersistentProjectileEntity.class, DELAYED_LAUNCH, DelayedLaunchComponent::new);
 		registry.registerForPlayers(DIRECTION_BURST, DirectionBurstComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(FishingBobberEntity.class, DISARMING_FISHING_BOBBER, fishingBobber -> new DisarmingFishingBobberComponent());
 		registry.registerForPlayers(DISARMED_PLAYER, DisarmedPlayerComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
