@@ -41,7 +41,7 @@ public class BuryEntityComponent implements AutoSyncedComponent, ServerTickingCo
 	public void serverTick() {
 		if (buryPos != null) {
 			if (obj.getX() != buryPos.getX() + 0.5 || obj.getY() != buryPos.getY() + 0.5 || obj.getZ() != buryPos.getZ() + 0.5) {
-				obj.refreshPositionAfterTeleport(buryPos.getX() + 0.5, buryPos.getY() + 0.5, buryPos.getZ() + 0.5);
+				obj.requestTeleport(buryPos.getX() + 0.5, buryPos.getY() + 0.5, buryPos.getZ() + 0.5);
 			}
 			if (obj.getVelocity() != Vec3d.ZERO) {
 				obj.setVelocity(Vec3d.ZERO);

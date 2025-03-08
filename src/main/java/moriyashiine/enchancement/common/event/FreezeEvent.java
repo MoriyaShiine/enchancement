@@ -40,7 +40,7 @@ public class FreezeEvent {
 						frozenPlayer.setBodyYaw(entity.getBodyYaw());
 						frozenPlayer.setPitch(entity.getPitch());
 						frozenPlayer.age = entity.age;
-						frozenPlayer.refreshPositionAfterTeleport(entity.getX(), entity.getY(), entity.getZ());
+						frozenPlayer.requestTeleport(entity.getX(), entity.getY(), entity.getZ());
 						ModEntityComponents.FROZEN.get(frozenPlayer).freeze();
 						SyncFrozenPlayerSlimStatusS2CPayload.send(serverPlayer, frozenPlayer.getUuid());
 						entity.getWorld().spawnEntity(frozenPlayer);

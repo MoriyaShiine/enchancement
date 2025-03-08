@@ -67,6 +67,7 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 			stuckEntity = living;
 		} else {
 			if (stuckEntity != null && stuckEntity.isAlive()) {
+				obj.refreshPositionAfterTeleport(stuckEntity.getX(), stuckEntity.getEyeY(), stuckEntity.getZ());
 				obj.setVelocity(Vec3d.ZERO);
 				if (++leechingTicks > leechData.maxTicks()) {
 					stuckEntityId = -2;
@@ -87,7 +88,6 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 		tick();
 		if (stuckEntity != null && stuckEntity.isAlive()) {
 			if (obj.getOwner() instanceof LivingEntity living && living.isAlive()) {
-				obj.refreshPositionAfterTeleport(stuckEntity.getX(), stuckEntity.getEyeY(), stuckEntity.getZ());
 				if (leechingTicks % 20 == 0 && stuckEntity.damage((ServerWorld) obj.getWorld(), ModDamageTypes.create(obj.getWorld(), ModDamageTypes.LIFE_DRAIN, obj, living), leechData.damage())) {
 					living.heal(leechData.healAmount());
 					stuckEntity.timeUntilRegen = 0;

@@ -3,9 +3,7 @@
  */
 package moriyashiine.enchancement.client.render.entity.state;
 
-import net.minecraft.entity.Entity;
-
 public class LeechingTridentRenderState {
-	public Entity trident = null, stuckEntity = null;
-	public float leechingTicks = 0, stabTicks = 0;
+	public boolean active = false;
+	public float offsetX = 0, offsetZ = 0, rotationY = 0, stabTicks = 0;
 }
