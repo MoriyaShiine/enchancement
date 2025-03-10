@@ -25,7 +25,7 @@ public class ModDynamicRegistryProvider extends FabricDynamicRegistryProvider {
 
 	@Override
 	public String getName() {
-		return Enchancement.MOD_ID + " Dynamic Registries";
+		return Enchancement.MOD_ID + "_dynamic";
 	}
 
 	private static <T> Registerable<T> createRegisterable(RegistryWrapper.WrapperLookup registries, Entries entries) {
