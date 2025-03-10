@@ -8,12 +8,11 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 
-public class InCombatEvent implements ServerLivingEntityEvents.AllowDamage {
+public class InCombatEvent implements ServerLivingEntityEvents.AfterDamage {
 	@Override
-	public boolean allowDamage(LivingEntity entity, DamageSource source, float amount) {
+	public void afterDamage(LivingEntity entity, DamageSource source, float baseDamageTaken, float damageTaken, boolean blocked) {
 		if (source.getAttacker() instanceof LivingEntity) {
 			ModEntityComponents.IN_COMBAT.get(entity).setInCombat();
 		}
-		return true;
 	}
 }

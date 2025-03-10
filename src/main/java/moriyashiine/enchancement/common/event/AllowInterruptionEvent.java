@@ -13,9 +13,9 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
-public class AllowInterruptionEvent implements ServerLivingEntityEvents.AllowDamage {
+public class AllowInterruptionEvent implements ServerLivingEntityEvents.AfterDamage {
 	@Override
-	public boolean allowDamage(LivingEntity entity, DamageSource source, float amount) {
+	public void afterDamage(LivingEntity entity, DamageSource source, float baseDamageTaken, float damageTaken, boolean blocked) {
 		if (source.getAttacker() != null && !source.isIn(ModDamageTypeTags.DOES_NOT_INTERRUPT)) {
 			ItemStack stack = entity.getActiveItem();
 			if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.ALLOW_INTERRUPTION)) {
@@ -29,6 +29,5 @@ public class AllowInterruptionEvent implements ServerLivingEntityEvents.AllowDam
 				});
 			}
 		}
-		return true;
 	}
 }

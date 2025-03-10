@@ -86,7 +86,7 @@ public class Enchancement implements ModInitializer {
 		DefaultItemComponentEvents.MODIFY.register(new AnimalArmorEnchantmentEvent.AllowComponent());
 		EnchantmentEvents.ALLOW_ENCHANTING.register(new AnimalArmorEnchantmentEvent.AllowEnchanting());
 		ServerEntityEvents.EQUIPMENT_CHANGE.register(new EquipmentResetEvent());
-		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new AllowInterruptionEvent());
+		ServerLivingEntityEvents.AFTER_DAMAGE.register(new AllowInterruptionEvent());
 		ServerTickEvents.END_SERVER_TICK.register(new BounceEvent());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new BuryEntityEvent.Unbury());
 		UseEntityCallback.EVENT.register(new BuryEntityEvent.Use());
@@ -95,8 +95,8 @@ public class Enchancement implements ModInitializer {
 		ServerLivingEntityEvents.AFTER_DEATH.register(new FreezeEvent.HandleDeath());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new FreezeEvent.HandleDamage());
 		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register(new HeadDropsEvent());
-		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new InCombatEvent());
-		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new LeechingTridentEvent());
+		ServerLivingEntityEvents.AFTER_DAMAGE.register(new InCombatEvent());
+		ServerLivingEntityEvents.AFTER_DAMAGE.register(new LeechingTridentEvent());
 		PlayerBlockBreakEvents.BEFORE.register(new MineOreVeinsEvent());
 		MultiplyMovementSpeedEvent.EVENT.register(new ModifyMovementSpeedEvent());
 		MultiplyMovementSpeedEvent.EVENT.register(new RageEvent());

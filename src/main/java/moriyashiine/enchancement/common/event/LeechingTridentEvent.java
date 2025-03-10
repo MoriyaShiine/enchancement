@@ -10,9 +10,9 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.TridentEntity;
 
-public class LeechingTridentEvent implements ServerLivingEntityEvents.AllowDamage {
+public class LeechingTridentEvent implements ServerLivingEntityEvents.AfterDamage {
 	@Override
-	public boolean allowDamage(LivingEntity entity, DamageSource source, float amount) {
+	public void afterDamage(LivingEntity entity, DamageSource source, float baseDamageTaken, float damageTaken, boolean blocked) {
 		if (source.getSource() instanceof TridentEntity trident && !entity.blockedByShield(source)) {
 			LeechingTridentComponent leechingTridentComponent = ModEntityComponents.LEECHING_TRIDENT.get(trident);
 			if (leechingTridentComponent.hasLeech() && leechingTridentComponent.getStuckEntity() == null) {
@@ -29,6 +29,5 @@ public class LeechingTridentEvent implements ServerLivingEntityEvents.AllowDamag
 				}
 			}
 		}
-		return true;
 	}
 }
