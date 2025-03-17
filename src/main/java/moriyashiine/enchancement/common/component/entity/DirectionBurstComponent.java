@@ -5,19 +5,22 @@ package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import moriyashiine.enchancement.client.EnchancementClient;
-import moriyashiine.enchancement.client.payload.AddMovementBurstParticlesPayload;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.enchantment.effect.DirectionBurstEffect;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.payload.DirectionBurstPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.strawberrylib.api.module.SLibClientUtils;
+import moriyashiine.strawberrylib.api.module.SLibUtils;
+import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.Vec3d;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
@@ -78,7 +81,7 @@ public class DirectionBurstComponent implements AutoSyncedComponent, CommonTicki
 	@Override
 	public void clientTick() {
 		tick();
-		if (hasDirectionBurst && canUse() && obj == MinecraftClient.getInstance().player) {
+		if (hasDirectionBurst && canUse() && SLibClientUtils.isHost(obj)) {
 			GameOptions options = MinecraftClient.getInstance().options;
 			boolean pressingKey = EnchancementClient.DIRECTION_BURST_KEYBINDING.isPressed();
 			if (ticksLeftToPressActivationKey > 0) {
@@ -91,7 +94,7 @@ public class DirectionBurstComponent implements AutoSyncedComponent, CommonTicki
 					if (inputVelocity != Vec3d.ZERO) {
 						Vec3d velocity = inputVelocity.rotateY((float) Math.toRadians(-(obj.getHeadYaw() + 90))).multiply(MultiplyMovementSpeedEvent.getMovementMultiplier(obj));
 						use(velocity.getX(), velocity.getZ());
-						AddMovementBurstParticlesPayload.addParticles(obj);
+						SLibClientUtils.addParticles(obj, ParticleTypes.CLOUD, 8, ParticleAnchor.BODY);
 						DirectionBurstPayload.send(velocity);
 					}
 				} else {
@@ -124,7 +127,7 @@ public class DirectionBurstComponent implements AutoSyncedComponent, CommonTicki
 	}
 
 	public boolean canUse() {
-		return cooldown == 0 && EnchancementUtil.isGroundedOrAirborne(obj);
+		return cooldown == 0 && SLibUtils.isGroundedOrAirborne(obj);
 	}
 
 	public boolean preventFalling() {

@@ -3,7 +3,7 @@
  */
 package moriyashiine.enchancement.mixin.config.coyotebite;
 
-import moriyashiine.enchancement.client.event.CoyoteBiteEvent;
+import moriyashiine.enchancement.client.event.config.CoyoteBiteEvent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerInteractionManager;

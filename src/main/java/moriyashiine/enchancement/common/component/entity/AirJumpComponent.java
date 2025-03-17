@@ -4,14 +4,16 @@
 package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
-import moriyashiine.enchancement.client.payload.AddAirJumpParticlesPayload;
 import moriyashiine.enchancement.common.enchantment.effect.AirJumpEffect;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.payload.AirJumpPayload;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.strawberrylib.api.module.SLibClientUtils;
+import moriyashiine.strawberrylib.api.module.SLibUtils;
+import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -94,7 +96,7 @@ public class AirJumpComponent implements AutoSyncedComponent, CommonTickingCompo
 		tick();
 		if (hasAirJump && obj.jumping && !wasJumping && canUse()) {
 			use();
-			AddAirJumpParticlesPayload.addParticles(obj);
+			SLibClientUtils.addParticles(obj, ParticleTypes.CLOUD, 8, ParticleAnchor.BASE);
 			AirJumpPayload.send();
 		}
 		wasJumping = obj.jumping;
@@ -130,7 +132,7 @@ public class AirJumpComponent implements AutoSyncedComponent, CommonTickingCompo
 	}
 
 	public boolean canUse() {
-		return jumpCooldown == 0 && jumpsLeft > 0 && ticksInAir >= 5 && !obj.isOnGround() && EnchancementUtil.isGroundedOrAirborne(obj);
+		return jumpCooldown == 0 && jumpsLeft > 0 && ticksInAir >= 5 && !obj.isOnGround() && SLibUtils.isGroundedOrAirborne(obj);
 	}
 
 	public void use() {

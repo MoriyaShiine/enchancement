@@ -3,12 +3,13 @@
  */
 package moriyashiine.enchancement.common.component.entity;
 
-import moriyashiine.enchancement.client.util.EnchancementClientUtil;
 import moriyashiine.enchancement.common.enchantment.effect.LeechingTridentEffect;
 import moriyashiine.enchancement.common.init.ModDamageTypes;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.strawberrylib.api.module.SLibClientUtils;
+import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -88,7 +89,7 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 		tick();
 		if (stuckEntity != null && stuckEntity.isAlive()) {
 			if (obj.getOwner() instanceof LivingEntity living && living.isAlive()) {
-				if (leechingTicks % 20 == 0 && stuckEntity.damage((ServerWorld) obj.getWorld(), ModDamageTypes.create(obj.getWorld(), ModDamageTypes.LIFE_DRAIN, obj, living), leechData.damage())) {
+				if (leechingTicks % 20 == 0 && stuckEntity.damage((ServerWorld) obj.getWorld(), obj.getWorld().getDamageSources().create(ModDamageTypes.LIFE_DRAIN, obj, living), leechData.damage())) {
 					living.heal(leechData.healAmount());
 					stuckEntity.timeUntilRegen = 0;
 					stabTicks = 20;
@@ -104,10 +105,8 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 	@Override
 	public void clientTick() {
 		tick();
-		if (stuckEntity != null && stuckEntity.isAlive() && stabTicks == 19 && EnchancementClientUtil.shouldAddParticles(stuckEntity)) {
-			for (int i = 0; i < 5; i++) {
-				obj.getWorld().addParticle(ParticleTypes.DAMAGE_INDICATOR, stuckEntity.getParticleX(0.5), stuckEntity.getBodyY(0.5), stuckEntity.getParticleZ(0.5), 0, 0, 0);
-			}
+		if (stuckEntity != null && stuckEntity.isAlive() && stabTicks == 19) {
+			SLibClientUtils.addParticles(stuckEntity, ParticleTypes.DAMAGE_INDICATOR, 5, ParticleAnchor.BODY);
 		}
 	}
 

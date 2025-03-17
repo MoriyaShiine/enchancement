@@ -33,6 +33,7 @@ fabricApi {
 }
 
 repositories {
+    mavenLocal()
     chenille.repositories.ladysnake()
     chenille.repositories.terraformers()
     chenille.repositories.modrinth()
@@ -47,13 +48,15 @@ dependencies {
     mappings "net.fabricmc:yarn:${yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${loader_version}"
 
-    modIncludeApi "org.ladysnake.cardinal-components-api:cardinal-components-base:${cardinal_components_version}"
-    modIncludeApi "org.ladysnake.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}"
+    modApi "org.ladysnake.cardinal-components-api:cardinal-components-base:${cardinal_components_version}"
+    modApi "org.ladysnake.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}"
     modIncludeApi "org.ladysnake.cardinal-components-api:cardinal-components-world:${cardinal_components_version}"
     modIncludeApi "maven.modrinth:midnightlib:${midnightlib_version}"
+    modIncludeApi "net.kyrptonaught:tooltipfix:1.1.1-1.21.2"
 //    modIncludeApi "maven.modrinth:tooltipfix:${tooltipfix_version}"
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+    modImplementation "moriyashiine:strawberrylib-private:${strawberrylib_version}"
 
 //    modCompileOnly "io.github.apace100:apoli:${apoli_version}"
     modCompileOnly("squeek.appleskin:appleskin-fabric:${appleskin_version}:api") {

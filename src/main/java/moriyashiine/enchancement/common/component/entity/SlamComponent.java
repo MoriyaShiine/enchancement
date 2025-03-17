@@ -5,7 +5,6 @@ package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import moriyashiine.enchancement.client.EnchancementClient;
-import moriyashiine.enchancement.client.util.EnchancementClientUtil;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModParticleTypes;
@@ -13,9 +12,12 @@ import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.payload.StartSlammingC2SPayload;
 import moriyashiine.enchancement.common.payload.StopSlammingC2SPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.strawberrylib.api.module.SLibClientUtils;
+import moriyashiine.strawberrylib.api.module.SLibUtils;
+import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
+import moriyashiine.strawberrylib.api.objects.records.ParticleVelocity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.enums.Thickness;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -24,10 +26,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.*;
 import net.minecraft.world.event.GameEvent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
@@ -67,7 +66,7 @@ public class SlamComponent implements CommonTickingComponent {
 		hasSlam = strength > 0;
 		if (hasSlam) {
 			if (isSlamming) {
-				if (!EnchancementUtil.isGroundedOrAirborne(obj, true)) {
+				if (!SLibUtils.isGroundedOrAirborne(obj, true)) {
 					isSlamming = false;
 					return;
 				}
@@ -92,13 +91,9 @@ public class SlamComponent implements CommonTickingComponent {
 		tick();
 		if (hasSlam) {
 			if (isSlamming) {
-				if (EnchancementClientUtil.shouldAddParticles(obj)) {
-					for (int i = 0; i < 4; i++) {
-						obj.getWorld().addParticle(ModParticleTypes.VELOCITY_LINE, obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 1, 0);
-					}
-				}
+				SLibClientUtils.addParticles(obj, ModParticleTypes.VELOCITY_LINE, 4, ParticleAnchor.BODY, ParticleVelocity.of(new Vec3d(0, 1, 0)));
 			}
-			if (!obj.isSpectator() && obj == MinecraftClient.getInstance().player) {
+			if (!obj.isSpectator() && SLibClientUtils.isHost(obj)) {
 				if (isSlamming && obj.isOnGround()) {
 					stopSlammingClient(obj.getY());
 					StopSlammingC2SPayload.send(obj.getY());
@@ -142,7 +137,7 @@ public class SlamComponent implements CommonTickingComponent {
 		if (slideComponent != null && slideComponent.isSliding()) {
 			return false;
 		}
-		return slamCooldown == 0 && !obj.isOnGround() && EnchancementUtil.isGroundedOrAirborne(obj);
+		return slamCooldown == 0 && !obj.isOnGround() && SLibUtils.isGroundedOrAirborne(obj);
 	}
 
 	private void stopSlamming() {
@@ -154,7 +149,7 @@ public class SlamComponent implements CommonTickingComponent {
 	public void stopSlammingServer() {
 		stopSlamming();
 		obj.getWorld().getOtherEntities(obj, new Box(obj.getBlockPos()).expand(3, 1, 3), foundEntity -> foundEntity.isAlive() && foundEntity.distanceTo(obj) < 5).forEach(foundEntity -> {
-			if (foundEntity instanceof LivingEntity living && EnchancementUtil.shouldHurt(obj, living) && EnchancementUtil.canSee(obj, foundEntity, 0)) {
+			if (foundEntity instanceof LivingEntity living && SLibUtils.shouldHurt(obj, living) && SLibUtils.canSee(obj, foundEntity, 0)) {
 				living.takeKnockback(1, obj.getX() - living.getX(), obj.getZ() - living.getZ());
 			}
 		});

@@ -3,17 +3,20 @@
  */
 package moriyashiine.enchancement.common.payload;
 
-import moriyashiine.enchancement.client.payload.AddMovementBurstParticlesPayload;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.component.entity.DirectionBurstComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.strawberrylib.api.module.SLibUtils;
+import moriyashiine.strawberrylib.api.objects.enums.PacketTarget;
+import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
+import moriyashiine.strawberrylib.api.objects.records.ParticleVelocity;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.Vec3d;
 
 public record DirectionBurstPayload(float velocityX, float velocityZ) implements CustomPayload {
@@ -35,7 +38,7 @@ public record DirectionBurstPayload(float velocityX, float velocityZ) implements
 			DirectionBurstComponent directionBurstComponent = ModEntityComponents.DIRECTION_BURST.get(context.player());
 			if (directionBurstComponent.hasDirectionBurst() && directionBurstComponent.canUse()) {
 				directionBurstComponent.use(payload.velocityX(), payload.velocityZ());
-				PlayerLookup.tracking(context.player()).forEach(foundPlayer -> AddMovementBurstParticlesPayload.send(foundPlayer, context.player()));
+				SLibUtils.addParticles(context.player(), ParticleTypes.CLOUD, 8, ParticleAnchor.BODY, PacketTarget.OTHERS, ParticleVelocity.ZERO);
 			}
 		}
 	}

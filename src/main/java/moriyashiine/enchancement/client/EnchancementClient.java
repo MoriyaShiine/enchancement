@@ -3,7 +3,11 @@
  */
 package moriyashiine.enchancement.client;
 
-import moriyashiine.enchancement.client.event.*;
+import moriyashiine.enchancement.client.event.config.CoyoteBiteEvent;
+import moriyashiine.enchancement.client.event.config.EnchantmentDescriptionsEvent;
+import moriyashiine.enchancement.client.event.config.SyncVelocitiesEvent;
+import moriyashiine.enchancement.client.event.config.ToggleablePassivesEvent;
+import moriyashiine.enchancement.client.event.enchantmenteffectcomponenttype.*;
 import moriyashiine.enchancement.client.event.integration.appleskin.BrimstoneAppleskinEvent;
 import moriyashiine.enchancement.client.particle.HoneyBubbleParticle;
 import moriyashiine.enchancement.client.particle.SparkParticle;
@@ -22,6 +26,8 @@ import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
 import moriyashiine.enchancement.common.init.ModParticleTypes;
 import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
+import moriyashiine.strawberrylib.api.event.client.ModifyNightVisionStrengthEvent;
+import moriyashiine.strawberrylib.api.event.client.OutlineEntityEvent;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
@@ -53,28 +59,36 @@ public class EnchancementClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
+		initEntities();
+		initParticles();
+		initEvents();
+		initPayloads();
+		HandledScreens.register(ModScreenHandlerTypes.ENCHANTING_TABLE, EnchantingTableScreen::new);
+		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(FrozenReloadListener.INSTANCE);
+		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(Enchancement.id("alternate_air_jump"), modContainer, ResourcePackActivationType.NORMAL));
+		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(Enchancement.id("alternate_burst"), modContainer, ResourcePackActivationType.NORMAL));
+		betterCombatLoaded = FabricLoader.getInstance().isModLoaded("bettercombat");
+		irisLoaded = FabricLoader.getInstance().isModLoaded("iris");
+		if (FabricLoader.getInstance().isModLoaded("appleskin")) {
+			HUDOverlayEvent.HealthRestored.EVENT.register(new BrimstoneAppleskinEvent());
+		}
+	}
+
+	private void initEntities() {
 		EntityModelLayerRegistry.registerModelLayer(FrozenPlayerEntityModel.LAYER, () -> FrozenPlayerEntityModel.getTexturedModelData(false));
 		EntityModelLayerRegistry.registerModelLayer(FrozenPlayerEntityModel.LAYER_SLIM, () -> FrozenPlayerEntityModel.getTexturedModelData(true));
 		EntityRendererRegistry.register(ModEntityTypes.AMETHYST_SHARD, AmethystShardEntityRenderer::new);
 		EntityRendererRegistry.register(ModEntityTypes.BRIMSTONE, BrimstoneEntityRenderer::new);
 		EntityRendererRegistry.register(ModEntityTypes.ICE_SHARD, IceShardEntityRenderer::new);
 		EntityRendererRegistry.register(ModEntityTypes.TORCH, TorchEntityRenderer::new);
+	}
+
+	private void initParticles() {
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.BRIMSTONE_BUBBLE, WaterBubbleParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.CRITICAL_TIPPER, TintlessDamageParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.HONEY_BUBBLE, HoneyBubbleParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.SPARK, provider -> new SparkParticle.Factory());
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.VELOCITY_LINE, VelocityLineParticle.Factory::new);
-		HandledScreens.register(ModScreenHandlerTypes.ENCHANTING_TABLE, EnchantingTableScreen::new);
-		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(FrozenReloadListener.INSTANCE);
-		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(Enchancement.id("alternate_air_jump"), modContainer, ResourcePackActivationType.NORMAL));
-		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(Enchancement.id("alternate_burst"), modContainer, ResourcePackActivationType.NORMAL));
-		initEvents();
-		initPayloads();
-		betterCombatLoaded = FabricLoader.getInstance().isModLoaded("bettercombat");
-		irisLoaded = FabricLoader.getInstance().isModLoaded("iris");
-		if (FabricLoader.getInstance().isModLoaded("appleskin")) {
-			HUDOverlayEvent.HealthRestored.EVENT.register(new BrimstoneAppleskinEvent());
-		}
 	}
 
 	private void initEvents() {
@@ -84,14 +98,16 @@ public class EnchancementClient implements ClientModInitializer {
 		ClientTickEvents.START_WORLD_TICK.register(new SyncVelocitiesEvent());
 		ItemTooltipCallback.EVENT.register(new ToggleablePassivesEvent());
 		// enchantment
-		HudLayerRegistrationCallback.EVENT.register(new AirJumpRenderEvent());
-		ItemTooltipCallback.EVENT.register(new AutomaticallyFeedsTooltipEvent());
-		ClientTickEvents.END_WORLD_TICK.register(new BounceEvent());
-		HudLayerRegistrationCallback.EVENT.register(new BrimstoneRenderEvent());
-		HudLayerRegistrationCallback.EVENT.register(new ChargeJumpRenderEvent());
-		HudLayerRegistrationCallback.EVENT.register(new DirectionBurstRenderEvent());
-		ItemTooltipCallback.EVENT.register(new RageRenderEvent());
-		HudLayerRegistrationCallback.EVENT.register(new RotationBurstRenderEvent());
+		HudLayerRegistrationCallback.EVENT.register(new AirJumpClientEvent());
+		ItemTooltipCallback.EVENT.register(new AutomaticallyFeedsTooltipClientEvent());
+		ClientTickEvents.END_WORLD_TICK.register(new BounceClientEvent());
+		HudLayerRegistrationCallback.EVENT.register(new BrimstoneClientEvent());
+		HudLayerRegistrationCallback.EVENT.register(new ChargeJumpClientEvent());
+		HudLayerRegistrationCallback.EVENT.register(new DirectionBurstClientEventEvent());
+		OutlineEntityEvent.HAS_OUTLINE.register(new EntityXrayClientEvent());
+		ModifyNightVisionStrengthEvent.ADD.register(new NightVisionClientEvent());
+		ItemTooltipCallback.EVENT.register(new RageClientEvent());
+		HudLayerRegistrationCallback.EVENT.register(new RotationBurstClientEvent());
 	}
 
 	private void initPayloads() {
@@ -102,11 +118,8 @@ public class EnchancementClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(SyncEnchantingTableCostPayload.ID, new SyncEnchantingTableCostPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(SyncHookedVelocityPayload.ID, new SyncHookedVelocityPayload.Receiver());
 		// enchantment
-		ClientPlayNetworking.registerGlobalReceiver(AddAirJumpParticlesPayload.ID, new AddAirJumpParticlesPayload.Receiver());
-		ClientPlayNetworking.registerGlobalReceiver(AddEmitterParticlePayload.ID, new AddEmitterParticlePayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(AddLightningDashParticlesPayload.ID, new AddLightningDashParticlesPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(AddMoltenParticlesPayload.ID, new AddMoltenParticlesPayload.Receiver());
-		ClientPlayNetworking.registerGlobalReceiver(AddMovementBurstParticlesPayload.ID, new AddMovementBurstParticlesPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(BoostInFluidS2CPayload.ID, new BoostInFluidS2CPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(GlideS2CPayload.ID, new GlideS2CPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(PlayBrimstoneFireSoundPayload.ID, new PlayBrimstoneFireSoundPayload.Receiver());

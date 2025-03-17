@@ -7,8 +7,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
-import moriyashiine.enchancement.common.util.SubmersionGate;
+import moriyashiine.strawberrylib.api.module.SLibUtils;
+import moriyashiine.strawberrylib.api.objects.enums.SubmersionGate;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.effect.EnchantmentValueEffect;
 import net.minecraft.entity.LivingEntity;
@@ -26,7 +26,7 @@ public record ModifySubmergedMovementSpeedEffect(EnchantmentValueEffect modifier
 		for (ItemStack stack : living.getAllArmorItems()) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				ModifySubmergedMovementSpeedEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.MODIFY_SUBMERGED_MOVEMENT_SPEED);
-				if (effect != null && (living.isWet() || ModEntityComponents.EXTENDED_WATER_TIME.get(living).getTicksWet() > 0 || EnchancementUtil.isSubmerged(living, effect.gate()))) {
+				if (effect != null && (living.isWet() || ModEntityComponents.EXTENDED_WATER_TIME.get(living).getTicksWet() > 0 || SLibUtils.isSubmerged(living, effect.gate()))) {
 					value.setValue(effect.modifier().apply(level, living.getRandom(), value.floatValue()));
 				}
 			});

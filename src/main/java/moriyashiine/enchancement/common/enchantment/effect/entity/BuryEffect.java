@@ -9,6 +9,9 @@ import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.tag.ModBlockTags;
 import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
+import moriyashiine.strawberrylib.api.module.SLibClientUtils;
+import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
+import moriyashiine.strawberrylib.api.objects.records.ParticleVelocity;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.EnchantmentEffectContext;
 import net.minecraft.enchantment.effect.EnchantmentEntityEffect;
@@ -61,10 +64,7 @@ public class BuryEffect implements EnchantmentEntityEffect {
 						buryEntityComponent.setBuryPos(pos);
 						buryEntityComponent.sync();
 					} else {
-						BlockStateParticleEffect particle = new BlockStateParticleEffect(ParticleTypes.BLOCK, state);
-						for (int j = 0; j < 24; j++) {
-							world.addParticle(particle, entity.getParticleX(1), entity.getRandomBodyY(), entity.getParticleZ(1), 0, 0, 0);
-						}
+						SLibClientUtils.addParticleEffects(entity, new BlockStateParticleEffect(ParticleTypes.BLOCK, state), 24, ParticleAnchor.BODY, ParticleVelocity.ZERO);
 					}
 					post.run();
 					return true;

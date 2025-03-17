@@ -12,7 +12,7 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.event.SyncEnchantingMaterialMapEvent;
+import moriyashiine.enchancement.common.event.internal.SyncEnchantingMaterialMapEvent;
 import moriyashiine.enchancement.common.screenhandlers.EnchantingTableScreenHandler;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.item.Item;

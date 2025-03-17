@@ -6,7 +6,8 @@ package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.fluidwalk
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import moriyashiine.enchancement.common.util.SubmersionGate;
+import moriyashiine.strawberrylib.api.module.SLibUtils;
+import moriyashiine.strawberrylib.api.objects.enums.SubmersionGate;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MobEntity;
@@ -23,7 +24,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
 	@ModifyReturnValue(method = "shouldDismount", at = @At("RETURN"))
 	private boolean enchancement$fluidWalking(boolean original) {
-		if (original && getVehicle() instanceof MobEntity mob && EnchancementUtil.hasAnyEnchantmentsWith(mob, ModEnchantmentEffectComponentTypes.FLUID_WALKING) && EnchancementUtil.isSubmerged(mob, SubmersionGate.ALL)) {
+		if (original && getVehicle() instanceof MobEntity mob && EnchancementUtil.hasAnyEnchantmentsWith(mob, ModEnchantmentEffectComponentTypes.FLUID_WALKING) && SLibUtils.isSubmerged(mob, SubmersionGate.ALL)) {
 			return false;
 		}
 		return original;

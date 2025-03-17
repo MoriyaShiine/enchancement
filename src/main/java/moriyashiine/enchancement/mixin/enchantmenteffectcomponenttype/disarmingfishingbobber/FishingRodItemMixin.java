@@ -3,8 +3,7 @@
  */
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.disarmingfishingbobber;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import moriyashiine.enchancement.common.component.entity.DisarmingFishingBobberComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -17,9 +16,9 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(FishingRodItem.class)
 public class FishingRodItemMixin {
-	@WrapOperation(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/ProjectileEntity;spawn(Lnet/minecraft/entity/projectile/ProjectileEntity;Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/item/ItemStack;)Lnet/minecraft/entity/projectile/ProjectileEntity;"))
-	private <T extends ProjectileEntity> T enchancment$disarmingFishingBobber(T projectile, ServerWorld world, ItemStack stack, Operation<T> original, World world0, PlayerEntity user) {
+	@WrapWithCondition(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/ProjectileEntity;spawn(Lnet/minecraft/entity/projectile/ProjectileEntity;Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/item/ItemStack;)Lnet/minecraft/entity/projectile/ProjectileEntity;"))
+	private <T extends ProjectileEntity> boolean enchancment$disarmingFishingBobber(T projectile, ServerWorld world, ItemStack stack, World world0, PlayerEntity user) {
 		DisarmingFishingBobberComponent.maybeSet(user, stack, projectile);
-		return original.call(projectile, world, stack);
+		return true;
 	}
 }

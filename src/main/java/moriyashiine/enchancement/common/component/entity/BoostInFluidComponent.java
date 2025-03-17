@@ -6,8 +6,9 @@ package moriyashiine.enchancement.common.component.entity;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.payload.BoostInFluidC2SPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import moriyashiine.enchancement.common.util.SubmersionGate;
-import net.minecraft.client.MinecraftClient;
+import moriyashiine.strawberrylib.api.module.SLibClientUtils;
+import moriyashiine.strawberrylib.api.module.SLibUtils;
+import moriyashiine.strawberrylib.api.objects.enums.SubmersionGate;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -47,7 +48,7 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 		hasBoost = boostStrength > 0;
 		if (hasBoost) {
 			if (shouldBoost) {
-				if (EnchancementUtil.isSubmerged(obj, SubmersionGate.ALL) && EnchancementUtil.isGroundedOrAirborne(obj, true)) {
+				if (SLibUtils.isSubmerged(obj, SubmersionGate.ALL) && SLibUtils.isGroundedOrAirborne(obj, true)) {
 					if (shouldAddVelocity()) {
 						boost = (float) MathHelper.clamp(boost + 0.0025, boostStrength * 0.075, boostStrength);
 						obj.addVelocity(0, boost, 0);
@@ -74,11 +75,11 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 				double y = obj.getY();
 				double z = obj.getZ();
 				ParticleEffect bubbleColumn = ParticleTypes.BUBBLE_COLUMN_UP, splash = ParticleTypes.SPLASH, bubble = ParticleTypes.BUBBLE;
-				if (EnchancementUtil.isSubmerged(obj, SubmersionGate.LAVA_ONLY)) {
+				if (SLibUtils.isSubmerged(obj, SubmersionGate.LAVA_ONLY)) {
 					bubbleColumn = ParticleTypes.LAVA;
 					splash = ParticleTypes.LAVA;
 					bubble = ParticleTypes.LAVA;
-				} else if (EnchancementUtil.isSubmerged(obj, SubmersionGate.POWDER_SNOW_ONLY)) {
+				} else if (SLibUtils.isSubmerged(obj, SubmersionGate.POWDER_SNOW_ONLY)) {
 					bubbleColumn = ParticleTypes.SNOWFLAKE;
 					splash = ParticleTypes.SNOWFLAKE;
 					bubble = ParticleTypes.SNOWFLAKE;
@@ -93,8 +94,8 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 				}
 			}
 			LivingEntity entity = obj.getControllingPassenger() instanceof PlayerEntity player ? player : obj;
-			if (entity == MinecraftClient.getInstance().player) {
-				if (entity.jumping && EnchancementUtil.isGroundedOrAirborne(obj, true)) {
+			if (SLibClientUtils.isHost(entity)) {
+				if (entity.jumping && SLibUtils.isGroundedOrAirborne(obj, true)) {
 					if (canUse(false)) {
 						shouldBoost = true;
 						BoostInFluidC2SPayload.send(obj, true);
@@ -116,7 +117,7 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 	}
 
 	public boolean canUse(boolean ignoreBoost) {
-		return (ignoreBoost || !shouldBoost) && EnchancementUtil.isSubmerged(obj, SubmersionGate.ALL);
+		return (ignoreBoost || !shouldBoost) && SLibUtils.isSubmerged(obj, SubmersionGate.ALL);
 	}
 
 	private boolean shouldAddVelocity() {

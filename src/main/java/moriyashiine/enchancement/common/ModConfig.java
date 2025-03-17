@@ -124,6 +124,7 @@ public class ModConfig extends MidnightConfig {
 	}
 
 	static {
+		// need to do this before mod init since I mixin into certain things before then
 		MidnightConfig.init(Enchancement.MOD_ID, ModConfig.class);
 	}
 }

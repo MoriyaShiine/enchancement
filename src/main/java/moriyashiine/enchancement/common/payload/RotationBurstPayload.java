@@ -3,16 +3,19 @@
  */
 package moriyashiine.enchancement.common.payload;
 
-import moriyashiine.enchancement.client.payload.AddMovementBurstParticlesPayload;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.component.entity.RotationBurstComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.strawberrylib.api.module.SLibUtils;
+import moriyashiine.strawberrylib.api.objects.enums.PacketTarget;
+import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
+import moriyashiine.strawberrylib.api.objects.records.ParticleVelocity;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.particle.ParticleTypes;
 
 public record RotationBurstPayload() implements CustomPayload {
 	public static final CustomPayload.Id<RotationBurstPayload> ID = new Id<>(Enchancement.id("rotation_burst"));
@@ -33,7 +36,7 @@ public record RotationBurstPayload() implements CustomPayload {
 			RotationBurstComponent rotationBurstComponent = ModEntityComponents.ROTATION_BURST.get(context.player());
 			if (rotationBurstComponent.hasRotationBurst() && rotationBurstComponent.canUse()) {
 				rotationBurstComponent.use();
-				PlayerLookup.tracking(context.player()).forEach(foundPlayer -> AddMovementBurstParticlesPayload.send(foundPlayer, context.player()));
+				SLibUtils.addParticles(context.player(), ParticleTypes.CLOUD, 8, ParticleAnchor.BODY, PacketTarget.OTHERS, ParticleVelocity.ZERO);
 			}
 		}
 	}

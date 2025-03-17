@@ -3,7 +3,7 @@
  */
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.felltrees;
 
-import moriyashiine.enchancement.common.event.FellTreesEvent;
+import moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype.FellTreesEvent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;

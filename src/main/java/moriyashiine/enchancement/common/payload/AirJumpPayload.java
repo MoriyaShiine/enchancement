@@ -3,16 +3,19 @@
  */
 package moriyashiine.enchancement.common.payload;
 
-import moriyashiine.enchancement.client.payload.AddAirJumpParticlesPayload;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.component.entity.AirJumpComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.strawberrylib.api.module.SLibUtils;
+import moriyashiine.strawberrylib.api.objects.enums.PacketTarget;
+import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
+import moriyashiine.strawberrylib.api.objects.records.ParticleVelocity;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.particle.ParticleTypes;
 
 public record AirJumpPayload() implements CustomPayload {
 	public static final CustomPayload.Id<AirJumpPayload> ID = new Id<>(Enchancement.id("air_jump"));
@@ -33,7 +36,7 @@ public record AirJumpPayload() implements CustomPayload {
 			AirJumpComponent airJumpComponent = ModEntityComponents.AIR_JUMP.get(context.player());
 			if (airJumpComponent.hasAirJump() && airJumpComponent.canUse()) {
 				airJumpComponent.use();
-				PlayerLookup.tracking(context.player()).forEach(foundPlayer -> AddAirJumpParticlesPayload.send(foundPlayer, context.player()));
+				SLibUtils.addParticles(context.player(), ParticleTypes.CLOUD, 8, ParticleAnchor.BASE, PacketTarget.OTHERS, ParticleVelocity.ZERO);
 			}
 		}
 	}

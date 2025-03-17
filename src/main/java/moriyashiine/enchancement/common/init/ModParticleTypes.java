@@ -3,27 +3,21 @@
  */
 package moriyashiine.enchancement.common.init;
 
-import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.particle.HoneyBubbleParticleEffect;
 import moriyashiine.enchancement.common.particle.SparkParticleEffect;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.minecraft.particle.ParticleType;
 import net.minecraft.particle.SimpleParticleType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
+
+import static moriyashiine.strawberrylib.api.module.SLibRegistries.registerParticleType;
 
 public class ModParticleTypes {
-	public static final SimpleParticleType BRIMSTONE_BUBBLE = FabricParticleTypes.simple();
-	public static final SimpleParticleType CRITICAL_TIPPER = FabricParticleTypes.simple();
-	public static final ParticleType<HoneyBubbleParticleEffect> HONEY_BUBBLE = FabricParticleTypes.complex(HoneyBubbleParticleEffect.CODEC, HoneyBubbleParticleEffect.PACKET_CODEC);
-	public static final ParticleType<SparkParticleEffect> SPARK = FabricParticleTypes.complex(SparkParticleEffect.CODEC, SparkParticleEffect.PACKET_CODEC);
-	public static final SimpleParticleType VELOCITY_LINE = FabricParticleTypes.simple();
+	public static final SimpleParticleType BRIMSTONE_BUBBLE = registerParticleType("brimstone_bubble", FabricParticleTypes.simple());
+	public static final SimpleParticleType CRITICAL_TIPPER = registerParticleType("critical_tipper", FabricParticleTypes.simple());
+	public static final ParticleType<HoneyBubbleParticleEffect> HONEY_BUBBLE = registerParticleType("honey_bubble", FabricParticleTypes.complex(HoneyBubbleParticleEffect.CODEC, HoneyBubbleParticleEffect.PACKET_CODEC));
+	public static final ParticleType<SparkParticleEffect> SPARK = registerParticleType("spark", FabricParticleTypes.complex(SparkParticleEffect.CODEC, SparkParticleEffect.PACKET_CODEC));
+	public static final SimpleParticleType VELOCITY_LINE = registerParticleType("velocity_line", FabricParticleTypes.simple());
 
 	public static void init() {
-		Registry.register(Registries.PARTICLE_TYPE, Enchancement.id("brimstone_bubble"), BRIMSTONE_BUBBLE);
-		Registry.register(Registries.PARTICLE_TYPE, Enchancement.id("critical_tipper"), CRITICAL_TIPPER);
-		Registry.register(Registries.PARTICLE_TYPE, Enchancement.id("honey_bubble"), HONEY_BUBBLE);
-		Registry.register(Registries.PARTICLE_TYPE, Enchancement.id("spark"), SPARK);
-		Registry.register(Registries.PARTICLE_TYPE, Enchancement.id("velocity_line"), VELOCITY_LINE);
 	}
 }

@@ -6,7 +6,7 @@ package moriyashiine.enchancement.common.component.entity;
 import moriyashiine.enchancement.client.payload.UseEruptionPayload;
 import moriyashiine.enchancement.common.enchantment.effect.EruptionEffect;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -110,7 +110,7 @@ public class EruptionComponent implements AutoSyncedComponent, CommonTickingComp
 	}
 
 	private static List<LivingEntity> getNearby(LivingEntity living) {
-		return living.getWorld().getEntitiesByClass(LivingEntity.class, new Box(living.getBlockPos()).expand(2, 2, 2), foundEntity ->
-				foundEntity.isAlive() && foundEntity.distanceTo(living) < 10 && EnchancementUtil.shouldHurt(living, foundEntity) && EnchancementUtil.canSee(living, foundEntity, 2));
+		return living.getWorld().getEntitiesByClass(LivingEntity.class, new Box(living.getBlockPos()).expand(2), foundEntity ->
+				foundEntity.isAlive() && foundEntity.distanceTo(living) < 10 && SLibUtils.shouldHurt(living, foundEntity) && SLibUtils.canSee(living, foundEntity, 2));
 	}
 }

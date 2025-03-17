@@ -5,15 +5,17 @@ package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import moriyashiine.enchancement.client.EnchancementClient;
-import moriyashiine.enchancement.client.payload.AddMovementBurstParticlesPayload;
 import moriyashiine.enchancement.common.enchantment.effect.RotationBurstEffect;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.payload.RotationBurstPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import net.minecraft.client.MinecraftClient;
+import moriyashiine.strawberrylib.api.module.SLibClientUtils;
+import moriyashiine.strawberrylib.api.module.SLibUtils;
+import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.Vec3d;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
@@ -75,7 +77,7 @@ public class RotationBurstComponent implements AutoSyncedComponent, CommonTickin
 	@Override
 	public void clientTick() {
 		tick();
-		if (hasRotationBurst && !obj.isSpectator() && obj == MinecraftClient.getInstance().player) {
+		if (hasRotationBurst && !obj.isSpectator() && SLibClientUtils.isHost(obj)) {
 			if (obj.jumping) {
 				ticksPressingJump = Math.min(2, ++ticksPressingJump);
 			} else {
@@ -84,7 +86,7 @@ public class RotationBurstComponent implements AutoSyncedComponent, CommonTickin
 			boolean pressingKey = EnchancementClient.ROTATION_BURST_KEYBINDING.isPressed();
 			if (pressingKey && !wasPressingKey && canUse()) {
 				use();
-				AddMovementBurstParticlesPayload.addParticles(obj);
+				SLibClientUtils.addParticles(obj, ParticleTypes.CLOUD, 8, ParticleAnchor.BODY);
 				RotationBurstPayload.send();
 			}
 			wasPressingKey = pressingKey;
@@ -120,7 +122,7 @@ public class RotationBurstComponent implements AutoSyncedComponent, CommonTickin
 	}
 
 	public boolean canUse() {
-		return Math.max(cooldown, resetDelayTicks) == 0 && !obj.isOnGround() && EnchancementUtil.isGroundedOrAirborne(obj);
+		return Math.max(cooldown, resetDelayTicks) == 0 && !obj.isOnGround() && SLibUtils.isGroundedOrAirborne(obj);
 	}
 
 	public void use() {

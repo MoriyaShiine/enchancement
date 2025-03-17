@@ -6,7 +6,7 @@ package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.lightning
 import moriyashiine.enchancement.common.component.entity.LightningDashComponent;
 import moriyashiine.enchancement.common.enchantment.effect.LightningDashEffect;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -37,7 +37,7 @@ public abstract class ItemStackMixin {
 	private void enchancement$lightningDash(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
 		ItemStack stack = user.getStackInHand(hand);
 		setUsing(user, false);
-		if (hand == Hand.MAIN_HAND && !EnchancementUtil.isSufficientlyHigh(user, 0.25) && canUse(user.getRandom(), stack)) {
+		if (hand == Hand.MAIN_HAND && !SLibUtils.isSufficientlyHigh(user, 0.25) && canUse(user.getRandom(), stack)) {
 			setUsing(user, true);
 			user.setCurrentHand(hand);
 			cir.setReturnValue(ActionResult.CONSUME);

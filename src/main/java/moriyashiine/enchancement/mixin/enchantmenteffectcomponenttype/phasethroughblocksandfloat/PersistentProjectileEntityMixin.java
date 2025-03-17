@@ -8,6 +8,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moriyashiine.enchancement.common.component.entity.PhaseThroughBlocksAndFloatComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -69,7 +70,7 @@ public abstract class PersistentProjectileEntityMixin extends Entity {
 							onEntityHit(new EntityHitResult(entities.get(i)));
 						}
 						getWorld().emitGameEvent(GameEvent.TELEPORT, blockHitResult.getPos(), GameEvent.Emitter.of(this));
-						getWorld().playSound(null, getBlockPos(), ModSoundEvents.ENTITY_GENERIC_TELEPORT, getSoundCategory(), 0.75F, 1);
+						SLibUtils.playSound(this, ModSoundEvents.ENTITY_GENERIC_TELEPORT, 0.75F, 1);
 						setPosition(end);
 					} else {
 						for (int i = 0; i < 6; i++) {

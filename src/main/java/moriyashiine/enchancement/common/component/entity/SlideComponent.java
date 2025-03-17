@@ -5,13 +5,14 @@ package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import moriyashiine.enchancement.client.EnchancementClient;
-import moriyashiine.enchancement.client.util.EnchancementClientUtil;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModParticleTypes;
 import moriyashiine.enchancement.common.payload.StartSlidingC2SPayload;
 import moriyashiine.enchancement.common.payload.StopSlidingC2SPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.strawberrylib.api.module.SLibClientUtils;
+import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
@@ -129,7 +130,7 @@ public class SlideComponent implements CommonTickingComponent {
 	public void clientTick() {
 		tick();
 		if (hasSlide) {
-			if (!obj.isSpectator() && obj == MinecraftClient.getInstance().player) {
+			if (!obj.isSpectator() && SLibClientUtils.isHost(obj)) {
 				GameOptions options = MinecraftClient.getInstance().options;
 				if (EnchancementClient.SLIDE_KEYBINDING.isPressed() && !obj.isSneaking() && !obj.jumping) {
 					if (canSlide()) {
@@ -143,7 +144,7 @@ public class SlideComponent implements CommonTickingComponent {
 					StopSlidingC2SPayload.send();
 				}
 			}
-			if (isSliding() && EnchancementClientUtil.shouldAddParticles(obj)) {
+			if (isSliding() && SLibClientUtils.shouldAddParticles(obj)) {
 				Vector2d vec = new Vector2d(adjustedVelocity.x(), adjustedVelocity.z());
 				vec.normalize();
 				vec.mul(obj.getWidth() / 2);
@@ -188,7 +189,7 @@ public class SlideComponent implements CommonTickingComponent {
 	}
 
 	public boolean canSlide() {
-		return !isSliding() && obj.isOnGround() && EnchancementUtil.isGroundedOrAirborne(obj);
+		return !isSliding() && obj.isOnGround() && SLibUtils.isGroundedOrAirborne(obj);
 	}
 
 	private boolean hitsBlock(BlockPos pos) {

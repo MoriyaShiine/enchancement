@@ -3,11 +3,12 @@
  */
 package moriyashiine.enchancement.common.component.entity;
 
-import moriyashiine.enchancement.client.util.EnchancementClientUtil;
 import moriyashiine.enchancement.common.enchantment.effect.GlideEffect;
 import moriyashiine.enchancement.common.payload.GlideC2SPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import net.minecraft.client.MinecraftClient;
+import moriyashiine.strawberrylib.api.module.SLibClientUtils;
+import moriyashiine.strawberrylib.api.module.SLibUtils;
+import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
@@ -60,14 +61,12 @@ public class GlideComponent implements AutoSyncedComponent, CommonTickingCompone
 	public void clientTick() {
 		tick();
 		boolean shouldBeGliding = obj.jumping && airTicks >= minDuration && airTicks <= GlideEffect.getMaxDuration(obj) && canGlide();
-		if (obj == MinecraftClient.getInstance().player && gliding != shouldBeGliding) {
+		if (gliding != shouldBeGliding && SLibClientUtils.isHost(obj)) {
 			gliding = shouldBeGliding;
 			GlideC2SPayload.send(gliding);
 		}
-		if (isGliding() && EnchancementClientUtil.shouldAddParticles(obj)) {
-			for (int i = 0; i < 4; i++) {
-				obj.getWorld().addParticle(ParticleTypes.SMALL_GUST, obj.getParticleX(1), obj.getY(), obj.getParticleZ(1), 0, 0, 0);
-			}
+		if (isGliding()) {
+			SLibClientUtils.addParticles(obj, ParticleTypes.SMALL_GUST, 4, ParticleAnchor.BASE);
 		}
 	}
 
@@ -80,6 +79,6 @@ public class GlideComponent implements AutoSyncedComponent, CommonTickingCompone
 	}
 
 	public boolean canGlide() {
-		return minDuration > 0 && EnchancementUtil.isGroundedOrAirborne(obj);
+		return minDuration > 0 && SLibUtils.isGroundedOrAirborne(obj);
 	}
 }

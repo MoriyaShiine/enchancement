@@ -11,10 +11,8 @@ import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.tag.ModItemTags;
+import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
-import net.fabricmc.fabric.api.tag.convention.v2.ConventionalFluidTags;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
@@ -26,9 +24,6 @@ import net.minecraft.enchantment.effect.EnchantmentValueEffect;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -43,10 +38,8 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TriState;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.world.RaycastContext;
 import org.apache.commons.lang3.mutable.MutableFloat;
 import org.jetbrains.annotations.Nullable;
 
@@ -251,82 +244,9 @@ public class EnchancementUtil {
 
 	// misc
 
-	public static boolean canSee(Entity host, Entity target, int range) {
-		if (target.getWorld() == host.getWorld() && host.getPos().distanceTo(target.getPos()) <= 32) {
-			for (int i = -range; i <= range; i++) {
-				if (host.getWorld().raycast(new RaycastContext(host.getPos().add(0, i, 0), target.getPos().add(0, i, 0), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, host)).getType() == HitResult.Type.MISS) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public static boolean isGroundedOrAirborne(LivingEntity living, boolean allowWater) {
-		if (living instanceof PlayerEntity player && player.getAbilities().flying) {
-			return false;
-		}
-		if (!allowWater) {
-			if (living.isTouchingWater() || living.isSwimming()) {
-				return false;
-			}
-		}
-		return !living.isGliding() && !living.hasVehicle() && !living.isClimbing();
-	}
-
-	public static boolean isGroundedOrAirborne(LivingEntity living) {
-		return isGroundedOrAirborne(living, false);
-	}
-
-	public static boolean isSneakingOrSitting(Entity entity, boolean sneaking) {
-		if (sneaking) {
-			return true;
-		}
-		if (entity instanceof TameableEntity tameable && tameable.isSitting()) {
-			return true;
-		}
-		return entity instanceof MobEntity && entity.getControllingPassenger() instanceof PlayerEntity player && player.isSneaking();
-	}
-
-	public static boolean isSubmerged(Entity entity, SubmersionGate gate) {
-		for (int i = 0; i < MathHelper.ceil(entity.getHeight()); i++) {
-			BlockState blockState = entity.getWorld().getBlockState(entity.getBlockPos().up(i));
-			if (gate.allowsWater() && !blockState.isOf(Blocks.BUBBLE_COLUMN) && blockState.getFluidState().isIn(ConventionalFluidTags.WATER)) {
-				return true;
-			}
-			if (gate.allowsLava() && blockState.getFluidState().isIn(ConventionalFluidTags.LAVA)) {
-				return true;
-			}
-			if (gate.allowsPowderSnow() && blockState.isOf(Blocks.POWDER_SNOW)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public static boolean isSufficientlyHigh(Entity entity, double distanceFromGround) {
-		return entity.getWorld().raycast(new RaycastContext(entity.getPos(), entity.getPos().add(0, -distanceFromGround, 0), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.ANY, entity)).getType() == HitResult.Type.MISS;
-	}
-
 	public static void resetFallDistance(Entity entity) {
 		entity.onLanding();
 		ModEntityComponents.LIGHTNING_DASH.maybeGet(entity).ifPresent(LightningDashComponent::cancel);
-	}
-
-	public static boolean shouldHurt(Entity attacker, Entity target) {
-		if (attacker == null || target == null) {
-			return true;
-		}
-		if (attacker == target || attacker.hasPassenger(target) || target.hasPassenger(attacker)) {
-			return false;
-		}
-		if (attacker.isTeammate(target) || target.isTeammate(attacker)) {
-			return false;
-		}
-		if (attacker instanceof PlayerEntity attackingPlayer && target instanceof PlayerEntity targetPlayer) {
-			return attackingPlayer.shouldDamagePlayer(targetPlayer);
-		}
-		return true;
 	}
 
 	public static int getFlooredHealth(LivingEntity living) {
@@ -381,6 +301,6 @@ public class EnchancementUtil {
 	// specific enchantment
 
 	public static boolean shouldFluidWalk(Entity entity) {
-		return !isSneakingOrSitting(entity, entity.isSneaking()) && hasAnyEnchantmentsWith(entity, ModEnchantmentEffectComponentTypes.FLUID_WALKING);
+		return !SLibUtils.isSneakingOrSitting(entity, entity.isSneaking()) && hasAnyEnchantmentsWith(entity, ModEnchantmentEffectComponentTypes.FLUID_WALKING);
 	}
 }

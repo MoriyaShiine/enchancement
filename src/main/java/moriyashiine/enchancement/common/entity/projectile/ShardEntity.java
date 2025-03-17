@@ -3,9 +3,8 @@
  */
 package moriyashiine.enchancement.common.entity.projectile;
 
-import moriyashiine.enchancement.common.init.ModDamageTypes;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -67,7 +66,7 @@ public abstract class ShardEntity extends PersistentProjectileEntity {
 				entity = part.owner;
 			}
 			Entity owner = getOwner();
-			if (EnchancementUtil.shouldHurt(owner, entity) && entity.damage(serverWorld, ModDamageTypes.create(getWorld(), getDamageType(), this, owner), (float) getDamage())) {
+			if (SLibUtils.shouldHurt(owner, entity) && entity.damage(serverWorld, serverWorld.getDamageSources().create(getDamageType(), this, owner), (float) getDamage())) {
 				onTargetHit(entity);
 				playSound(getHitSound(), 1, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
 				addParticles();

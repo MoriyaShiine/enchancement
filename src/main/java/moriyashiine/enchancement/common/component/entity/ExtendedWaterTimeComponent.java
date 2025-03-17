@@ -3,10 +3,12 @@
  */
 package moriyashiine.enchancement.common.component.entity;
 
-import moriyashiine.enchancement.client.util.EnchancementClientUtil;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.strawberrylib.api.module.SLibClientUtils;
+import moriyashiine.strawberrylib.api.module.SLibUtils;
+import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -14,7 +16,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.math.MathHelper;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
@@ -51,21 +52,21 @@ public class ExtendedWaterTimeComponent implements AutoSyncedComponent, CommonTi
 	public void serverTick() {
 		tick();
 		if (ticksWet > 0 && obj.age % 10 == 0 && !obj.isWet()) {
-			obj.getWorld().playSound(null, obj.getBlockPos(), SoundEvents.BLOCK_POINTED_DRIPSTONE_DRIP_WATER, obj.getSoundCategory(), 1, 1);
+			SLibUtils.playSound(obj, SoundEvents.BLOCK_POINTED_DRIPSTONE_DRIP_WATER);
 		}
 	}
 
 	@Override
 	public void clientTick() {
 		tick();
-		if (ticksWet > 0 && !obj.isInvisible() && !obj.isWet() && EnchancementClientUtil.shouldAddParticles(obj)) {
+		if (ticksWet > 0 && !obj.isInvisible() && !obj.isWet()) {
 			for (EquipmentSlot slot : EquipmentSlot.values()) {
 				if (slot.isArmorSlot()) {
 					if (EnchantmentHelper.hasAnyEnchantmentsWith(obj.getEquippedStack(slot), ModEnchantmentEffectComponentTypes.EXTEND_WATER_TIME)) {
 						if (slot == EquipmentSlot.FEET) {
-							obj.getWorld().addParticle(ParticleTypes.FALLING_WATER, obj.getParticleX(1), obj.getY() + obj.getHeight() * 0.15, obj.getParticleZ(1), 0, 0, 0);
+							SLibClientUtils.addParticles(obj, ParticleTypes.FALLING_WATER, 1, ParticleAnchor.FEET);
 						} else {
-							obj.getWorld().addParticle(ParticleTypes.FALLING_WATER, obj.getParticleX(1), obj.getY() + obj.getHeight() * MathHelper.nextDouble(obj.getRandom(), 0.4, 0.8), obj.getParticleZ(1), 0, 0, 0);
+							SLibClientUtils.addParticles(obj, ParticleTypes.FALLING_WATER, 1, ParticleAnchor.CHEST);
 						}
 					}
 				}

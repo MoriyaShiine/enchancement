@@ -5,12 +5,19 @@ package moriyashiine.enchancement.common;
 
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import moriyashiine.enchancement.client.payload.*;
-import moriyashiine.enchancement.common.event.*;
+import moriyashiine.enchancement.common.event.enchantmenteffect.ModifySubmergedMovementSpeedEvent;
+import moriyashiine.enchancement.common.event.config.AnimalArmorEnchantmentEvent;
+import moriyashiine.enchancement.common.event.config.RebalanceEnchantmentsEvent;
+import moriyashiine.enchancement.common.event.config.ToggleablePassivesEvent;
+import moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype.*;
+import moriyashiine.enchancement.common.event.internal.*;
 import moriyashiine.enchancement.common.init.*;
 import moriyashiine.enchancement.common.payload.*;
 import moriyashiine.enchancement.common.reloadlisteners.EnchantingMaterialReloadListener;
 import moriyashiine.enchancement.common.reloadlisteners.HeadDropsReloadListener;
 import moriyashiine.enchancement.common.reloadlisteners.MineOreVeinsBaseBlockReloadListener;
+import moriyashiine.strawberrylib.api.SLib;
+import moriyashiine.strawberrylib.api.event.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
@@ -43,19 +50,13 @@ public class Enchancement implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		ModComponentTypes.init();
-		ModEnchantmentEffectComponentTypes.init();
-		ModEnchantmentEntityEffectTypes.init();
-		ModLootConditionTypes.init();
-		ModEntityTypes.init();
-		ModParticleTypes.init();
-		ModSoundEvents.init();
-		ModScreenHandlerTypes.init();
+		SLib.init(MOD_ID);
+		initRegistries();
+		initEvents();
+		initPayloads();
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(EnchantingMaterialReloadListener.ID, EnchantingMaterialReloadListener::new);
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new HeadDropsReloadListener());
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new MineOreVeinsBaseBlockReloadListener());
-		initEvents();
-		initPayloads();
 		isApoliLoaded = FabricLoader.getInstance().isModLoaded("apoli");
 		for (String mod : new String[]{"enchdesc", "enchantedtooltips", "idwtialsimmoedm"}) {
 			if (FabricLoader.getInstance().isModLoaded(mod)) {
@@ -69,37 +70,64 @@ public class Enchancement implements ModInitializer {
 		return Identifier.of(MOD_ID, value);
 	}
 
+	private void initRegistries() {
+		ModComponentTypes.init();
+		ModEnchantmentEffectComponentTypes.init();
+		ModEnchantmentEntityEffectTypes.init();
+		ModEntityTypes.init();
+		ModLootConditionTypes.init();
+		ModParticleTypes.init();
+		ModScreenHandlerTypes.init();
+		ModSoundEvents.init();
+	}
+
 	private void initEvents() {
 		// internal
 		ServerLifecycleEvents.SERVER_STARTED.register(new CacheEnchantmentRegistryEvent());
 		ServerPlayConnectionEvents.JOIN.register(new EnforceConfigMatchEvent.Join());
 		ServerTickEvents.END_SERVER_TICK.register(new EnforceConfigMatchEvent.Tick());
+		ServerLivingEntityEvents.AFTER_DAMAGE.register(new InCombatEvent());
 		ServerPlayConnectionEvents.JOIN.register(new SyncEnchantingMaterialMapEvent.Join());
 		ServerTickEvents.END_SERVER_TICK.register(new SyncEnchantingMaterialMapEvent.Tick());
+		ServerTickEvents.END_SERVER_TICK.register(new SyncVelocitiesEvent());
 		// config
+		DefaultItemComponentEvents.MODIFY.register(new AnimalArmorEnchantmentEvent.AllowComponent());
+		EnchantmentEvents.ALLOW_ENCHANTING.register(new AnimalArmorEnchantmentEvent.AllowEnchanting());
 		EnchantmentEvents.ALLOW_ENCHANTING.register(new RebalanceEnchantmentsEvent.AllowEnchanting());
 		ServerLifecycleEvents.SERVER_STARTED.register(new RebalanceEnchantmentsEvent.ServerStarted());
 		UseBlockCallback.EVENT.register(new RebalanceEnchantmentsEvent.UseBlock());
 		UseItemCallback.EVENT.register(new RebalanceEnchantmentsEvent.UseItem());
-		MultiplyMovementSpeedEvent.EVENT.register(new ToggleablePassivesEvent());
-		// enchantment
-		DefaultItemComponentEvents.MODIFY.register(new AnimalArmorEnchantmentEvent.AllowComponent());
-		EnchantmentEvents.ALLOW_ENCHANTING.register(new AnimalArmorEnchantmentEvent.AllowEnchanting());
-		ServerEntityEvents.EQUIPMENT_CHANGE.register(new EquipmentResetEvent());
+		MultiplyMovementSpeedEvent.EVENT.register(new ToggleablePassivesEvent.AirMobility());
+		TickEntityEvent.EVENT.register(new ToggleablePassivesEvent.Efficiency());
+		// enchantment effect
+		MultiplyMovementSpeedEvent.EVENT.register(new ModifySubmergedMovementSpeedEvent());
+		// enchantment effect component type
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(new AllowInterruptionEvent());
-		ServerTickEvents.END_SERVER_TICK.register(new BounceEvent());
+		PreventFallDamageEvent.EVENT.register(new BounceEvent.Bounce());
+		ServerTickEvents.END_SERVER_TICK.register(new BounceEvent.DelayedBounce());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new BuryEntityEvent.Unbury());
 		UseEntityCallback.EVENT.register(new BuryEntityEvent.Use());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new ChainLightningEvent());
-		PlayerBlockBreakEvents.BEFORE.register(new FellTreesEvent());
+		ModifyJumpVelocityEvent.EVENT.register(new ChargeJumpEvent());
+		ModifyCriticalStatusEvent.EVENT.register(new CriticalTipperEvent());
+		ServerEntityEvents.EQUIPMENT_CHANGE.register(new EquipmentResetEvent());
+		ModifyBlockBreakingSpeedEvent.MULTIPLY_TOTAL.register(new FellTreesEvent.BreakSpeed());
+		PlayerBlockBreakEvents.BEFORE.register(new FellTreesEvent.FellTree());
+		PreventFallDamageEvent.EVENT.register(new FluidWalkingEvent());
 		ServerLivingEntityEvents.AFTER_DEATH.register(new FreezeEvent.HandleDeath());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new FreezeEvent.HandleDamage());
 		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register(new HeadDropsEvent());
-		ServerLivingEntityEvents.AFTER_DAMAGE.register(new InCombatEvent());
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(new LeechingTridentEvent());
-		PlayerBlockBreakEvents.BEFORE.register(new MineOreVeinsEvent());
-		MultiplyMovementSpeedEvent.EVENT.register(new ModifyMovementSpeedEvent());
-		MultiplyMovementSpeedEvent.EVENT.register(new RageEvent());
+		PreventFallDamageEvent.EVENT.register(new LightningDashEvent());
+		ModifyBlockBreakingSpeedEvent.MULTIPLY_TOTAL.register(new MineOreVeinsEvent.BreakSpeed());
+		PlayerBlockBreakEvents.BEFORE.register(new MineOreVeinsEvent.MineOres());
+		ModifyDamageTakenEvent.Base.ADD.register(new RageEvent.DamageDealtBonus());
+		ModifyDamageTakenEvent.Final.MULTIPLY_TOTAL.register(new RageEvent.DamageTakenReduction());
+		MultiplyMovementSpeedEvent.EVENT.register(new RageEvent.SpeedBonus());
+		ModifyJumpVelocityEvent.EVENT.register(new RotationBurstEvent());
+		PreventFallDamageEvent.EVENT.register(new SlamEvent.FallImmunity());
+		ModifyJumpVelocityEvent.EVENT.register(new SlamEvent.JumpBoost());
+		ModifyJumpVelocityEvent.EVENT.register(new SlideEvent());
 	}
 
 	private void initPayloads() {
@@ -109,11 +137,8 @@ public class Enchancement implements ModInitializer {
 		PayloadTypeRegistry.playS2C().register(SyncEnchantingTableBookshelfCountPayload.ID, SyncEnchantingTableBookshelfCountPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(SyncEnchantingTableCostPayload.ID, SyncEnchantingTableCostPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(SyncHookedVelocityPayload.ID, SyncHookedVelocityPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(AddAirJumpParticlesPayload.ID, AddAirJumpParticlesPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(AddEmitterParticlePayload.ID, AddEmitterParticlePayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(AddLightningDashParticlesPayload.ID, AddLightningDashParticlesPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(AddMoltenParticlesPayload.ID, AddMoltenParticlesPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(AddMovementBurstParticlesPayload.ID, AddMovementBurstParticlesPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(BoostInFluidS2CPayload.ID, BoostInFluidS2CPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(GlideS2CPayload.ID, GlideS2CPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(PlayBrimstoneFireSoundPayload.ID, PlayBrimstoneFireSoundPayload.CODEC);

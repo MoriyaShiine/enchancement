@@ -9,7 +9,7 @@ import moriyashiine.enchancement.common.init.ModDamageTypes;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
 import moriyashiine.enchancement.common.init.ModParticleTypes;
 import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
@@ -112,7 +112,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 						}
 						damage *= getDamageMultiplier(distanceTraveled);
 						damage = Math.min(50, damage);
-						entity.damage(serverWorld, ModDamageTypes.create(getWorld(), ModDamageTypes.BRIMSTONE, this, owner), (float) damage);
+						entity.damage(serverWorld, serverWorld.getDamageSources().create(ModDamageTypes.BRIMSTONE, this, owner), (float) damage);
 						hitEntities.add(entity);
 						if (entity instanceof LivingEntity living && living.isDead()) {
 							killedEntities.add(living);
@@ -222,7 +222,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 
 	private boolean canEntityBeHit(Entity owner, Entity entity) {
 		if (entity instanceof LivingEntity || entity.getType().isIn(ModEntityTypeTags.BRIMSTONE_HITTABLE)) {
-			return !hitEntities.contains(entity) && entity.isAlive() && EnchancementUtil.shouldHurt(owner, entity);
+			return !hitEntities.contains(entity) && entity.isAlive() && SLibUtils.shouldHurt(owner, entity);
 		}
 		return false;
 	}

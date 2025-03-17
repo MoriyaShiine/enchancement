@@ -7,6 +7,8 @@ import moriyashiine.enchancement.common.enchantment.effect.TeleportOnHitEffect;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.strawberrylib.api.module.SLibClientUtils;
+import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -46,9 +48,7 @@ public class TeleportOnHitComponent implements AutoSyncedComponent, ClientTickin
 	@Override
 	public void clientTick() {
 		if (teleportsOnBlockHit() || teleportsOnEntityHit()) {
-			for (int i = 0; i < 8; i++) {
-				obj.getWorld().addParticle(ParticleTypes.REVERSE_PORTAL, obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 0, 0);
-			}
+			SLibClientUtils.addParticles(obj, ParticleTypes.REVERSE_PORTAL, 8, ParticleAnchor.BODY);
 		}
 	}
 

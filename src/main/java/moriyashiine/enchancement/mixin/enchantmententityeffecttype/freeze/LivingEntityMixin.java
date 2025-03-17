@@ -4,9 +4,8 @@
 package moriyashiine.enchancement.mixin.enchantmententityeffecttype.freeze;
 
 import moriyashiine.enchancement.common.component.entity.FrozenComponent;
-import moriyashiine.enchancement.common.init.ModDamageTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -53,7 +52,7 @@ public abstract class LivingEntityMixin extends Entity {
 			FrozenComponent frozenComponent = ModEntityComponents.FROZEN.get(this);
 			if (frozenComponent.isFrozen()) {
 				Entity lastFreezingAttacker = frozenComponent.getLastFreezingAttacker();
-				if (EnchancementUtil.shouldHurt(lastFreezingAttacker, entity) && entity.damage(serverWorld, ModDamageTypes.create(getWorld(), DamageTypes.FREEZE, lastFreezingAttacker == null ? this : lastFreezingAttacker), 8)) {
+				if (SLibUtils.shouldHurt(lastFreezingAttacker, entity) && entity.damage(serverWorld, serverWorld.getDamageSources().create(DamageTypes.FREEZE, lastFreezingAttacker == null ? this : lastFreezingAttacker), 8)) {
 					damage(serverWorld, getDamageSources().generic(), 2);
 					entity.setFrozenTicks(800);
 				}

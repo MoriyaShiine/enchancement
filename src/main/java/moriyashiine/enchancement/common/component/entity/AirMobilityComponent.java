@@ -5,7 +5,7 @@ package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModComponentTypes;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
@@ -51,7 +51,7 @@ public class AirMobilityComponent implements CommonTickingComponent {
 				if (resetBypassTicks == 0) {
 					ticksInAir = 0;
 				}
-			} else if (EnchancementUtil.isGroundedOrAirborne(obj) && EnchancementUtil.isSufficientlyHigh(obj, 1)) {
+			} else if (SLibUtils.isGroundedOrAirborne(obj) && SLibUtils.isSufficientlyHigh(obj, 1)) {
 				ticksInAir++;
 			}
 		} else {

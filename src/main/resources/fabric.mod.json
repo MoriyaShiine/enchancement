@@ -45,7 +45,8 @@
 	"fabricloader": "*",
 	"minecraft": "~1.21.4",
 	"java": ">=21",
-	"fabric-api": "*"
+	"fabric-api": "*",
+	"strawberrylib": "*"
   },
   "custom": {
 	"cardinal-components": [

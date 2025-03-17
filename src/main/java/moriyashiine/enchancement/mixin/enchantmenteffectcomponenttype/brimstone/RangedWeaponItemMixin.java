@@ -33,7 +33,7 @@ public class RangedWeaponItemMixin {
 		if (weaponStack.contains(ModComponentTypes.BRIMSTONE_DAMAGE)) {
 			int damage = weaponStack.getOrDefault(ModComponentTypes.BRIMSTONE_DAMAGE, 0);
 			if (world instanceof ServerWorld serverWorld) {
-				shooter.damage(serverWorld, ModDamageTypes.create(world, ModDamageTypes.LIFE_DRAIN), shooter.getMaxHealth() * (damage / 20F));
+				shooter.damage(serverWorld, world.getDamageSources().create(ModDamageTypes.LIFE_DRAIN), shooter.getMaxHealth() * (damage / 20F));
 			}
 			BrimstoneEntity brimstone = new BrimstoneEntity(world, shooter, weaponStack);
 			brimstone.setDamage(damage);

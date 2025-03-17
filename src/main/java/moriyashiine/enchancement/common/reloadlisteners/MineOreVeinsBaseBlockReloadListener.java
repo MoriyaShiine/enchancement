@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.event.MineOreVeinsEvent;
+import moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype.MineOreVeinsEvent;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.block.Block;
 import net.minecraft.registry.Registries;

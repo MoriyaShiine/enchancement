@@ -6,12 +6,12 @@ package moriyashiine.enchancement.common.component.entity;
 import moriyashiine.enchancement.client.payload.AddLightningDashParticlesPayload;
 import moriyashiine.enchancement.client.payload.UseLightningDashPayload;
 import moriyashiine.enchancement.client.sound.SparkSoundInstance;
-import moriyashiine.enchancement.client.util.EnchancementClientUtil;
 import moriyashiine.enchancement.common.enchantment.effect.LightningDashEffect;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.particle.SparkParticleEffect;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.strawberrylib.api.module.SLibClientUtils;
+import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
@@ -117,7 +117,7 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 	@Override
 	public void serverTick() {
 		tick();
-		if (isFloating() && !EnchancementUtil.isSufficientlyHigh(obj, 0.25)) {
+		if (isFloating() && !SLibUtils.isSufficientlyHigh(obj, 0.25)) {
 			cancel();
 			sync();
 		}
@@ -146,7 +146,7 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 	@Override
 	public void clientTick() {
 		tick();
-		if (isFloating() && EnchancementClientUtil.shouldAddParticles(obj)) {
+		if (isFloating() && SLibClientUtils.shouldAddParticles(obj)) {
 			for (int i = 0; i <= 4; i++) {
 				obj.getWorld().addParticle(new SparkParticleEffect(obj.getPos().addRandom(obj.getRandom(), 1)), obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 0, 0);
 			}
@@ -200,6 +200,6 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 				new Box(
 						obj.getX() - 0.5 - range, obj.getY() - 1.5, obj.getZ() - 0.5 - range,
 						obj.getX() + 0.5 + range, obj.getY() + 0.5 + range, obj.getZ() + 0.5 + range
-				), foundEntity -> foundEntity.isAlive() && foundEntity.distanceTo(obj) < 10 && EnchancementUtil.shouldHurt(obj, foundEntity) && EnchancementUtil.canSee(obj, foundEntity, range));
+				), foundEntity -> foundEntity.isAlive() && foundEntity.distanceTo(obj) < 10 && SLibUtils.shouldHurt(obj, foundEntity) && SLibUtils.canSee(obj, foundEntity, range));
 	}
 }
