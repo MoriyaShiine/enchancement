@@ -145,7 +145,8 @@
 	"entity.torch.LivingEntityMixin",
 	"entity.torch.PersistentProjectileEntityMixin",
 	"util.EnchantedCountIncreaseLootFunctionMixin",
-	"util.PersistentProjectileEntityMixin"
+	"util.PersistentProjectileEntityMixin",
+	"util.SetEnchantmentsLootFunctionMixin"
   ],
   "client": [
 	"config.allowduplicatekeybindings.client.ControlsListWidgetKeyBindingEntryMixin",
