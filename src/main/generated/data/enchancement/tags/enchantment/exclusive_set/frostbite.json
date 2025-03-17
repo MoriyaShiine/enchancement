@@ -1,8 +1,5 @@
 {
   "values": [
-	{
-	  "id": "minecraft:fire_aspect",
-	  "required": false
-	}
+	"minecraft:fire_aspect"
   ]
 }

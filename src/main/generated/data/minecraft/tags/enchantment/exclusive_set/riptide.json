@@ -1,8 +1,5 @@
 {
   "values": [
-	{
-	  "id": "enchancement:warp",
-	  "required": false
-	}
+	"enchancement:warp"
   ]
 }

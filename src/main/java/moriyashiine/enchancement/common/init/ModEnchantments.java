@@ -113,13 +113,23 @@ public class ModEnchantments {
 		return RegistryKey.of(RegistryKeys.ENCHANTMENT, Enchancement.id(id));
 	}
 
-	public static Enchantment create(Identifier id, RegistryEntryList<Item> supportedItems, int maxLevel, AttributeModifierSlot slot, EffectsAdder effectsAdder) {
-		if (FabricLoader.getInstance().isDevelopmentEnvironment() && !ModEnchantmentTagProvider.ALL_ENCHANCEMENT_ENCHANTMENTS.contains(id)) {
-			ModEnchantmentTagProvider.ALL_ENCHANCEMENT_ENCHANTMENTS.add(id);
+	public static Enchantment create(Identifier id, boolean treasure, RegistryEntryList<Item> supportedItems, int maxLevel, AttributeModifierSlot slot, EffectsAdder effectsAdder) {
+		if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+			if (treasure) {
+				if (!ModEnchantmentTagProvider.TREASURE_ENCHANTMENTS.contains(id)) {
+					ModEnchantmentTagProvider.TREASURE_ENCHANTMENTS.add(id);
+				}
+			} else if (!ModEnchantmentTagProvider.NON_TREASURE_ENCHANTMENTS.contains(id)) {
+				ModEnchantmentTagProvider.NON_TREASURE_ENCHANTMENTS.add(id);
+			}
 		}
 		Enchantment.Builder builder = Enchantment.builder(Enchantment.definition(supportedItems, 5, maxLevel, Enchantment.leveledCost(5, 6), Enchantment.leveledCost(20, 6), 2, slot));
 		effectsAdder.addEffects(builder);
 		return builder.build(id);
+	}
+
+	public static Enchantment create(Identifier id, RegistryEntryList<Item> supportedItems, int maxLevel, AttributeModifierSlot slot, EffectsAdder effectsAdder) {
+		return create(id, false, supportedItems, maxLevel, slot, effectsAdder);
 	}
 
 	public static void bootstrap(Registerable<Enchantment> registerable) {
@@ -570,7 +580,7 @@ public class ModEnchantments {
 					);
 				}));
 		// mace
-		registerable.register(METEOR, create(METEOR.getValue(),
+		registerable.register(METEOR, create(METEOR.getValue(), true,
 				itemLookup.getOrThrow(ItemTags.MACE_ENCHANTABLE),
 				2,
 				AttributeModifierSlot.MAINHAND,
@@ -618,7 +628,7 @@ public class ModEnchantments {
 											.movement(MovementPredicate.fallDistance(NumberRange.DoubleRange.atLeast(1.5)))
 							));
 				}));
-		registerable.register(THUNDERSTRUCK, create(THUNDERSTRUCK.getValue(),
+		registerable.register(THUNDERSTRUCK, create(THUNDERSTRUCK.getValue(), true,
 				itemLookup.getOrThrow(ItemTags.MACE_ENCHANTABLE),
 				2,
 				AttributeModifierSlot.MAINHAND,

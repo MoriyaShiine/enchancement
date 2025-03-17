@@ -5,10 +5,10 @@ package moriyashiine.enchancement.common;
 
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import moriyashiine.enchancement.client.payload.*;
-import moriyashiine.enchancement.common.event.enchantmenteffect.ModifySubmergedMovementSpeedEvent;
 import moriyashiine.enchancement.common.event.config.AnimalArmorEnchantmentEvent;
 import moriyashiine.enchancement.common.event.config.RebalanceEnchantmentsEvent;
 import moriyashiine.enchancement.common.event.config.ToggleablePassivesEvent;
+import moriyashiine.enchancement.common.event.enchantmenteffect.ModifySubmergedMovementSpeedEvent;
 import moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype.*;
 import moriyashiine.enchancement.common.event.internal.*;
 import moriyashiine.enchancement.common.init.*;

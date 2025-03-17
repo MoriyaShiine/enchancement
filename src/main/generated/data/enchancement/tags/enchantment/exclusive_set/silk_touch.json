@@ -1,8 +1,5 @@
 {
   "values": [
-	{
-	  "id": "minecraft:silk_touch",
-	  "required": false
-	}
+	"minecraft:silk_touch"
   ]
 }

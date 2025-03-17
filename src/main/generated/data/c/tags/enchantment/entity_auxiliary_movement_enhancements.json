@@ -1,28 +1,10 @@
 {
   "values": [
-	{
-	  "id": "enchancement:strafe",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:dash",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:gale",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:slide",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:buoy",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:sticky",
-	  "required": false
-	}
+	"enchancement:strafe",
+	"enchancement:dash",
+	"enchancement:gale",
+	"enchancement:slide",
+	"enchancement:buoy",
+	"enchancement:sticky"
   ]
 }

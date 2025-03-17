@@ -1,16 +1,7 @@
 {
   "values": [
-	{
-	  "id": "enchancement:bouncy",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:buoy",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:sticky",
-	  "required": false
-	}
+	"enchancement:bouncy",
+	"enchancement:buoy",
+	"enchancement:sticky"
   ]
 }

@@ -3,14 +3,12 @@
  */
 package moriyashiine.enchancement.common.util;
 
-import net.fabricmc.fabric.api.item.v1.EnchantingContext;
-
 public enum OverhaulMode {
-	ACCEPTABLE(EnchantingContext.ACCEPTABLE), PRIMARY(EnchantingContext.PRIMARY), NON_TREASURE(EnchantingContext.ACCEPTABLE), DISABLED(EnchantingContext.ACCEPTABLE);
+	ALL(true), NON_TREASURE(false), DISABLED(false);
 
-	public final EnchantingContext context;
+	public final boolean allowsTreasure;
 
-	OverhaulMode(EnchantingContext context) {
-		this.context = context;
+	OverhaulMode(boolean allowsTreasure) {
+		this.allowsTreasure = allowsTreasure;
 	}
 }

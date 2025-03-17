@@ -1,140 +1,38 @@
 {
   "values": [
-	{
-	  "id": "enchancement:assimilation",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:perception",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:veil",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:adrenaline",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:amphibious",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:strafe",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:wardenspine",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:dash",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:gale",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:slide",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:bouncy",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:buoy",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:sticky",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:berserk",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:frostbite",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:chaos",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:delay",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:phasing",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:brimstone",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:scatter",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:torch",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:leech",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:warp",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:meteor",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:thunderstruck",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:molten",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:extracting",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:beheading",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:lumberjack",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:bury",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:scooping",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:apex",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:disarm",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:grapple",
-	  "required": false
-	}
+	"enchancement:assimilation",
+	"enchancement:perception",
+	"enchancement:veil",
+	"enchancement:adrenaline",
+	"enchancement:amphibious",
+	"enchancement:strafe",
+	"enchancement:wardenspine",
+	"enchancement:dash",
+	"enchancement:gale",
+	"enchancement:slide",
+	"enchancement:bouncy",
+	"enchancement:buoy",
+	"enchancement:sticky",
+	"enchancement:berserk",
+	"enchancement:frostbite",
+	"enchancement:chaos",
+	"enchancement:delay",
+	"enchancement:phasing",
+	"enchancement:brimstone",
+	"enchancement:scatter",
+	"enchancement:torch",
+	"enchancement:leech",
+	"enchancement:warp",
+	"enchancement:molten",
+	"enchancement:extracting",
+	"enchancement:beheading",
+	"enchancement:lumberjack",
+	"enchancement:bury",
+	"enchancement:scooping",
+	"enchancement:apex",
+	"enchancement:disarm",
+	"enchancement:grapple",
+	"enchancement:meteor",
+	"enchancement:thunderstruck"
   ]
 }

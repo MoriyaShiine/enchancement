@@ -11,7 +11,6 @@ import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
 import moriyashiine.enchancement.common.tag.ModEnchantmentTags;
 import moriyashiine.enchancement.common.tag.ModItemTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import moriyashiine.enchancement.common.util.OverhaulMode;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.Blocks;
@@ -353,9 +352,10 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 			if (enchantment.isIn(ModEnchantmentTags.ALWAYS_SELECTABLE)) {
 				return true;
 			}
-			if (stack.canBeEnchantedWith(enchantment, ModConfig.overhaulEnchantingTable.context)) {
-				return ModConfig.overhaulEnchantingTable != OverhaulMode.NON_TREASURE || enchantment.isIn(EnchantmentTags.NON_TREASURE);
+			if (ModConfig.overhaulEnchantingTable.allowsTreasure && enchantment.isIn(EnchantmentTags.TREASURE)) {
+				return true;
 			}
+			return enchantment.isIn(EnchantmentTags.IN_ENCHANTING_TABLE);
 		}
 		return false;
 	}

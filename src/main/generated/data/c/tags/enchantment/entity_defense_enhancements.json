@@ -1,20 +1,8 @@
 {
   "values": [
-	{
-	  "id": "enchancement:veil",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:amphibious",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:wardenspine",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:bouncy",
-	  "required": false
-	}
+	"enchancement:veil",
+	"enchancement:amphibious",
+	"enchancement:wardenspine",
+	"enchancement:bouncy"
   ]
 }

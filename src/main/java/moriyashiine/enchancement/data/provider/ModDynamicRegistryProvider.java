@@ -14,8 +14,8 @@ import net.minecraft.registry.entry.RegistryEntry;
 import java.util.concurrent.CompletableFuture;
 
 public class ModDynamicRegistryProvider extends FabricDynamicRegistryProvider {
-	public ModDynamicRegistryProvider(FabricDataOutput output) {
-		super(output, CompletableFuture.supplyAsync(BuiltinRegistries::createWrapperLookup));
+	public ModDynamicRegistryProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+		super(output, registriesFuture);
 	}
 
 	@Override

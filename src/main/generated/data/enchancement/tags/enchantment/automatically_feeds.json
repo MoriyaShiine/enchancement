@@ -1,8 +1,5 @@
 {
   "values": [
-	{
-	  "id": "enchancement:assimilation",
-	  "required": false
-	}
+	"enchancement:assimilation"
   ]
 }

@@ -12,6 +12,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentLevelEntry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.EnchantmentTags;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -72,7 +73,7 @@ public class EnchantmentHelperMixin {
 			}
 		}
 		if (enchantments.isEmpty()) {
-			@Nullable RegistryEntry<Enchantment> entry = EnchancementUtil.getRandomEnchantment(stack, random);
+			@Nullable RegistryEntry<Enchantment> entry = EnchancementUtil.getRandomEnchantment(stack, random, EnchantmentTags.IN_ENCHANTING_TABLE);
 			if (entry != null) {
 				enchantments.add(new EnchantmentLevelEntry(entry, 1));
 			}

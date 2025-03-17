@@ -53,7 +53,7 @@ public class ModConfig extends MidnightConfig {
 	public static boolean invertedList = false;
 
 	@Entry
-	public static OverhaulMode overhaulEnchantingTable = OverhaulMode.ACCEPTABLE;
+	public static OverhaulMode overhaulEnchantingTable = OverhaulMode.ALL;
 
 	@Entry
 	public static boolean singleLevelMode = true;

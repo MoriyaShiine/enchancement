@@ -18,6 +18,7 @@ import net.minecraft.item.Items;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.EnchantmentTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
@@ -39,7 +40,7 @@ public abstract class PillagerEntityMixin extends IllagerEntity {
 		if (ModConfig.enhanceMobs) {
 			if (getRandom().nextFloat() <= getRaid().getEnchantmentChance()) {
 				ItemStack stack = new ItemStack(Items.CROSSBOW);
-				@Nullable RegistryEntry<Enchantment> enchantment = EnchancementUtil.getRandomEnchantment(stack, getRandom());
+				@Nullable RegistryEntry<Enchantment> enchantment = EnchancementUtil.getRandomEnchantment(stack, getRandom(), EnchantmentTags.ON_MOB_SPAWN_EQUIPMENT);
 				if (enchantment != null) {
 					stack.addEnchantment(enchantment, enchantment.value().getMaxLevel());
 				}
@@ -52,7 +53,7 @@ public abstract class PillagerEntityMixin extends IllagerEntity {
 	@WrapOperation(method = "enchantMainHandItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;applyEnchantmentProvider(Lnet/minecraft/item/ItemStack;Lnet/minecraft/registry/DynamicRegistryManager;Lnet/minecraft/registry/RegistryKey;Lnet/minecraft/world/LocalDifficulty;Lnet/minecraft/util/math/random/Random;)V"))
 	private void enchancement$enhanceMobs(ItemStack stack, DynamicRegistryManager registryManager, RegistryKey<EnchantmentProvider> providerKey, LocalDifficulty localDifficulty, Random random, Operation<Void> original) {
 		if (ModConfig.enhanceMobs) {
-			@Nullable RegistryEntry<Enchantment> enchantment = EnchancementUtil.getRandomEnchantment(stack, getRandom());
+			@Nullable RegistryEntry<Enchantment> enchantment = EnchancementUtil.getRandomEnchantment(stack, getRandom(), EnchantmentTags.ON_MOB_SPAWN_EQUIPMENT);
 			if (enchantment != null) {
 				stack.addEnchantment(enchantment, enchantment.value().getMaxLevel());
 				return;

@@ -13,6 +13,7 @@ import net.minecraft.entity.mob.VindicatorEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.EnchantmentTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -32,7 +33,7 @@ public abstract class VindicatorEntityMixin extends IllagerEntity {
 		if (ModConfig.enhanceMobs) {
 			ItemStack stack = new ItemStack(Items.IRON_AXE);
 			if (getRandom().nextFloat() <= getRaid().getEnchantmentChance()) {
-				@Nullable RegistryEntry<Enchantment> enchantment = EnchancementUtil.getRandomEnchantment(stack, getRandom());
+				@Nullable RegistryEntry<Enchantment> enchantment = EnchancementUtil.getRandomEnchantment(stack, getRandom(), EnchantmentTags.ON_MOB_SPAWN_EQUIPMENT);
 				if (enchantment != null) {
 					stack.addEnchantment(enchantment, enchantment.value().getMaxLevel());
 				}

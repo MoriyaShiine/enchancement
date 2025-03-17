@@ -1,20 +1,8 @@
 {
   "values": [
-	{
-	  "id": "enchancement:berserk",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:delay",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:scooping",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:apex",
-	  "required": false
-	}
+	"enchancement:berserk",
+	"enchancement:delay",
+	"enchancement:scooping",
+	"enchancement:apex"
   ]
 }

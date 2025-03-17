@@ -1,16 +1,7 @@
 {
   "values": [
-	{
-	  "id": "enchancement:meteor",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:thunderstruck",
-	  "required": false
-	},
-	{
-	  "id": "minecraft:wind_burst",
-	  "required": false
-	}
+	"enchancement:meteor",
+	"enchancement:thunderstruck",
+	"minecraft:wind_burst"
   ]
 }

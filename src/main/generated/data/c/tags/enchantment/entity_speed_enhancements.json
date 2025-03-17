@@ -1,12 +1,6 @@
 {
   "values": [
-	{
-	  "id": "enchancement:adrenaline",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:buoy",
-	  "required": false
-	}
+	"enchancement:adrenaline",
+	"enchancement:buoy"
   ]
 }

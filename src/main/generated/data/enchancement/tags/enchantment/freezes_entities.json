@@ -1,8 +1,5 @@
 {
   "values": [
-	{
-	  "id": "enchancement:frostbite",
-	  "required": false
-	}
+	"enchancement:frostbite"
   ]
 }

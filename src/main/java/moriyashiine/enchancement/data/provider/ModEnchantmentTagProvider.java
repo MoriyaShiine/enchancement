@@ -10,7 +10,6 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEnchantmentTags;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.registry.BuiltinRegistries;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.EnchantmentTags;
 import net.minecraft.util.Identifier;
@@ -20,70 +19,73 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class ModEnchantmentTagProvider extends FabricTagProvider.EnchantmentTagProvider {
-	public static final List<Identifier> ALL_ENCHANCEMENT_ENCHANTMENTS = new ArrayList<>();
+	public static final List<Identifier> NON_TREASURE_ENCHANTMENTS = new ArrayList<>(), TREASURE_ENCHANTMENTS = new ArrayList<>();
 
-	public ModEnchantmentTagProvider(FabricDataOutput output) {
-		super(output, CompletableFuture.supplyAsync(BuiltinRegistries::createWrapperLookup));
+	public ModEnchantmentTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
+		super(output, completableFuture);
 	}
 
 	@Override
 	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
 		FabricTagProvider<Enchantment>.FabricTagBuilder nonTreasure = getOrCreateTagBuilder(EnchantmentTags.NON_TREASURE);
+		FabricTagProvider<Enchantment>.FabricTagBuilder treasure = getOrCreateTagBuilder(EnchantmentTags.TREASURE);
 		FabricTagProvider<Enchantment>.FabricTagBuilder tooltipOrder = getOrCreateTagBuilder(EnchantmentTags.TOOLTIP_ORDER);
-		ALL_ENCHANCEMENT_ENCHANTMENTS.forEach(nonTreasure::addOptional);
-		ALL_ENCHANCEMENT_ENCHANTMENTS.forEach(tooltipOrder::addOptional);
+		NON_TREASURE_ENCHANTMENTS.forEach(nonTreasure::add);
+		TREASURE_ENCHANTMENTS.forEach(treasure::add);
+		NON_TREASURE_ENCHANTMENTS.forEach(tooltipOrder::add);
+		TREASURE_ENCHANTMENTS.forEach(tooltipOrder::add);
 
 		getOrCreateTagBuilder(ModEnchantmentTags.AUTOMATICALLY_FEEDS)
-				.addOptional(ModEnchantments.ASSIMILATION);
+				.add(ModEnchantments.ASSIMILATION);
 		getOrCreateTagBuilder(ModEnchantmentTags.ANIMAL_ARMOR_ENCHANTMENTS)
-				.addOptional(ModEnchantments.BOUNCY)
-				.addOptional(ModEnchantments.BUOY)
-				.addOptional(ModEnchantments.STICKY);
+				.add(ModEnchantments.BOUNCY)
+				.add(ModEnchantments.BUOY)
+				.add(ModEnchantments.STICKY);
 		getOrCreateTagBuilder(ModEnchantmentTags.DISALLOWS_TOGGLEABLE_PASSIVE)
-				.addOptional(Enchantments.EFFICIENCY)
-				.addOptional(Enchantments.RIPTIDE);
+				.add(Enchantments.EFFICIENCY)
+				.add(Enchantments.RIPTIDE);
 		getOrCreateTagBuilder(ModEnchantmentTags.FREEZES_ENTITIES)
-				.addOptional(ModEnchantments.FROSTBITE);
+				.add(ModEnchantments.FROSTBITE);
 
 		getOrCreateTagBuilder(ConventionalEnchantmentTags.ENTITY_AUXILIARY_MOVEMENT_ENHANCEMENTS)
-				.addOptional(ModEnchantments.STRAFE)
-				.addOptional(ModEnchantments.DASH)
-				.addOptional(ModEnchantments.GALE)
-				.addOptional(ModEnchantments.SLIDE)
-				.addOptional(ModEnchantments.BUOY)
-				.addOptional(ModEnchantments.STICKY);
+				.add(ModEnchantments.STRAFE)
+				.add(ModEnchantments.DASH)
+				.add(ModEnchantments.GALE)
+				.add(ModEnchantments.SLIDE)
+				.add(ModEnchantments.BUOY)
+				.add(ModEnchantments.STICKY);
 		getOrCreateTagBuilder(ConventionalEnchantmentTags.ENTITY_DEFENSE_ENHANCEMENTS)
-				.addOptional(ModEnchantments.VEIL)
-				.addOptional(ModEnchantments.AMPHIBIOUS)
-				.addOptional(ModEnchantments.WARDENSPINE)
-				.addOptional(ModEnchantments.BOUNCY);
+				.add(ModEnchantments.VEIL)
+				.add(ModEnchantments.AMPHIBIOUS)
+				.add(ModEnchantments.WARDENSPINE)
+				.add(ModEnchantments.BOUNCY);
 		getOrCreateTagBuilder(ConventionalEnchantmentTags.ENTITY_SPEED_ENHANCEMENTS)
-				.addOptional(ModEnchantments.ADRENALINE)
-				.addOptional(ModEnchantments.BUOY);
+				.add(ModEnchantments.ADRENALINE)
+				.add(ModEnchantments.BUOY);
 		getOrCreateTagBuilder(ConventionalEnchantmentTags.INCREASE_ENTITY_DROPS)
-				.addOptional(ModEnchantments.SCOOPING);
+				.add(ModEnchantments.SCOOPING);
 		getOrCreateTagBuilder(ConventionalEnchantmentTags.WEAPON_DAMAGE_ENHANCEMENTS)
-				.addOptional(ModEnchantments.BERSERK)
-				.addOptional(ModEnchantments.DELAY)
-				.addOptional(ModEnchantments.SCOOPING)
-				.addOptional(ModEnchantments.APEX);
+				.add(ModEnchantments.BERSERK)
+				.add(ModEnchantments.DELAY)
+				.add(ModEnchantments.SCOOPING)
+				.add(ModEnchantments.APEX);
 
 		getOrCreateTagBuilder(ModEnchantmentTags.BOUNCY_EXCLUSIVE_SET)
-				.addOptional(Enchantments.FEATHER_FALLING);
+				.add(Enchantments.FEATHER_FALLING);
 		getOrCreateTagBuilder(ModEnchantmentTags.BRIMSTONE_EXCLUSIVE_SET)
-				.addOptional(Enchantments.PIERCING);
+				.add(Enchantments.PIERCING);
 		getOrCreateTagBuilder(ModEnchantmentTags.FROSTBITE_EXCLUSIVE_SET)
-				.addOptional(Enchantments.FIRE_ASPECT);
+				.add(Enchantments.FIRE_ASPECT);
 		getOrCreateTagBuilder(ModEnchantmentTags.MACE_EXCLUSIVE_SET)
-				.addOptional(ModEnchantments.METEOR)
-				.addOptional(ModEnchantments.THUNDERSTRUCK)
-				.addOptional(Enchantments.WIND_BURST);
+				.add(ModEnchantments.METEOR)
+				.add(ModEnchantments.THUNDERSTRUCK)
+				.add(Enchantments.WIND_BURST);
 		getOrCreateTagBuilder(ModEnchantmentTags.SILK_TOUCH_EXCLUSIVE_SET)
-				.addOptional(Enchantments.SILK_TOUCH);
+				.add(Enchantments.SILK_TOUCH);
 		getOrCreateTagBuilder(ModEnchantmentTags.WARDENSPINE_EXCLUSIVE_SET)
-				.addOptional(Enchantments.THORNS);
+				.add(Enchantments.THORNS);
 
 		getOrCreateTagBuilder(EnchantmentTags.RIPTIDE_EXCLUSIVE_SET)
-				.addOptional(ModEnchantments.WARP);
+				.add(ModEnchantments.WARP);
 	}
 }

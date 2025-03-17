@@ -13,6 +13,7 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.EnchantmentTags;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
@@ -26,7 +27,7 @@ public class MobEntityMixin {
 	@Inject(method = "enchantEquipment(Lnet/minecraft/world/ServerWorldAccess;Lnet/minecraft/entity/EquipmentSlot;Lnet/minecraft/util/math/random/Random;FLnet/minecraft/world/LocalDifficulty;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/MobEntity;equipStack(Lnet/minecraft/entity/EquipmentSlot;Lnet/minecraft/item/ItemStack;)V", shift = At.Shift.AFTER))
 	private void enchancement$enhanceMobs(ServerWorldAccess world, EquipmentSlot slot, Random random, float power, LocalDifficulty localDifficulty, CallbackInfo ci, @Local ItemStack stack) {
 		if (ModConfig.enhanceMobs) {
-			RegistryEntry<Enchantment> enchantment = EnchancementUtil.getRandomEnchantment(stack, random);
+			RegistryEntry<Enchantment> enchantment = EnchancementUtil.getRandomEnchantment(stack, random, EnchantmentTags.ON_MOB_SPAWN_EQUIPMENT);
 			if (enchantment != null) {
 				ItemEnchantmentsComponent.Builder builder = new ItemEnchantmentsComponent.Builder(ItemEnchantmentsComponent.DEFAULT);
 				builder.add(enchantment, random.nextBetween(enchantment.value().getMinLevel(), enchantment.value().getMaxLevel()));

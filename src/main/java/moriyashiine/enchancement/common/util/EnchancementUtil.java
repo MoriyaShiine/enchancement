@@ -32,6 +32,7 @@ import net.minecraft.item.equipment.ArmorMaterials;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryOwner;
+import net.minecraft.registry.tag.EnchantmentTags;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
@@ -104,11 +105,13 @@ public class EnchancementUtil {
 	// disable disallowed enchantments
 
 	@Nullable
-	public static RegistryEntry<Enchantment> getRandomEnchantment(ItemStack stack, Random random) {
+	public static RegistryEntry<Enchantment> getRandomEnchantment(ItemStack stack, Random random, TagKey<Enchantment> checkedTag) {
 		List<RegistryEntry<Enchantment>> enchantments = new ArrayList<>();
 		for (RegistryEntry<Enchantment> enchantment : ENCHANTMENTS) {
-			if (stack.isOf(Items.BOOK) || stack.isOf(Items.ENCHANTED_BOOK) || stack.canBeEnchantedWith(enchantment, EnchantingContext.ACCEPTABLE)) {
-				enchantments.add(enchantment);
+			if (enchantment.isIn(checkedTag)) {
+				if (stack.isOf(Items.BOOK) || stack.isOf(Items.ENCHANTED_BOOK) || stack.canBeEnchantedWith(enchantment, EnchantingContext.ACCEPTABLE)) {
+					enchantments.add(enchantment);
+				}
 			}
 		}
 		if (!enchantments.isEmpty()) {
@@ -124,7 +127,7 @@ public class EnchancementUtil {
 		}
 		List<RegistryEntry<Enchantment>> enchantments = new ArrayList<>();
 		for (RegistryEntry<Enchantment> entry : ENCHANTMENTS) {
-			if (isEnchantmentAllowed(entry)) {
+			if (isEnchantmentAllowed(entry) && entry.isIn(EnchantmentTags.ON_RANDOM_LOOT)) {
 				if (stack.isOf(Items.BOOK) || stack.isOf(Items.ENCHANTED_BOOK) || stack.canBeEnchantedWith(entry, EnchantingContext.ACCEPTABLE)) {
 					enchantments.add(entry);
 				}
