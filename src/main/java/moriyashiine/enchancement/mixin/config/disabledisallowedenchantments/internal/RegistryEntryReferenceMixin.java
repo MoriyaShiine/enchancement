@@ -9,7 +9,6 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryOwner;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -19,16 +18,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @SuppressWarnings("unchecked")
 @Mixin(RegistryEntry.Reference.class)
-public class RegistryEntryReferenceMixin<T> {
-	@Shadow
-	@Final
-	private RegistryEntryOwner<T> owner;
-
+public abstract class RegistryEntryReferenceMixin<T> {
 	@Shadow
 	private @Nullable RegistryKey<T> registryKey;
 
 	@Shadow
 	private @Nullable T value;
+
+	@Shadow
+	public abstract boolean ownerEquals(RegistryEntryOwner<T> owner);
 
 	@Inject(method = "hasKeyAndValue", at = @At("HEAD"))
 	private void enchancement$disableDisallowedEnchantments(CallbackInfoReturnable<Boolean> cir) {
@@ -47,7 +45,7 @@ public class RegistryEntryReferenceMixin<T> {
 
 	@Unique
 	private void validate() {
-		if (EnchancementUtil.ENCHANTMENT_REGISTRY_OWNER != null && owner.ownerEquals((RegistryEntryOwner<T>) EnchancementUtil.ENCHANTMENT_REGISTRY_OWNER)) {
+		if (EnchancementUtil.ENCHANTMENT_REGISTRY_OWNER != null && ownerEquals((RegistryEntryOwner<T>) EnchancementUtil.ENCHANTMENT_REGISTRY_OWNER)) {
 			if (registryKey == null || value == null) {
 				registryKey = (RegistryKey<T>) ModEnchantments.EMPTY_KEY;
 				value = (T) ModEnchantments.EMPTY;
