@@ -18,6 +18,7 @@
 	"config.disabledisallowedenchantments.internal.SimpleRegistryMixin",
 	"config.disabledisallowedenchantments.internal.TagGroupLoaderMixin",
 	"config.disabledurability.AnvilScreenHandlerMixin",
+	"config.disabledurability.CreeperEntityMixin",
 	"config.disabledurability.ItemStackMixin",
 	"config.disabledurability.SetDamageLootFunctionMixin",
 	"config.disablevelocitychecks.ServerPlayNetworkHandlerMixin",
