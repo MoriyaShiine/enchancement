@@ -5,14 +5,14 @@ body:
     attributes:
       label: Confirmations
       options:
-        - label: I can verify that I am running the mod on the latest possible Minecraft version.
-          required: true
-        - label: I can verify that the issue I am reporting exists on the latest possible Mod version.
-          required: true
+        - label: I can verify that I am running the mod on the latest Minecraft version the mod is released for.
+        - label: I can verify that the issue I am reporting exists on the latest Mod version.
+        - label: I checked this box anyway without reading and acknowledge that this issue will be closed if this box is checked.
+        - label: I acknowledge that this issue will only be fixed for the latest Minecraft version the mod is released for.
   - type: input
     attributes:
       label: Mod version (NOT Minecraft version)
-      description: Please do not put "latest,", "newest," or some other vague indiciator.
+      description: Please do not put "latest," "newest," or any other vague indicator.
     validations:
       required: true
   - type: textarea
