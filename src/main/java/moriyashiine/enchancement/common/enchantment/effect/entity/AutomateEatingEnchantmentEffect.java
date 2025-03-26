@@ -49,8 +49,8 @@ public record AutomateEatingEnchantmentEffect(NumberRange.IntRange hungerRange) 
 
 	private static ItemStack getMostNeededFood(PlayerEntity player) {
 		ItemStack food = ItemStack.EMPTY;
-		for (int i = 0; i < player.getInventory().main.size(); i++) {
-			ItemStack stack = player.getInventory().main.get(i);
+		for (int i = 0; i < player.getInventory().getMainStacks().size(); i++) {
+			ItemStack stack = player.getInventory().getMainStacks().get(i);
 			if (stack.contains(DataComponentTypes.FOOD)) {
 				FoodComponent component = stack.get(DataComponentTypes.FOOD);
 				if (needsFood(player, component)) {

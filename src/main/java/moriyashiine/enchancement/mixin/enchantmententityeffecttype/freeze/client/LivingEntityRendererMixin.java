@@ -38,17 +38,17 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, S extend
 	}
 
 	@Inject(method = "updateRenderState(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/client/render/entity/state/LivingEntityRenderState;F)V", at = @At("TAIL"))
-	private void enchancement$freeze(T entity, S state, float tickDelta, CallbackInfo ci) {
+	private void enchancement$freeze(T entity, S state, float tickProgress, CallbackInfo ci) {
 		FrozenComponent frozenComponent = ModEntityComponents.FROZEN.get(entity);
 		isFrozen = frozenComponent.isFrozen();
 		if (isFrozen) {
 			state.shaking = false;
 			state.pose = frozenComponent.getForcedPose();
-			state.yawDegrees = frozenComponent.getForcedHeadYaw();
+			state.relativeHeadYaw = frozenComponent.getForcedHeadYaw();
 			state.bodyYaw = frozenComponent.getForcedBodyYaw();
 			state.pitch = frozenComponent.getForcedPitch();
-			state.limbFrequency = frozenComponent.getForcedLimbFrequency();
-			state.limbAmplitudeMultiplier = frozenComponent.getForcedLimbAmplitudeMultiplier();
+			state.limbSwingAnimationProgress = frozenComponent.getForcedLimbSwingAnimationProgress();
+			state.limbSwingAmplitude = frozenComponent.getForcedLimbSwingAmplitude();
 			state.age = frozenComponent.getForcedClientAge();
 		}
 	}

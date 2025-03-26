@@ -52,8 +52,8 @@ public class TorchEntity extends PersistentProjectileEntity {
 	public void tick() {
 		super.tick();
 		if (getWorld().isClient) {
-			getWorld().addParticle(ParticleTypes.FLAME, getX(), getY(), getZ(), 0, 0, 0);
-			getWorld().addParticle(ParticleTypes.SMOKE, getX(), getY(), getZ(), 0, 0, 0);
+			getWorld().addParticleClient(ParticleTypes.FLAME, getX(), getY(), getZ(), 0, 0, 0);
+			getWorld().addParticleClient(ParticleTypes.SMOKE, getX(), getY(), getZ(), 0, 0, 0);
 		}
 	}
 
@@ -108,9 +108,9 @@ public class TorchEntity extends PersistentProjectileEntity {
 	@Override
 	public void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
-		canFunction = nbt.getBoolean("CanFunction");
-		shouldPlaceTorch = nbt.getBoolean("ShouldPlaceTorch");
-		ignitionTime = nbt.getInt("IgnitionTime");
+		canFunction = nbt.getBoolean("CanFunction", false);
+		shouldPlaceTorch = nbt.getBoolean("ShouldPlaceTorch", false);
+		ignitionTime = nbt.getInt("IgnitionTime", 0);
 	}
 
 	@Override

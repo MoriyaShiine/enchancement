@@ -13,7 +13,7 @@ import net.minecraft.entity.projectile.TridentEntity;
 public class LeechingTridentEvent implements ServerLivingEntityEvents.AfterDamage {
 	@Override
 	public void afterDamage(LivingEntity entity, DamageSource source, float baseDamageTaken, float damageTaken, boolean blocked) {
-		if (source.getSource() instanceof TridentEntity trident && !entity.blockedByShield(source)) {
+		if (!blocked && source.getSource() instanceof TridentEntity trident) {
 			LeechingTridentComponent leechingTridentComponent = ModEntityComponents.LEECHING_TRIDENT.get(trident);
 			if (leechingTridentComponent.hasLeech() && leechingTridentComponent.getStuckEntity() == null) {
 				if (trident.getOwner() != entity) {

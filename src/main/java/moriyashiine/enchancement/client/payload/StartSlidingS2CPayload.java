@@ -16,13 +16,14 @@ import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-public record StartSlidingS2CPayload(int entityId, float velocityX, float velocityZ, float adjustedVelocityX,
-									 float adjustedVelocityZ, float cachedYaw) implements CustomPayload {
+public record StartSlidingS2CPayload(int entityId, SlideComponent.SlideVelocity velocity,
+									 SlideComponent.SlideVelocity adjustedVelocity,
+									 float cachedYaw) implements CustomPayload {
 	public static final Id<StartSlidingS2CPayload> ID = new Id<>(Enchancement.id("start_sliding_s2c"));
-	public static final PacketCodec<PacketByteBuf, StartSlidingS2CPayload> CODEC = PacketCodec.tuple(PacketCodecs.VAR_INT, StartSlidingS2CPayload::entityId, PacketCodecs.FLOAT, StartSlidingS2CPayload::velocityX,
-			PacketCodecs.FLOAT, StartSlidingS2CPayload::velocityZ,
-			PacketCodecs.FLOAT, StartSlidingS2CPayload::adjustedVelocityX,
-			PacketCodecs.FLOAT, StartSlidingS2CPayload::adjustedVelocityZ,
+	public static final PacketCodec<PacketByteBuf, StartSlidingS2CPayload> CODEC = PacketCodec.tuple(
+			PacketCodecs.VAR_INT, StartSlidingS2CPayload::entityId,
+			SlideComponent.SlideVelocity.PACKET_CODEC, StartSlidingS2CPayload::velocity,
+			SlideComponent.SlideVelocity.PACKET_CODEC, StartSlidingS2CPayload::adjustedVelocity,
 			PacketCodecs.FLOAT, StartSlidingS2CPayload::cachedYaw,
 			StartSlidingS2CPayload::new);
 
@@ -32,7 +33,7 @@ public record StartSlidingS2CPayload(int entityId, float velocityX, float veloci
 	}
 
 	public static void send(ServerPlayerEntity player, Entity entity, SlideComponent.SlideVelocity velocity, SlideComponent.SlideVelocity adjustedVelocity, float cachedYaw) {
-		ServerPlayNetworking.send(player, new StartSlidingS2CPayload(entity.getId(), velocity.x(), velocity.z(), adjustedVelocity.x(), adjustedVelocity.z(), cachedYaw));
+		ServerPlayNetworking.send(player, new StartSlidingS2CPayload(entity.getId(), velocity, adjustedVelocity, cachedYaw));
 	}
 
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<StartSlidingS2CPayload> {
@@ -40,7 +41,7 @@ public record StartSlidingS2CPayload(int entityId, float velocityX, float veloci
 		public void receive(StartSlidingS2CPayload payload, ClientPlayNetworking.Context context) {
 			Entity entity = context.player().getWorld().getEntityById(payload.entityId());
 			if (entity instanceof PlayerEntity player) {
-				ModEntityComponents.SLIDE.get(player).startSliding(new SlideComponent.SlideVelocity(payload.velocityX(), payload.velocityZ()), new SlideComponent.SlideVelocity(payload.adjustedVelocityX(), payload.adjustedVelocityZ()), payload.cachedYaw());
+				ModEntityComponents.SLIDE.get(player).startSliding(payload.velocity(), payload.adjustedVelocity(), payload.cachedYaw());
 			}
 		}
 	}

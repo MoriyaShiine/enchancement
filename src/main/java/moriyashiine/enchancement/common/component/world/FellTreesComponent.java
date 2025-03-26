@@ -3,13 +3,14 @@
  */
 package moriyashiine.enchancement.common.component.world;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -17,7 +18,6 @@ import net.minecraft.world.World;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,17 +31,15 @@ public class FellTreesComponent implements ServerTickingComponent {
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		NbtList treesToCut = tag.getList("TreesToCut", NbtElement.COMPOUND_TYPE);
-		for (int i = 0; i < treesToCut.size(); i++) {
-			this.treesToCut.add(Tree.deserialize(registryLookup, treesToCut.getCompound(i)));
+		treesToCut.clear();
+		for (Tree tree : tag.get("TreesToCut", Tree.CODEC.listOf(), registryLookup.getOps(NbtOps.INSTANCE)).orElse(List.of())) {
+			treesToCut.add(new Tree(new ArrayList<>(tree.logs), new ArrayList<>(tree.drops), tree.originalPos, tree.stack.copy()));
 		}
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		NbtList treesToCut = new NbtList();
-		treesToCut.addAll(this.treesToCut.stream().map(tree -> tree.serialize(registryLookup)).toList());
-		tag.put("TreesToCut", treesToCut);
+		tag.put("TreesToCut", Tree.CODEC.listOf(), registryLookup.getOps(NbtOps.INSTANCE), List.copyOf(treesToCut));
 	}
 
 	@Override
@@ -63,41 +61,16 @@ public class FellTreesComponent implements ServerTickingComponent {
 		treesToCut.add(tree);
 	}
 
-	public static class Tree {
-		public final List<BlockPos> logs;
-		public final List<ItemStack> drops;
-		public final BlockPos originalPos;
-		public final ItemStack stack;
+	public record Tree(List<BlockPos> logs, List<ItemStack> drops, BlockPos originalPos, ItemStack stack) {
+		public static final Codec<Tree> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+						BlockPos.CODEC.listOf().fieldOf("logs").forGetter(Tree::logs),
+						ItemStack.CODEC.listOf().fieldOf("drops").forGetter(Tree::drops),
+						BlockPos.CODEC.fieldOf("original_pos").forGetter(Tree::originalPos),
+						ItemStack.CODEC.fieldOf("stack").forGetter(Tree::stack))
+				.apply(instance, Tree::new));
 
-		public Tree(List<BlockPos> logs, BlockPos originalPos, ItemStack stack) {
-			this.logs = logs;
-			this.drops = new ArrayList<>();
-			this.originalPos = originalPos;
-			this.stack = stack.copy();
-		}
-
-		public NbtCompound serialize(RegistryWrapper.WrapperLookup registryLookup) {
-			NbtCompound compound = new NbtCompound();
-			compound.putLongArray("Logs", logs.stream().map(BlockPos::asLong).toList());
-			NbtList drops = new NbtList();
-			this.drops.forEach(stack -> {
-				if (!stack.isEmpty()) {
-					drops.add(stack.toNbt(registryLookup));
-				}
-			});
-			compound.put("Drops", drops);
-			compound.putLong("OriginalPos", originalPos.asLong());
-			compound.put("Stack", stack.toNbt(registryLookup));
-			return compound;
-		}
-
-		public static Tree deserialize(RegistryWrapper.WrapperLookup registryLookup, NbtCompound compound) {
-			Tree tree = new Tree(Arrays.stream(compound.getLongArray("Logs")).mapToObj(BlockPos::fromLong).collect(Collectors.toList()), BlockPos.fromLong(compound.getLong("OriginalPos")), ItemStack.fromNbtOrEmpty(registryLookup, compound.getCompound("Stack")));
-			NbtList drops = compound.getList("Drops", NbtElement.COMPOUND_TYPE);
-			for (int i = 0; i < drops.size(); i++) {
-				ItemStack.fromNbt(registryLookup, drops.getCompound(i)).ifPresent(tree.drops::add);
-			}
-			return tree;
+		public static Tree of(List<BlockPos> logs, BlockPos originalPos, ItemStack stack) {
+			return new Tree(logs, new ArrayList<>(), originalPos, stack.copy());
 		}
 	}
 }

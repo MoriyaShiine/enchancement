@@ -55,7 +55,7 @@ public class BrimstoneTravelSoundInstance extends MovingSoundInstance {
 			}
 		}
 		pitchModifier = MathHelper.clamp(pitchModifier, 0, 0.5F);
-		pitch = MathHelper.lerp((float) entity.getDamage() / 12F, 1.5F, 1) + pitchModifier;
+		pitch = MathHelper.lerp(entity.getDamage() / 12F, 1.5F, 1) + pitchModifier;
 		previousPos = newPos;
 	}
 }

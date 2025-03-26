@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(Entity.class)
 public class EntityMixin {
-	@ModifyArg(method = "setOnFireFromLava", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;setOnFireFor(F)V"))
+	@ModifyArg(method = "igniteByLava", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;setOnFireFor(F)V"))
 	private float enchancement$fluidWalking(float seconds) {
 		if (EnchancementUtil.hasAnyEnchantmentsWith((Entity) (Object) this, ModEnchantmentEffectComponentTypes.FLUID_WALKING)) {
 			seconds /= 6;

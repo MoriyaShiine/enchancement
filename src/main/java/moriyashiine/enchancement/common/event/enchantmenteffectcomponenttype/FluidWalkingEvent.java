@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 
 public class FluidWalkingEvent implements PreventFallDamageEvent {
 	@Override
-	public boolean shouldNotTakeFallDamage(World world, LivingEntity entity, float fallDistance, float damageMultiplier, DamageSource damageSource) {
+	public boolean shouldNotTakeFallDamage(World world, LivingEntity entity, double fallDistance, float damagePerDistance, DamageSource damageSource) {
 		return fallDistance > entity.getSafeFallDistance() && !world.getFluidState(entity.getSteppingPos()).isEmpty() && EnchancementUtil.hasAnyEnchantmentsWith(entity, ModEnchantmentEffectComponentTypes.FLUID_WALKING);
 	}
 }

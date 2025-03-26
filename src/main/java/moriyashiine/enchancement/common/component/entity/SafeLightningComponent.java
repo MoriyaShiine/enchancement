@@ -12,7 +12,7 @@ public class SafeLightningComponent implements Component {
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		safe = tag.getBoolean("Safe");
+		safe = tag.getBoolean("Safe", false);
 	}
 
 	@Override

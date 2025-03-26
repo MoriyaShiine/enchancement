@@ -29,8 +29,8 @@ public class GlideComponent implements AutoSyncedComponent, CommonTickingCompone
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		gliding = tag.getBoolean("Gliding");
-		airTicks = tag.getInt("AirTicks");
+		gliding = tag.getBoolean("Gliding", false);
+		airTicks = tag.getInt("AirTicks", 0);
 	}
 
 	@Override

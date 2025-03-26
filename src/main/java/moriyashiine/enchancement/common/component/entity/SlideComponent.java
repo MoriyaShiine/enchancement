@@ -3,6 +3,8 @@
  */
 package moriyashiine.enchancement.common.component.entity;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.common.Enchancement;
@@ -20,6 +22,9 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -50,16 +55,16 @@ public class SlideComponent implements CommonTickingComponent {
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		velocity = SlideVelocity.deserialize(tag.getCompound("Velocity"));
-		adjustedVelocity = SlideVelocity.deserialize(tag.getCompound("AdjustedVelocity"));
-		cachedYaw = tag.getFloat("CachedYaw");
-		slidingTicks = tag.getInt("SlidingTicks");
+		velocity = tag.get("Velocity", SlideVelocity.CODEC).orElse(SlideVelocity.ZERO);
+		adjustedVelocity = tag.get("AdjustedVelocity", SlideVelocity.CODEC).orElse(SlideVelocity.ZERO);
+		cachedYaw = tag.getFloat("CachedYaw", 0);
+		slidingTicks = tag.getInt("SlidingTicks", 0);
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.put("Velocity", velocity.serialize());
-		tag.put("AdjustedVelocity", adjustedVelocity.serialize());
+		tag.put("Velocity", SlideVelocity.CODEC, velocity);
+		tag.put("AdjustedVelocity", SlideVelocity.CODEC, adjustedVelocity);
 		tag.putFloat("CachedYaw", cachedYaw);
 		tag.putInt("SlidingTicks", slidingTicks);
 	}
@@ -148,8 +153,8 @@ public class SlideComponent implements CommonTickingComponent {
 				Vector2d vec = new Vector2d(adjustedVelocity.x(), adjustedVelocity.z());
 				vec.normalize();
 				vec.mul(obj.getWidth() / 2);
-				obj.getWorld().addParticle(ModParticleTypes.VELOCITY_LINE, obj.getX() - vec.y(), obj.getY() + obj.getHeight() / 2 + MathHelper.nextFloat(obj.getRandom(), -obj.getHeight() / 3, obj.getHeight() / 3), obj.getZ() + vec.x(), adjustedVelocity.x(), 0, adjustedVelocity.z());
-				obj.getWorld().addParticle(ModParticleTypes.VELOCITY_LINE, obj.getX() + vec.y(), obj.getY() + obj.getHeight() / 2 + MathHelper.nextFloat(obj.getRandom(), -obj.getHeight() / 3, obj.getHeight() / 3), obj.getZ() - vec.x(), adjustedVelocity.x(), 0, adjustedVelocity.z());
+				obj.getWorld().addParticleClient(ModParticleTypes.VELOCITY_LINE, obj.getX() - vec.y(), obj.getY() + obj.getHeight() / 2 + MathHelper.nextFloat(obj.getRandom(), -obj.getHeight() / 3, obj.getHeight() / 3), obj.getZ() + vec.x(), adjustedVelocity.x(), 0, adjustedVelocity.z());
+				obj.getWorld().addParticleClient(ModParticleTypes.VELOCITY_LINE, obj.getX() + vec.y(), obj.getY() + obj.getHeight() / 2 + MathHelper.nextFloat(obj.getRandom(), -obj.getHeight() / 3, obj.getHeight() / 3), obj.getZ() - vec.x(), adjustedVelocity.x(), 0, adjustedVelocity.z());
 			}
 		}
 	}
@@ -239,18 +244,17 @@ public class SlideComponent implements CommonTickingComponent {
 	}
 
 	public record SlideVelocity(float x, float z) {
+		public static final Codec<SlideVelocity> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+						Codec.FLOAT.fieldOf("x").forGetter(SlideVelocity::x),
+						Codec.FLOAT.fieldOf("z").forGetter(SlideVelocity::z))
+				.apply(instance, SlideVelocity::new));
+		public static final PacketCodec<PacketByteBuf, SlideVelocity> PACKET_CODEC = PacketCodec.tuple(
+				PacketCodecs.FLOAT, SlideVelocity::x,
+				PacketCodecs.FLOAT, SlideVelocity::z,
+				SlideVelocity::new
+		);
+
 		public static final SlideVelocity ZERO = new SlideVelocity(0, 0);
-
-		private static SlideVelocity deserialize(NbtCompound nbt) {
-			return new SlideVelocity(nbt.getFloat("VelocityX"), nbt.getFloat("VelocityZ"));
-		}
-
-		private NbtCompound serialize() {
-			NbtCompound velocity = new NbtCompound();
-			velocity.putFloat("VelocityX", x());
-			velocity.putFloat("VelocityZ", z());
-			return velocity;
-		}
 
 		SlideVelocity multiply(float value) {
 			return new SlideVelocity(x() * value, z() * value);

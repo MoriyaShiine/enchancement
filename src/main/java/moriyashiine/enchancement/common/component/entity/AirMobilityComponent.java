@@ -23,8 +23,8 @@ public class AirMobilityComponent implements CommonTickingComponent {
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		resetBypassTicks = tag.getInt("ResetBypassTicks");
-		ticksInAir = tag.getInt("TicksInAir");
+		resetBypassTicks = tag.getInt("ResetBypassTicks", 0);
+		ticksInAir = tag.getInt("TicksInAir", 0);
 	}
 
 	@Override

@@ -19,8 +19,8 @@ public class FrozenGuardianComponent implements AutoSyncedComponent {
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		forcedTailAngle = tag.getFloat("ForcedTailAngle");
-		forcedSpikesExtension = tag.getFloat("ForcedSpikesExtension");
+		forcedTailAngle = tag.getFloat("ForcedTailAngle", 0);
+		forcedSpikesExtension = tag.getFloat("ForcedSpikesExtension", 0);
 	}
 
 	@Override

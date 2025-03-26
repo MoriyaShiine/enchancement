@@ -30,7 +30,7 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 	private boolean frozen = false;
 	private int ticksFrozen = 0;
 	private EntityPose forcedPose = EntityPose.STANDING;
-	private float forcedHeadYaw = 0, forcedBodyYaw = 0, forcedPitch = 0, forcedLimbFrequency = 0, forcedLimbAmplitudeMultiplier = 0;
+	private float forcedHeadYaw = 0, forcedBodyYaw = 0, forcedPitch = 0, forcedLimbSwingAnimationProgress = 0, forcedLimbSwingAmplitude = 0;
 	private int forcedClientAge = 0;
 
 	public FrozenComponent(LivingEntity obj) {
@@ -39,15 +39,15 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		frozen = tag.getBoolean("Frozen");
-		ticksFrozen = tag.getInt("TicksFrozen");
-		forcedPose = EntityPose.valueOf(tag.getString("ForcedPose"));
-		forcedHeadYaw = tag.getFloat("ForcedHeadYaw");
-		forcedBodyYaw = tag.getFloat("ForcedBodyYaw");
-		forcedPitch = tag.getFloat("ForcedPitch");
-		forcedLimbFrequency = tag.getFloat("ForcedLimbFrequency");
-		forcedLimbAmplitudeMultiplier = tag.getFloat("ForcedLimbAmplitudeMultiplier");
-		forcedClientAge = tag.getInt("ForcedClientAge");
+		frozen = tag.getBoolean("Frozen", false);
+		ticksFrozen = tag.getInt("TicksFrozen", 0);
+		forcedPose = EntityPose.valueOf(tag.getString("ForcedPose", EntityPose.STANDING.toString()));
+		forcedHeadYaw = tag.getFloat("ForcedHeadYaw", 0);
+		forcedBodyYaw = tag.getFloat("ForcedBodyYaw", 0);
+		forcedPitch = tag.getFloat("ForcedPitch", 0);
+		forcedLimbSwingAnimationProgress = tag.getFloat("ForcedLimbSwingAnimationProgress", 0);
+		forcedLimbSwingAmplitude = tag.getFloat("ForcedLimbAmplitude", 0);
+		forcedClientAge = tag.getInt("ForcedClientAge", 0);
 	}
 
 	@Override
@@ -58,8 +58,8 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 		tag.putFloat("ForcedHeadYaw", forcedHeadYaw);
 		tag.putFloat("ForcedBodyYaw", forcedBodyYaw);
 		tag.putFloat("ForcedPitch", forcedPitch);
-		tag.putFloat("ForcedLimbFrequency", forcedLimbFrequency);
-		tag.putFloat("ForcedLimbAmplitudeMultiplier", forcedLimbAmplitudeMultiplier);
+		tag.putFloat("ForcedLimbSwingAnimationProgress", forcedLimbSwingAnimationProgress);
+		tag.putFloat("ForcedLimbAmplitude", forcedLimbSwingAmplitude);
 		tag.putInt("ForcedClientAge", forcedClientAge);
 	}
 
@@ -122,12 +122,12 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 		return forcedPitch;
 	}
 
-	public float getForcedLimbFrequency() {
-		return forcedLimbFrequency;
+	public float getForcedLimbSwingAnimationProgress() {
+		return forcedLimbSwingAnimationProgress;
 	}
 
-	public float getForcedLimbAmplitudeMultiplier() {
-		return forcedLimbAmplitudeMultiplier;
+	public float getForcedLimbSwingAmplitude() {
+		return forcedLimbSwingAmplitude;
 	}
 
 	public int getForcedClientAge() {
@@ -149,8 +149,8 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 		forcedHeadYaw = obj.getHeadYaw();
 		forcedBodyYaw = obj.getBodyYaw();
 		forcedPitch = obj.getPitch();
-		forcedLimbFrequency = MathHelper.nextFloat(obj.getRandom(), -1, 1);
-		forcedLimbAmplitudeMultiplier = MathHelper.nextFloat(obj.getRandom(), -1, 1);
+		forcedLimbSwingAnimationProgress = MathHelper.nextFloat(obj.getRandom(), -1, 1);
+		forcedLimbSwingAmplitude = MathHelper.nextFloat(obj.getRandom(), -1, 1);
 		forcedClientAge = obj.age;
 		frozen = true;
 		sync();

@@ -3,6 +3,8 @@
  */
 package moriyashiine.enchancement.common.component.entity;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import moriyashiine.enchancement.common.enchantment.effect.LeechingTridentEffect;
 import moriyashiine.enchancement.common.init.ModDamageTypes;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
@@ -41,18 +43,16 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		if (tag.contains("LeechData")) {
-			leechData = LeechData.deserialize(tag.getCompound("LeechData"));
-		}
-		stuckEntityId = tag.getInt("StuckEntityId");
-		leechingTicks = tag.getInt("LeechingTicks");
-		stabTicks = tag.getInt("StabTicks");
+		leechData = tag.get("LeechData", LeechData.CODEC).orElse(null);
+		stuckEntityId = tag.getInt("StuckEntityId", 0);
+		leechingTicks = tag.getInt("LeechingTicks", 0);
+		stabTicks = tag.getInt("StabTicks", 0);
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		if (leechData != null) {
-			tag.put("LeechData", leechData.serialize());
+			tag.put("LeechData", LeechData.CODEC, leechData);
 		}
 		tag.putInt("StuckEntityId", stuckEntityId);
 		tag.putInt("LeechingTicks", leechingTicks);
@@ -140,7 +140,7 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 			if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.LEECHING_TRIDENT)) {
 				LeechingTridentEffect.setValues(user.getRandom(), damage, healAmount, duration, Collections.singleton(stack));
 			} else if (!(user instanceof PlayerEntity) && EnchancementUtil.hasAnyEnchantmentsWith(user, ModEnchantmentEffectComponentTypes.LEECHING_TRIDENT)) {
-				LeechingTridentEffect.setValues(user.getRandom(), damage, healAmount, duration, user.getEquippedItems());
+				LeechingTridentEffect.setValues(user.getRandom(), damage, healAmount, duration, EnchancementUtil.getHeldItems(user));
 			}
 			if (damage.floatValue() != 0) {
 				LeechingTridentComponent leechingTridentComponent = ModEntityComponents.LEECHING_TRIDENT.get(entity);
@@ -151,16 +151,10 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 	}
 
 	public record LeechData(float damage, float healAmount, int maxTicks) {
-		static LeechData deserialize(NbtCompound nbt) {
-			return new LeechData(nbt.getFloat("Damage"), nbt.getFloat("HealAmount"), nbt.getInt("MaxTicks"));
-		}
-
-		NbtCompound serialize() {
-			NbtCompound nbt = new NbtCompound();
-			nbt.putFloat("Damage", damage());
-			nbt.putFloat("HealAmount", healAmount());
-			nbt.putInt("MaxTicks", maxTicks());
-			return nbt;
-		}
+		public static final Codec<LeechData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+						Codec.FLOAT.fieldOf("damage").forGetter(LeechData::damage),
+						Codec.FLOAT.fieldOf("heal_amount").forGetter(LeechData::healAmount),
+						Codec.INT.fieldOf("max_ticks").forGetter(LeechData::maxTicks))
+				.apply(instance, LeechData::new));
 	}
 }

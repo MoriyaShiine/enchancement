@@ -8,8 +8,7 @@ import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.particle.EntityEffectParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryWrapper;
@@ -30,25 +29,15 @@ public class ApplyRandomStatusEffectGenericComponent implements AutoSyncedCompon
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		if (tag.contains("CustomPotionEffects")) {
-			NbtList nbtList = tag.getList("CustomPotionEffects", NbtElement.COMPOUND_TYPE);
-			for (int i = 0; i < nbtList.size(); i++) {
-				effects.add(StatusEffectInstance.fromNbt(nbtList.getCompound(i)));
-			}
-			color = tag.getInt("Color");
-		}
+		effects.clear();
+		effects.addAll(tag.get("CustomPotionEffects", StatusEffectInstance.CODEC.listOf(), registryLookup.getOps(NbtOps.INSTANCE)).orElse(List.of()));
+		color = tag.getInt("Color", -1);
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		if (!effects.isEmpty()) {
-			NbtList nbtList = new NbtList();
-			for (StatusEffectInstance statusEffectInstance : effects) {
-				nbtList.add(statusEffectInstance.writeNbt());
-			}
-			tag.put("CustomPotionEffects", nbtList);
-			tag.putInt("Color", color);
-		}
+		tag.put("CustomPotionEffects", StatusEffectInstance.CODEC.listOf(), registryLookup.getOps(NbtOps.INSTANCE), List.copyOf(effects));
+		tag.putInt("Color", color);
 	}
 
 	@Override
@@ -94,7 +83,7 @@ public class ApplyRandomStatusEffectGenericComponent implements AutoSyncedCompon
 			return;
 		}
 		for (int i = 0; i < amount; i++) {
-			obj.getWorld().addParticle(EntityEffectParticleEffect.create(ParticleTypes.ENTITY_EFFECT, color), obj.getParticleX(0.5), obj.getRandomBodyY(), obj.getParticleZ(0.5), 0, 0, 0);
+			obj.getWorld().addParticleClient(EntityEffectParticleEffect.create(ParticleTypes.ENTITY_EFFECT, color), obj.getParticleX(0.5), obj.getRandomBodyY(), obj.getParticleZ(0.5), 0, 0, 0);
 		}
 	}
 }

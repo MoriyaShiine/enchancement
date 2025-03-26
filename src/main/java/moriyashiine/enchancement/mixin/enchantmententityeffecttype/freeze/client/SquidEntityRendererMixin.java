@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(SquidEntityRenderer.class)
 public class SquidEntityRendererMixin<T extends SquidEntity> {
 	@Inject(method = "updateRenderState(Lnet/minecraft/entity/passive/SquidEntity;Lnet/minecraft/client/render/entity/state/SquidEntityRenderState;F)V", at = @At("TAIL"))
-	private void enchancement$freeze(T entity, SquidEntityRenderState state, float tickDelta, CallbackInfo ci) {
+	private void enchancement$freeze(T entity, SquidEntityRenderState state, float tickProgress, CallbackInfo ci) {
 		if (ModEntityComponents.FROZEN.get(entity).isFrozen()) {
 			FrozenSquidComponent frozenSquidComponent = ModEntityComponents.FROZEN_SQUID.get(entity);
 			state.tentacleAngle = frozenSquidComponent.getForcedTentacleAngle();

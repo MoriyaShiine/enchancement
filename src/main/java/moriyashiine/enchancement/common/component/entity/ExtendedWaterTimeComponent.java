@@ -29,7 +29,7 @@ public class ExtendedWaterTimeComponent implements AutoSyncedComponent, CommonTi
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		ticksWet = tag.getInt("TicksWet");
+		ticksWet = tag.getInt("TicksWet", 0);
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class ExtendedWaterTimeComponent implements AutoSyncedComponent, CommonTi
 	@Override
 	public void serverTick() {
 		tick();
-		if (ticksWet > 0 && obj.age % 10 == 0 && !obj.isWet()) {
+		if (ticksWet > 0 && obj.age % 10 == 0 && !obj.isTouchingWaterOrRain()) {
 			SLibUtils.playSound(obj, SoundEvents.BLOCK_POINTED_DRIPSTONE_DRIP_WATER);
 		}
 	}
@@ -59,7 +59,7 @@ public class ExtendedWaterTimeComponent implements AutoSyncedComponent, CommonTi
 	@Override
 	public void clientTick() {
 		tick();
-		if (ticksWet > 0 && !obj.isInvisible() && !obj.isWet()) {
+		if (ticksWet > 0 && !obj.isInvisible() && !obj.isTouchingWaterOrRain()) {
 			for (EquipmentSlot slot : EquipmentSlot.values()) {
 				if (slot.isArmorSlot()) {
 					if (EnchantmentHelper.hasAnyEnchantmentsWith(obj.getEquippedStack(slot), ModEnchantmentEffectComponentTypes.EXTEND_WATER_TIME)) {

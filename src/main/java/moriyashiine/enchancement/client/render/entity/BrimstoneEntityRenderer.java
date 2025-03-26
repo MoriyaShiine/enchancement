@@ -55,11 +55,11 @@ public class BrimstoneEntityRenderer extends ProjectileEntityRenderer<BrimstoneE
 	}
 
 	@Override
-	public void updateRenderState(BrimstoneEntity entity, BrimstoneEntityRenderState state, float tickDelta) {
-		super.updateRenderState(entity, state, tickDelta);
+	public void updateRenderState(BrimstoneEntity entity, BrimstoneEntityRenderState state, float tickProgress) {
+		super.updateRenderState(entity, state, tickProgress);
 		state.distanceTraveled = entity.distanceTraveled;
 		state.ticksExisted = entity.ticksExisted;
-		state.damage = (float) entity.getDamage();
+		state.damage = entity.getDamage();
 		state.damageMultiplier = entity.getDamageMultiplier(entity.distanceTraveled - 1);
 	}
 

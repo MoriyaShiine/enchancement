@@ -3,7 +3,7 @@
  */
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.multiplychargetime;
 
-import moriyashiine.enchancement.common.entity.UseTimeDeltaHolder;
+import moriyashiine.enchancement.common.entity.UseTimeProgressHolder;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.Entity;
@@ -18,34 +18,34 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin extends Entity implements UseTimeDeltaHolder {
+public abstract class LivingEntityMixin extends Entity implements UseTimeProgressHolder {
 	@Unique
-	private float useTimeDelta = 0;
+	private float useTimeProgress = 0;
 
 	public LivingEntityMixin(EntityType<?> type, World world) {
 		super(type, world);
 	}
 
 	@Override
-	public float enchancement$getUseTimeDelta() {
-		return useTimeDelta;
+	public float enchancement$getUseTimeProgress() {
+		return useTimeProgress;
 	}
 
 	@Inject(method = "tickItemStackUsage", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;usageTick(Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;I)V", shift = At.Shift.AFTER), cancellable = true)
 	private void enchancement$multiplyChargeTime(ItemStack stack, CallbackInfo ci) {
 		float multiplier = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.MULTIPLY_CHARGE_TIME, getRandom(), stack, 1);
 		if (multiplier != 1) {
-			if (useTimeDelta < 1) {
-				useTimeDelta = Math.min(1, useTimeDelta + 1 / multiplier);
+			if (useTimeProgress < 1) {
+				useTimeProgress = Math.min(1, useTimeProgress + 1 / multiplier);
 				ci.cancel();
 			} else {
-				useTimeDelta = 0;
+				useTimeProgress = 0;
 			}
 		}
 	}
 
 	@Inject(method = "clearActiveItem", at = @At("TAIL"))
 	private void enchancement$multiplyChargeTime(CallbackInfo ci) {
-		useTimeDelta = 0;
+		useTimeProgress = 0;
 	}
 }

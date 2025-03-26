@@ -4,6 +4,7 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.rotationburst;
 
 import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -31,7 +32,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 	private void enchancement$rotationBurst(CallbackInfo ci) {
 		if (!lastArmorSet.isEmpty()) {
 			int index = 0, difference = 0;
-			for (ItemStack newStack : getAllArmorItems()) {
+			for (ItemStack newStack : EnchancementUtil.getArmorItems(this)) {
 				if (!ItemStack.areEqual(lastArmorSet.get(index), newStack)) {
 					difference++;
 				}
@@ -42,6 +43,6 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 			}
 		}
 		lastArmorSet.clear();
-		getAllArmorItems().forEach(lastArmorSet::add);
+		lastArmorSet.addAll(EnchancementUtil.getArmorItems(this));
 	}
 }

@@ -3,22 +3,16 @@
  */
 package moriyashiine.enchancement.common.component.entity;
 
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
 public class InCombatComponent implements ServerTickingComponent {
-	private final LivingEntity obj;
 	private int combatTicks = 0;
-
-	public InCombatComponent(LivingEntity obj) {
-		this.obj = obj;
-	}
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		combatTicks = tag.getInt("CombatTicks");
+		combatTicks = tag.getInt("CombatTicks", 0);
 	}
 
 	@Override

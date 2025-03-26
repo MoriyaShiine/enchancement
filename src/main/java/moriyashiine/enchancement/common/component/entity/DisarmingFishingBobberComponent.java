@@ -14,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.MathHelper;
 import org.apache.commons.lang3.mutable.MutableBoolean;
@@ -29,17 +30,17 @@ public class DisarmingFishingBobberComponent implements Component {
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		stack = ItemStack.fromNbtOrEmpty(registryLookup, tag.getCompound("Stack"));
-		enabled = tag.getBoolean("Enabled");
-		stealsFromPlayers = tag.getBoolean("StealsFromPlayers");
-		playerCooldown = tag.getInt("PlayerCooldown");
-		userCooldown = tag.getInt("UserCooldown");
+		stack = tag.get("Stack", ItemStack.CODEC, registryLookup.getOps(NbtOps.INSTANCE)).orElse(ItemStack.EMPTY);
+		enabled = tag.getBoolean("Enabled", false);
+		stealsFromPlayers = tag.getBoolean("StealsFromPlayers", false);
+		playerCooldown = tag.getInt("PlayerCooldown", 0);
+		userCooldown = tag.getInt("UserCooldown", 0);
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		if (!stack.isEmpty()) {
-			tag.put("Stack", stack.toNbt(registryLookup));
+			tag.put("Stack", ItemStack.CODEC, registryLookup.getOps(NbtOps.INSTANCE), stack);
 		}
 		tag.putBoolean("Enabled", enabled);
 		tag.putBoolean("StealsFromPlayers", stealsFromPlayers);
@@ -82,7 +83,7 @@ public class DisarmingFishingBobberComponent implements Component {
 			if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.DISARMING_FISHING_BOBBER)) {
 				DisarmingFishingBobberEffect.setValues(user.getRandom(), enabled, stealsFromPlayers, playerCooldown, userCooldown, Collections.singleton(stack));
 			} else if (!(user instanceof PlayerEntity) && EnchancementUtil.hasAnyEnchantmentsWith(user, ModEnchantmentEffectComponentTypes.DISARMING_FISHING_BOBBER)) {
-				DisarmingFishingBobberEffect.setValues(user.getRandom(), enabled, stealsFromPlayers, playerCooldown, userCooldown, user.getEquippedItems());
+				DisarmingFishingBobberEffect.setValues(user.getRandom(), enabled, stealsFromPlayers, playerCooldown, userCooldown, EnchancementUtil.getHeldItems(user));
 			}
 			if (enabled.booleanValue()) {
 				DisarmingFishingBobberComponent disarmingFishingBobberComponent = ModEntityComponents.DISARMING_FISHING_BOBBER.get(entity);

@@ -7,6 +7,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import moriyashiine.strawberrylib.api.objects.enums.SubmersionGate;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -21,13 +22,13 @@ public record ModifySubmergedMovementSpeedEffect(EnchantmentValueEffect modifier
 					Codec.STRING.fieldOf("gate").forGetter(e -> e.gate().name()))
 			.apply(instance, (enchantmentValueEffect, gate) -> new ModifySubmergedMovementSpeedEffect(enchantmentValueEffect, SubmersionGate.valueOf(gate))));
 
-	public static float getValue(LivingEntity living) {
+	public static float getValue(LivingEntity entity) {
 		MutableFloat value = new MutableFloat();
-		for (ItemStack stack : living.getAllArmorItems()) {
+		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				ModifySubmergedMovementSpeedEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.MODIFY_SUBMERGED_MOVEMENT_SPEED);
-				if (effect != null && (living.isWet() || ModEntityComponents.EXTENDED_WATER_TIME.get(living).getTicksWet() > 0 || SLibUtils.isSubmerged(living, effect.gate()))) {
-					value.setValue(effect.modifier().apply(level, living.getRandom(), value.floatValue()));
+				if (effect != null && (entity.isTouchingWaterOrRain() || ModEntityComponents.EXTENDED_WATER_TIME.get(entity).getTicksWet() > 0 || SLibUtils.isSubmerged(entity, effect.gate()))) {
+					value.setValue(effect.modifier().apply(level, entity.getRandom(), value.floatValue()));
 				}
 			});
 		}

@@ -45,7 +45,7 @@ public record AddLightningDashParticlesPayload(int entityId) implements CustomPa
 				if (!state.isReplaceable() && entity.getWorld().getBlockState(mutable.move(Direction.UP)).isReplaceable()) {
 					BlockStateParticleEffect particle = new BlockStateParticleEffect(ParticleTypes.BLOCK, state);
 					for (int k = 0; k < 8; k++) {
-						entity.getWorld().addParticle(particle, x, mutable.getY() + 0.5, z, 0, 0, 0);
+						entity.getWorld().addParticleClient(particle, x, mutable.getY() + 0.5, z, 0, 0, 0);
 					}
 				}
 			}

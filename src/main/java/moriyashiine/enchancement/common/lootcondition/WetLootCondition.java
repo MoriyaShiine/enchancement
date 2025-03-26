@@ -29,6 +29,6 @@ public class WetLootCondition implements LootCondition {
 		if (entity == null) {
 			return false;
 		}
-		return entity.isWet();
+		return entity.isTouchingWaterOrRain();
 	}
 }

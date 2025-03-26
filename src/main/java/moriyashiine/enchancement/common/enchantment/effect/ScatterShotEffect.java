@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.enchantment.effect;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.effect.EnchantmentEffectEntry;
 import net.minecraft.enchantment.effect.EnchantmentValueEffect;
@@ -43,19 +44,19 @@ public record ScatterShotEffect(EnchantmentValueEffect minimum, EnchantmentValue
 		return MathHelper.floor(minimum.floatValue());
 	}
 
-	public static int getMinimum(LivingEntity living) {
+	public static int getMinimum(LivingEntity entity) {
 		int count = 0;
-		for (ItemStack stack : living.getEquippedItems()) {
-			count += getMinimum(living.getRandom(), stack);
+		for (ItemStack stack : EnchancementUtil.getHeldItems(entity)) {
+			count += getMinimum(entity.getRandom(), stack);
 		}
 		return count;
 	}
 
-	public static int getMinimum(LivingEntity shooter, ItemStack weaponStack) {
-		if (shooter instanceof PlayerEntity) {
-			return getMinimum(shooter.getRandom(), weaponStack);
+	public static int getMinimum(LivingEntity entity, ItemStack weaponStack) {
+		if (entity instanceof PlayerEntity) {
+			return getMinimum(entity.getRandom(), weaponStack);
 		}
-		return getMinimum(shooter);
+		return getMinimum(entity);
 	}
 
 	public static int getMaximum(Random random, ItemStack stack) {
@@ -69,10 +70,10 @@ public record ScatterShotEffect(EnchantmentValueEffect minimum, EnchantmentValue
 		return MathHelper.floor(maximum.floatValue());
 	}
 
-	public static int getMaximum(LivingEntity living) {
+	public static int getMaximum(LivingEntity entity) {
 		int count = 0;
-		for (ItemStack stack : living.getEquippedItems()) {
-			count += getMaximum(living.getRandom(), stack);
+		for (ItemStack stack : EnchancementUtil.getHeldItems(entity)) {
+			count += getMaximum(entity.getRandom(), stack);
 		}
 		return count;
 	}
@@ -95,18 +96,18 @@ public record ScatterShotEffect(EnchantmentValueEffect minimum, EnchantmentValue
 		return allowedProjectiles;
 	}
 
-	public static Set<Item> getAllowedProjectiles(LivingEntity living) {
+	public static Set<Item> getAllowedProjectiles(LivingEntity entity) {
 		Set<Item> allowedProjectiles = new HashSet<>();
-		for (ItemStack stack : living.getEquippedItems()) {
+		for (ItemStack stack : EnchancementUtil.getHeldItems(entity)) {
 			allowedProjectiles.addAll(getAllowedProjectiles(stack));
 		}
 		return allowedProjectiles;
 	}
 
-	public static Set<Item> getAllowedProjectiles(LivingEntity shooter, ItemStack weaponStack) {
-		if (shooter instanceof PlayerEntity) {
+	public static Set<Item> getAllowedProjectiles(LivingEntity entity, ItemStack weaponStack) {
+		if (entity instanceof PlayerEntity) {
 			return getAllowedProjectiles(weaponStack);
 		}
-		return getAllowedProjectiles(shooter);
+		return getAllowedProjectiles(entity);
 	}
 }

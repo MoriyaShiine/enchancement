@@ -26,8 +26,8 @@ public class EntityShapeContextMixin {
 	@Mutable
 	private Predicate<FluidState> walkOnFluidPredicate;
 
-	@Inject(method = "<init>(ZDLnet/minecraft/item/ItemStack;Ljava/util/function/Predicate;Lnet/minecraft/entity/Entity;)V", at = @At("TAIL"))
-	protected void enchancement$fluidWalking(boolean descending, double minY, ItemStack heldItem, Predicate<LivingEntity> walkOnFluidPredicate, Entity entity, CallbackInfo ci) {
+	@Inject(method = "<init>(ZZDLnet/minecraft/item/ItemStack;Ljava/util/function/Predicate;Lnet/minecraft/entity/Entity;)V", at = @At("TAIL"))
+	protected void enchancement$fluidWalking(boolean descending, boolean placement, double minY, ItemStack heldItem, Predicate<LivingEntity> walkOnFluidPredicate, Entity entity, CallbackInfo ci) {
 		this.walkOnFluidPredicate = this.walkOnFluidPredicate.or(state -> entity != null && EnchancementUtil.shouldFluidWalk(entity));
 	}
 }

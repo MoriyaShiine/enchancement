@@ -66,7 +66,7 @@ public abstract class ShardEntity extends PersistentProjectileEntity {
 				entity = part.owner;
 			}
 			Entity owner = getOwner();
-			if (SLibUtils.shouldHurt(owner, entity) && entity.damage(serverWorld, serverWorld.getDamageSources().create(getDamageType(), this, owner), (float) getDamage())) {
+			if (SLibUtils.shouldHurt(owner, entity) && entity.damage(serverWorld, serverWorld.getDamageSources().create(getDamageType(), this, owner), (float) damage)) {
 				onTargetHit(entity);
 				playSound(getHitSound(), 1, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
 				addParticles();

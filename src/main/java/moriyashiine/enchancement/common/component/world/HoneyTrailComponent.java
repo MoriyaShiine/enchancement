@@ -3,13 +3,14 @@
  */
 package moriyashiine.enchancement.common.component.world;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import moriyashiine.enchancement.common.particle.HoneyBubbleParticleEffect;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.util.Uuids;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
@@ -35,17 +36,13 @@ public class HoneyTrailComponent implements AutoSyncedComponent, CommonTickingCo
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		NbtList honeySpots = tag.getList("HoneySpots", NbtElement.COMPOUND_TYPE);
-		for (int i = 0; i < honeySpots.size(); i++) {
-			this.honeySpots.add(HoneySpot.deserialize(honeySpots.getCompound(i)));
-		}
+		honeySpots.clear();
+		honeySpots.addAll(tag.get("HoneySpots", HoneySpot.CODEC.listOf()).orElse(List.of()));
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		NbtList honeySpots = new NbtList();
-		honeySpots.addAll(this.honeySpots.stream().map(HoneySpot::serialize).toList());
-		tag.put("HoneySpots", honeySpots);
+		tag.put("HoneySpots", HoneySpot.CODEC.listOf(), List.copyOf(honeySpots));
 	}
 
 	@Override
@@ -64,7 +61,7 @@ public class HoneyTrailComponent implements AutoSyncedComponent, CommonTickingCo
 		for (HoneySpot spot : honeySpots) {
 			if (spot.pos.distanceTo(MinecraftClient.getInstance().getCameraEntity().getPos()) < 128) {
 				for (int j = 0; j < 3; j++) {
-					obj.addParticle(new HoneyBubbleParticleEffect(spot.ownerId),
+					obj.addParticleClient(new HoneyBubbleParticleEffect(spot.ownerId),
 							MathHelper.nextDouble(obj.random, spot.getBox().minX, spot.getBox().maxX),
 							MathHelper.nextDouble(obj.random, spot.getBox().minY, spot.getBox().maxY),
 							MathHelper.nextDouble(obj.random, spot.getBox().minZ, spot.getBox().maxZ),
@@ -106,6 +103,14 @@ public class HoneyTrailComponent implements AutoSyncedComponent, CommonTickingCo
 	}
 
 	public static class HoneySpot {
+		public static final Codec<HoneySpot> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+						Uuids.CODEC.fieldOf("owner_id").forGetter(HoneySpot::getOwnerId),
+						Vec3d.CODEC.fieldOf("pos").forGetter(HoneySpot::getPos),
+						BlockPos.CODEC.fieldOf("block_pos").forGetter(HoneySpot::getBlockPos),
+						Codec.INT.fieldOf("age").forGetter(HoneySpot::getAge),
+						Codec.INT.fieldOf("max_age").forGetter(HoneySpot::getMaxAge))
+				.apply(instance, HoneySpot::new));
+
 		private final UUID ownerId;
 		private final Vec3d pos;
 		private final BlockPos blockPos;
@@ -126,24 +131,24 @@ public class HoneyTrailComponent implements AutoSyncedComponent, CommonTickingCo
 			return ownerId;
 		}
 
+		private Vec3d getPos() {
+			return pos;
+		}
+
+		private BlockPos getBlockPos() {
+			return blockPos;
+		}
+
 		public Box getBox() {
 			return box;
 		}
 
-		public NbtCompound serialize() {
-			NbtCompound compound = new NbtCompound();
-			compound.putUuid("OwnerId", ownerId);
-			compound.putDouble("PosX", pos.getX());
-			compound.putDouble("PosY", pos.getY());
-			compound.putDouble("PosZ", pos.getZ());
-			compound.putLong("BlockPos", blockPos.asLong());
-			compound.putInt("Age", age);
-			compound.putInt("MaxAge", maxAge);
-			return compound;
+		private int getAge() {
+			return age;
 		}
 
-		public static HoneySpot deserialize(NbtCompound compound) {
-			return new HoneySpot(compound.getUuid("OwnerId"), new Vec3d(compound.getDouble("PosX"), compound.getDouble("PosY"), compound.getDouble("PosZ")), BlockPos.fromLong(compound.getLong("BlockPos")), compound.getInt("Age"), compound.getInt("MaxAge"));
+		private int getMaxAge() {
+			return maxAge;
 		}
 	}
 }

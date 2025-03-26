@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 
 public class LightningDashEvent implements PreventFallDamageEvent {
 	@Override
-	public boolean shouldNotTakeFallDamage(World world, LivingEntity entity, float fallDistance, float damageMultiplier, DamageSource damageSource) {
+	public boolean shouldNotTakeFallDamage(World world, LivingEntity entity, double fallDistance, float damagePerDistance, DamageSource damageSource) {
 		LightningDashComponent lightningDashComponent = ModEntityComponents.LIGHTNING_DASH.getNullable(entity);
 		return lightningDashComponent != null && lightningDashComponent.isSmashing();
 	}

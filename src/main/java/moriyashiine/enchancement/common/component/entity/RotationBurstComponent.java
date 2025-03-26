@@ -35,10 +35,10 @@ public class RotationBurstComponent implements AutoSyncedComponent, CommonTickin
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		shouldRefresh = tag.getBoolean("ShouldRefresh");
-		cooldown = tag.getInt("Cooldown");
-		lastCooldown = tag.getInt("LastCooldown");
-		wavedashTicks = tag.getInt("WavedashTicks");
+		shouldRefresh = tag.getBoolean("ShouldRefresh", false);
+		cooldown = tag.getInt("Cooldown", 0);
+		lastCooldown = tag.getInt("LastCooldown", 0);
+		wavedashTicks = tag.getInt("WavedashTicks", 0);
 	}
 
 	@Override

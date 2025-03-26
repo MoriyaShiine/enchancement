@@ -36,12 +36,12 @@ public class AirJumpComponent implements AutoSyncedComponent, CommonTickingCompo
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		shouldRefresh = tag.getBoolean("ShouldRefresh");
-		cooldown = tag.getInt("Cooldown");
-		lastCooldown = tag.getInt("LastCooldown");
-		jumpCooldown = tag.getInt("JumpCooldown");
-		jumpsLeft = tag.getInt("JumpsLeft");
-		ticksInAir = tag.getInt("TicksInAir");
+		shouldRefresh = tag.getBoolean("ShouldRefresh", false);
+		cooldown = tag.getInt("Cooldown", 0);
+		lastCooldown = tag.getInt("LastCooldown", 0);
+		jumpCooldown = tag.getInt("JumpCooldown", 0);
+		jumpsLeft = tag.getInt("JumpsLeft", 0);
+		ticksInAir = tag.getInt("TicksInAir", 0);
 	}
 
 	@Override

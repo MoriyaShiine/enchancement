@@ -15,14 +15,13 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
 
-public record StartSlidingC2SPayload(float velocityX, float velocityZ, float adjustedVelocityX,
-									 float adjustedVelocityZ, float cachedYaw) implements CustomPayload {
+public record StartSlidingC2SPayload(SlideComponent.SlideVelocity velocity,
+									 SlideComponent.SlideVelocity adjustedVelocity,
+									 float cachedYaw) implements CustomPayload {
 	public static final CustomPayload.Id<StartSlidingC2SPayload> ID = new Id<>(Enchancement.id("start_sliding_c2s"));
 	public static final PacketCodec<PacketByteBuf, StartSlidingC2SPayload> CODEC = PacketCodec.tuple(
-			PacketCodecs.FLOAT, StartSlidingC2SPayload::velocityX,
-			PacketCodecs.FLOAT, StartSlidingC2SPayload::velocityZ,
-			PacketCodecs.FLOAT, StartSlidingC2SPayload::adjustedVelocityX,
-			PacketCodecs.FLOAT, StartSlidingC2SPayload::adjustedVelocityZ,
+			SlideComponent.SlideVelocity.PACKET_CODEC, StartSlidingC2SPayload::velocity,
+			SlideComponent.SlideVelocity.PACKET_CODEC, StartSlidingC2SPayload::adjustedVelocity,
 			PacketCodecs.FLOAT, StartSlidingC2SPayload::cachedYaw,
 			StartSlidingC2SPayload::new);
 
@@ -32,7 +31,7 @@ public record StartSlidingC2SPayload(float velocityX, float velocityZ, float adj
 	}
 
 	public static void send(SlideComponent.SlideVelocity velocity, SlideComponent.SlideVelocity adjustedVelocity, float cachedYaw) {
-		ClientPlayNetworking.send(new StartSlidingC2SPayload(velocity.x(), velocity.z(), adjustedVelocity.x(), adjustedVelocity.z(), cachedYaw));
+		ClientPlayNetworking.send(new StartSlidingC2SPayload(velocity, adjustedVelocity, cachedYaw));
 	}
 
 	public static class Receiver implements ServerPlayNetworking.PlayPayloadHandler<StartSlidingC2SPayload> {
@@ -40,10 +39,8 @@ public record StartSlidingC2SPayload(float velocityX, float velocityZ, float adj
 		public void receive(StartSlidingC2SPayload payload, ServerPlayNetworking.Context context) {
 			SlideComponent slideComponent = ModEntityComponents.SLIDE.get(context.player());
 			if (slideComponent.hasSlide() && slideComponent.canSlide()) {
-				SlideComponent.SlideVelocity velocity = new SlideComponent.SlideVelocity(payload.velocityX(), payload.velocityZ());
-				SlideComponent.SlideVelocity adjustedVelocity = new SlideComponent.SlideVelocity(payload.adjustedVelocityX(), payload.adjustedVelocityZ());
-				slideComponent.startSliding(velocity, adjustedVelocity, payload.cachedYaw());
-				PlayerLookup.tracking(context.player()).forEach(foundPlayer -> StartSlidingS2CPayload.send(foundPlayer, context.player(), velocity, adjustedVelocity, payload.cachedYaw()));
+				slideComponent.startSliding(payload.velocity(), payload.adjustedVelocity(), payload.cachedYaw());
+				PlayerLookup.tracking(context.player()).forEach(foundPlayer -> StartSlidingS2CPayload.send(foundPlayer, context.player(), payload.velocity(), payload.adjustedVelocity(), payload.cachedYaw()));
 			}
 		}
 	}

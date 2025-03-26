@@ -49,11 +49,11 @@ public class SparkParticle extends Particle {
 	}
 
 	@Override
-	public void render(VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
+	public void render(VertexConsumer vertexConsumer, Camera camera, float tickProgress) {
 	}
 
 	@Override
-	public void renderCustom(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Camera camera, float tickDelta) {
+	public void renderCustom(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Camera camera, float tickProgress) {
 		VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getLightning());
 		Vec3d cameraPos = camera.getPos();
 		for (int i = 1; i < arcs.size(); i++) {

@@ -7,5 +7,5 @@ import net.minecraft.client.render.entity.state.ItemStackEntityRenderState;
 
 public class FloatingTridentRenderState {
 	public boolean isFloating = false;
-	public ItemStackEntityRenderState stackState = new ItemStackEntityRenderState();
+	public final ItemStackEntityRenderState stackState = new ItemStackEntityRenderState();
 }

@@ -105,7 +105,7 @@ public class FrozenReloadListener implements IdentifiableResourceReloadListener,
 					Enchancement.LOGGER.warn(exception.getLocalizedMessage());
 				}
 			}
-			MinecraftClient.getInstance().getTextureManager().registerTexture(textureID, new NativeImageBackedTexture(destTex));
+			MinecraftClient.getInstance().getTextureManager().registerTexture(textureID, new NativeImageBackedTexture(textureID::toString, destTex));
 			return textureID;
 		}
 	}

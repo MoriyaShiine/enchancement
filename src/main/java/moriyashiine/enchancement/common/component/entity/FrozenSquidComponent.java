@@ -19,9 +19,9 @@ public class FrozenSquidComponent implements AutoSyncedComponent {
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		forcedTentacleAngle = tag.getFloat("ForceTentacleAngle");
-		forcedTiltAngle = tag.getFloat("ForcedTiltAngle");
-		forcedRollAngle = tag.getFloat("ForcedRollAngle");
+		forcedTentacleAngle = tag.getFloat("ForceTentacleAngle", 0);
+		forcedTiltAngle = tag.getFloat("ForcedTiltAngle", 0);
+		forcedRollAngle = tag.getFloat("ForcedRollAngle", 0);
 	}
 
 	@Override

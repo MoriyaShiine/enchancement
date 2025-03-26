@@ -26,23 +26,23 @@ public record RageEffect(EnchantmentValueEffect damageDealtModifier, Enchantment
 	// damage dealt
 	public static int color = -1;
 
-	public static float getDamageDealtModifier(LivingEntity living, ItemStack stack) {
+	public static float getDamageDealtModifier(LivingEntity entity, ItemStack stack) {
 		MutableFloat value = new MutableFloat();
 		EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 			RageEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.RAGE);
 			if (effect != null) {
-				value.setValue(effect.damageDealtModifier().apply(level, living.getRandom(), value.floatValue()));
+				value.setValue(effect.damageDealtModifier().apply(level, entity.getRandom(), value.floatValue()));
 			}
 		});
-		return (10 - Math.max(3, EnchancementUtil.getFlooredHealth(living))) * value.floatValue();
+		return (10 - Math.max(3, EnchancementUtil.getFlooredHealth(entity))) * value.floatValue();
 	}
 
-	public static float getDamageDealtModifierMax(LivingEntity living, ItemStack stack) {
+	public static float getDamageDealtModifierMax(LivingEntity entity, ItemStack stack) {
 		MutableFloat value = new MutableFloat();
 		EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 			RageEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.RAGE);
 			if (effect != null) {
-				value.setValue(effect.damageDealtModifier().apply(level, living.getRandom(), value.floatValue()));
+				value.setValue(effect.damageDealtModifier().apply(level, entity.getRandom(), value.floatValue()));
 			}
 		});
 		return 7 * value.floatValue();
@@ -60,41 +60,41 @@ public record RageEffect(EnchantmentValueEffect damageDealtModifier, Enchantment
 	}
 
 	// damage taken
-	public static float getDamageTakenModifier(LivingEntity living, ItemStack stack) {
+	public static float getDamageTakenModifier(LivingEntity entity, ItemStack stack) {
 		MutableFloat value = new MutableFloat();
 		EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 			RageEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.RAGE);
 			if (effect != null) {
-				value.setValue(effect.damageTakenModifier().apply(level, living.getRandom(), value.floatValue()));
+				value.setValue(effect.damageTakenModifier().apply(level, entity.getRandom(), value.floatValue()));
 			}
 		});
-		return Math.max(0, 1 - MathHelper.ceil((10 - Math.max(3, EnchancementUtil.getFlooredHealth(living))) * value.floatValue() * 100) / 100F);
+		return Math.max(0, 1 - MathHelper.ceil((10 - Math.max(3, EnchancementUtil.getFlooredHealth(entity))) * value.floatValue() * 100) / 100F);
 	}
 
-	public static float getDamageTakenModifier(LivingEntity living) {
+	public static float getDamageTakenModifier(LivingEntity entity) {
 		float value = 1;
-		for (ItemStack stack : living.getAllArmorItems()) {
-			value *= getDamageTakenModifier(living, stack);
+		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
+			value *= getDamageTakenModifier(entity, stack);
 		}
 		return Math.max(0, value);
 	}
 
 	// movement speed
-	public static float getMovementSpeedModifier(LivingEntity living, ItemStack stack) {
+	public static float getMovementSpeedModifier(LivingEntity entity, ItemStack stack) {
 		MutableFloat value = new MutableFloat();
 		EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 			RageEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.RAGE);
 			if (effect != null) {
-				value.setValue(effect.movementSpeedModifier().apply(level, living.getRandom(), value.floatValue()));
+				value.setValue(effect.movementSpeedModifier().apply(level, entity.getRandom(), value.floatValue()));
 			}
 		});
-		return (10 - Math.max(3, EnchancementUtil.getFlooredHealth(living))) * value.floatValue();
+		return (10 - Math.max(3, EnchancementUtil.getFlooredHealth(entity))) * value.floatValue();
 	}
 
-	public static float getMovementSpeedModifier(LivingEntity living) {
+	public static float getMovementSpeedModifier(LivingEntity entity) {
 		float value = 1;
-		for (ItemStack stack : living.getAllArmorItems()) {
-			value += getMovementSpeedModifier(living, stack);
+		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
+			value += getMovementSpeedModifier(entity, stack);
 		}
 		return value;
 	}

@@ -25,7 +25,7 @@ public class ChargeJumpComponent implements AutoSyncedComponent, CommonTickingCo
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		strength = tag.getInt("Strength");
+		strength = tag.getInt("Strength", 0);
 	}
 
 	@Override

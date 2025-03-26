@@ -18,6 +18,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryWrapper;
@@ -36,13 +37,13 @@ public class ApplyRandomStatusEffectComponent implements Component {
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		originalStack = ItemStack.fromNbtOrEmpty(registryLookup, tag.getCompound("OriginalStack"));
+		originalStack = tag.get("OriginalStack", ItemStack.CODEC, registryLookup.getOps(NbtOps.INSTANCE)).orElse(ItemStack.EMPTY);
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		if (!originalStack.isEmpty()) {
-			tag.put("OriginalStack", originalStack.toNbt(registryLookup));
+			tag.put("OriginalStack", ItemStack.CODEC, registryLookup.getOps(NbtOps.INSTANCE), originalStack);
 		}
 	}
 
@@ -60,7 +61,7 @@ public class ApplyRandomStatusEffectComponent implements Component {
 		if (weaponStack != null && EnchantmentHelper.hasAnyEnchantmentsWith(weaponStack, ModEnchantmentEffectComponentTypes.APPLY_RANDOM_STATUS_EFFECT)) {
 			ApplyRandomStatusEffectEffect.setValues(user.getRandom(), duration, disallowedTag, Collections.singleton(weaponStack));
 		} else if (!(user instanceof PlayerEntity) && EnchancementUtil.hasAnyEnchantmentsWith(user, ModEnchantmentEffectComponentTypes.APPLY_RANDOM_STATUS_EFFECT)) {
-			ApplyRandomStatusEffectEffect.setValues(user.getRandom(), duration, disallowedTag, user.getEquippedItems());
+			ApplyRandomStatusEffectEffect.setValues(user.getRandom(), duration, disallowedTag, EnchancementUtil.getHeldItems(user));
 		}
 		if (duration.floatValue() != 0) {
 			int attempts = 0;

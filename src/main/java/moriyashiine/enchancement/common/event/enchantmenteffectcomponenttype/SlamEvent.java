@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 public class SlamEvent {
 	public static class FallImmunity implements PreventFallDamageEvent {
 		@Override
-		public boolean shouldNotTakeFallDamage(World world, LivingEntity entity, float fallDistance, float damageMultiplier, DamageSource damageSource) {
+		public boolean shouldNotTakeFallDamage(World world, LivingEntity entity, double fallDistance, float damagePerDistance, DamageSource damageSource) {
 			SlamComponent slamComponent = ModEntityComponents.SLAM.getNullable(entity);
 			return slamComponent != null && slamComponent.isSlamming();
 		}

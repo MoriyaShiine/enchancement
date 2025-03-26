@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.enchantment.effect;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.effect.EnchantmentValueEffect;
 import net.minecraft.entity.LivingEntity;
@@ -23,7 +24,7 @@ public record DirectionBurstEffect(EnchantmentValueEffect cooldown, EnchantmentV
 
 	public static int getCooldown(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : entity.getAllArmorItems()) {
+		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				DirectionBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.DIRECTION_BURST);
 				if (effect != null) {
@@ -36,7 +37,7 @@ public record DirectionBurstEffect(EnchantmentValueEffect cooldown, EnchantmentV
 
 	public static float getGroundStrength(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : entity.getAllArmorItems()) {
+		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				DirectionBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.DIRECTION_BURST);
 				if (effect != null) {
@@ -49,7 +50,7 @@ public record DirectionBurstEffect(EnchantmentValueEffect cooldown, EnchantmentV
 
 	public static float getAirStrength(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : entity.getAllArmorItems()) {
+		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				DirectionBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.DIRECTION_BURST);
 				if (effect != null) {

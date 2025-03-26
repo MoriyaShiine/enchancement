@@ -3,6 +3,7 @@
  */
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.brimstone;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -13,8 +14,8 @@ import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -33,6 +34,14 @@ import java.util.UUID;
 @Mixin(CrossbowItem.class)
 public abstract class CrossbowItemMixin {
 	@Shadow
+	abstract CrossbowItem.LoadingSounds getLoadingSounds(ItemStack stack);
+
+	@Shadow
+	private static boolean loadProjectiles(LivingEntity shooter, ItemStack crossbow) {
+		return false;
+	}
+
+	@Shadow
 	public abstract int getMaxUseTime(ItemStack stack, LivingEntity user);
 
 	@WrapOperation(method = "onStoppedUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/CrossbowItem;getPullProgress(ILnet/minecraft/item/ItemStack;Lnet/minecraft/entity/LivingEntity;)F"))
@@ -40,8 +49,9 @@ public abstract class CrossbowItemMixin {
 		if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.BRIMSTONE)) {
 			stack.remove(ModComponentTypes.BRIMSTONE_UUID);
 			int damage = BrimstoneEffect.getBrimstoneDamage(CrossbowItem.getPullProgress(getMaxUseTime(stack, user) - remainingUseTicks, stack, user));
-			if (damage > 0) {
+			if (damage > 0 && !CrossbowItem.isCharged(stack) && loadProjectiles(user, stack)) {
 				stack.set(ModComponentTypes.BRIMSTONE_DAMAGE, damage);
+				getLoadingSounds(stack).end().ifPresent(sound -> world.playSound(null, user.getX(), user.getY(), user.getZ(), sound.value(), user.getSoundCategory(), 1, 1 / (world.getRandom().nextFloat() * 0.5F + 1) + 0.2F));
 				return 1;
 			}
 		}
@@ -65,6 +75,11 @@ public abstract class CrossbowItemMixin {
 		}
 	}
 
+	@ModifyExpressionValue(method = "usageTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/CrossbowItem;isCharged(Lnet/minecraft/item/ItemStack;)Z"))
+	private boolean enchancement$brimstone(boolean original, World world, LivingEntity user, ItemStack stack) {
+		return original || EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.BRIMSTONE);
+	}
+
 	@ModifyReturnValue(method = "getPullTime", at = @At("RETURN"))
 	private static int enchancement$brimstone(int original, ItemStack stack, LivingEntity user) {
 		float value = BrimstoneEffect.getChargeTimeMultiplier(user.getRandom(), stack);
@@ -74,8 +89,8 @@ public abstract class CrossbowItemMixin {
 		return original;
 	}
 
-	@WrapOperation(method = "shoot", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;playSound(Lnet/minecraft/entity/player/PlayerEntity;DDDLnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FF)V"))
-	private void enchancement$brimstone(World instance, PlayerEntity source, double x, double y, double z, SoundEvent sound, SoundCategory category, float volume, float pitch, Operation<Void> original, LivingEntity shooter) {
+	@WrapOperation(method = "shoot", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;playSound(Lnet/minecraft/entity/Entity;DDDLnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FF)V"))
+	private void enchancement$brimstone(World instance, Entity source, double x, double y, double z, SoundEvent sound, SoundCategory category, float volume, float pitch, Operation<Void> original, LivingEntity shooter) {
 		int damage = shooter.getEquippedStack(LivingEntity.getSlotForHand(shooter.getActiveHand())).getOrDefault(ModComponentTypes.BRIMSTONE_DAMAGE, 0);
 		if (damage > 0) {
 			sound = getFireSound(damage);

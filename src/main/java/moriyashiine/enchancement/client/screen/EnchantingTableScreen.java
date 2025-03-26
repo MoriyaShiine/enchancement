@@ -183,7 +183,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 		context.drawTooltip(client.textRenderer, Text.literal(bookshelfCountText), (posX + 178) * 2, (posY + BOOKSHELF_Y + 20) * 2);
 		context.getMatrices().scale(1, 1, 1);
 		context.getMatrices().pop();
-		drawBook(context, (width - backgroundWidth) / 2, (height - backgroundHeight) / 2, client.getRenderTickCounter().getTickDelta(true));
+		drawBook(context, (width - backgroundWidth) / 2, (height - backgroundHeight) / 2, client.getRenderTickCounter().getTickProgress(true));
 		if (!handler.getEnchantingMaterial().isEmpty()) {
 			forceTransparency = true;
 			RenderSystem.setShaderColor(1, 1, 1, 0.5F);
@@ -264,7 +264,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 	private void drawBook(DrawContext context, int x, int y, float delta) {
 		float deltaTurningSpeed = MathHelper.lerp(delta, this.pageTurningSpeed, this.nextPageTurningSpeed);
 		float deltaPageangle = MathHelper.lerp(delta, this.pageAngle, this.nextPageAngle);
-		DiffuseLighting.method_34742();
+		DiffuseLighting.enableGuiShaderLighting();
 		context.getMatrices().push();
 		context.getMatrices().translate(x + 23, y + 15, 100);
 		context.getMatrices().scale(-40, 40, 40);

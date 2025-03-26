@@ -58,13 +58,13 @@ public class EnchantmentHelperMixin {
 	private static List<EnchantmentLevelEntry> enchancement$disableDisallowedEnchantments(int level, ItemStack stack, Stream<RegistryEntry<Enchantment>> possibleEnchantments, Operation<List<EnchantmentLevelEntry>> original, Random random) {
 		List<EnchantmentLevelEntry> enchantments = original.call(level, stack, possibleEnchantments);
 		for (int i = enchantments.size() - 1; i >= 0; i--) {
-			RegistryEntry<Enchantment> enchantment = enchantments.get(i).enchantment;
+			RegistryEntry<Enchantment> enchantment = enchantments.get(i).enchantment();
 			if (!EnchancementUtil.isEnchantmentAllowed(enchantment)) {
 				@Nullable RegistryEntry<Enchantment> replacement = EnchancementUtil.getReplacement(enchantment, stack);
 				if (replacement == null) {
 					enchantments.remove(i);
 				} else {
-					if (enchantments.stream().anyMatch(entry -> entry.enchantment.equals(replacement))) {
+					if (enchantments.stream().anyMatch(entry -> entry.enchantment().equals(replacement))) {
 						enchantments.remove(i);
 					} else {
 						enchantments.set(i, new EnchantmentLevelEntry(replacement, 1));

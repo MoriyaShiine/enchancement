@@ -34,7 +34,7 @@ public record AddMoltenParticlesPayload(BlockPos pos) implements CustomPayload {
 			ClientWorld world = context.client().world;
 			if (world != null) {
 				for (int i = 0; i < 8; i++) {
-					world.addParticle(ParticleTypes.SMALL_FLAME, payload.pos().getX() + 0.5 + MathHelper.nextDouble(world.random, -0.5, 0.5F), payload.pos().getY() + 0.5 + MathHelper.nextDouble(world.random, -0.5, 0.5F), payload.pos().getZ() + 0.5 + MathHelper.nextDouble(world.random, -0.5, 0.5F), 0, 0, 0);
+					world.addParticleClient(ParticleTypes.SMALL_FLAME, payload.pos().getX() + 0.5 + MathHelper.nextDouble(world.random, -0.5, 0.5F), payload.pos().getY() + 0.5 + MathHelper.nextDouble(world.random, -0.5, 0.5F), payload.pos().getZ() + 0.5 + MathHelper.nextDouble(world.random, -0.5, 0.5F), 0, 0, 0);
 				}
 			}
 		}

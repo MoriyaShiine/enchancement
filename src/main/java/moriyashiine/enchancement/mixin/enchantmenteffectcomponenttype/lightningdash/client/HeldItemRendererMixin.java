@@ -29,10 +29,10 @@ public class HeldItemRendererMixin {
 		return original;
 	}
 
-	@Inject(method = "renderFirstPersonItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;multiply(Lorg/joml/Quaternionf;)V", ordinal = 12))
-	private void enchancement$lightningDash(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
+	@Inject(method = "renderFirstPersonItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;multiply(Lorg/joml/Quaternionfc;)V", ordinal = 12))
+	private void enchancement$lightningDash(AbstractClientPlayerEntity player, float tickProgress, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
 		if (LightningDashEffect.getChargeTime(player.getRandom(), item) != 0) {
-			matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees((player.age + tickDelta) * 20));
+			matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees((player.age + tickProgress) * 20));
 		}
 	}
 }

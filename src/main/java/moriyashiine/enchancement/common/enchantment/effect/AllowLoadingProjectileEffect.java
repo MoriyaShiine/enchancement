@@ -56,7 +56,7 @@ public record AllowLoadingProjectileEffect(Identifier model, SoundEvent soundEve
 		PROJECTILE_MAP.put(Items.ICE, ((world, owner, stack, shotFrom) -> new IceShardEntity(world, owner, shotFrom)));
 		PROJECTILE_MAP.put(Items.TORCH, (world, owner, stack, shotFrom) -> {
 			TorchEntity torch = new TorchEntity(world, owner, stack, shotFrom);
-			torch.setDamage(torch.getDamage() / 2);
+			torch.setDamage(torch.damage / 2);
 			int level = 0;
 			if (shotFrom != null) {
 				for (RegistryEntry<Enchantment> enchantment : EnchantmentHelper.getEnchantments(shotFrom).getEnchantments()) {

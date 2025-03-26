@@ -13,7 +13,6 @@ import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.item.AnimalArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.ItemTags;
@@ -49,7 +48,7 @@ public class EnchantmentHelperMixin {
 
 	@Unique
 	private static boolean isApplicable(ItemStack stack) {
-		return stack.getItem() instanceof AnimalArmorItem || stack.isIn(ItemTags.CHEST_ARMOR_ENCHANTABLE) || stack.isIn(ItemTags.MINING_ENCHANTABLE) || stack.isIn(ItemTags.TRIDENT_ENCHANTABLE);
+		return EnchancementUtil.isBodyArmor(stack) || stack.isIn(ItemTags.MINING_ENCHANTABLE) || stack.isIn(ItemTags.TRIDENT_ENCHANTABLE);
 	}
 
 	@Inject(method = "apply", at = @At(value = "RETURN", ordinal = 1))

@@ -20,9 +20,9 @@ public class BounceComponent implements ServerTickingComponent, AutoSyncedCompon
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		invertedBounce = tag.getBoolean("InvertedBounce");
-		justBounced = tag.getBoolean("JustBounced");
-		ticksOnGround = tag.getInt("TicksOnGround");
+		invertedBounce = tag.getBoolean("InvertedBounce", false);
+		justBounced = tag.getBoolean("JustBounced", false);
+		ticksOnGround = tag.getInt("TicksOnGround", 0);
 	}
 
 	@Override

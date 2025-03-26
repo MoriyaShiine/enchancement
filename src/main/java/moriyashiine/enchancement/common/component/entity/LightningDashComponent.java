@@ -43,7 +43,7 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 	private boolean playedSound = false;
 	private int ticksUsing = 0;
 
-	private float nextTickFallDistance = 0;
+	private double nextTickFallDistance = 0;
 
 	public LightningDashComponent(LivingEntity obj) {
 		this.obj = obj;
@@ -51,9 +51,9 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		using = tag.getBoolean("Using");
-		floatTicks = tag.getInt("FloatTicks");
-		smashTicks = tag.getInt("SmashTicks");
+		using = tag.getBoolean("Using", false);
+		floatTicks = tag.getInt("FloatTicks", 0);
+		smashTicks = tag.getInt("SmashTicks", 0);
 	}
 
 	@Override
@@ -148,7 +148,7 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 		tick();
 		if (isFloating() && SLibClientUtils.shouldAddParticles(obj)) {
 			for (int i = 0; i <= 4; i++) {
-				obj.getWorld().addParticle(new SparkParticleEffect(obj.getPos().addRandom(obj.getRandom(), 1)), obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 0, 0);
+				obj.getWorld().addParticleClient(new SparkParticleEffect(obj.getPos().addRandom(obj.getRandom(), 1)), obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 0, 0);
 			}
 		}
 		if (smashTicks == 1 && obj.isOnGround()) {

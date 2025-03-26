@@ -3,7 +3,6 @@
  */
 package moriyashiine.enchancement.client.event.enchantmenteffectcomponenttype;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudLayerRegistrationCallback;
@@ -28,7 +27,6 @@ public class AirJumpClientEvent implements HudLayerRegistrationCallback {
 			if (airJumpComponent.hasAirJump()) {
 				int jumpsLeft = airJumpComponent.getJumpsLeft();
 				if (jumpsLeft < airJumpComponent.getMaxJumps()) {
-					RenderSystem.enableBlend();
 					Identifier first = getTexture(jumpsLeft + 1);
 					Identifier second = getTexture(jumpsLeft);
 					int x = context.getScaledWindowWidth() / 2 - 5, y = context.getScaledWindowHeight() / 2 + 27;
@@ -38,7 +36,6 @@ public class AirJumpClientEvent implements HudLayerRegistrationCallback {
 					} else {
 						context.drawGuiTexture(RenderLayer::getGuiTextured, second, x, y, 9, 9);
 					}
-					RenderSystem.disableBlend();
 				}
 			}
 		}));

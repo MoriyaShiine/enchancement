@@ -11,8 +11,6 @@ import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.loot.condition.LootCondition;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -35,21 +33,13 @@ public class ConditionalAttributesComponent implements ServerTickingComponent {
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		attributes.clear();
-		NbtList list = tag.getList("Attributes", NbtElement.COMPOUND_TYPE);
-		for (int i = 0; i < list.size(); i++) {
-			NbtCompound attributeCompound = list.getCompound(i);
-			ConditionalAttribute.CODEC.parse(registryLookup.getOps(NbtOps.INSTANCE), attributeCompound).ifSuccess(attributes::add);
-		}
-		removeAll = tag.getBoolean("RemoveAll");
+		attributes.addAll(tag.get("Attributes", ConditionalAttribute.CODEC.listOf(), registryLookup.getOps(NbtOps.INSTANCE)).orElse(List.of()));
+		removeAll = tag.getBoolean("RemoveAll", false);
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		NbtList attributes = new NbtList();
-		for (ConditionalAttribute attribute : this.attributes) {
-			ConditionalAttribute.CODEC.encodeStart(registryLookup.getOps(NbtOps.INSTANCE), attribute).ifSuccess(attributes::add);
-		}
-		tag.put("Attributes", attributes);
+		tag.put("Attributes", ConditionalAttribute.CODEC.listOf(), registryLookup.getOps(NbtOps.INSTANCE), List.copyOf(attributes));
 		tag.putBoolean("RemoveAll", removeAll);
 	}
 

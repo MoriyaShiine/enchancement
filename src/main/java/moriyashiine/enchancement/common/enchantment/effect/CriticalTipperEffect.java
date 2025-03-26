@@ -28,9 +28,7 @@ public record CriticalTipperEffect(EnchantmentValueEffect distanceLeniency, Part
 		EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 			List<EnchantmentEffectEntry<CriticalTipperEffect>> effects = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.CRITICAL_TIPPER);
 			if (effects != null) {
-				effects.forEach(effect -> {
-					mutableFloat.setValue(effect.effect().distanceLeniency().apply(level, random, mutableFloat.floatValue()));
-				});
+				effects.forEach(effect -> mutableFloat.setValue(effect.effect().distanceLeniency().apply(level, random, mutableFloat.floatValue())));
 			}
 		});
 		return mutableFloat.floatValue();

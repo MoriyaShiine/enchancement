@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.enchantment.effect;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.effect.EnchantmentValueEffect;
 import net.minecraft.entity.LivingEntity;
@@ -25,7 +26,7 @@ public record RotationBurstEffect(EnchantmentValueEffect cooldown, EnchantmentVa
 
 	public static int getCooldown(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : entity.getAllArmorItems()) {
+		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				RotationBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.ROTATION_BURST);
 				if (effect != null) {
@@ -38,7 +39,7 @@ public record RotationBurstEffect(EnchantmentValueEffect cooldown, EnchantmentVa
 
 	public static float getStrength(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : entity.getAllArmorItems()) {
+		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				RotationBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.ROTATION_BURST);
 				if (effect != null) {
@@ -51,7 +52,7 @@ public record RotationBurstEffect(EnchantmentValueEffect cooldown, EnchantmentVa
 
 	public static int getWavedashTicks(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : entity.getAllArmorItems()) {
+		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				RotationBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.ROTATION_BURST);
 				if (effect != null) {
@@ -64,7 +65,7 @@ public record RotationBurstEffect(EnchantmentValueEffect cooldown, EnchantmentVa
 
 	public static float getWavedashStrength(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : entity.getAllArmorItems()) {
+		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				RotationBurstEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.ROTATION_BURST);
 				if (effect != null) {

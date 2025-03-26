@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(PersistentProjectileEntity.class)
 public class PersistentProjectileEntityMixin {
-	@ModifyArg(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;addParticle(Lnet/minecraft/particle/ParticleEffect;DDDDDD)V", ordinal = 0))
+	@ModifyArg(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;addParticleClient(Lnet/minecraft/particle/ParticleEffect;DDDDDD)V"))
 	private ParticleEffect enchancement$delayedLaunch(ParticleEffect value) {
 		DelayedLaunchComponent delayedLaunchComponent = ModEntityComponents.DELAYED_LAUNCH.getNullable(this);
 		if (delayedLaunchComponent != null && delayedLaunchComponent.shouldChangeParticles()) {

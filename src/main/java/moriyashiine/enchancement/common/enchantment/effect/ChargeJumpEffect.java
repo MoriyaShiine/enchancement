@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.enchantment.effect;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.effect.EnchantmentValueEffect;
 import net.minecraft.entity.LivingEntity;
@@ -21,7 +22,7 @@ public record ChargeJumpEffect(EnchantmentValueEffect chargeTime, EnchantmentVal
 
 	public static int getChargeTime(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : entity.getAllArmorItems()) {
+		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				ChargeJumpEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.CHARGE_JUMP);
 				if (effect != null) {
@@ -34,7 +35,7 @@ public record ChargeJumpEffect(EnchantmentValueEffect chargeTime, EnchantmentVal
 
 	public static float getStrength(LivingEntity entity, float base) {
 		MutableFloat mutableFloat = new MutableFloat(base);
-		for (ItemStack stack : entity.getAllArmorItems()) {
+		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				ChargeJumpEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.CHARGE_JUMP);
 				if (effect != null) {

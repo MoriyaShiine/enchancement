@@ -3,6 +3,6 @@
  */
 package moriyashiine.enchancement.common.entity;
 
-public interface UseTimeDeltaHolder {
-	float enchancement$getUseTimeDelta();
+public interface UseTimeProgressHolder {
+	float enchancement$getUseTimeProgress();
 }

@@ -145,17 +145,17 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 	@Override
 	public void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
-		setDamage(nbt.getFloat("Damage"));
-		dataTracker.set(FORCED_PITCH, nbt.getFloat("ForcedPitch"));
-		dataTracker.set(FORCED_YAW, nbt.getFloat("ForcedYaw"));
-		distanceTraveled = nbt.getInt("DistanceTraveled");
-		ticksExisted = nbt.getInt("TicksExisted");
+		setDamage(nbt.getFloat("Damage", 0));
+		dataTracker.set(FORCED_PITCH, nbt.getFloat("ForcedPitch", 0));
+		dataTracker.set(FORCED_YAW, nbt.getFloat("ForcedYaw", 0));
+		distanceTraveled = nbt.getInt("DistanceTraveled", 0);
+		ticksExisted = nbt.getInt("TicksExisted", 0);
 	}
 
 	@Override
 	public void writeCustomDataToNbt(NbtCompound nbt) {
 		super.writeCustomDataToNbt(nbt);
-		nbt.putFloat("Damage", (float) getDamage());
+		nbt.putFloat("Damage", getDamage());
 		nbt.putFloat("ForcedPitch", getPitch());
 		nbt.putFloat("ForcedYaw", getYaw());
 		nbt.putInt("DistanceTraveled", distanceTraveled);
@@ -185,8 +185,7 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 		dataTracker.set(DAMAGE, (float) damage);
 	}
 
-	@Override
-	public double getDamage() {
+	public float getDamage() {
 		return dataTracker.get(DAMAGE);
 	}
 
@@ -207,9 +206,9 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 
 	private void addParticles(ParticleEffect particle, double x, double y, double z) {
 		ALWAYS_SPAWN_PARTICLES = true;
-		float range = (float) MathHelper.lerp(getDamage() / 12, 0, 0.5F);
+		float range = MathHelper.lerp(getDamage() / 12, 0, 0.5F);
 		for (int i = 0; i < 8; i++) {
-			getWorld().addParticle(particle,
+			getWorld().addParticleClient(particle,
 					x + MathHelper.nextFloat(random, -range, range),
 					y + MathHelper.nextFloat(random, -range, range),
 					z + MathHelper.nextFloat(random, -range, range),

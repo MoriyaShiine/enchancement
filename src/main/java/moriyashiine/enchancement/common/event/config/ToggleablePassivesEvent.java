@@ -48,7 +48,7 @@ public class ToggleablePassivesEvent {
 		@Override
 		public void tick(ServerWorld world, Entity entity) {
 			if (entity instanceof PlayerEntity player) {
-				ItemStack stack = player.getInventory().getStack(player.getInventory().selectedSlot);
+				ItemStack stack = player.getInventory().getStack(player.getInventory().getSelectedSlot());
 				boolean hasEfficiency = hasEfficiency(stack);
 				SLibUtils.conditionallyApplyAttributeModifier(player, EntityAttributes.MINING_EFFICIENCY, EnchancementUtil.hasWeakEnchantments(stack) ? WEAK_EFFICIENCY : STRONG_EFFICIENCY, hasEfficiency);
 			}

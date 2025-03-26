@@ -37,7 +37,7 @@ public class BounceEvent {
 
 	public static class Bounce implements PreventFallDamageEvent {
 		@Override
-		public boolean shouldNotTakeFallDamage(World world, LivingEntity entity, float fallDistance, float damageMultiplier, DamageSource damageSource) {
+		public boolean shouldNotTakeFallDamage(World world, LivingEntity entity, double fallDistance, float damagePerDistance, DamageSource damageSource) {
 			if (!damageSource.isOf(DamageTypes.STALAGMITE) && fallDistance > entity.getSafeFallDistance() && EnchancementUtil.hasAnyEnchantmentsWith(entity, ModEnchantmentEffectComponentTypes.BOUNCE)) {
 				SLibUtils.playSound(entity, SoundEvents.BLOCK_SLIME_BLOCK_FALL);
 				BounceComponent bounceComponent = ModEntityComponents.BOUNCE.get(entity);
@@ -55,7 +55,7 @@ public class BounceEvent {
 		}
 
 		private static boolean shouldBounce(LivingEntity entity, BounceComponent bounceComponent) {
-			boolean bounce = !SLibUtils.isSneakingOrSitting(entity, entity.bypassesLandingEffects());
+			boolean bounce = !SLibUtils.isCrouching(entity, true);
 			if (bounceComponent.hasInvertedBounce()) {
 				bounce = !bounce;
 			}

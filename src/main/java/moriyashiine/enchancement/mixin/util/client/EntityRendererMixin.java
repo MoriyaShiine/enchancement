@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(EntityRenderer.class)
 public class EntityRendererMixin<T extends Entity, S extends EntityRenderState> {
 	@Inject(method = "updateRenderState", at = @At("TAIL"))
-	private void enchancement$livingEntityRenderStateAddition(T entity, S state, float tickDelta, CallbackInfo ci) {
+	private void enchancement$livingEntityRenderStateAddition(T entity, S state, float tickProgress, CallbackInfo ci) {
 		EntityRenderStateAddition stateAddition = (EntityRenderStateAddition) state;
 		stateAddition.enchancement$setActiveStack(entity instanceof LivingEntity living ? living.getActiveItem() : ItemStack.EMPTY);
 		stateAddition.enchancement$setMainHandStack(entity instanceof LivingEntity living ? living.getMainHandStack() : ItemStack.EMPTY);

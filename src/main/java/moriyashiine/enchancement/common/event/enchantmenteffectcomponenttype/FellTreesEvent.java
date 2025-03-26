@@ -109,7 +109,7 @@ public class FellTreesEvent {
 				Entry entry = Entry.get(player);
 				if (entry != null && isValid(entry.tree(), stack)) {
 					entry.tree().sort(Comparator.comparingInt(Vec3i::getY).reversed());
-					ModWorldComponents.FELL_TREES.get(world).addTree(new FellTreesComponent.Tree(entry.tree(), pos, stack));
+					ModWorldComponents.FELL_TREES.get(world).addTree(FellTreesComponent.Tree.of(entry.tree(), pos, stack));
 					ENTRIES.remove(entry);
 					stack.damage(entry.tree().size(), player, EquipmentSlot.MAINHAND);
 					return false;

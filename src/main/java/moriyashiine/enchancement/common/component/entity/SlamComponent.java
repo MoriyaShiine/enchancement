@@ -48,9 +48,9 @@ public class SlamComponent implements CommonTickingComponent {
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		isSlamming = tag.getBoolean("IsSlamming");
-		slamCooldown = tag.getInt("SlamCooldown");
-		ticksLeftToJump = tag.getInt("TicksLeftToJump");
+		isSlamming = tag.getBoolean("IsSlamming", false);
+		slamCooldown = tag.getInt("SlamCooldown", 0);
+		ticksLeftToJump = tag.getInt("TicksLeftToJump", 0);
 	}
 
 	@Override
@@ -169,7 +169,7 @@ public class SlamComponent implements CommonTickingComponent {
 				double x = obj.getX() + MathHelper.sin(i) * j / 2, z = obj.getZ() + MathHelper.cos(i) * j / 2;
 				BlockState state = obj.getWorld().getBlockState(mutable.set(x, y, z));
 				if (!state.isReplaceable() && obj.getWorld().getBlockState(mutable.move(Direction.UP)).isReplaceable()) {
-					obj.getWorld().addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, state), x, mutable.getY(), z, 0, 0, 0);
+					obj.getWorld().addParticleClient(new BlockStateParticleEffect(ParticleTypes.BLOCK, state), x, mutable.getY(), z, 0, 0, 0);
 				}
 			}
 		}

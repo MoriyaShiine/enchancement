@@ -35,8 +35,8 @@ public class TeleportOnHitComponent implements AutoSyncedComponent, ClientTickin
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		teleportsOnBlockHit = tag.getBoolean("TeleportsOnBlockHit");
-		teleportsOnEntityHit = tag.getBoolean("TeleportsOnEntityHit");
+		teleportsOnBlockHit = tag.getBoolean("TeleportsOnBlockHit", false);
+		teleportsOnEntityHit = tag.getBoolean("TeleportsOnEntityHit", false);
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class TeleportOnHitComponent implements AutoSyncedComponent, ClientTickin
 			if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.TELEPORT_ON_HIT)) {
 				TeleportOnHitEffect.setValues(teleportsOnBlockHit, teleportsOnEntityHit, Collections.singleton(stack));
 			} else if (!(user instanceof PlayerEntity) && EnchancementUtil.hasAnyEnchantmentsWith(user, ModEnchantmentEffectComponentTypes.TELEPORT_ON_HIT)) {
-				TeleportOnHitEffect.setValues(teleportsOnBlockHit, teleportsOnEntityHit, user.getEquippedItems());
+				TeleportOnHitEffect.setValues(teleportsOnBlockHit, teleportsOnEntityHit, EnchancementUtil.getHeldItems(user));
 			}
 			if (teleportsOnBlockHit.booleanValue() || teleportsOnEntityHit.booleanValue()) {
 				TeleportOnHitComponent teleportOnHitComponent = ModEntityComponents.TELEPORT_ON_HIT.get(entity);

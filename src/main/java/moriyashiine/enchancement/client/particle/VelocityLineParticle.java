@@ -21,7 +21,7 @@ public class VelocityLineParticle extends SpriteBillboardParticle {
 		vertical = velocityY != 0;
 		if (vertical) {
 			angle = MathHelper.HALF_PI;
-			prevAngle = angle;
+			lastAngle = angle;
 		}
 		yaw = (float) MathHelper.atan2(velocityX, velocityZ) + MathHelper.HALF_PI;
 		maxAge = 3;
@@ -40,15 +40,15 @@ public class VelocityLineParticle extends SpriteBillboardParticle {
 	}
 
 	@Override
-	public void render(VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
+	public void render(VertexConsumer vertexConsumer, Camera camera, float tickProgress) {
 		if (vertical) {
-			super.render(vertexConsumer, camera, tickDelta);
+			super.render(vertexConsumer, camera, tickProgress);
 		} else {
 			Quaternionf quaternionf = new Quaternionf();
 			quaternionf.rotationYXZ(yaw, 0, 0);
-			this.method_60373(vertexConsumer, camera, quaternionf, tickDelta);
+			render(vertexConsumer, camera, quaternionf, tickProgress);
 			quaternionf.rotationYXZ(yaw, MathHelper.PI, 0);
-			this.method_60373(vertexConsumer, camera, quaternionf, tickDelta);
+			render(vertexConsumer, camera, quaternionf, tickProgress);
 		}
 	}
 

@@ -23,17 +23,13 @@ public class BuryEntityComponent implements AutoSyncedComponent, ServerTickingCo
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		if (tag.contains("BuryPos")) {
-			buryPos = BlockPos.fromLong(tag.getLong("BuryPos"));
-		} else {
-			buryPos = null;
-		}
+		buryPos = tag.get("BuryPos", BlockPos.CODEC).orElse(null);
 	}
 
 	@Override
 	public void writeToNbt(@NotNull NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		if (buryPos != null) {
-			tag.putLong("BuryPos", buryPos.asLong());
+			tag.put("BuryPos", BlockPos.CODEC, buryPos);
 		}
 	}
 

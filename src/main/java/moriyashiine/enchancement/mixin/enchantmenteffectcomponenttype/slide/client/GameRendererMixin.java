@@ -23,7 +23,7 @@ public class GameRendererMixin {
 	private MinecraftClient client;
 
 	@Inject(method = "bobView", at = @At("HEAD"), cancellable = true)
-	private void enchancement$slide(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
+	private void enchancement$slide(MatrixStack matrices, float tickProgress, CallbackInfo ci) {
 		@Nullable SlideComponent slideComponent = ModEntityComponents.SLIDE.getNullable(client.getCameraEntity());
 		if (slideComponent != null && slideComponent.isSliding()) {
 			ci.cancel();

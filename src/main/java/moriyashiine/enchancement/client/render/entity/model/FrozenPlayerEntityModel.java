@@ -31,12 +31,12 @@ public class FrozenPlayerEntityModel extends BipedEntityModel<FrozenPlayerEntity
 			root.addChild(
 					EntityModelPartNames.LEFT_ARM,
 					ModelPartBuilder.create().uv(32, 48).cuboid(-1, -2, -2, 3, 12, 4, Dilation.NONE),
-					ModelTransform.pivot(5, 2, 0)
+					ModelTransform.origin(5, 2, 0)
 			);
 			root.addChild(
 					EntityModelPartNames.RIGHT_ARM,
 					ModelPartBuilder.create().uv(40, 16).cuboid(-2, -2, -2, 3, 12, 4, Dilation.NONE),
-					ModelTransform.pivot(-5, 2, 0)
+					ModelTransform.origin(-5, 2, 0)
 			);
 		}
 		return TexturedModelData.of(modelData, 64, 64);
@@ -44,15 +44,15 @@ public class FrozenPlayerEntityModel extends BipedEntityModel<FrozenPlayerEntity
 
 	@Override
 	public void setArmAngle(Arm arm, MatrixStack matrices) {
-		getRootPart().rotate(matrices);
+		getRootPart().applyTransform(matrices);
 		ModelPart armPart = getArm(arm);
 		if (slim) {
-			float pivot = 0.5F * (arm == Arm.RIGHT ? 1 : -1);
-			armPart.pivotX += pivot;
-			armPart.rotate(matrices);
-			armPart.pivotX -= pivot;
+			float origin = 0.5F * (arm == Arm.RIGHT ? 1 : -1);
+			armPart.originX += origin;
+			armPart.applyTransform(matrices);
+			armPart.originX -= origin;
 		} else {
-			armPart.rotate(matrices);
+			armPart.applyTransform(matrices);
 		}
 	}
 }

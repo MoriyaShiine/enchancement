@@ -40,7 +40,7 @@ public class FrozenPlayerEntity extends MobEntity {
 	@Override
 	public void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
-		setSlim(nbt.getBoolean("Slim"));
+		setSlim(nbt.getBoolean("Slim", false));
 	}
 
 	@Override

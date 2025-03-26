@@ -44,16 +44,16 @@ public class TridentEntityRendererMixin {
 	private void enchancement$rebalanceEquipment(TridentEntityRenderState state, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
 		if (floatingTridentRenderState.isFloating) {
 			matrices.push();
-			matrices.translate(0.0F, MathHelper.sin(state.age / 10) * 0.1F + 0.1F + 0.25F * floatingTridentRenderState.stackState.itemRenderState.getTransformation().scale.y(), 0);
+			matrices.translate(0.0F, MathHelper.sin(state.age / 10) * 0.1F + 0.1F + 0.25F, 0);
 			matrices.multiply(RotationAxis.POSITIVE_Y.rotation(ItemEntity.getRotation(state.age, 0)));
-			ItemEntityRenderer.renderStack(matrices, vertexConsumers, light, floatingTridentRenderState.stackState, random);
+			ItemEntityRenderer.render(matrices, vertexConsumers, light, floatingTridentRenderState.stackState, random);
 			matrices.pop();
 			ci.cancel();
 		}
 	}
 
 	@Inject(method = "updateRenderState(Lnet/minecraft/entity/projectile/TridentEntity;Lnet/minecraft/client/render/entity/state/TridentEntityRenderState;F)V", at = @At("TAIL"))
-	private void enchancement$rebalanceEquipment(TridentEntity entity, TridentEntityRenderState state, float tickDelta, CallbackInfo ci) {
+	private void enchancement$rebalanceEquipment(TridentEntity entity, TridentEntityRenderState state, float tickProgress, CallbackInfo ci) {
 		floatingTridentRenderState.isFloating = entity.getDataTracker().get(TridentEntity.LOYALTY) > 0 && !entity.isOwnerAlive();
 		floatingTridentRenderState.stackState.update(entity, entity.asItemStack(), itemModelManager);
 	}

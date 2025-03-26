@@ -22,6 +22,7 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.enchantment.effect.EnchantmentEffectEntry;
 import net.minecraft.enchantment.effect.EnchantmentValueEffect;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
@@ -247,9 +248,28 @@ public class EnchancementUtil {
 
 	// misc
 
-	public static void resetFallDistance(Entity entity) {
-		entity.onLanding();
-		ModEntityComponents.LIGHTNING_DASH.maybeGet(entity).ifPresent(LightningDashComponent::cancel);
+	public static List<ItemStack> getArmorItems(LivingEntity entity) {
+		List<ItemStack> stacks = new ArrayList<>();
+		for (EquipmentSlot slot : EquipmentSlot.values()) {
+			if (slot.isArmorSlot()) {
+				stacks.add(entity.getEquippedStack(slot));
+			}
+		}
+		return stacks;
+	}
+
+	public static List<ItemStack> getHeldItems(LivingEntity entity) {
+		List<ItemStack> stacks = new ArrayList<>();
+		for (EquipmentSlot slot : EquipmentSlot.values()) {
+			if (slot.getType() == EquipmentSlot.Type.HAND) {
+				stacks.add(entity.getEquippedStack(slot));
+			}
+		}
+		return stacks;
+	}
+
+	public static boolean isBodyArmor(ItemStack stack) {
+		return stack.contains(DataComponentTypes.EQUIPPABLE) && stack.get(DataComponentTypes.EQUIPPABLE).slot() == EquipmentSlot.BODY;
 	}
 
 	public static int getFlooredHealth(LivingEntity living) {
@@ -257,11 +277,16 @@ public class EnchancementUtil {
 		return (int) Math.floor(percentage * 10 + 0.5);
 	}
 
+	public static void resetFallDistance(Entity entity) {
+		entity.onLanding();
+		ModEntityComponents.LIGHTNING_DASH.maybeGet(entity).ifPresent(LightningDashComponent::cancel);
+	}
+
 	// enchantment
 
 	public static boolean hasAnyEnchantmentsIn(Entity entity, TagKey<Enchantment> tag) {
 		if (entity instanceof LivingEntity living) {
-			for (ItemStack stack : living.getAllArmorItems()) {
+			for (ItemStack stack : getArmorItems(living)) {
 				if (EnchantmentHelper.hasAnyEnchantmentsIn(stack, tag)) {
 					return true;
 				}
@@ -272,7 +297,7 @@ public class EnchancementUtil {
 
 	public static boolean hasAnyEnchantmentsWith(Entity entity, ComponentType<?> componentType) {
 		if (entity instanceof LivingEntity living) {
-			for (ItemStack stack : living.getAllArmorItems()) {
+			for (ItemStack stack : getArmorItems(living)) {
 				if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, componentType)) {
 					return true;
 				}
@@ -289,7 +314,7 @@ public class EnchancementUtil {
 
 	public static float getValue(ComponentType<EnchantmentValueEffect> component, LivingEntity entity, float base) {
 		MutableFloat mutableFloat = new MutableFloat(base);
-		for (ItemStack stack : entity.getAllArmorItems()) {
+		for (ItemStack stack : getArmorItems(entity)) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> enchantment.value().modifyValue(component, entity.getRandom(), level, mutableFloat));
 		}
 		return mutableFloat.floatValue();
@@ -304,6 +329,6 @@ public class EnchancementUtil {
 	// specific enchantment
 
 	public static boolean shouldFluidWalk(Entity entity) {
-		return !SLibUtils.isSneakingOrSitting(entity, entity.isSneaking()) && hasAnyEnchantmentsWith(entity, ModEnchantmentEffectComponentTypes.FLUID_WALKING);
+		return !SLibUtils.isCrouching(entity, true) && hasAnyEnchantmentsWith(entity, ModEnchantmentEffectComponentTypes.FLUID_WALKING);
 	}
 }

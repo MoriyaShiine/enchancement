@@ -32,8 +32,8 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		shouldBoost = tag.getBoolean("ShouldBoost");
-		boost = tag.getFloat("Boost");
+		shouldBoost = tag.getBoolean("ShouldBoost", false);
+		boost = tag.getFloat("Boost", 0);
 	}
 
 	@Override
@@ -84,12 +84,12 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 					splash = ParticleTypes.SNOWFLAKE;
 					bubble = ParticleTypes.SNOWFLAKE;
 				}
-				obj.getWorld().addParticle(bubbleColumn, x, y, z, 0, 0.04, 0);
-				obj.getWorld().addParticle(bubbleColumn, obj.getParticleX(0.5), y + obj.getHeight() / 8, obj.getParticleZ(0.5), 0, 0.04, 0);
+				obj.getWorld().addParticleClient(bubbleColumn, x, y, z, 0, 0.04, 0);
+				obj.getWorld().addParticleClient(bubbleColumn, obj.getParticleX(0.5), y + obj.getHeight() / 8, obj.getParticleZ(0.5), 0, 0.04, 0);
 				if (obj.getWorld().getBlockState(obj.getBlockPos().up()).isAir()) {
 					for (int i = 0; i < 2; i++) {
-						obj.getWorld().addParticle(splash, obj.getParticleX(0.5), obj.getBlockY() + 1, obj.getParticleZ(0.5), 0, 1, 0);
-						obj.getWorld().addParticle(bubble, obj.getParticleX(0.5), obj.getBlockY() + 1, obj.getParticleZ(0.5), 0, 0.2, 0);
+						obj.getWorld().addParticleClient(splash, obj.getParticleX(0.5), obj.getBlockY() + 1, obj.getParticleZ(0.5), 0, 1, 0);
+						obj.getWorld().addParticleClient(bubble, obj.getParticleX(0.5), obj.getBlockY() + 1, obj.getParticleZ(0.5), 0, 0.2, 0);
 					}
 				}
 			}

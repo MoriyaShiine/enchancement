@@ -19,13 +19,13 @@ public class ClientPlayerEntityMixin extends AbstractClientPlayerEntity {
 		super(world, profile);
 	}
 
-	@ModifyExpressionValue(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isTouchingWater()Z", ordinal = 0))
-	private boolean enchancement$fluidWalking0(boolean original) {
+	@ModifyExpressionValue(method = "canStartSprinting", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isTouchingWater()Z"))
+	private boolean enchancement$fluidWalkingStart(boolean original) {
 		return original && !EnchancementUtil.hasAnyEnchantmentsWith(this, ModEnchantmentEffectComponentTypes.FLUID_WALKING);
 	}
 
-	@ModifyExpressionValue(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isTouchingWater()Z", ordinal = 1))
-	private boolean enchancement$fluidWalking1(boolean original) {
+	@ModifyExpressionValue(method = "shouldStopSprinting", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isTouchingWater()Z"))
+	private boolean enchancement$fluidWalkingStop(boolean original) {
 		return original && !EnchancementUtil.hasAnyEnchantmentsWith(this, ModEnchantmentEffectComponentTypes.FLUID_WALKING);
 	}
 }

@@ -46,7 +46,7 @@ public abstract class TridentEntityMixin extends PersistentProjectileEntity {
 
 	@Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
 	private void enchancement$rebalanceEquipmentRead(NbtCompound nbt, CallbackInfo ci) {
-		ownedByPlayer = nbt.getBoolean("OwnedByPlayer");
+		ownedByPlayer = nbt.getBoolean("OwnedByPlayer", false);
 	}
 
 	@Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))

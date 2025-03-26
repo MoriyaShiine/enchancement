@@ -29,7 +29,7 @@ public abstract class LivingEntityMixin extends Entity {
 		super(type, world);
 	}
 
-	@ModifyVariable(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;blockedByShield(Lnet/minecraft/entity/damage/DamageSource;)Z"), argsOnly = true)
+	@ModifyVariable(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getDamageBlockedAmount(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/damage/DamageSource;F)F"), argsOnly = true)
 	private float enchancement$rebalanceProjectiles(float value, ServerWorld world, DamageSource source) {
 		if (source.getSource() instanceof ProjectileEntity projectile) {
 			boolean bypass = ModConfig.rebalanceProjectiles;
@@ -53,7 +53,7 @@ public abstract class LivingEntityMixin extends Entity {
 		return value;
 	}
 
-	@ModifyExpressionValue(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/damage/DamageSource;isIn(Lnet/minecraft/registry/tag/TagKey;)Z", ordinal = 4))
+	@ModifyExpressionValue(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/damage/DamageSource;isIn(Lnet/minecraft/registry/tag/TagKey;)Z", ordinal = 3))
 	private boolean enchancement$rebalanceProjectiles(boolean value, ServerWorld world, DamageSource source) {
 		if (ModConfig.rebalanceProjectiles && source.getSource() instanceof ProjectileEntity) {
 			return true;

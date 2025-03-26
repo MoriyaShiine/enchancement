@@ -41,7 +41,7 @@ public class EruptionComponent implements AutoSyncedComponent, CommonTickingComp
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		using = tag.getBoolean("Using");
+		using = tag.getBoolean("Using", false);
 	}
 
 	@Override
@@ -85,8 +85,8 @@ public class EruptionComponent implements AutoSyncedComponent, CommonTickingComp
 				if (!state.isReplaceable() && obj.getWorld().getBlockState(mutable.move(Direction.UP)).isReplaceable()) {
 					BlockStateParticleEffect particle = new BlockStateParticleEffect(ParticleTypes.BLOCK, state);
 					for (int k = 0; k < 2; k++) {
-						obj.getWorld().addParticle(particle, x, mutable.getY() + 0.5, z, 0, 0.5, 0);
-						obj.getWorld().addParticle(ParticleTypes.LAVA, x, mutable.getY() + 0.5, z, 0, 2, 0);
+						obj.getWorld().addParticleClient(particle, x, mutable.getY() + 0.5, z, 0, 0.5, 0);
+						obj.getWorld().addParticleClient(ParticleTypes.LAVA, x, mutable.getY() + 0.5, z, 0, 2, 0);
 					}
 				}
 			}

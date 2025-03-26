@@ -24,7 +24,7 @@ public class EntityRenderDispatcherMixin {
 	private static EntityRenderer<?, ?> DEFAULT_FROZEN_PLAYER_ENTITY_RENDERER, SLIM_FROZEN_PLAYER_ENTITY_RENDERER;
 
 	@SuppressWarnings("unchecked")
-	@ModifyReturnValue(method = "getRenderer", at = @At("RETURN"))
+	@ModifyReturnValue(method = "getRenderer(Lnet/minecraft/entity/Entity;)Lnet/minecraft/client/render/entity/EntityRenderer;", at = @At("RETURN"))
 	private <T extends Entity> EntityRenderer<? super T, ?> enchancement$frozenPlayer(EntityRenderer<? super T, ?> original, T entity) {
 		if (entity instanceof FrozenPlayerEntity frozenPlayer) {
 			return (EntityRenderer<? super T, ?>) (frozenPlayer.isSlim() ? SLIM_FROZEN_PLAYER_ENTITY_RENDERER : DEFAULT_FROZEN_PLAYER_ENTITY_RENDERER);

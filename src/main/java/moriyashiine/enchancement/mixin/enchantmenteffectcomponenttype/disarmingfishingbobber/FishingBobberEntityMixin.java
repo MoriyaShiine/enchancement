@@ -92,7 +92,7 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 							if (entity instanceof WitchEntity) {
 								PotionContentsComponent potionContents = stack.getOrDefault(DataComponentTypes.POTION_CONTENTS, null);
 								if (potionContents != null) {
-									potionContents.potion().ifPresent(potion -> ModEntityComponents.DISARMED_WITCH.get(entity).disablePotion(potion.value()));
+									potionContents.potion().ifPresent(potion -> ModEntityComponents.DISARMED_WITCH.get(entity).disablePotion(potion));
 								}
 							}
 						}

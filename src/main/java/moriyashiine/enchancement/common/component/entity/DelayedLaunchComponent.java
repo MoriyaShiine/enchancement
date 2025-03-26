@@ -46,32 +46,23 @@ public class DelayedLaunchComponent implements AutoSyncedComponent, CommonTickin
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		if (tag.contains("StoredVelocity")) {
-			NbtCompound storedVelocity = tag.getCompound("StoredVelocity");
-			this.storedVelocity = new Vec3d(storedVelocity.getDouble("X"), storedVelocity.getDouble("Y"), storedVelocity.getDouble("Z"));
-		} else {
-			storedVelocity = null;
-		}
-		maxDuration = tag.getInt("MaxDuration");
-		peakDuration = tag.getInt("PeakDuration");
-		maxMultiplier = tag.getFloat("MaxMultiplier");
-		allowRedirect = tag.getBoolean("AllowRedirect");
+		storedVelocity = tag.get("StoredVelocity", Vec3d.CODEC).orElse(null);
+		maxDuration = tag.getInt("MaxDuration", 0);
+		peakDuration = tag.getInt("PeakDuration", 0);
+		maxMultiplier = tag.getFloat("MaxMultiplier", 0);
+		allowRedirect = tag.getBoolean("AllowRedirect", false);
 
-		ticksFloating = tag.getInt("TicksFloating");
-		forcedPitch = tag.getFloat("ForcedPitch");
-		forcedYaw = tag.getFloat("ForcedYaw");
-		cachedSpeed = tag.getFloat("CachedSpeed");
-		cachedDivergence = tag.getFloat("CachedDivergence");
+		ticksFloating = tag.getInt("TicksFloating", 0);
+		forcedPitch = tag.getFloat("ForcedPitch", 0);
+		forcedYaw = tag.getFloat("ForcedYaw", 0);
+		cachedSpeed = tag.getFloat("CachedSpeed", 0);
+		cachedDivergence = tag.getFloat("CachedDivergence", 0);
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		if (storedVelocity != null) {
-			NbtCompound storedVelocity = new NbtCompound();
-			storedVelocity.putDouble("X", this.storedVelocity.getX());
-			storedVelocity.putDouble("Y", this.storedVelocity.getY());
-			storedVelocity.putDouble("Z", this.storedVelocity.getZ());
-			tag.put("StoredVelocity", storedVelocity);
+			tag.put("StoredVelocity", Vec3d.CODEC, storedVelocity);
 		}
 		tag.putInt("MaxDuration", maxDuration);
 		tag.putInt("PeakDuration", peakDuration);
@@ -120,7 +111,7 @@ public class DelayedLaunchComponent implements AutoSyncedComponent, CommonTickin
 					forcedPitch = MathHelper.wrapDegrees(obj.getPitch() + 180);
 					forcedYaw = MathHelper.wrapDegrees(-(obj.getYaw() + 180));
 				}
-				obj.setDamage(obj.getDamage() * MathHelper.lerp(Math.min(1, (float) ticksFloating / peakDuration), 1, 1 + maxMultiplier));
+				obj.setDamage(obj.damage * MathHelper.lerp(Math.min(1, (float) ticksFloating / peakDuration), 1, 1 + maxMultiplier));
 				obj.setVelocity(storedVelocity);
 				maxDuration = peakDuration = 0;
 				maxMultiplier = 0;
@@ -154,7 +145,7 @@ public class DelayedLaunchComponent implements AutoSyncedComponent, CommonTickin
 			if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.DELAYED_LAUNCH)) {
 				DelayedLaunchEffect.setValues(user.getRandom(), maxDuration, peakDuration, maxMultiplier, allowRedirect, Collections.singleton(stack));
 			} else if (!(user instanceof PlayerEntity) && EnchancementUtil.hasAnyEnchantmentsWith(user, ModEnchantmentEffectComponentTypes.DELAYED_LAUNCH)) {
-				DelayedLaunchEffect.setValues(user.getRandom(), maxDuration, peakDuration, maxMultiplier, allowRedirect, user.getEquippedItems());
+				DelayedLaunchEffect.setValues(user.getRandom(), maxDuration, peakDuration, maxMultiplier, allowRedirect, EnchancementUtil.getHeldItems(user));
 			}
 			if (maxDuration.floatValue() != 0) {
 				DelayedLaunchComponent delayedLaunchComponent = ModEntityComponents.DELAYED_LAUNCH.get(entity);

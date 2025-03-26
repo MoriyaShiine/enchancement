@@ -12,8 +12,8 @@ public class ProjectileTimerComponent implements CommonTickingComponent {
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		resetTicks = tag.getInt("ResetTicks");
-		timesHit = tag.getInt("TimesHit");
+		resetTicks = tag.getInt("ResetTicks", 0);
+		timesHit = tag.getInt("TimesHit", 0);
 	}
 
 	@Override

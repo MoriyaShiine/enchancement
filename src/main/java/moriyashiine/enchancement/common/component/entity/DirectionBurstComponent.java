@@ -42,10 +42,10 @@ public class DirectionBurstComponent implements AutoSyncedComponent, CommonTicki
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		shouldRefresh = tag.getBoolean("ShouldRefresh");
-		cooldown = tag.getInt("Cooldown");
-		lastCooldown = tag.getInt("LastCooldown");
-		gravityTicks = tag.getInt("GravityTicks");
+		shouldRefresh = tag.getBoolean("ShouldRefresh", false);
+		cooldown = tag.getInt("Cooldown", 0);
+		lastCooldown = tag.getInt("LastCooldown", 0);
+		gravityTicks = tag.getInt("GravityTicks", 0);
 	}
 
 	@Override

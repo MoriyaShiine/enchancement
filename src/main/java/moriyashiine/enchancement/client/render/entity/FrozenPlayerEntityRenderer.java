@@ -30,8 +30,8 @@ public class FrozenPlayerEntityRenderer extends BipedEntityRenderer<FrozenPlayer
 	}
 
 	@Override
-	public void updateRenderState(FrozenPlayerEntity entity, FrozenPlayerEntityRenderState state, float tickDelta) {
-		super.updateRenderState(entity, state, tickDelta);
+	public void updateRenderState(FrozenPlayerEntity entity, FrozenPlayerEntityRenderState state, float tickProgress) {
+		super.updateRenderState(entity, state, tickProgress);
 		state.slim = entity.isSlim();
 	}
 

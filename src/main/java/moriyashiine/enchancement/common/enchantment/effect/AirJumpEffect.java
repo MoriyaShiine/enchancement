@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.enchantment.effect;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.effect.EnchantmentValueEffect;
 import net.minecraft.entity.LivingEntity;
@@ -24,7 +25,7 @@ public record AirJumpEffect(EnchantmentValueEffect airJumps, EnchantmentValueEff
 
 	public static int getAirJumps(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : entity.getAllArmorItems()) {
+		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				AirJumpEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.AIR_JUMP);
 				if (effect != null) {
@@ -37,7 +38,7 @@ public record AirJumpEffect(EnchantmentValueEffect airJumps, EnchantmentValueEff
 
 	public static float getAirJumpStrength(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : entity.getAllArmorItems()) {
+		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				AirJumpEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.AIR_JUMP);
 				if (effect != null) {
@@ -50,7 +51,7 @@ public record AirJumpEffect(EnchantmentValueEffect airJumps, EnchantmentValueEff
 
 	public static int getChargeCooldown(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : entity.getAllArmorItems()) {
+		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				AirJumpEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.AIR_JUMP);
 				if (effect != null) {
@@ -63,7 +64,7 @@ public record AirJumpEffect(EnchantmentValueEffect airJumps, EnchantmentValueEff
 
 	public static int getJumpCooldown(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : entity.getAllArmorItems()) {
+		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				AirJumpEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.AIR_JUMP);
 				if (effect != null) {

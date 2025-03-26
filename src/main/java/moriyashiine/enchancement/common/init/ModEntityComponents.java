@@ -72,7 +72,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerFor(GuardianEntity.class, FROZEN_GUARDIAN, FrozenGuardianComponent::new);
 		registry.registerFor(SquidEntity.class, FROZEN_SQUID, FrozenSquidComponent::new);
 		registry.registerFor(LivingEntity.class, GLIDE, GlideComponent::new);
-		registry.registerFor(LivingEntity.class, IN_COMBAT, InCombatComponent::new);
+		registry.registerFor(LivingEntity.class, IN_COMBAT, living -> new InCombatComponent());
 		registry.registerFor(TridentEntity.class, LEECHING_TRIDENT, LeechingTridentComponent::new);
 		registry.registerFor(LivingEntity.class, LIGHTNING_DASH, LightningDashComponent::new);
 		registry.registerFor(PersistentProjectileEntity.class, PHASE_THROUGH_BLOCKS_AND_FLOAT, PhaseThroughBlocksAndFloatComponent::new);

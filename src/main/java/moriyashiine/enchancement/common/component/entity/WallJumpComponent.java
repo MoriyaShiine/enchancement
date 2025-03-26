@@ -46,15 +46,13 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		if (tag.contains("SlidingPos")) {
-			slidingPos = BlockPos.fromLong(tag.getLong("SlidingPos"));
-		}
+		slidingPos = tag.get("SlidingPos", BlockPos.CODEC).orElse(null);
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		if (slidingPos != null) {
-			tag.putLong("SlidingPos", slidingPos.asLong());
+			tag.put("SlidingPos", BlockPos.CODEC, slidingPos);
 		}
 	}
 
