@@ -1,4 +1,14 @@
 ------------------------------------------------------
+Version 1.21.5-r1
+------------------------------------------------------
+- update to 1.21.5
+- tridents thrown by players no longer despawn
+- meteor and thunderstruck now generate in trial chambers
+- fix creepers consuming flint and steel when interacted with
+- fix internal datapack enchantments sometimes generating
+- fix https://github.com/MoriyaShiine/enchancement/issues/239
+
+------------------------------------------------------
 Version 1.21.4-r8
 ------------------------------------------------------
 - fix https://github.com/MoriyaShiine/enchancement/issues/237
