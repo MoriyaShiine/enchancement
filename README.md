@@ -112,6 +112,7 @@ Everything Enchancement adds is configurable:
   * Animal armor can be enchanted with boots enchantments.
   * Bows slow you down less when charging.
   * Crossbows pull unique ammunition from your inventory instead of only from off-hand.
+  * Tridents thrown by players never despawn.
   * Tridents with Loyalty linger in the world if the owner is dead instead of dropping on the ground.
   * Tridents with Loyalty that are thrown into the void will automatically return to their owner.
   * Maces have slightly faster attack speed.
@@ -144,10 +145,7 @@ Everything Enchancement adds is configurable:
   * All keybindings that are set to the same key will activate at the same time instead of only one applying.
 
 ## External Links
-Support me on Ko-fi! I release new versions of my mods early here <3
-
-[![Ko-fi](https://i.imgur.com/6pkJV6h.png)](https://ko-fi.com/moriyashiine)
-
-Join my Discord!
-
-[![Discord](https://i.imgur.com/72QzxP1.png)](https://discord.gg/Am6M8VQ)
+### Support me on Ko-fi! Any amount is appreciated, and you can get cosmetic benefits for doing so <3
+[![Ko-fi](https://github.com/MoriyaShiine/strawberrylib/blob/main/.webassets/kofi.png?raw=true)](https://ko-fi.com/moriyashiine)
+### Join my Discord!
+[![Discord](https://github.com/MoriyaShiine/strawberrylib/blob/main/.webassets/discord.png?raw=true)](https://discord.gg/Am6M8VQ)
