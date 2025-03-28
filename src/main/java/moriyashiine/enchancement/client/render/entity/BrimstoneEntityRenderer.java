@@ -3,11 +3,9 @@
  */
 package moriyashiine.enchancement.client.render.entity;
 
-import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.client.render.entity.state.BrimstoneEntityRenderState;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.entity.projectile.BrimstoneEntity;
-import net.irisshaders.iris.api.v0.IrisApi;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.ProjectileEntityRenderer;
@@ -69,9 +67,10 @@ public class BrimstoneEntityRenderer extends ProjectileEntityRenderer<BrimstoneE
 	}
 
 	private static RenderLayer getRenderLayer() {
-		if (EnchancementClient.irisLoaded && IrisApi.getInstance().isShaderPackInUse()) {
-			return RenderLayer.getEntityCutoutNoCull(TEXTURE);
-		}
+		// todo fix when iris can build
+//		if (EnchancementClient.irisLoaded && IrisApi.getInstance().isShaderPackInUse()) {
+//			return RenderLayer.getEntityCutoutNoCull(TEXTURE);
+//		}
 		return RenderLayer.getEntityAlpha(TEXTURE);
 	}
 
