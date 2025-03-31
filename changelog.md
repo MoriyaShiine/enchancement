@@ -2,6 +2,7 @@
 Version 1.21.5-r2
 ------------------------------------------------------
 - leaves now drop leaf litter when broken with molten
+- readd iris support for brimstone rendering
 
 ------------------------------------------------------
 Version 1.21.5-r1
