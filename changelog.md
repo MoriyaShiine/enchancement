@@ -2,6 +2,7 @@
 Version 1.21.5-r2
 ------------------------------------------------------
 - leaves now drop leaf litter when broken with molten
+- bogged now drop skeletons skulls with beheading
 - readd iris support for brimstone rendering
 
 ------------------------------------------------------
