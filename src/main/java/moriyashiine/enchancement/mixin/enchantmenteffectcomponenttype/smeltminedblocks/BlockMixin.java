@@ -42,20 +42,36 @@ public class BlockMixin {
 		if (entity != null && entity.isSneaking()) {
 			return original;
 		}
-		if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.SMELT_MINED_BLOCKS) && !original.isEmpty()) {
-			original = new ArrayList<>(original);
-			boolean smeltsSelf = state.isIn(ModBlockTags.SMELTS_SELF);
-			for (int i = 0; i < original.size(); i++) {
-				Pair<ItemStack, Float> smelted = getSmeltedStack(world, smeltsSelf ? new ItemStack(state.getBlock()) : original.get(i));
-				if (smelted != null) {
-					PlayerLookup.tracking(world, pos).forEach(foundPlayer -> AddMoltenParticlesPayload.send(foundPlayer, pos));
-					world.playSound(null, pos, ModSoundEvents.BLOCK_GENERIC_SMELT, SoundCategory.BLOCKS, 1, 1);
-					original.set(i, smelted.getLeft());
-					FurnaceBlockEntity.dropExperience(world, entity != null && EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.MINE_ORE_VEINS) ? entity.getPos() : Vec3d.of(pos), 1, smelted.getRight());
+		if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.SMELT_MINED_BLOCKS)) {
+			if (state.isIn(ModBlockTags.SMELTS_SELF)) {
+				ItemStack smelted = smeltBlock(world, pos, entity, state.getBlock().asItem().getDefaultStack());
+				if (!smelted.isEmpty()) {
+					return List.of(smelted);
 				}
+			} else if (!original.isEmpty()) {
+				original = new ArrayList<>(original);
+				for (int i = 0; i < original.size(); i++) {
+					ItemStack smelted = smeltBlock(world, pos, entity, original.get(i));
+					if (!smelted.isEmpty()) {
+						original.set(i, smelted);
+					}
+				}
+				return List.copyOf(original);
 			}
 		}
 		return original;
+	}
+
+	@Unique
+	private static ItemStack smeltBlock(ServerWorld world, BlockPos pos, @Nullable Entity entity, ItemStack stack) {
+		Pair<ItemStack, Float> smelted = getSmeltedStack(world, stack);
+		if (smelted != null) {
+			PlayerLookup.tracking(world, pos).forEach(foundPlayer -> AddMoltenParticlesPayload.send(foundPlayer, pos));
+			world.playSound(null, pos, ModSoundEvents.BLOCK_GENERIC_SMELT, SoundCategory.BLOCKS, 1, 1);
+			FurnaceBlockEntity.dropExperience(world, entity != null && EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.MINE_ORE_VEINS) ? entity.getPos() : Vec3d.ofCenter(pos), 1, smelted.getRight());
+			return smelted.getLeft();
+		}
+		return ItemStack.EMPTY;
 	}
 
 	@Unique

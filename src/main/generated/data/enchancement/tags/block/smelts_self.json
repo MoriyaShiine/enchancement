@@ -1,5 +1,9 @@
 {
   "values": [
+	{
+	  "id": "#minecraft:leaves",
+	  "required": false
+	},
 	"minecraft:nether_gold_ore"
   ]
 }
