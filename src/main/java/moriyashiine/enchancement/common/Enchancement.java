@@ -133,8 +133,8 @@ public class Enchancement implements ModInitializer {
 	private void initPayloads() {
 		// client payloads
 		PayloadTypeRegistry.playS2C().register(EnforceConfigMatchPayload.ID, EnforceConfigMatchPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(SyncBookshelvesPayload.ID, SyncBookshelvesPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(SyncEnchantingMaterialMapPayload.ID, SyncEnchantingMaterialMapPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(SyncEnchantingTableBookshelfCountPayload.ID, SyncEnchantingTableBookshelfCountPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(SyncEnchantingTableCostPayload.ID, SyncEnchantingTableCostPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(SyncHookedVelocityPayload.ID, SyncHookedVelocityPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(AddLightningDashParticlesPayload.ID, AddLightningDashParticlesPayload.CODEC);

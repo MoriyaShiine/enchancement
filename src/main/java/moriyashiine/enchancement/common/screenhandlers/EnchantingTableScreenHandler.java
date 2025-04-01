@@ -3,7 +3,7 @@
  */
 package moriyashiine.enchancement.common.screenhandlers;
 
-import moriyashiine.enchancement.client.payload.SyncEnchantingTableBookshelfCountPayload;
+import moriyashiine.enchancement.client.payload.SyncBookshelvesPayload;
 import moriyashiine.enchancement.client.payload.SyncEnchantingTableCostPayload;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModEnchantments;
@@ -11,6 +11,7 @@ import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
 import moriyashiine.enchancement.common.tag.ModEnchantmentTags;
 import moriyashiine.enchancement.common.tag.ModItemTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.enchancement.common.util.OverhaulMode;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.Blocks;
@@ -18,6 +19,7 @@ import net.minecraft.block.EnchantingTableBlock;
 import net.minecraft.block.entity.ChiseledBookshelfBlockEntity;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -31,7 +33,6 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.EnchantmentTags;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
@@ -51,6 +52,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 	public static final int PAGE_SIZE = 4;
 
 	public final List<RegistryEntry<Enchantment>> validEnchantments = new ArrayList<>(), selectedEnchantments = new ArrayList<>();
+	public final Set<RegistryEntry<Enchantment>> chiseledEnchantments = new HashSet<>();
 	public int viewIndex = 0;
 
 	private ItemStack enchantingStack = ItemStack.EMPTY;
@@ -75,9 +77,8 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		super(ModScreenHandlerTypes.ENCHANTING_TABLE, syncId);
 		this.context = context;
 		this.world = world;
-		bookshelfCount = calculateBookshelfCount();
 		if (playerInventory.player instanceof ServerPlayerEntity player) {
-			SyncEnchantingTableBookshelfCountPayload.send(player, bookshelfCount);
+			collectBookshelves(player);
 		}
 		addSlot(new Slot(inventory, 0, 15, 31) {
 			@Override
@@ -295,18 +296,27 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		return material;
 	}
 
-	private int calculateBookshelfCount() {
-		float[] bookshelfCountArray = {0};
+	private void collectBookshelves(ServerPlayerEntity player) {
 		context.run((world, pos) -> {
+			chiseledEnchantments.clear();
+			bookshelfCount = 0;
 			for (BlockPos offset : EnchantingTableBlock.POWER_PROVIDER_OFFSETS) {
-				if (canAccessPowerProvider(world, pos, offset)) {
-					bookshelfCountArray[0]++;
-				} else if (world.getBlockEntity(pos.add(offset)) instanceof ChiseledBookshelfBlockEntity chiseledBookshelfBlockEntity && world.getBlockState(pos.add(offset.getX() / 2, offset.getY(), offset.getZ() / 2)).isIn(BlockTags.ENCHANTMENT_POWER_TRANSMITTER)) {
-					bookshelfCountArray[0] += chiseledBookshelfBlockEntity.getFilledSlotCount() / 3F;
+				if (EnchantingTableBlock.canAccessPowerProvider(world, pos, offset)) {
+					if (world.getBlockEntity(pos.add(offset)) instanceof ChiseledBookshelfBlockEntity chiseledBookshelfBlockEntity) {
+						bookshelfCount += chiseledBookshelfBlockEntity.getFilledSlotCount() / 3;
+						if (ModConfig.overhaulEnchantingTable == OverhaulMode.CHISELED) {
+							for (int i = 0; i < chiseledBookshelfBlockEntity.size(); i++) {
+								chiseledEnchantments.addAll(EnchantmentHelper.getEnchantments(chiseledBookshelfBlockEntity.getStack(i)).getEnchantments());
+							}
+						}
+					} else {
+						bookshelfCount++;
+					}
 				}
 			}
+			bookshelfCount = Math.min(15, bookshelfCount);
+			SyncBookshelvesPayload.send(player, chiseledEnchantments, bookshelfCount);
 		});
-		return Math.min(15, (int) bookshelfCountArray[0]);
 	}
 
 	public int getCost() {
@@ -339,12 +349,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		return world.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).streamEntries().toList();
 	}
 
-	// clone of vanilla method because for some reason quilt always returns true
-	private static boolean canAccessPowerProvider(World world, BlockPos tablePos, BlockPos providerOffset) {
-		return world.getBlockState(tablePos.add(providerOffset)).isIn(BlockTags.ENCHANTMENT_POWER_PROVIDER) && world.getBlockState(tablePos.add(providerOffset.getX() / 2, providerOffset.getY(), providerOffset.getZ() / 2)).isIn(BlockTags.ENCHANTMENT_POWER_TRANSMITTER);
-	}
-
-	private static boolean isEnchantmentAllowed(RegistryEntry<Enchantment> enchantment, ItemStack stack) {
+	private boolean isEnchantmentAllowed(RegistryEntry<Enchantment> enchantment, ItemStack stack) {
 		if (stack.isEmpty() || enchantment.isIn(ModEnchantmentTags.UNSELECTABLE)) {
 			return false;
 		}
@@ -352,10 +357,12 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 			if (enchantment.isIn(ModEnchantmentTags.ALWAYS_SELECTABLE)) {
 				return true;
 			}
-			if (ModConfig.overhaulEnchantingTable.allowsTreasure && enchantment.isIn(EnchantmentTags.TREASURE)) {
-				return true;
+			if (ModConfig.overhaulEnchantingTable != OverhaulMode.CHISELED || chiseledEnchantments.contains(enchantment)) {
+				if (ModConfig.overhaulEnchantingTable.allowsTreasure && enchantment.isIn(EnchantmentTags.TREASURE)) {
+					return true;
+				}
+				return enchantment.isIn(EnchantmentTags.IN_ENCHANTING_TABLE);
 			}
-			return enchantment.isIn(EnchantmentTags.IN_ENCHANTING_TABLE);
 		}
 		return false;
 	}

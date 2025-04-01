@@ -4,7 +4,7 @@
 package moriyashiine.enchancement.common.util;
 
 public enum OverhaulMode {
-	ALL(true), NON_TREASURE(false), DISABLED(false);
+	ALL(true), NON_TREASURE(false), CHISELED(true), DISABLED(false);
 
 	public final boolean allowsTreasure;
 

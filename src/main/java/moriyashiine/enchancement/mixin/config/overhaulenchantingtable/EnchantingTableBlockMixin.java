@@ -3,12 +3,14 @@
  */
 package moriyashiine.enchancement.mixin.config.overhaulenchantingtable;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.screenhandlers.EnchantingTableScreenHandler;
 import moriyashiine.enchancement.common.util.OverhaulMode;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.EnchantingTableBlock;
+import net.minecraft.block.entity.ChiseledBookshelfBlockEntity;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
@@ -27,5 +29,10 @@ public class EnchantingTableBlockMixin {
 		if (ModConfig.overhaulEnchantingTable != OverhaulMode.DISABLED) {
 			cir.setReturnValue(new SimpleNamedScreenHandlerFactory((syncId, inventory, player) -> new EnchantingTableScreenHandler(syncId, inventory, ScreenHandlerContext.create(world, pos), world), text));
 		}
+	}
+
+	@ModifyExpressionValue(method = "canAccessPowerProvider", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;isIn(Lnet/minecraft/registry/tag/TagKey;)Z", ordinal = 0))
+	private static boolean enchancement$overhaulEnchantingTable(boolean original, World world, BlockPos tablePos, BlockPos providerOffset) {
+		return original || (ModConfig.overhaulEnchantingTable != OverhaulMode.DISABLED && world.getBlockEntity(tablePos.add(providerOffset)) instanceof ChiseledBookshelfBlockEntity);
 	}
 }

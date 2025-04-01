@@ -9,6 +9,7 @@ import moriyashiine.enchancement.client.event.config.SyncVelocitiesEvent;
 import moriyashiine.enchancement.client.event.config.ToggleablePassivesEvent;
 import moriyashiine.enchancement.client.event.enchantmenteffectcomponenttype.*;
 import moriyashiine.enchancement.client.event.integration.appleskin.BrimstoneAppleskinEvent;
+import moriyashiine.enchancement.client.event.internal.SyncBookshelvesEvent;
 import moriyashiine.enchancement.client.particle.HoneyBubbleParticle;
 import moriyashiine.enchancement.client.particle.SparkParticle;
 import moriyashiine.enchancement.client.particle.TintlessDamageParticle;
@@ -92,6 +93,8 @@ public class EnchancementClient implements ClientModInitializer {
 	}
 
 	private void initEvents() {
+		// internal
+		ClientTickEvents.END_WORLD_TICK.register(new SyncBookshelvesEvent());
 		// config
 		ClientTickEvents.END_WORLD_TICK.register(new CoyoteBiteEvent());
 		ItemTooltipCallback.EVENT.register(new EnchantmentDescriptionsEvent());
@@ -113,8 +116,8 @@ public class EnchancementClient implements ClientModInitializer {
 	private void initPayloads() {
 		// internal
 		ClientPlayNetworking.registerGlobalReceiver(EnforceConfigMatchPayload.ID, new EnforceConfigMatchPayload.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(SyncBookshelvesPayload.ID, new SyncBookshelvesPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(SyncEnchantingMaterialMapPayload.ID, new SyncEnchantingMaterialMapPayload.Receiver());
-		ClientPlayNetworking.registerGlobalReceiver(SyncEnchantingTableBookshelfCountPayload.ID, new SyncEnchantingTableBookshelfCountPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(SyncEnchantingTableCostPayload.ID, new SyncEnchantingTableCostPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(SyncHookedVelocityPayload.ID, new SyncHookedVelocityPayload.Receiver());
 		// enchantment
