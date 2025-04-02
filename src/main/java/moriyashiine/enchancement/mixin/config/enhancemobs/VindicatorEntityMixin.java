@@ -33,9 +33,9 @@ public abstract class VindicatorEntityMixin extends IllagerEntity {
 		if (ModConfig.enhanceMobs) {
 			ItemStack stack = new ItemStack(Items.IRON_AXE);
 			if (getRandom().nextFloat() <= getRaid().getEnchantmentChance()) {
-				@Nullable RegistryEntry<Enchantment> enchantment = EnchancementUtil.getRandomEnchantment(stack, getRandom(), EnchantmentTags.ON_MOB_SPAWN_EQUIPMENT);
-				if (enchantment != null) {
-					stack.addEnchantment(enchantment, enchantment.value().getMaxLevel());
+				@Nullable RegistryEntry<Enchantment> randomEnchantment = EnchancementUtil.getRandomEnchantment(stack, EnchantmentTags.ON_MOB_SPAWN_EQUIPMENT, getRandom());
+				if (randomEnchantment != null) {
+					stack.addEnchantment(randomEnchantment, randomEnchantment.value().getMaxLevel());
 				}
 			}
 			equipStack(EquipmentSlot.MAINHAND, stack);

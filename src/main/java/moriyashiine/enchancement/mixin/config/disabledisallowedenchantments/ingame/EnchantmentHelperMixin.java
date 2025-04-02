@@ -45,9 +45,9 @@ public class EnchantmentHelperMixin {
 			if (EnchancementUtil.isEnchantmentAllowed(enchantment)) {
 				builder.add(enchantment, level);
 			} else {
-				@Nullable RegistryEntry<Enchantment> replacement = EnchancementUtil.getReplacement(enchantment, stack);
-				if (replacement != null) {
-					builder.add(replacement, Math.min(level, replacement.value().getMaxLevel()));
+				@Nullable RegistryEntry<Enchantment> randomEnchantment = EnchancementUtil.getRandomEnchantment(stack, EnchantmentTags.ON_RANDOM_LOOT, null);
+				if (randomEnchantment != null) {
+					builder.add(randomEnchantment, Math.min(level, randomEnchantment.value().getMaxLevel()));
 				}
 			}
 		});
@@ -60,22 +60,22 @@ public class EnchantmentHelperMixin {
 		for (int i = enchantments.size() - 1; i >= 0; i--) {
 			RegistryEntry<Enchantment> enchantment = enchantments.get(i).enchantment();
 			if (!EnchancementUtil.isEnchantmentAllowed(enchantment)) {
-				@Nullable RegistryEntry<Enchantment> replacement = EnchancementUtil.getReplacement(enchantment, stack);
-				if (replacement == null) {
+				@Nullable RegistryEntry<Enchantment> randomEnchantment = EnchancementUtil.getRandomEnchantment(stack, EnchantmentTags.ON_RANDOM_LOOT, random);
+				if (randomEnchantment == null) {
 					enchantments.remove(i);
 				} else {
-					if (enchantments.stream().anyMatch(entry -> entry.enchantment().equals(replacement))) {
+					if (enchantments.stream().anyMatch(entry -> entry.enchantment().equals(randomEnchantment))) {
 						enchantments.remove(i);
 					} else {
-						enchantments.set(i, new EnchantmentLevelEntry(replacement, 1));
+						enchantments.set(i, new EnchantmentLevelEntry(randomEnchantment, 1));
 					}
 				}
 			}
 		}
 		if (enchantments.isEmpty()) {
-			@Nullable RegistryEntry<Enchantment> entry = EnchancementUtil.getRandomEnchantment(stack, random, EnchantmentTags.IN_ENCHANTING_TABLE);
-			if (entry != null) {
-				enchantments.add(new EnchantmentLevelEntry(entry, 1));
+			@Nullable RegistryEntry<Enchantment> randomEnchantment = EnchancementUtil.getRandomEnchantment(stack, EnchantmentTags.IN_ENCHANTING_TABLE, random);
+			if (randomEnchantment != null) {
+				enchantments.add(new EnchantmentLevelEntry(randomEnchantment, 1));
 			}
 		}
 		return enchantments;

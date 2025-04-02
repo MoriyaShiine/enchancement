@@ -30,10 +30,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.equipment.ArmorMaterials;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryOwner;
-import net.minecraft.registry.tag.EnchantmentTags;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
@@ -53,6 +51,7 @@ import java.util.Map;
 public class EnchancementUtil {
 	public static RegistryEntryOwner<?> ENCHANTMENT_REGISTRY_OWNER = null;
 	public static final List<RegistryEntry.Reference<Enchantment>> ENCHANTMENTS = new ArrayList<>();
+	public static Random SERVER_RANDOM = null;
 
 	public static final Object2IntMap<Enchantment> ORIGINAL_MAX_LEVELS = new Object2IntOpenHashMap<>();
 	public static final Map<TagKey<Item>, TriState> VANILLA_ENCHANTMENT_STRENGTH_TAGS = new HashMap<>();
@@ -106,7 +105,7 @@ public class EnchancementUtil {
 	// disable disallowed enchantments
 
 	@Nullable
-	public static RegistryEntry<Enchantment> getRandomEnchantment(ItemStack stack, Random random, TagKey<Enchantment> checkedTag) {
+	public static RegistryEntry<Enchantment> getRandomEnchantment(ItemStack stack, TagKey<Enchantment> checkedTag, @Nullable Random random) {
 		List<RegistryEntry<Enchantment>> enchantments = new ArrayList<>();
 		for (RegistryEntry<Enchantment> enchantment : ENCHANTMENTS) {
 			if (enchantment.isIn(checkedTag)) {
@@ -116,32 +115,12 @@ public class EnchancementUtil {
 			}
 		}
 		if (!enchantments.isEmpty()) {
+			if (random == null) {
+				random = SERVER_RANDOM;
+			}
 			return enchantments.get(random.nextInt(enchantments.size()));
 		}
 		return null;
-	}
-
-	@Nullable
-	public static RegistryEntry<Enchantment> getReplacement(RegistryEntry<Enchantment> enchantment, ItemStack stack) {
-		if (enchantment.getKey().isEmpty()) {
-			return null;
-		}
-		List<RegistryEntry<Enchantment>> enchantments = new ArrayList<>();
-		for (RegistryEntry<Enchantment> entry : ENCHANTMENTS) {
-			if (isEnchantmentAllowed(entry) && entry.isIn(EnchantmentTags.ON_RANDOM_LOOT)) {
-				if (stack.isOf(Items.BOOK) || stack.isOf(Items.ENCHANTED_BOOK) || stack.canBeEnchantedWith(entry, EnchantingContext.ACCEPTABLE)) {
-					enchantments.add(entry);
-				}
-			}
-		}
-		if (enchantments.isEmpty()) {
-			return null;
-		}
-		int index = (enchantment.getKey().get().getValue().hashCode() + Registries.ITEM.getId(stack.getItem()).hashCode()) % enchantments.size();
-		if (index < 0) {
-			index += enchantments.size();
-		}
-		return enchantments.get(index);
 	}
 
 	public static boolean isEnchantmentAllowed(RegistryEntry<Enchantment> enchantment) {

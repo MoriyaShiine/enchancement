@@ -8,6 +8,7 @@ import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.EnchantmentTags;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -30,9 +31,9 @@ public abstract class ItemEnchantmentsComponentBuilderMixin {
 			ci.cancel();
 		} else if (!EnchancementUtil.isEnchantmentAllowed(enchantment)) {
 			if (EnchancementUtil.cachedApplyStack != null) {
-				@Nullable RegistryEntry<Enchantment> replacement = EnchancementUtil.getReplacement(enchantment, EnchancementUtil.cachedApplyStack);
-				if (replacement != null) {
-					set(replacement, Math.min(level, replacement.value().getMaxLevel()));
+				@Nullable RegistryEntry<Enchantment> randomEnchantment = EnchancementUtil.getRandomEnchantment(EnchancementUtil.cachedApplyStack, EnchantmentTags.ON_RANDOM_LOOT, null);
+				if (randomEnchantment != null) {
+					set(randomEnchantment, Math.min(level, randomEnchantment.value().getMaxLevel()));
 					ci.cancel();
 					return;
 				}
@@ -49,9 +50,9 @@ public abstract class ItemEnchantmentsComponentBuilderMixin {
 			ci.cancel();
 		} else if (!EnchancementUtil.isEnchantmentAllowed(enchantment)) {
 			if (EnchancementUtil.cachedApplyStack != null) {
-				@Nullable RegistryEntry<Enchantment> replacement = EnchancementUtil.getReplacement(enchantment, EnchancementUtil.cachedApplyStack);
-				if (replacement != null) {
-					add(replacement, Math.min(level, replacement.value().getMaxLevel()));
+				@Nullable RegistryEntry<Enchantment> randomEnchantment = EnchancementUtil.getRandomEnchantment(EnchancementUtil.cachedApplyStack, EnchantmentTags.ON_RANDOM_LOOT, null);
+				if (randomEnchantment != null) {
+					add(randomEnchantment, Math.min(level, randomEnchantment.value().getMaxLevel()));
 					ci.cancel();
 					return;
 				}

@@ -40,9 +40,9 @@ public abstract class PillagerEntityMixin extends IllagerEntity {
 		if (ModConfig.enhanceMobs) {
 			if (getRandom().nextFloat() <= getRaid().getEnchantmentChance()) {
 				ItemStack stack = new ItemStack(Items.CROSSBOW);
-				@Nullable RegistryEntry<Enchantment> enchantment = EnchancementUtil.getRandomEnchantment(stack, getRandom(), EnchantmentTags.ON_MOB_SPAWN_EQUIPMENT);
-				if (enchantment != null) {
-					stack.addEnchantment(enchantment, enchantment.value().getMaxLevel());
+				@Nullable RegistryEntry<Enchantment> randomEnchantment = EnchancementUtil.getRandomEnchantment(stack, EnchantmentTags.ON_MOB_SPAWN_EQUIPMENT, getRandom());
+				if (randomEnchantment != null) {
+					stack.addEnchantment(randomEnchantment, randomEnchantment.value().getMaxLevel());
 				}
 				equipStack(EquipmentSlot.MAINHAND, stack);
 			}
@@ -53,9 +53,9 @@ public abstract class PillagerEntityMixin extends IllagerEntity {
 	@WrapOperation(method = "enchantMainHandItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;applyEnchantmentProvider(Lnet/minecraft/item/ItemStack;Lnet/minecraft/registry/DynamicRegistryManager;Lnet/minecraft/registry/RegistryKey;Lnet/minecraft/world/LocalDifficulty;Lnet/minecraft/util/math/random/Random;)V"))
 	private void enchancement$enhanceMobs(ItemStack stack, DynamicRegistryManager registryManager, RegistryKey<EnchantmentProvider> providerKey, LocalDifficulty localDifficulty, Random random, Operation<Void> original) {
 		if (ModConfig.enhanceMobs) {
-			@Nullable RegistryEntry<Enchantment> enchantment = EnchancementUtil.getRandomEnchantment(stack, getRandom(), EnchantmentTags.ON_MOB_SPAWN_EQUIPMENT);
-			if (enchantment != null) {
-				stack.addEnchantment(enchantment, enchantment.value().getMaxLevel());
+			@Nullable RegistryEntry<Enchantment> randomEnchantment = EnchancementUtil.getRandomEnchantment(stack, EnchantmentTags.ON_MOB_SPAWN_EQUIPMENT, random);
+			if (randomEnchantment != null) {
+				stack.addEnchantment(randomEnchantment, randomEnchantment.value().getMaxLevel());
 				return;
 			}
 		}
