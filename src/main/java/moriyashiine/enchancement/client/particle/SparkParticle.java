@@ -30,9 +30,7 @@ public class SparkParticle extends Particle {
 		this.destination = destination;
 		maxAge = 5;
 		randomizeArcs();
-		red = 0.2F;
-		green = 0.7F;
-		blue = 0.3F;
+		setColor(0.2F, 0.7F, 0.3F);
 	}
 
 	@Override

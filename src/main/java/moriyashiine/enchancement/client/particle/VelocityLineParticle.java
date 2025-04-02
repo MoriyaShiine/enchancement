@@ -25,10 +25,8 @@ public class VelocityLineParticle extends SpriteBillboardParticle {
 		}
 		yaw = (float) MathHelper.atan2(velocityX, velocityZ) + MathHelper.HALF_PI;
 		maxAge = 3;
-		red = MathHelper.nextFloat(world.getRandom(), 0.8F, 1);
-		green = MathHelper.nextFloat(world.getRandom(), 0.8F, 1);
-		blue = 0.5F;
-		alpha = MathHelper.nextFloat(world.getRandom(), 0.6F, 0.8F);
+		setColor(MathHelper.nextFloat(random, 0.8F, 1), MathHelper.nextFloat(random, 0.8F, 1), 0.5F);
+		alpha = MathHelper.nextFloat(random, 0.6F, 0.8F);
 	}
 
 	@Override

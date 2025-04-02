@@ -16,7 +16,7 @@ public class TintlessDamageParticle extends DamageParticle {
 
 	public TintlessDamageParticle(ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
 		super(world, x, y, z, velocityX, velocityY, velocityZ);
-		tint = MathHelper.nextFloat(world.getRandom(), 0.9F, 1);
+		tint = MathHelper.nextFloat(random, 0.9F, 1);
 		resetTint();
 	}
 
