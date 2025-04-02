@@ -3,7 +3,7 @@
  */
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.bounce;
 
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
@@ -14,7 +14,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -39,8 +38,8 @@ public abstract class LivingEntityMixin extends Entity {
 		return value;
 	}
 
-	@WrapWithCondition(method = "travelControlled", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setVelocity(Lnet/minecraft/util/math/Vec3d;)V"))
-	private boolean enchancement$bounce(LivingEntity instance, Vec3d vec3d) {
-		return !ModEntityComponents.BOUNCE.get(this).justBounced();
+	@ModifyExpressionValue(method = "travelControlled", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;canMoveVoluntarily()Z"))
+	private boolean enchancement$bounce(boolean original) {
+		return original || ModEntityComponents.BOUNCE.get(this).justBounced();
 	}
 }

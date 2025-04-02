@@ -113,7 +113,7 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 			}
 			if (slidingPos != null && (obj.getControllingPassenger() instanceof PlayerEntity player ? player : obj).jumping) {
 				Vec3d diff = obj.getBlockPos().toCenterPos().subtract(slidingPos.toCenterPos()).normalize().multiply(jumpStrength);
-				Vec3d velocity = new Vec3d(diff.getX(), MultiplyMovementSpeedEvent.getJumpStrength(obj, jumpStrength * 3), diff.getZ());
+				Vec3d velocity = new Vec3d(diff.getX(), MultiplyMovementSpeedEvent.getJumpStrength(obj, jumpStrength * (obj instanceof PlayerEntity ? 3 : 2)), diff.getZ());
 				use(velocity);
 				WallJumpPayload.send(obj, velocity);
 				targetPos = null;
