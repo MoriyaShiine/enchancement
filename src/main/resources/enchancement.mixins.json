@@ -147,7 +147,6 @@
 	"enchantmententityeffecttype.freeze.ProjectileEntityMixin",
 	"enchantmententityeffecttype.freeze.SquidEntityMixin",
 	"enchantmententityeffecttype.spawnparticleswithcount.SpawnParticlesEnchantmentEffectMixin",
-	"entity.torch.LivingEntityMixin",
 	"entity.torch.PersistentProjectileEntityMixin",
 	"util.EnchantedCountIncreaseLootFunctionMixin",
 	"util.PersistentProjectileEntityMixin",
