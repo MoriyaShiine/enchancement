@@ -10,8 +10,10 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEnchantmentTags;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.EnchantmentTags;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
@@ -87,5 +89,27 @@ public class ModEnchantmentTagProvider extends FabricTagProvider.EnchantmentTagP
 
 		getOrCreateTagBuilder(EnchantmentTags.RIPTIDE_EXCLUSIVE_SET)
 				.add(ModEnchantments.WARP);
+
+		// librarian trades
+		addLibrarianTrades(EnchantmentTags.DESERT_COMMON_TRADE, EnchantmentTags.DESERT_SPECIAL_TRADE,
+				ModEnchantments.BURY, Enchantments.FIRE_ASPECT, ModEnchantments.MOLTEN);
+		addLibrarianTrades(EnchantmentTags.JUNGLE_COMMON_TRADE, EnchantmentTags.JUNGLE_SPECIAL_TRADE,
+				ModEnchantments.BOUNCY, ModEnchantments.CHAOS, ModEnchantments.PERCEPTION);
+		addLibrarianTrades(EnchantmentTags.PLAINS_COMMON_TRADE, EnchantmentTags.PLAINS_SPECIAL_TRADE,
+				ModEnchantments.APEX, ModEnchantments.ASSIMILATION, ModEnchantments.GALE);
+		addLibrarianTrades(EnchantmentTags.SAVANNA_COMMON_TRADE, EnchantmentTags.SAVANNA_SPECIAL_TRADE,
+				ModEnchantments.BRIMSTONE, ModEnchantments.STICKY, ModEnchantments.TORCH);
+		addLibrarianTrades(EnchantmentTags.SNOW_COMMON_TRADE, EnchantmentTags.SNOW_SPECIAL_TRADE,
+				ModEnchantments.FROSTBITE, Enchantments.SILK_TOUCH, ModEnchantments.SLIDE);
+		addLibrarianTrades(EnchantmentTags.SWAMP_COMMON_TRADE, EnchantmentTags.SWAMP_SPECIAL_TRADE,
+				ModEnchantments.AMPHIBIOUS, ModEnchantments.BUOY, Enchantments.LUCK_OF_THE_SEA);
+		addLibrarianTrades(EnchantmentTags.TAIGA_COMMON_TRADE, EnchantmentTags.TAIGA_SPECIAL_TRADE,
+				ModEnchantments.GRAPPLE, ModEnchantments.LUMBERJACK, ModEnchantments.PHASING);
+	}
+
+	@SafeVarargs
+	private void addLibrarianTrades(TagKey<Enchantment> common, TagKey<Enchantment> special, RegistryKey<Enchantment>... enchantments) {
+		getOrCreateTagBuilder(common).add(List.of(enchantments));
+		getOrCreateTagBuilder(special).add(List.of(enchantments));
 	}
 }
