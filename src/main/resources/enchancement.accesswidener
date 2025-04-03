@@ -5,21 +5,22 @@ accessible class net/minecraft/entity/effect/InstantHealthOrDamageStatusEffect
 accessible class net/minecraft/entity/mob/ShulkerEntity$PeekGoal
 accessible class net/minecraft/entity/mob/ShulkerEntity$ShootBulletGoal
 accessible method net/minecraft/block/entity/AbstractFurnaceBlockEntity dropExperience (Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/math/Vec3d;IF)V
-accessible method net/minecraft/entity/projectile/ArrowEntity setPotionContents (Lnet/minecraft/component/type/PotionContentsComponent;)V
-accessible method net/minecraft/item/CrossbowItem getPullProgress (ILnet/minecraft/item/ItemStack;Lnet/minecraft/entity/LivingEntity;)F
+accessible method net/minecraft/block/ChiseledBookshelfBlock getSlotForHitPos (Lnet/minecraft/util/hit/BlockHitResult;Lnet/minecraft/block/BlockState;)Ljava/util/OptionalInt;
+accessible method net/minecraft/block/HoneyBlock addCollisionEffects (Lnet/minecraft/world/World;Lnet/minecraft/entity/Entity;)V
+accessible method net/minecraft/block/HoneyBlock updateSlidingVelocity (Lnet/minecraft/entity/Entity;)V
 accessible method net/minecraft/enchantment/EnchantmentHelper forEachEnchantment (Lnet/minecraft/item/ItemStack;Lnet/minecraft/enchantment/EnchantmentHelper$Consumer;)V
 accessible method net/minecraft/enchantment/EnchantmentHelper forEachEnchantment (Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/enchantment/EnchantmentHelper$ContextAwareConsumer;)V
 accessible method net/minecraft/enchantment/Enchantment modifyValue (Lnet/minecraft/component/ComponentType;Lnet/minecraft/server/world/ServerWorld;ILnet/minecraft/item/ItemStack;Lorg/apache/commons/lang3/mutable/MutableFloat;)V
+accessible method net/minecraft/entity/projectile/ArrowEntity setPotionContents (Lnet/minecraft/component/type/PotionContentsComponent;)V
 accessible method net/minecraft/entity/Entity spawnSprintingParticles ()V
 accessible method net/minecraft/entity/mob/GuardianEntity setBeamTarget (I)V
-accessible method net/minecraft/block/HoneyBlock addCollisionEffects (Lnet/minecraft/world/World;Lnet/minecraft/entity/Entity;)V
-accessible method net/minecraft/block/HoneyBlock updateSlidingVelocity (Lnet/minecraft/entity/Entity;)V
 accessible method net/minecraft/entity/ItemEntity tryMerge (Lnet/minecraft/entity/ItemEntity;)V
 accessible method net/minecraft/entity/LivingEntity getJumpVelocity ()F
 accessible method net/minecraft/entity/projectile/PersistentProjectileEntity asItemStack ()Lnet/minecraft/item/ItemStack;
 accessible method net/minecraft/entity/projectile/PersistentProjectileEntity isInGround ()Z
 accessible method net/minecraft/entity/mob/PiglinBrain onAttacked (Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/mob/PiglinEntity;Lnet/minecraft/entity/LivingEntity;)V
 accessible method net/minecraft/entity/projectile/TridentEntity isOwnerAlive ()Z
+accessible method net/minecraft/item/CrossbowItem getPullProgress (ILnet/minecraft/item/ItemStack;Lnet/minecraft/entity/LivingEntity;)F
 accessible method net/minecraft/world/World getEntityLookup ()Lnet/minecraft/world/entity/EntityLookup;
 accessible field net/minecraft/loot/condition/AlternativeLootCondition terms Ljava/util/List;
 accessible field net/minecraft/component/Component value Ljava/lang/Object;

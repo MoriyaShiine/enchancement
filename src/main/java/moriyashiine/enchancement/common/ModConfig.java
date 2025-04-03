@@ -98,6 +98,8 @@ public class ModConfig extends MidnightConfig {
 	@Entry(category = "client")
 	public static boolean coloredEnchantmentNames = true;
 	@Entry(category = "client")
+	public static boolean chiseledBookshelfPeeking = true;
+	@Entry(category = "client")
 	public static AllowDuplicateKeybindingsMode allowDuplicateKeybindings = AllowDuplicateKeybindingsMode.VANILLA_AND_ENCHANCEMENT;
 	@Entry(category = "client")
 	public static boolean invertedBounce = false;

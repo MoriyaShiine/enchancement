@@ -3,10 +3,7 @@
  */
 package moriyashiine.enchancement.client;
 
-import moriyashiine.enchancement.client.event.config.CoyoteBiteEvent;
-import moriyashiine.enchancement.client.event.config.EnchantmentDescriptionsEvent;
-import moriyashiine.enchancement.client.event.config.SyncVelocitiesEvent;
-import moriyashiine.enchancement.client.event.config.ToggleablePassivesEvent;
+import moriyashiine.enchancement.client.event.config.*;
 import moriyashiine.enchancement.client.event.enchantmenteffectcomponenttype.*;
 import moriyashiine.enchancement.client.event.integration.appleskin.BrimstoneAppleskinEvent;
 import moriyashiine.enchancement.client.event.internal.SyncBookshelvesEvent;
@@ -96,6 +93,7 @@ public class EnchancementClient implements ClientModInitializer {
 		// config
 		ClientTickEvents.END_WORLD_TICK.register(new CoyoteBiteEvent());
 		ItemTooltipCallback.EVENT.register(new EnchantmentDescriptionsEvent());
+		HudLayerRegistrationCallback.EVENT.register(new ChiseledBookshelfPeekingEvent());
 		ClientTickEvents.START_WORLD_TICK.register(new SyncVelocitiesEvent());
 		ItemTooltipCallback.EVENT.register(new ToggleablePassivesEvent());
 		// enchantment

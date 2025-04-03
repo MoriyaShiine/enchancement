@@ -193,6 +193,7 @@
   "enchancement.midnightconfig.coyoteBiteTicks": "Coyote Bite Ticks",
   "enchancement.midnightconfig.enchantmentDescriptions": "Enchantment Descriptions",
   "enchancement.midnightconfig.coloredEnchantmentNames": "Colored Enchantment Names",
+  "enchancement.midnightconfig.chiseledBookshelfPeeking": "Chiseled Bookshelf Peeking",
   "enchancement.midnightconfig.allowDuplicateKeybindings": "Allow Duplicate Keybindings",
   "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.NONE": "None",
   "enchancement.midnightconfig.enum.AllowDuplicateKeybindingsMode.VANILLA_AND_ENCHANCEMENT": "Vanilla and Enchancement",
