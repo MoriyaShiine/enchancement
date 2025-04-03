@@ -30,6 +30,9 @@
 	"client": [
 	  "moriyashiine.enchancement.client.EnchancementClient"
 	],
+	"cardinal-components-block": [
+	  "moriyashiine.enchancement.common.init.ModBlockComponents"
+	],
 	"cardinal-components-entity": [
 	  "moriyashiine.enchancement.common.init.ModEntityComponents"
 	],
@@ -50,6 +53,7 @@
   },
   "custom": {
 	"cardinal-components": [
+	  "enchancement:chiseled_bookshelf",
 	  "enchancement:fell_trees",
 	  "enchancement:honey_trail",
 	  "enchancement:air_jump",

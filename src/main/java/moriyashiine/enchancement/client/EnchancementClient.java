@@ -10,10 +10,7 @@ import moriyashiine.enchancement.client.event.config.ToggleablePassivesEvent;
 import moriyashiine.enchancement.client.event.enchantmenteffectcomponenttype.*;
 import moriyashiine.enchancement.client.event.integration.appleskin.BrimstoneAppleskinEvent;
 import moriyashiine.enchancement.client.event.internal.SyncBookshelvesEvent;
-import moriyashiine.enchancement.client.particle.HoneyBubbleParticle;
-import moriyashiine.enchancement.client.particle.SparkParticle;
-import moriyashiine.enchancement.client.particle.TintlessDamageParticle;
-import moriyashiine.enchancement.client.particle.VelocityLineParticle;
+import moriyashiine.enchancement.client.particle.*;
 import moriyashiine.enchancement.client.payload.*;
 import moriyashiine.enchancement.client.reloadlisteners.FrozenReloadListener;
 import moriyashiine.enchancement.client.render.entity.AmethystShardEntityRenderer;
@@ -86,6 +83,7 @@ public class EnchancementClient implements ClientModInitializer {
 
 	private void initParticles() {
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.BRIMSTONE_BUBBLE, WaterBubbleParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.CHISELED_ENCHANTMENT, PurpleConnectionParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.CRITICAL_TIPPER, TintlessDamageParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.HONEY_BUBBLE, HoneyBubbleParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.SPARK, provider -> new SparkParticle.Factory());

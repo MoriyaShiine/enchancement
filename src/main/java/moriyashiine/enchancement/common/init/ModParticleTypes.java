@@ -13,6 +13,7 @@ import static moriyashiine.strawberrylib.api.module.SLibRegistries.registerParti
 
 public class ModParticleTypes {
 	public static final SimpleParticleType BRIMSTONE_BUBBLE = registerParticleType("brimstone_bubble", FabricParticleTypes.simple());
+	public static final SimpleParticleType CHISELED_ENCHANTMENT = registerParticleType("chiseled_enchantment", FabricParticleTypes.simple());
 	public static final SimpleParticleType CRITICAL_TIPPER = registerParticleType("critical_tipper", FabricParticleTypes.simple());
 	public static final ParticleType<HoneyBubbleParticleEffect> HONEY_BUBBLE = registerParticleType("honey_bubble", FabricParticleTypes.complex(HoneyBubbleParticleEffect.CODEC, HoneyBubbleParticleEffect.PACKET_CODEC));
 	public static final ParticleType<SparkParticleEffect> SPARK = registerParticleType("spark", FabricParticleTypes.complex(SparkParticleEffect.CODEC, SparkParticleEffect.PACKET_CODEC));

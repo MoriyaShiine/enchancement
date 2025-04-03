@@ -32,6 +32,7 @@
 	"config.enhancemobs.PillagerEntityMixin",
 	"config.enhancemobs.VindicatorEntityMixin",
 	"config.overhaulenchantingtable.AnvilScreenHandlerMixin",
+	"config.overhaulenchantingtable.ChiseledBookshelfBlockEntityMixin",
 	"config.overhaulenchantingtable.EnchantingTableBlockMixin",
 	"config.overhaulenchantingtable.TradeOffersFactoryMixin",
 	"config.overhaulenchantingtable.TradeOffersMixin",

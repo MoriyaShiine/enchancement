@@ -305,8 +305,8 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 					if (world.getBlockEntity(pos.add(offset)) instanceof ChiseledBookshelfBlockEntity chiseledBookshelfBlockEntity) {
 						bookshelfCount += chiseledBookshelfBlockEntity.getFilledSlotCount() / 3;
 						if (ModConfig.overhaulEnchantingTable == OverhaulMode.CHISELED) {
-							for (int i = 0; i < chiseledBookshelfBlockEntity.size(); i++) {
-								chiseledEnchantments.addAll(EnchantmentHelper.getEnchantments(chiseledBookshelfBlockEntity.getStack(i)).getEnchantments());
+							for (ItemStack stack : chiseledBookshelfBlockEntity) {
+								chiseledEnchantments.addAll(EnchantmentHelper.getEnchantments(stack).getEnchantments());
 							}
 						}
 					} else {
