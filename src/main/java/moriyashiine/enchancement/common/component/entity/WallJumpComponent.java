@@ -27,6 +27,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.event.GameEvent;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
@@ -140,6 +141,7 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 	public void use(Vec3d velocity) {
 		obj.setVelocity(velocity);
 		obj.playSound(SoundEvents.BLOCK_SLIME_BLOCK_FALL);
+		obj.emitGameEvent(GameEvent.ENTITY_ACTION);
 		slidingPos = null;
 		hasJumped = true;
 	}

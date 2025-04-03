@@ -23,6 +23,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.event.GameEvent;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
@@ -139,6 +140,7 @@ public class DirectionBurstComponent implements AutoSyncedComponent, CommonTicki
 		gravityTicks = 3;
 		obj.setVelocity(velocityX, 0, velocityZ);
 		obj.playSound(ModSoundEvents.ENTITY_GENERIC_STRAFE, 1, 1);
+		obj.emitGameEvent(GameEvent.ENTITY_ACTION);
 		EnchancementUtil.resetFallDistance(obj);
 		ModEntityComponents.AIR_MOBILITY.get(obj).resetTicksInAir();
 	}

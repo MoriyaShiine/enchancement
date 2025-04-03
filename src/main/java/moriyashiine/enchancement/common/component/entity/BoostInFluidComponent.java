@@ -16,6 +16,7 @@ import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.event.GameEvent;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
@@ -52,6 +53,7 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 					if (shouldAddVelocity()) {
 						boost = (float) MathHelper.clamp(boost + 0.0025, boostStrength * 0.075, boostStrength);
 						obj.addVelocity(0, boost, 0);
+						obj.emitGameEvent(GameEvent.ENTITY_ACTION);
 					}
 				} else {
 					shouldBoost = false;

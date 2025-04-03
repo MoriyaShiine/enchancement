@@ -24,6 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.event.GameEvent;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
@@ -73,6 +74,7 @@ public class EruptionComponent implements AutoSyncedComponent, CommonTickingComp
 	public void useCommon() {
 		obj.setVelocity(obj.getVelocity().getX(), EruptionEffect.getJumpStrength(obj.getRandom(), obj.getMainHandStack()), obj.getVelocity().getZ());
 		obj.playSound(ModSoundEvents.ENTITY_GENERIC_ERUPT, 1, MathHelper.nextFloat(obj.getRandom(), 0.8F, 1.2F));
+		obj.emitGameEvent(GameEvent.ENTITY_ACTION);
 	}
 
 	public void useClient() {

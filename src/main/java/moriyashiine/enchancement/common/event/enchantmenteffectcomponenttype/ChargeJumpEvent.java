@@ -14,6 +14,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.event.GameEvent;
 
 public class ChargeJumpEvent implements ModifyJumpVelocityEvent {
 	private static final BlockStateParticleEffect SLIME_PARTICLE = new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.getDefaultState());
@@ -26,6 +27,7 @@ public class ChargeJumpEvent implements ModifyJumpVelocityEvent {
 			if (boostProgress > 0) {
 				if (entity.getWorld() instanceof ServerWorld world) {
 					SLibUtils.playSound(entity, SoundEvents.BLOCK_SLIME_BLOCK_FALL);
+					entity.emitGameEvent(GameEvent.ENTITY_ACTION);
 					world.spawnParticles(SLIME_PARTICLE, entity.getX(), entity.getY(), entity.getZ(), 32, 0, 0, 0, 0.15);
 				}
 				return velocity.add(0, chargeJumpComponent.getBoost(), 0);

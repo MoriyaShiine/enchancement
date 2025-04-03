@@ -75,6 +75,7 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 			floatTicks--;
 			obj.onLanding();
 			obj.setVelocity(obj.getVelocity().multiply(0.9));
+			obj.emitGameEvent(GameEvent.ENTITY_ACTION);
 			if (obj.handSwinging && obj.getPitch() > -15) {
 				cachedHeight = obj.getY();
 				smashTicks = 30;
@@ -91,7 +92,6 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 				}
 				if (smashTicks == 1) {
 					obj.playSound(SoundEvents.ITEM_MACE_SMASH_GROUND_HEAVY, 1, 1);
-					obj.getWorld().emitGameEvent(GameEvent.STEP, obj.getPos(), GameEvent.Emitter.of(obj.getSteppingBlockState()));
 				}
 			}
 		}
@@ -170,6 +170,7 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 
 	public void useCommon(Vec3d lungeVelocity, int floatTicks) {
 		obj.setVelocity(lungeVelocity);
+		obj.emitGameEvent(GameEvent.ENTITY_ACTION);
 		this.floatTicks = floatTicks;
 	}
 

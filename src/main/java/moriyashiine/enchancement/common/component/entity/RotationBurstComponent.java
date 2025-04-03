@@ -18,6 +18,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.event.GameEvent;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
@@ -129,6 +130,7 @@ public class RotationBurstComponent implements AutoSyncedComponent, CommonTickin
 		reset();
 		wavedashTicks = RotationBurstEffect.getWavedashTicks(obj);
 		obj.playSound(ModSoundEvents.ENTITY_GENERIC_DASH, 1, 1);
+		obj.emitGameEvent(GameEvent.ENTITY_ACTION);
 		Vec3d velocity = obj.getRotationVector().normalize().multiply(RotationBurstEffect.getStrength(obj)).multiply(MultiplyMovementSpeedEvent.getMovementMultiplier(obj));
 		obj.setVelocity(velocity.getX(), velocity.getY(), velocity.getZ());
 		EnchancementUtil.resetFallDistance(obj);

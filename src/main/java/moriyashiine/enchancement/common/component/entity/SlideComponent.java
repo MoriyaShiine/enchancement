@@ -29,7 +29,6 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.event.GameEvent;
 import org.joml.Vector2d;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
@@ -86,7 +85,6 @@ public class SlideComponent implements CommonTickingComponent {
 					crawlTimer = 3;
 				}
 				obj.spawnSprintingParticles();
-				obj.getWorld().emitGameEvent(GameEvent.STEP, obj.getPos(), GameEvent.Emitter.of(obj.getSteppingBlockState()));
 				double dX = adjustedVelocity.x(), dZ = adjustedVelocity.z();
 				if (!obj.isOnGround()) {
 					dX *= 0.2;
