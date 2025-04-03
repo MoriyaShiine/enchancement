@@ -5,8 +5,10 @@ package moriyashiine.enchancement.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.screenhandlers.EnchantingTableScreenHandler;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.enchancement.common.util.OverhaulMode;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.DiffuseLighting;
@@ -53,7 +55,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 	private static final Identifier STRENGTH_TEXTURE = Enchancement.id("container/enchanting_table/strength");
 	private static final Identifier STRENGTH_HIGHLIGHTED_TEXTURE = Enchancement.id("container/enchanting_table/strength_highlighted");
 
-	private static final int BOOKSHELF_Y = 9, UP_Y = 34, DOWN_Y = UP_Y + 17, ENCHANT_Y = 72;
+	private static final int CHISELED_BOOKSHELF_Y = 48, BOOKSHELF_Y = 9, UP_Y = 34, DOWN_Y = UP_Y + 17, ENCHANT_Y = 72;
 
 	private BookModel bookModel;
 
@@ -67,7 +69,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 	private float pageRotationSpeed;
 
 	private int highlightedEnchantmentIndex = -1;
-	private int materialIndex = 0, materialIndexTicks = 0;
+	private int materialIndex = 0, materialIndexTicks = 0, chiseledTicks = 0;
 
 	public EnchantingTableScreen(EnchantingTableScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
@@ -176,6 +178,18 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 				context.drawGuiTexture(RenderLayer::getGuiTextured, STRENGTH_HIGHLIGHTED_TEXTURE, startX, startY, 8, 8);
 			}
 		}
+		if (ModConfig.overhaulEnchantingTable == OverhaulMode.CHISELED && chiseledTicks > 0 && handler.chiseledEnchantments.isEmpty()) {
+			if (isInChiseledWarningBounds(posX, posY, mouseX, mouseY)) {
+				context.drawTooltip(textRenderer, Text.translatable("tooltip.enchancement.no_chiseled_enchantments").formatted(Formatting.RED), mouseX, mouseY);
+			}
+			float scale = 1 + MathHelper.sin(chiseledTicks / 8F) / 4;
+			context.getMatrices().push();
+			context.getMatrices().translate(posX + 104, posY + CHISELED_BOOKSHELF_Y, 0);
+			context.getMatrices().scale(scale, scale, scale);
+			context.getMatrices().translate(-8, -8, 0);
+			context.drawItem(Items.CHISELED_BOOKSHELF.getDefaultStack(), 0, 0);
+			context.getMatrices().pop();
+		}
 		context.drawItem(Items.BOOKSHELF.getDefaultStack(), posX + 154, posY + BOOKSHELF_Y);
 		context.getMatrices().push();
 		context.getMatrices().scale(0.5F, 0.5F, 0.5F);
@@ -217,6 +231,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 		} else {
 			materialIndex = materialIndexTicks = 0;
 		}
+		chiseledTicks++;
 	}
 
 	@Override
@@ -296,5 +311,9 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 
 	private static boolean isInEnchantButtonBounds(int posX, int posY, int mouseX, int mouseY) {
 		return isInBounds(posX, posY, mouseX, mouseY, 154, 170, ENCHANT_Y, ENCHANT_Y + 16);
+	}
+
+	private static boolean isInChiseledWarningBounds(int posX, int posY, int mouseX, int mouseY) {
+		return isInBounds(posX, posY, mouseX, mouseY, 88, 120, CHISELED_BOOKSHELF_Y - 16, CHISELED_BOOKSHELF_Y + 16);
 	}
 }

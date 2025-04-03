@@ -157,6 +157,7 @@
   "key.enchancement.rotationBurst": "Rotation Burst",
   "key.enchancement.slam": "Slam",
   "key.enchancement.slide": "Slide",
+  "tooltip.enchancement.no_chiseled_enchantments": "This Enchanting Table needs power. Place Chiseled Bookshelves containing Enchanted Books nearby.",
   "tooltip.enchancement.experience_level_cost": "Experience Cost: %d levels",
   "tooltip.enchancement.material_cost": "Material Cost: %d %s",
   "tooltip.enchancement.cannot_auto_consume": "Cannot Auto-consume",
