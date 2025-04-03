@@ -16,6 +16,7 @@ public class ModParticleTypes {
 	public static final SimpleParticleType CHISELED_ENCHANTMENT = registerParticleType("chiseled_enchantment", FabricParticleTypes.simple());
 	public static final SimpleParticleType CRITICAL_TIPPER = registerParticleType("critical_tipper", FabricParticleTypes.simple());
 	public static final ParticleType<HoneyBubbleParticleEffect> HONEY_BUBBLE = registerParticleType("honey_bubble", FabricParticleTypes.complex(HoneyBubbleParticleEffect.CODEC, HoneyBubbleParticleEffect.PACKET_CODEC));
+	public static final SimpleParticleType SHORT_SMALL_FLAME = registerParticleType("short_small_flame", FabricParticleTypes.simple());
 	public static final ParticleType<SparkParticleEffect> SPARK = registerParticleType("spark", FabricParticleTypes.complex(SparkParticleEffect.CODEC, SparkParticleEffect.PACKET_CODEC));
 	public static final SimpleParticleType VELOCITY_LINE = registerParticleType("velocity_line", FabricParticleTypes.simple());
 

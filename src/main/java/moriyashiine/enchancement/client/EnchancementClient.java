@@ -83,6 +83,7 @@ public class EnchancementClient implements ClientModInitializer {
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.CHISELED_ENCHANTMENT, PurpleConnectionParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.CRITICAL_TIPPER, TintlessDamageParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.HONEY_BUBBLE, HoneyBubbleParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.SHORT_SMALL_FLAME, ShortFlameParticle.SmallFactory::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.SPARK, provider -> new SparkParticle.Factory());
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.VELOCITY_LINE, VelocityLineParticle.Factory::new);
 	}

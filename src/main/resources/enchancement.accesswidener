@@ -39,6 +39,7 @@ mutable field net/minecraft/enchantment/effect/TargetedEnchantmentEffect require
 accessible field net/minecraft/registry/tag/TagEntry id Lnet/minecraft/util/Identifier;
 accessible method net/minecraft/client/particle/ConnectionParticle <init> (Lnet/minecraft/client/world/ClientWorld;DDDDDD)V
 accessible method net/minecraft/client/particle/DamageParticle <init> (Lnet/minecraft/client/world/ClientWorld;DDDDDD)V
+accessible method net/minecraft/client/particle/FlameParticle <init> (Lnet/minecraft/client/world/ClientWorld;DDDDDD)V
 accessible method net/minecraft/client/gui/hud/InGameHud renderHealthBar (Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/entity/player/PlayerEntity;IIIIFIIIZ)V
 accessible field net/minecraft/entity/projectile/TridentEntity LOYALTY Lnet/minecraft/entity/data/TrackedData;
 accessible field net/minecraft/client/option/KeyBinding timesPressed I
