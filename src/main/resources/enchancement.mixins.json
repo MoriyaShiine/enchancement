@@ -163,7 +163,7 @@
 	"config.allowduplicatekeybindings.client.KeyBindingMixin",
 	"config.coloredenchantmentnames.client.EnchantmentMixin",
 	"config.coyotebite.MinecraftClientMixin",
-	"config.overhaulenchantingtable.client.GrindstoneScreenMixin",
+	"config.enchantedbookgrinding.client.GrindstoneScreenMixin",
 	"config.overhaulenchantingtable.client.ItemMixin",
 	"config.overhaulenchantingtable.client.RenderLayersMixin",
 	"config.rebalanceequipment.client.ClientPlayerEntityMixin",
