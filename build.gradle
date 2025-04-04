@@ -33,7 +33,6 @@ fabricApi {
 }
 
 repositories {
-    mavenLocal()
     chenille.repositories.ladysnake()
     chenille.repositories.terraformers()
     chenille.repositories.modrinth()
@@ -45,6 +44,7 @@ repositories {
         name "appleskin"
         url "https://maven.ryanliptak.com/"
     }
+    chenille.repositories.jitpack()
 }
 
 dependencies {
@@ -57,9 +57,7 @@ dependencies {
     modIncludeImplementation "org.ladysnake.cardinal-components-api:cardinal-components-block:${cardinal_components_version}"
     modIncludeImplementation "org.ladysnake.cardinal-components-api:cardinal-components-world:${cardinal_components_version}"
     modIncludeImplementation "maven.modrinth:midnightlib:${midnightlib_version}"
-    // this is a local version of tooltipfix since the mod seems dead. if you need to depend on Enchancement, clone this PR (https://github.com/kyrptonaught/tooltipfix/pull/38) and publish it to maven local.
-    modIncludeImplementation "net.kyrptonaught:tooltipfix:${tooltipfix_version}"
-//    modIncludeImplementation "maven.modrinth:tooltipfix:${tooltipfix_version}"
+    modIncludeImplementation "com.github.MoriyaShiine:tooltipfix:${tooltipfix_version}"
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     modImplementation "moriyashiine:strawberrylib:${strawberrylib_version}"
