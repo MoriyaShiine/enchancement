@@ -11,7 +11,6 @@ import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
 import moriyashiine.enchancement.common.tag.ModEnchantmentTags;
 import moriyashiine.enchancement.common.tag.ModItemTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import moriyashiine.enchancement.common.util.OverhaulMode;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.Blocks;
@@ -304,7 +303,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 				if (EnchantingTableBlock.canAccessPowerProvider(world, pos, offset)) {
 					if (world.getBlockEntity(pos.add(offset)) instanceof ChiseledBookshelfBlockEntity chiseledBookshelfBlockEntity) {
 						bookshelfCount += chiseledBookshelfBlockEntity.getFilledSlotCount() / 3;
-						if (ModConfig.overhaulEnchantingTable == OverhaulMode.CHISELED) {
+						if (ModConfig.overhaulEnchantingTable.chiseledMode()) {
 							for (ItemStack stack : chiseledBookshelfBlockEntity) {
 								chiseledEnchantments.addAll(EnchantmentHelper.getEnchantments(stack).getEnchantments());
 							}
@@ -357,8 +356,8 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 			if (enchantment.isIn(ModEnchantmentTags.ALWAYS_SELECTABLE)) {
 				return true;
 			}
-			if (ModConfig.overhaulEnchantingTable != OverhaulMode.CHISELED || chiseledEnchantments.contains(enchantment)) {
-				if (ModConfig.overhaulEnchantingTable.allowsTreasure && enchantment.isIn(EnchantmentTags.TREASURE)) {
+			if (!ModConfig.overhaulEnchantingTable.chiseledMode() || chiseledEnchantments.contains(enchantment)) {
+				if (ModConfig.overhaulEnchantingTable.allowsTreasure() && enchantment.isIn(EnchantmentTags.TREASURE)) {
 					return true;
 				}
 				return enchantment.isIn(EnchantmentTags.IN_ENCHANTING_TABLE);

@@ -5,7 +5,6 @@ package moriyashiine.enchancement.mixin.config.overhaulenchantingtable;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.util.OverhaulMode;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.village.TradeOffers;
 import net.minecraft.village.VillagerProfession;
@@ -30,7 +29,7 @@ public class TradeOffersMixin {
 
 	@Inject(method = "<clinit>", at = @At("TAIL"))
 	private static void enchancement$overhaulEnchantingTable(CallbackInfo ci) {
-		if (ModConfig.overhaulEnchantingTable == OverhaulMode.CHISELED) {
+		if (ModConfig.overhaulEnchantingTable.chiseledMode()) {
 			PROFESSION_TO_LEVELED_TRADE.put(VillagerProfession.LIBRARIAN, REBALANCED_PROFESSION_TO_LEVELED_TRADE.get(VillagerProfession.LIBRARIAN));
 		}
 	}

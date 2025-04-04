@@ -6,7 +6,6 @@ package moriyashiine.enchancement.mixin.config.overhaulenchantingtable;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.util.OverhaulMode;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.DynamicRegistryManager;
@@ -22,7 +21,7 @@ import java.util.Optional;
 public class TradeOffersSellEnchantedToolFactoryMixin {
 	@WrapOperation(method = "create", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;enchant(Lnet/minecraft/util/math/random/Random;Lnet/minecraft/item/ItemStack;ILnet/minecraft/registry/DynamicRegistryManager;Ljava/util/Optional;)Lnet/minecraft/item/ItemStack;"))
 	private ItemStack enchancement$overhaulEnchantingTable(Random random, ItemStack stack, int level, DynamicRegistryManager dynamicRegistryManager, Optional<? extends RegistryEntryList<Enchantment>> enchantments, Operation<ItemStack> original) {
-		if (ModConfig.overhaulEnchantingTable == OverhaulMode.CHISELED) {
+		if (ModConfig.overhaulEnchantingTable.chiseledMode()) {
 			return stack;
 		}
 		return original.call(random, stack, level, dynamicRegistryManager, enchantments);
