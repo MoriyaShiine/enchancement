@@ -30,6 +30,7 @@ import net.minecraft.item.Items;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.EnchantmentTags;
@@ -314,6 +315,10 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 				}
 			}
 			bookshelfCount = Math.min(15, bookshelfCount);
+			if (player.isCreative()) {
+				Registry<Enchantment> enchantmentRegistry = world.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT);
+				enchantmentRegistry.forEach(enchantment -> chiseledEnchantments.add(enchantmentRegistry.getEntry(enchantment)));
+			}
 			SyncBookshelvesPayload.send(player, chiseledEnchantments, bookshelfCount);
 		});
 	}
