@@ -53,7 +53,7 @@ public class ModConfig extends MidnightConfig {
 	public static boolean invertedList = false;
 
 	@Entry
-	public static OverhaulMode overhaulEnchantingTable = OverhaulMode.CHISELED;
+	public static OverhaulMode overhaulEnchanting = OverhaulMode.CHISELED;
 
 	@Entry
 	public static boolean singleLevelMode = true;
@@ -115,7 +115,7 @@ public class ModConfig extends MidnightConfig {
 		}
 		String encoding = builder.toString() +
 				invertedList +
-				overhaulEnchantingTable +
+				overhaulEnchanting +
 				singleLevelMode + enchantmentLimit +
 				disableDurability + disableVelocityChecks +
 				enhanceMobs +

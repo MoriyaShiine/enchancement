@@ -29,10 +29,10 @@ import net.minecraft.registry.tag.TagKey;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OverhaulEnchantingTableEvent implements LootTableEvents.Modify {
+public class OverhaulEnchantingEvent implements LootTableEvents.Modify {
 	@Override
 	public void modifyLootTable(RegistryKey<LootTable> key, LootTable.Builder tableBuilder, LootTableSource source, RegistryWrapper.WrapperLookup registries) {
-		if (ModConfig.overhaulEnchantingTable.chiseledMode()) {
+		if (ModConfig.overhaulEnchanting.chiseledMode()) {
 			if (key == LootTables.NETHER_BRIDGE_CHEST) {
 				addGuaranteedBook(tableBuilder, Items.IRON_HELMET);
 			}

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-package moriyashiine.enchancement.mixin.config.overhaulenchantingtable;
+package moriyashiine.enchancement.mixin.config.overhaulenchanting;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import moriyashiine.enchancement.common.ModConfig;
@@ -28,8 +28,8 @@ public class TradeOffersMixin {
 	public static Map<RegistryKey<VillagerProfession>, Int2ObjectMap<TradeOffers.Factory[]>> REBALANCED_PROFESSION_TO_LEVELED_TRADE;
 
 	@Inject(method = "<clinit>", at = @At("TAIL"))
-	private static void enchancement$overhaulEnchantingTable(CallbackInfo ci) {
-		if (ModConfig.overhaulEnchantingTable.chiseledMode()) {
+	private static void enchancement$overhaulEnchanting(CallbackInfo ci) {
+		if (ModConfig.overhaulEnchanting.chiseledMode()) {
 			PROFESSION_TO_LEVELED_TRADE.put(VillagerProfession.LIBRARIAN, REBALANCED_PROFESSION_TO_LEVELED_TRADE.get(VillagerProfession.LIBRARIAN));
 		}
 	}

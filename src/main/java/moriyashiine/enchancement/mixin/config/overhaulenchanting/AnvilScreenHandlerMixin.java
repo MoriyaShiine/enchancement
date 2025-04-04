@@ -1,7 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-package moriyashiine.enchancement.mixin.config.overhaulenchantingtable;
+package moriyashiine.enchancement.mixin.config.overhaulenchanting;
 
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.util.OverhaulMode;
@@ -36,17 +36,17 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
 	}
 
 	@Inject(method = "canTakeOutput", at = @At("HEAD"), cancellable = true)
-	private void enchancement$overhaulEnchantingTable(PlayerEntity player, boolean present, CallbackInfoReturnable<Boolean> cir) {
-		if (ModConfig.overhaulEnchantingTable != OverhaulMode.DISABLED && input.getStack(1).isOf(Items.ENCHANTED_BOOK)) {
+	private void enchancement$overhaulEnchanting(PlayerEntity player, boolean present, CallbackInfoReturnable<Boolean> cir) {
+		if (ModConfig.overhaulEnchanting != OverhaulMode.DISABLED && input.getStack(1).isOf(Items.ENCHANTED_BOOK)) {
 			cir.setReturnValue(true);
 		}
 	}
 
 	@Inject(method = "updateResult", at = @At("TAIL"))
-	private void enchancement$overhaulEnchantingTable(CallbackInfo ci) {
-		if (ModConfig.overhaulEnchantingTable != OverhaulMode.DISABLED) {
+	private void enchancement$overhaulEnchanting(CallbackInfo ci) {
+		if (ModConfig.overhaulEnchanting != OverhaulMode.DISABLED) {
 			if (input.getStack(1).isOf(Items.ENCHANTED_BOOK)) {
-				if (ModConfig.overhaulEnchantingTable.chiseledMode() && !input.getStack(0).isOf(Items.ENCHANTED_BOOK)) {
+				if (ModConfig.overhaulEnchanting.chiseledMode() && !input.getStack(0).isOf(Items.ENCHANTED_BOOK)) {
 					output.setStack(0, ItemStack.EMPTY);
 					sendContentUpdates();
 					return;

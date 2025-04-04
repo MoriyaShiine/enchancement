@@ -303,7 +303,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 				if (EnchantingTableBlock.canAccessPowerProvider(world, pos, offset)) {
 					if (world.getBlockEntity(pos.add(offset)) instanceof ChiseledBookshelfBlockEntity chiseledBookshelfBlockEntity) {
 						bookshelfCount += chiseledBookshelfBlockEntity.getFilledSlotCount() / 3;
-						if (ModConfig.overhaulEnchantingTable.chiseledMode()) {
+						if (ModConfig.overhaulEnchanting.chiseledMode()) {
 							for (ItemStack stack : chiseledBookshelfBlockEntity) {
 								chiseledEnchantments.addAll(EnchantmentHelper.getEnchantments(stack).getEnchantments());
 							}
@@ -356,8 +356,8 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 			if (enchantment.isIn(ModEnchantmentTags.ALWAYS_SELECTABLE)) {
 				return true;
 			}
-			if (!ModConfig.overhaulEnchantingTable.chiseledMode() || chiseledEnchantments.contains(enchantment)) {
-				if (ModConfig.overhaulEnchantingTable.allowsTreasure() && enchantment.isIn(EnchantmentTags.TREASURE)) {
+			if (!ModConfig.overhaulEnchanting.chiseledMode() || chiseledEnchantments.contains(enchantment)) {
+				if (ModConfig.overhaulEnchanting.allowsTreasure() && enchantment.isIn(EnchantmentTags.TREASURE)) {
 					return true;
 				}
 				return enchantment.isIn(EnchantmentTags.IN_ENCHANTING_TABLE);
