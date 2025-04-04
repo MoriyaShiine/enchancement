@@ -72,11 +72,30 @@ Fishing Rod Enchantments:
 Everything Enchancement adds is configurable:
 * Disallowed Enchantments:
   * Remove most vanilla enchantments from the game. Enchancement tries to make choosing your enchantments more fun and engaging by replacing many of the stat change enchantments with enchantments that grant the player unique abilities.
-* Overhaul Enchanting Table
+* Overhaul Enchanting
   * Replaces the Enchanting Table UI with a new version that removes the RNG involved in enchanting; you may simply choose the enchantments you wish to have.
-  * To balance the ability to freely choose enchantments, enchanting items now has an additional material cost, such as Diamonds for Diamond equipment.
-  * Bookshelves now reduce the experience, lapis, and material cost of enchanting.
-  * Enchanted Books can be applied to items in an Anvil at no cost.
+  * Enchanting Tables require Chiseled Bookshelves with Enchanted Books in them to access their enchantments.
+  * Enchanting items has an additional material cost related to the item being enchanted, such as Diamonds for Diamond equipment.
+  * Bookshelves reduce the experience, lapis lazuli, and material cost of enchanting.
+  * Enchanted Books cannot be applied to tools in an anvil.
+  * Villagers only sell unenchanted items.
+  * Librarians sell specific enchanted books related to the biome they're from.
+  * Various types of Enchanted Books are guaranteed to spawn in specific structures.
+    * Helmet Enchantments - Nether Fortresses
+    * Chestplate Enchantments - Trial Chambers
+    * Leggings Enchantments - Ancient Cities
+    * Boots Enchantments - Desert Pyramids
+    * Sword Enchantments - Dungeons
+    * Bow Enchantments - Jungle Pyramids
+    * Crossbow Enchantments - Pillager Outposts
+    * Trident Enchantments - Ocean Ruins
+    * Mace Enchantments - Trial Chambers (Ominous Vault)
+    * Mining Tool Enchantments - Ruined Portals
+    * Pickaxe Enchantments - Mineshafts
+    * Axe Enchantments - Bastions
+    * Shovel Enchantments - Buried Treasure Chests
+    * Hoe Enchantments - Village Houses
+    * Fishing Rod Enchantments - Shipwrecks
 * Single Level Mode
   * Remove leveling from enchantments, meaning that the max level for all enchantments will be 1. Enchantments that are brought down to this level will act as their original max level counterpart, an example being Luck of the Sea I will function the same as Luck of the Sea III. Enchantments on gear made from materials easier to obtain will be weaker.
 * Enchantment Limit
@@ -86,6 +105,8 @@ Everything Enchancement adds is configurable:
   * Anvils will not break when used, unless they are part of the tag.
 * Disable Velocity Checks
   * Removes the checks to determine if a player is moving too fast, since Enchancement adds many forms of movement that may trigger that.
+* Enchanted Book Grinding
+  * Enchantments can be transferred off of enchanted items and onto books using a grindstone.
 * Enhance Mobs
   * Hostile monsters will spawn with random enchantments.
 * Rebalance Consumables
@@ -139,8 +160,11 @@ Everything Enchancement adds is configurable:
   * Entities can be attacked for a few ticks after they leave your crosshair,
 * Enchantment Descriptions
   * Enchantments display what they do under their name.
+  * Enchanted Books display what items they can be applied to.
 * Colored Enchantment Names
   * Enchantments are colored green, similar to how Curses are colored red.
+* Chiseled Bookshelf Peeking
+  * Chiseled Bookshelves display the item in the slot you're looking at.
 * Allow Duplicate Keybindings
   * All keybindings that are set to the same key will activate at the same time instead of only one applying.
 
