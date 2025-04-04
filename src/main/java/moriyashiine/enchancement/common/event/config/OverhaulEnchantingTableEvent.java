@@ -4,6 +4,7 @@
 package moriyashiine.enchancement.common.event.config;
 
 import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.loot.function.StoreItemEnchantmentsLootFunction;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.fabricmc.fabric.api.loot.v3.LootTableSource;
 import net.minecraft.enchantment.Enchantment;
@@ -32,57 +33,74 @@ public class OverhaulEnchantingTableEvent implements LootTableEvents.Modify {
 	@Override
 	public void modifyLootTable(RegistryKey<LootTable> key, LootTable.Builder tableBuilder, LootTableSource source, RegistryWrapper.WrapperLookup registries) {
 		if (ModConfig.overhaulEnchantingTable.chiseledMode()) {
-			RegistryWrapper<Enchantment> enchantmentLookup = registries.getOrThrow(RegistryKeys.ENCHANTMENT);
 			if (key == LootTables.NETHER_BRIDGE_CHEST) {
-				addGuaranteedBook(tableBuilder, enchantmentLookup, ItemTags.HEAD_ARMOR_ENCHANTABLE);
+				addGuaranteedBook(tableBuilder, Items.IRON_HELMET);
 			}
 			if (key == LootTables.TRIAL_CHAMBERS_REWARD_RARE_CHEST) {
-				addGuaranteedBook(tableBuilder, enchantmentLookup, ItemTags.CHEST_ARMOR_ENCHANTABLE);
+				addGuaranteedBook(tableBuilder, Items.IRON_CHESTPLATE);
 			}
 			if (key == LootTables.ANCIENT_CITY_CHEST) {
-				addGuaranteedBook(tableBuilder, enchantmentLookup, ItemTags.LEG_ARMOR_ENCHANTABLE);
+				addGuaranteedBook(tableBuilder, Items.IRON_LEGGINGS);
 			}
 			if (key == LootTables.DESERT_PYRAMID_CHEST) {
-				addGuaranteedBook(tableBuilder, enchantmentLookup, ItemTags.FOOT_ARMOR_ENCHANTABLE);
+				addGuaranteedBook(tableBuilder, Items.IRON_BOOTS);
 			}
 			if (key == LootTables.SIMPLE_DUNGEON_CHEST) {
-				addGuaranteedBook(tableBuilder, enchantmentLookup, ItemTags.SWORD_ENCHANTABLE, ItemTags.FIRE_ASPECT_ENCHANTABLE);
+				addGuaranteedBook(tableBuilder, Items.IRON_SWORD);
 			}
 			if (key == LootTables.JUNGLE_TEMPLE_CHEST) {
-				addGuaranteedBook(tableBuilder, enchantmentLookup, ItemTags.BOW_ENCHANTABLE);
+				addGuaranteedBook(tableBuilder, Items.BOW);
 			}
 			if (key == LootTables.PILLAGER_OUTPOST_CHEST) {
-				addGuaranteedBook(tableBuilder, enchantmentLookup, ItemTags.CROSSBOW_ENCHANTABLE);
+				addGuaranteedBook(tableBuilder, Items.CROSSBOW);
 			}
 			if (key == LootTables.UNDERWATER_RUIN_BIG_CHEST || key == LootTables.UNDERWATER_RUIN_SMALL_CHEST) {
-				addGuaranteedBook(tableBuilder, enchantmentLookup, ItemTags.TRIDENT_ENCHANTABLE);
+				addGuaranteedBook(tableBuilder, Items.TRIDENT);
 			}
 			if (key == LootTables.RUINED_PORTAL_CHEST) {
-				addGuaranteedBook(tableBuilder, enchantmentLookup, ItemTags.MINING_ENCHANTABLE);
+				addGuaranteedBook(tableBuilder, registries.getOrThrow(RegistryKeys.ENCHANTMENT), ItemTags.MINING_ENCHANTABLE, ItemTags.MINING_LOOT_ENCHANTABLE);
 			}
 			if (key == LootTables.ABANDONED_MINESHAFT_CHEST) {
-				addGuaranteedBook(tableBuilder, enchantmentLookup, ItemTags.PICKAXES);
+				addGuaranteedBook(tableBuilder, Items.IRON_PICKAXE);
 			}
 			if (key == LootTables.BASTION_OTHER_CHEST) {
-				addChanceBook(tableBuilder, enchantmentLookup, ItemTags.AXES);
+				addChanceBook(tableBuilder, Items.IRON_AXE);
 			}
 			if (key == LootTables.BASTION_TREASURE_CHEST) {
-				addGuaranteedBook(tableBuilder, enchantmentLookup, ItemTags.AXES);
+				addGuaranteedBook(tableBuilder, Items.IRON_AXE);
 			}
 			if (key == LootTables.BURIED_TREASURE_CHEST) {
-				addGuaranteedBook(tableBuilder, enchantmentLookup, ItemTags.SHOVELS);
+				addGuaranteedBook(tableBuilder, Items.IRON_SHOVEL);
 			}
 			if (key == LootTables.VILLAGE_DESERT_HOUSE_CHEST || key == LootTables.VILLAGE_PLAINS_CHEST || key == LootTables.VILLAGE_TAIGA_HOUSE_CHEST || key == LootTables.VILLAGE_SNOWY_HOUSE_CHEST || key == LootTables.VILLAGE_SAVANNA_HOUSE_CHEST) {
-				addChanceBook(tableBuilder, enchantmentLookup, ItemTags.HOES);
+				addChanceBook(tableBuilder, Items.IRON_HOE);
 			}
 			if (key == LootTables.SHIPWRECK_TREASURE_CHEST) {
-				addGuaranteedBook(tableBuilder, enchantmentLookup, ItemTags.FISHING_ENCHANTABLE);
+				addGuaranteedBook(tableBuilder, Items.FISHING_ROD);
 			}
 		}
 	}
 
+	private static void addEnchantedBook(LootTable.Builder builder, LootNumberProvider rolls, Item item) {
+		builder.pool(LootPool.builder()
+				.rolls(rolls)
+				.with(
+						ItemEntry.builder(Items.BOOK)
+								.weight(1)
+								.apply(StoreItemEnchantmentsLootFunction.builder(item))
+				));
+	}
+
+	private static void addChanceBook(LootTable.Builder builder, Item item) {
+		addEnchantedBook(builder, UniformLootNumberProvider.create(0, 1), item);
+	}
+
+	private static void addGuaranteedBook(LootTable.Builder builder, Item item) {
+		addEnchantedBook(builder, ConstantLootNumberProvider.create(1), item);
+	}
+
 	@SafeVarargs
-	private static void addEnchantedBook(LootTable.Builder builder, RegistryWrapper<Enchantment> enchantmentLookup, LootNumberProvider rolls, TagKey<Item>... tags) {
+	private static void addGuaranteedBook(LootTable.Builder builder, RegistryWrapper<Enchantment> enchantmentLookup, TagKey<Item>... tags) {
 		List<RegistryEntry<Enchantment>> enchantments = new ArrayList<>();
 		enchantmentLookup.streamEntries().forEach(enchantment -> enchantment.value().getApplicableItems().getTagKey().ifPresent(tagKey -> {
 			for (TagKey<Item> tag : tags) {
@@ -92,22 +110,12 @@ public class OverhaulEnchantingTableEvent implements LootTableEvents.Modify {
 			}
 		}));
 		builder.pool(LootPool.builder()
-				.rolls(rolls)
+				.rolls(ConstantLootNumberProvider.create(1))
 				.with(
 						ItemEntry.builder(
 										Items.BOOK)
 								.weight(1)
 								.apply(new EnchantRandomlyLootFunction.Builder().options(RegistryEntryList.of(enchantments)))
 				));
-	}
-
-	@SafeVarargs
-	private static void addChanceBook(LootTable.Builder builder, RegistryWrapper<Enchantment> enchantmentLookup, TagKey<Item>... tags) {
-		addEnchantedBook(builder, enchantmentLookup, UniformLootNumberProvider.create(0, 1), tags);
-	}
-
-	@SafeVarargs
-	private static void addGuaranteedBook(LootTable.Builder builder, RegistryWrapper<Enchantment> enchantmentLookup, TagKey<Item>... tags) {
-		addEnchantedBook(builder, enchantmentLookup, ConstantLootNumberProvider.create(1), tags);
 	}
 }

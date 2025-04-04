@@ -78,6 +78,7 @@ public class Enchancement implements ModInitializer {
 		ModEnchantmentEntityEffectTypes.init();
 		ModEntityTypes.init();
 		ModLootConditionTypes.init();
+		ModLootFunctionTypes.init();
 		ModParticleTypes.init();
 		ModScreenHandlerTypes.init();
 		ModSoundEvents.init();
