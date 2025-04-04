@@ -77,6 +77,7 @@ Everything Enchancement adds is configurable:
   * Enchanting Tables require Chiseled Bookshelves with Enchanted Books in them to access their enchantments.
   * Enchanting items has an additional material cost related to the item being enchanted, such as Diamonds for Diamond equipment.
   * Bookshelves reduce the experience, lapis lazuli, and material cost of enchanting.
+  * Enchantments can be transferred off of enchanted items and onto books using a grindstone.
   * Enchanted Books cannot be applied to tools in an anvil.
   * Villagers only sell unenchanted items.
   * Librarians sell specific enchanted books related to the biome they're from.
@@ -105,8 +106,6 @@ Everything Enchancement adds is configurable:
   * Anvils will not break when used, unless they are part of the tag.
 * Disable Velocity Checks
   * Removes the checks to determine if a player is moving too fast, since Enchancement adds many forms of movement that may trigger that.
-* Enchanted Book Grinding
-  * Enchantments can be transferred off of enchanted items and onto books using a grindstone.
 * Enhance Mobs
   * Hostile monsters will spawn with random enchantments.
 * Rebalance Consumables
