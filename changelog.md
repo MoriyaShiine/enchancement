@@ -1,4 +1,21 @@
 ------------------------------------------------------
+Version 1.21.5-r3
+------------------------------------------------------
+- enchanting tables now require chiseled bookshelves nearby with enchanted books in them to access those enchantments in the table
+- enchantments can now be transferred off of enchanted items and onto books using a grindstone
+- chiseled bookshelves now show the item in the slot you're looking at
+- enchanted books now show the items they can be applied to
+- villagers no longer sell enchanted gear
+- librarians now sell specific enchanted books related to the biome they're from
+- enchanted books of a certain type are now guaranteed to spawn in certain structure chests. see the main mod page for info!
+- enchanted books can no longer be applied to tools in an anvil
+- various enchantment actions have been assigned game events
+- randomly generated enchantment loot is now actually (seeded) random and no longer uses a hashing function to replace enchantments deterministically
+- molten particles now disappear faster
+- fix flying horses
+- fix projectiles not bypassing cooldown
+
+------------------------------------------------------
 Version 1.21.5-r2
 ------------------------------------------------------
 - leaves now drop leaf litter when broken with molten
