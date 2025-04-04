@@ -3,7 +3,7 @@
  */
 package moriyashiine.enchancement.mixin.config.overhaulenchantingtable.client;
 
-import moriyashiine.enchancement.client.screen.EnchantingTableScreen;
+import moriyashiine.enchancement.client.gui.screen.EnchantingTableScreen;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderLayers;

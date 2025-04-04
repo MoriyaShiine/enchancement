@@ -1,7 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-package moriyashiine.enchancement.client.screen;
+package moriyashiine.enchancement.client.gui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import moriyashiine.enchancement.common.Enchancement;

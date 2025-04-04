@@ -4,7 +4,7 @@
 package moriyashiine.enchancement.client.payload;
 
 import moriyashiine.enchancement.client.event.internal.SyncBookshelvesEvent;
-import moriyashiine.enchancement.client.screen.EnchantingTableScreen;
+import moriyashiine.enchancement.client.gui.screen.EnchantingTableScreen;
 import moriyashiine.enchancement.common.Enchancement;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
