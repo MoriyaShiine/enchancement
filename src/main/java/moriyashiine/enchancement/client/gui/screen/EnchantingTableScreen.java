@@ -8,6 +8,7 @@ import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.screenhandlers.EnchantingTableScreenHandler;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.enchancement.common.util.OverhaulMode;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.DiffuseLighting;
@@ -179,7 +180,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 				context.drawGuiTexture(RenderLayer::getGuiTextured, STRENGTH_HIGHLIGHTED_TEXTURE, startX, startY, 8, 8);
 			}
 		}
-		if (ModConfig.overhaulEnchanting.chiseledMode() && receivedPacket && handler.chiseledEnchantments.isEmpty()) {
+		if (ModConfig.overhaulEnchanting == OverhaulMode.CHISELED && receivedPacket && handler.chiseledEnchantments.isEmpty()) {
 			if (isInChiseledWarningBounds(posX, posY, mouseX, mouseY)) {
 				context.drawTooltip(textRenderer, Text.translatable("tooltip.enchancement.no_chiseled_enchantments").formatted(Formatting.RED), mouseX, mouseY);
 			}

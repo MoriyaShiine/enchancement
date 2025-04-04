@@ -1,12 +1,13 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-package moriyashiine.enchancement.mixin.config.enchantedbookgrinding;
+package moriyashiine.enchancement.mixin.config.overhaulenchanting;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.util.OverhaulMode;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.inventory.Inventory;
@@ -27,8 +28,8 @@ public class GrindstoneScreenHandlerOutputSlotMixin {
 	private final List<ItemStack> slotStacks = new ArrayList<>();
 
 	@ModifyReturnValue(method = "getExperience(Lnet/minecraft/world/World;)I", at = @At("RETURN"))
-	private int enchancement$enchantedBookGrindingStore(int original) {
-		if (ModConfig.enchantedBookGrinding && slotStacks.get(1).isOf(Items.BOOK)) {
+	private int enchancement$overhaulEnchantingStore(int original) {
+		if (ModConfig.overhaulEnchanting == OverhaulMode.CHISELED && slotStacks.get(1).isOf(Items.BOOK)) {
 			slotStacks.clear();
 			return 0;
 		}
@@ -36,13 +37,13 @@ public class GrindstoneScreenHandlerOutputSlotMixin {
 	}
 
 	@Inject(method = "getExperience(Lnet/minecraft/item/ItemStack;)I", at = @At("HEAD"))
-	private void enchancement$enchantedBookGrinding(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
+	private void enchancement$overhaulEnchanting(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
 		slotStacks.add(stack);
 	}
 
 	@WrapOperation(method = "onTakeItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/inventory/Inventory;setStack(ILnet/minecraft/item/ItemStack;)V", ordinal = 0))
-	private void enchancement$enchantedBookGrindingEnchanted(Inventory instance, int i, ItemStack stack, Operation<Void> original) {
-		if (ModConfig.enchantedBookGrinding && instance.getStack(1).isOf(Items.BOOK)) {
+	private void enchancement$overhaulEnchantingEnchanted(Inventory instance, int i, ItemStack stack, Operation<Void> original) {
+		if (ModConfig.overhaulEnchanting == OverhaulMode.CHISELED && instance.getStack(1).isOf(Items.BOOK)) {
 			stack = instance.getStack(i);
 			EnchantmentHelper.set(stack, ItemEnchantmentsComponent.DEFAULT);
 		}
@@ -50,8 +51,8 @@ public class GrindstoneScreenHandlerOutputSlotMixin {
 	}
 
 	@WrapOperation(method = "onTakeItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/inventory/Inventory;setStack(ILnet/minecraft/item/ItemStack;)V", ordinal = 1))
-	private void enchancement$enchantedBookGrindingBook(Inventory instance, int i, ItemStack stack, Operation<Void> original) {
-		if (ModConfig.enchantedBookGrinding) {
+	private void enchancement$overhaulEnchantingBook(Inventory instance, int i, ItemStack stack, Operation<Void> original) {
+		if (ModConfig.overhaulEnchanting == OverhaulMode.CHISELED) {
 			ItemStack book = instance.getStack(i);
 			if (book.getCount() > 1 && book.isOf(Items.BOOK)) {
 				book.decrement(1);

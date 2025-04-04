@@ -11,6 +11,7 @@ import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
 import moriyashiine.enchancement.common.tag.ModEnchantmentTags;
 import moriyashiine.enchancement.common.tag.ModItemTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.enchancement.common.util.OverhaulMode;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.Blocks;
@@ -304,7 +305,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 				if (EnchantingTableBlock.canAccessPowerProvider(world, pos, offset)) {
 					if (world.getBlockEntity(pos.add(offset)) instanceof ChiseledBookshelfBlockEntity chiseledBookshelfBlockEntity) {
 						bookshelfCount += chiseledBookshelfBlockEntity.getFilledSlotCount() / 3;
-						if (ModConfig.overhaulEnchanting.chiseledMode()) {
+						if (ModConfig.overhaulEnchanting == OverhaulMode.CHISELED && !player.isCreative()) {
 							for (ItemStack stack : chiseledBookshelfBlockEntity) {
 								chiseledEnchantments.addAll(EnchantmentHelper.getEnchantments(stack).getEnchantments());
 							}
@@ -315,7 +316,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 				}
 			}
 			bookshelfCount = Math.min(15, bookshelfCount);
-			if (player.isCreative()) {
+			if (ModConfig.overhaulEnchanting == OverhaulMode.CHISELED && player.isCreative()) {
 				Registry<Enchantment> enchantmentRegistry = world.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT);
 				enchantmentRegistry.forEach(enchantment -> chiseledEnchantments.add(enchantmentRegistry.getEntry(enchantment)));
 			}
@@ -361,7 +362,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 			if (enchantment.isIn(ModEnchantmentTags.ALWAYS_SELECTABLE)) {
 				return true;
 			}
-			if (!ModConfig.overhaulEnchanting.chiseledMode() || chiseledEnchantments.contains(enchantment)) {
+			if (ModConfig.overhaulEnchanting != OverhaulMode.CHISELED || chiseledEnchantments.contains(enchantment)) {
 				if (ModConfig.overhaulEnchanting.allowsTreasure() && enchantment.isIn(EnchantmentTags.TREASURE)) {
 					return true;
 				}

@@ -46,7 +46,7 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
 	private void enchancement$overhaulEnchanting(CallbackInfo ci) {
 		if (ModConfig.overhaulEnchanting != OverhaulMode.DISABLED) {
 			if (input.getStack(1).isOf(Items.ENCHANTED_BOOK)) {
-				if (ModConfig.overhaulEnchanting.chiseledMode() && !input.getStack(0).isOf(Items.ENCHANTED_BOOK)) {
+				if (ModConfig.overhaulEnchanting == OverhaulMode.CHISELED && !input.getStack(0).isOf(Items.ENCHANTED_BOOK)) {
 					output.setStack(0, ItemStack.EMPTY);
 					sendContentUpdates();
 					return;

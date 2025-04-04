@@ -5,6 +5,7 @@ package moriyashiine.enchancement.common.event.config;
 
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.loot.function.StoreItemEnchantmentsLootFunction;
+import moriyashiine.enchancement.common.util.OverhaulMode;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.fabricmc.fabric.api.loot.v3.LootTableSource;
 import net.minecraft.enchantment.Enchantment;
@@ -32,7 +33,7 @@ import java.util.List;
 public class OverhaulEnchantingEvent implements LootTableEvents.Modify {
 	@Override
 	public void modifyLootTable(RegistryKey<LootTable> key, LootTable.Builder tableBuilder, LootTableSource source, RegistryWrapper.WrapperLookup registries) {
-		if (ModConfig.overhaulEnchanting.chiseledMode()) {
+		if (ModConfig.overhaulEnchanting != OverhaulMode.DISABLED) {
 			if (key == LootTables.NETHER_BRIDGE_CHEST) {
 				addGuaranteedBook(tableBuilder, Items.IRON_HELMET);
 			}

@@ -43,7 +43,7 @@ public class EnchantingTableBlockMixin {
 
 	@WrapOperation(method = "randomDisplayTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;addParticleClient(Lnet/minecraft/particle/ParticleEffect;DDDDDD)V"))
 	private void enchancement$overhaulEnchanting(World instance, ParticleEffect parameters, double x, double y, double z, double velocityX, double velocityY, double velocityZ, Operation<Void> original, @Local(ordinal = 0, argsOnly = true) BlockPos pos, @Local(ordinal = 1) BlockPos offset) {
-		if (ModConfig.overhaulEnchanting.chiseledMode() && instance.getBlockEntity(pos.add(offset)) instanceof ChiseledBookshelfBlockEntity chiseledBookshelfBlockEntity && ModBlockComponents.CHISELED_BOOKSHELF.get(chiseledBookshelfBlockEntity).hasEnchantments()) {
+		if (ModConfig.overhaulEnchanting == OverhaulMode.CHISELED && instance.getBlockEntity(pos.add(offset)) instanceof ChiseledBookshelfBlockEntity chiseledBookshelfBlockEntity && ModBlockComponents.CHISELED_BOOKSHELF.get(chiseledBookshelfBlockEntity).hasEnchantments()) {
 			parameters = ModParticleTypes.CHISELED_ENCHANTMENT;
 		}
 		original.call(instance, parameters, x, y, z, velocityX, velocityY, velocityZ);

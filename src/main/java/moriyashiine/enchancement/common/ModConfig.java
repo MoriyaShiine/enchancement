@@ -65,8 +65,6 @@ public class ModConfig extends MidnightConfig {
 	@Entry
 	public static boolean disableVelocityChecks = true;
 	@Entry
-	public static boolean enchantedBookGrinding = true;
-	@Entry
 	public static boolean enhanceMobs = true;
 	@Entry
 	public static boolean rebalanceConsumables = true;

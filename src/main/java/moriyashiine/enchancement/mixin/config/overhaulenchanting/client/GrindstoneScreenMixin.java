@@ -1,12 +1,13 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-package moriyashiine.enchancement.mixin.config.enchantedbookgrinding.client;
+package moriyashiine.enchancement.mixin.config.overhaulenchanting.client;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.util.OverhaulMode;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.GrindstoneScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -31,9 +32,9 @@ public abstract class GrindstoneScreenMixin extends HandledScreen<GrindstoneScre
 	}
 
 	@WrapOperation(method = "drawBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIFFIIII)V"))
-	private void enchancement$enchantedBookGrinding(DrawContext instance, Function<Identifier, RenderLayer> renderLayers, Identifier sprite, int x, int y, float u, float v, int width, int height, int textureWidth, int textureHeight, Operation<Void> original) {
+	private void enchancement$overhaulEnchanting(DrawContext instance, Function<Identifier, RenderLayer> renderLayers, Identifier sprite, int x, int y, float u, float v, int width, int height, int textureWidth, int textureHeight, Operation<Void> original) {
 		original.call(instance, renderLayers, sprite, x, y, u, v, width, height, textureWidth, textureHeight);
-		if (ModConfig.enchantedBookGrinding && handler.getSlot(0).getStack().hasEnchantments()) {
+		if (ModConfig.overhaulEnchanting == OverhaulMode.CHISELED && handler.getSlot(0).getStack().hasEnchantments()) {
 			instance.drawGuiTexture(renderLayers, BOOK_OUTLINE, x + 49, y + 40, 16, 16);
 		}
 	}
