@@ -1,7 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-package moriyashiine.enchancement.common.lootcondition;
+package moriyashiine.enchancement.common.loot.condition;
 
 import com.mojang.serialization.MapCodec;
 import moriyashiine.enchancement.common.component.entity.InCombatComponent;

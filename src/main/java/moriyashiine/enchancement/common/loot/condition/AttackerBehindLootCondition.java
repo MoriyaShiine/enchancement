@@ -1,7 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-package moriyashiine.enchancement.common.lootcondition;
+package moriyashiine.enchancement.common.loot.condition;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.MapCodec;

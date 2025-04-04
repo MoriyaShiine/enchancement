@@ -3,10 +3,10 @@
  */
 package moriyashiine.enchancement.common.init;
 
-import moriyashiine.enchancement.common.lootcondition.AttackerBehindLootCondition;
-import moriyashiine.enchancement.common.lootcondition.HasExtendedWaterTimeLootCondition;
-import moriyashiine.enchancement.common.lootcondition.InCombatLootCondition;
-import moriyashiine.enchancement.common.lootcondition.WetLootCondition;
+import moriyashiine.enchancement.common.loot.condition.AttackerBehindLootCondition;
+import moriyashiine.enchancement.common.loot.condition.HasExtendedWaterTimeLootCondition;
+import moriyashiine.enchancement.common.loot.condition.InCombatLootCondition;
+import moriyashiine.enchancement.common.loot.condition.WetLootCondition;
 import net.minecraft.loot.condition.LootConditionType;
 
 import static moriyashiine.strawberrylib.api.module.SLibRegistries.registerLootConditionType;
