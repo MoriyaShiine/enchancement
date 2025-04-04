@@ -40,7 +40,7 @@ public record SyncBookshelvesPayload(Set<RegistryEntry<Enchantment>> chiseledEnc
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<SyncBookshelvesPayload> {
 		@Override
 		public void receive(SyncBookshelvesPayload payload, ClientPlayNetworking.Context context) {
-			SyncBookshelvesEvent.CHISELED_ENCHANTMENTS.addAll(payload.chiseledEnchantments());
+			SyncBookshelvesEvent.CHISELED_ENCHANTMENTS = payload.chiseledEnchantments();
 			EnchantingTableScreen.bookshelfCount = payload.bookshelfCount();
 		}
 	}

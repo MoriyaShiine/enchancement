@@ -70,6 +70,8 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 	private int highlightedEnchantmentIndex = -1;
 	private int materialIndex = 0, materialIndexTicks = 0, chiseledTicks = 0;
 
+	public boolean receivedPacket = false;
+
 	public EnchantingTableScreen(EnchantingTableScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 		backgroundHeight += 16;
@@ -177,7 +179,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 				context.drawGuiTexture(RenderLayer::getGuiTextured, STRENGTH_HIGHLIGHTED_TEXTURE, startX, startY, 8, 8);
 			}
 		}
-		if (ModConfig.overhaulEnchanting.chiseledMode() && chiseledTicks > 0 && handler.chiseledEnchantments.isEmpty()) {
+		if (ModConfig.overhaulEnchanting.chiseledMode() && receivedPacket && handler.chiseledEnchantments.isEmpty()) {
 			if (isInChiseledWarningBounds(posX, posY, mouseX, mouseY)) {
 				context.drawTooltip(textRenderer, Text.translatable("tooltip.enchancement.no_chiseled_enchantments").formatted(Formatting.RED), mouseX, mouseY);
 			}
