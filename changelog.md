@@ -1,4 +1,9 @@
 ------------------------------------------------------
+Version 1.21.5-r4
+------------------------------------------------------
+- fix enchanting table gui darkening the background more than it should be
+
+------------------------------------------------------
 Version 1.21.5-r3
 ------------------------------------------------------
 - enchanting tables now require chiseled bookshelves nearby with enchanted books in them to access those enchantments in the table
