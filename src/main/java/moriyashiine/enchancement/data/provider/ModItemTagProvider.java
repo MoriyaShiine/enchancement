@@ -36,15 +36,12 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
 				.addOptional(of("spelunkery", "portal_fluid_bottle"));
 		getOrCreateTagBuilder(ModItemTags.DEFAULT_ENCHANTING_MATERIAL)
 				.add(Items.AMETHYST_SHARD);
-		getOrCreateTagBuilder(ModItemTags.NO_LOYALTY)
-				.addOptional(of("impaled", "pitchfork"));
 		getOrCreateTagBuilder(ModItemTags.RETAINS_DURABILITY)
 				.add(Items.WOLF_ARMOR)
 				.addOptionalTag(of("create", "sandpaper"))
 				.addOptional(of("create", "super_glue"));
 		getOrCreateTagBuilder(ModItemTags.WEAKLY_ENCHANTED)
 				.add(Items.LEATHER_HORSE_ARMOR)
-				.add(Items.IRON_HORSE_ARMOR)
-				.addOptional(of("impaled", "pitchfork"));
+				.add(Items.IRON_HORSE_ARMOR);
 	}
 }

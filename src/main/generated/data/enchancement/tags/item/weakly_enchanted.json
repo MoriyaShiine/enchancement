@@ -1,10 +1,6 @@
 {
   "values": [
 	"minecraft:leather_horse_armor",
-	"minecraft:iron_horse_armor",
-	{
-	  "id": "impaled:pitchfork",
-	  "required": false
-	}
+	"minecraft:iron_horse_armor"
   ]
 }

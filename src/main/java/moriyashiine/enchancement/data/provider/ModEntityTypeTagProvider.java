@@ -14,8 +14,6 @@ import net.minecraft.registry.tag.EntityTypeTags;
 
 import java.util.concurrent.CompletableFuture;
 
-import static net.minecraft.util.Identifier.of;
-
 public class ModEntityTypeTagProvider extends FabricTagProvider.EntityTypeTagProvider {
 	public ModEntityTypeTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
 		super(output, completableFuture);
@@ -29,7 +27,8 @@ public class ModEntityTypeTagProvider extends FabricTagProvider.EntityTypeTagPro
 				.add(EntityType.END_CRYSTAL);
 		getOrCreateTagBuilder(ModEntityTypeTags.BYPASSES_DECREASING_DAMAGE)
 				.add(ModEntityTypes.AMETHYST_SHARD)
-				.add(ModEntityTypes.ICE_SHARD);
+				.add(ModEntityTypes.ICE_SHARD)
+				.add(ModEntityTypes.TORCH);
 		getOrCreateTagBuilder(ModEntityTypeTags.CANNOT_BURY)
 				.addOptionalTag(ConventionalEntityTypeTags.BOSSES)
 				.add(EntityType.ELDER_GUARDIAN)
@@ -40,9 +39,6 @@ public class ModEntityTypeTagProvider extends FabricTagProvider.EntityTypeTagPro
 		getOrCreateTagBuilder(ModEntityTypeTags.CANNOT_FREEZE)
 				.addOptionalTag(ConventionalEntityTypeTags.BOSSES)
 				.addOptionalTag(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES);
-		getOrCreateTagBuilder(ModEntityTypeTags.NO_LOYALTY)
-				.addOptional(of("impaled", "pitchfork"))
-				.addOptional(of("impaled", "guardian_trident"));
 		getOrCreateTagBuilder(ModEntityTypeTags.VEIL_IMMUNE)
 				.addOptionalTag(ConventionalEntityTypeTags.BOSSES)
 				.add(EntityType.ELDER_GUARDIAN)
