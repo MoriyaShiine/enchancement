@@ -198,10 +198,11 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 	}
 
 	public float getDamageMultiplier(int distanceTraveled) {
-		if (distanceTraveled < 8) {
-			return MathHelper.lerp(distanceTraveled / 8F, 0.25F, 1);
+		final float threshold = 12;
+		if (distanceTraveled < threshold) {
+			return MathHelper.lerp(distanceTraveled / threshold, 0.25F, 1);
 		}
-		return Math.min(2, MathHelper.lerp((distanceTraveled - 8) / 200F, 1F, 2F));
+		return Math.min(2, MathHelper.lerp((distanceTraveled - threshold) / 200F, 1F, 2F));
 	}
 
 	private void addParticles(ParticleEffect particle, double x, double y, double z) {
