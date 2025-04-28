@@ -29,7 +29,7 @@ public abstract class PotionEntityMixin extends ThrownItemEntity {
 		getWorld().getNonSpectatingEntities(LivingEntity.class, getBoundingBox().expand(4, 2, 4)).forEach(living -> {
 			if (EnchancementUtil.hasAnyEnchantmentsWith(living, ModEnchantmentEffectComponentTypes.EXTEND_WATER_TIME)) {
 				ExtendedWaterTimeComponent extendedWaterTimeComponent = ModEntityComponents.EXTENDED_WATER_TIME.get(living);
-				extendedWaterTimeComponent.markWet(600);
+				extendedWaterTimeComponent.markWet(300);
 				extendedWaterTimeComponent.sync();
 			}
 		});
