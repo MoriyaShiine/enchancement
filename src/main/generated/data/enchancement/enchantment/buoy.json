@@ -20,8 +20,8 @@
 		"type": "minecraft:add",
 		"value": {
 		  "type": "minecraft:linear",
-		  "base": 0.35,
-		  "per_level_above_first": 0.35
+		  "base": 0.175,
+		  "per_level_above_first": 0.175
 		}
 	  }
 	},

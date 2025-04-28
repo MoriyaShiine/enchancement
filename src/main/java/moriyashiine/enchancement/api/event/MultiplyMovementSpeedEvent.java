@@ -6,7 +6,6 @@ package moriyashiine.enchancement.api.event;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.enchantment.effect.ModifySubmergedMovementSpeedEffect;
 import moriyashiine.enchancement.common.enchantment.effect.RageEffect;
-import moriyashiine.enchancement.common.event.enchantmenteffect.ModifySubmergedMovementSpeedEvent;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.entity.LivingEntity;
@@ -64,7 +63,7 @@ public interface MultiplyMovementSpeedEvent {
 		if (entity.isSprinting()) {
 			multiplier /= 1.3;
 		}
-		multiplier = Math.min(ModifySubmergedMovementSpeedEvent.MAXIMUM_MOVEMENT_MULTIPLIER, multiplier);
+		multiplier = Math.min(MAXIMUM_MOVEMENT_MULTIPLIER, multiplier);
 		return (float) MathHelper.clamp(entity.getAttributeValue(EntityAttributes.MOVEMENT_SPEED) * multiplier / entity.getAttributeBaseValue(EntityAttributes.MOVEMENT_SPEED), 0.715F, 1.2F);
 	}
 }

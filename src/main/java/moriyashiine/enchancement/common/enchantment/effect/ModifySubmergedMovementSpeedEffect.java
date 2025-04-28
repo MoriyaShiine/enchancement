@@ -27,11 +27,15 @@ public record ModifySubmergedMovementSpeedEffect(EnchantmentValueEffect modifier
 		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 				ModifySubmergedMovementSpeedEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.MODIFY_SUBMERGED_MOVEMENT_SPEED);
-				if (effect != null && (entity.isTouchingWaterOrRain() || ModEntityComponents.EXTENDED_WATER_TIME.get(entity).getTicksWet() > 0 || SLibUtils.isSubmerged(entity, effect.gate()))) {
+				if (effect != null && shouldApply(entity, effect)) {
 					value.setValue(effect.modifier().apply(level, entity.getRandom(), value.floatValue()));
 				}
 			});
 		}
 		return value.floatValue();
+	}
+
+	private static boolean shouldApply(LivingEntity entity, ModifySubmergedMovementSpeedEffect effect) {
+		return entity.isTouchingWaterOrRain() || ModEntityComponents.EXTENDED_WATER_TIME.get(entity).getTicksWet() > 0 || SLibUtils.isSubmerged(entity, effect.gate());
 	}
 }

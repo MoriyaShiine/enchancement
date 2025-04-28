@@ -360,7 +360,7 @@ public class ModEnchantments {
 					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.MODIFY_SUBMERGED_MOVEMENT_SPEED,
 							new ModifySubmergedMovementSpeedEffect(
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.35F)),
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.175F)),
 									SubmersionGate.WATER_ONLY));
 					builder.addEffect(
 							EnchantmentEffectComponentTypes.TICK,

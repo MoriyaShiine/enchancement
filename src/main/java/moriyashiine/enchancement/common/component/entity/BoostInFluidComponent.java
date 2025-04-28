@@ -49,7 +49,7 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 		hasBoost = boostStrength > 0;
 		if (hasBoost) {
 			if (shouldBoost) {
-				if (SLibUtils.isSubmerged(obj, SubmersionGate.ALL) && SLibUtils.isGroundedOrAirborne(obj, true)) {
+				if (canUse(true)) {
 					if (shouldAddVelocity()) {
 						boost = (float) MathHelper.clamp(boost + 0.0025, boostStrength * 0.075, boostStrength);
 						obj.addVelocity(0, boost, 0);
@@ -97,7 +97,7 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 			}
 			LivingEntity entity = obj.getControllingPassenger() instanceof PlayerEntity player ? player : obj;
 			if (SLibClientUtils.isHost(entity)) {
-				if (entity.jumping && SLibUtils.isGroundedOrAirborne(obj, true)) {
+				if (entity.jumping) {
 					if (canUse(false)) {
 						shouldBoost = true;
 						BoostInFluidC2SPayload.send(obj, true);
@@ -119,7 +119,7 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 	}
 
 	public boolean canUse(boolean ignoreBoost) {
-		return (ignoreBoost || !shouldBoost) && SLibUtils.isSubmerged(obj, SubmersionGate.ALL);
+		return (ignoreBoost || !shouldBoost) && SLibUtils.isGroundedOrAirborne(obj, true) && SLibUtils.isSubmerged(obj, SubmersionGate.ALL);
 	}
 
 	private boolean shouldAddVelocity() {
