@@ -48,7 +48,7 @@ public class EnchantmentHelperMixin {
 
 	@Unique
 	private static boolean isApplicable(ItemStack stack) {
-		return EnchancementUtil.isBodyArmor(stack) || stack.isIn(ItemTags.MINING_ENCHANTABLE) || stack.isIn(ItemTags.TRIDENT_ENCHANTABLE);
+		return EnchancementUtil.isBodyArmor(stack) || stack.isIn(ItemTags.CHEST_ARMOR_ENCHANTABLE) || stack.isIn(ItemTags.MINING_ENCHANTABLE) || stack.isIn(ItemTags.TRIDENT_ENCHANTABLE);
 	}
 
 	@Inject(method = "apply", at = @At(value = "RETURN", ordinal = 1))
