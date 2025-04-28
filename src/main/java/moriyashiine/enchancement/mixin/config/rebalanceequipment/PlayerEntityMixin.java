@@ -3,9 +3,13 @@
  */
 package moriyashiine.enchancement.mixin.config.rebalanceequipment;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moriyashiine.enchancement.common.ModConfig;
+import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.entry.RegistryEntry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -31,6 +35,15 @@ public class PlayerEntityMixin {
 		if (heldItemsPredicate != null) {
 			value = value.or(heldItemsPredicate);
 			heldItemsPredicate = null;
+		}
+		return value;
+	}
+
+	@WrapOperation(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getAttributeValue(Lnet/minecraft/registry/entry/RegistryEntry;)D", ordinal = 1))
+	private double enchancement$rebalanceEquipment(PlayerEntity instance, RegistryEntry<EntityAttribute> registryEntry, Operation<Double> original) {
+		double value = original.call(instance, registryEntry);
+		if (ModConfig.rebalanceEquipment) {
+			return Math.max(0.5F, value);
 		}
 		return value;
 	}
