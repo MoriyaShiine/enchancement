@@ -36,7 +36,7 @@ public class SlideComponent implements CommonTickingComponent {
 	private static final EntityAttributeModifier SAFE_FALL_DISTANCE_MODIFIER = new EntityAttributeModifier(Enchancement.id("slide_safe_fall_distance"), 6, EntityAttributeModifier.Operation.ADD_VALUE);
 	private static final EntityAttributeModifier STEP_HEIGHT_MODIFIER = new EntityAttributeModifier(Enchancement.id("slide_step_height"), 1, EntityAttributeModifier.Operation.ADD_VALUE);
 
-	private static final int MAX_SLIDING_TICKS = 40;
+	private static final int MAX_SLIDING_TICKS = 40, MAX_WATER_SKIP_TICKS = 30;
 
 	private final PlayerEntity obj;
 	private SlideVelocity velocity = SlideVelocity.ZERO, adjustedVelocity = SlideVelocity.ZERO;
@@ -46,7 +46,7 @@ public class SlideComponent implements CommonTickingComponent {
 	private float strength = 0;
 	private boolean hasSlide = false;
 
-	private int crawlTimer = 0;
+	private int crawlTimer = 0, waterSkipTicks = 0;
 
 	public SlideComponent(PlayerEntity obj) {
 		this.obj = obj;
@@ -77,7 +77,7 @@ public class SlideComponent implements CommonTickingComponent {
 			crawlTimer--;
 		}
 		if (hasSlide) {
-			if (obj.isSneaking() || (obj.isTouchingWater() && !hasFluidWalking)) {
+			if (waterSkipTicks >= MAX_WATER_SKIP_TICKS || obj.isSneaking() || (obj.isTouchingWater() && !hasFluidWalking)) {
 				stopSliding();
 			}
 			if (isSliding()) {
@@ -91,19 +91,25 @@ public class SlideComponent implements CommonTickingComponent {
 					dZ *= 0.2;
 				}
 				float multiplier = MultiplyMovementSpeedEvent.getMovementMultiplier(obj);
+				multiplier *= 1 - (waterSkipTicks / (MAX_WATER_SKIP_TICKS * 2F));
 				obj.addVelocity(dX * multiplier, 0, dZ * multiplier);
 				if (obj.isTouchingWater() && hasFluidWalking) {
 					obj.setVelocity(obj.getVelocity().getX(), strength, obj.getVelocity().getZ());
+					waterSkipTicks++;
 				}
 				if (slidingTicks < MAX_SLIDING_TICKS) {
 					slidingTicks++;
 				}
-			} else if (slidingTicks > 0) {
-				slidingTicks = Math.max(0, slidingTicks - 4);
+			} else {
+				if (slidingTicks > 0) {
+					slidingTicks = Math.max(0, slidingTicks - 4);
+				}
+				waterSkipTicks = 0;
 			}
 		} else {
 			stopSliding();
 			slidingTicks = 0;
+			waterSkipTicks = 0;
 		}
 	}
 
