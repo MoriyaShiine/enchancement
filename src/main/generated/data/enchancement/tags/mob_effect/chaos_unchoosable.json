@@ -2,18 +2,11 @@
   "values": [
 	"minecraft:blindness",
 	"minecraft:darkness",
+	"minecraft:levitation",
 	"minecraft:bad_omen",
 	"minecraft:raid_omen",
 	"minecraft:trial_omen",
 	"minecraft:hero_of_the_village",
-	{
-	  "id": "bewitchment:mortal_coil",
-	  "required": false
-	},
-	{
-	  "id": "bewitchment:wednesday",
-	  "required": false
-	},
 	{
 	  "id": "spectrum:ascension",
 	  "required": false

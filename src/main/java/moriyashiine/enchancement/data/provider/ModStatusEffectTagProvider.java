@@ -25,12 +25,11 @@ public class ModStatusEffectTagProvider extends FabricTagProvider<StatusEffect> 
 		getOrCreateTagBuilder(ModStatusEffectTags.CHAOS_UNCHOOSABLE)
 				.add(StatusEffects.BLINDNESS.value())
 				.add(StatusEffects.DARKNESS.value())
+				.add(StatusEffects.LEVITATION.value())
 				.add(StatusEffects.BAD_OMEN.value())
 				.add(StatusEffects.RAID_OMEN.value())
 				.add(StatusEffects.TRIAL_OMEN.value())
 				.add(StatusEffects.HERO_OF_THE_VILLAGE.value())
-				.addOptional(of("bewitchment", "mortal_coil"))
-				.addOptional(of("bewitchment", "wednesday"))
 				.addOptional(of("spectrum", "ascension"))
 				.addOptional(of("spectrum", "divinity"));
 	}
