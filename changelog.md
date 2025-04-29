@@ -1,4 +1,16 @@
 ------------------------------------------------------
+Version 1.21.5-r5
+------------------------------------------------------
+- fix enchanted chestplates not giving increased air mobility
+- increased air mobility now resets when flying
+- swords now innately have at least sweeping edge 1
+- splash potions now set extended water time for less time
+- slide water skipping now has momentum falloff
+- buoy now gives less of a speed boost
+- levitation can no longer be applied by chaos
+- brimstone close range threshold has been increased
+
+------------------------------------------------------
 Version 1.21.5-r4
 ------------------------------------------------------
 - fix enchanting table gui darkening the background more than it should be
