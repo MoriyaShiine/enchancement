@@ -130,7 +130,7 @@ Everything Enchancement adds is configurable:
   * Iron armor has slightly more armor, and gains armor toughness.
   * Golden armor has slightly less armor.
   * Animal armor can be enchanted with boots enchantments.
-  * Sword sweeping damage is increased to be proportional on the primary damage dealt.
+  * Sword sweeping damage is increased to be proportional to the primary damage dealt.
   * Bows slow you down less when charging.
   * Crossbows pull unique ammunition from your inventory instead of only from off-hand.
   * Tridents thrown by players never despawn.
