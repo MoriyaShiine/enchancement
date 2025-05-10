@@ -25,6 +25,7 @@
 	"config.disablevelocitychecks.ServerPlayNetworkHandlerMixin",
 	"config.enchantmentlimit.EnchantCommandMixin",
 	"config.enchantmentlimit.EnchantmentHelperMixin",
+	"config.enchantmentlimit.EnchantmentLevelEntryMixin",
 	"config.enhancemobs.MobEntityMixin",
 	"config.enhancemobs.PillagerEntityMixin",
 	"config.enhancemobs.VindicatorEntityMixin",

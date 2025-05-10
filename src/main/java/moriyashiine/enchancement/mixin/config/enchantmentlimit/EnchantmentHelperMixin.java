@@ -3,9 +3,11 @@
  */
 package moriyashiine.enchancement.mixin.config.enchantmentlimit;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
@@ -49,6 +51,22 @@ public class EnchantmentHelperMixin {
 	private static List<EnchantmentLevelEntry> enchancement$enchantmentLimit(List<EnchantmentLevelEntry> original, Random random, ItemStack stack) {
 		while (EnchancementUtil.exceedsLimit(stack, original.size())) {
 			original.removeFirst();
+		}
+		return original;
+	}
+
+	@ModifyExpressionValue(method = "method_60106", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/Enchantment;getMinPower(I)I"))
+	private static int enchancement$enchantmentLimitMin(int original) {
+		if (ModConfig.enchantmentLimit > 0) {
+			return 0;
+		}
+		return original;
+	}
+
+	@ModifyExpressionValue(method = "method_60106", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/Enchantment;getMaxPower(I)I"))
+	private static int enchancement$enchantmentLimitMax(int original) {
+		if (ModConfig.enchantmentLimit > 0) {
+			return Integer.MAX_VALUE;
 		}
 		return original;
 	}
