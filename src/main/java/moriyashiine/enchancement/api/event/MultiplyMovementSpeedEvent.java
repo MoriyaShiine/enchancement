@@ -47,7 +47,7 @@ public interface MultiplyMovementSpeedEvent {
 		if (entity.isSprinting()) {
 			speedRatio /= 1.3;
 		}
-		return (float) (MathHelper.clamp(jumpRatio * Math.min(1, speedRatio), 0.715F, 1.2F) * entity.getAttributeValue(EntityAttributes.JUMP_STRENGTH) * multiplier);
+		return (float) (MathHelper.clamp(jumpRatio * Math.min(1, speedRatio), 2 / 3F, 1.2F) * entity.getAttributeValue(EntityAttributes.JUMP_STRENGTH) * multiplier);
 	}
 
 	static float getMovementMultiplier(LivingEntity entity) {
@@ -64,6 +64,6 @@ public interface MultiplyMovementSpeedEvent {
 			multiplier /= 1.3;
 		}
 		multiplier = Math.min(MAXIMUM_MOVEMENT_MULTIPLIER, multiplier);
-		return (float) MathHelper.clamp(entity.getAttributeValue(EntityAttributes.MOVEMENT_SPEED) * multiplier / entity.getAttributeBaseValue(EntityAttributes.MOVEMENT_SPEED), 0.715F, 1.2F);
+		return (float) MathHelper.clamp(entity.getAttributeValue(EntityAttributes.MOVEMENT_SPEED) * multiplier / entity.getAttributeBaseValue(EntityAttributes.MOVEMENT_SPEED), 2 / 3F, 1.2F);
 	}
 }
