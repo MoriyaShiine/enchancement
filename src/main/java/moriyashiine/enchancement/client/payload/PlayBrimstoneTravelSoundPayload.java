@@ -18,7 +18,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 public record PlayBrimstoneTravelSoundPayload(int entityId) implements CustomPayload {
 	public static final Id<PlayBrimstoneTravelSoundPayload> ID = new Id<>(Enchancement.id("play_brimstone_travel_sound"));
 	public static final PacketCodec<PacketByteBuf, PlayBrimstoneTravelSoundPayload> CODEC = PacketCodec.tuple(
-			PacketCodecs.INTEGER, PlayBrimstoneTravelSoundPayload::entityId,
+			PacketCodecs.VAR_INT, PlayBrimstoneTravelSoundPayload::entityId,
 			PlayBrimstoneTravelSoundPayload::new);
 
 	@Override
