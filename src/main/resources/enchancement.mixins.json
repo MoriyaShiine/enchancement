@@ -65,6 +65,7 @@
 	"config.rebalanceprojectiles.ProjectileUtilMixin",
 	"config.rebalanceprojectiles.RangedWeaponItemMixin",
 	"config.rebalancestatuseffects.InstantHealthOrDamageStatusEffectMixin",
+	"config.rebalancestatuseffects.PotionsMixin",
 	"config.rebalancestatuseffects.StatusEffectMixin",
 	"config.rebalancestatuseffects.WitherSkullEntityMixin",
 	"config.singlelevelmode.EnchantmentHelperMixin",
