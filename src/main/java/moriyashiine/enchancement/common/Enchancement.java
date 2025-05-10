@@ -92,6 +92,8 @@ public class Enchancement implements ModInitializer {
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(new InCombatEvent());
 		ServerPlayConnectionEvents.JOIN.register(new SyncEnchantingMaterialMapEvent.Join());
 		ServerTickEvents.END_SERVER_TICK.register(new SyncEnchantingMaterialMapEvent.Tick());
+		ServerPlayConnectionEvents.JOIN.register(new SyncOriginalMaxLevelsEvent.Join());
+		ServerLifecycleEvents.SERVER_STARTED.register(new SyncOriginalMaxLevelsEvent.ServerStarted());
 		ServerTickEvents.END_SERVER_TICK.register(new SyncVelocitiesEvent());
 		// config
 		DefaultItemComponentEvents.MODIFY.register(new AnimalArmorEnchantmentEvent.AllowComponent());
@@ -141,6 +143,7 @@ public class Enchancement implements ModInitializer {
 		PayloadTypeRegistry.playS2C().register(SyncEnchantingMaterialMapPayload.ID, SyncEnchantingMaterialMapPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(SyncEnchantingTableCostPayload.ID, SyncEnchantingTableCostPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(SyncHookedVelocityPayload.ID, SyncHookedVelocityPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(SyncOriginalMaxLevelsPayload.ID, SyncOriginalMaxLevelsPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(AddLightningDashParticlesPayload.ID, AddLightningDashParticlesPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(AddMoltenParticlesPayload.ID, AddMoltenParticlesPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(BoostInFluidS2CPayload.ID, BoostInFluidS2CPayload.CODEC);

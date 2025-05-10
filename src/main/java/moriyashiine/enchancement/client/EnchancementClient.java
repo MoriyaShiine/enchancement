@@ -119,6 +119,7 @@ public class EnchancementClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(SyncEnchantingMaterialMapPayload.ID, new SyncEnchantingMaterialMapPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(SyncEnchantingTableCostPayload.ID, new SyncEnchantingTableCostPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(SyncHookedVelocityPayload.ID, new SyncHookedVelocityPayload.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(SyncOriginalMaxLevelsPayload.ID, new SyncOriginalMaxLevelsPayload.Receiver());
 		// enchantment
 		ClientPlayNetworking.registerGlobalReceiver(AddLightningDashParticlesPayload.ID, new AddLightningDashParticlesPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(AddMoltenParticlesPayload.ID, new AddMoltenParticlesPayload.Receiver());
