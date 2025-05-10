@@ -38,6 +38,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<FrozenGuardianComponent> FROZEN_GUARDIAN = ComponentRegistry.getOrCreate(Enchancement.id("frozen_guardian"), FrozenGuardianComponent.class);
 	public static final ComponentKey<FrozenSquidComponent> FROZEN_SQUID = ComponentRegistry.getOrCreate(Enchancement.id("frozen_squid"), FrozenSquidComponent.class);
 	public static final ComponentKey<GlideComponent> GLIDE = ComponentRegistry.getOrCreate(Enchancement.id("glide"), GlideComponent.class);
+	public static final ComponentKey<GroundedCooldownComponent> GROUNDED_COOLDOWN = ComponentRegistry.getOrCreate(Enchancement.id("grounded_cooldown"), GroundedCooldownComponent.class);
 	public static final ComponentKey<InCombatComponent> IN_COMBAT = ComponentRegistry.getOrCreate(Enchancement.id("in_combat"), InCombatComponent.class);
 	public static final ComponentKey<LeechingTridentComponent> LEECHING_TRIDENT = ComponentRegistry.getOrCreate(Enchancement.id("leeching_trident"), LeechingTridentComponent.class);
 	public static final ComponentKey<LightningDashComponent> LIGHTNING_DASH = ComponentRegistry.getOrCreate(Enchancement.id("lightning_dash"), LightningDashComponent.class);
@@ -72,6 +73,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerFor(GuardianEntity.class, FROZEN_GUARDIAN, FrozenGuardianComponent::new);
 		registry.registerFor(SquidEntity.class, FROZEN_SQUID, FrozenSquidComponent::new);
 		registry.registerFor(LivingEntity.class, GLIDE, GlideComponent::new);
+		registry.registerForPlayers(GROUNDED_COOLDOWN, GroundedCooldownComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(LivingEntity.class, IN_COMBAT, living -> new InCombatComponent());
 		registry.registerFor(TridentEntity.class, LEECHING_TRIDENT, LeechingTridentComponent::new);
 		registry.registerFor(LivingEntity.class, LIGHTNING_DASH, LightningDashComponent::new);

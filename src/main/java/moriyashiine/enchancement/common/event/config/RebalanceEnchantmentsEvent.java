@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.event.config;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.entity.WindBurstHolder;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
@@ -152,7 +153,7 @@ public class RebalanceEnchantmentsEvent {
 					world.spawnEntity(windChargeEntity);
 				}
 				world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_WIND_CHARGE_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F));
-				player.getItemCooldownManager().set(stack, 60);
+				ModEntityComponents.GROUNDED_COOLDOWN.get(player).putOnCooldown(stack, 60);
 				player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
 				stack.damage(1, player, LivingEntity.getSlotForHand(hand));
 				return ActionResult.SUCCESS;
