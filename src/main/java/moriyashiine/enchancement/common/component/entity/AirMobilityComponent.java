@@ -8,6 +8,7 @@ import moriyashiine.enchancement.common.init.ModComponentTypes;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -48,7 +49,7 @@ public class AirMobilityComponent implements CommonTickingComponent {
 			if (resetBypassTicks > 0) {
 				resetBypassTicks--;
 			}
-			if (obj.isOnGround() || (obj instanceof PlayerEntity player && player.getAbilities().flying)) {
+			if (obj.isOnGround() || obj.hasStatusEffect(StatusEffects.SLOWNESS) || (obj instanceof PlayerEntity player && player.getAbilities().flying)) {
 				if (resetBypassTicks == 0) {
 					ticksInAir = 0;
 				}
