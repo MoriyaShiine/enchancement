@@ -101,6 +101,7 @@ Everything Enchancement adds is configurable:
   * Remove leveling from enchantments, meaning that the max level for all enchantments will be 1. Enchantments that are brought down to this level will act as their original max level counterpart, an example being Luck of the Sea I will function the same as Luck of the Sea III. Enchantments on gear made from materials easier to obtain will be weaker.
 * Enchantment Limit
   * Force items to only allow one enchantment by default.
+  * All enchantments are equally weighted and selectable during generation.
 * Disable Durability
   * Remove durability from most aspects of the game. Items in the `enchancement:retains_durability` tag will continue to have durability.
   * Anvils will not break when used, unless they are part of the tag.
@@ -149,6 +150,7 @@ Everything Enchancement adds is configurable:
   * Projectiles shot by players have higher velocity (damage is scaled properly to be normal).
 * Rebalance Status Effects
   * Instant Health, Instant Damage, Strength, and Weakness are less potent.
+  * Turtle master gives 1 less level of Resistance.
   * Wither Skulls apply Wither for less time.
 * Toggleable Passives
   * Enchanted chestplates increase air velocity.

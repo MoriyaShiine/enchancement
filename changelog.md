@@ -1,4 +1,16 @@
 ------------------------------------------------------
+Version 1.21.5-r6
+------------------------------------------------------
+- every enchantment is now equally weighted and selectable when enchantment limit is enabled
+- turtle master now gives 1 less level of resistance
+- air mobility is no longer increased if you have slowness
+- increase the maximum potency slowness can affect movement enchantments
+- wind burst right click function now only starts decrementing cooldown when on ground
+- fix veil decreasing detection range of non-hostile entities
+- fix rare crash related to cached max levels
+- merge https://github.com/MoriyaShiine/enchancement/pull/247
+
+------------------------------------------------------
 Version 1.21.5-r5
 ------------------------------------------------------
 - fix enchanted chestplates not giving increased air mobility
