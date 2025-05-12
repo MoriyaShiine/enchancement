@@ -123,7 +123,7 @@ public class ModEnchantments {
 				ModEnchantmentTagProvider.NON_TREASURE_ENCHANTMENTS.add(id);
 			}
 		}
-		Enchantment.Builder builder = Enchantment.builder(Enchantment.definition(supportedItems, 5, maxLevel, Enchantment.leveledCost(5, 6), Enchantment.leveledCost(20, 6), 2, slot));
+		Enchantment.Builder builder = Enchantment.builder(Enchantment.definition(supportedItems, 5, maxLevel, Enchantment.leveledCost(10, 10), Enchantment.leveledCost(40, 10), 2, slot));
 		effectsAdder.addEffects(builder);
 		return builder.build(id);
 	}

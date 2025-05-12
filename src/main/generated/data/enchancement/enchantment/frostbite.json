@@ -27,13 +27,13 @@
   },
   "exclusive_set": "#enchancement:exclusive_set/frostbite",
   "max_cost": {
-	"base": 20,
-	"per_level_above_first": 6
+	"base": 40,
+	"per_level_above_first": 10
   },
   "max_level": 2,
   "min_cost": {
-	"base": 5,
-	"per_level_above_first": 6
+	"base": 10,
+	"per_level_above_first": 10
   },
   "slots": [
 	"mainhand"
