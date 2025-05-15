@@ -38,7 +38,7 @@ public class OverhaulEnchantingEvent implements LootTableEvents.Modify {
 				addGuaranteedBook(tableBuilder, Items.IRON_HELMET);
 			}
 			if (key == LootTables.TRIAL_CHAMBERS_REWARD_RARE_CHEST) {
-				addGuaranteedBook(tableBuilder, Items.IRON_CHESTPLATE);
+				addChanceBook(tableBuilder, Items.IRON_CHESTPLATE);
 			}
 			if (key == LootTables.ANCIENT_CITY_CHEST) {
 				addGuaranteedBook(tableBuilder, Items.IRON_LEGGINGS);
