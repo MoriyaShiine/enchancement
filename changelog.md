@@ -1,4 +1,10 @@
 ------------------------------------------------------
+Version 1.21.5-r7
+------------------------------------------------------
+- trial chamber rewards now only give enchanted chestplate books half as often
+- fix air jumping not resetting fall distance
+
+------------------------------------------------------
 Version 1.21.5-r6
 ------------------------------------------------------
 - every enchantment is now equally weighted and selectable when enchantment limit is enabled
