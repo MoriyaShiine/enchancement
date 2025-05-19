@@ -20,6 +20,7 @@ import moriyashiine.enchancement.common.reloadlisteners.MineOreVeinsBaseBlockRel
 import moriyashiine.enchancement.common.util.enchantment.EruptionMaceEffect;
 import moriyashiine.enchancement.common.util.enchantment.LightningDashMaceEffect;
 import moriyashiine.enchancement.common.util.enchantment.MaceEffect;
+import moriyashiine.enchancement.common.util.enchantment.WindBurstMaceEffect;
 import moriyashiine.strawberrylib.api.SLib;
 import moriyashiine.strawberrylib.api.event.*;
 import net.fabricmc.api.ModInitializer;
@@ -31,7 +32,6 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
-import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.item.v1.DefaultItemComponentEvents;
 import net.fabricmc.fabric.api.item.v1.EnchantmentEvents;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
@@ -88,6 +88,7 @@ public class Enchancement implements ModInitializer {
 
 		MaceEffect.EFFECTS.add(new EruptionMaceEffect());
 		MaceEffect.EFFECTS.add(new LightningDashMaceEffect());
+		MaceEffect.EFFECTS.add(new WindBurstMaceEffect());
 	}
 
 	private void initEvents() {
@@ -108,7 +109,6 @@ public class Enchancement implements ModInitializer {
 		EnchantmentEvents.ALLOW_ENCHANTING.register(new RebalanceEnchantmentsEvent.AllowEnchanting());
 		ServerLifecycleEvents.SERVER_STARTED.register(new RebalanceEnchantmentsEvent.ServerStarted());
 		UseBlockCallback.EVENT.register(new RebalanceEnchantmentsEvent.UseBlock());
-		UseItemCallback.EVENT.register(new RebalanceEnchantmentsEvent.UseItem());
 		MultiplyMovementSpeedEvent.EVENT.register(new ToggleablePassivesEvent.AirMobility());
 		TickEntityEvent.EVENT.register(new ToggleablePassivesEvent.Efficiency());
 		// enchantment effect

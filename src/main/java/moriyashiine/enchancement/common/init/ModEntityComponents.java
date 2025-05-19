@@ -40,6 +40,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<GlideComponent> GLIDE = ComponentRegistry.getOrCreate(Enchancement.id("glide"), GlideComponent.class);
 	public static final ComponentKey<GroundedCooldownComponent> GROUNDED_COOLDOWN = ComponentRegistry.getOrCreate(Enchancement.id("grounded_cooldown"), GroundedCooldownComponent.class);
 	public static final ComponentKey<InCombatComponent> IN_COMBAT = ComponentRegistry.getOrCreate(Enchancement.id("in_combat"), InCombatComponent.class);
+	public static final ComponentKey<UsingMaceComponent> LAUNCH_WIND_CHARGE = ComponentRegistry.getOrCreate(Enchancement.id("launch_wind_charge"), UsingMaceComponent.class);
 	public static final ComponentKey<LeechingTridentComponent> LEECHING_TRIDENT = ComponentRegistry.getOrCreate(Enchancement.id("leeching_trident"), LeechingTridentComponent.class);
 	public static final ComponentKey<LightningDashComponent> LIGHTNING_DASH = ComponentRegistry.getOrCreate(Enchancement.id("lightning_dash"), LightningDashComponent.class);
 	public static final ComponentKey<PhaseThroughBlocksAndFloatComponent> PHASE_THROUGH_BLOCKS_AND_FLOAT = ComponentRegistry.getOrCreate(Enchancement.id("phase_through_blocks_and_float"), PhaseThroughBlocksAndFloatComponent.class);
@@ -75,6 +76,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerFor(LivingEntity.class, GLIDE, GlideComponent::new);
 		registry.registerForPlayers(GROUNDED_COOLDOWN, GroundedCooldownComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(LivingEntity.class, IN_COMBAT, living -> new InCombatComponent());
+		registry.registerForPlayers(LAUNCH_WIND_CHARGE, player -> new UsingMaceComponent(), RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(TridentEntity.class, LEECHING_TRIDENT, LeechingTridentComponent::new);
 		registry.registerForPlayers(LIGHTNING_DASH, LightningDashComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(PersistentProjectileEntity.class, PHASE_THROUGH_BLOCKS_AND_FLOAT, PhaseThroughBlocksAndFloatComponent::new);

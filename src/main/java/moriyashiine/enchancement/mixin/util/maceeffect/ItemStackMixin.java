@@ -3,6 +3,7 @@
  */
 package moriyashiine.enchancement.mixin.util.maceeffect;
 
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.util.enchantment.MaceEffect;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
@@ -67,12 +68,14 @@ public abstract class ItemStackMixin {
 	@Inject(method = "onStoppedUsing", at = @At("HEAD"), cancellable = true)
 	private void enchancement$maceEffect(World world, LivingEntity user, int remainingUseTicks, CallbackInfo ci) {
 		if (user instanceof PlayerEntity player) {
+			ItemStack stack = (ItemStack) (Object) this;
 			for (MaceEffect effect : MaceEffect.EFFECTS) {
 				if (effect.isUsing(player)) {
 					int useTime = getMaxUseTime(user) - remainingUseTicks;
 					if (useTime >= EnchancementUtil.getTridentChargeTime()) {
 						player.incrementStat(Stats.USED.getOrCreateStat(getItem()));
-						effect.use(world, player, (ItemStack) (Object) this);
+						effect.use(world, player, stack);
+						ModEntityComponents.GROUNDED_COOLDOWN.get(player).putOnCooldown(stack, 60);
 					}
 					ci.cancel();
 					return;
