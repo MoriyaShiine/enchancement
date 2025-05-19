@@ -17,6 +17,9 @@ import moriyashiine.enchancement.common.payload.*;
 import moriyashiine.enchancement.common.reloadlisteners.EnchantingMaterialReloadListener;
 import moriyashiine.enchancement.common.reloadlisteners.HeadDropsReloadListener;
 import moriyashiine.enchancement.common.reloadlisteners.MineOreVeinsBaseBlockReloadListener;
+import moriyashiine.enchancement.common.util.enchantment.EruptionMaceEffect;
+import moriyashiine.enchancement.common.util.enchantment.LightningDashMaceEffect;
+import moriyashiine.enchancement.common.util.enchantment.MaceEffect;
 import moriyashiine.strawberrylib.api.SLib;
 import moriyashiine.strawberrylib.api.event.*;
 import net.fabricmc.api.ModInitializer;
@@ -82,6 +85,9 @@ public class Enchancement implements ModInitializer {
 		ModParticleTypes.init();
 		ModScreenHandlerTypes.init();
 		ModSoundEvents.init();
+
+		MaceEffect.EFFECTS.add(new EruptionMaceEffect());
+		MaceEffect.EFFECTS.add(new LightningDashMaceEffect());
 	}
 
 	private void initEvents() {

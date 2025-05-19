@@ -107,7 +107,6 @@
 	"enchantmenteffectcomponenttype.disarmingfishingbobber.FishingBobberEntityMixin",
 	"enchantmenteffectcomponenttype.disarmingfishingbobber.FishingRodItemMixin",
 	"enchantmenteffectcomponenttype.disarmingfishingbobber.WitchEntityMixin",
-	"enchantmenteffectcomponenttype.eruption.ItemStackMixin",
 	"enchantmenteffectcomponenttype.extendedwaterspinattack.TridentItemMixin",
 	"enchantmenteffectcomponenttype.extendwatertime.PotionEntityMixin",
 	"enchantmenteffectcomponenttype.felltrees.PlayerEntityMixin",
@@ -124,7 +123,6 @@
 	"enchantmenteffectcomponenttype.honeytrail.LivingEntityMixin",
 	"enchantmenteffectcomponenttype.leechingtrident.TridentEntityMixin",
 	"enchantmenteffectcomponenttype.lightningdash.EntityMixin",
-	"enchantmenteffectcomponenttype.lightningdash.ItemStackMixin",
 	"enchantmenteffectcomponenttype.modifyconsumptiontime.LivingEntityMixin",
 	"enchantmenteffectcomponenttype.modifydetectionrange.LivingEntityMixin",
 	"enchantmenteffectcomponenttype.phasethroughblocksandfloat.PersistentProjectileEntityMixin",
@@ -157,7 +155,8 @@
 	"entity.torch.PersistentProjectileEntityMixin",
 	"util.EnchantedCountIncreaseLootFunctionMixin",
 	"util.PersistentProjectileEntityMixin",
-	"util.SetEnchantmentsLootFunctionMixin"
+	"util.SetEnchantmentsLootFunctionMixin",
+	"util.maceeffect.ItemStackMixin"
   ],
   "client": [
 	"config.allowduplicatekeybindings.client.ControlsListWidgetKeyBindingEntryMixin",
@@ -182,14 +181,11 @@
 	"enchantmenteffectcomponenttype.buryentity.client.ShulkerEntityRendererMixin",
 	"enchantmenteffectcomponenttype.chargejump.client.ClientPlayerInteractionManagerMixin",
 	"enchantmenteffectcomponenttype.disarmingfishingbobber.client.MinecraftClientMixin",
-	"enchantmenteffectcomponenttype.eruption.client.HeldItemRendererMixin",
-	"enchantmenteffectcomponenttype.eruption.client.PlayerEntityRendererMixin",
 	"enchantmenteffectcomponenttype.fluidwalking.client.ClientPlayerEntityMixin",
 	"enchantmenteffectcomponenttype.hidelabelbehindwalls.client.EntityRendererMixin",
 	"enchantmenteffectcomponenttype.leechingtrident.client.TridentEntityRendererMixin",
 	"enchantmenteffectcomponenttype.lightningdash.client.HeldItemFeatureRendererMixin",
 	"enchantmenteffectcomponenttype.lightningdash.client.HeldItemRendererMixin",
-	"enchantmenteffectcomponenttype.lightningdash.client.PlayerEntityRendererMixin",
 	"enchantmenteffectcomponenttype.rage.client.ArmedEntityRenderStateMixin",
 	"enchantmenteffectcomponenttype.rage.client.DrawContextMixin",
 	"enchantmenteffectcomponenttype.rage.client.HeldItemFeatureRendererMixin",
@@ -209,7 +205,9 @@
 	"entity.frozenplayer.client.EntityRenderDispatcherMixin",
 	"util.client.EntityRendererMixin",
 	"util.client.EntityRenderStateMixin",
-	"util.client.ItemModelManagerMixin"
+	"util.client.ItemModelManagerMixin",
+	"util.maceeffect.client.HeldItemRendererMixin",
+	"util.maceeffect.client.PlayerEntityRendererMixin"
   ],
   "injectors": {
 	"defaultRequire": 1,

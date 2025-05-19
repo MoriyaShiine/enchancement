@@ -4,10 +4,11 @@
 package moriyashiine.enchancement.client.payload;
 
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.util.enchantment.EruptionMaceEffect;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
@@ -25,19 +26,17 @@ public record UseEruptionPayload(int entityId) implements CustomPayload {
 		return ID;
 	}
 
-	public static void send(ServerPlayerEntity player, Entity entity) {
-		ServerPlayNetworking.send(player, new UseEruptionPayload(entity.getId()));
+	public static void send(ServerPlayerEntity player, PlayerEntity user) {
+		ServerPlayNetworking.send(player, new UseEruptionPayload(user.getId()));
 	}
 
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<UseEruptionPayload> {
 		@Override
 		public void receive(UseEruptionPayload payload, ClientPlayNetworking.Context context) {
 			Entity entity = context.player().getWorld().getEntityById(payload.entityId());
-			if (entity != null) {
-				ModEntityComponents.ERUPTION.maybeGet(entity).ifPresent(eruptionComponent -> {
-					eruptionComponent.useCommon();
-					eruptionComponent.useClient();
-				});
+			if (entity instanceof PlayerEntity player) {
+				EruptionMaceEffect.useCommon(player);
+				EruptionMaceEffect.useClient(player);
 			}
 		}
 	}

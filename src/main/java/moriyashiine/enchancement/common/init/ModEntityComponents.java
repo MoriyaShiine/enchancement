@@ -32,7 +32,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<DisarmingFishingBobberComponent> DISARMING_FISHING_BOBBER = ComponentRegistry.getOrCreate(Enchancement.id("disarming_fishing_bobber"), DisarmingFishingBobberComponent.class);
 	public static final ComponentKey<DisarmedPlayerComponent> DISARMED_PLAYER = ComponentRegistry.getOrCreate(Enchancement.id("disarmed_player"), DisarmedPlayerComponent.class);
 	public static final ComponentKey<DisarmedWitchComponent> DISARMED_WITCH = ComponentRegistry.getOrCreate(Enchancement.id("disarmed_witch"), DisarmedWitchComponent.class);
-	public static final ComponentKey<EruptionComponent> ERUPTION = ComponentRegistry.getOrCreate(Enchancement.id("eruption"), EruptionComponent.class);
+	public static final ComponentKey<UsingMaceComponent> ERUPTION = ComponentRegistry.getOrCreate(Enchancement.id("eruption"), UsingMaceComponent.class);
 	public static final ComponentKey<ExtendedWaterTimeComponent> EXTENDED_WATER_TIME = ComponentRegistry.getOrCreate(Enchancement.id("extended_water_time"), ExtendedWaterTimeComponent.class);
 	public static final ComponentKey<FrozenComponent> FROZEN = ComponentRegistry.getOrCreate(Enchancement.id("frozen"), FrozenComponent.class);
 	public static final ComponentKey<FrozenGuardianComponent> FROZEN_GUARDIAN = ComponentRegistry.getOrCreate(Enchancement.id("frozen_guardian"), FrozenGuardianComponent.class);
@@ -67,7 +67,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerFor(FishingBobberEntity.class, DISARMING_FISHING_BOBBER, fishingBobber -> new DisarmingFishingBobberComponent());
 		registry.registerForPlayers(DISARMED_PLAYER, DisarmedPlayerComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(WitchEntity.class, DISARMED_WITCH, witch -> new DisarmedWitchComponent());
-		registry.registerFor(LivingEntity.class, ERUPTION, EruptionComponent::new);
+		registry.registerForPlayers(ERUPTION, player -> new UsingMaceComponent(), RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(LivingEntity.class, EXTENDED_WATER_TIME, ExtendedWaterTimeComponent::new);
 		registry.registerFor(LivingEntity.class, FROZEN, FrozenComponent::new);
 		registry.registerFor(GuardianEntity.class, FROZEN_GUARDIAN, FrozenGuardianComponent::new);
@@ -76,7 +76,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerForPlayers(GROUNDED_COOLDOWN, GroundedCooldownComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(LivingEntity.class, IN_COMBAT, living -> new InCombatComponent());
 		registry.registerFor(TridentEntity.class, LEECHING_TRIDENT, LeechingTridentComponent::new);
-		registry.registerFor(LivingEntity.class, LIGHTNING_DASH, LightningDashComponent::new);
+		registry.registerForPlayers(LIGHTNING_DASH, LightningDashComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(PersistentProjectileEntity.class, PHASE_THROUGH_BLOCKS_AND_FLOAT, PhaseThroughBlocksAndFloatComponent::new);
 		registry.registerFor(LivingEntity.class, PROJECTILE_TIMER, living -> new ProjectileTimerComponent());
 		registry.registerForPlayers(ROTATION_BURST, RotationBurstComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);

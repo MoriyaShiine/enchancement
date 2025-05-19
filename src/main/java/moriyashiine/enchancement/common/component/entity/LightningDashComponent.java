@@ -4,19 +4,13 @@
 package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.client.payload.AddLightningDashParticlesPayload;
-import moriyashiine.enchancement.client.payload.UseLightningDashPayload;
-import moriyashiine.enchancement.client.sound.SparkSoundInstance;
 import moriyashiine.enchancement.common.enchantment.effect.LightningDashEffect;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.particle.SparkParticleEffect;
-import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -28,38 +22,34 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.event.GameEvent;
-import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 import java.util.List;
 
-public class LightningDashComponent implements AutoSyncedComponent, CommonTickingComponent {
-	private final LivingEntity obj;
-	private boolean using = false;
+public class LightningDashComponent extends UsingMaceComponent implements CommonTickingComponent {
+	private final PlayerEntity obj;
 	private double cachedHeight = 0;
 	private int floatTicks = 0, smashTicks = 0;
 
-	private boolean playedSound = false;
 	private int ticksUsing = 0;
 
 	private double nextTickFallDistance = 0;
 
-	public LightningDashComponent(LivingEntity obj) {
+	public LightningDashComponent(PlayerEntity obj) {
 		this.obj = obj;
 	}
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		using = tag.getBoolean("Using", false);
+		super.readFromNbt(tag, registryLookup);
 		floatTicks = tag.getInt("FloatTicks", 0);
 		smashTicks = tag.getInt("SmashTicks", 0);
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.putBoolean("Using", using);
+		super.writeToNbt(tag, registryLookup);
 		tag.putInt("FloatTicks", floatTicks);
 		tag.putInt("SmashTicks", smashTicks);
 	}
@@ -97,16 +87,11 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 			}
 		}
 		if (hasLightningDash && ItemStack.areEqual(obj.getActiveItem(), obj.getMainHandStack())) {
-			if (!playedSound && obj.getItemUseTime() == EnchancementUtil.getTridentChargeTime()) {
-				obj.playSound(ModSoundEvents.ENTITY_GENERIC_PING, 1, 1);
-				playedSound = true;
-			}
 			if (ticksUsing % 18 == 0) {
 				obj.playSound(ModSoundEvents.ITEM_GENERIC_WHOOSH, 0.5F, 1);
 			}
 			ticksUsing++;
 		} else {
-			playedSound = false;
 			ticksUsing = 0;
 		}
 		if (nextTickFallDistance != 0) {
@@ -161,27 +146,8 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 		ModEntityComponents.LIGHTNING_DASH.sync(obj);
 	}
 
-	public void setUsing(boolean using) {
-		this.using = using;
-	}
-
-	public boolean isUsing() {
-		return using;
-	}
-
-	public void useCommon(Vec3d lungeVelocity, int floatTicks) {
-		obj.setVelocity(lungeVelocity);
-		obj.emitGameEvent(GameEvent.ENTITY_ACTION);
+	public void setFloatTicks(int floatTicks) {
 		this.floatTicks = floatTicks;
-	}
-
-	@Environment(EnvType.CLIENT)
-	public void useClient() {
-		MinecraftClient.getInstance().getSoundManager().play(new SparkSoundInstance(obj));
-	}
-
-	public void useServer(Vec3d lungeVelocity, int floatTicks) {
-		PlayerLookup.tracking(obj).forEach(foundPlayer -> UseLightningDashPayload.send(foundPlayer, obj, lungeVelocity, floatTicks));
 	}
 
 	public boolean isFloating() {

@@ -4,10 +4,11 @@
 package moriyashiine.enchancement.client.payload;
 
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.util.enchantment.LightningDashMaceEffect;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
@@ -28,19 +29,17 @@ public record UseLightningDashPayload(int entityId, Vec3d lungeVelocity, int flo
 		return ID;
 	}
 
-	public static void send(ServerPlayerEntity player, Entity entity, Vec3d lungeVelocity, int floatTicks) {
-		ServerPlayNetworking.send(player, new UseLightningDashPayload(entity.getId(), lungeVelocity, floatTicks));
+	public static void send(ServerPlayerEntity player, PlayerEntity user, Vec3d lungeVelocity, int floatTicks) {
+		ServerPlayNetworking.send(player, new UseLightningDashPayload(user.getId(), lungeVelocity, floatTicks));
 	}
 
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<UseLightningDashPayload> {
 		@Override
 		public void receive(UseLightningDashPayload payload, ClientPlayNetworking.Context context) {
 			Entity entity = context.player().getWorld().getEntityById(payload.entityId());
-			if (entity != null) {
-				ModEntityComponents.LIGHTNING_DASH.maybeGet(entity).ifPresent(lightningDashComponent -> {
-					lightningDashComponent.useCommon(payload.lungeVelocity(), payload.floatTicks());
-					lightningDashComponent.useClient();
-				});
+			if (entity instanceof PlayerEntity player) {
+				LightningDashMaceEffect.useCommon(player, payload.lungeVelocity(), payload.floatTicks());
+				LightningDashMaceEffect.useClient(player);
 			}
 		}
 	}
