@@ -8,7 +8,7 @@
 	"enchancement:eruption": {
 	  "charge_time": {
 		"type": "minecraft:add",
-		"value": 0.5
+		"value": 1.5
 	  },
 	  "fire_duration": {
 		"type": "minecraft:add",
@@ -21,14 +21,6 @@
 	  "jump_strength": {
 		"type": "minecraft:add",
 		"value": 1.35
-	  }
-	},
-	"enchancement:multiply_charge_time": {
-	  "type": "minecraft:multiply",
-	  "factor": {
-		"type": "minecraft:linear",
-		"base": 3.0,
-		"per_level_above_first": -1.0
 	  }
 	},
 	"minecraft:post_attack": [

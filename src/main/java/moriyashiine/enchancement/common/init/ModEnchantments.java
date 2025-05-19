@@ -529,10 +529,6 @@ public class ModEnchantments {
 					builder.addEffect(
 							ModEnchantmentEffectComponentTypes.ALLOW_INTERRUPTION
 					);
-					builder.addNonListEffect(
-							ModEnchantmentEffectComponentTypes.MULTIPLY_CHARGE_TIME,
-							new MultiplyEnchantmentEffect(EnchantmentLevelBasedValue.linear(3, -1))
-					);
 					builder.addEffect(
 							ModEnchantmentEffectComponentTypes.LEECHING_TRIDENT,
 							new LeechingTridentEffect(
@@ -568,10 +564,6 @@ public class ModEnchantments {
 					builder.addEffect(
 							ModEnchantmentEffectComponentTypes.ALLOW_INTERRUPTION
 					);
-					builder.addNonListEffect(
-							ModEnchantmentEffectComponentTypes.MULTIPLY_CHARGE_TIME,
-							new MultiplyEnchantmentEffect(EnchantmentLevelBasedValue.linear(3, -1))
-					);
 					builder.addEffect(
 							ModEnchantmentEffectComponentTypes.TELEPORT_ON_HIT,
 							new TeleportOnHitEffect(
@@ -592,14 +584,10 @@ public class ModEnchantments {
 					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.ERUPTION,
 							new EruptionEffect(
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0.5F)),
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1.5F)),
 									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1.35F)),
 									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(4))
 							)
-					);
-					builder.addNonListEffect(
-							ModEnchantmentEffectComponentTypes.MULTIPLY_CHARGE_TIME,
-							new MultiplyEnchantmentEffect(EnchantmentLevelBasedValue.linear(3, -1))
 					);
 					builder.addEffect(
 							EnchantmentEffectComponentTypes.POST_ATTACK,
@@ -642,13 +630,9 @@ public class ModEnchantments {
 							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.35F))
 					);
 					builder.addNonListEffect(
-							ModEnchantmentEffectComponentTypes.MULTIPLY_CHARGE_TIME,
-							new MultiplyEnchantmentEffect(EnchantmentLevelBasedValue.linear(3, -1))
-					);
-					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.LIGHTNING_DASH,
 							new LightningDashEffect(
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0.5F)),
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1.5F)),
 									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(3)),
 									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.8F, 0.3F)),
 									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(1)),
