@@ -584,7 +584,6 @@ public class ModEnchantments {
 					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.ERUPTION,
 							new EruptionEffect(
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1.5F)),
 									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1.35F)),
 									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(4))
 							)
@@ -632,7 +631,6 @@ public class ModEnchantments {
 					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.LIGHTNING_DASH,
 							new LightningDashEffect(
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1.5F)),
 									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(3)),
 									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.8F, 0.3F)),
 									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(1)),

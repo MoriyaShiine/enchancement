@@ -10,6 +10,7 @@ import moriyashiine.enchancement.common.enchantment.effect.LightningDashEffect;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.particle.SparkParticleEffect;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.fabricmc.api.EnvType;
@@ -65,9 +66,9 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 
 	@Override
 	public void tick() {
-		int chargeTime = LightningDashEffect.getChargeTime(obj.getRandom(), obj.getMainHandStack());
+		boolean hasLightningDash = LightningDashEffect.getFloatTime(obj.getRandom(), obj.getMainHandStack()) != 0;
 		if (isFloating() || isSmashing()) {
-			if (chargeTime == 0) {
+			if (!hasLightningDash) {
 				cancel();
 			}
 		}
@@ -95,8 +96,8 @@ public class LightningDashComponent implements AutoSyncedComponent, CommonTickin
 				}
 			}
 		}
-		if (chargeTime > 0 && ItemStack.areEqual(obj.getActiveItem(), obj.getMainHandStack())) {
-			if (!playedSound && obj.getItemUseTime() == chargeTime) {
+		if (hasLightningDash && ItemStack.areEqual(obj.getActiveItem(), obj.getMainHandStack())) {
+			if (!playedSound && obj.getItemUseTime() == EnchancementUtil.getTridentChargeTime()) {
 				obj.playSound(ModSoundEvents.ENTITY_GENERIC_PING, 1, 1);
 				playedSound = true;
 			}

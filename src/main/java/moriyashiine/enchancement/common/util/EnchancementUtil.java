@@ -23,10 +23,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.ToolMaterial;
+import net.minecraft.item.*;
 import net.minecraft.item.equipment.ArmorMaterials;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryOwner;
@@ -222,6 +219,12 @@ public class EnchancementUtil {
 
 	public static boolean isUnbreakable(ItemStack stack) {
 		return ModConfig.disableDurability && !stack.isEmpty() && stack.contains(DataComponentTypes.MAX_DAMAGE) && !stack.isIn(ModItemTags.RETAINS_DURABILITY);
+	}
+
+	// rebalance equipment
+
+	public static int getTridentChargeTime() {
+		return TridentItem.MIN_DRAW_DURATION * (ModConfig.rebalanceEquipment ? 2 : 1);
 	}
 
 	// misc

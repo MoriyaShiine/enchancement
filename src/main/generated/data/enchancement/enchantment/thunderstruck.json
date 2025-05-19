@@ -18,10 +18,6 @@
 	  }
 	],
 	"enchancement:lightning_dash": {
-	  "charge_time": {
-		"type": "minecraft:add",
-		"value": 1.5
-	  },
 	  "float_time": {
 		"type": "minecraft:add",
 		"value": 3.0

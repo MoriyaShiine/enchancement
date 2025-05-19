@@ -6,6 +6,7 @@ package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.lightning
 import moriyashiine.enchancement.common.component.entity.LightningDashComponent;
 import moriyashiine.enchancement.common.enchantment.effect.LightningDashEffect;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -61,7 +62,7 @@ public abstract class ItemStackMixin {
 		if (isUsing(user)) {
 			ItemStack stack = (ItemStack) (Object) this;
 			int useTime = getMaxUseTime(user) - remainingUseTicks;
-			if (useTime >= LightningDashEffect.getChargeTime(user.getRandom(), stack)) {
+			if (useTime >= EnchancementUtil.getTridentChargeTime()) {
 				if (user instanceof PlayerEntity player) {
 					player.incrementStat(Stats.USED.getOrCreateStat(getItem()));
 				}
@@ -81,7 +82,7 @@ public abstract class ItemStackMixin {
 
 	@Unique
 	private boolean canUse(Random random, ItemStack stack) {
-		return LightningDashEffect.getChargeTime(random, stack) != 0;
+		return LightningDashEffect.getFloatTime(random, stack) != 0;
 	}
 
 	@Unique

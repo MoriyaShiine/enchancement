@@ -6,6 +6,7 @@ package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.eruption;
 import moriyashiine.enchancement.common.component.entity.EruptionComponent;
 import moriyashiine.enchancement.common.enchantment.effect.EruptionEffect;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -58,9 +59,8 @@ public abstract class ItemStackMixin {
 	@Inject(method = "onStoppedUsing", at = @At("HEAD"), cancellable = true)
 	private void enchancement$eruption(World world, LivingEntity user, int remainingUseTicks, CallbackInfo ci) {
 		if (isUsing(user)) {
-			ItemStack stack = (ItemStack) (Object) this;
 			int useTime = getMaxUseTime(user) - remainingUseTicks;
-			if (useTime >= EruptionEffect.getChargeTime(user.getRandom(), stack)) {
+			if (useTime >= EnchancementUtil.getTridentChargeTime()) {
 				if (user instanceof PlayerEntity player) {
 					player.incrementStat(Stats.USED.getOrCreateStat(getItem()));
 				}
@@ -78,7 +78,7 @@ public abstract class ItemStackMixin {
 
 	@Unique
 	private boolean canUse(Random random, ItemStack stack) {
-		return EruptionEffect.getChargeTime(random, stack) != 0;
+		return EruptionEffect.getJumpStrength(random, stack) != 0;
 	}
 
 	@Unique

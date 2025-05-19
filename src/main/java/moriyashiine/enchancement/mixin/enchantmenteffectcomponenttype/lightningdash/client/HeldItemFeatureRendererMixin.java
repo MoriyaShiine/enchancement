@@ -24,7 +24,7 @@ public class HeldItemFeatureRendererMixin<S extends ArmedEntityRenderState> {
 	private void enchancement$lightningDash(S entityState, ItemRenderState itemState, Arm arm, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
 		if (arm == entityState.mainArm) {
 			EntityRenderStateAddition stateAddition = (EntityRenderStateAddition) entityState;
-			if (ItemStack.areEqual(stateAddition.enchancement$getActiveStack(), stateAddition.enchancement$getMainHandStack()) && LightningDashEffect.getChargeTime(stateAddition.enchancement$getRandom(), stateAddition.enchancement$getMainHandStack()) != 0) {
+			if (ItemStack.areEqual(stateAddition.enchancement$getActiveStack(), stateAddition.enchancement$getMainHandStack()) && LightningDashEffect.getFloatTime(stateAddition.enchancement$getRandom(), stateAddition.enchancement$getMainHandStack()) != 0) {
 				matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(entityState.age * 20));
 			}
 		}

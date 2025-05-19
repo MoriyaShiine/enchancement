@@ -13,27 +13,15 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
-public record LightningDashEffect(EnchantmentValueEffect chargeTime, EnchantmentValueEffect floatTime,
+public record LightningDashEffect(EnchantmentValueEffect floatTime,
 								  EnchantmentValueEffect lungeStrength, EnchantmentValueEffect smashStrength,
 								  EnchantmentValueEffect smashDamageMultiplier) {
 	public static final Codec<LightningDashEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-					EnchantmentValueEffect.CODEC.fieldOf("charge_time").forGetter(LightningDashEffect::chargeTime),
 					EnchantmentValueEffect.CODEC.fieldOf("float_time").forGetter(LightningDashEffect::floatTime),
 					EnchantmentValueEffect.CODEC.fieldOf("lunge_strength").forGetter(LightningDashEffect::lungeStrength),
 					EnchantmentValueEffect.CODEC.fieldOf("smash_strength").forGetter(LightningDashEffect::smashStrength),
 					EnchantmentValueEffect.CODEC.fieldOf("smash_damage_multiplier").forGetter(LightningDashEffect::smashDamageMultiplier))
 			.apply(instance, LightningDashEffect::new));
-
-	public static int getChargeTime(Random random, ItemStack stack) {
-		MutableFloat mutableFloat = new MutableFloat(0);
-		EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
-			LightningDashEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.LIGHTNING_DASH);
-			if (effect != null) {
-				mutableFloat.setValue(effect.chargeTime().apply(level, random, mutableFloat.floatValue()));
-			}
-		});
-		return MathHelper.floor(mutableFloat.floatValue() * 20);
-	}
 
 	public static int getFloatTime(Random random, ItemStack stack) {
 		MutableFloat mutableFloat = new MutableFloat(0);

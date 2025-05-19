@@ -6,10 +6,6 @@
   "effects": {
 	"enchancement:allow_interruption": {},
 	"enchancement:eruption": {
-	  "charge_time": {
-		"type": "minecraft:add",
-		"value": 1.5
-	  },
 	  "fire_duration": {
 		"type": "minecraft:add",
 		"value": {

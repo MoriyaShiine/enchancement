@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.component.entity;
 import moriyashiine.enchancement.client.payload.UseEruptionPayload;
 import moriyashiine.enchancement.common.enchantment.effect.EruptionEffect;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.block.BlockState;
@@ -52,9 +53,9 @@ public class EruptionComponent implements AutoSyncedComponent, CommonTickingComp
 
 	@Override
 	public void tick() {
-		int chargeTime = EruptionEffect.getChargeTime(obj.getRandom(), obj.getMainHandStack());
-		if (chargeTime > 0 && ItemStack.areEqual(obj.getActiveItem(), obj.getMainHandStack())) {
-			if (!playedSound && obj.getItemUseTime() == chargeTime) {
+		boolean hasEruption = EruptionEffect.getJumpStrength(obj.getRandom(), obj.getMainHandStack()) != 0;
+		if (hasEruption && ItemStack.areEqual(obj.getActiveItem(), obj.getMainHandStack())) {
+			if (!playedSound && obj.getItemUseTime() == EnchancementUtil.getTridentChargeTime()) {
 				obj.playSound(ModSoundEvents.ENTITY_GENERIC_PING, 1, 1);
 				playedSound = true;
 			}
