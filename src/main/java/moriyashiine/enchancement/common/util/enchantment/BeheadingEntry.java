@@ -1,7 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-package moriyashiine.enchancement.common.util;
+package moriyashiine.enchancement.common.util.enchantment;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;

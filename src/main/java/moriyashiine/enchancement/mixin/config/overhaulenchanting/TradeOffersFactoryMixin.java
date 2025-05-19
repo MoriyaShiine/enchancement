@@ -5,7 +5,7 @@ package moriyashiine.enchancement.mixin.config.overhaulenchanting;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.util.OverhaulMode;
+import moriyashiine.enchancement.common.util.config.OverhaulMode;
 import net.minecraft.village.TradeOffers;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;

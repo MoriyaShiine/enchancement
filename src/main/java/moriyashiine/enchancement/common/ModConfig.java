@@ -5,7 +5,7 @@ package moriyashiine.enchancement.common;
 
 import eu.midnightdust.lib.config.MidnightConfig;
 import moriyashiine.enchancement.client.util.AllowDuplicateKeybindingsMode;
-import moriyashiine.enchancement.common.util.OverhaulMode;
+import moriyashiine.enchancement.common.util.config.OverhaulMode;
 
 import java.util.Arrays;
 import java.util.List;

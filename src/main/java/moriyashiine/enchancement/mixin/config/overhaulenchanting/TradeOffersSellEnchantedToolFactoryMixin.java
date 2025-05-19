@@ -6,7 +6,7 @@ package moriyashiine.enchancement.mixin.config.overhaulenchanting;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.util.OverhaulMode;
+import moriyashiine.enchancement.common.util.config.OverhaulMode;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.DynamicRegistryManager;

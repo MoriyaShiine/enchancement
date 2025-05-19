@@ -1,7 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-package moriyashiine.enchancement.common.util;
+package moriyashiine.enchancement.common.util.config;
 
 public enum OverhaulMode {
 	CHISELED(true), FREE_CHOOSE(true), NON_TREASURE(false), DISABLED(false);

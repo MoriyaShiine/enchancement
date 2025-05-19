@@ -11,7 +11,7 @@ import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModBlockComponents;
 import moriyashiine.enchancement.common.init.ModParticleTypes;
 import moriyashiine.enchancement.common.screenhandlers.EnchantingTableScreenHandler;
-import moriyashiine.enchancement.common.util.OverhaulMode;
+import moriyashiine.enchancement.common.util.config.OverhaulMode;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.EnchantingTableBlock;
 import net.minecraft.block.entity.ChiseledBookshelfBlockEntity;

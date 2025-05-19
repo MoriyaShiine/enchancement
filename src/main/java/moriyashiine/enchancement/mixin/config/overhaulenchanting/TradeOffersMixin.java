@@ -5,7 +5,7 @@ package moriyashiine.enchancement.mixin.config.overhaulenchanting;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.util.OverhaulMode;
+import moriyashiine.enchancement.common.util.config.OverhaulMode;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.village.TradeOffers;
 import net.minecraft.village.VillagerProfession;
