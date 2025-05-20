@@ -5,10 +5,7 @@ package moriyashiine.enchancement.common;
 
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import moriyashiine.enchancement.client.payload.*;
-import moriyashiine.enchancement.common.event.config.AnimalArmorEnchantmentEvent;
-import moriyashiine.enchancement.common.event.config.OverhaulEnchantingEvent;
-import moriyashiine.enchancement.common.event.config.RebalanceEnchantmentsEvent;
-import moriyashiine.enchancement.common.event.config.ToggleablePassivesEvent;
+import moriyashiine.enchancement.common.event.config.*;
 import moriyashiine.enchancement.common.event.enchantmenteffect.ModifySubmergedMovementSpeedEvent;
 import moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype.*;
 import moriyashiine.enchancement.common.event.internal.*;
@@ -109,6 +106,8 @@ public class Enchancement implements ModInitializer {
 		EnchantmentEvents.ALLOW_ENCHANTING.register(new RebalanceEnchantmentsEvent.AllowEnchanting());
 		ServerLifecycleEvents.SERVER_STARTED.register(new RebalanceEnchantmentsEvent.ServerStarted());
 		UseBlockCallback.EVENT.register(new RebalanceEnchantmentsEvent.UseBlock());
+		ServerLivingEntityEvents.AFTER_DAMAGE.register(new RebalanceEquipmentEvent.Interrupt());
+		TickEntityEvent.EVENT.register(new RebalanceEquipmentEvent.Tick());
 		MultiplyMovementSpeedEvent.EVENT.register(new ToggleablePassivesEvent.AirMobility());
 		TickEntityEvent.EVENT.register(new ToggleablePassivesEvent.Efficiency());
 		// enchantment effect
