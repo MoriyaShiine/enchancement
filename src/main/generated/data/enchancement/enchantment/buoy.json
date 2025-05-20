@@ -8,8 +8,8 @@
 	  "type": "minecraft:add",
 	  "value": {
 		"type": "minecraft:linear",
-		"base": 1.0,
-		"per_level_above_first": 0.5
+		"base": 0.7,
+		"per_level_above_first": 0.3
 	  }
 	},
 	"enchancement:extend_water_time": {},

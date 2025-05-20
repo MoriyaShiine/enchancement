@@ -114,6 +114,10 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 		this.shouldBoost = shouldBoost;
 	}
 
+	public boolean isBoosting() {
+		return boost > 0;
+	}
+
 	public boolean hasBoost() {
 		return hasBoost;
 	}
