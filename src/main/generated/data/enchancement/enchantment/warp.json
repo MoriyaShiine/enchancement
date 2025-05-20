@@ -4,7 +4,6 @@
 	"translate": "enchantment.enchancement.warp"
   },
   "effects": {
-	"enchancement:allow_interruption": {},
 	"enchancement:teleport_on_hit": [
 	  {
 		"effect": {

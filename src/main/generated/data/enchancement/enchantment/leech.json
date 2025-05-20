@@ -4,7 +4,6 @@
 	"translate": "enchantment.enchancement.leech"
   },
   "effects": {
-	"enchancement:allow_interruption": {},
 	"enchancement:leeching_trident": [
 	  {
 		"effect": {

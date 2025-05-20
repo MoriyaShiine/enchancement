@@ -4,7 +4,6 @@
 	"translate": "enchantment.enchancement.thunderstruck"
   },
   "effects": {
-	"enchancement:allow_interruption": {},
 	"enchancement:chain_lightning": [
 	  {
 		"effect": {

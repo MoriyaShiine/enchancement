@@ -527,9 +527,6 @@ public class ModEnchantments {
 				AttributeModifierSlot.MAINHAND,
 				builder -> {
 					builder.addEffect(
-							ModEnchantmentEffectComponentTypes.ALLOW_INTERRUPTION
-					);
-					builder.addEffect(
 							ModEnchantmentEffectComponentTypes.LEECHING_TRIDENT,
 							new LeechingTridentEffect(
 									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1)),
@@ -562,9 +559,6 @@ public class ModEnchantments {
 				AttributeModifierSlot.MAINHAND,
 				builder -> {
 					builder.addEffect(
-							ModEnchantmentEffectComponentTypes.ALLOW_INTERRUPTION
-					);
-					builder.addEffect(
 							ModEnchantmentEffectComponentTypes.TELEPORT_ON_HIT,
 							new TeleportOnHitEffect(
 									true,
@@ -578,9 +572,6 @@ public class ModEnchantments {
 				AttributeModifierSlot.MAINHAND,
 				builder -> {
 					builder.exclusiveSet(enchantmentLookup.getOrThrow(ModEnchantmentTags.MACE_EXCLUSIVE_SET));
-					builder.addEffect(
-							ModEnchantmentEffectComponentTypes.ALLOW_INTERRUPTION
-					);
 					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.ERUPTION,
 							new EruptionEffect(
@@ -621,9 +612,6 @@ public class ModEnchantments {
 				AttributeModifierSlot.MAINHAND,
 				builder -> {
 					builder.exclusiveSet(enchantmentLookup.getOrThrow(ModEnchantmentTags.MACE_EXCLUSIVE_SET));
-					builder.addEffect(
-							ModEnchantmentEffectComponentTypes.ALLOW_INTERRUPTION
-					);
 					builder.addEffect(
 							ModEnchantmentEffectComponentTypes.CHAIN_LIGHTNING,
 							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.35F))

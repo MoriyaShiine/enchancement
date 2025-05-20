@@ -4,7 +4,6 @@
 	"translate": "enchantment.enchancement.meteor"
   },
   "effects": {
-	"enchancement:allow_interruption": {},
 	"enchancement:eruption": {
 	  "fire_duration": {
 		"type": "minecraft:add",
