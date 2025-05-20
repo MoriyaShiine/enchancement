@@ -114,6 +114,7 @@
 	"enchantmenteffectcomponenttype.fluidwalking.EntityMixin",
 	"enchantmenteffectcomponenttype.fluidwalking.EntityShapeContextMixin",
 	"enchantmenteffectcomponenttype.fluidwalking.LivingEntityMixin",
+	"enchantmenteffectcomponenttype.fluidwalking.MagmaBlockMixin",
 	"enchantmenteffectcomponenttype.fluidwalking.PlayerEntityMixin",
 	"enchantmenteffectcomponenttype.fluidwalking.PowderSnowBlockMixin",
 	"enchantmenteffectcomponenttype.glide.LivingEntityMixin",
