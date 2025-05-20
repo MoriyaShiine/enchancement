@@ -31,6 +31,7 @@ public class ModEntityTypeTagProvider extends FabricTagProvider.EntityTypeTagPro
 				.add(ModEntityTypes.TORCH);
 		getOrCreateTagBuilder(ModEntityTypeTags.CANNOT_BURY)
 				.addOptionalTag(ConventionalEntityTypeTags.BOSSES)
+				.add(EntityType.CREAKING)
 				.add(EntityType.ELDER_GUARDIAN)
 				.add(EntityType.WARDEN)
 				.add(EntityType.VEX);

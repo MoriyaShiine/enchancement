@@ -4,6 +4,7 @@
 	  "id": "#c:bosses",
 	  "required": false
 	},
+	"minecraft:creaking",
 	"minecraft:elder_guardian",
 	"minecraft:warden",
 	"minecraft:vex"
