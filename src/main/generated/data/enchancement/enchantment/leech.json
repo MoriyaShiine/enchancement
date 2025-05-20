@@ -15,8 +15,8 @@
 			"type": "minecraft:add",
 			"value": {
 			  "type": "minecraft:linear",
-			  "base": 3.0,
-			  "per_level_above_first": 3.0
+			  "base": 2.0,
+			  "per_level_above_first": 2.0
 			}
 		  },
 		  "heal_amount": {

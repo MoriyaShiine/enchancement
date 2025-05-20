@@ -531,7 +531,7 @@ public class ModEnchantments {
 							new LeechingTridentEffect(
 									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1)),
 									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1)),
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(3))
+									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(2))
 							));
 					builder.addEffect(
 							EnchantmentEffectComponentTypes.POST_ATTACK,
