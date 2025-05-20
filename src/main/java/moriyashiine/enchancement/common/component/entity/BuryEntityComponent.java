@@ -3,6 +3,7 @@
  */
 package moriyashiine.enchancement.common.component.entity;
 
+import moriyashiine.enchancement.common.enchantment.effect.entity.BuryEffect;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -42,6 +43,9 @@ public class BuryEntityComponent implements AutoSyncedComponent, ServerTickingCo
 			if (obj.getVelocity() != Vec3d.ZERO) {
 				obj.setVelocity(Vec3d.ZERO);
 				obj.velocityModified = true;
+			}
+			if (BuryEffect.cannotBeBuried(obj)) {
+				unbury();
 			}
 		}
 	}

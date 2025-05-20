@@ -45,11 +45,7 @@ public class BuryEffect implements EnchantmentEntityEffect {
 	}
 
 	public static boolean bury(World world, Entity entity, Runnable post) {
-		if (entity.getType().isIn(ModEntityTypeTags.CANNOT_BURY) || entity.isSpectator()) {
-			return false;
-		} else if (entity instanceof LivingEntity living && living.isDead()) {
-			return false;
-		} else if (entity instanceof PlayerEntity targetPlayer && targetPlayer.isCreative()) {
+		if (cannotBeBuried(entity)) {
 			return false;
 		}
 		BuryEntityComponent buryEntityComponent = ModEntityComponents.BURY_ENTITY.getNullable(entity);
@@ -72,5 +68,14 @@ public class BuryEffect implements EnchantmentEntityEffect {
 			}
 		}
 		return false;
+	}
+
+	public static boolean cannotBeBuried(Entity entity) {
+		if (entity.getType().isIn(ModEntityTypeTags.CANNOT_BURY) || entity.isSpectator()) {
+			return true;
+		} else if (entity instanceof LivingEntity living && living.isDead()) {
+			return true;
+		}
+		return entity instanceof PlayerEntity player && player.isCreative();
 	}
 }
