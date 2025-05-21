@@ -4,6 +4,7 @@
 package moriyashiine.enchancement.mixin.config.rebalanceequipment.client;
 
 import moriyashiine.enchancement.client.render.entity.state.FloatingTridentRenderState;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.client.item.ItemModelManager;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -54,7 +55,7 @@ public class TridentEntityRendererMixin {
 
 	@Inject(method = "updateRenderState(Lnet/minecraft/entity/projectile/TridentEntity;Lnet/minecraft/client/render/entity/state/TridentEntityRenderState;F)V", at = @At("TAIL"))
 	private void enchancement$rebalanceEquipment(TridentEntity entity, TridentEntityRenderState state, float tickProgress, CallbackInfo ci) {
-		floatingTridentRenderState.isFloating = entity.getDataTracker().get(TridentEntity.LOYALTY) > 0 && !entity.isOwnerAlive();
+		floatingTridentRenderState.isFloating = entity.getDataTracker().get(TridentEntity.LOYALTY) > 0 && !entity.isOwnerAlive() && ModEntityComponents.TRIDENT_OWNER.get(entity).isOwnedByPlayer();
 		floatingTridentRenderState.stackState.update(entity, entity.asItemStack(), itemModelManager);
 	}
 }

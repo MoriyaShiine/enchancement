@@ -50,6 +50,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<SlamComponent> SLAM = ComponentRegistry.getOrCreate(Enchancement.id("slam"), SlamComponent.class);
 	public static final ComponentKey<SlideComponent> SLIDE = ComponentRegistry.getOrCreate(Enchancement.id("slide"), SlideComponent.class);
 	public static final ComponentKey<TeleportOnHitComponent> TELEPORT_ON_HIT = ComponentRegistry.getOrCreate(Enchancement.id("teleport_on_hit"), TeleportOnHitComponent.class);
+	public static final ComponentKey<TridentOwnerComponent> TRIDENT_OWNER = ComponentRegistry.getOrCreate(Enchancement.id("trident_owner"), TridentOwnerComponent.class);
 	public static final ComponentKey<WallJumpComponent> WALL_JUMP = ComponentRegistry.getOrCreate(Enchancement.id("wall_jump"), WallJumpComponent.class);
 
 	@Override
@@ -86,6 +87,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerForPlayers(SLAM, SlamComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(SLIDE, SlideComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(ProjectileEntity.class, TELEPORT_ON_HIT, TeleportOnHitComponent::new);
+		registry.registerFor(TridentEntity.class, TRIDENT_OWNER, TridentOwnerComponent::new);
 		registry.registerFor(LivingEntity.class, WALL_JUMP, WallJumpComponent::new);
 	}
 }
