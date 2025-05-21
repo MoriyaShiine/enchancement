@@ -81,6 +81,7 @@
 	  "enchancement:launch_wind_charge",
 	  "enchancement:leeching_trident",
 	  "enchancement:lightning_dash",
+	  "enchancement:owned_trident",
 	  "enchancement:phase_through_blocks_and_float",
 	  "enchancement:projectile_timer",
 	  "enchancement:rotation_burst",
@@ -88,7 +89,6 @@
 	  "enchancement:slam",
 	  "enchancement:slide",
 	  "enchancement:teleport_on_hit",
-	  "enchancement:trident_owner",
 	  "enchancement:wall_jump"
 	],
 	"lithium:options": {

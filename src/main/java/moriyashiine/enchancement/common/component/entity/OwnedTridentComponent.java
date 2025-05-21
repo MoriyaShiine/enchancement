@@ -9,33 +9,41 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 
-public class TridentOwnerComponent implements AutoSyncedComponent {
+public class OwnedTridentComponent implements AutoSyncedComponent {
 	private final TridentEntity obj;
 	private boolean ownedByPlayer = false;
+	private int slot = -1;
 
-	public TridentOwnerComponent(TridentEntity obj) {
+	public OwnedTridentComponent(TridentEntity obj) {
 		this.obj = obj;
 	}
 
 	@Override
 	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		ownedByPlayer = tag.getBoolean("OwnedByPlayer", false);
+		slot = tag.getInt("Slot", -1);
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		tag.putBoolean("OwnedByPlayer", ownedByPlayer);
+		tag.putInt("Slot", slot);
 	}
 
 	public void sync() {
-		ModEntityComponents.TRIDENT_OWNER.get(obj);
+		ModEntityComponents.OWNED_TRIDENT.get(obj);
 	}
 
 	public boolean isOwnedByPlayer() {
 		return ownedByPlayer;
 	}
 
-	public void setOwnedByPlayer(boolean ownedByPlayer) {
-		this.ownedByPlayer = ownedByPlayer;
+	public int getSlot() {
+		return slot;
+	}
+
+	public void markPlayerOwned(int slot) {
+		this.ownedByPlayer = true;
+		this.slot = slot;
 	}
 }

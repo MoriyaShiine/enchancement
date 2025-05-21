@@ -27,7 +27,7 @@ public abstract class TridentEntityMixin extends PersistentProjectileEntity {
 
 	@ModifyVariable(method = "age", at = @At("STORE"))
 	private int enchancement$rebalanceEquipmentPreventDespawn(int value) {
-		return ModConfig.rebalanceEquipment && ModEntityComponents.TRIDENT_OWNER.get(this).isOwnedByPlayer() ? 1 : value;
+		return ModConfig.rebalanceEquipment && ModEntityComponents.OWNED_TRIDENT.get(this).isOwnedByPlayer() ? 1 : value;
 	}
 
 	@ModifyVariable(method = "tick", at = @At("STORE"))

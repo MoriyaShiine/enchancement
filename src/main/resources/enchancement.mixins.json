@@ -58,6 +58,7 @@
 	"config.rebalanceequipment.HoeItemMixin",
 	"config.rebalanceequipment.ItemsMixin",
 	"config.rebalanceequipment.MaceItemMixin",
+	"config.rebalanceequipment.PersistentProjectileEntityMixin",
 	"config.rebalanceequipment.PlayerEntityMixin",
 	"config.rebalanceequipment.ServerAdvancementLoaderMixin",
 	"config.rebalanceequipment.ToolMaterialMixin",

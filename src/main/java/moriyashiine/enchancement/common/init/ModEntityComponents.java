@@ -43,6 +43,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<UsingMaceComponent> LAUNCH_WIND_CHARGE = ComponentRegistry.getOrCreate(Enchancement.id("launch_wind_charge"), UsingMaceComponent.class);
 	public static final ComponentKey<LeechingTridentComponent> LEECHING_TRIDENT = ComponentRegistry.getOrCreate(Enchancement.id("leeching_trident"), LeechingTridentComponent.class);
 	public static final ComponentKey<LightningDashComponent> LIGHTNING_DASH = ComponentRegistry.getOrCreate(Enchancement.id("lightning_dash"), LightningDashComponent.class);
+	public static final ComponentKey<OwnedTridentComponent> OWNED_TRIDENT = ComponentRegistry.getOrCreate(Enchancement.id("owned_trident"), OwnedTridentComponent.class);
 	public static final ComponentKey<PhaseThroughBlocksAndFloatComponent> PHASE_THROUGH_BLOCKS_AND_FLOAT = ComponentRegistry.getOrCreate(Enchancement.id("phase_through_blocks_and_float"), PhaseThroughBlocksAndFloatComponent.class);
 	public static final ComponentKey<ProjectileTimerComponent> PROJECTILE_TIMER = ComponentRegistry.getOrCreate(Enchancement.id("projectile_timer"), ProjectileTimerComponent.class);
 	public static final ComponentKey<RotationBurstComponent> ROTATION_BURST = ComponentRegistry.getOrCreate(Enchancement.id("rotation_burst"), RotationBurstComponent.class);
@@ -50,7 +51,6 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<SlamComponent> SLAM = ComponentRegistry.getOrCreate(Enchancement.id("slam"), SlamComponent.class);
 	public static final ComponentKey<SlideComponent> SLIDE = ComponentRegistry.getOrCreate(Enchancement.id("slide"), SlideComponent.class);
 	public static final ComponentKey<TeleportOnHitComponent> TELEPORT_ON_HIT = ComponentRegistry.getOrCreate(Enchancement.id("teleport_on_hit"), TeleportOnHitComponent.class);
-	public static final ComponentKey<TridentOwnerComponent> TRIDENT_OWNER = ComponentRegistry.getOrCreate(Enchancement.id("trident_owner"), TridentOwnerComponent.class);
 	public static final ComponentKey<WallJumpComponent> WALL_JUMP = ComponentRegistry.getOrCreate(Enchancement.id("wall_jump"), WallJumpComponent.class);
 
 	@Override
@@ -80,6 +80,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerForPlayers(LAUNCH_WIND_CHARGE, player -> new UsingMaceComponent(), RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(TridentEntity.class, LEECHING_TRIDENT, LeechingTridentComponent::new);
 		registry.registerForPlayers(LIGHTNING_DASH, LightningDashComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+		registry.registerFor(TridentEntity.class, OWNED_TRIDENT, OwnedTridentComponent::new);
 		registry.registerFor(PersistentProjectileEntity.class, PHASE_THROUGH_BLOCKS_AND_FLOAT, PhaseThroughBlocksAndFloatComponent::new);
 		registry.registerFor(LivingEntity.class, PROJECTILE_TIMER, living -> new ProjectileTimerComponent());
 		registry.registerForPlayers(ROTATION_BURST, RotationBurstComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
@@ -87,7 +88,6 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerForPlayers(SLAM, SlamComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(SLIDE, SlideComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(ProjectileEntity.class, TELEPORT_ON_HIT, TeleportOnHitComponent::new);
-		registry.registerFor(TridentEntity.class, TRIDENT_OWNER, TridentOwnerComponent::new);
 		registry.registerFor(LivingEntity.class, WALL_JUMP, WallJumpComponent::new);
 	}
 }
