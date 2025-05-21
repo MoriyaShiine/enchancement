@@ -23,6 +23,7 @@ accessible method net/minecraft/entity/projectile/TridentEntity isOwnerAlive ()Z
 accessible method net/minecraft/item/CrossbowItem getPullProgress (ILnet/minecraft/item/ItemStack;Lnet/minecraft/entity/LivingEntity;)F
 accessible method net/minecraft/world/World getEntityLookup ()Lnet/minecraft/world/entity/EntityLookup;
 accessible field net/minecraft/loot/condition/AlternativeLootCondition terms Ljava/util/List;
+accessible field net/minecraft/component/type/BundleContentsComponent$Builder stacks Ljava/util/List;
 accessible field net/minecraft/component/Component value Ljava/lang/Object;
 mutable field net/minecraft/component/Component value Ljava/lang/Object;
 accessible field net/minecraft/entity/projectile/PersistentProjectileEntity damage D
