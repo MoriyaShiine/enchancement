@@ -137,7 +137,9 @@ public class DirectionBurstComponent implements AutoSyncedComponent, CommonTicki
 
 	public void use(double velocityX, double velocityZ) {
 		reset();
-		gravityTicks = 3;
+		if (!obj.isOnGround()) {
+			gravityTicks = 3;
+		}
 		obj.setVelocity(velocityX, 0, velocityZ);
 		obj.playSound(ModSoundEvents.ENTITY_GENERIC_STRAFE, 1, 1);
 		obj.emitGameEvent(GameEvent.ENTITY_ACTION);
