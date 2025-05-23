@@ -134,7 +134,10 @@ Everything Enchancement adds is configurable:
   * Sword sweeping damage is increased to be proportional to the primary damage dealt.
   * Bows slow you down less when charging.
   * Crossbows pull unique ammunition from your inventory instead of only from off-hand.
+  * Tridents have a charge time of 1 second and can be interrupted.
+  * Tridents play a ping sound when they are ready to be used.
   * Tridents thrown by players never despawn.
+  * Tridents return to the slot they were thrown from.
   * Tridents with Loyalty linger in the world if the owner is dead instead of dropping on the ground.
   * Tridents with Loyalty that are thrown into the void will automatically return to their owner.
   * Maces have slightly faster attack speed.
@@ -143,6 +146,7 @@ Everything Enchancement adds is configurable:
   * Hoes have slower attack speed but more attack damage and attack reach.
   * Fishing Bobbers are thrown more accurately.
   * Fishing Bobbers pull the root vehicle of the hooked entity.
+  * Enchanted Books stack to 16, and display the names of their enchantments in Bundles.
 * Rebalance Projectiles
   * Projectiles ignore invulnerability frames and deal less damage per hit that would have been blocked.
   * Projectiles negate velocity on hit.
