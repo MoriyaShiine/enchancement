@@ -1,4 +1,27 @@
 ------------------------------------------------------
+Version 1.21.5-r8
+------------------------------------------------------
+- tridents and maces now universally have a charge time of 1 second and can be interrupted
+- tridents now play a ping sound when they're ready to launch
+- tridents now return to the slot they were thrown from
+- all mace enchantments now have a cooldown of 3 seconds that starts once you touch the ground
+- enchanted books now stack to 16
+- bundles now display the enchantments on enchanted books
+- perception now gives mobs bigger attack/follow range
+- strafe no longer gives antigravity when used on the ground
+- buoy now prevents magma block damage
+- buoy now has consistent speed over all, and descends slower
+- leech now leeches for less time
+- warp projectiles now return to their owner when they take damage
+- entities are now unburied if they normally can't be but were before, such being buried and then going into spectator mode
+- creakings can no longer be buried
+- toggleable passive sound now only plays on client
+- remove multiply charge time enchantment component
+- fix gale doubling fall distance after jumping twice
+- fix charge up animation for tridents and maces being stuttery
+- fix enchanted tridents shot by drowned rendering as items after they die
+
+------------------------------------------------------
 Version 1.21.5-r7
 ------------------------------------------------------
 - trial chamber rewards now only give enchanted chestplate books half as often
