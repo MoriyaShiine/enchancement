@@ -12,7 +12,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
 
-public class DirectionBurstClientEventEvent implements HudLayerRegistrationCallback {
+public class DirectionBurstClientEvent implements HudLayerRegistrationCallback {
 	private static final Identifier BACKGROUND_TEXTURE = Enchancement.id("hud/burst_background");
 	private static final Identifier PROGRESS_TEXTURE = Enchancement.id("hud/burst_progress");
 
