@@ -110,6 +110,7 @@
 	"enchantmenteffectcomponenttype.disarmingfishingbobber.FishingBobberEntityMixin",
 	"enchantmenteffectcomponenttype.disarmingfishingbobber.FishingRodItemMixin",
 	"enchantmenteffectcomponenttype.disarmingfishingbobber.WitchEntityMixin",
+	"enchantmenteffectcomponenttype.entityxray.LivingEntityMixin",
 	"enchantmenteffectcomponenttype.extendedwaterspinattack.TridentItemMixin",
 	"enchantmenteffectcomponenttype.extendwatertime.PotionEntityMixin",
 	"enchantmenteffectcomponenttype.felltrees.PlayerEntityMixin",
