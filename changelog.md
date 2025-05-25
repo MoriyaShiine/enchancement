@@ -1,4 +1,12 @@
 ------------------------------------------------------
+Version 1.21.5-r9
+------------------------------------------------------
+- fix warp tridents not returning to their correct slot
+- fix rare case where warp would create client-only tridents
+- fix https://github.com/MoriyaShiine/enchancement/issues/250
+- merge https://github.com/MoriyaShiine/enchancement/pull/249
+
+------------------------------------------------------
 Version 1.21.5-r8
 ------------------------------------------------------
 - tridents and maces now universally have a charge time of 1 second and can be interrupted
