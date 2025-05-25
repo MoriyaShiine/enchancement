@@ -22,6 +22,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentLevelBasedValue;
 import net.minecraft.enchantment.effect.AllOfEnchantmentEffects;
 import net.minecraft.enchantment.effect.AttributeEnchantmentEffect;
+import net.minecraft.enchantment.effect.DamageImmunityEnchantmentEffect;
 import net.minecraft.enchantment.effect.EnchantmentEffectTarget;
 import net.minecraft.enchantment.effect.entity.*;
 import net.minecraft.enchantment.effect.value.AddEnchantmentEffect;
@@ -49,6 +50,7 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryList;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
@@ -383,6 +385,15 @@ public class ModEnchantments {
 											EnchantmentLevelBasedValue.linear(2),
 											EntityAttributeModifier.Operation.ADD_VALUE),
 									HasExtendedWaterTimeLootCondition.INSTANCE));
+					builder.addEffect(
+							EnchantmentEffectComponentTypes.DAMAGE_IMMUNITY,
+							DamageImmunityEnchantmentEffect.INSTANCE,
+							DamageSourcePropertiesLootCondition.builder(
+									DamageSourcePredicate.Builder.create()
+											.tag(TagPredicate.expected(DamageTypeTags.BURN_FROM_STEPPING))
+											.tag(TagPredicate.unexpected(DamageTypeTags.BYPASSES_INVULNERABILITY))
+							)
+					);
 				}));
 		registerable.register(STICKY, create(STICKY.getValue(),
 				itemLookup.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
