@@ -58,8 +58,10 @@ public class TeleportOnHitComponent implements AutoSyncedComponent, ClientTickin
 
 	public void disable() {
 		teleportsOnBlockHit = teleportsOnEntityHit = false;
-		if (obj instanceof PersistentProjectileEntity persistentProjectile && obj.getOwner() instanceof PlayerEntity player && !player.isCreative() && player.giveItemStack(persistentProjectile.asItemStack())) {
-			obj.discard();
+		if (obj instanceof PersistentProjectileEntity projectile && obj.getOwner() instanceof PlayerEntity player && !player.isCreative()) {
+			if (EnchancementUtil.insertToCorrectTridentSlot(projectile, player.getInventory(), projectile.asItemStack()) || player.giveItemStack(projectile.asItemStack())) {
+				obj.discard();
+			}
 		}
 	}
 

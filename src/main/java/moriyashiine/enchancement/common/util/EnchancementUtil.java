@@ -23,6 +23,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.entity.projectile.TridentEntity;
 import net.minecraft.item.*;
 import net.minecraft.item.equipment.ArmorMaterials;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -222,6 +225,14 @@ public class EnchancementUtil {
 	}
 
 	// rebalance equipment
+
+	public static boolean insertToCorrectTridentSlot(PersistentProjectileEntity projectile, PlayerInventory inventory, ItemStack stack) {
+		if (ModConfig.rebalanceEquipment && projectile instanceof TridentEntity) {
+			int slot = ModEntityComponents.OWNED_TRIDENT.get(projectile).getSlot();
+			return inventory.getStack(slot).isEmpty() && inventory.insertStack(slot, stack);
+		}
+		return false;
+	}
 
 	public static int getTridentChargeTime() {
 		return TridentItem.MIN_DRAW_DURATION * (ModConfig.rebalanceEquipment ? 2 : 1);
