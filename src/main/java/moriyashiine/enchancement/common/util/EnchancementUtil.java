@@ -229,7 +229,7 @@ public class EnchancementUtil {
 	public static boolean insertToCorrectTridentSlot(PersistentProjectileEntity projectile, PlayerInventory inventory, ItemStack stack) {
 		if (ModConfig.rebalanceEquipment && projectile instanceof TridentEntity) {
 			int slot = ModEntityComponents.OWNED_TRIDENT.get(projectile).getSlot();
-			return inventory.getStack(slot).isEmpty() && inventory.insertStack(slot, stack);
+			return slot >= 0 && inventory.getStack(slot).isEmpty() && inventory.insertStack(slot, stack);
 		}
 		return false;
 	}
