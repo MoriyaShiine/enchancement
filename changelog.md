@@ -1,4 +1,9 @@
 ------------------------------------------------------
+Version 1.21.5-r11
+------------------------------------------------------
+- fix trident return slot crashing in offhand when disable durability is disabled
+
+------------------------------------------------------
 Version 1.21.5-r10
 ------------------------------------------------------
 - fix https://github.com/MoriyaShiine/enchancement/issues/251
