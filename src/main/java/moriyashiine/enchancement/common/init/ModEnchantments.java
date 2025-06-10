@@ -568,14 +568,12 @@ public class ModEnchantments {
 				itemLookup.getOrThrow(ItemTags.TRIDENT_ENCHANTABLE),
 				2,
 				AttributeModifierSlot.MAINHAND,
-				builder -> {
-					builder.addEffect(
-							ModEnchantmentEffectComponentTypes.TELEPORT_ON_HIT,
-							new TeleportOnHitEffect(
-									true,
-									false)
-					);
-				}));
+				builder -> builder.addEffect(
+						ModEnchantmentEffectComponentTypes.TELEPORT_ON_HIT,
+						new TeleportOnHitEffect(
+								true,
+								false)
+				)));
 		// mace
 		registerable.register(METEOR, create(METEOR.getValue(), true,
 				itemLookup.getOrThrow(ItemTags.MACE_ENCHANTABLE),
