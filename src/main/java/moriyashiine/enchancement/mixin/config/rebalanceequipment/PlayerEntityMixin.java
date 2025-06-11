@@ -20,7 +20,7 @@ import java.util.function.Predicate;
 @Mixin(value = PlayerEntity.class, priority = 1001)
 public class PlayerEntityMixin {
 	@Unique
-	private static Predicate<ItemStack> heldItemsPredicate = null;
+	private Predicate<ItemStack> heldItemsPredicate = null;
 
 	@ModifyVariable(method = "getProjectileType", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/RangedWeaponItem;getHeldProjectiles()Ljava/util/function/Predicate;"))
 	private Predicate<ItemStack> enchancement$rebalanceEquipment(Predicate<ItemStack> value) {
