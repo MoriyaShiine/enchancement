@@ -147,6 +147,7 @@ Everything Enchancement adds is configurable:
   * Fishing Bobbers are thrown more accurately.
   * Fishing Bobbers pull the root vehicle of the hooked entity.
   * Enchanted Books stack to 16, and display the names of their enchantments in Bundles.
+  * Removes attribute swapping.
 * Rebalance Projectiles
   * Projectiles ignore invulnerability frames and deal less damage per hit that would have been blocked.
   * Projectiles negate velocity on hit.
