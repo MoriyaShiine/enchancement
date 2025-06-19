@@ -3,23 +3,23 @@
  */
 package moriyashiine.enchancement.common.component.entity;
 
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class ProjectileTimerComponent implements CommonTickingComponent {
 	private int resetTicks = 0, timesHit = 0;
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		resetTicks = tag.getInt("ResetTicks", 0);
-		timesHit = tag.getInt("TimesHit", 0);
+	public void readData(ReadView readView) {
+		resetTicks = readView.getInt("ResetTicks", 0);
+		timesHit = readView.getInt("TimesHit", 0);
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.putInt("ResetTicks", resetTicks);
-		tag.putInt("TimesHit", timesHit);
+	public void writeData(WriteView writeView) {
+		writeView.putInt("ResetTicks", resetTicks);
+		writeView.putInt("TimesHit", timesHit);
 	}
 
 	@Override

@@ -6,11 +6,13 @@ package moriyashiine.enchancement.data.provider;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.tag.ModEnchantmentTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEnchantmentTags;
+import net.minecraft.data.tag.EnchantmentTagProvider;
+import net.minecraft.data.tag.ProvidedTagBuilder;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.EnchantmentTags;
 import net.minecraft.registry.tag.TagKey;
@@ -20,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class ModEnchantmentTagProvider extends FabricTagProvider.EnchantmentTagProvider {
+public class ModEnchantmentTagProvider extends EnchantmentTagProvider {
 	public static final List<Identifier> NON_TREASURE_ENCHANTMENTS = new ArrayList<>(), TREASURE_ENCHANTMENTS = new ArrayList<>();
 
 	public ModEnchantmentTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
@@ -29,65 +31,65 @@ public class ModEnchantmentTagProvider extends FabricTagProvider.EnchantmentTagP
 
 	@Override
 	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-		FabricTagProvider<Enchantment>.FabricTagBuilder nonTreasure = getOrCreateTagBuilder(EnchantmentTags.NON_TREASURE);
-		FabricTagProvider<Enchantment>.FabricTagBuilder treasure = getOrCreateTagBuilder(EnchantmentTags.TREASURE);
-		FabricTagProvider<Enchantment>.FabricTagBuilder tooltipOrder = getOrCreateTagBuilder(EnchantmentTags.TOOLTIP_ORDER);
-		NON_TREASURE_ENCHANTMENTS.forEach(nonTreasure::add);
-		TREASURE_ENCHANTMENTS.forEach(treasure::add);
-		NON_TREASURE_ENCHANTMENTS.forEach(tooltipOrder::add);
-		TREASURE_ENCHANTMENTS.forEach(tooltipOrder::add);
+		ProvidedTagBuilder<RegistryKey<Enchantment>, Enchantment> nonTreasure = builder(EnchantmentTags.NON_TREASURE);
+		ProvidedTagBuilder<RegistryKey<Enchantment>, Enchantment> treasure = builder(EnchantmentTags.TREASURE);
+		ProvidedTagBuilder<RegistryKey<Enchantment>, Enchantment> tooltipOrder = builder(EnchantmentTags.TOOLTIP_ORDER);
+		NON_TREASURE_ENCHANTMENTS.forEach(id -> nonTreasure.add(RegistryKey.of(RegistryKeys.ENCHANTMENT, id)));
+		TREASURE_ENCHANTMENTS.forEach(id -> treasure.add(RegistryKey.of(RegistryKeys.ENCHANTMENT, id)));
+		NON_TREASURE_ENCHANTMENTS.forEach(id -> tooltipOrder.add(RegistryKey.of(RegistryKeys.ENCHANTMENT, id)));
+		TREASURE_ENCHANTMENTS.forEach(id -> tooltipOrder.add(RegistryKey.of(RegistryKeys.ENCHANTMENT, id)));
 
-		getOrCreateTagBuilder(ModEnchantmentTags.AUTOMATICALLY_FEEDS)
+		builder(ModEnchantmentTags.AUTOMATICALLY_FEEDS)
 				.add(ModEnchantments.ASSIMILATION);
-		getOrCreateTagBuilder(ModEnchantmentTags.ANIMAL_ARMOR_ENCHANTMENTS)
+		builder(ModEnchantmentTags.ANIMAL_ARMOR_ENCHANTMENTS)
 				.add(ModEnchantments.BOUNCY)
 				.add(ModEnchantments.BUOY)
 				.add(ModEnchantments.STICKY);
-		getOrCreateTagBuilder(ModEnchantmentTags.DISALLOWS_TOGGLEABLE_PASSIVE)
+		builder(ModEnchantmentTags.DISALLOWS_TOGGLEABLE_PASSIVE)
 				.add(Enchantments.EFFICIENCY)
 				.add(Enchantments.RIPTIDE);
-		getOrCreateTagBuilder(ModEnchantmentTags.FREEZES_ENTITIES)
+		builder(ModEnchantmentTags.FREEZES_ENTITIES)
 				.add(ModEnchantments.FROSTBITE);
 
-		getOrCreateTagBuilder(ConventionalEnchantmentTags.ENTITY_AUXILIARY_MOVEMENT_ENHANCEMENTS)
+		builder(ConventionalEnchantmentTags.ENTITY_AUXILIARY_MOVEMENT_ENHANCEMENTS)
 				.add(ModEnchantments.STRAFE)
 				.add(ModEnchantments.DASH)
 				.add(ModEnchantments.GALE)
 				.add(ModEnchantments.SLIDE)
 				.add(ModEnchantments.BUOY)
 				.add(ModEnchantments.STICKY);
-		getOrCreateTagBuilder(ConventionalEnchantmentTags.ENTITY_DEFENSE_ENHANCEMENTS)
+		builder(ConventionalEnchantmentTags.ENTITY_DEFENSE_ENHANCEMENTS)
 				.add(ModEnchantments.VEIL)
 				.add(ModEnchantments.AMPHIBIOUS)
 				.add(ModEnchantments.WARDENSPINE)
 				.add(ModEnchantments.BOUNCY);
-		getOrCreateTagBuilder(ConventionalEnchantmentTags.ENTITY_SPEED_ENHANCEMENTS)
+		builder(ConventionalEnchantmentTags.ENTITY_SPEED_ENHANCEMENTS)
 				.add(ModEnchantments.ADRENALINE)
 				.add(ModEnchantments.BUOY);
-		getOrCreateTagBuilder(ConventionalEnchantmentTags.INCREASE_ENTITY_DROPS)
+		builder(ConventionalEnchantmentTags.INCREASE_ENTITY_DROPS)
 				.add(ModEnchantments.SCOOPING);
-		getOrCreateTagBuilder(ConventionalEnchantmentTags.WEAPON_DAMAGE_ENHANCEMENTS)
+		builder(ConventionalEnchantmentTags.WEAPON_DAMAGE_ENHANCEMENTS)
 				.add(ModEnchantments.BERSERK)
 				.add(ModEnchantments.DELAY)
 				.add(ModEnchantments.SCOOPING)
 				.add(ModEnchantments.APEX);
 
-		getOrCreateTagBuilder(ModEnchantmentTags.BOUNCY_EXCLUSIVE_SET)
+		builder(ModEnchantmentTags.BOUNCY_EXCLUSIVE_SET)
 				.add(Enchantments.FEATHER_FALLING);
-		getOrCreateTagBuilder(ModEnchantmentTags.BRIMSTONE_EXCLUSIVE_SET)
+		builder(ModEnchantmentTags.BRIMSTONE_EXCLUSIVE_SET)
 				.add(Enchantments.PIERCING);
-		getOrCreateTagBuilder(ModEnchantmentTags.FROSTBITE_EXCLUSIVE_SET)
+		builder(ModEnchantmentTags.FROSTBITE_EXCLUSIVE_SET)
 				.add(Enchantments.FIRE_ASPECT);
-		getOrCreateTagBuilder(ModEnchantmentTags.MACE_EXCLUSIVE_SET)
+		builder(ModEnchantmentTags.MACE_EXCLUSIVE_SET)
 				.add(ModEnchantments.METEOR)
 				.add(ModEnchantments.THUNDERSTRUCK)
 				.add(Enchantments.WIND_BURST);
-		getOrCreateTagBuilder(ModEnchantmentTags.SILK_TOUCH_EXCLUSIVE_SET)
+		builder(ModEnchantmentTags.SILK_TOUCH_EXCLUSIVE_SET)
 				.add(Enchantments.SILK_TOUCH);
-		getOrCreateTagBuilder(ModEnchantmentTags.WARDENSPINE_EXCLUSIVE_SET)
+		builder(ModEnchantmentTags.WARDENSPINE_EXCLUSIVE_SET)
 				.add(Enchantments.THORNS);
 
-		getOrCreateTagBuilder(EnchantmentTags.RIPTIDE_EXCLUSIVE_SET)
+		builder(EnchantmentTags.RIPTIDE_EXCLUSIVE_SET)
 				.add(ModEnchantments.WARP);
 
 		// librarian trades
@@ -109,7 +111,7 @@ public class ModEnchantmentTagProvider extends FabricTagProvider.EnchantmentTagP
 
 	@SafeVarargs
 	private void addLibrarianTrades(TagKey<Enchantment> common, TagKey<Enchantment> special, RegistryKey<Enchantment>... enchantments) {
-		getOrCreateTagBuilder(common).add(List.of(enchantments));
-		getOrCreateTagBuilder(special).add(List.of(enchantments));
+		builder(common).add(List.of(enchantments));
+		builder(special).add(List.of(enchantments));
 	}
 }

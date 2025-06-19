@@ -3,21 +3,21 @@
  */
 package moriyashiine.enchancement.common.component.entity;
 
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import org.ladysnake.cca.api.v3.component.Component;
 
 public class SafeLightningComponent implements Component {
 	private boolean safe = false;
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		safe = tag.getBoolean("Safe", false);
+	public void readData(ReadView readView) {
+		safe = readView.getBoolean("Safe", false);
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.putBoolean("Safe", safe);
+	public void writeData(WriteView writeView) {
+		writeView.putBoolean("Safe", safe);
 	}
 
 	public boolean isSafe() {

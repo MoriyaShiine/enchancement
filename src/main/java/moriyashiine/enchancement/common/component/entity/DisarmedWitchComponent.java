@@ -3,11 +3,10 @@
  */
 package moriyashiine.enchancement.common.component.entity;
 
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.potion.Potion;
-import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import org.ladysnake.cca.api.v3.component.Component;
 
 import java.util.ArrayList;
@@ -17,14 +16,14 @@ public class DisarmedWitchComponent implements Component {
 	private final List<RegistryEntry<Potion>> disabledPotions = new ArrayList<>();
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+	public void readData(ReadView readView) {
 		disabledPotions.clear();
-		disabledPotions.addAll(tag.get("DisabledPotions", Potion.CODEC.listOf(), registryLookup.getOps(NbtOps.INSTANCE)).orElse(List.of()));
+		disabledPotions.addAll(readView.read("DisabledPotions", Potion.CODEC.listOf()).orElse(List.of()));
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.put("DisabledPotions", Potion.CODEC.listOf(), registryLookup.getOps(NbtOps.INSTANCE), List.copyOf(disabledPotions));
+	public void writeData(WriteView writeView) {
+		writeView.put("DisabledPotions", Potion.CODEC.listOf(), List.copyOf(disabledPotions));
 	}
 
 	public boolean isDisabled(RegistryEntry<Potion> potion) {

@@ -8,6 +8,7 @@ import moriyashiine.enchancement.client.event.enchantmenteffectcomponenttype.*;
 import moriyashiine.enchancement.client.event.integration.appleskin.BrimstoneAppleskinEvent;
 import moriyashiine.enchancement.client.event.internal.SyncBookshelvesEvent;
 import moriyashiine.enchancement.client.gui.screen.EnchantingTableScreen;
+import moriyashiine.enchancement.client.hud.*;
 import moriyashiine.enchancement.client.particle.*;
 import moriyashiine.enchancement.client.payload.*;
 import moriyashiine.enchancement.client.reloadlisteners.FrozenReloadListener;
@@ -31,8 +32,9 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.HudLayerRegistrationCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
@@ -52,6 +54,8 @@ public class EnchancementClient implements ClientModInitializer {
 	public static final KeyBinding SLIDE_KEYBINDING = registerKeyBinding(() -> KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".slide", GLFW.GLFW_KEY_LEFT_CONTROL, "key.categories." + Enchancement.MOD_ID)));
 
 	public static boolean betterCombatLoaded = false, irisLoaded = false;
+
+	public static boolean drawTooltipsImmediately = false;
 
 	@Override
 	public void onInitializeClient() {
@@ -96,20 +100,21 @@ public class EnchancementClient implements ClientModInitializer {
 		ClientTickEvents.END_WORLD_TICK.register(new CoyoteBiteEvent());
 		ItemTooltipCallback.EVENT.register(new EnchantmentDescriptionsEvent.DescriptionText());
 		TooltipComponentCallback.EVENT.register(new EnchantmentDescriptionsEvent.Icons());
-		HudLayerRegistrationCallback.EVENT.register(new ChiseledBookshelfPeekingEvent());
 		ClientTickEvents.START_WORLD_TICK.register(new SyncVelocitiesEvent());
 		ItemTooltipCallback.EVENT.register(new ToggleablePassivesEvent());
 		// enchantment
-		HudLayerRegistrationCallback.EVENT.register(new AirJumpClientEvent());
 		ItemTooltipCallback.EVENT.register(new AutomaticallyFeedsTooltipClientEvent());
 		ClientTickEvents.END_WORLD_TICK.register(new BounceClientEvent());
-		HudLayerRegistrationCallback.EVENT.register(new BrimstoneClientEvent());
-		HudLayerRegistrationCallback.EVENT.register(new ChargeJumpClientEvent());
-		HudLayerRegistrationCallback.EVENT.register(new DirectionBurstClientEvent());
 		OutlineEntityEvent.HAS_OUTLINE.register(new EntityXrayClientEvent());
 		ModifyNightVisionStrengthEvent.ADD.register(new NightVisionClientEvent());
 		ItemTooltipCallback.EVENT.register(new RageClientEvent());
-		HudLayerRegistrationCallback.EVENT.register(new RotationBurstClientEvent());
+		// hud elements
+		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("chiseled_bookshelf_peeking"), new ChiseledBookshelfPeekingEvent());
+		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("air_jump"), new AirJumpHudElement());
+		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("brimstone"), new BrimstoneHudElement());
+		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("charge_jump"), new ChargeJumpHudElement());
+		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("direction_burst"), new DirectionBurstHudElement());
+		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("rotation_burst"), new RotationBurstHudElement());
 	}
 
 	private void initPayloads() {

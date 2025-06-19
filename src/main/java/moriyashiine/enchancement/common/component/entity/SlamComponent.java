@@ -20,12 +20,12 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.enums.Thickness;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.*;
 import net.minecraft.world.event.GameEvent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
@@ -47,17 +47,17 @@ public class SlamComponent implements CommonTickingComponent {
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		isSlamming = tag.getBoolean("IsSlamming", false);
-		slamCooldown = tag.getInt("SlamCooldown", 0);
-		ticksLeftToJump = tag.getInt("TicksLeftToJump", 0);
+	public void readData(ReadView readView) {
+		isSlamming = readView.getBoolean("IsSlamming", false);
+		slamCooldown = readView.getInt("SlamCooldown", 0);
+		ticksLeftToJump = readView.getInt("TicksLeftToJump", 0);
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.putBoolean("IsSlamming", isSlamming);
-		tag.putInt("SlamCooldown", slamCooldown);
-		tag.putInt("TicksLeftToJump", ticksLeftToJump);
+	public void writeData(WriteView writeView) {
+		writeView.putBoolean("IsSlamming", isSlamming);
+		writeView.putInt("SlamCooldown", slamCooldown);
+		writeView.putInt("TicksLeftToJump", ticksLeftToJump);
 	}
 
 	@Override

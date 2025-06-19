@@ -3,7 +3,7 @@
  */
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.brimstone.client;
 
-import moriyashiine.enchancement.client.event.enchantmenteffectcomponenttype.BrimstoneClientEvent;
+import moriyashiine.enchancement.client.hud.BrimstoneHudElement;
 import moriyashiine.enchancement.common.enchantment.effect.BrimstoneEffect;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import net.minecraft.entity.LivingEntity;
@@ -24,7 +24,7 @@ public abstract class CrossbowItemMixin {
 	@Inject(method = "usageTick", at = @At("HEAD"))
 	private void enchancement$brimstone(World world, LivingEntity user, ItemStack stack, int remainingUseTicks, CallbackInfo ci) {
 		if (SLibClientUtils.isHost(user)) {
-			BrimstoneClientEvent.health = BrimstoneEffect.getBrimstoneDamage(CrossbowItem.getPullProgress(getMaxUseTime(stack, user) - remainingUseTicks, stack, user));
+			BrimstoneHudElement.health = BrimstoneEffect.getBrimstoneDamage(CrossbowItem.getPullProgress(getMaxUseTime(stack, user) - remainingUseTicks, stack, user));
 		}
 	}
 }

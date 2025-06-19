@@ -5,8 +5,8 @@ package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.common.enchantment.effect.ChargeJumpEffect;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.MathHelper;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
@@ -24,13 +24,13 @@ public class ChargeJumpComponent implements AutoSyncedComponent, CommonTickingCo
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		strength = tag.getInt("Strength", 0);
+	public void readData(ReadView readView) {
+		strength = readView.getInt("Strength", 0);
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.putInt("Strength", strength);
+	public void writeData(WriteView writeView) {
+		writeView.putInt("Strength", strength);
 	}
 
 	@Override

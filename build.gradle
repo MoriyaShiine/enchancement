@@ -1,6 +1,6 @@
 plugins {
-    id 'fabric-loom' version '1.10-SNAPSHOT'
-    id 'io.github.ladysnake.chenille' version '0.14.0'
+    id 'fabric-loom' version "${loom_version}"
+    id 'io.github.ladysnake.chenille' version "${chenille_version}"
 }
 
 version = project.mod_version

@@ -6,9 +6,8 @@ package moriyashiine.enchancement.common.component.entity;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
@@ -24,14 +23,14 @@ public class DisarmedPlayerComponent implements AutoSyncedComponent, CommonTicki
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+	public void readData(ReadView readView) {
 		disarmedStacks.clear();
-		disarmedStacks.addAll(tag.get("DisarmedStacks", ItemStack.CODEC.listOf(), registryLookup.getOps(NbtOps.INSTANCE)).orElse(List.of()));
+		disarmedStacks.addAll(readView.read("DisarmedStacks", ItemStack.CODEC.listOf()).orElse(List.of()));
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.put("DisarmedStacks", ItemStack.CODEC.listOf(), registryLookup.getOps(NbtOps.INSTANCE), List.copyOf(disarmedStacks));
+	public void writeData(WriteView writeView) {
+		writeView.put("DisarmedStacks", ItemStack.CODEC.listOf(), List.copyOf(disarmedStacks));
 	}
 
 	@Override

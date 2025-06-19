@@ -5,8 +5,8 @@ package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.entity.projectile.TridentEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 
 public class OwnedTridentComponent implements AutoSyncedComponent {
@@ -19,15 +19,15 @@ public class OwnedTridentComponent implements AutoSyncedComponent {
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		ownedByPlayer = tag.getBoolean("OwnedByPlayer", false);
-		slot = tag.getInt("Slot", -1);
+	public void readData(ReadView readView) {
+		ownedByPlayer = readView.getBoolean("OwnedByPlayer", false);
+		slot = readView.getInt("Slot", -1);
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.putBoolean("OwnedByPlayer", ownedByPlayer);
-		tag.putInt("Slot", slot);
+	public void writeData(WriteView writeView) {
+		writeView.putBoolean("OwnedByPlayer", ownedByPlayer);
+		writeView.putInt("Slot", slot);
 	}
 
 	public void sync() {

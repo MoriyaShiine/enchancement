@@ -3,21 +3,21 @@
  */
 package moriyashiine.enchancement.common.component.entity;
 
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
 public class InCombatComponent implements ServerTickingComponent {
 	private int combatTicks = 0;
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		combatTicks = tag.getInt("CombatTicks", 0);
+	public void readData(ReadView readView) {
+		combatTicks = readView.getInt("CombatTicks", 0);
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.putInt("CombatTicks", combatTicks);
+	public void writeData(WriteView writeView) {
+		writeView.putInt("CombatTicks", combatTicks);
 	}
 
 	@Override

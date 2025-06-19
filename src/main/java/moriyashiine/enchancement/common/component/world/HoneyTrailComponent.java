@@ -8,8 +8,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import moriyashiine.enchancement.common.particle.HoneyBubbleParticleEffect;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.Uuids;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -35,14 +35,14 @@ public class HoneyTrailComponent implements AutoSyncedComponent, CommonTickingCo
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+	public void readData(ReadView readView) {
 		honeySpots.clear();
-		honeySpots.addAll(tag.get("HoneySpots", HoneySpot.CODEC.listOf()).orElse(List.of()));
+		honeySpots.addAll(readView.read("HoneySpots", HoneySpot.CODEC.listOf()).orElse(List.of()));
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.put("HoneySpots", HoneySpot.CODEC.listOf(), List.copyOf(honeySpots));
+	public void writeData(WriteView writeView) {
+		writeView.put("HoneySpots", HoneySpot.CODEC.listOf(), List.copyOf(honeySpots));
 	}
 
 	@Override

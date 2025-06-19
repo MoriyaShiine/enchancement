@@ -5,8 +5,8 @@ package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.entity.mob.GuardianEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 
 public class FrozenGuardianComponent implements AutoSyncedComponent {
@@ -18,15 +18,15 @@ public class FrozenGuardianComponent implements AutoSyncedComponent {
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		forcedTailAngle = tag.getFloat("ForcedTailAngle", 0);
-		forcedSpikesExtension = tag.getFloat("ForcedSpikesExtension", 0);
+	public void readData(ReadView readView) {
+		forcedTailAngle = readView.getFloat("ForcedTailAngle", 0);
+		forcedSpikesExtension = readView.getFloat("ForcedSpikesExtension", 0);
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.putFloat("ForcedTailAngle", forcedTailAngle);
-		tag.putFloat("ForcedSpikesExtension", forcedSpikesExtension);
+	public void writeData(WriteView writeView) {
+		writeView.putFloat("ForcedTailAngle", forcedTailAngle);
+		writeView.putFloat("ForcedSpikesExtension", forcedSpikesExtension);
 	}
 
 	public void sync() {

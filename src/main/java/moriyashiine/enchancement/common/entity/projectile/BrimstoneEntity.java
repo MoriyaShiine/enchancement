@@ -21,12 +21,13 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -143,23 +144,23 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 	}
 
 	@Override
-	public void readCustomDataFromNbt(NbtCompound nbt) {
-		super.readCustomDataFromNbt(nbt);
-		setDamage(nbt.getFloat("Damage", 0));
-		dataTracker.set(FORCED_PITCH, nbt.getFloat("ForcedPitch", 0));
-		dataTracker.set(FORCED_YAW, nbt.getFloat("ForcedYaw", 0));
-		distanceTraveled = nbt.getInt("DistanceTraveled", 0);
-		ticksExisted = nbt.getInt("TicksExisted", 0);
+	protected void readCustomData(ReadView view) {
+		super.readCustomData(view);
+		setDamage(view.getFloat("Damage", 0));
+		dataTracker.set(FORCED_PITCH, view.getFloat("ForcedPitch", 0));
+		dataTracker.set(FORCED_YAW, view.getFloat("ForcedYaw", 0));
+		distanceTraveled = view.getInt("DistanceTraveled", 0);
+		ticksExisted = view.getInt("TicksExisted", 0);
 	}
 
 	@Override
-	public void writeCustomDataToNbt(NbtCompound nbt) {
-		super.writeCustomDataToNbt(nbt);
-		nbt.putFloat("Damage", getDamage());
-		nbt.putFloat("ForcedPitch", getPitch());
-		nbt.putFloat("ForcedYaw", getYaw());
-		nbt.putInt("DistanceTraveled", distanceTraveled);
-		nbt.putInt("TicksExisted", ticksExisted);
+	protected void writeCustomData(WriteView view) {
+		super.writeCustomData(view);
+		view.putFloat("Damage", getDamage());
+		view.putFloat("ForcedPitch", getPitch());
+		view.putFloat("ForcedYaw", getYaw());
+		view.putInt("DistanceTraveled", distanceTraveled);
+		view.putInt("TicksExisted", ticksExisted);
 	}
 
 	@Override

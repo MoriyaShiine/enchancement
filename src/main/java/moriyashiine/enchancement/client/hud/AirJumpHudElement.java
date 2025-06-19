@@ -1,18 +1,18 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-package moriyashiine.enchancement.client.event.enchantmenteffectcomponenttype;
+package moriyashiine.enchancement.client.hud;
 
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import net.fabricmc.fabric.api.client.rendering.v1.HudLayerRegistrationCallback;
-import net.fabricmc.fabric.api.client.rendering.v1.IdentifiedLayer;
-import net.fabricmc.fabric.api.client.rendering.v1.LayeredDrawerWrapper;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.gl.RenderPipelines;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.util.Identifier;
 
-public class AirJumpClientEvent implements HudLayerRegistrationCallback {
+public class AirJumpHudElement implements HudElement {
 	private static final Identifier[] TEXTURES = new Identifier[16];
 
 	static {
@@ -22,8 +22,8 @@ public class AirJumpClientEvent implements HudLayerRegistrationCallback {
 	}
 
 	@Override
-	public void register(LayeredDrawerWrapper layeredDrawer) {
-		layeredDrawer.attachLayerAfter(IdentifiedLayer.CROSSHAIR, Enchancement.id("air_jump"), (context, tickCounter) -> ModEntityComponents.AIR_JUMP.maybeGet(MinecraftClient.getInstance().getCameraEntity()).ifPresent(airJumpComponent -> {
+	public void render(DrawContext context, RenderTickCounter tickCounter) {
+		ModEntityComponents.AIR_JUMP.maybeGet(MinecraftClient.getInstance().getCameraEntity()).ifPresent(airJumpComponent -> {
 			if (airJumpComponent.hasAirJump()) {
 				int jumpsLeft = airJumpComponent.getJumpsLeft();
 				if (jumpsLeft < airJumpComponent.getMaxJumps()) {
@@ -31,14 +31,14 @@ public class AirJumpClientEvent implements HudLayerRegistrationCallback {
 					Identifier second = getTexture(jumpsLeft);
 					int x = context.getScaledWindowWidth() / 2 - 5, y = context.getScaledWindowHeight() / 2 + 27;
 					if (airJumpComponent.getCooldown() < airJumpComponent.getLastCooldown()) {
-						context.drawGuiTexture(RenderLayer::getGuiTextured, first, x, y, 9, 9);
-						context.drawGuiTexture(RenderLayer::getGuiTextured, second, 9, 9, 0, 0, x, y, 9, (int) ((airJumpComponent.getCooldown() / (float) airJumpComponent.getLastCooldown()) * 9));
+						context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, first, x, y, 9, 9);
+						context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, second, 9, 9, 0, 0, x, y, 9, (int) ((airJumpComponent.getCooldown() / (float) airJumpComponent.getLastCooldown()) * 9));
 					} else {
-						context.drawGuiTexture(RenderLayer::getGuiTextured, second, x, y, 9, 9);
+						context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, second, x, y, 9, 9);
 					}
 				}
 			}
-		}));
+		});
 	}
 
 	private static Identifier getTexture(int i) {

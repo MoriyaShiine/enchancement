@@ -13,12 +13,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import org.jetbrains.annotations.NotNull;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
@@ -34,17 +33,17 @@ public class PhaseThroughBlocksAndFloatComponent implements AutoSyncedComponent,
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		maxPhaseBlocks = tag.getInt("MaxPhaseBlocks", 0);
-		ticksInAir = tag.getInt("TicksInAir", 0);
-		velocityLength = tag.getDouble("VelocityLength", 0);
+	public void readData(ReadView readView) {
+		maxPhaseBlocks = readView.getInt("MaxPhaseBlocks", 0);
+		ticksInAir = readView.getInt("TicksInAir", 0);
+		velocityLength = readView.getDouble("VelocityLength", 0);
 	}
 
 	@Override
-	public void writeToNbt(@NotNull NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.putInt("MaxPhaseBlocks", maxPhaseBlocks);
-		tag.putInt("TicksInAir", ticksInAir);
-		tag.putDouble("VelocityLength", velocityLength);
+	public void writeData(WriteView writeView) {
+		writeView.putInt("MaxPhaseBlocks", maxPhaseBlocks);
+		writeView.putInt("TicksInAir", ticksInAir);
+		writeView.putDouble("VelocityLength", velocityLength);
 	}
 
 	@Override

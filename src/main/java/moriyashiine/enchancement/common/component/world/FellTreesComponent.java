@@ -9,10 +9,9 @@ import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
@@ -30,16 +29,16 @@ public class FellTreesComponent implements ServerTickingComponent {
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+	public void readData(ReadView readView) {
 		treesToCut.clear();
-		for (Tree tree : tag.get("TreesToCut", Tree.CODEC.listOf(), registryLookup.getOps(NbtOps.INSTANCE)).orElse(List.of())) {
+		for (Tree tree : readView.read("TreesToCut", Tree.CODEC.listOf()).orElse(List.of())) {
 			treesToCut.add(new Tree(new ArrayList<>(tree.logs), new ArrayList<>(tree.drops), tree.originalPos, tree.stack.copy()));
 		}
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.put("TreesToCut", Tree.CODEC.listOf(), registryLookup.getOps(NbtOps.INSTANCE), List.copyOf(treesToCut));
+	public void writeData(WriteView writeView) {
+		writeView.put("TreesToCut", Tree.CODEC.listOf(), List.copyOf(treesToCut));
 	}
 
 	@Override

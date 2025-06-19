@@ -3,21 +3,21 @@
  */
 package moriyashiine.enchancement.common.component.entity;
 
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 
 public class UsingMaceComponent implements AutoSyncedComponent {
 	private boolean using = false;
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		using = tag.getBoolean("Using", false);
+	public void readData(ReadView readView) {
+		using = readView.getBoolean("Using", false);
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.putBoolean("Using", using);
+	public void writeData(WriteView writeView) {
+		writeView.putBoolean("Using", using);
 	}
 
 	public void setUsing(boolean using) {

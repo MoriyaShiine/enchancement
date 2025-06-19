@@ -15,8 +15,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.MathHelper;
@@ -45,35 +45,35 @@ public class DelayedLaunchComponent implements AutoSyncedComponent, CommonTickin
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		storedVelocity = tag.get("StoredVelocity", Vec3d.CODEC).orElse(null);
-		maxDuration = tag.getInt("MaxDuration", 0);
-		peakDuration = tag.getInt("PeakDuration", 0);
-		maxMultiplier = tag.getFloat("MaxMultiplier", 0);
-		allowRedirect = tag.getBoolean("AllowRedirect", false);
+	public void readData(ReadView readView) {
+		storedVelocity = readView.read("StoredVelocity", Vec3d.CODEC).orElse(null);
+		maxDuration = readView.getInt("MaxDuration", 0);
+		peakDuration = readView.getInt("PeakDuration", 0);
+		maxMultiplier = readView.getFloat("MaxMultiplier", 0);
+		allowRedirect = readView.getBoolean("AllowRedirect", false);
 
-		ticksFloating = tag.getInt("TicksFloating", 0);
-		forcedPitch = tag.getFloat("ForcedPitch", 0);
-		forcedYaw = tag.getFloat("ForcedYaw", 0);
-		cachedSpeed = tag.getFloat("CachedSpeed", 0);
-		cachedDivergence = tag.getFloat("CachedDivergence", 0);
+		ticksFloating = readView.getInt("TicksFloating", 0);
+		forcedPitch = readView.getFloat("ForcedPitch", 0);
+		forcedYaw = readView.getFloat("ForcedYaw", 0);
+		cachedSpeed = readView.getFloat("CachedSpeed", 0);
+		cachedDivergence = readView.getFloat("CachedDivergence", 0);
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+	public void writeData(WriteView writeView) {
 		if (storedVelocity != null) {
-			tag.put("StoredVelocity", Vec3d.CODEC, storedVelocity);
+			writeView.put("StoredVelocity", Vec3d.CODEC, storedVelocity);
 		}
-		tag.putInt("MaxDuration", maxDuration);
-		tag.putInt("PeakDuration", peakDuration);
-		tag.putFloat("MaxMultiplier", maxMultiplier);
-		tag.putBoolean("AllowRedirect", allowRedirect);
+		writeView.putInt("MaxDuration", maxDuration);
+		writeView.putInt("PeakDuration", peakDuration);
+		writeView.putFloat("MaxMultiplier", maxMultiplier);
+		writeView.putBoolean("AllowRedirect", allowRedirect);
 
-		tag.putInt("TicksFloating", ticksFloating);
-		tag.putFloat("ForcedPitch", forcedPitch);
-		tag.putFloat("ForcedYaw", forcedYaw);
-		tag.putFloat("CachedSpeed", cachedSpeed);
-		tag.putFloat("CachedDivergence", cachedDivergence);
+		writeView.putInt("TicksFloating", ticksFloating);
+		writeView.putFloat("ForcedPitch", forcedPitch);
+		writeView.putFloat("ForcedYaw", forcedYaw);
+		writeView.putFloat("CachedSpeed", cachedSpeed);
+		writeView.putFloat("CachedDivergence", cachedDivergence);
 	}
 
 	@Override

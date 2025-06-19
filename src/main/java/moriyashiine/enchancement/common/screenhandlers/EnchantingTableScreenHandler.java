@@ -289,7 +289,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 				stack.get(DataComponentTypes.REPAIRABLE).items().forEach(item -> items.add(item.value() == Items.NETHERITE_INGOT ? Items.DIAMOND : item.value()));
 			}
 			if (items.isEmpty()) {
-				material = new EnchantingMaterial(Ingredient.fromTag(world.getRegistryManager().getOrThrow(RegistryKeys.ITEM).getOrThrow(ModItemTags.DEFAULT_ENCHANTING_MATERIAL)));
+				material = new EnchantingMaterial(Ingredient.ofTag(world.getRegistryManager().getOrThrow(RegistryKeys.ITEM).getOrThrow(ModItemTags.DEFAULT_ENCHANTING_MATERIAL)));
 			} else {
 				material = new EnchantingMaterial(Ingredient.ofItems(items.toArray(new ItemConvertible[0])));
 			}

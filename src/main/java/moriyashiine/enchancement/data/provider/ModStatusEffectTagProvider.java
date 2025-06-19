@@ -8,8 +8,11 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.util.Identifier;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -22,15 +25,23 @@ public class ModStatusEffectTagProvider extends FabricTagProvider<StatusEffect> 
 
 	@Override
 	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-		getOrCreateTagBuilder(ModStatusEffectTags.CHAOS_UNCHOOSABLE)
-				.add(StatusEffects.BLINDNESS.value())
-				.add(StatusEffects.DARKNESS.value())
-				.add(StatusEffects.LEVITATION.value())
-				.add(StatusEffects.BAD_OMEN.value())
-				.add(StatusEffects.RAID_OMEN.value())
-				.add(StatusEffects.TRIAL_OMEN.value())
-				.add(StatusEffects.HERO_OF_THE_VILLAGE.value())
-				.addOptional(of("spectrum", "ascension"))
-				.addOptional(of("spectrum", "divinity"));
+		builder(ModStatusEffectTags.CHAOS_UNCHOOSABLE)
+				.add(key(StatusEffects.BLINDNESS))
+				.add(key(StatusEffects.DARKNESS))
+				.add(key(StatusEffects.LEVITATION))
+				.add(key(StatusEffects.BAD_OMEN))
+				.add(key(StatusEffects.RAID_OMEN))
+				.add(key(StatusEffects.TRIAL_OMEN))
+				.add(key(StatusEffects.HERO_OF_THE_VILLAGE))
+				.addOptional(key(of("spectrum", "ascension")))
+				.addOptional(key(of("spectrum", "divinity")));
+	}
+
+	private static RegistryKey<StatusEffect> key(RegistryEntry<StatusEffect> entry) {
+		return entry.getKey().orElseThrow();
+	}
+
+	private static RegistryKey<StatusEffect> key(Identifier id) {
+		return RegistryKey.of(RegistryKeys.STATUS_EFFECT, id);
 	}
 }

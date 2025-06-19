@@ -9,9 +9,8 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 
 import java.util.ArrayList;
@@ -29,20 +28,20 @@ public class ChiseledBookshelfComponent implements AutoSyncedComponent {
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup wrapperLookup) {
+	public void readData(ReadView readView) {
 		stacks.clear();
-		for (ItemStack stack : tag.get("Stacks", ItemStack.CODEC.listOf(), wrapperLookup.getOps(NbtOps.INSTANCE)).orElse(List.of())) {
+		for (ItemStack stack : readView.read("Stacks", ItemStack.CODEC.listOf()).orElse(List.of())) {
 			stacks.add(stack.isOf(PLACEHOLDER) ? ItemStack.EMPTY : stack);
 		}
-		hasEnchantments = tag.getBoolean("HasEnchantments", false);
+		hasEnchantments = readView.getBoolean("HasEnchantments", false);
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup wrapperLookup) {
+	public void writeData(WriteView writeView) {
 		List<ItemStack> stacks = this.stacks;
 		stacks.replaceAll(stack -> stack.isEmpty() ? PLACEHOLDER.getDefaultStack() : stack);
-		tag.put("Stacks", ItemStack.CODEC.listOf(), wrapperLookup.getOps(NbtOps.INSTANCE), stacks);
-		tag.putBoolean("HasEnchantments", hasEnchantments);
+		writeView.put("Stacks", ItemStack.CODEC.listOf(), stacks);
+		writeView.putBoolean("HasEnchantments", hasEnchantments);
 	}
 
 	public void sync() {

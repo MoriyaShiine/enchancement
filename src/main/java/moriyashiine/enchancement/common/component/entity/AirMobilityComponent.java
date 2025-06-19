@@ -11,8 +11,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class AirMobilityComponent implements CommonTickingComponent {
@@ -24,15 +24,15 @@ public class AirMobilityComponent implements CommonTickingComponent {
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		resetBypassTicks = tag.getInt("ResetBypassTicks", 0);
-		ticksInAir = tag.getInt("TicksInAir", 0);
+	public void readData(ReadView readView) {
+		resetBypassTicks = readView.getInt("ResetBypassTicks", 0);
+		ticksInAir = readView.getInt("TicksInAir", 0);
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.putInt("ResetBypassTicks", resetBypassTicks);
-		tag.putInt("TicksInAir", ticksInAir);
+	public void writeData(WriteView writeView) {
+		writeView.putInt("ResetBypassTicks", resetBypassTicks);
+		writeView.putInt("TicksInAir", ticksInAir);
 	}
 
 	@Override

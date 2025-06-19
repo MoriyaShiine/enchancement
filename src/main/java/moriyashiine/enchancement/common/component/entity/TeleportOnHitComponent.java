@@ -16,9 +16,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ClientTickingComponent;
@@ -34,15 +34,15 @@ public class TeleportOnHitComponent implements AutoSyncedComponent, ClientTickin
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		teleportsOnBlockHit = tag.getBoolean("TeleportsOnBlockHit", false);
-		teleportsOnEntityHit = tag.getBoolean("TeleportsOnEntityHit", false);
+	public void readData(ReadView readView) {
+		teleportsOnBlockHit = readView.getBoolean("TeleportsOnBlockHit", false);
+		teleportsOnEntityHit = readView.getBoolean("TeleportsOnEntityHit", false);
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.putBoolean("TeleportsOnBlockHit", teleportsOnBlockHit);
-		tag.putBoolean("TeleportsOnEntityHit", teleportsOnEntityHit);
+	public void writeData(WriteView writeView) {
+		writeView.putBoolean("TeleportsOnBlockHit", teleportsOnBlockHit);
+		writeView.putBoolean("TeleportsOnEntityHit", teleportsOnEntityHit);
 	}
 
 	@Override

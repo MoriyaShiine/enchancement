@@ -6,8 +6,7 @@ package moriyashiine.enchancement.mixin.config.overhaulenchanting;
 import moriyashiine.enchancement.common.component.block.ChiseledBookshelfComponent;
 import moriyashiine.enchancement.common.init.ModBlockComponents;
 import net.minecraft.block.entity.ChiseledBookshelfBlockEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -22,8 +21,8 @@ public class ChiseledBookshelfBlockEntityMixin {
 		chiseledBookshelfComponent.sync();
 	}
 
-	@Inject(method = "readNbt", at = @At("TAIL"))
-	private void enchancement$overhaulEnchanting(NbtCompound nbt, RegistryWrapper.WrapperLookup registries, CallbackInfo ci) {
+	@Inject(method = "readData", at = @At("TAIL"))
+	private void enchancement$overhaulEnchanting(ReadView view, CallbackInfo ci) {
 		ModBlockComponents.CHISELED_BOOKSHELF.get(this).update();
 	}
 }

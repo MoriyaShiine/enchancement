@@ -7,8 +7,13 @@ import moriyashiine.enchancement.common.tag.ModItemTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
+import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.tag.TagKey;
+import net.minecraft.util.Identifier;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -21,27 +26,37 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
 
 	@Override
 	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-		getOrCreateTagBuilder(ModItemTags.CANNOT_AUTOMATICALLY_CONSUME)
+		valueLookupBuilder(ModItemTags.CANNOT_AUTOMATICALLY_CONSUME)
 				.addOptionalTag(ConventionalItemTags.RAW_FISH_FOODS)
 				.addOptionalTag(ConventionalItemTags.RAW_MEAT_FOODS)
 				.addOptionalTag(ConventionalItemTags.FOOD_POISONING_FOODS)
 				.add(Items.CHORUS_FRUIT)
 				.add(Items.ENCHANTED_GOLDEN_APPLE)
 				.add(Items.GOLDEN_APPLE)
-				.add(Items.OMINOUS_BOTTLE)
-				.addOptionalTag(of("c", "foods/doughs"))
-				.addOptionalTag(of("c", "foods/pastas"))
-				.addOptional(of("farmersdelight", "dog_food"))
-				.addOptional(of("farmersdelight", "pie_crust"))
-				.addOptional(of("spelunkery", "portal_fluid_bottle"));
-		getOrCreateTagBuilder(ModItemTags.DEFAULT_ENCHANTING_MATERIAL)
+				.add(Items.OMINOUS_BOTTLE);
+		builder(ModItemTags.CANNOT_AUTOMATICALLY_CONSUME)
+				.addOptionalTag(tagKey(of("c", "foods/doughs")))
+				.addOptionalTag(tagKey(of("c", "foods/pastas")))
+				.addOptional(key(of("farmersdelight", "dog_food")))
+				.addOptional(key(of("farmersdelight", "pie_crust")))
+				.addOptional(key(of("spelunkery", "portal_fluid_bottle")));
+		valueLookupBuilder(ModItemTags.DEFAULT_ENCHANTING_MATERIAL)
 				.add(Items.AMETHYST_SHARD);
-		getOrCreateTagBuilder(ModItemTags.RETAINS_DURABILITY)
-				.add(Items.WOLF_ARMOR)
-				.addOptionalTag(of("create", "sandpaper"))
-				.addOptional(of("create", "super_glue"));
-		getOrCreateTagBuilder(ModItemTags.WEAKLY_ENCHANTED)
+		valueLookupBuilder(ModItemTags.RETAINS_DURABILITY)
+				.add(Items.WOLF_ARMOR);
+		builder(ModItemTags.RETAINS_DURABILITY)
+				.addOptionalTag(tagKey(of("create", "sandpaper")))
+				.addOptional(key(of("create", "super_glue")));
+		valueLookupBuilder(ModItemTags.WEAKLY_ENCHANTED)
 				.add(Items.LEATHER_HORSE_ARMOR)
 				.add(Items.IRON_HORSE_ARMOR);
+	}
+
+	private static TagKey<Item> tagKey(Identifier id) {
+		return TagKey.of(RegistryKeys.ITEM, id);
+	}
+
+	private static RegistryKey<Item> key(Identifier id) {
+		return RegistryKey.of(RegistryKeys.ITEM, id);
 	}
 }

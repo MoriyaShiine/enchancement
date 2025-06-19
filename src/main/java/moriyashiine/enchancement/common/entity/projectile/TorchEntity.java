@@ -15,10 +15,11 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
@@ -106,19 +107,19 @@ public class TorchEntity extends PersistentProjectileEntity {
 	}
 
 	@Override
-	public void readCustomDataFromNbt(NbtCompound nbt) {
-		super.readCustomDataFromNbt(nbt);
-		canFunction = nbt.getBoolean("CanFunction", false);
-		shouldPlaceTorch = nbt.getBoolean("ShouldPlaceTorch", false);
-		ignitionTime = nbt.getInt("IgnitionTime", 0);
+	protected void readCustomData(ReadView view) {
+		super.readCustomData(view);
+		canFunction = view.getBoolean("CanFunction", false);
+		shouldPlaceTorch = view.getBoolean("ShouldPlaceTorch", false);
+		ignitionTime = view.getInt("IgnitionTime", 0);
 	}
 
 	@Override
-	public void writeCustomDataToNbt(NbtCompound nbt) {
-		super.writeCustomDataToNbt(nbt);
-		nbt.putBoolean("CanFunction", canFunction);
-		nbt.putBoolean("ShouldPlaceTorch", shouldPlaceTorch);
-		nbt.putInt("IgnitionTime", ignitionTime);
+	protected void writeCustomData(WriteView view) {
+		super.writeCustomData(view);
+		view.putBoolean("CanFunction", canFunction);
+		view.putBoolean("ShouldPlaceTorch", shouldPlaceTorch);
+		view.putInt("IgnitionTime", ignitionTime);
 	}
 
 	@Override

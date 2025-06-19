@@ -10,11 +10,10 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.loot.condition.LootCondition;
 import net.minecraft.loot.context.LootContext;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.Identifier;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
@@ -31,16 +30,16 @@ public class ConditionalAttributesComponent implements ServerTickingComponent {
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+	public void readData(ReadView readView) {
 		attributes.clear();
-		attributes.addAll(tag.get("Attributes", ConditionalAttribute.CODEC.listOf(), registryLookup.getOps(NbtOps.INSTANCE)).orElse(List.of()));
-		removeAll = tag.getBoolean("RemoveAll", false);
+		attributes.addAll(readView.read("Attributes", ConditionalAttribute.CODEC.listOf()).orElse(List.of()));
+		removeAll = readView.getBoolean("RemoveAll", false);
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.put("Attributes", ConditionalAttribute.CODEC.listOf(), registryLookup.getOps(NbtOps.INSTANCE), List.copyOf(attributes));
-		tag.putBoolean("RemoveAll", removeAll);
+	public void writeData(WriteView writeView) {
+		writeView.put("Attributes", ConditionalAttribute.CODEC.listOf(), List.copyOf(attributes));
+		writeView.putBoolean("RemoveAll", removeAll);
 	}
 
 	@Override

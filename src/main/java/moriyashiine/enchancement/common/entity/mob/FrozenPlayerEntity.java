@@ -10,7 +10,8 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.world.World;
 
 import java.util.UUID;
@@ -38,15 +39,15 @@ public class FrozenPlayerEntity extends MobEntity {
 	}
 
 	@Override
-	public void readCustomDataFromNbt(NbtCompound nbt) {
-		super.readCustomDataFromNbt(nbt);
-		setSlim(nbt.getBoolean("Slim", false));
+	protected void readCustomData(ReadView view) {
+		super.readCustomData(view);
+		setSlim(view.getBoolean("Slim", false));
 	}
 
 	@Override
-	public void writeCustomDataToNbt(NbtCompound nbt) {
-		super.writeCustomDataToNbt(nbt);
-		nbt.putBoolean("Slim", isSlim());
+	protected void writeCustomData(WriteView view) {
+		super.writeCustomData(view);
+		view.putBoolean("Slim", isSlim());
 	}
 
 	@Override

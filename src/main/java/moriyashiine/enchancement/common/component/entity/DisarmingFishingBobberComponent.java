@@ -13,9 +13,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.MathHelper;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableFloat;
@@ -29,23 +28,23 @@ public class DisarmingFishingBobberComponent implements Component {
 	private int playerCooldown = 0, userCooldown = 0;
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		stack = tag.get("Stack", ItemStack.CODEC, registryLookup.getOps(NbtOps.INSTANCE)).orElse(ItemStack.EMPTY);
-		enabled = tag.getBoolean("Enabled", false);
-		stealsFromPlayers = tag.getBoolean("StealsFromPlayers", false);
-		playerCooldown = tag.getInt("PlayerCooldown", 0);
-		userCooldown = tag.getInt("UserCooldown", 0);
+	public void readData(ReadView readView) {
+		stack = readView.read("Stack", ItemStack.CODEC).orElse(ItemStack.EMPTY);
+		enabled = readView.getBoolean("Enabled", false);
+		stealsFromPlayers = readView.getBoolean("StealsFromPlayers", false);
+		playerCooldown = readView.getInt("PlayerCooldown", 0);
+		userCooldown = readView.getInt("UserCooldown", 0);
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+	public void writeData(WriteView writeView) {
 		if (!stack.isEmpty()) {
-			tag.put("Stack", ItemStack.CODEC, registryLookup.getOps(NbtOps.INSTANCE), stack);
+			writeView.put("Stack", ItemStack.CODEC, stack);
 		}
-		tag.putBoolean("Enabled", enabled);
-		tag.putBoolean("StealsFromPlayers", stealsFromPlayers);
-		tag.putInt("PlayerCooldown", playerCooldown);
-		tag.putInt("UserCooldown", userCooldown);
+		writeView.putBoolean("Enabled", enabled);
+		writeView.putBoolean("StealsFromPlayers", stealsFromPlayers);
+		writeView.putInt("PlayerCooldown", playerCooldown);
+		writeView.putInt("UserCooldown", userCooldown);
 	}
 
 	public ItemStack getStack() {

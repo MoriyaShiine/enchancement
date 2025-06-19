@@ -17,10 +17,10 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.event.GameEvent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
@@ -41,17 +41,17 @@ public class LightningDashComponent extends UsingMaceComponent implements Common
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		super.readFromNbt(tag, registryLookup);
-		floatTicks = tag.getInt("FloatTicks", 0);
-		smashTicks = tag.getInt("SmashTicks", 0);
+	public void readData(ReadView readView) {
+		super.readData(readView);
+		floatTicks = readView.getInt("FloatTicks", 0);
+		smashTicks = readView.getInt("SmashTicks", 0);
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		super.writeToNbt(tag, registryLookup);
-		tag.putInt("FloatTicks", floatTicks);
-		tag.putInt("SmashTicks", smashTicks);
+	public void writeData(WriteView writeView) {
+		super.writeData(writeView);
+		writeView.putInt("FloatTicks", floatTicks);
+		writeView.putInt("SmashTicks", smashTicks);
 	}
 
 	@Override

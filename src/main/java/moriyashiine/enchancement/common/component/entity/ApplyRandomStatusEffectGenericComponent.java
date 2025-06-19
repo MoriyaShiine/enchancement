@@ -7,11 +7,10 @@ import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.particle.EntityEffectParticleEffect;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
@@ -28,16 +27,16 @@ public class ApplyRandomStatusEffectGenericComponent implements AutoSyncedCompon
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+	public void readData(ReadView readView) {
 		effects.clear();
-		effects.addAll(tag.get("CustomPotionEffects", StatusEffectInstance.CODEC.listOf(), registryLookup.getOps(NbtOps.INSTANCE)).orElse(List.of()));
-		color = tag.getInt("Color", -1);
+		effects.addAll(readView.read("CustomPotionEffects", StatusEffectInstance.CODEC.listOf()).orElse(List.of()));
+		color = readView.getInt("Color", -1);
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.put("CustomPotionEffects", StatusEffectInstance.CODEC.listOf(), registryLookup.getOps(NbtOps.INSTANCE), List.copyOf(effects));
-		tag.putInt("Color", color);
+	public void writeData(WriteView writeView) {
+		writeView.put("CustomPotionEffects", StatusEffectInstance.CODEC.listOf(), List.copyOf(effects));
+		writeView.putInt("Color", color);
 	}
 
 	@Override

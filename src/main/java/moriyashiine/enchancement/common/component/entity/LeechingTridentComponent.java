@@ -18,10 +18,10 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.TridentEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import org.apache.commons.lang3.mutable.MutableFloat;
@@ -42,21 +42,21 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		leechData = tag.get("LeechData", LeechData.CODEC).orElse(null);
-		stuckEntityId = tag.getInt("StuckEntityId", 0);
-		leechingTicks = tag.getInt("LeechingTicks", 0);
-		stabTicks = tag.getInt("StabTicks", 0);
+	public void readData(ReadView readView) {
+		leechData = readView.read("LeechData", LeechData.CODEC).orElse(null);
+		stuckEntityId = readView.getInt("StuckEntityId", 0);
+		leechingTicks = readView.getInt("LeechingTicks", 0);
+		stabTicks = readView.getInt("StabTicks", 0);
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+	public void writeData(WriteView writeView) {
 		if (leechData != null) {
-			tag.put("LeechData", LeechData.CODEC, leechData);
+			writeView.put("LeechData", LeechData.CODEC, leechData);
 		}
-		tag.putInt("StuckEntityId", stuckEntityId);
-		tag.putInt("LeechingTicks", leechingTicks);
-		tag.putInt("StabTicks", stabTicks);
+		writeView.putInt("StuckEntityId", stuckEntityId);
+		writeView.putInt("LeechingTicks", leechingTicks);
+		writeView.putInt("StabTicks", stabTicks);
 	}
 
 	@Override

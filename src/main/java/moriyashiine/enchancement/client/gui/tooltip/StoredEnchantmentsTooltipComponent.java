@@ -6,9 +6,9 @@ package moriyashiine.enchancement.client.gui.tooltip;
 import moriyashiine.enchancement.common.Enchancement;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
@@ -71,7 +71,7 @@ public record StoredEnchantmentsTooltipComponent(
 		});
 		int[] posX = {x};
 		renderSlots(enchantments, identifier -> {
-			context.drawGuiTexture(RenderLayer::getGuiTextured, identifier, posX[0], y, 16, 16);
+			context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, identifier, posX[0], y, 16, 16);
 			posX[0] += 18;
 		});
 	}

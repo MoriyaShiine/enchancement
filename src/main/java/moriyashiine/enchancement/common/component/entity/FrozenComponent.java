@@ -15,12 +15,11 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.NotNull;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
@@ -38,29 +37,29 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		frozen = tag.getBoolean("Frozen", false);
-		ticksFrozen = tag.getInt("TicksFrozen", 0);
-		forcedPose = EntityPose.valueOf(tag.getString("ForcedPose", EntityPose.STANDING.toString()));
-		forcedHeadYaw = tag.getFloat("ForcedHeadYaw", 0);
-		forcedBodyYaw = tag.getFloat("ForcedBodyYaw", 0);
-		forcedPitch = tag.getFloat("ForcedPitch", 0);
-		forcedLimbSwingAnimationProgress = tag.getFloat("ForcedLimbSwingAnimationProgress", 0);
-		forcedLimbSwingAmplitude = tag.getFloat("ForcedLimbAmplitude", 0);
-		forcedClientAge = tag.getInt("ForcedClientAge", 0);
+	public void readData(ReadView readView) {
+		frozen = readView.getBoolean("Frozen", false);
+		ticksFrozen = readView.getInt("TicksFrozen", 0);
+		forcedPose = EntityPose.valueOf(readView.getString("ForcedPose", EntityPose.STANDING.toString()));
+		forcedHeadYaw = readView.getFloat("ForcedHeadYaw", 0);
+		forcedBodyYaw = readView.getFloat("ForcedBodyYaw", 0);
+		forcedPitch = readView.getFloat("ForcedPitch", 0);
+		forcedLimbSwingAnimationProgress = readView.getFloat("ForcedLimbSwingAnimationProgress", 0);
+		forcedLimbSwingAmplitude = readView.getFloat("ForcedLimbAmplitude", 0);
+		forcedClientAge = readView.getInt("ForcedClientAge", 0);
 	}
 
 	@Override
-	public void writeToNbt(@NotNull NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.putBoolean("Frozen", frozen);
-		tag.putInt("TicksFrozen", ticksFrozen);
-		tag.putString("ForcedPose", forcedPose.toString());
-		tag.putFloat("ForcedHeadYaw", forcedHeadYaw);
-		tag.putFloat("ForcedBodyYaw", forcedBodyYaw);
-		tag.putFloat("ForcedPitch", forcedPitch);
-		tag.putFloat("ForcedLimbSwingAnimationProgress", forcedLimbSwingAnimationProgress);
-		tag.putFloat("ForcedLimbAmplitude", forcedLimbSwingAmplitude);
-		tag.putInt("ForcedClientAge", forcedClientAge);
+	public void writeData(WriteView writeView) {
+		writeView.putBoolean("Frozen", frozen);
+		writeView.putInt("TicksFrozen", ticksFrozen);
+		writeView.putString("ForcedPose", forcedPose.toString());
+		writeView.putFloat("ForcedHeadYaw", forcedHeadYaw);
+		writeView.putFloat("ForcedBodyYaw", forcedBodyYaw);
+		writeView.putFloat("ForcedPitch", forcedPitch);
+		writeView.putFloat("ForcedLimbSwingAnimationProgress", forcedLimbSwingAnimationProgress);
+		writeView.putFloat("ForcedLimbAmplitude", forcedLimbSwingAmplitude);
+		writeView.putInt("ForcedClientAge", forcedClientAge);
 	}
 
 	@Override

@@ -19,9 +19,9 @@ import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -46,14 +46,14 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		slidingPos = tag.get("SlidingPos", BlockPos.CODEC).orElse(null);
+	public void readData(ReadView readView) {
+		slidingPos = readView.read("SlidingPos", BlockPos.CODEC).orElse(null);
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+	public void writeData(WriteView writeView) {
 		if (slidingPos != null) {
-			tag.put("SlidingPos", BlockPos.CODEC, slidingPos);
+			writeView.put("SlidingPos", BlockPos.CODEC, slidingPos);
 		}
 	}
 

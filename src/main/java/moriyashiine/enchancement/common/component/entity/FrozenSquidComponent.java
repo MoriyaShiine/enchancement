@@ -5,8 +5,8 @@ package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.entity.passive.SquidEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 
 public class FrozenSquidComponent implements AutoSyncedComponent {
@@ -18,17 +18,17 @@ public class FrozenSquidComponent implements AutoSyncedComponent {
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		forcedTentacleAngle = tag.getFloat("ForceTentacleAngle", 0);
-		forcedTiltAngle = tag.getFloat("ForcedTiltAngle", 0);
-		forcedRollAngle = tag.getFloat("ForcedRollAngle", 0);
+	public void readData(ReadView readView) {
+		forcedTentacleAngle = readView.getFloat("ForceTentacleAngle", 0);
+		forcedTiltAngle = readView.getFloat("ForcedTiltAngle", 0);
+		forcedRollAngle = readView.getFloat("ForcedRollAngle", 0);
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.putFloat("ForceTentacleAngle", forcedTentacleAngle);
-		tag.putFloat("ForcedTiltAngle", forcedTiltAngle);
-		tag.putFloat("ForcedRollAngle", forcedRollAngle);
+	public void writeData(WriteView writeView) {
+		writeView.putFloat("ForceTentacleAngle", forcedTentacleAngle);
+		writeView.putFloat("ForcedTiltAngle", forcedTiltAngle);
+		writeView.putFloat("ForcedRollAngle", forcedRollAngle);
 	}
 
 	public void sync() {

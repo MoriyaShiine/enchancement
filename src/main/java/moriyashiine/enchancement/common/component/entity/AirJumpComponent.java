@@ -13,9 +13,9 @@ import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.event.GameEvent;
@@ -37,23 +37,23 @@ public class AirJumpComponent implements AutoSyncedComponent, CommonTickingCompo
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		shouldRefresh = tag.getBoolean("ShouldRefresh", false);
-		cooldown = tag.getInt("Cooldown", 0);
-		lastCooldown = tag.getInt("LastCooldown", 0);
-		jumpCooldown = tag.getInt("JumpCooldown", 0);
-		jumpsLeft = tag.getInt("JumpsLeft", 0);
-		ticksInAir = tag.getInt("TicksInAir", 0);
+	public void readData(ReadView readView) {
+		shouldRefresh = readView.getBoolean("ShouldRefresh", false);
+		cooldown = readView.getInt("Cooldown", 0);
+		lastCooldown = readView.getInt("LastCooldown", 0);
+		jumpCooldown = readView.getInt("JumpCooldown", 0);
+		jumpsLeft = readView.getInt("JumpsLeft", 0);
+		ticksInAir = readView.getInt("TicksInAir", 0);
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.putBoolean("ShouldRefresh", shouldRefresh);
-		tag.putInt("Cooldown", cooldown);
-		tag.putInt("LastCooldown", lastCooldown);
-		tag.putInt("JumpCooldown", jumpCooldown);
-		tag.putInt("JumpsLeft", jumpsLeft);
-		tag.putInt("TicksInAir", ticksInAir);
+	public void writeData(WriteView writeView) {
+		writeView.putBoolean("ShouldRefresh", shouldRefresh);
+		writeView.putInt("Cooldown", cooldown);
+		writeView.putInt("LastCooldown", lastCooldown);
+		writeView.putInt("JumpCooldown", jumpCooldown);
+		writeView.putInt("JumpsLeft", jumpsLeft);
+		writeView.putInt("TicksInAir", ticksInAir);
 	}
 
 	@Override

@@ -17,12 +17,11 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.MathHelper;
 import org.apache.commons.lang3.mutable.MutableFloat;
 import org.jetbrains.annotations.Nullable;
@@ -36,14 +35,14 @@ public class ApplyRandomStatusEffectComponent implements Component {
 	private ItemStack originalStack = ItemStack.EMPTY;
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		originalStack = tag.get("OriginalStack", ItemStack.CODEC, registryLookup.getOps(NbtOps.INSTANCE)).orElse(ItemStack.EMPTY);
+	public void readData(ReadView readView) {
+		originalStack = readView.read("OriginalStack", ItemStack.CODEC).orElse(ItemStack.EMPTY);
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+	public void writeData(WriteView writeView) {
 		if (!originalStack.isEmpty()) {
-			tag.put("OriginalStack", ItemStack.CODEC, registryLookup.getOps(NbtOps.INSTANCE), originalStack);
+			writeView.put("OriginalStack", ItemStack.CODEC, originalStack);
 		}
 	}
 

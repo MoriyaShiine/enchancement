@@ -21,11 +21,11 @@ import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -53,19 +53,19 @@ public class SlideComponent implements CommonTickingComponent {
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		velocity = tag.get("Velocity", SlideVelocity.CODEC).orElse(SlideVelocity.ZERO);
-		adjustedVelocity = tag.get("AdjustedVelocity", SlideVelocity.CODEC).orElse(SlideVelocity.ZERO);
-		cachedYaw = tag.getFloat("CachedYaw", 0);
-		slidingTicks = tag.getInt("SlidingTicks", 0);
+	public void readData(ReadView readView) {
+		velocity = readView.read("Velocity", SlideVelocity.CODEC).orElse(SlideVelocity.ZERO);
+		adjustedVelocity = readView.read("AdjustedVelocity", SlideVelocity.CODEC).orElse(SlideVelocity.ZERO);
+		cachedYaw = readView.getFloat("CachedYaw", 0);
+		slidingTicks = readView.getInt("SlidingTicks", 0);
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.put("Velocity", SlideVelocity.CODEC, velocity);
-		tag.put("AdjustedVelocity", SlideVelocity.CODEC, adjustedVelocity);
-		tag.putFloat("CachedYaw", cachedYaw);
-		tag.putInt("SlidingTicks", slidingTicks);
+	public void writeData(WriteView writeView) {
+		writeView.put("Velocity", SlideVelocity.CODEC, velocity);
+		writeView.put("AdjustedVelocity", SlideVelocity.CODEC, adjustedVelocity);
+		writeView.putFloat("CachedYaw", cachedYaw);
+		writeView.putInt("SlidingTicks", slidingTicks);
 	}
 
 	@Override

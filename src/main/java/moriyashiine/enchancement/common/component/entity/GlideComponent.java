@@ -10,9 +10,9 @@ import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
@@ -28,15 +28,15 @@ public class GlideComponent implements AutoSyncedComponent, CommonTickingCompone
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		gliding = tag.getBoolean("Gliding", false);
-		airTicks = tag.getInt("AirTicks", 0);
+	public void readData(ReadView readView) {
+		gliding = readView.getBoolean("Gliding", false);
+		airTicks = readView.getInt("AirTicks", 0);
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.putBoolean("Gliding", gliding);
-		tag.putInt("AirTicks", airTicks);
+	public void writeData(WriteView writeView) {
+		writeView.putBoolean("Gliding", gliding);
+		writeView.putInt("AirTicks", airTicks);
 	}
 
 	@Override

@@ -4,8 +4,8 @@
 package moriyashiine.enchancement.common.component.entity;
 
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
@@ -19,17 +19,17 @@ public class BounceComponent implements ServerTickingComponent, AutoSyncedCompon
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		invertedBounce = tag.getBoolean("InvertedBounce", false);
-		justBounced = tag.getBoolean("JustBounced", false);
-		ticksOnGround = tag.getInt("TicksOnGround", 0);
+	public void readData(ReadView readView) {
+		invertedBounce = readView.getBoolean("InvertedBounce", false);
+		justBounced = readView.getBoolean("JustBounced", false);
+		ticksOnGround = readView.getInt("TicksOnGround", 0);
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.putBoolean("InvertedBounce", invertedBounce);
-		tag.putBoolean("JustBounced", justBounced);
-		tag.putInt("TicksOnGround", ticksOnGround);
+	public void writeData(WriteView writeView) {
+		writeView.putBoolean("InvertedBounce", invertedBounce);
+		writeView.putBoolean("JustBounced", justBounced);
+		writeView.putInt("TicksOnGround", ticksOnGround);
 	}
 
 	@Override

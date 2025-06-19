@@ -25,6 +25,11 @@ public class ItemRendererMixin {
 		RageEffect.color = RageEffect.getColor(entity, stack);
 	}
 
+	@Inject(method = "renderItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemDisplayContext;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/world/World;III)V", at = @At("TAIL"))
+	private void enchancement$rageTail(LivingEntity entity, ItemStack stack, ItemDisplayContext displayContext, MatrixStack matrices, VertexConsumerProvider vertexConsumers, World world, int light, int overlay, int seed, CallbackInfo ci) {
+		RageEffect.color = -1;
+	}
+
 	@WrapOperation(method = "renderBakedItemQuads", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/ItemRenderer;getTint([II)I"))
 	private static int enchancement$rage(int[] tints, int index, Operation<Integer> original) {
 		if (RageEffect.color != -1) {

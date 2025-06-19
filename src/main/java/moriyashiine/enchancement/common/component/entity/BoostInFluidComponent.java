@@ -11,10 +11,10 @@ import moriyashiine.strawberrylib.api.module.SLibUtils;
 import moriyashiine.strawberrylib.api.objects.enums.SubmersionGate;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.event.GameEvent;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
@@ -32,15 +32,15 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		shouldBoost = tag.getBoolean("ShouldBoost", false);
-		boost = tag.getFloat("Boost", 0);
+	public void readData(ReadView readView) {
+		shouldBoost = readView.getBoolean("ShouldBoost", false);
+		boost = readView.getFloat("Boost", 0);
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.putBoolean("ShouldBoost", shouldBoost);
-		tag.putFloat("Boost", boost);
+	public void writeData(WriteView writeView) {
+		writeView.putBoolean("ShouldBoost", shouldBoost);
+		writeView.putFloat("Boost", boost);
 	}
 
 	@Override

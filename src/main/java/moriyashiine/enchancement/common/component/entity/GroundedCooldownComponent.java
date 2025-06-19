@@ -7,9 +7,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 import java.util.ArrayList;
@@ -27,18 +26,18 @@ public class GroundedCooldownComponent implements CommonTickingComponent {
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+	public void readData(ReadView readView) {
 		cooldowns.clear();
-		cooldowns.addAll(tag.get("Cooldowns", GroundedCooldown.CODEC.listOf(), registryLookup.getOps(NbtOps.INSTANCE)).orElse(List.of()));
-		airTicks = tag.getInt("AirTicks", 0);
-		waitTicks = tag.getInt("WaitTicks", 0);
+		cooldowns.addAll(readView.read("Cooldowns", GroundedCooldown.CODEC.listOf()).orElse(List.of()));
+		airTicks = readView.getInt("AirTicks", 0);
+		waitTicks = readView.getInt("WaitTicks", 0);
 	}
 
 	@Override
-	public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		tag.put("Cooldowns", GroundedCooldown.CODEC.listOf(), registryLookup.getOps(NbtOps.INSTANCE), cooldowns);
-		tag.putInt("AirTicks", airTicks);
-		tag.putInt("WaitTicks", waitTicks);
+	public void writeData(WriteView writeView) {
+		writeView.put("Cooldowns", GroundedCooldown.CODEC.listOf(), cooldowns);
+		writeView.putInt("AirTicks", airTicks);
+		writeView.putInt("WaitTicks", waitTicks);
 	}
 
 	@Override

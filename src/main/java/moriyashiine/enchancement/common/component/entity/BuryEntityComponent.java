@@ -6,11 +6,10 @@ package moriyashiine.enchancement.common.component.entity;
 import moriyashiine.enchancement.common.enchantment.effect.entity.BuryEffect;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import org.jetbrains.annotations.NotNull;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
@@ -23,14 +22,14 @@ public class BuryEntityComponent implements AutoSyncedComponent, ServerTickingCo
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-		buryPos = tag.get("BuryPos", BlockPos.CODEC).orElse(null);
+	public void readData(ReadView readView) {
+		buryPos = readView.read("BuryPos", BlockPos.CODEC).orElse(null);
 	}
 
 	@Override
-	public void writeToNbt(@NotNull NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+	public void writeData(WriteView writeView) {
 		if (buryPos != null) {
-			tag.put("BuryPos", BlockPos.CODEC, buryPos);
+			writeView.put("BuryPos", BlockPos.CODEC, buryPos);
 		}
 	}
 
