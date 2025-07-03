@@ -2,7 +2,7 @@
   <h1>Enchancement</h1>
   <a href="https://modrinth.com/user/ContentSMP"><img src="https://raw.githubusercontent.com/ContentSMP/Badges/9fa7a82bf987686e0de935ff6913c7f5aadac960/csmp/cozy_vector.svg"></a>
  <a href="https://modrinth.com/mod/strawberrylib"><img src="https://github.com/ContentSMP/Badges/raw/refs/heads/main/strawberrylib/cozy_vector.svg"></a>
-  <a href="https://discord.gg/Am6M8VQ"><img src="https://raw.githubusercontent.com/intergrav/devins-badges/c7fd18efdadd1c3f12ae56b49afd834640d2d797/assets/cozy/social/discord-plural_vector.svg"></a>
+  <a href="https://discord.gg/Am6M8VQ"><img src="https://github.com/intergrav/devins-badges/raw/refs/heads/v3/assets/cozy/social/discord-singular_vector.svg"></a>
  <a href="https://ko-fi.com/moriyashiine"><img src="https://github.com/intergrav/devins-badges/raw/refs/heads/v3/assets/cozy/donate/kofi-singular_vector.svg"></a>
   <h3>Enchancement is a mod that aims to completely overhaul vanilla Minecraft's enchanting system, along with some other adjacent mechanics.</h3>
 </div>
