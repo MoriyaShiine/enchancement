@@ -1,7 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-package moriyashiine.enchancement.client.event.config;
+package moriyashiine.enchancement.client.hud;
 
 import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.common.ModConfig;
@@ -18,7 +18,7 @@ import net.minecraft.util.hit.BlockHitResult;
 
 import java.util.List;
 
-public class ChiseledBookshelfPeekingEvent implements HudElement {
+public class ChiseledBookshelfPeekingHudElement implements HudElement {
 	@Override
 	public void render(DrawContext context, RenderTickCounter tickCounter) {
 		if (ModConfig.chiseledBookshelfPeeking) {

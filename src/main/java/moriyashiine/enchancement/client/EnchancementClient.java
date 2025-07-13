@@ -114,7 +114,7 @@ public class EnchancementClient implements ClientModInitializer {
 		ModifyNightVisionStrengthEvent.ADD.register(new NightVisionClientEvent());
 		ItemTooltipCallback.EVENT.register(new RageClientEvent());
 		// hud elements
-		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("chiseled_bookshelf_peeking"), new ChiseledBookshelfPeekingEvent());
+		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("chiseled_bookshelf_peeking"), new ChiseledBookshelfPeekingHudElement());
 		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("air_jump"), new AirJumpHudElement());
 		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("brimstone"), new BrimstoneHudElement());
 		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("charge_jump"), new ChargeJumpHudElement());
