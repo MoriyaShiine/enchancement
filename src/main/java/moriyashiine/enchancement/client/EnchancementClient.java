@@ -3,7 +3,10 @@
  */
 package moriyashiine.enchancement.client;
 
-import moriyashiine.enchancement.client.event.config.*;
+import moriyashiine.enchancement.client.event.config.CoyoteBiteEvent;
+import moriyashiine.enchancement.client.event.config.EnchantmentDescriptionsEvent;
+import moriyashiine.enchancement.client.event.config.SyncVelocitiesEvent;
+import moriyashiine.enchancement.client.event.config.ToggleablePassivesEvent;
 import moriyashiine.enchancement.client.event.enchantmenteffectcomponenttype.*;
 import moriyashiine.enchancement.client.event.integration.appleskin.BrimstoneAppleskinEvent;
 import moriyashiine.enchancement.client.event.internal.SyncBookshelvesEvent;
@@ -22,6 +25,7 @@ import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
 import moriyashiine.enchancement.common.init.ModParticleTypes;
 import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
+import moriyashiine.strawberrylib.api.event.client.DisableHudBarEvent;
 import moriyashiine.strawberrylib.api.event.client.ModifyNightVisionStrengthEvent;
 import moriyashiine.strawberrylib.api.event.client.OutlineEntityEvent;
 import net.fabricmc.api.ClientModInitializer;
@@ -105,6 +109,7 @@ public class EnchancementClient implements ClientModInitializer {
 		// enchantment
 		ItemTooltipCallback.EVENT.register(new AutomaticallyFeedsTooltipClientEvent());
 		ClientTickEvents.END_WORLD_TICK.register(new BounceClientEvent());
+		DisableHudBarEvent.EVENT.register(new ChargeJumpClientEvent());
 		OutlineEntityEvent.HAS_OUTLINE.register(new EntityXrayClientEvent());
 		ModifyNightVisionStrengthEvent.ADD.register(new NightVisionClientEvent());
 		ItemTooltipCallback.EVENT.register(new RageClientEvent());

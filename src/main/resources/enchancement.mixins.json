@@ -184,7 +184,6 @@
 	"enchantmenteffectcomponenttype.brimstone.client.CrossbowItemMixin",
 	"enchantmenteffectcomponenttype.brimstone.client.InGameHudMixin",
 	"enchantmenteffectcomponenttype.buryentity.client.ShulkerEntityRendererMixin",
-	"enchantmenteffectcomponenttype.chargejump.client.ClientPlayerInteractionManagerMixin",
 	"enchantmenteffectcomponenttype.disarmingfishingbobber.client.MinecraftClientMixin",
 	"enchantmenteffectcomponenttype.fluidwalking.client.ClientPlayerEntityMixin",
 	"enchantmenteffectcomponenttype.hidelabelbehindwalls.client.EntityRendererMixin",
