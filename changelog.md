@@ -1,4 +1,9 @@
 ------------------------------------------------------
+Version 1.21.7-r3
+------------------------------------------------------
+- fix https://github.com/MoriyaShiine/enchancement/issues/252
+
+------------------------------------------------------
 Version 1.21.7-r2
 ------------------------------------------------------
 - fix the charge jump bar being overridden by the player locator bar
