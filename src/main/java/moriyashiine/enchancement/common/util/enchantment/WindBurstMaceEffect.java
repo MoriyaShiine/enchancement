@@ -7,7 +7,6 @@ import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.entity.WindBurstHolder;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.WindChargeEntity;
@@ -19,7 +18,7 @@ import net.minecraft.world.World;
 public class WindBurstMaceEffect extends MaceEffect {
 	@Override
 	public boolean canUse(Random random, ItemStack stack) {
-		return ModConfig.rebalanceEnchantments && EnchantmentHelper.getEnchantments(stack).getEnchantments().stream().anyMatch(entry -> entry.matchesKey(Enchantments.WIND_BURST));
+		return ModConfig.rebalanceEnchantments && stack.getEnchantments().getEnchantments().stream().anyMatch(entry -> entry.matchesKey(Enchantments.WIND_BURST));
 	}
 
 	@Override

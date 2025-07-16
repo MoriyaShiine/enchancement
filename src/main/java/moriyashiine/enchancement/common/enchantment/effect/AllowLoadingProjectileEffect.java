@@ -59,7 +59,7 @@ public record AllowLoadingProjectileEffect(Identifier model, SoundEvent soundEve
 			torch.setDamage(torch.damage / 2);
 			int level = 0;
 			if (shotFrom != null) {
-				for (RegistryEntry<Enchantment> enchantment : EnchantmentHelper.getEnchantments(shotFrom).getEnchantments()) {
+				for (RegistryEntry<Enchantment> enchantment : shotFrom.getEnchantments().getEnchantments()) {
 					if (EnchantmentHelper.hasAnyEnchantmentsWith(shotFrom, ModEnchantmentEffectComponentTypes.ALLOW_LOADING_PROJECTILE)) {
 						level += EnchantmentHelper.getLevel(enchantment, shotFrom);
 					}

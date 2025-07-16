@@ -14,7 +14,6 @@ import net.minecraft.component.Component;
 import net.minecraft.component.ComponentMap;
 import net.minecraft.component.EnchantmentEffectComponentTypes;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentLevelBasedValue;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.enchantment.effect.EnchantmentEffectEntry;
@@ -122,7 +121,7 @@ public class RebalanceEnchantmentsEvent {
 		}
 
 		private static boolean hasIgnite(ItemStack stack) {
-			for (RegistryEntry<Enchantment> enchantment : EnchantmentHelper.getEnchantments(stack).getEnchantments()) {
+			for (RegistryEntry<Enchantment> enchantment : stack.getEnchantments().getEnchantments()) {
 				for (TargetedEnchantmentEffect<EnchantmentEntityEffect> targetedEnchantmentEffect : enchantment.value().getEffect(EnchantmentEffectComponentTypes.POST_ATTACK)) {
 					if (targetedEnchantmentEffect.effect() instanceof IgniteEnchantmentEffect) {
 						return true;
