@@ -25,7 +25,7 @@ public class ChiseledBookshelfPeekingHudElement implements HudElement {
 			int width = context.getScaledWindowWidth() / 2;
 			int height = context.getScaledWindowHeight() / 2;
 			MinecraftClient client = MinecraftClient.getInstance();
-			if (client.crosshairTarget instanceof BlockHitResult result && client.world.getBlockEntity(result.getBlockPos()) instanceof ChiseledBookshelfBlockEntity chiseledBookshelfBlockEntity) {
+			if (!client.gameRenderer.getCamera().isThirdPerson() && client.crosshairTarget instanceof BlockHitResult result && client.world.getBlockEntity(result.getBlockPos()) instanceof ChiseledBookshelfBlockEntity chiseledBookshelfBlockEntity) {
 				((ChiseledBookshelfBlock) Blocks.CHISELED_BOOKSHELF).getSlotForHitPos(result, chiseledBookshelfBlockEntity.getCachedState()).ifPresent(index -> {
 					List<ItemStack> stacks = ModBlockComponents.CHISELED_BOOKSHELF.get(chiseledBookshelfBlockEntity).getStacks();
 					if (!stacks.isEmpty()) {
