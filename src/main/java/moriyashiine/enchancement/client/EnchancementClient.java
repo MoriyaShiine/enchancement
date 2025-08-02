@@ -10,7 +10,7 @@ import moriyashiine.enchancement.client.event.config.ToggleablePassivesEvent;
 import moriyashiine.enchancement.client.event.enchantmenteffectcomponenttype.*;
 import moriyashiine.enchancement.client.event.integration.appleskin.BrimstoneAppleskinEvent;
 import moriyashiine.enchancement.client.event.internal.SyncBookshelvesEvent;
-import moriyashiine.enchancement.client.gui.screen.EnchantingTableScreen;
+import moriyashiine.enchancement.client.gui.screen.ingame.EnchantingTableScreen;
 import moriyashiine.enchancement.client.hud.*;
 import moriyashiine.enchancement.client.particle.*;
 import moriyashiine.enchancement.client.payload.*;

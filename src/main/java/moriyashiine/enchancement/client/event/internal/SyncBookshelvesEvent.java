@@ -3,8 +3,8 @@
  */
 package moriyashiine.enchancement.client.event.internal;
 
-import moriyashiine.enchancement.client.gui.screen.EnchantingTableScreen;
-import moriyashiine.enchancement.common.screenhandlers.EnchantingTableScreenHandler;
+import moriyashiine.enchancement.client.gui.screen.ingame.EnchantingTableScreen;
+import moriyashiine.enchancement.common.screenhandler.EnchantingTableScreenHandler;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;

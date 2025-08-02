@@ -1,7 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-package moriyashiine.enchancement.common.reloadlisteners;
+package moriyashiine.enchancement.common.reloadlistener;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

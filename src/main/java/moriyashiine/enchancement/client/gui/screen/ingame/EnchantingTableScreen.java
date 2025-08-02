@@ -1,12 +1,12 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-package moriyashiine.enchancement.client.gui.screen;
+package moriyashiine.enchancement.client.gui.screen.ingame;
 
 import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.screenhandlers.EnchantingTableScreenHandler;
+import moriyashiine.enchancement.common.screenhandler.EnchantingTableScreenHandler;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.util.config.OverhaulMode;
 import net.minecraft.client.gl.RenderPipelines;
@@ -30,7 +30,7 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
 
-import static moriyashiine.enchancement.common.screenhandlers.EnchantingTableScreenHandler.PAGE_SIZE;
+import static moriyashiine.enchancement.common.screenhandler.EnchantingTableScreenHandler.PAGE_SIZE;
 
 public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHandler> {
 	public static int bookshelfCount = 0;

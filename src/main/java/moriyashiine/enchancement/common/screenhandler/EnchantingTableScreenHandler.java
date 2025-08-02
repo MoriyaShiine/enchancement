@@ -1,7 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-package moriyashiine.enchancement.common.screenhandlers;
+package moriyashiine.enchancement.common.screenhandler;
 
 import moriyashiine.enchancement.client.payload.SyncBookshelvesPayload;
 import moriyashiine.enchancement.client.payload.SyncEnchantingTableCostPayload;
@@ -123,15 +123,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 				return getEnchantingMaterial(slots.getFirst().getStack()).test(stack);
 			}
 		});
-		int index;
-		for (index = 0; index < 3; ++index) {
-			for (int i = 0; i < 9; ++i) {
-				addSlot(new Slot(playerInventory, i + index * 9 + 9, 8 + i * 18, 84 + index * 18));
-			}
-		}
-		for (index = 0; index < 9; ++index) {
-			addSlot(new Slot(playerInventory, index, 8 + index * 18, 142));
-		}
+		addPlayerSlots(playerInventory, 8, 84);
 	}
 
 	@Override

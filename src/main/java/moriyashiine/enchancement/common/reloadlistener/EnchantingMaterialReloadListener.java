@@ -1,7 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-package moriyashiine.enchancement.common.reloadlisteners;
+package moriyashiine.enchancement.common.reloadlistener;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -13,7 +13,7 @@ import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.event.internal.SyncEnchantingMaterialMapEvent;
-import moriyashiine.enchancement.common.screenhandlers.EnchantingTableScreenHandler;
+import moriyashiine.enchancement.common.screenhandler.EnchantingTableScreenHandler;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.item.Item;
 import net.minecraft.recipe.Ingredient;

@@ -5,7 +5,7 @@ package moriyashiine.enchancement.client.payload;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.screenhandlers.EnchantingTableScreenHandler;
+import moriyashiine.enchancement.common.screenhandler.EnchantingTableScreenHandler;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.item.Item;

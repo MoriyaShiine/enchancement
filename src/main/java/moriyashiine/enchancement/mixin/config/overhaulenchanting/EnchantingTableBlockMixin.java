@@ -10,7 +10,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModBlockComponents;
 import moriyashiine.enchancement.common.init.ModParticleTypes;
-import moriyashiine.enchancement.common.screenhandlers.EnchantingTableScreenHandler;
+import moriyashiine.enchancement.common.screenhandler.EnchantingTableScreenHandler;
 import moriyashiine.enchancement.common.util.config.OverhaulMode;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.EnchantingTableBlock;

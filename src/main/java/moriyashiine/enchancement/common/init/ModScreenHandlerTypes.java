@@ -3,7 +3,7 @@
  */
 package moriyashiine.enchancement.common.init;
 
-import moriyashiine.enchancement.common.screenhandlers.EnchantingTableScreenHandler;
+import moriyashiine.enchancement.common.screenhandler.EnchantingTableScreenHandler;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.screen.ScreenHandlerType;
 
