@@ -9,6 +9,7 @@
 	"config.disabledisallowedenchantments.ingame.EnchantmentHelperMixin",
 	"config.disabledisallowedenchantments.ingame.EnchantRandomlyLootFunctionMixin",
 	"config.disabledisallowedenchantments.ingame.ItemEnchantmentsComponentBuilderMixin",
+	"config.disabledisallowedenchantments.ingame.ItemEnchantmentsComponentMixin",
 	"config.disabledisallowedenchantments.ingame.SetEnchantmentsLootFunctionMixin",
 	"config.disabledisallowedenchantments.ingame.SingleEnchantmentProviderMixin",
 	"config.disabledisallowedenchantments.internal.CommandSourceMixin",
