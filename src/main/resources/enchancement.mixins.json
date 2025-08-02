@@ -13,6 +13,7 @@
 	"config.disabledisallowedenchantments.ingame.SingleEnchantmentProviderMixin",
 	"config.disabledisallowedenchantments.internal.CommandSourceMixin",
 	"config.disabledisallowedenchantments.internal.ItemGroupsMixin",
+	"config.disabledisallowedenchantments.internal.RegistryEntryLookupMixin",
 	"config.disabledisallowedenchantments.internal.RegistryEntryReferenceArgumentTypeMixin",
 	"config.disabledisallowedenchantments.internal.RegistryEntryReferenceMixin",
 	"config.disabledisallowedenchantments.internal.RegistryMixin",
