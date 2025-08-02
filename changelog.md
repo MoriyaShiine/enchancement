@@ -1,4 +1,11 @@
 ------------------------------------------------------
+Version 1.21.7-r4
+------------------------------------------------------
+- item stacks now remove the empty enchantment when loaded
+- fix https://github.com/MoriyaShiine/enchancement/issues/253
+- fix https://github.com/MoriyaShiine/enchancement/issues/254
+
+------------------------------------------------------
 Version 1.21.7-r3
 ------------------------------------------------------
 - fix https://github.com/MoriyaShiine/enchancement/issues/252
