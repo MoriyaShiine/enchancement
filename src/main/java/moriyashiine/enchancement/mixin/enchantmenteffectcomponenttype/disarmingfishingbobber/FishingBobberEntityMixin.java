@@ -4,6 +4,7 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.disarmingfishingbobber;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import moriyashiine.enchancement.common.component.entity.DisarmedWanderingTraderComponent;
 import moriyashiine.enchancement.common.component.entity.DisarmingFishingBobberComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
@@ -11,10 +12,12 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.*;
 import net.minecraft.entity.mob.*;
+import net.minecraft.entity.passive.WanderingTraderEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.village.Merchant;
@@ -83,11 +86,18 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 									PiglinBrain.onAttacked(serverWorld, piglin, owner);
 								}
 							}
-							if (entity instanceof Merchant) {
-								stack = ItemStack.EMPTY;
-							}
 							if (entity instanceof EndermanEntity enderman) {
 								enderman.setCarriedBlock(null);
+							}
+							if (entity instanceof WanderingTraderEntity) {
+								DisarmedWanderingTraderComponent disarmedWanderingTraderComponent = ModEntityComponents.DISARMED_WANDERING_TRADER.get(entity);
+								if (stack.isOf(Items.MILK_BUCKET)) {
+									disarmedWanderingTraderComponent.disarmMilk();
+								} else {
+									disarmedWanderingTraderComponent.disarmPotion();
+								}
+							} else if (entity instanceof Merchant) {
+								stack = ItemStack.EMPTY;
 							}
 							if (entity instanceof WitchEntity) {
 								PotionContentsComponent potionContents = stack.getOrDefault(DataComponentTypes.POTION_CONTENTS, null);

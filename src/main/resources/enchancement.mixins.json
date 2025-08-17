@@ -112,6 +112,7 @@
 	"enchantmenteffectcomponenttype.directionburst.EntityMixin",
 	"enchantmenteffectcomponenttype.disarmingfishingbobber.FishingBobberEntityMixin",
 	"enchantmenteffectcomponenttype.disarmingfishingbobber.FishingRodItemMixin",
+	"enchantmenteffectcomponenttype.disarmingfishingbobber.WanderingTraderEntityMixin",
 	"enchantmenteffectcomponenttype.disarmingfishingbobber.WitchEntityMixin",
 	"enchantmenteffectcomponenttype.entityxray.LivingEntityMixin",
 	"enchantmenteffectcomponenttype.extendedwaterspinattack.TridentItemMixin",

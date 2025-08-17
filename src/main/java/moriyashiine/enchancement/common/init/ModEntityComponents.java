@@ -10,6 +10,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.GuardianEntity;
 import net.minecraft.entity.mob.WitchEntity;
 import net.minecraft.entity.passive.SquidEntity;
+import net.minecraft.entity.passive.WanderingTraderEntity;
 import net.minecraft.entity.projectile.*;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
 import org.ladysnake.cca.api.v3.component.ComponentRegistry;
@@ -31,6 +32,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<DirectionBurstComponent> DIRECTION_BURST = ComponentRegistry.getOrCreate(Enchancement.id("direction_burst"), DirectionBurstComponent.class);
 	public static final ComponentKey<DisarmingFishingBobberComponent> DISARMING_FISHING_BOBBER = ComponentRegistry.getOrCreate(Enchancement.id("disarming_fishing_bobber"), DisarmingFishingBobberComponent.class);
 	public static final ComponentKey<DisarmedPlayerComponent> DISARMED_PLAYER = ComponentRegistry.getOrCreate(Enchancement.id("disarmed_player"), DisarmedPlayerComponent.class);
+	public static final ComponentKey<DisarmedWanderingTraderComponent> DISARMED_WANDERING_TRADER = ComponentRegistry.getOrCreate(Enchancement.id("disarmed_wandering_trader"), DisarmedWanderingTraderComponent.class);
 	public static final ComponentKey<DisarmedWitchComponent> DISARMED_WITCH = ComponentRegistry.getOrCreate(Enchancement.id("disarmed_witch"), DisarmedWitchComponent.class);
 	public static final ComponentKey<UsingMaceComponent> ERUPTION = ComponentRegistry.getOrCreate(Enchancement.id("eruption"), UsingMaceComponent.class);
 	public static final ComponentKey<ExtendedWaterTimeComponent> EXTENDED_WATER_TIME = ComponentRegistry.getOrCreate(Enchancement.id("extended_water_time"), ExtendedWaterTimeComponent.class);
@@ -68,6 +70,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerForPlayers(DIRECTION_BURST, DirectionBurstComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(FishingBobberEntity.class, DISARMING_FISHING_BOBBER, fishingBobber -> new DisarmingFishingBobberComponent());
 		registry.registerForPlayers(DISARMED_PLAYER, DisarmedPlayerComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+		registry.registerFor(WanderingTraderEntity.class, DISARMED_WANDERING_TRADER, wanderingTrader -> new DisarmedWanderingTraderComponent());
 		registry.registerFor(WitchEntity.class, DISARMED_WITCH, witch -> new DisarmedWitchComponent());
 		registry.registerForPlayers(ERUPTION, player -> new UsingMaceComponent(), RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(LivingEntity.class, EXTENDED_WATER_TIME, ExtendedWaterTimeComponent::new);
