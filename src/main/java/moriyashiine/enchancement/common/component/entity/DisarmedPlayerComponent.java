@@ -30,7 +30,7 @@ public class DisarmedPlayerComponent implements AutoSyncedComponent, CommonTicki
 
 	@Override
 	public void writeData(WriteView writeView) {
-		writeView.put("DisarmedStacks", ItemStack.CODEC.listOf(), List.copyOf(disarmedStacks));
+		writeView.put("DisarmedStacks", ItemStack.CODEC.listOf(), disarmedStacks);
 	}
 
 	@Override

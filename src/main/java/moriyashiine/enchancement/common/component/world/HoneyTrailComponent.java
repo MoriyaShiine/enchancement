@@ -42,7 +42,7 @@ public class HoneyTrailComponent implements AutoSyncedComponent, CommonTickingCo
 
 	@Override
 	public void writeData(WriteView writeView) {
-		writeView.put("HoneySpots", HoneySpot.CODEC.listOf(), List.copyOf(honeySpots));
+		writeView.put("HoneySpots", HoneySpot.CODEC.listOf(), honeySpots);
 	}
 
 	@Override

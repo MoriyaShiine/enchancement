@@ -23,7 +23,7 @@ public class DisarmedWitchComponent implements Component {
 
 	@Override
 	public void writeData(WriteView writeView) {
-		writeView.put("DisabledPotions", Potion.CODEC.listOf(), List.copyOf(disabledPotions));
+		writeView.put("DisabledPotions", Potion.CODEC.listOf(), disabledPotions);
 	}
 
 	public boolean isDisabled(RegistryEntry<Potion> potion) {

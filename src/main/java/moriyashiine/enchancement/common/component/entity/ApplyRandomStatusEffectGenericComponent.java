@@ -35,7 +35,7 @@ public class ApplyRandomStatusEffectGenericComponent implements AutoSyncedCompon
 
 	@Override
 	public void writeData(WriteView writeView) {
-		writeView.put("CustomPotionEffects", StatusEffectInstance.CODEC.listOf(), List.copyOf(effects));
+		writeView.put("CustomPotionEffects", StatusEffectInstance.CODEC.listOf(), effects);
 		writeView.putInt("Color", color);
 	}
 

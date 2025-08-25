@@ -38,7 +38,7 @@ public class FellTreesComponent implements ServerTickingComponent {
 
 	@Override
 	public void writeData(WriteView writeView) {
-		writeView.put("TreesToCut", Tree.CODEC.listOf(), List.copyOf(treesToCut));
+		writeView.put("TreesToCut", Tree.CODEC.listOf(), treesToCut);
 	}
 
 	@Override

@@ -38,7 +38,7 @@ public class ConditionalAttributesComponent implements ServerTickingComponent {
 
 	@Override
 	public void writeData(WriteView writeView) {
-		writeView.put("Attributes", ConditionalAttribute.CODEC.listOf(), List.copyOf(attributes));
+		writeView.put("Attributes", ConditionalAttribute.CODEC.listOf(), attributes);
 		writeView.putBoolean("RemoveAll", removeAll);
 	}
 
