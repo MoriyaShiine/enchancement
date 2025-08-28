@@ -75,8 +75,6 @@ public class EnchancementUtil {
 
 	public static ItemStack cachedApplyStack = null;
 
-	public static boolean shouldCancelTargetDamagedEnchantments = false;
-
 	public static List<ItemEntity> mergeItemEntities(List<ItemEntity> drops) {
 		for (int i = drops.size() - 1; i >= 0; i--) {
 			if (i < drops.size() - 1) {

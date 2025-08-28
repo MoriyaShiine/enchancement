@@ -84,7 +84,6 @@
 	"config.toggleablepassives.GrindstoneScreenHandlerMixin",
 	"config.toggleablepassives.ItemStackMixin",
 	"config.toggleablepassives.TridentEntityMixin",
-	"config.weaponenchantmentcooldownrequirement.EnchantmentHelperMixin",
 	"config.weaponenchantmentcooldownrequirement.PlayerEntityMixin",
 	"enchantmenteffectcomponenttype.airjump.LivingEntityMixin",
 	"enchantmenteffectcomponenttype.allowcrossbowcooldownreloading.ServerPlayerInteractionManagerMixin",
