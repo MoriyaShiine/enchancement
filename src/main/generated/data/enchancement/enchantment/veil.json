@@ -16,7 +16,15 @@
 		},
 		"numerator": 1.0
 	  }
-	}
+	},
+	"minecraft:attributes": [
+	  {
+		"amount": -1.0,
+		"attribute": "minecraft:waypoint_transmit_range",
+		"id": "enchancement:enchantment.veil",
+		"operation": "add_multiplied_base"
+	  }
+	]
   },
   "max_cost": {
 	"base": 40,

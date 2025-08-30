@@ -180,6 +180,12 @@ public class ModEnchantments {
 					builder.addNonListEffect(
 							ModEnchantmentEffectComponentTypes.MODIFY_DETECTION_RANGE,
 							new MultiplyEnchantmentEffect(new EnchantmentLevelBasedValue.Fraction(EnchantmentLevelBasedValue.constant(1), EnchantmentLevelBasedValue.linear(2))));
+					builder.addEffect(
+							EnchantmentEffectComponentTypes.ATTRIBUTES,
+							new AttributeEnchantmentEffect(Enchancement.id("enchantment.veil"),
+									EntityAttributes.WAYPOINT_TRANSMIT_RANGE,
+									EnchantmentLevelBasedValue.constant(-1),
+									EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
 				}));
 		// chestplate
 		registerable.register(ADRENALINE, create(ADRENALINE.getValue(),
