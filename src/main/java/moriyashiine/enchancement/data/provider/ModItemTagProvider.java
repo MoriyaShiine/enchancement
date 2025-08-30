@@ -26,9 +26,9 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
 	@Override
 	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
 		valueLookupBuilder(ModItemTags.CANNOT_AUTOMATICALLY_CONSUME)
-				.addOptionalTag(ConventionalItemTags.RAW_FISH_FOODS)
-				.addOptionalTag(ConventionalItemTags.RAW_MEAT_FOODS)
-				.addOptionalTag(ConventionalItemTags.FOOD_POISONING_FOODS)
+				.forceAddTag(ConventionalItemTags.RAW_FISH_FOODS)
+				.forceAddTag(ConventionalItemTags.RAW_MEAT_FOODS)
+				.forceAddTag(ConventionalItemTags.FOOD_POISONING_FOODS)
 				.add(Items.CHORUS_FRUIT)
 				.add(Items.ENCHANTED_GOLDEN_APPLE)
 				.add(Items.GOLDEN_APPLE)

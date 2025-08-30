@@ -22,11 +22,11 @@ public class ModDamageTypeTagProvider extends FabricTagProvider<DamageType> {
 	@Override
 	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
 		builder(ModDamageTypeTags.BYPASSES_WARDENSPINE)
-				.addOptionalTag(DamageTypeTags.AVOIDS_GUARDIAN_THORNS)
-				.addOptionalTag(DamageTypeTags.BYPASSES_INVULNERABILITY);
+				.forceAddTag(DamageTypeTags.AVOIDS_GUARDIAN_THORNS)
+				.forceAddTag(DamageTypeTags.BYPASSES_INVULNERABILITY);
 		builder(ModDamageTypeTags.DOES_NOT_INTERRUPT)
-				.addOptional(ModDamageTypes.LIFE_DRAIN)
-				.addOptionalTag(DamageTypeTags.BYPASSES_INVULNERABILITY);
+				.forceAddTag(DamageTypeTags.BYPASSES_INVULNERABILITY)
+				.addOptional(ModDamageTypes.LIFE_DRAIN);
 
 		builder(DamageTypeTags.BYPASSES_ARMOR)
 				.addOptional(ModDamageTypes.BRIMSTONE)

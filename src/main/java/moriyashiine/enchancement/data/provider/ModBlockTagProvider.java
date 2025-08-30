@@ -17,8 +17,6 @@ import net.minecraft.util.Identifier;
 
 import java.util.concurrent.CompletableFuture;
 
-import static net.minecraft.util.Identifier.of;
-
 public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 	public ModBlockTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
 		super(output, registriesFuture);
@@ -27,23 +25,20 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 	@Override
 	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
 		valueLookupBuilder(ModBlockTags.BURIABLE)
-				.addOptionalTag(BlockTags.HOE_MINEABLE)
-				.addOptionalTag(BlockTags.SHOVEL_MINEABLE)
-				.addOptionalTag(BlockTags.NYLIUM)
+				.forceAddTag(BlockTags.HOE_MINEABLE)
+				.forceAddTag(BlockTags.SHOVEL_MINEABLE)
+				.forceAddTag(BlockTags.NYLIUM)
 				.add(Blocks.COBWEB)
 				.add(Blocks.NETHERRACK)
 				.add(Blocks.POWDER_SNOW);
 		valueLookupBuilder(ModBlockTags.NETHER_ORES)
-				.addOptionalTag(ConventionalBlockTags.NETHERITE_SCRAP_ORES)
-				.addOptionalTag(ConventionalBlockTags.QUARTZ_ORES)
-				.add(Blocks.NETHER_GOLD_ORE);
-		builder(ModBlockTags.NETHER_ORES)
-				.addOptional(key(of("cinderscapes", "sulfur_ore")));
+				.forceAddTag(ConventionalBlockTags.ORES_IN_GROUND_NETHERRACK)
+				.forceAddTag(ConventionalBlockTags.NETHERITE_SCRAP_ORES);
 		valueLookupBuilder(ModBlockTags.SMELTS_SELF)
-				.addOptionalTag(BlockTags.LEAVES)
+				.forceAddTag(BlockTags.LEAVES)
 				.add(Blocks.NETHER_GOLD_ORE);
 		valueLookupBuilder(ModBlockTags.UNSTICKABLE)
-				.addOptionalTag(BlockTags.ICE);
+				.forceAddTag(BlockTags.ICE);
 	}
 
 	private static RegistryKey<Block> key(Identifier id) {

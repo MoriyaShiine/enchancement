@@ -20,7 +20,6 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -72,8 +71,10 @@ public class MineOreVeinsEvent {
 			return Blocks.NETHERRACK;
 		} else if (state.isIn(ModBlockTags.END_ORES)) {
 			return Blocks.END_STONE;
+		} else if (state.isIn(ConventionalBlockTags.ORES_IN_GROUND_DEEPSLATE)) {
+			return Blocks.DEEPSLATE;
 		}
-		return Registries.BLOCK.getId(state.getBlock()).getPath().startsWith("deepslate") ? Blocks.DEEPSLATE : Blocks.STONE;
+		return Blocks.STONE;
 	}
 
 	public static class BreakSpeed implements ModifyBlockBreakingSpeedEvent {

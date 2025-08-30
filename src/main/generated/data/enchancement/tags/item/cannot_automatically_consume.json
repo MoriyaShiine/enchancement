@@ -1,17 +1,8 @@
 {
   "values": [
-	{
-	  "id": "#c:foods/raw_fish",
-	  "required": false
-	},
-	{
-	  "id": "#c:foods/raw_meat",
-	  "required": false
-	},
-	{
-	  "id": "#c:foods/food_poisoning",
-	  "required": false
-	},
+	"#c:foods/raw_fish",
+	"#c:foods/raw_meat",
+	"#c:foods/food_poisoning",
 	"minecraft:chorus_fruit",
 	"minecraft:enchanted_golden_apple",
 	"minecraft:golden_apple",

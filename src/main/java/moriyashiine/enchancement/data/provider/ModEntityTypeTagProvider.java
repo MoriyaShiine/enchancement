@@ -22,26 +22,26 @@ public class ModEntityTypeTagProvider extends FabricTagProvider.EntityTypeTagPro
 	@Override
 	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
 		valueLookupBuilder(ModEntityTypeTags.BRIMSTONE_HITTABLE)
-				.addOptionalTag(ConventionalEntityTypeTags.BOATS)
-				.addOptionalTag(ConventionalEntityTypeTags.MINECARTS)
+				.forceAddTag(ConventionalEntityTypeTags.BOATS)
+				.forceAddTag(ConventionalEntityTypeTags.MINECARTS)
 				.add(EntityType.END_CRYSTAL);
 		valueLookupBuilder(ModEntityTypeTags.BYPASSES_DECREASING_DAMAGE)
 				.add(ModEntityTypes.AMETHYST_SHARD)
 				.add(ModEntityTypes.ICE_SHARD)
 				.add(ModEntityTypes.TORCH);
 		valueLookupBuilder(ModEntityTypeTags.CANNOT_BURY)
-				.addOptionalTag(ConventionalEntityTypeTags.BOSSES)
+				.forceAddTag(ConventionalEntityTypeTags.BOSSES)
 				.add(EntityType.CREAKING)
 				.add(EntityType.ELDER_GUARDIAN)
 				.add(EntityType.WARDEN)
 				.add(EntityType.VEX);
 		valueLookupBuilder(ModEntityTypeTags.CANNOT_DISARM)
-				.addOptionalTag(ConventionalEntityTypeTags.BOSSES);
+				.forceAddTag(ConventionalEntityTypeTags.BOSSES);
 		valueLookupBuilder(ModEntityTypeTags.CANNOT_FREEZE)
-				.addOptionalTag(ConventionalEntityTypeTags.BOSSES)
-				.addOptionalTag(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES);
+				.forceAddTag(ConventionalEntityTypeTags.BOSSES)
+				.forceAddTag(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES);
 		valueLookupBuilder(ModEntityTypeTags.VEIL_IMMUNE)
-				.addOptionalTag(ConventionalEntityTypeTags.BOSSES)
+				.forceAddTag(ConventionalEntityTypeTags.BOSSES)
 				.add(EntityType.ELDER_GUARDIAN)
 				.add(EntityType.WARDEN);
 	}

@@ -1,8 +1,5 @@
 {
   "values": [
-	{
-	  "id": "#c:bosses",
-	  "required": false
-	}
+	"#c:bosses"
   ]
 }

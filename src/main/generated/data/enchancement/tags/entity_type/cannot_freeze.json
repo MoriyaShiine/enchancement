@@ -1,12 +1,6 @@
 {
   "values": [
-	{
-	  "id": "#c:bosses",
-	  "required": false
-	},
-	{
-	  "id": "#minecraft:freeze_immune_entity_types",
-	  "required": false
-	}
+	"#c:bosses",
+	"#minecraft:freeze_immune_entity_types"
   ]
 }

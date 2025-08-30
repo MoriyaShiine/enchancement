@@ -1,13 +1,7 @@
 {
   "values": [
-	{
-	  "id": "#c:boats",
-	  "required": false
-	},
-	{
-	  "id": "#c:minecarts",
-	  "required": false
-	},
+	"#c:boats",
+	"#c:minecarts",
 	"minecraft:end_crystal"
   ]
 }

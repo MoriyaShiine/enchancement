@@ -1,17 +1,8 @@
 {
   "values": [
-	{
-	  "id": "#minecraft:mineable/hoe",
-	  "required": false
-	},
-	{
-	  "id": "#minecraft:mineable/shovel",
-	  "required": false
-	},
-	{
-	  "id": "#minecraft:nylium",
-	  "required": false
-	},
+	"#minecraft:mineable/hoe",
+	"#minecraft:mineable/shovel",
+	"#minecraft:nylium",
 	"minecraft:cobweb",
 	"minecraft:netherrack",
 	"minecraft:powder_snow"

@@ -1,9 +1,6 @@
 {
   "values": [
-	{
-	  "id": "#c:bosses",
-	  "required": false
-	},
+	"#c:bosses",
 	"minecraft:creaking",
 	"minecraft:elder_guardian",
 	"minecraft:warden",
