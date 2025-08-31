@@ -43,7 +43,7 @@ public abstract class EntityMixin {
 	private boolean inHoneySpot() {
 		HoneyTrailComponent honeyTrailComponent = ModWorldComponents.HONEY_TRAIL.get(getWorld());
 		for (HoneyTrailComponent.HoneySpot spot : honeyTrailComponent.getHoneySpots()) {
-			if (spot.getBox().contains(getPos()) && SLibUtils.shouldHurt(getWorld().getEntityLookup().get(spot.getOwnerId()), (Entity) (Object) this)) {
+			if (spot.getBox().contains(getPos()) && SLibUtils.shouldHurt(getWorld().getEntity(spot.getOwnerId()), (Entity) (Object) this)) {
 				return true;
 			}
 		}
