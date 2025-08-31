@@ -1,6 +1,4 @@
 accessWidener v2 named
-accessible class net/minecraft/enchantment/EnchantmentHelper$Consumer
-accessible class net/minecraft/enchantment/EnchantmentHelper$ContextAwareConsumer
 accessible class net/minecraft/entity/effect/InstantHealthOrDamageStatusEffect
 accessible class net/minecraft/entity/mob/ShulkerEntity$PeekGoal
 accessible class net/minecraft/entity/mob/ShulkerEntity$ShootBulletGoal
@@ -8,9 +6,6 @@ accessible method net/minecraft/block/entity/AbstractFurnaceBlockEntity dropExpe
 accessible method net/minecraft/block/ChiseledBookshelfBlock getSlotForHitPos (Lnet/minecraft/util/hit/BlockHitResult;Lnet/minecraft/block/BlockState;)Ljava/util/OptionalInt;
 accessible method net/minecraft/block/HoneyBlock addCollisionEffects (Lnet/minecraft/world/World;Lnet/minecraft/entity/Entity;)V
 accessible method net/minecraft/block/HoneyBlock updateSlidingVelocity (Lnet/minecraft/entity/Entity;)V
-accessible method net/minecraft/enchantment/EnchantmentHelper forEachEnchantment (Lnet/minecraft/item/ItemStack;Lnet/minecraft/enchantment/EnchantmentHelper$Consumer;)V
-accessible method net/minecraft/enchantment/EnchantmentHelper forEachEnchantment (Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/enchantment/EnchantmentHelper$ContextAwareConsumer;)V
-accessible method net/minecraft/enchantment/Enchantment modifyValue (Lnet/minecraft/component/ComponentType;Lnet/minecraft/server/world/ServerWorld;ILnet/minecraft/item/ItemStack;Lorg/apache/commons/lang3/mutable/MutableFloat;)V
 accessible method net/minecraft/entity/projectile/ArrowEntity setPotionContents (Lnet/minecraft/component/type/PotionContentsComponent;)V
 accessible method net/minecraft/entity/Entity spawnSprintingParticles ()V
 accessible method net/minecraft/entity/mob/GuardianEntity setBeamTarget (I)V
