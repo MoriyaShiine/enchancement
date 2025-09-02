@@ -17,6 +17,6 @@ import org.spongepowered.asm.mixin.injection.At;
 public class PlayerEntityMixin {
 	@WrapWithCondition(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;onTargetDamaged(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/damage/DamageSource;)V"))
 	private boolean enchancement$weaponEnchantmentCooldownRequirement(ServerWorld world, Entity target, DamageSource damageSource) {
-		return SLibUtils.currentAttackCooldown == -1 || !(SLibUtils.currentAttackCooldown < ModConfig.weaponEnchantmentCooldownRequirement);
+		return SLibUtils.isAttackingPlayerCooldownWithinThreshold(ModConfig.weaponEnchantmentCooldownRequirement);
 	}
 }
