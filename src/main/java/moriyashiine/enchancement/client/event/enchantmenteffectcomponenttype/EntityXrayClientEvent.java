@@ -6,22 +6,38 @@ package moriyashiine.enchancement.client.event.enchantmenteffectcomponenttype;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.event.client.OutlineEntityEvent;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 
-public class EntityXrayClientEvent implements OutlineEntityEvent.HasOutline {
-	@Override
-	public TriState hasOutline(Entity entity) {
-		ClientPlayerEntity player = MinecraftClient.getInstance().player;
-		if (player != null && entity instanceof LivingEntity living && !living.isSneaking() && !living.isInvisible()) {
-			float distance = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.ENTITY_XRAY, player, 0);
-			if (distance > 0 && entity.distanceTo(player) < distance && !EnchancementUtil.hasAnyEnchantmentsWith(living, ModEnchantmentEffectComponentTypes.HIDE_LABEL_BEHIND_WALLS) && !living.canSee(player)) {
-				return TriState.TRUE;
-			}
+public class EntityXrayClientEvent {
+	private static final MinecraftClient client = MinecraftClient.getInstance();
+
+	private static float xrayDistance = 0;
+
+	public static class Tick implements ClientTickEvents.EndWorldTick {
+		@Override
+		public void onEndTick(ClientWorld world) {
+			xrayDistance = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.ENTITY_XRAY, client.player, 0);
 		}
-		return TriState.DEFAULT;
+	}
+
+	public static class Outline implements OutlineEntityEvent.HasOutline {
+		@Override
+		public TriState hasOutline(Entity entity) {
+			if (xrayDistance > 0) {
+				ClientPlayerEntity player = client.player;
+				if (player != null && entity instanceof LivingEntity living && !living.isSneaking() && !living.isInvisible()) {
+					if (entity.distanceTo(player) < xrayDistance && !EnchancementUtil.hasAnyEnchantmentsWith(living, ModEnchantmentEffectComponentTypes.HIDE_LABEL_BEHIND_WALLS) && !living.canSee(player)) {
+						return TriState.TRUE;
+					}
+				}
+			}
+			return TriState.DEFAULT;
+		}
 	}
 }

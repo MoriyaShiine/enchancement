@@ -110,7 +110,8 @@ public class EnchancementClient implements ClientModInitializer {
 		ItemTooltipCallback.EVENT.register(new AutomaticallyFeedsTooltipClientEvent());
 		ClientTickEvents.END_WORLD_TICK.register(new BounceClientEvent());
 		DisableHudBarEvent.EVENT.register(new ChargeJumpClientEvent());
-		OutlineEntityEvent.HAS_OUTLINE.register(new EntityXrayClientEvent());
+		ClientTickEvents.END_WORLD_TICK.register(new EntityXrayClientEvent.Tick());
+		OutlineEntityEvent.HAS_OUTLINE.register(new EntityXrayClientEvent.Outline());
 		ModifyNightVisionStrengthEvent.ADD.register(new NightVisionClientEvent());
 		ItemTooltipCallback.EVENT.register(new RageClientEvent());
 		// hud elements
