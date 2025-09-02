@@ -3,6 +3,7 @@
  */
 package moriyashiine.enchancement.common.util;
 
+import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.component.entity.LightningDashComponent;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
@@ -42,7 +43,6 @@ import org.apache.commons.lang3.mutable.MutableFloat;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -53,7 +53,7 @@ public class EnchancementUtil {
 	public static Random SERVER_RANDOM = null;
 
 	public static final Map<Enchantment, Integer> ORIGINAL_MAX_LEVELS = new ConcurrentHashMap<>();
-	public static final Map<TagKey<Item>, TriState> VANILLA_ENCHANTMENT_STRENGTH_TAGS = new HashMap<>();
+	public static final Map<TagKey<Item>, TriState> VANILLA_ENCHANTMENT_STRENGTH_TAGS = new Object2ObjectArrayMap<>();
 
 	static {
 		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.REPAIRS_LEATHER_ARMOR, TriState.TRUE);
