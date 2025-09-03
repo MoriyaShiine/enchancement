@@ -14,6 +14,8 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 
+import java.util.OptionalInt;
+
 public class EntityXrayClientEvent {
 	private static final MinecraftClient client = MinecraftClient.getInstance();
 
@@ -26,18 +28,20 @@ public class EntityXrayClientEvent {
 		}
 	}
 
-	public static class Outline implements OutlineEntityEvent.HasOutline {
+	public static class Outline implements OutlineEntityEvent {
+		private static final OutlineData DATA = new OutlineData(TriState.TRUE, OptionalInt.empty());
+
 		@Override
-		public TriState hasOutline(Entity entity) {
+		public OutlineData getOutlineData(Entity entity) {
 			if (xrayDistance > 0) {
 				ClientPlayerEntity player = client.player;
 				if (player != null && entity instanceof LivingEntity living && !living.isSneaking() && !living.isInvisible()) {
 					if (entity.distanceTo(player) < xrayDistance && !EnchancementUtil.hasAnyEnchantmentsWith(living, ModEnchantmentEffectComponentTypes.HIDE_LABEL_BEHIND_WALLS) && !living.canSee(player)) {
-						return TriState.TRUE;
+						return DATA;
 					}
 				}
 			}
-			return TriState.DEFAULT;
+			return OutlineData.EMPTY;
 		}
 	}
 }
