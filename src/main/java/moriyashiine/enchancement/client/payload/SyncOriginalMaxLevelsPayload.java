@@ -39,7 +39,6 @@ public record SyncOriginalMaxLevelsPayload(
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<SyncOriginalMaxLevelsPayload> {
 		@Override
 		public void receive(SyncOriginalMaxLevelsPayload payload, ClientPlayNetworking.Context context) {
-			EnchancementUtil.ORIGINAL_MAX_LEVELS.clear();
 			payload.map().forEach((key, value) -> EnchancementUtil.ORIGINAL_MAX_LEVELS.put(key.value(), value));
 		}
 	}
