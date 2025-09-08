@@ -119,7 +119,7 @@ public class Enchancement implements ModInitializer {
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new BuryEntityEvent.Unbury());
 		UseEntityCallback.EVENT.register(new BuryEntityEvent.Use());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new ChainLightningEvent());
-		ModifyJumpVelocityEvent.EVENT.register(new ChargeJumpEvent());
+		ModifyMovementEvents.JUMP_VELOCITY.register(new ChargeJumpEvent());
 		ModifyCriticalStatusEvent.EVENT.register(new CriticalTipperEvent());
 		ServerEntityEvents.EQUIPMENT_CHANGE.register(new EquipmentResetEvent());
 		ModifyBlockBreakingSpeedEvent.MULTIPLY_TOTAL.register(new FellTreesEvent.BreakSpeed());
@@ -132,13 +132,13 @@ public class Enchancement implements ModInitializer {
 		PreventFallDamageEvent.EVENT.register(new LightningDashEvent());
 		ModifyBlockBreakingSpeedEvent.MULTIPLY_TOTAL.register(new MineOreVeinsEvent.BreakSpeed());
 		PlayerBlockBreakEvents.BEFORE.register(new MineOreVeinsEvent.MineOres());
-		ModifyDamageTakenEvent.Base.ADD.register(new RageEvent.DamageDealtBonus());
-		ModifyDamageTakenEvent.Final.MULTIPLY_TOTAL.register(new RageEvent.DamageTakenReduction());
+		ModifyDamageTakenEvent.ADD.register(new RageEvent.DamageDealtBonus());
+		ModifyDamageTakenEvent.MULTIPLY_TOTAL.register(new RageEvent.DamageTakenReduction());
 		MultiplyMovementSpeedEvent.EVENT.register(new RageEvent.SpeedBonus());
-		ModifyJumpVelocityEvent.EVENT.register(new RotationBurstEvent());
+		ModifyMovementEvents.JUMP_VELOCITY.register(new RotationBurstEvent());
 		PreventFallDamageEvent.EVENT.register(new SlamEvent.FallImmunity());
-		ModifyJumpVelocityEvent.EVENT.register(new SlamEvent.JumpBoost());
-		ModifyJumpVelocityEvent.EVENT.register(new SlideEvent());
+		ModifyMovementEvents.JUMP_VELOCITY.register(new SlamEvent.JumpBoost());
+		ModifyMovementEvents.JUMP_VELOCITY.register(new SlideEvent());
 	}
 
 	private void initPayloads() {

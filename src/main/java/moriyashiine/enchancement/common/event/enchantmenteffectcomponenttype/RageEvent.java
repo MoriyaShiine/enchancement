@@ -15,8 +15,8 @@ import net.minecraft.world.World;
 public class RageEvent {
 	public static class DamageDealtBonus implements ModifyDamageTakenEvent {
 		@Override
-		public float modify(float amount, ServerWorld world, DamageSource source, LivingEntity victim) {
-			if (source.getSource() instanceof LivingEntity living) {
+		public float modify(Phase phase, float amount, ServerWorld world, DamageSource source, LivingEntity victim) {
+			if (phase == Phase.BASE && source.getSource() instanceof LivingEntity living) {
 				return RageEffect.getDamageDealtModifier(living, living.getMainHandStack());
 			}
 			return 0;
@@ -25,8 +25,8 @@ public class RageEvent {
 
 	public static class DamageTakenReduction implements ModifyDamageTakenEvent {
 		@Override
-		public float modify(float amount, ServerWorld world, DamageSource source, LivingEntity victim) {
-			if (!source.isIn(DamageTypeTags.BYPASSES_ENCHANTMENTS)) {
+		public float modify(Phase phase, float amount, ServerWorld world, DamageSource source, LivingEntity victim) {
+			if (phase == Phase.FINAL && !source.isIn(DamageTypeTags.BYPASSES_ENCHANTMENTS)) {
 				return RageEffect.getDamageTakenModifier(victim);
 			}
 			return 1;

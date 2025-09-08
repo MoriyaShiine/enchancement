@@ -5,7 +5,7 @@ package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
 import moriyashiine.enchancement.common.component.entity.ChargeJumpComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.strawberrylib.api.event.ModifyJumpVelocityEvent;
+import moriyashiine.strawberrylib.api.event.ModifyMovementEvents;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.LivingEntity;
@@ -16,7 +16,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.event.GameEvent;
 
-public class ChargeJumpEvent implements ModifyJumpVelocityEvent {
+public class ChargeJumpEvent implements ModifyMovementEvents.JumpVelocity {
 	private static final BlockStateParticleEffect SLIME_PARTICLE = new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.getDefaultState());
 
 	@Override

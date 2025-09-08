@@ -10,6 +10,7 @@ import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.event.PreventFallDamageEvent;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -37,7 +38,7 @@ public class BounceEvent {
 
 	public static class Bounce implements PreventFallDamageEvent {
 		@Override
-		public boolean shouldNotTakeFallDamage(World world, LivingEntity entity, double fallDistance, float damagePerDistance, DamageSource damageSource) {
+		public TriState preventsFallDamage(World world, LivingEntity entity, double fallDistance, float damagePerDistance, DamageSource damageSource) {
 			if (!damageSource.isOf(DamageTypes.STALAGMITE) && fallDistance > entity.getSafeFallDistance() && EnchancementUtil.hasAnyEnchantmentsWith(entity, ModEnchantmentEffectComponentTypes.BOUNCE)) {
 				SLibUtils.playSound(entity, SoundEvents.BLOCK_SLIME_BLOCK_FALL);
 				BounceComponent bounceComponent = ModEntityComponents.BOUNCE.get(entity);
@@ -49,9 +50,9 @@ public class BounceEvent {
 						scheduleBounce(entity, bounceStrength);
 					}
 				}
-				return true;
+				return TriState.TRUE;
 			}
-			return false;
+			return TriState.DEFAULT;
 		}
 
 		private static boolean shouldBounce(LivingEntity entity, BounceComponent bounceComponent) {

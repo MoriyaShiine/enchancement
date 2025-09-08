@@ -5,8 +5,9 @@ package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
 import moriyashiine.enchancement.common.component.entity.SlamComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.strawberrylib.api.event.ModifyJumpVelocityEvent;
+import moriyashiine.strawberrylib.api.event.ModifyMovementEvents;
 import moriyashiine.strawberrylib.api.event.PreventFallDamageEvent;
+import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.util.math.Vec3d;
@@ -15,13 +16,16 @@ import net.minecraft.world.World;
 public class SlamEvent {
 	public static class FallImmunity implements PreventFallDamageEvent {
 		@Override
-		public boolean shouldNotTakeFallDamage(World world, LivingEntity entity, double fallDistance, float damagePerDistance, DamageSource damageSource) {
+		public TriState preventsFallDamage(World world, LivingEntity entity, double fallDistance, float damagePerDistance, DamageSource damageSource) {
 			SlamComponent slamComponent = ModEntityComponents.SLAM.getNullable(entity);
-			return slamComponent != null && slamComponent.isSlamming();
+			if (slamComponent != null && slamComponent.isSlamming()) {
+				return TriState.TRUE;
+			}
+			return TriState.DEFAULT;
 		}
 	}
 
-	public static class JumpBoost implements ModifyJumpVelocityEvent {
+	public static class JumpBoost implements ModifyMovementEvents.JumpVelocity {
 		@Override
 		public Vec3d modify(Vec3d velocity, LivingEntity entity) {
 			SlamComponent slamComponent = ModEntityComponents.SLAM.getNullable(entity);
