@@ -28,6 +28,6 @@ public class ItemStackEntityRenderStateMixin implements ItemStackEntityRenderSta
 
 	@Inject(method = "update", at = @At("TAIL"))
 	private void enchancement$rage(Entity entity, ItemStack stack, ItemModelManager itemModelManager, CallbackInfo ci) {
-		rageColor = RageEffect.getColor(MinecraftClient.getInstance().getCameraEntity(), stack);
+		rageColor = RageEffect.getColor(MinecraftClient.getInstance().player, stack);
 	}
 }

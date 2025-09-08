@@ -11,15 +11,15 @@ import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.enchantment.EnchantmentHelper;
 
 public class BrimstoneHudElement implements HudElement {
-	private static final MinecraftClient minecraft = MinecraftClient.getInstance();
+	private static final MinecraftClient client = MinecraftClient.getInstance();
 	public static int forcedHeight = -1, health = -1;
 
 	@Override
 	public void render(DrawContext context, RenderTickCounter tickCounter) {
-		if (EnchantmentHelper.hasAnyEnchantmentsWith(minecraft.player.getActiveItem(), ModEnchantmentEffectComponentTypes.BRIMSTONE)) {
-			int scaledWidth = minecraft.getWindow().getScaledWidth(), scaledHeight = minecraft.getWindow().getScaledHeight();
+		if (client.player != null && EnchantmentHelper.hasAnyEnchantmentsWith(client.player.getActiveItem(), ModEnchantmentEffectComponentTypes.BRIMSTONE)) {
+			int scaledWidth = client.getWindow().getScaledWidth(), scaledHeight = client.getWindow().getScaledHeight();
 			forcedHeight = (scaledHeight / 2) + 6;
-			minecraft.inGameHud.renderHealthBar(context, minecraft.player, (scaledWidth / 2) - 25, forcedHeight, 1, -1, 12, health, health, 0, false);
+			client.inGameHud.renderHealthBar(context, client.player, (scaledWidth / 2) - 25, forcedHeight, 1, -1, 12, health, health, 0, false);
 			forcedHeight = -1;
 		} else {
 			health = -1;

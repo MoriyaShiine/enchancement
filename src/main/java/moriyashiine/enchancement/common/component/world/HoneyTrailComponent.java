@@ -7,6 +7,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import moriyashiine.enchancement.common.particle.HoneyBubbleParticleEffect;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.storage.ReadView;
 import net.minecraft.storage.WriteView;
@@ -58,14 +59,17 @@ public class HoneyTrailComponent implements AutoSyncedComponent, CommonTickingCo
 	@Override
 	public void clientTick() {
 		tick();
-		for (HoneySpot spot : honeySpots) {
-			if (spot.pos.distanceTo(MinecraftClient.getInstance().getCameraEntity().getPos()) < 128) {
-				for (int j = 0; j < 3; j++) {
-					obj.addParticleClient(new HoneyBubbleParticleEffect(spot.ownerId),
-							MathHelper.nextDouble(obj.random, spot.getBox().minX, spot.getBox().maxX),
-							MathHelper.nextDouble(obj.random, spot.getBox().minY, spot.getBox().maxY),
-							MathHelper.nextDouble(obj.random, spot.getBox().minZ, spot.getBox().maxZ),
-							0, 0, 0);
+		Entity cameraEntity = MinecraftClient.getInstance().getCameraEntity();
+		if (cameraEntity != null) {
+			for (HoneySpot spot : honeySpots) {
+				if (spot.pos.distanceTo(cameraEntity.getPos()) < 128) {
+					for (int j = 0; j < 3; j++) {
+						obj.addParticleClient(new HoneyBubbleParticleEffect(spot.ownerId),
+								MathHelper.nextDouble(obj.random, spot.getBox().minX, spot.getBox().maxX),
+								MathHelper.nextDouble(obj.random, spot.getBox().minY, spot.getBox().maxY),
+								MathHelper.nextDouble(obj.random, spot.getBox().minZ, spot.getBox().maxZ),
+								0, 0, 0);
+					}
 				}
 			}
 		}

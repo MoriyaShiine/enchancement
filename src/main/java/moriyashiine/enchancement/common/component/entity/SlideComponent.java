@@ -77,7 +77,7 @@ public class SlideComponent implements CommonTickingComponent {
 			crawlTimer--;
 		}
 		if (hasSlide) {
-			if (waterSkipTicks >= MAX_WATER_SKIP_TICKS || obj.isSneaking() || (obj.isTouchingWater() && !hasFluidWalking)) {
+			if (waterSkipTicks >= MAX_WATER_SKIP_TICKS || obj.isSneaking() || !obj.isPartOfGame() || (obj.isTouchingWater() && !hasFluidWalking)) {
 				stopSliding();
 			}
 			if (isSliding()) {

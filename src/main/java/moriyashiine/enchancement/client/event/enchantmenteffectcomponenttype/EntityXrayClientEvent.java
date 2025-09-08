@@ -24,7 +24,7 @@ public class EntityXrayClientEvent {
 	public static class Tick implements ClientTickEvents.EndWorldTick {
 		@Override
 		public void onEndTick(ClientWorld world) {
-			xrayDistance = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.ENTITY_XRAY, client.player, 0);
+			xrayDistance = client.player != null && !client.player.isSpectator() ? EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.ENTITY_XRAY, client.player, 0) : 0;
 		}
 	}
 

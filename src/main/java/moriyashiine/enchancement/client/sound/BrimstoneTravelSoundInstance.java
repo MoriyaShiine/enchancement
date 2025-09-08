@@ -7,6 +7,7 @@ import moriyashiine.enchancement.common.entity.projectile.BrimstoneEntity;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.MovingSoundInstance;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
@@ -44,13 +45,16 @@ public class BrimstoneTravelSoundInstance extends MovingSoundInstance {
 		y = newPos.getY();
 		z = newPos.getZ();
 		if (previousPos != null) {
-			Vec3d cameraPos = MinecraftClient.getInstance().getCameraEntity().getPos();
-			double prevDistance = previousPos.distanceTo(cameraPos);
-			if (prevDistance < volume * 16) {
-				if (prevDistance > newPos.distanceTo(cameraPos)) {
-					pitchModifier += 1 / 40F;
-				} else {
-					pitchModifier -= 1 / 40F;
+			Entity cameraEntity = MinecraftClient.getInstance().getCameraEntity();
+			if (cameraEntity != null) {
+				Vec3d cameraPos = cameraEntity.getPos();
+				double prevDistance = previousPos.distanceTo(cameraPos);
+				if (prevDistance < volume * 16) {
+					if (prevDistance > newPos.distanceTo(cameraPos)) {
+						pitchModifier += 1 / 40F;
+					} else {
+						pitchModifier -= 1 / 40F;
+					}
 				}
 			}
 		}

@@ -23,6 +23,9 @@ public record ModifySubmergedMovementSpeedEffect(EnchantmentValueEffect modifier
 			.apply(instance, (enchantmentValueEffect, gate) -> new ModifySubmergedMovementSpeedEffect(enchantmentValueEffect, SubmersionGate.valueOf(gate))));
 
 	public static float getValue(LivingEntity entity) {
+		if (entity.isSpectator()) {
+			return 0;
+		}
 		MutableFloat value = new MutableFloat();
 		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
 			EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {

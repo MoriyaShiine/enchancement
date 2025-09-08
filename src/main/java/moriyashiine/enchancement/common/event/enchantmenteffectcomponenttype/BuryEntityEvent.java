@@ -42,18 +42,20 @@ public class BuryEntityEvent {
 	public static class Use implements UseEntityCallback {
 		@Override
 		public ActionResult interact(PlayerEntity player, World world, Hand hand, Entity entity, @Nullable EntityHitResult hitResult) {
-			ItemStack stack = player.getStackInHand(hand);
-			if (!player.getItemCooldownManager().isCoolingDown(stack) && EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.BURY_ENTITY) && BuryEffect.bury(world, entity, () -> {
-				if (!world.isClient) {
-					int cooldown = MathHelper.floor(EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.BURY_ENTITY, (ServerWorld) world, stack, 0) * 20);
-					if (cooldown > 0) {
-						player.getItemCooldownManager().set(stack, cooldown);
+			if (player.isPartOfGame()) {
+				ItemStack stack = player.getStackInHand(hand);
+				if (!player.getItemCooldownManager().isCoolingDown(stack) && EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.BURY_ENTITY) && BuryEffect.bury(world, entity, () -> {
+					if (!world.isClient) {
+						int cooldown = MathHelper.floor(EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.BURY_ENTITY, (ServerWorld) world, stack, 0) * 20);
+						if (cooldown > 0) {
+							player.getItemCooldownManager().set(stack, cooldown);
+						}
+						player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
+						stack.damage(1, player, LivingEntity.getSlotForHand(hand));
 					}
-					player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
-					stack.damage(1, player, LivingEntity.getSlotForHand(hand));
+				})) {
+					return ActionResult.SUCCESS;
 				}
-			})) {
-				return ActionResult.SUCCESS;
 			}
 			return ActionResult.PASS;
 		}

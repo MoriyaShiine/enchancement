@@ -4,12 +4,14 @@
 package moriyashiine.enchancement.client.hud;
 
 import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.component.entity.AirJumpComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 
 public class AirJumpHudElement implements HudElement {
@@ -23,7 +25,9 @@ public class AirJumpHudElement implements HudElement {
 
 	@Override
 	public void render(DrawContext context, RenderTickCounter tickCounter) {
-		ModEntityComponents.AIR_JUMP.maybeGet(MinecraftClient.getInstance().getCameraEntity()).ifPresent(airJumpComponent -> {
+		PlayerEntity player = MinecraftClient.getInstance().player;
+		if (player != null && !player.isSpectator()) {
+			AirJumpComponent airJumpComponent = ModEntityComponents.AIR_JUMP.get(player);
 			if (airJumpComponent.hasAirJump()) {
 				int jumpsLeft = airJumpComponent.getJumpsLeft();
 				if (jumpsLeft < airJumpComponent.getMaxJumps()) {
@@ -38,7 +42,7 @@ public class AirJumpHudElement implements HudElement {
 					}
 				}
 			}
-		});
+		}
 	}
 
 	private static Identifier getTexture(int i) {

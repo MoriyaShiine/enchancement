@@ -4,12 +4,14 @@
 package moriyashiine.enchancement.client.hud;
 
 import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.component.entity.DirectionBurstComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 
 public class DirectionBurstHudElement implements HudElement {
@@ -18,7 +20,9 @@ public class DirectionBurstHudElement implements HudElement {
 
 	@Override
 	public void render(DrawContext context, RenderTickCounter tickCounter) {
-		ModEntityComponents.DIRECTION_BURST.maybeGet(MinecraftClient.getInstance().getCameraEntity()).ifPresent(directionBurstComponent -> {
+		PlayerEntity player = MinecraftClient.getInstance().player;
+		if (player != null && !player.isSpectator()) {
+			DirectionBurstComponent directionBurstComponent = ModEntityComponents.DIRECTION_BURST.get(player);
 			if (directionBurstComponent.hasDirectionBurst() && directionBurstComponent.getCooldown() > 0) {
 				int x = context.getScaledWindowWidth() / 2 - 5, y = context.getScaledWindowHeight() / 2 - 14;
 				context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, BACKGROUND_TEXTURE, x, y, 10, 4);
@@ -26,6 +30,6 @@ public class DirectionBurstHudElement implements HudElement {
 					context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, PROGRESS_TEXTURE, 10, 4, 0, 0, x, y, (int) (11 - (directionBurstComponent.getCooldown() / (float) directionBurstComponent.getLastCooldown()) * 10), 4);
 				}
 			}
-		});
+		}
 	}
 }

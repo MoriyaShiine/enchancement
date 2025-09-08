@@ -7,6 +7,7 @@ import moriyashiine.enchancement.common.particle.HoneyBubbleParticleEffect;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.player.PlayerEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -23,7 +24,8 @@ public class HoneyBubbleParticle extends SpriteBillboardParticle {
 		setSpriteForAge(spriteProvider);
 		maxAge = 3;
 		gravityStrength = 0.008F;
-		if (MinecraftClient.getInstance().getCameraEntity().getUuid().equals(ownerId)) {
+		PlayerEntity player = MinecraftClient.getInstance().player;
+		if (player != null && player.getUuid().equals(ownerId)) {
 			alpha = 0.2F;
 		} else {
 			alpha = 0.5F;

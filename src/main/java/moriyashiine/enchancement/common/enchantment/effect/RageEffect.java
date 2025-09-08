@@ -49,7 +49,7 @@ public record RageEffect(EnchantmentValueEffect damageDealtModifier, Enchantment
 	}
 
 	public static int getColor(Entity entity, ItemStack stack) {
-		if (entity instanceof LivingEntity living) {
+		if (entity instanceof LivingEntity living && !living.isSpectator()) {
 			float damageBonus = getDamageDealtModifier(living, stack);
 			if (damageBonus > 0) {
 				float other = 1 - damageBonus / getDamageDealtModifierMax(living, stack);
@@ -61,6 +61,9 @@ public record RageEffect(EnchantmentValueEffect damageDealtModifier, Enchantment
 
 	// damage taken
 	public static float getDamageTakenModifier(LivingEntity entity, ItemStack stack) {
+		if (entity == null || entity.isSpectator()) {
+			return 1;
+		}
 		MutableFloat value = new MutableFloat();
 		EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 			RageEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.RAGE);
@@ -81,6 +84,9 @@ public record RageEffect(EnchantmentValueEffect damageDealtModifier, Enchantment
 
 	// movement speed
 	public static float getMovementSpeedModifier(LivingEntity entity, ItemStack stack) {
+		if (entity == null || entity.isSpectator()) {
+			return 0;
+		}
 		MutableFloat value = new MutableFloat();
 		EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
 			RageEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.RAGE);

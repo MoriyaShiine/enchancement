@@ -11,6 +11,6 @@ import net.minecraft.entity.LivingEntity;
 public class NightVisionClientEvent implements ModifyNightVisionStrengthEvent {
 	@Override
 	public float modify(float strength, LivingEntity entity) {
-		return EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.NIGHT_VISION, entity, 0);
+		return entity.isSpectator() ? 0 : EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.NIGHT_VISION, entity, 0);
 	}
 }
