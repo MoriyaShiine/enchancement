@@ -1,4 +1,12 @@
 ------------------------------------------------------
+Version 1.21.7-r11
+------------------------------------------------------
+- use proper checks for client player, camera entity, and spectator
+- merge https://github.com/MoriyaShiine/enchancement/pull/259
+  - adds Ukrainian translation. Thanks StarmanMine142!
+- fix https://github.com/MoriyaShiine/enchancement/issues/260
+
+------------------------------------------------------
 Version 1.21.7-r10
 ------------------------------------------------------
 - fix rare case where bedrock was obtainable from projectiles
