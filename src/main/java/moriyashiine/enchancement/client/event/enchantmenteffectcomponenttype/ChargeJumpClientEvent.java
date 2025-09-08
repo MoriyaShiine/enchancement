@@ -11,6 +11,9 @@ import net.minecraft.entity.player.PlayerEntity;
 public class ChargeJumpClientEvent implements DisableHudBarEvent {
 	@Override
 	public boolean shouldDisableHudBar(PlayerEntity player) {
+		if (player == null) { // todo slib will have this check built in next version, so remove it then
+			return false;
+		}
 		ChargeJumpComponent chargeJumpComponent = ModEntityComponents.CHARGE_JUMP.get(player);
 		return chargeJumpComponent.hasChargeJump() && chargeJumpComponent.getChargeProgress() > 0;
 	}
