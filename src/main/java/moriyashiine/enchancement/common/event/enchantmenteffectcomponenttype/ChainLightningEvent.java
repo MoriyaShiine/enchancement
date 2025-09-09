@@ -7,8 +7,8 @@ import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.particle.SparkParticleEffect;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.strawberrylib.api.event.AfterDamageIncludingDeathEvent;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
-import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -21,12 +21,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ChainLightningEvent implements ServerLivingEntityEvents.AllowDamage {
+public class ChainLightningEvent implements AfterDamageIncludingDeathEvent {
 	private boolean first = true;
 
 	@Override
-	public boolean allowDamage(LivingEntity entity, DamageSource source, float amount) {
-		if (first) {
+	public void afterDamage(LivingEntity entity, DamageSource source, float baseDamageTaken, float damageTaken, boolean blocked) {
+		if (!blocked && first) {
 			float multiplier = 0;
 			if (source.getSource() instanceof LivingEntity living) {
 				multiplier = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.CHAIN_LIGHTNING, (ServerWorld) entity.getWorld(), living.getMainHandStack(), 0);
@@ -35,11 +35,10 @@ public class ChainLightningEvent implements ServerLivingEntityEvents.AllowDamage
 			}
 			if (multiplier != 0) {
 				first = false;
-				chain(new ArrayList<>(), (ServerWorld) entity.getWorld(), entity, source, amount, multiplier);
+				chain(new ArrayList<>(), (ServerWorld) entity.getWorld(), entity, source, baseDamageTaken, multiplier);
 				first = true;
 			}
 		}
-		return true;
 	}
 
 	private static void chain(List<LivingEntity> hitEntities, ServerWorld world, LivingEntity target, DamageSource source, float damage, float multiplier) {

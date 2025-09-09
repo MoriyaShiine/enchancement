@@ -118,7 +118,7 @@ public class Enchancement implements ModInitializer {
 		ServerTickEvents.END_SERVER_TICK.register(new BounceEvent.DelayedBounce());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new BuryEntityEvent.Unbury());
 		UseEntityCallback.EVENT.register(new BuryEntityEvent.Use());
-		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new ChainLightningEvent());
+		AfterDamageIncludingDeathEvent.EVENT.register(new ChainLightningEvent());
 		ModifyMovementEvents.JUMP_VELOCITY.register(new ChargeJumpEvent());
 		ModifyCriticalStatusEvent.EVENT.register(new CriticalTipperEvent());
 		ServerEntityEvents.EQUIPMENT_CHANGE.register(new EquipmentResetEvent());
