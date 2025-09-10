@@ -107,7 +107,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 				enchantingStack = ItemStack.EMPTY;
 				enchantingMaterial = EnchantingMaterial.EMPTY;
 				cost = 0;
-				player.getInventory().offerOrDrop(slots.get(2).getStack());
+				player.getInventory().offerOrDrop(slots.get(2).getStack().copyAndEmpty());
 				super.onTakeItem(player, stack);
 			}
 		});
