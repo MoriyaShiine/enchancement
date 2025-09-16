@@ -20,11 +20,10 @@ public class LeechingTridentEvent implements ServerLivingEntityEvents.AfterDamag
 					entity.getWorld().getEntitiesByClass(TridentEntity.class, entity.getBoundingBox().expand(1), foundTrident -> true).forEach(otherTrident -> {
 						LeechingTridentComponent otherLeechingTridentComponent = ModEntityComponents.LEECHING_TRIDENT.get(otherTrident);
 						if (otherLeechingTridentComponent.getStuckEntity() == entity) {
-							otherLeechingTridentComponent.setStuckEntityId(-2);
-							otherLeechingTridentComponent.sync();
+							otherLeechingTridentComponent.unleech();
 						}
 					});
-					leechingTridentComponent.setStuckEntityId(entity.getId());
+					leechingTridentComponent.setStuckEntity(entity);
 					leechingTridentComponent.sync();
 				}
 			}
