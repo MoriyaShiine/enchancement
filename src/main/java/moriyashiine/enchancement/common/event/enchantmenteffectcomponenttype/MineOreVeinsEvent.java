@@ -39,10 +39,12 @@ public class MineOreVeinsEvent {
 			for (int x = -1; x <= 1; x++) {
 				for (int y = -1; y <= 1; y++) {
 					for (int z = -1; z <= 1; z++) {
-						BlockState state = world.getBlockState(pos.set(originalX + x, originalY + y, originalZ + z));
-						if (state.isIn(ConventionalBlockTags.ORES) && !ores.contains(pos) && state.getBlock() == original) {
-							ores.add(pos.toImmutable());
-							gatherOres(ores, world, pos, original);
+						if (world.getWorldBorder().contains(pos.set(originalX + x, originalY + y, originalZ + z))) {
+							BlockState state = world.getBlockState(pos);
+							if (state.isIn(ConventionalBlockTags.ORES) && !ores.contains(pos) && state.getBlock() == original) {
+								ores.add(pos.toImmutable());
+								gatherOres(ores, world, pos, original);
+							}
 						}
 					}
 				}

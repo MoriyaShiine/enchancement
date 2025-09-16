@@ -38,10 +38,13 @@ public class FellTreesEvent {
 			for (int x = -1; x <= 1; x++) {
 				for (int y = -1; y <= 1; y++) {
 					for (int z = -1; z <= 1; z++) {
-						BlockState state = world.getBlockState(pos.set(originalX + x, originalY + y, originalZ + z));
-						if (state.isIn(BlockTags.LOGS) && !tree.contains(pos) && state.getBlock() == original) {
-							tree.add(pos.toImmutable());
-							gatherTree(tree, world, pos, original);
+						pos.set(originalX + x, originalY + y, originalZ + z);
+						if (!(world instanceof World borderWorld) || borderWorld.getWorldBorder().contains(pos)) {
+							BlockState state = world.getBlockState(pos);
+							if (state.isIn(BlockTags.LOGS) && !tree.contains(pos) && state.getBlock() == original) {
+								tree.add(pos.toImmutable());
+								gatherTree(tree, world, pos, original);
+							}
 						}
 					}
 				}
