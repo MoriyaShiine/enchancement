@@ -1,4 +1,10 @@
 ------------------------------------------------------
+Version 1.21.8-r3
+------------------------------------------------------
+- extracting, lumberjack, and torch no longer work outside the world border
+- clean up leech code
+
+------------------------------------------------------
 Version 1.21.8-r2
 ------------------------------------------------------
 - fix enchanting table dupe bug
