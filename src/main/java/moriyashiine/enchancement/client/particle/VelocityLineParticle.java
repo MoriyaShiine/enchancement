@@ -9,7 +9,6 @@ import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 
 public class VelocityLineParticle extends SpriteBillboardParticle {
@@ -60,17 +59,11 @@ public class VelocityLineParticle extends SpriteBillboardParticle {
 		return Rotator.Y_AND_W_ONLY;
 	}
 
-	public static class Factory implements ParticleFactory<SimpleParticleType> {
-		private final SpriteProvider spriteProvider;
-
-		public Factory(SpriteProvider spriteProvider) {
-			this.spriteProvider = spriteProvider;
-		}
-
+	public record Factory(SpriteProvider spriteProvider) implements ParticleFactory<SimpleParticleType> {
 		@Override
-		public @Nullable Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+		public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
 			VelocityLineParticle particle = new VelocityLineParticle(world, x, y, z, velocityX, velocityY, velocityZ);
-			particle.setSpriteForAge(spriteProvider);
+			particle.setSpriteForAge(spriteProvider());
 			return particle;
 		}
 	}

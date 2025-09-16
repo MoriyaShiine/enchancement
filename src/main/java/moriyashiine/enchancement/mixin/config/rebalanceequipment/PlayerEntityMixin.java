@@ -36,7 +36,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 	}
 
 	@ModifyVariable(method = "getProjectileType", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/RangedWeaponItem;getHeldProjectiles()Ljava/util/function/Predicate;"))
-	private Predicate<ItemStack> enchancement$rebalanceEquipment(Predicate<ItemStack> value) {
+	private Predicate<ItemStack> enchancement$rebalanceEquipmentHeld(Predicate<ItemStack> value) {
 		if (ModConfig.rebalanceEquipment) {
 			heldItemsPredicate = value;
 		}
@@ -44,7 +44,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 	}
 
 	@ModifyVariable(method = "getProjectileType", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/RangedWeaponItem;getProjectiles()Ljava/util/function/Predicate;"))
-	private Predicate<ItemStack> enchancement$rebalanceEquipment(Predicate<ItemStack> value, ItemStack stack) {
+	private Predicate<ItemStack> enchancement$rebalanceEquipment(Predicate<ItemStack> value) {
 		if (heldItemsPredicate != null) {
 			value = value.or(heldItemsPredicate);
 			heldItemsPredicate = null;

@@ -16,16 +16,11 @@ public class ShortFlameParticle extends FlameParticle {
 		maxAge /= 4;
 	}
 
-	public static class SmallFactory implements ParticleFactory<SimpleParticleType> {
-		private final SpriteProvider spriteProvider;
-
-		public SmallFactory(SpriteProvider spriteProvider) {
-			this.spriteProvider = spriteProvider;
-		}
-
+	public record SmallFactory(SpriteProvider spriteProvider) implements ParticleFactory<SimpleParticleType> {
+		@Override
 		public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
 			ShortFlameParticle shortFlameParticle = new ShortFlameParticle(world, x, y, z, velocityX, velocityY, velocityZ);
-			shortFlameParticle.setSprite(spriteProvider);
+			shortFlameParticle.setSprite(spriteProvider());
 			shortFlameParticle.scale(0.5F);
 			return shortFlameParticle;
 		}

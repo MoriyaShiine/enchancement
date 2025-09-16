@@ -3,6 +3,7 @@
  */
 package moriyashiine.enchancement.mixin.enchantmententityeffecttype.freeze.client;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import moriyashiine.enchancement.client.reloadlisteners.FrozenReloadListener;
 import moriyashiine.enchancement.common.component.entity.FrozenComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
@@ -17,7 +18,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntityRenderer.class)
@@ -29,12 +29,12 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, S extend
 		super(context);
 	}
 
-	@ModifyVariable(method = "getRenderLayer", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/render/entity/LivingEntityRenderer;getTexture(Lnet/minecraft/client/render/entity/state/LivingEntityRenderState;)Lnet/minecraft/util/Identifier;"))
-	private Identifier enchancement$freeze(Identifier value) {
+	@ModifyExpressionValue(method = "getRenderLayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/LivingEntityRenderer;getTexture(Lnet/minecraft/client/render/entity/state/LivingEntityRenderState;)Lnet/minecraft/util/Identifier;"))
+	private Identifier enchancement$freeze(Identifier original) {
 		if (isFrozen) {
-			return FrozenReloadListener.INSTANCE.getTexture(value);
+			return FrozenReloadListener.INSTANCE.getTexture(original);
 		}
-		return value;
+		return original;
 	}
 
 	@Inject(method = "updateRenderState(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/client/render/entity/state/LivingEntityRenderState;F)V", at = @At("TAIL"))

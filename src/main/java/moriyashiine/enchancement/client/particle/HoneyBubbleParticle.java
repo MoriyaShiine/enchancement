@@ -8,7 +8,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -51,16 +50,10 @@ public class HoneyBubbleParticle extends SpriteBillboardParticle {
 		return ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT;
 	}
 
-	public static class Factory implements ParticleFactory<HoneyBubbleParticleEffect> {
-		private final SpriteProvider spriteProvider;
-
-		public Factory(SpriteProvider spriteProvider) {
-			this.spriteProvider = spriteProvider;
-		}
-
+	public record Factory(SpriteProvider spriteProvider) implements ParticleFactory<HoneyBubbleParticleEffect> {
 		@Override
-		public @Nullable Particle createParticle(HoneyBubbleParticleEffect parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-			return new HoneyBubbleParticle(parameters.ownerId(), world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider);
+		public Particle createParticle(HoneyBubbleParticleEffect parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+			return new HoneyBubbleParticle(parameters.ownerId(), world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider());
 		}
 	}
 }

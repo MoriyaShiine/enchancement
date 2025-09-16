@@ -28,17 +28,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.function.Function;
 
-public class EnchantingMaterialReloadListener implements SimpleSynchronousResourceReloadListener {
+public record EnchantingMaterialReloadListener(RegistryOps<JsonElement> registryOps) implements SimpleSynchronousResourceReloadListener {
 	private static final Codec<Ingredient> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Ingredient.CODEC.fieldOf("ingredient").forGetter(Function.identity())
 	).apply(instance, Function.identity()));
 
 	public static final Identifier ID = Enchancement.id("enchanting_material");
 
-	private final RegistryOps<JsonElement> registryOps;
-
 	public EnchantingMaterialReloadListener(RegistryWrapper.WrapperLookup wrapperLookup) {
-		registryOps = wrapperLookup.getOps(JsonOps.INSTANCE);
+		this(wrapperLookup.getOps(JsonOps.INSTANCE));
 	}
 
 	@Override

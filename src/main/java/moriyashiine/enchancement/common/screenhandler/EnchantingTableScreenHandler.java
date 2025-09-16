@@ -364,28 +364,21 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		return false;
 	}
 
-	public static class EnchantingMaterial {
-		public static final PacketCodec<RegistryByteBuf, EnchantingMaterial> PACKET_CODEC = Ingredient.PACKET_CODEC.xmap(EnchantingMaterial::new, material -> material.ingredient);
+	@SuppressWarnings("deprecation")
+	public record EnchantingMaterial(Ingredient ingredient) {
+		public static final PacketCodec<RegistryByteBuf, EnchantingMaterial> PACKET_CODEC = Ingredient.PACKET_CODEC.xmap(EnchantingMaterial::new, EnchantingMaterial::ingredient);
 
 		public static final EnchantingMaterial EMPTY = new EnchantingMaterial(null);
 
-		private final Ingredient ingredient;
-
-		public EnchantingMaterial(Ingredient ingredient) {
-			this.ingredient = ingredient;
-		}
-
-		@SuppressWarnings("deprecation")
 		public RegistryEntry<Item> get(int index) {
-			return ingredient.getMatchingItems().toList().get(index);
+			return ingredient().getMatchingItems().toList().get(index);
 		}
 
-		@SuppressWarnings("deprecation")
 		public int size() {
-			if (ingredient == null) {
+			if (ingredient() == null) {
 				return 0;
 			}
-			return ingredient.getMatchingItems().toList().size();
+			return ingredient().getMatchingItems().toList().size();
 		}
 
 		public boolean isEmpty() {
@@ -393,10 +386,10 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		}
 
 		public boolean test(ItemStack stack) {
-			if (ingredient == null) {
+			if (ingredient() == null) {
 				return false;
 			}
-			return ingredient.test(stack);
+			return ingredient().test(stack);
 		}
 	}
 }

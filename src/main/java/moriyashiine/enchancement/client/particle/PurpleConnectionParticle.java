@@ -17,16 +17,11 @@ public class PurpleConnectionParticle extends ConnectionParticle {
 		setColor(MathHelper.nextFloat(random, 0.7F, 0.8F), 0, MathHelper.nextFloat(random, 0.8F, 0.9F));
 	}
 
-	public static class Factory implements ParticleFactory<SimpleParticleType> {
-		private final SpriteProvider spriteProvider;
-
-		public Factory(SpriteProvider spriteProvider) {
-			this.spriteProvider = spriteProvider;
-		}
-
+	public record Factory(SpriteProvider spriteProvider) implements ParticleFactory<SimpleParticleType> {
+		@Override
 		public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
 			PurpleConnectionParticle purpleConnectionParticle = new PurpleConnectionParticle(world, x, y, z, velocityX, velocityY, velocityZ);
-			purpleConnectionParticle.setSprite(spriteProvider);
+			purpleConnectionParticle.setSprite(spriteProvider());
 			return purpleConnectionParticle;
 		}
 	}

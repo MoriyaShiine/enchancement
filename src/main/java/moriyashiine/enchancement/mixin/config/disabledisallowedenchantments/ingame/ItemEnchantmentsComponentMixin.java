@@ -19,7 +19,7 @@ public class ItemEnchantmentsComponentMixin {
 		Object2IntOpenHashMap<RegistryEntry<Enchantment>> newMap = new Object2IntOpenHashMap<>();
 		value.forEach((entry, level) -> {
 			if (!entry.matchesKey(ModEnchantments.EMPTY_KEY)) {
-				newMap.put(entry, level);
+				newMap.put(entry, level.intValue());
 			}
 		});
 		return newMap;

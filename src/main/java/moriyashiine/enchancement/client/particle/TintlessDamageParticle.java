@@ -30,16 +30,11 @@ public class TintlessDamageParticle extends DamageParticle {
 		red = green = blue = tint;
 	}
 
-	public static class Factory implements ParticleFactory<SimpleParticleType> {
-		private final SpriteProvider spriteProvider;
-
-		public Factory(SpriteProvider spriteProvider) {
-			this.spriteProvider = spriteProvider;
-		}
-
+	public record Factory(SpriteProvider spriteProvider) implements ParticleFactory<SimpleParticleType> {
+		@Override
 		public Particle createParticle(SimpleParticleType type, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
 			TintlessDamageParticle particle = new TintlessDamageParticle(world, x, y, z, velocityX, velocityY, velocityZ);
-			particle.setSprite(spriteProvider);
+			particle.setSprite(spriteProvider());
 			return particle;
 		}
 	}
