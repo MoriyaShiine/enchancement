@@ -1,4 +1,11 @@
 ------------------------------------------------------
+Version 1.21.8-r4
+------------------------------------------------------
+- merge https://github.com/MoriyaShiine/enchancement/pull/263
+  - Upgrade Stored Enchantments Tooltip Component. Thanks EightSidedSquare!
+- fix chiseled bookshelf peeking issues
+
+------------------------------------------------------
 Version 1.21.8-r3
 ------------------------------------------------------
 - extracting, lumberjack, and torch no longer work outside the world border
