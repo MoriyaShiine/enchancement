@@ -4,6 +4,7 @@
 package moriyashiine.enchancement.common;
 
 import eu.midnightdust.lib.config.MidnightConfig;
+import moriyashiine.enchancement.client.gui.tooltip.StoredEnchantmentsTooltipComponent;
 import moriyashiine.enchancement.client.util.AllowDuplicateKeybindingsMode;
 import moriyashiine.enchancement.common.util.config.OverhaulMode;
 
@@ -123,6 +124,12 @@ public class ModConfig extends MidnightConfig {
 				maxFellTreesBlocks + maxFellTreesHorizontalLength + maxMineOreVeinsBlocks +
 				coyoteBiteTicks;
 		return encoding.hashCode();
+	}
+
+	@Override
+	public void writeChanges(String modid) {
+		super.writeChanges(modid);
+		StoredEnchantmentsTooltipComponent.clearIconCache();
 	}
 
 	static {
