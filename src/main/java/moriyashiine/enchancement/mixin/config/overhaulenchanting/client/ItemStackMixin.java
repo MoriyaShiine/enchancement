@@ -18,10 +18,10 @@ import java.util.function.Consumer;
 
 @Mixin(ItemStack.class)
 public class ItemStackMixin {
-    @Inject(method = "appendComponentTooltip", at = @At("HEAD"), cancellable = true)
-    private <T extends TooltipAppender> void enchancement$overhaulEnchanting(ComponentType<T> componentType, Item.TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> textConsumer, TooltipType type, CallbackInfo ci) {
-        if(componentType == DataComponentTypes.STORED_ENCHANTMENTS && EnchantmentDescriptionsEvent.enableDescriptions()) {
-            ci.cancel();
-        }
-    }
+	@Inject(method = "appendComponentTooltip", at = @At("HEAD"), cancellable = true)
+	private <T extends TooltipAppender> void enchancement$overhaulEnchanting(ComponentType<T> componentType, Item.TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> textConsumer, TooltipType type, CallbackInfo ci) {
+		if (componentType == DataComponentTypes.STORED_ENCHANTMENTS && EnchantmentDescriptionsEvent.enableDescriptions()) {
+			ci.cancel();
+		}
+	}
 }

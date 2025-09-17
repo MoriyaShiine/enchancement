@@ -17,10 +17,10 @@ import java.util.List;
 
 @Mixin(DrawContext.class)
 public class DrawContextMixin {
-    @Inject(method = "drawTooltipImmediately", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/tooltip/TooltipComponent;getWidth(Lnet/minecraft/client/font/TextRenderer;)I"))
-    private void enchancement$overhaulEnchanting(TextRenderer textRenderer, List<TooltipComponent> components, int x, int y, TooltipPositioner positioner, @Nullable Identifier texture, CallbackInfo ci, @Local TooltipComponent component) {
-        if (component instanceof StoredEnchantmentsTooltipComponent storedEnchantmentsComponent) {
-            storedEnchantmentsComponent.cacheDimensions(textRenderer, x, y, (DrawContext) (Object) this, positioner);
-        }
-    }
+	@Inject(method = "drawTooltipImmediately", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/tooltip/TooltipComponent;getWidth(Lnet/minecraft/client/font/TextRenderer;)I"))
+	private void enchancement$overhaulEnchanting(TextRenderer textRenderer, List<TooltipComponent> components, int x, int y, TooltipPositioner positioner, @Nullable Identifier texture, CallbackInfo ci, @Local TooltipComponent component) {
+		if (component instanceof StoredEnchantmentsTooltipComponent storedEnchantmentsComponent) {
+			storedEnchantmentsComponent.cacheDimensions(textRenderer, x, y, (DrawContext) (Object) this, positioner);
+		}
+	}
 }

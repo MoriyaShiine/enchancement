@@ -35,7 +35,7 @@ public class EnchantmentDescriptionsEvent {
 				EnchantmentHelper.getEnchantments(stack).getEnchantments().forEach(enchantment -> {
 					for (int i = 0; i < lines.size(); i++) {
 						Text description = getDescription(lines.get(i), enchantment, true);
-						if(description != null) {
+						if (description != null) {
 							lines.add(i + 1, description);
 							break;
 						}

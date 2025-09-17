@@ -28,7 +28,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.function.Function;
 
-public record EnchantingMaterialReloadListener(RegistryOps<JsonElement> registryOps) implements SimpleSynchronousResourceReloadListener {
+public record EnchantingMaterialReloadListener(
+		RegistryOps<JsonElement> registryOps) implements SimpleSynchronousResourceReloadListener {
 	private static final Codec<Ingredient> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Ingredient.CODEC.fieldOf("ingredient").forGetter(Function.identity())
 	).apply(instance, Function.identity()));
