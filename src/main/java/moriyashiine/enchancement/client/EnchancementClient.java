@@ -39,6 +39,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
+import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
@@ -104,6 +105,7 @@ public class EnchancementClient implements ClientModInitializer {
 		ClientTickEvents.END_WORLD_TICK.register(new CoyoteBiteEvent());
 		ItemTooltipCallback.EVENT.register(new EnchantmentDescriptionsEvent.DescriptionText());
 		TooltipComponentCallback.EVENT.register(new EnchantmentDescriptionsEvent.Icons());
+		CommonLifecycleEvents.TAGS_LOADED.register(new EnchantmentDescriptionsEvent.ClearIconCache());
 		ClientTickEvents.START_WORLD_TICK.register(new SyncVelocitiesEvent());
 		ItemTooltipCallback.EVENT.register(new ToggleablePassivesEvent());
 		// enchantment
