@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) MoriyaShiine. All Rights Reserved.
+ */
 package moriyashiine.enchancement.mixin.config.overhaulenchanting.client;
 
 import moriyashiine.enchancement.client.event.config.EnchantmentDescriptionsEvent;
