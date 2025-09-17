@@ -171,6 +171,7 @@
 	"config.allowduplicatekeybindings.client.ControlsListWidgetKeyBindingEntryMixin",
 	"config.allowduplicatekeybindings.client.GameOptionsMixin",
 	"config.allowduplicatekeybindings.client.KeyBindingMixin",
+	"config.chiseledbookshelfpeeking.client.DrawContextMixin",
 	"config.coloredenchantmentnames.client.EnchantmentMixin",
 	"config.coyotebite.MinecraftClientMixin",
 	"config.overhaulenchanting.client.DrawContextMixin",
