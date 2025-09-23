@@ -129,7 +129,9 @@ public class ModConfig extends MidnightConfig {
 	@Override
 	public void writeChanges(String modid) {
 		super.writeChanges(modid);
-		StoredEnchantmentsTooltipComponent.clearIconCache();
+		if (Enchancement.isLoaded) {
+			StoredEnchantmentsTooltipComponent.clearIconCache();
+		}
 	}
 
 	static {
