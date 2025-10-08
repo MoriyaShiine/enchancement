@@ -31,7 +31,7 @@ public record BoostInFluidS2CPayload(int entityId, boolean shouldBoost) implemen
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<BoostInFluidS2CPayload> {
 		@Override
 		public void receive(BoostInFluidS2CPayload payload, ClientPlayNetworking.Context context) {
-			Entity entity = context.player().getWorld().getEntityById(payload.entityId());
+			Entity entity = context.player().getEntityWorld().getEntityById(payload.entityId());
 			if (entity instanceof LivingEntity) {
 				ModEntityComponents.BOOST_IN_FLUID.get(entity).setShouldBoost(payload.shouldBoost());
 			}

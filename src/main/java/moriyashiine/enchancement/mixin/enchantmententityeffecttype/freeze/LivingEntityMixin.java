@@ -48,12 +48,12 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@Inject(method = "pushAwayFrom", at = @At("HEAD"))
 	private void enchancement$freeze(Entity entity, CallbackInfo ci) {
-		if (getWorld() instanceof ServerWorld serverWorld) {
+		if (getEntityWorld() instanceof ServerWorld world) {
 			FrozenComponent frozenComponent = ModEntityComponents.FROZEN.get(this);
 			if (frozenComponent.isFrozen()) {
 				Entity lastFreezingAttacker = frozenComponent.getLastFreezingAttacker();
-				if (SLibUtils.shouldHurt(lastFreezingAttacker, entity) && entity.damage(serverWorld, serverWorld.getDamageSources().create(DamageTypes.FREEZE, lastFreezingAttacker == null ? this : lastFreezingAttacker), 8)) {
-					damage(serverWorld, getDamageSources().generic(), 2);
+				if (SLibUtils.shouldHurt(lastFreezingAttacker, entity) && entity.damage(world, world.getDamageSources().create(DamageTypes.FREEZE, lastFreezingAttacker == null ? this : lastFreezingAttacker), 8)) {
+					damage(world, getDamageSources().generic(), 2);
 					entity.setFrozenTicks(800);
 				}
 			}

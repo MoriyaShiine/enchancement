@@ -11,7 +11,8 @@ base {
 }
 
 chenille {
-    customLicense = rootProject.file("LICENSE")
+    // todo uncomment this when chenille updates
+//    customLicense = rootProject.file("LICENSE")
     github = new URL("https://github.com/MoriyaShiine/enchancement")
     javaVersion = 21
     configurePublishing {

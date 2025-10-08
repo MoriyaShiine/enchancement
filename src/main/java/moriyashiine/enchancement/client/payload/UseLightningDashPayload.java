@@ -36,7 +36,7 @@ public record UseLightningDashPayload(int entityId, Vec3d lungeVelocity, int flo
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<UseLightningDashPayload> {
 		@Override
 		public void receive(UseLightningDashPayload payload, ClientPlayNetworking.Context context) {
-			Entity entity = context.player().getWorld().getEntityById(payload.entityId());
+			Entity entity = context.player().getEntityWorld().getEntityById(payload.entityId());
 			if (entity instanceof PlayerEntity player) {
 				LightningDashMaceEffect.useCommon(player, payload.lungeVelocity(), payload.floatTicks());
 				LightningDashMaceEffect.useClient(player);

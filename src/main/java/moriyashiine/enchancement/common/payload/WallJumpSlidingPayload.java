@@ -37,7 +37,7 @@ public record WallJumpSlidingPayload(int entityId, long pos) implements CustomPa
 	public static class Receiver implements ServerPlayNetworking.PlayPayloadHandler<WallJumpSlidingPayload> {
 		@Override
 		public void receive(WallJumpSlidingPayload payload, ServerPlayNetworking.Context context) {
-			Entity entity = context.player().getWorld().getEntityById(payload.entityId());
+			Entity entity = context.player().getEntityWorld().getEntityById(payload.entityId());
 			if (entity instanceof LivingEntity) {
 				BlockPos pos = payload.pos() == PLACEHOLDER_NULL ? null : BlockPos.fromLong(payload.pos());
 				ModEntityComponents.WALL_JUMP.get(entity).setSlidingPos(pos);

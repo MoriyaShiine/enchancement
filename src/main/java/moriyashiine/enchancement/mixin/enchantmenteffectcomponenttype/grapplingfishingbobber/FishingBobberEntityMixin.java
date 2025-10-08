@@ -65,7 +65,7 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity implemen
 	private void enchancement$grappleFishingBobber(CallbackInfo ci) {
 		if (getStrength() != 0) {
 			if (grappleState != null) {
-				if (age % 10 == 0 && getWorld().getBlockState(grapplePos) != grappleState) {
+				if (age % 10 == 0 && getEntityWorld().getBlockState(grapplePos) != grappleState) {
 					grapplePos = null;
 					grappleState = null;
 				}
@@ -90,8 +90,8 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity implemen
 	private void enchancement$grappleFishingBobber(BlockHitResult blockHitResult, CallbackInfo ci) {
 		if (getStrength() != 0) {
 			grapplePos = blockHitResult.getBlockPos();
-			grappleState = getWorld().getBlockState(grapplePos);
-			if (getWorld().isClient) {
+			grappleState = getEntityWorld().getBlockState(grapplePos);
+			if (getEntityWorld().isClient()) {
 				PlayerEntity owner = getPlayerOwner();
 				if (owner != null) {
 					owner.playSound(ModSoundEvents.ENTITY_FISHING_BOBBER_GRAPPLE, 1, 1);
@@ -102,7 +102,7 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity implemen
 
 	@Inject(method = "onEntityHit", at = @At("TAIL"))
 	private void enchancement$grappleFishingBobber(EntityHitResult entityHitResult, CallbackInfo ci) {
-		if (getStrength() != 0 && getWorld().isClient) {
+		if (getStrength() != 0 && getEntityWorld().isClient()) {
 			PlayerEntity owner = getPlayerOwner();
 			if (owner != null) {
 				owner.playSound(ModSoundEvents.ENTITY_FISHING_BOBBER_GRAPPLE, 1, 1);
@@ -124,7 +124,7 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity implemen
 			if (grappleState != null) {
 				PlayerEntity player = getPlayerOwner();
 				if (player != null) {
-					if (!getWorld().isClient) {
+					if (!getEntityWorld().isClient()) {
 						if (getY() > player.getY()) {
 							player.setVelocity(player.getVelocity().getX(), 0, player.getVelocity().getZ());
 						}
@@ -133,7 +133,7 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity implemen
 					}
 				}
 			}
-			return getWorld().isClient ? original : 1;
+			return getEntityWorld().isClient() ? original : 1;
 		}
 		return original;
 	}

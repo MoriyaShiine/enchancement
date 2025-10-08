@@ -91,7 +91,7 @@ public abstract class CrossbowItemMixin {
 
 	@WrapOperation(method = "shoot", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;playSound(Lnet/minecraft/entity/Entity;DDDLnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FF)V"))
 	private void enchancement$brimstone(World instance, Entity source, double x, double y, double z, SoundEvent sound, SoundCategory category, float volume, float pitch, Operation<Void> original, LivingEntity shooter) {
-		int damage = shooter.getEquippedStack(LivingEntity.getSlotForHand(shooter.getActiveHand())).getOrDefault(ModComponentTypes.BRIMSTONE_DAMAGE, 0);
+		int damage = shooter.getEquippedStack(shooter.getActiveHand().getEquipmentSlot()).getOrDefault(ModComponentTypes.BRIMSTONE_DAMAGE, 0);
 		if (damage > 0) {
 			sound = getFireSound(damage);
 		}

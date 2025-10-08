@@ -62,7 +62,7 @@ public class HoneyTrailComponent implements AutoSyncedComponent, CommonTickingCo
 		Entity cameraEntity = MinecraftClient.getInstance().getCameraEntity();
 		if (cameraEntity != null) {
 			for (HoneySpot spot : honeySpots) {
-				if (spot.pos.distanceTo(cameraEntity.getPos()) < 128) {
+				if (spot.pos.distanceTo(cameraEntity.getEntityPos()) < 128) {
 					for (int j = 0; j < 3; j++) {
 						obj.addParticleClient(new HoneyBubbleParticleEffect(spot.ownerId),
 								MathHelper.nextDouble(obj.random, spot.getBox().minX, spot.getBox().maxX),
@@ -103,7 +103,7 @@ public class HoneyTrailComponent implements AutoSyncedComponent, CommonTickingCo
 	}
 
 	private static Vec3d getAdjustedPos(LivingEntity owner) {
-		return owner.getWorld().raycast(new RaycastContext(owner.getPos(), owner.getPos().subtract(0, 2, 0), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, owner)).getPos();
+		return owner.getEntityWorld().raycast(new RaycastContext(owner.getEntityPos(), owner.getEntityPos().subtract(0, 2, 0), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, owner)).getPos();
 	}
 
 	public static class HoneySpot {

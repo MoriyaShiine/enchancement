@@ -148,15 +148,15 @@ public class SlamComponent implements CommonTickingComponent {
 
 	public void stopSlammingServer() {
 		stopSlamming();
-		obj.getWorld().getOtherEntities(obj, new Box(obj.getBlockPos()).expand(3, 1, 3), foundEntity -> foundEntity.isAlive() && foundEntity.distanceTo(obj) < 5).forEach(foundEntity -> {
+		obj.getEntityWorld().getOtherEntities(obj, new Box(obj.getBlockPos()).expand(3, 1, 3), foundEntity -> foundEntity.isAlive() && foundEntity.distanceTo(obj) < 5).forEach(foundEntity -> {
 			if (foundEntity instanceof LivingEntity living && SLibUtils.shouldHurt(obj, living) && SLibUtils.canSee(obj, foundEntity, 0)) {
 				living.takeKnockback(1, obj.getX() - living.getX(), obj.getZ() - living.getZ());
 			}
 		});
-		obj.getWorld().emitGameEvent(GameEvent.STEP, obj.getPos(), GameEvent.Emitter.of(obj.getSteppingBlockState()));
-		@SuppressWarnings("deprecation") BlockState state = obj.getWorld().getBlockState(obj.getLandingPos());
+		obj.getEntityWorld().emitGameEvent(GameEvent.STEP, obj.getEntityPos(), GameEvent.Emitter.of(obj.getSteppingBlockState()));
+		@SuppressWarnings("deprecation") BlockState state = obj.getEntityWorld().getBlockState(obj.getLandingPos());
 		if (state.contains(Properties.THICKNESS) && state.contains(Properties.VERTICAL_DIRECTION) && state.get(Properties.THICKNESS) == Thickness.TIP && state.get(Properties.VERTICAL_DIRECTION) == Direction.UP) {
-			obj.damage((ServerWorld) obj.getWorld(), obj.getDamageSources().stalagmite(), Integer.MAX_VALUE);
+			obj.damage((ServerWorld) obj.getEntityWorld(), obj.getDamageSources().stalagmite(), Integer.MAX_VALUE);
 		}
 	}
 
@@ -167,9 +167,9 @@ public class SlamComponent implements CommonTickingComponent {
 		for (int i = 0; i < 360; i += 15) {
 			for (int j = 1; j < 5; j++) {
 				double x = obj.getX() + MathHelper.sin(i) * j / 2, z = obj.getZ() + MathHelper.cos(i) * j / 2;
-				BlockState state = obj.getWorld().getBlockState(mutable.set(x, y, z));
-				if (!state.isReplaceable() && obj.getWorld().getBlockState(mutable.move(Direction.UP)).isReplaceable()) {
-					obj.getWorld().addParticleClient(new BlockStateParticleEffect(ParticleTypes.BLOCK, state), x, mutable.getY(), z, 0, 0, 0);
+				BlockState state = obj.getEntityWorld().getBlockState(mutable.set(x, y, z));
+				if (!state.isReplaceable() && obj.getEntityWorld().getBlockState(mutable.move(Direction.UP)).isReplaceable()) {
+					obj.getEntityWorld().addParticleClient(new BlockStateParticleEffect(ParticleTypes.BLOCK, state), x, mutable.getY(), z, 0, 0, 0);
 				}
 			}
 		}

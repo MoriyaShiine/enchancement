@@ -50,12 +50,12 @@ public abstract class PersistentProjectileEntityMixin extends Entity {
 		ModEntityComponents.PHASE_THROUGH_BLOCKS_AND_FLOAT.maybeGet(this).ifPresent(phaseThroughBlocksAndFloatComponent -> {
 			if (phaseThroughBlocksAndFloatComponent.shouldPhase()) {
 				int maxPhaseBlocks = phaseThroughBlocksAndFloatComponent.getMaxPhaseBlocks();
-				BlockState state = getWorld().getBlockState(blockHitResult.getBlockPos());
-				state.onProjectileHit(getWorld(), state, blockHitResult, (PersistentProjectileEntity) (Object) this);
+				BlockState state = getEntityWorld().getBlockState(blockHitResult.getBlockPos());
+				state.onProjectileHit(getEntityWorld(), state, blockHitResult, (PersistentProjectileEntity) (Object) this);
 				double distance = 0;
 				Vec3d start = blockHitResult.getPos(), end = start.add(getVelocity().normalize().multiply(1 / 16D));
 				while (distance < maxPhaseBlocks + 1) {
-					BlockHitResult hitResult = getWorld().raycast(new RaycastContext(start, end, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, this));
+					BlockHitResult hitResult = getEntityWorld().raycast(new RaycastContext(start, end, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, this));
 					if (hitResult.getType() == HitResult.Type.MISS) {
 						break;
 					}
@@ -64,18 +64,18 @@ public abstract class PersistentProjectileEntityMixin extends Entity {
 					end = start.add(getVelocity().normalize().multiply(1 / 16D));
 				}
 				if (distance <= maxPhaseBlocks + 0.1) {
-					if (!getWorld().isClient) {
-						List<LivingEntity> entities = getWorld().getEntitiesByClass(LivingEntity.class, new Box(BlockPos.ofFloored(end)), Entity::canHit);
+					if (!getEntityWorld().isClient()) {
+						List<LivingEntity> entities = getEntityWorld().getEntitiesByClass(LivingEntity.class, new Box(BlockPos.ofFloored(end)), Entity::canHit);
 						for (int i = 0; i < entities.size() && i < getPierceLevel() + 1; i++) {
 							onEntityHit(new EntityHitResult(entities.get(i)));
 						}
-						getWorld().emitGameEvent(GameEvent.TELEPORT, blockHitResult.getPos(), GameEvent.Emitter.of(this));
+						getEntityWorld().emitGameEvent(GameEvent.TELEPORT, blockHitResult.getPos(), GameEvent.Emitter.of(this));
 						SLibUtils.playSound(this, ModSoundEvents.ENTITY_GENERIC_TELEPORT, 0.75F, 1);
 						setPosition(end);
 					} else {
 						for (int i = 0; i < 6; i++) {
-							getWorld().addParticleClient(ParticleTypes.REVERSE_PORTAL, blockHitResult.getPos().getX() + MathHelper.nextDouble(random, -getWidth() / 2, getWidth() / 2), blockHitResult.getPos().getY() + MathHelper.nextDouble(random, -getHeight() / 2, getHeight() / 2), blockHitResult.getPos().getZ() + MathHelper.nextDouble(random, -getWidth() / 2, getWidth() / 2), 0, 0, 0);
-							getWorld().addParticleClient(ParticleTypes.REVERSE_PORTAL, end.getX() + MathHelper.nextDouble(random, -getWidth() / 2, getWidth() / 2), end.getY() + MathHelper.nextDouble(random, -getHeight() / 2, getHeight() / 2), end.getZ() + MathHelper.nextDouble(random, -getWidth() / 2, getWidth() / 2), 0, 0, 0);
+							getEntityWorld().addParticleClient(ParticleTypes.REVERSE_PORTAL, blockHitResult.getPos().getX() + MathHelper.nextDouble(random, -getWidth() / 2, getWidth() / 2), blockHitResult.getPos().getY() + MathHelper.nextDouble(random, -getHeight() / 2, getHeight() / 2), blockHitResult.getPos().getZ() + MathHelper.nextDouble(random, -getWidth() / 2, getWidth() / 2), 0, 0, 0);
+							getEntityWorld().addParticleClient(ParticleTypes.REVERSE_PORTAL, end.getX() + MathHelper.nextDouble(random, -getWidth() / 2, getWidth() / 2), end.getY() + MathHelper.nextDouble(random, -getHeight() / 2, getHeight() / 2), end.getZ() + MathHelper.nextDouble(random, -getWidth() / 2, getWidth() / 2), 0, 0, 0);
 						}
 					}
 					phaseThroughBlocksAndFloatComponent.disable();

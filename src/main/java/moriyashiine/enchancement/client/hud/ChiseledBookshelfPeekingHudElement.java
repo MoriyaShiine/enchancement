@@ -31,7 +31,7 @@ public class ChiseledBookshelfPeekingHudElement implements HudElement {
 			int height = context.getScaledWindowHeight() / 2;
 			windowHeightOffset = HudStatusBarHeightRegistry.getHeight(VanillaHudElements.AIR_BAR);
 			if (!client.gameRenderer.getCamera().isThirdPerson() && client.crosshairTarget instanceof BlockHitResult result && client.world.getBlockEntity(result.getBlockPos()) instanceof ChiseledBookshelfBlockEntity chiseledBookshelfBlockEntity) {
-				((ChiseledBookshelfBlock) Blocks.CHISELED_BOOKSHELF).getSlotForHitPos(result, chiseledBookshelfBlockEntity.getCachedState()).ifPresent(index -> {
+				((ChiseledBookshelfBlock) Blocks.CHISELED_BOOKSHELF).getHitSlot(result, chiseledBookshelfBlockEntity.getCachedState().get(ChiseledBookshelfBlock.FACING)).ifPresent(index -> {
 					List<ItemStack> stacks = ModBlockComponents.CHISELED_BOOKSHELF.get(chiseledBookshelfBlockEntity).getStacks();
 					if (!stacks.isEmpty()) {
 						ItemStack stack = stacks.get(index);

@@ -26,7 +26,7 @@ import org.apache.commons.lang3.mutable.MutableFloat;
 
 public class HeadDropsEvent implements ServerEntityCombatEvents.AfterKilledOtherEntity {
 	@Override
-	public void afterKilledOtherEntity(ServerWorld world, Entity entity, LivingEntity killedEntity) {
+	public void afterKilledOtherEntity(ServerWorld world, Entity entity, LivingEntity killedEntity, DamageSource damageSource) {
 		if (entity instanceof LivingEntity attacker) {
 			float dropModifier = getDropChance(world, attacker, new DamageSource(attacker.getDamageSources().generic().getTypeRegistryEntry(), attacker, attacker));
 			if (dropModifier > 0) {
@@ -36,7 +36,7 @@ public class HeadDropsEvent implements ServerEntityCombatEvents.AfterKilledOther
 						if (killedEntity.getRandom().nextFloat() * dropModifier < entry.chance()) {
 							ItemStack stack = new ItemStack(entry.drop());
 							if (stack.getItem() == Items.PLAYER_HEAD && killedEntity instanceof PlayerEntity player) {
-								stack.set(DataComponentTypes.PROFILE, new ProfileComponent(player.getGameProfile()));
+								stack.set(DataComponentTypes.PROFILE, ProfileComponent.ofStatic(player.getGameProfile()));
 							}
 							ItemScatterer.spawn(world, killedEntity.getX(), killedEntity.getY(), killedEntity.getZ(), stack);
 						}

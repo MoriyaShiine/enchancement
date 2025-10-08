@@ -6,11 +6,12 @@ package moriyashiine.enchancement.mixin.config.rebalanceequipment.client;
 import moriyashiine.enchancement.client.render.entity.state.FloatingTridentRenderState;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.client.item.ItemModelManager;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.ItemEntityRenderer;
 import net.minecraft.client.render.entity.TridentEntityRenderer;
 import net.minecraft.client.render.entity.state.TridentEntityRenderState;
+import net.minecraft.client.render.state.CameraRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.projectile.TridentEntity;
@@ -41,13 +42,13 @@ public class TridentEntityRendererMixin {
 		floatingTridentRenderState = new FloatingTridentRenderState();
 	}
 
-	@Inject(method = "render(Lnet/minecraft/client/render/entity/state/TridentEntityRenderState;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("HEAD"), cancellable = true)
-	private void enchancement$rebalanceEquipment(TridentEntityRenderState state, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
+	@Inject(method = "render(Lnet/minecraft/client/render/entity/state/TridentEntityRenderState;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/command/OrderedRenderCommandQueue;Lnet/minecraft/client/render/state/CameraRenderState;)V", at = @At("HEAD"), cancellable = true)
+	private void enchancement$rebalanceEquipment(TridentEntityRenderState renderState, MatrixStack matrices, OrderedRenderCommandQueue queue, CameraRenderState cameraRenderState, CallbackInfo ci) {
 		if (floatingTridentRenderState.isFloating) {
 			matrices.push();
-			matrices.translate(0.0F, MathHelper.sin(state.age / 10) * 0.1F + 0.1F + 0.25F, 0);
-			matrices.multiply(RotationAxis.POSITIVE_Y.rotation(ItemEntity.getRotation(state.age, 0)));
-			ItemEntityRenderer.render(matrices, vertexConsumers, light, floatingTridentRenderState.stackState, random);
+			matrices.translate(0.0F, MathHelper.sin(renderState.age / 10) * 0.1F + 0.1F + 0.25F, 0);
+			matrices.multiply(RotationAxis.POSITIVE_Y.rotation(ItemEntity.getRotation(renderState.age, 0)));
+			ItemEntityRenderer.render(matrices, queue, renderState.light, floatingTridentRenderState.stackState, random);
 			matrices.pop();
 			ci.cancel();
 		}

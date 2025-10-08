@@ -22,7 +22,7 @@ public class WitherSkullEntityMixin extends ExplosiveProjectileEntity {
 	@ModifyArg(method = "onEntityHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffectInstance;<init>(Lnet/minecraft/registry/entry/RegistryEntry;II)V"), index = 1)
 	private int enchancement$rebalanceStatusEffects(int duration) {
 		if (ModConfig.rebalanceStatusEffects) {
-			return duration / (getWorld().getDifficulty() == Difficulty.HARD ? 4 : 2);
+			return duration / (getEntityWorld().getDifficulty() == Difficulty.HARD ? 4 : 2);
 		}
 		return duration;
 	}

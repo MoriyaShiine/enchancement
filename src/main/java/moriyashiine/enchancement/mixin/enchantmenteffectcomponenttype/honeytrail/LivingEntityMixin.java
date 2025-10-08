@@ -34,8 +34,8 @@ public abstract class LivingEntityMixin extends Entity {
 			LivingEntity living = (LivingEntity) (Object) this;
 			int maxAge = MathHelper.floor(EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.HONEY_TRAIL, living, 0) * 20);
 			if (maxAge > 0) {
-				if (isOnGround() || getWorld().raycast(new RaycastContext(getPos(), getPos().add(0, -1.5, 0), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, this)).getType() == HitResult.Type.BLOCK) {
-					ModWorldComponents.HONEY_TRAIL.get(getWorld()).addHoneySpot(living, maxAge);
+				if (isOnGround() || getEntityWorld().raycast(new RaycastContext(getEntityPos(), getEntityPos().add(0, -1.5, 0), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, this)).getType() == HitResult.Type.BLOCK) {
+					ModWorldComponents.HONEY_TRAIL.get(getEntityWorld()).addHoneySpot(living, maxAge);
 				}
 			}
 		}

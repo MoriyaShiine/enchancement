@@ -31,7 +31,7 @@ public record StopSlidingS2CPayload(int entityId) implements CustomPayload {
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<StopSlidingS2CPayload> {
 		@Override
 		public void receive(StopSlidingS2CPayload payload, ClientPlayNetworking.Context context) {
-			Entity entity = context.player().getWorld().getEntityById(payload.entityId());
+			Entity entity = context.player().getEntityWorld().getEntityById(payload.entityId());
 			if (entity instanceof PlayerEntity player) {
 				ModEntityComponents.SLIDE.get(player).stopSliding();
 			}

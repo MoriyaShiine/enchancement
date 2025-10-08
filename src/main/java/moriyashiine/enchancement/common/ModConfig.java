@@ -5,7 +5,6 @@ package moriyashiine.enchancement.common;
 
 import eu.midnightdust.lib.config.MidnightConfig;
 import moriyashiine.enchancement.client.gui.tooltip.StoredEnchantmentsTooltipComponent;
-import moriyashiine.enchancement.client.util.AllowDuplicateKeybindingsMode;
 import moriyashiine.enchancement.common.util.config.OverhaulMode;
 
 import java.util.Arrays;
@@ -99,8 +98,6 @@ public class ModConfig extends MidnightConfig {
 	@Entry(category = "client")
 	public static boolean chiseledBookshelfPeeking = true;
 	@Entry(category = "client")
-	public static AllowDuplicateKeybindingsMode allowDuplicateKeybindings = AllowDuplicateKeybindingsMode.VANILLA_AND_ENCHANCEMENT;
-	@Entry(category = "client")
 	public static boolean invertedBounce = false;
 	@Entry(category = "client")
 	public static boolean doublePressDirectionBurst = false;
@@ -127,8 +124,8 @@ public class ModConfig extends MidnightConfig {
 	}
 
 	@Override
-	public void writeChanges(String modid) {
-		super.writeChanges(modid);
+	public void writeChanges() {
+		super.writeChanges();
 		if (Enchancement.isLoaded) {
 			StoredEnchantmentsTooltipComponent.clearIconCache();
 		}

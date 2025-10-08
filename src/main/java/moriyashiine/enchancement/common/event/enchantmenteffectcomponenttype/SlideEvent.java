@@ -17,7 +17,7 @@ public class SlideEvent implements ModifyMovementEvents.JumpVelocity {
 		SlideComponent slideComponent = ModEntityComponents.SLIDE.getNullable(entity);
 		if (slideComponent != null && slideComponent.isSliding()) {
 			slideComponent.stopSliding();
-			if (entity instanceof PlayerEntity player && player.getWorld().isClient) {
+			if (entity instanceof PlayerEntity player && player.getEntityWorld().isClient()) {
 				StopSlidingC2SPayload.send();
 			}
 			return velocity.multiply(slideComponent.getJumpBonus(), slideComponent.getJumpBonus() > 2 ? 1.25 : 1, slideComponent.getJumpBonus());

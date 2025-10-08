@@ -108,16 +108,16 @@ public class LightningDashComponent extends UsingMaceComponent implements Common
 			sync();
 		}
 		if (smashTicks == 1 && obj.isOnGround()) {
-			ServerWorld serverWorld = (ServerWorld) obj.getWorld();
+			ServerWorld world = (ServerWorld) obj.getEntityWorld();
 			PlayerLookup.tracking(obj).forEach(foundPlayer -> AddLightningDashParticlesPayload.send(foundPlayer, obj));
 			obj.fallDistance = (float) Math.max(0, cachedHeight - obj.getY());
 			float base = (float) obj.getAttributeValue(EntityAttributes.ATTACK_DAMAGE);
 			boolean[] hurt = {true};
 			getNearby(3).forEach(entity -> {
 				DamageSource source = obj instanceof PlayerEntity player ? entity.getDamageSources().playerAttack(player) : entity.getDamageSources().mobAttack(obj);
-				float damage = EnchantmentHelper.getDamage(serverWorld, obj.getMainHandStack(), entity, source, base)
+				float damage = EnchantmentHelper.getDamage(world, obj.getMainHandStack(), entity, source, base)
 						+ obj.getMainHandStack().getItem().getBonusAttackDamage(entity, base, source);
-				if (entity.damage(serverWorld, source, damage * LightningDashEffect.getSmashDamageMultiplier(obj.getRandom(), obj.getMainHandStack()))) {
+				if (entity.damage(world, source, damage * LightningDashEffect.getSmashDamageMultiplier(obj.getRandom(), obj.getMainHandStack()))) {
 					entity.takeKnockback(1.5, obj.getX() - entity.getX(), obj.getZ() - entity.getZ());
 					hurt[0] = false;
 				}
@@ -134,7 +134,7 @@ public class LightningDashComponent extends UsingMaceComponent implements Common
 		tick();
 		if (isFloating() && SLibClientUtils.shouldAddParticles(obj)) {
 			for (int i = 0; i <= 4; i++) {
-				obj.getWorld().addParticleClient(new SparkParticleEffect(obj.getPos().addRandom(obj.getRandom(), 1)), obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 0, 0);
+				obj.getEntityWorld().addParticleClient(new SparkParticleEffect(obj.getEntityPos().addRandom(obj.getRandom(), 1)), obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 0, 0);
 			}
 		}
 		if (smashTicks == 1 && obj.isOnGround()) {
@@ -164,7 +164,7 @@ public class LightningDashComponent extends UsingMaceComponent implements Common
 
 	@SuppressWarnings("SameParameterValue")
 	private List<LivingEntity> getNearby(int range) {
-		return obj.getWorld().getEntitiesByClass(LivingEntity.class,
+		return obj.getEntityWorld().getEntitiesByClass(LivingEntity.class,
 				new Box(
 						obj.getX() - 0.5 - range, obj.getY() - 1.5, obj.getZ() - 0.5 - range,
 						obj.getX() + 0.5 + range, obj.getY() + 0.5 + range, obj.getZ() + 0.5 + range

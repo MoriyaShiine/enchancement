@@ -40,14 +40,14 @@ public class BrimstoneTravelSoundInstance extends MovingSoundInstance {
 			}
 			return;
 		}
-		Vec3d newPos = entity.getPos().add(entity.getRotationVector().multiply(entity.distanceTraveled));
+		Vec3d newPos = entity.getEntityPos().add(entity.getRotationVector().multiply(entity.distanceTraveled));
 		x = newPos.getX();
 		y = newPos.getY();
 		z = newPos.getZ();
 		if (previousPos != null) {
 			Entity cameraEntity = MinecraftClient.getInstance().getCameraEntity();
 			if (cameraEntity != null) {
-				Vec3d cameraPos = cameraEntity.getPos();
+				Vec3d cameraPos = cameraEntity.getEntityPos();
 				double prevDistance = previousPos.distanceTo(cameraPos);
 				if (prevDistance < volume * 16) {
 					if (prevDistance > newPos.distanceTo(cameraPos)) {

@@ -34,7 +34,7 @@ public record AutomateEatingEnchantmentEffect(NumberRange.IntRange hungerRange) 
 				food = getMostNeededFood(player);
 			}
 			if (!food.isEmpty()) {
-				ItemStack finished = food.finishUsing(player.getWorld(), player);
+				ItemStack finished = food.finishUsing(player.getEntityWorld(), player);
 				if (!ItemStack.areEqual(food, finished) && !player.giveItemStack(finished)) {
 					player.dropStack(world, finished);
 				}

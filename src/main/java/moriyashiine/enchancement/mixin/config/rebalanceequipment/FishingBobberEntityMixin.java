@@ -22,7 +22,7 @@ public class FishingBobberEntityMixin {
 	@WrapOperation(method = "pullHookedEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;setVelocity(Lnet/minecraft/util/math/Vec3d;)V"))
 	private void enchancement$rebalanceEquipment(Entity instance, Vec3d velocity, Operation<Void> original) {
 		if (ModConfig.rebalanceEquipment) {
-			if (!instance.getWorld().isClient) {
+			if (!instance.getEntityWorld().isClient()) {
 				Set<Entity> entities = SyncHookedVelocityPayload.getEntities(instance);
 				entities.forEach(entity -> original.call(entity, velocity));
 				PlayerLookup.tracking(instance).forEach(foundPlayer -> SyncHookedVelocityPayload.send(foundPlayer, instance, velocity));

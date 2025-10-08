@@ -71,7 +71,7 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 	private final World world;
 
 	public EnchantingTableScreenHandler(int syncId, PlayerInventory playerInventory) {
-		this(syncId, playerInventory, ScreenHandlerContext.EMPTY, playerInventory.player.getWorld());
+		this(syncId, playerInventory, ScreenHandlerContext.EMPTY, playerInventory.player.getEntityWorld());
 	}
 
 	public EnchantingTableScreenHandler(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context, World world) {

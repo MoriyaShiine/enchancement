@@ -14,41 +14,33 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.event.internal.SyncEnchantingMaterialMapEvent;
 import moriyashiine.enchancement.common.screenhandler.EnchantingTableScreenHandler;
-import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
+import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
+import net.fabricmc.fabric.api.resource.v1.reloader.SimpleResourceReloader;
 import net.minecraft.item.Item;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryOps;
-import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.resource.Resource;
-import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
-public record EnchantingMaterialReloadListener(
-		RegistryOps<JsonElement> registryOps) implements SimpleSynchronousResourceReloadListener {
+public class EnchantingMaterialReloadListener extends SimpleResourceReloader<Map<Item, EnchantingTableScreenHandler.EnchantingMaterial>> {
+	public static final Identifier ID = Enchancement.id("enchanting_material");
+
 	private static final Codec<Ingredient> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Ingredient.CODEC.fieldOf("ingredient").forGetter(Function.identity())
 	).apply(instance, Function.identity()));
 
-	public static final Identifier ID = Enchancement.id("enchanting_material");
-
-	public EnchantingMaterialReloadListener(RegistryWrapper.WrapperLookup wrapperLookup) {
-		this(wrapperLookup.getOps(JsonOps.INSTANCE));
-	}
-
 	@Override
-	public Identifier getFabricId() {
-		return ID;
-	}
-
-	@Override
-	public void reload(ResourceManager manager) {
-		EnchantingTableScreenHandler.ENCHANTING_MATERIAL_MAP.clear();
-		manager.findAllResources("enchanting_material", path -> path.getNamespace().equals(Enchancement.MOD_ID) && path.getPath().endsWith(".json")).forEach((identifier, resources) -> {
+	protected Map<Item, EnchantingTableScreenHandler.EnchantingMaterial> prepare(Store store) {
+		Map<Item, EnchantingTableScreenHandler.EnchantingMaterial> materials = new HashMap<>();
+		RegistryOps<JsonElement> registryOps = store.getOrThrow(ResourceLoader.RELOADER_REGISTRY_LOOKUP_KEY).getOps(JsonOps.INSTANCE);
+		store.getResourceManager().findAllResources("enchanting_material", path -> path.getNamespace().equals(Enchancement.MOD_ID) && path.getPath().endsWith(".json")).forEach((identifier, resources) -> {
 			for (Resource resource : resources) {
 				try (InputStream stream = resource.getInputStream()) {
 					JsonObject object = JsonParser.parseReader(new JsonReader(new InputStreamReader(stream))).getAsJsonObject();
@@ -58,12 +50,19 @@ public record EnchantingMaterialReloadListener(
 						continue;
 					}
 					DataResult<Ingredient> ingredient = CODEC.parse(registryOps, object);
-					EnchantingTableScreenHandler.ENCHANTING_MATERIAL_MAP.put(item, new EnchantingTableScreenHandler.EnchantingMaterial(ingredient.getOrThrow()));
+					materials.put(item, new EnchantingTableScreenHandler.EnchantingMaterial(ingredient.getOrThrow()));
 				} catch (Exception exception) {
 					Enchancement.LOGGER.error("{} in file '{}'", exception.getLocalizedMessage(), identifier);
 				}
 			}
 		});
+		return materials;
+	}
+
+	@Override
+	protected void apply(Map<Item, EnchantingTableScreenHandler.EnchantingMaterial> prepared, Store store) {
+		EnchantingTableScreenHandler.ENCHANTING_MATERIAL_MAP.clear();
+		EnchantingTableScreenHandler.ENCHANTING_MATERIAL_MAP.putAll(prepared);
 		SyncEnchantingMaterialMapEvent.shouldSend = true;
 	}
 }

@@ -34,11 +34,11 @@ public abstract class ProjectileEntityMixin {
 		if (getOwner() instanceof LivingEntity living) {
 			TeleportOnHitComponent teleportOnHitComponent = ModEntityComponents.TELEPORT_ON_HIT.get(this);
 			if (teleportOnHitComponent.teleportsOnBlockHit()) {
-				living.getWorld().playSoundFromEntity(null, living, ModSoundEvents.ENTITY_GENERIC_TELEPORT, living.getSoundCategory(), 1, 1);
+				living.getEntityWorld().playSoundFromEntity(null, living, ModSoundEvents.ENTITY_GENERIC_TELEPORT, living.getSoundCategory(), 1, 1);
 				BlockPos pos = blockHitResult.getBlockPos().offset(blockHitResult.getSide());
-				living.getWorld().emitGameEvent(GameEvent.TELEPORT, living.getPos(), GameEvent.Emitter.of(living, living.getSteppingBlockState()));
+				living.getEntityWorld().emitGameEvent(GameEvent.TELEPORT, living.getEntityPos(), GameEvent.Emitter.of(living, living.getSteppingBlockState()));
 				living.requestTeleport(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-				living.getWorld().sendEntityStatus(living, EntityStatuses.ADD_PORTAL_PARTICLES);
+				living.getEntityWorld().sendEntityStatus(living, EntityStatuses.ADD_PORTAL_PARTICLES);
 				if (living instanceof PathAwareEntity pathAware) {
 					pathAware.getNavigation().stop();
 				}
@@ -52,11 +52,11 @@ public abstract class ProjectileEntityMixin {
 		if (getOwner() instanceof LivingEntity living) {
 			TeleportOnHitComponent teleportOnHitComponent = ModEntityComponents.TELEPORT_ON_HIT.get(this);
 			if (teleportOnHitComponent.teleportsOnEntityHit()) {
-				living.getWorld().playSoundFromEntity(null, living, ModSoundEvents.ENTITY_GENERIC_TELEPORT, living.getSoundCategory(), 1, 1);
+				living.getEntityWorld().playSoundFromEntity(null, living, ModSoundEvents.ENTITY_GENERIC_TELEPORT, living.getSoundCategory(), 1, 1);
 				Vec3d pos = entityHitResult.getPos();
-				living.getWorld().emitGameEvent(GameEvent.TELEPORT, living.getPos(), GameEvent.Emitter.of(living, living.getSteppingBlockState()));
+				living.getEntityWorld().emitGameEvent(GameEvent.TELEPORT, living.getEntityPos(), GameEvent.Emitter.of(living, living.getSteppingBlockState()));
 				living.requestTeleport(pos.getX(), pos.getY() + 0.5, pos.getZ());
-				living.getWorld().sendEntityStatus(living, EntityStatuses.ADD_PORTAL_PARTICLES);
+				living.getEntityWorld().sendEntityStatus(living, EntityStatuses.ADD_PORTAL_PARTICLES);
 				if (living instanceof PathAwareEntity pathAware) {
 					pathAware.getNavigation().stop();
 				}

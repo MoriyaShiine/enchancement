@@ -29,13 +29,13 @@ public class ChainLightningEvent implements AfterDamageIncludingDeathEvent {
 		if (!blocked && first) {
 			float multiplier = 0;
 			if (source.getSource() instanceof LivingEntity living) {
-				multiplier = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.CHAIN_LIGHTNING, (ServerWorld) entity.getWorld(), living.getMainHandStack(), 0);
+				multiplier = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.CHAIN_LIGHTNING, (ServerWorld) entity.getEntityWorld(), living.getMainHandStack(), 0);
 			} else if (source.getSource() instanceof PersistentProjectileEntity projectile) {
-				multiplier = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.CHAIN_LIGHTNING, (ServerWorld) entity.getWorld(), projectile.asItemStack(), 0);
+				multiplier = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.CHAIN_LIGHTNING, (ServerWorld) entity.getEntityWorld(), projectile.asItemStack(), 0);
 			}
 			if (multiplier != 0) {
 				first = false;
-				chain(new ArrayList<>(), (ServerWorld) entity.getWorld(), entity, source, baseDamageTaken, multiplier);
+				chain(new ArrayList<>(), (ServerWorld) entity.getEntityWorld(), entity, source, baseDamageTaken, multiplier);
 				first = true;
 			}
 		}
@@ -59,7 +59,7 @@ public class ChainLightningEvent implements AfterDamageIncludingDeathEvent {
 		if (attacker == null) {
 			return Optional.empty();
 		}
-		List<LivingEntity> nearby = target.getWorld().getEntitiesByClass(LivingEntity.class, target.getBoundingBox().expand(3, 1, 3), foundEntity ->
+		List<LivingEntity> nearby = target.getEntityWorld().getEntitiesByClass(LivingEntity.class, target.getBoundingBox().expand(3, 1, 3), foundEntity ->
 						!hitEntities.contains(foundEntity) && foundEntity.distanceTo(attacker) < 8 && !(foundEntity instanceof PlayerEntity) && SLibUtils.shouldHurt(attacker, foundEntity))
 				.stream().sorted((e1, e2) -> Float.compare(e1.distanceTo(attacker), e2.distanceTo(attacker))).toList();
 		return nearby.isEmpty() ? Optional.empty() : Optional.of(nearby.getFirst());

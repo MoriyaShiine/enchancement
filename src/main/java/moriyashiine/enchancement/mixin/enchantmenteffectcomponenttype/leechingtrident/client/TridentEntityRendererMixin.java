@@ -7,11 +7,12 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import moriyashiine.enchancement.client.render.entity.state.LeechingTridentRenderState;
 import moriyashiine.enchancement.common.component.entity.LeechingTridentComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.TridentEntityRenderer;
 import net.minecraft.client.render.entity.state.TridentEntityRenderState;
+import net.minecraft.client.render.state.CameraRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.TridentEntity;
@@ -33,13 +34,13 @@ public abstract class TridentEntityRendererMixin extends EntityRenderer<TridentE
 		super(ctx);
 	}
 
-	@WrapWithCondition(method = "render(Lnet/minecraft/client/render/entity/state/TridentEntityRenderState;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;multiply(Lorg/joml/Quaternionfc;)V"))
+	@WrapWithCondition(method = "render(Lnet/minecraft/client/render/entity/state/TridentEntityRenderState;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/command/OrderedRenderCommandQueue;Lnet/minecraft/client/render/state/CameraRenderState;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;multiply(Lorg/joml/Quaternionfc;)V"))
 	private boolean enchancement$leechingTrident(MatrixStack instance, Quaternionfc quaternion) {
 		return !leechingTridentRenderState.active;
 	}
 
-	@Inject(method = "render(Lnet/minecraft/client/render/entity/state/TridentEntityRenderState;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;multiply(Lorg/joml/Quaternionfc;)V", ordinal = 0))
-	private void enchancement$leechingTrident(TridentEntityRenderState state, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
+	@Inject(method = "render(Lnet/minecraft/client/render/entity/state/TridentEntityRenderState;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/command/OrderedRenderCommandQueue;Lnet/minecraft/client/render/state/CameraRenderState;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;multiply(Lorg/joml/Quaternionfc;)V", ordinal = 0))
+	private void enchancement$leechingTrident(TridentEntityRenderState state, MatrixStack matrices, OrderedRenderCommandQueue queue, CameraRenderState cameraRenderState, CallbackInfo ci) {
 		if (leechingTridentRenderState.active) {
 			matrices.translate(leechingTridentRenderState.offsetX, 0, leechingTridentRenderState.offsetZ);
 			matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(leechingTridentRenderState.rotationY));

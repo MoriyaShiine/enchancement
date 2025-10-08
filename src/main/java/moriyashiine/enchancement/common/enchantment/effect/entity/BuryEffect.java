@@ -54,7 +54,7 @@ public class BuryEffect implements EnchantmentEntityEffect {
 				BlockPos pos = entity.getBlockPos().down(i);
 				BlockState state = world.getBlockState(pos);
 				if (state.isIn(ModBlockTags.BURIABLE)) {
-					if (!world.isClient) {
+					if (!world.isClient()) {
 						world.playSoundFromEntity(null, entity, ModSoundEvents.ENTITY_GENERIC_BURY, entity.getSoundCategory(), 1, 1);
 						entity.emitGameEvent(GameEvent.ENTITY_INTERACT);
 						buryEntityComponent.setBuryPos(pos);

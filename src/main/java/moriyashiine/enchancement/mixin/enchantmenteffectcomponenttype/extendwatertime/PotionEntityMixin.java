@@ -26,7 +26,7 @@ public abstract class PotionEntityMixin extends ThrownItemEntity {
 
 	@Inject(method = "onCollision", at = @At("TAIL"))
 	private void enchancement$extendWaterTime(HitResult hitResult, CallbackInfo ci) {
-		getWorld().getNonSpectatingEntities(LivingEntity.class, getBoundingBox().expand(4, 2, 4)).forEach(living -> {
+		getEntityWorld().getNonSpectatingEntities(LivingEntity.class, getBoundingBox().expand(4, 2, 4)).forEach(living -> {
 			if (EnchancementUtil.hasAnyEnchantmentsWith(living, ModEnchantmentEffectComponentTypes.EXTEND_WATER_TIME)) {
 				ExtendedWaterTimeComponent extendedWaterTimeComponent = ModEntityComponents.EXTENDED_WATER_TIME.get(living);
 				extendedWaterTimeComponent.markWet(300);

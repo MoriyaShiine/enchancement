@@ -37,15 +37,15 @@ public record AddLightningDashParticlesPayload(int entityId) implements CustomPa
 
 	public static void addParticles(Entity entity) {
 		BlockPos.Mutable mutable = new BlockPos.Mutable();
-		double y = Math.round(entity.getWorld().raycast(new RaycastContext(entity.getPos(), entity.getPos().add(entity.getRotationVector().multiply(4)), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.ANY, entity)).getPos().getY() - 1);
+		double y = Math.round(entity.getEntityWorld().raycast(new RaycastContext(entity.getEntityPos(), entity.getEntityPos().add(entity.getRotationVector().multiply(4)), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.ANY, entity)).getPos().getY() - 1);
 		for (int i = 0; i < 360; i += 15) {
 			for (int j = 1; j < 7; j++) {
 				double x = entity.getX() + MathHelper.sin(i) * j / 2, z = entity.getZ() + MathHelper.cos(i) * j / 2;
-				BlockState state = entity.getWorld().getBlockState(mutable.set(x, y, z));
-				if (!state.isReplaceable() && entity.getWorld().getBlockState(mutable.move(Direction.UP)).isReplaceable()) {
+				BlockState state = entity.getEntityWorld().getBlockState(mutable.set(x, y, z));
+				if (!state.isReplaceable() && entity.getEntityWorld().getBlockState(mutable.move(Direction.UP)).isReplaceable()) {
 					BlockStateParticleEffect particle = new BlockStateParticleEffect(ParticleTypes.BLOCK, state);
 					for (int k = 0; k < 8; k++) {
-						entity.getWorld().addParticleClient(particle, x, mutable.getY() + 0.5, z, 0, 0, 0);
+						entity.getEntityWorld().addParticleClient(particle, x, mutable.getY() + 0.5, z, 0, 0, 0);
 					}
 				}
 			}
@@ -55,7 +55,7 @@ public record AddLightningDashParticlesPayload(int entityId) implements CustomPa
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<AddLightningDashParticlesPayload> {
 		@Override
 		public void receive(AddLightningDashParticlesPayload payload, ClientPlayNetworking.Context context) {
-			Entity entity = context.player().getWorld().getEntityById(payload.entityId());
+			Entity entity = context.player().getEntityWorld().getEntityById(payload.entityId());
 			if (entity != null) {
 				addParticles(entity);
 			}

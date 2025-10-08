@@ -31,7 +31,7 @@ public record StopSlammingS2CPayload(int entityId, double posY) implements Custo
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<StopSlammingS2CPayload> {
 		@Override
 		public void receive(StopSlammingS2CPayload payload, ClientPlayNetworking.Context context) {
-			Entity entity = context.player().getWorld().getEntityById(payload.entityId());
+			Entity entity = context.player().getEntityWorld().getEntityById(payload.entityId());
 			if (entity instanceof PlayerEntity player) {
 				ModEntityComponents.SLAM.get(player).stopSlammingClient(payload.posY());
 			}

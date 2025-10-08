@@ -91,10 +91,10 @@ public class PhaseThroughBlocksAndFloatComponent implements AutoSyncedComponent,
 		if (entity instanceof PersistentProjectileEntity) {
 			float maxPhaseBlocks = 0;
 			if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.PHASE_THROUGH_BLOCKS_AND_FLOAT)) {
-				maxPhaseBlocks = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.PHASE_THROUGH_BLOCKS_AND_FLOAT, (ServerWorld) user.getWorld(), stack, 0);
+				maxPhaseBlocks = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.PHASE_THROUGH_BLOCKS_AND_FLOAT, (ServerWorld) user.getEntityWorld(), stack, 0);
 			} else if (!(user instanceof PlayerEntity) && EnchancementUtil.hasAnyEnchantmentsWith(user, ModEnchantmentEffectComponentTypes.PHASE_THROUGH_BLOCKS_AND_FLOAT)) {
 				for (ItemStack equippedStack : EnchancementUtil.getHeldItems(user)) {
-					maxPhaseBlocks = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.PHASE_THROUGH_BLOCKS_AND_FLOAT, (ServerWorld) user.getWorld(), equippedStack, 0);
+					maxPhaseBlocks = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.PHASE_THROUGH_BLOCKS_AND_FLOAT, (ServerWorld) user.getEntityWorld(), equippedStack, 0);
 				}
 			}
 			if (maxPhaseBlocks != 0) {

@@ -39,7 +39,7 @@ public class LightningDashMaceEffect extends MaceEffect {
 		Vec3d lungeVelocity = player.getRotationVector().multiply(LightningDashEffect.getLungeStrength(player.getRandom(), stack));
 		int floatTicks = LightningDashEffect.getFloatTime(player.getRandom(), stack);
 		LightningDashMaceEffect.useCommon(player, lungeVelocity, floatTicks);
-		if (world.isClient) {
+		if (world.isClient()) {
 			LightningDashMaceEffect.useClient(player);
 		} else {
 			LightningDashMaceEffect.useServer(player, lungeVelocity, floatTicks);

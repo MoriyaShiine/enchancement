@@ -33,7 +33,7 @@ public record PlayBrimstoneTravelSoundPayload(int entityId) implements CustomPay
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<PlayBrimstoneTravelSoundPayload> {
 		@Override
 		public void receive(PlayBrimstoneTravelSoundPayload payload, ClientPlayNetworking.Context context) {
-			Entity entity = context.player().getWorld().getEntityById(payload.entityId());
+			Entity entity = context.player().getEntityWorld().getEntityById(payload.entityId());
 			if (entity instanceof BrimstoneEntity brimstone) {
 				context.client().getSoundManager().play(new BrimstoneTravelSoundInstance(brimstone));
 			}

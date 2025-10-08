@@ -4,32 +4,27 @@
 package moriyashiine.enchancement.client.reloadlisteners;
 
 import moriyashiine.enchancement.common.Enchancement;
-import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
-import net.fabricmc.fabric.api.resource.ResourceReloadListenerKeys;
-import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.client.texture.TextureContents;
 import net.minecraft.resource.ResourceManager;
+import net.minecraft.resource.SynchronousResourceReloader;
 import net.minecraft.util.Identifier;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author UpcraftLP (<a href="https://github.com/UpcraftLP">https://github.com/UpcraftLP</a>)
  */
-public class FrozenReloadListener implements IdentifiableResourceReloadListener, SimpleSynchronousResourceReloadListener {
+public class FrozenReloadListener implements SynchronousResourceReloader {
 	public static final FrozenReloadListener INSTANCE = new FrozenReloadListener();
-
-	private static final Identifier ID = Enchancement.id("frozen");
+	public static final Identifier ID = Enchancement.id("frozen");
 
 	private static final Identifier PACKED_ICE_TEXTURE = Identifier.of("textures/block/packed_ice.png");
 	private static final boolean DEBUG_TEXTURES = Boolean.getBoolean(Enchancement.MOD_ID + ".debug_frozen_textures");
@@ -37,20 +32,9 @@ public class FrozenReloadListener implements IdentifiableResourceReloadListener,
 	private final Map<Identifier, Identifier> TEXTURE_CACHE = new HashMap<>();
 
 	@Override
-	public Identifier getFabricId() {
-		return ID;
-	}
-
-	@Override
 	public void reload(ResourceManager manager) {
 		// make sure resourcepack changes affect frozen entities
 		TEXTURE_CACHE.clear();
-	}
-
-	@Override
-	public Collection<Identifier> getFabricDependencies() {
-		// make sure textures are fully reloaded before we regenerate our cached textures
-		return Collections.singleton(ResourceReloadListenerKeys.TEXTURES);
 	}
 
 	public Identifier getTexture(Identifier original) {

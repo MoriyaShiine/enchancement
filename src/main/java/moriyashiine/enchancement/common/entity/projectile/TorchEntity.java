@@ -52,9 +52,9 @@ public class TorchEntity extends PersistentProjectileEntity {
 	@Override
 	public void tick() {
 		super.tick();
-		if (getWorld().isClient) {
-			getWorld().addParticleClient(ParticleTypes.FLAME, getX(), getY(), getZ(), 0, 0, 0);
-			getWorld().addParticleClient(ParticleTypes.SMOKE, getX(), getY(), getZ(), 0, 0, 0);
+		if (getEntityWorld().isClient()) {
+			getEntityWorld().addParticleClient(ParticleTypes.FLAME, getX(), getY(), getZ(), 0, 0, 0);
+			getEntityWorld().addParticleClient(ParticleTypes.SMOKE, getX(), getY(), getZ(), 0, 0, 0);
 		}
 	}
 
@@ -66,7 +66,7 @@ public class TorchEntity extends PersistentProjectileEntity {
 		}
 		if (entity instanceof LivingEntity living && entity.getType() != EntityType.ENDERMAN) {
 			playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 1, 1);
-			if (!getWorld().isClient) {
+			if (!getEntityWorld().isClient()) {
 				living.setOnFireFor(Math.min(16, MathHelper.ceil(living.getFireTicks() / 20F) + ignitionTime));
 			}
 		}
@@ -75,24 +75,24 @@ public class TorchEntity extends PersistentProjectileEntity {
 
 	@Override
 	protected void onBlockHit(BlockHitResult blockHitResult) {
-		BlockState state = getWorld().getBlockState(blockHitResult.getBlockPos());
-		state.onProjectileHit(getWorld(), state, blockHitResult, this);
-		if (getWorld() instanceof ServerWorld serverWorld) {
+		BlockState state = getEntityWorld().getBlockState(blockHitResult.getBlockPos());
+		state.onProjectileHit(getEntityWorld(), state, blockHitResult, this);
+		if (getEntityWorld() instanceof ServerWorld world) {
 			discard();
 			if (canFunction) {
 				if (shouldPlaceTorch && getOwner() instanceof PlayerEntity player && player.getAbilities().allowModifyWorld) {
 					BlockPos pos = blockHitResult.getBlockPos().offset(blockHitResult.getSide());
 					ItemPlacementContext context = new ItemPlacementContext(player, Hand.MAIN_HAND, asItemStack(), blockHitResult);
-					if (context.canPlace() && getWorld().getWorldBorder().contains(pos)) {
+					if (context.canPlace() && getEntityWorld().getWorldBorder().contains(pos)) {
 						state = Blocks.TORCH.getPlacementState(context);
-						if (state != null && state.canPlaceAt(getWorld(), pos)) {
-							getWorld().setBlockState(pos, state);
+						if (state != null && state.canPlaceAt(getEntityWorld(), pos)) {
+							getEntityWorld().setBlockState(pos, state);
 							playSound(Blocks.TORCH.getDefaultState().getSoundGroup().getPlaceSound(), 1, 1);
 							return;
 						} else {
 							state = Blocks.WALL_TORCH.getPlacementState(context);
-							if (state != null && state.canPlaceAt(getWorld(), pos)) {
-								getWorld().setBlockState(pos, state);
+							if (state != null && state.canPlaceAt(getEntityWorld(), pos)) {
+								getEntityWorld().setBlockState(pos, state);
 								playSound(Blocks.TORCH.getDefaultState().getSoundGroup().getPlaceSound(), 1, 1);
 								return;
 							}
@@ -100,7 +100,7 @@ public class TorchEntity extends PersistentProjectileEntity {
 					}
 				}
 				if (getOwner() instanceof PlayerEntity player && !player.isCreative()) {
-					dropStack(serverWorld, asItemStack(), 0.1F);
+					dropStack(world, asItemStack(), 0.1F);
 				}
 			}
 		}

@@ -32,7 +32,7 @@ public record StartSlammingS2CPayload(int entityId) implements CustomPayload {
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<StartSlammingS2CPayload> {
 		@Override
 		public void receive(StartSlammingS2CPayload payload, ClientPlayNetworking.Context context) {
-			Entity entity = context.player().getWorld().getEntityById(payload.entityId());
+			Entity entity = context.player().getEntityWorld().getEntityById(payload.entityId());
 			if (entity instanceof PlayerEntity player) {
 				SlamComponent slamComponent = ModEntityComponents.SLAM.get(player);
 				slamComponent.setSlamming(true);

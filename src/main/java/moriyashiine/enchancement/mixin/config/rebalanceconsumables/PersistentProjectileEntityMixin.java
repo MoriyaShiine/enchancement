@@ -43,7 +43,7 @@ public abstract class PersistentProjectileEntityMixin extends ProjectileEntity {
 
 	@Inject(method = "onEntityHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/PersistentProjectileEntity;playSound(Lnet/minecraft/sound/SoundEvent;FF)V"))
 	private void enchancement$rebalanceConsumables(EntityHitResult entityHitResult, CallbackInfo ci) {
-		if (getWorld() instanceof ServerWorld serverWorld && shouldApply()) {
+		if (getEntityWorld() instanceof ServerWorld world && shouldApply()) {
 			Entity entity = entityHitResult.getEntity();
 			if (entity instanceof EnderDragonPart part) {
 				entity = part.owner;
@@ -54,7 +54,7 @@ public abstract class PersistentProjectileEntityMixin extends ProjectileEntity {
 					stack = Items.ARROW.getDefaultStack();
 				}
 				if (stack.isIn(ItemTags.ARROWS)) {
-					ItemEntity drop = living.dropStack(serverWorld, stack, 1);
+					ItemEntity drop = living.dropStack(world, stack, 1);
 					if (drop != null && getOwner() != null) {
 						drop.setOwner(getOwner().getUuid());
 					}

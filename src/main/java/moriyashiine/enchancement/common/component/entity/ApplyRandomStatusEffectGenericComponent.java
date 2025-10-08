@@ -82,7 +82,7 @@ public class ApplyRandomStatusEffectGenericComponent implements AutoSyncedCompon
 			return;
 		}
 		for (int i = 0; i < amount; i++) {
-			obj.getWorld().addParticleClient(TintedParticleEffect.create(ParticleTypes.ENTITY_EFFECT, color), obj.getParticleX(0.5), obj.getRandomBodyY(), obj.getParticleZ(0.5), 0, 0, 0);
+			obj.getEntityWorld().addParticleClient(TintedParticleEffect.create(ParticleTypes.ENTITY_EFFECT, color), obj.getParticleX(0.5), obj.getRandomBodyY(), obj.getParticleZ(0.5), 0, 0, 0);
 		}
 	}
 }

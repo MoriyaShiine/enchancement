@@ -32,7 +32,7 @@ public record GlideS2CPayload(int entityId, boolean gliding) implements CustomPa
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<GlideS2CPayload> {
 		@Override
 		public void receive(GlideS2CPayload payload, ClientPlayNetworking.Context context) {
-			Entity entity = context.player().getWorld().getEntityById(payload.entityId());
+			Entity entity = context.player().getEntityWorld().getEntityById(payload.entityId());
 			if (entity instanceof LivingEntity living) {
 				GlideComponent glideComponent = ModEntityComponents.GLIDE.get(living);
 				if (glideComponent.canGlide()) {

@@ -7,7 +7,7 @@ import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.payload.SyncFrozenPlayerSlimStatusC2SPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.client.util.SkinTextures;
+import net.minecraft.entity.player.PlayerSkinType;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
@@ -32,7 +32,7 @@ public record SyncFrozenPlayerSlimStatusS2CPayload(UUID uuid) implements CustomP
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<SyncFrozenPlayerSlimStatusS2CPayload> {
 		@Override
 		public void receive(SyncFrozenPlayerSlimStatusS2CPayload payload, ClientPlayNetworking.Context context) {
-			SyncFrozenPlayerSlimStatusC2SPayload.send(payload.uuid(), context.player().getSkinTextures().model() == SkinTextures.Model.SLIM);
+			SyncFrozenPlayerSlimStatusC2SPayload.send(payload.uuid(), context.player().getSkin().model() == PlayerSkinType.SLIM);
 		}
 	}
 }

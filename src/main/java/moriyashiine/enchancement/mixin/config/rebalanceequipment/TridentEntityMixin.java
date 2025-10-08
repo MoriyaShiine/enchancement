@@ -45,7 +45,7 @@ public abstract class TridentEntityMixin extends PersistentProjectileEntity {
 
 	@ModifyExpressionValue(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/TridentEntity;isNoClip()Z"))
 	private boolean enchancement$rebalanceEquipment(boolean value) {
-		if (ModConfig.rebalanceEquipment && getY() <= getWorld().getBottomY()) {
+		if (ModConfig.rebalanceEquipment && getY() <= getEntityWorld().getBottomY()) {
 			return true;
 		}
 		return value;

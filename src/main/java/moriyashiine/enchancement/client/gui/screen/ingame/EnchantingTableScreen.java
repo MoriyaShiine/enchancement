@@ -10,6 +10,7 @@ import moriyashiine.enchancement.common.screenhandler.EnchantingTableScreenHandl
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.util.config.OverhaulMode;
 import net.minecraft.client.gl.RenderPipelines;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.entity.model.BookModel;
@@ -131,21 +132,21 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 	}
 
 	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+	public boolean mouseClicked(Click click, boolean doubled) {
 		int posX = (width - backgroundWidth) / 2;
 		int posY = (height - backgroundHeight) / 2 - 16;
-		if (handler.canEnchant(client.player, client.player.isCreative()) && isInEnchantButtonBounds(posX, posY, (int) mouseX, (int) mouseY) && !handler.selectedEnchantments.isEmpty() && handler.onButtonClick(client.player, 0)) {
+		if (handler.canEnchant(client.player, client.player.isCreative()) && isInEnchantButtonBounds(posX, posY, (int) click.x(), (int) click.y()) && !handler.selectedEnchantments.isEmpty() && handler.onButtonClick(client.player, 0)) {
 			client.interactionManager.clickButton(handler.syncId, 0);
 			return true;
 		}
 		if (handler.validEnchantments.size() > PAGE_SIZE) {
-			if (isInUpButtonBounds(posX, posY, (int) mouseX, (int) mouseY) && handler.onButtonClick(client.player, 1)) {
+			if (isInUpButtonBounds(posX, posY, (int) click.x(), (int) click.y()) && handler.onButtonClick(client.player, 1)) {
 				client.interactionManager.clickButton(handler.syncId, 1);
 				client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1));
 				nextPageAngle += 1;
 				return true;
 			}
-			if (isInDownButtonBounds(posX, posY, (int) mouseX, (int) mouseY) && handler.onButtonClick(client.player, 2)) {
+			if (isInDownButtonBounds(posX, posY, (int) click.x(), (int) click.y()) && handler.onButtonClick(client.player, 2)) {
 				client.interactionManager.clickButton(handler.syncId, 2);
 				client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1));
 				nextPageAngle -= 1;
@@ -157,7 +158,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 			client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1));
 			return true;
 		}
-		return super.mouseClicked(mouseX, mouseY, button);
+		return super.mouseClicked(click, doubled);
 	}
 
 	@Override

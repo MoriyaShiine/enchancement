@@ -48,7 +48,7 @@ public class EruptionMaceEffect extends MaceEffect {
 	@Override
 	public void use(World world, PlayerEntity player, ItemStack stack) {
 		EruptionMaceEffect.useCommon(player);
-		if (world.isClient) {
+		if (world.isClient()) {
 			EruptionMaceEffect.useClient(player);
 		} else {
 			EruptionMaceEffect.useServer(player);
@@ -67,12 +67,12 @@ public class EruptionMaceEffect extends MaceEffect {
 		for (int i = 0; i < 360; i += 15) {
 			for (int j = 1; j < 4; j++) {
 				double x = player.getX() + MathHelper.sin(i) * j / 2, z = player.getZ() + MathHelper.cos(i) * j / 2;
-				BlockState state = player.getWorld().getBlockState(mutable.set(x, y, z));
-				if (!state.isReplaceable() && player.getWorld().getBlockState(mutable.move(Direction.UP)).isReplaceable()) {
+				BlockState state = player.getEntityWorld().getBlockState(mutable.set(x, y, z));
+				if (!state.isReplaceable() && player.getEntityWorld().getBlockState(mutable.move(Direction.UP)).isReplaceable()) {
 					BlockStateParticleEffect particle = new BlockStateParticleEffect(ParticleTypes.BLOCK, state);
 					for (int k = 0; k < 2; k++) {
-						player.getWorld().addParticleClient(particle, x, mutable.getY() + 0.5, z, 0, 0.5, 0);
-						player.getWorld().addParticleClient(ParticleTypes.LAVA, x, mutable.getY() + 0.5, z, 0, 2, 0);
+						player.getEntityWorld().addParticleClient(particle, x, mutable.getY() + 0.5, z, 0, 0.5, 0);
+						player.getEntityWorld().addParticleClient(ParticleTypes.LAVA, x, mutable.getY() + 0.5, z, 0, 2, 0);
 					}
 				}
 			}
@@ -80,7 +80,7 @@ public class EruptionMaceEffect extends MaceEffect {
 	}
 
 	public static void useServer(PlayerEntity player) {
-		ServerWorld serverWorld = (ServerWorld) player.getWorld();
+		ServerWorld serverWorld = (ServerWorld) player.getEntityWorld();
 		PlayerLookup.tracking(player).forEach(foundPlayer -> UseEruptionPayload.send(foundPlayer, player));
 		float base = (float) player.getAttributeValue(EntityAttributes.ATTACK_DAMAGE);
 		float fireDuration = EruptionEffect.getFireDuration(player.getRandom(), player.getMainHandStack());
@@ -96,7 +96,7 @@ public class EruptionMaceEffect extends MaceEffect {
 	}
 
 	private static List<LivingEntity> getNearby(LivingEntity living) {
-		return living.getWorld().getEntitiesByClass(LivingEntity.class, new Box(living.getBlockPos()).expand(2), foundEntity ->
+		return living.getEntityWorld().getEntitiesByClass(LivingEntity.class, new Box(living.getBlockPos()).expand(2), foundEntity ->
 				foundEntity.isAlive() && foundEntity.distanceTo(living) < 10 && SLibUtils.shouldHurt(living, foundEntity) && SLibUtils.canSee(living, foundEntity, 2));
 	}
 }

@@ -86,12 +86,12 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 					splash = ParticleTypes.SNOWFLAKE;
 					bubble = ParticleTypes.SNOWFLAKE;
 				}
-				obj.getWorld().addParticleClient(bubbleColumn, x, y, z, 0, 0.04, 0);
-				obj.getWorld().addParticleClient(bubbleColumn, obj.getParticleX(0.5), y + obj.getHeight() / 8, obj.getParticleZ(0.5), 0, 0.04, 0);
-				if (obj.getWorld().getBlockState(obj.getBlockPos().up()).isAir()) {
+				obj.getEntityWorld().addParticleClient(bubbleColumn, x, y, z, 0, 0.04, 0);
+				obj.getEntityWorld().addParticleClient(bubbleColumn, obj.getParticleX(0.5), y + obj.getHeight() / 8, obj.getParticleZ(0.5), 0, 0.04, 0);
+				if (obj.getEntityWorld().getBlockState(obj.getBlockPos().up()).isAir()) {
 					for (int i = 0; i < 2; i++) {
-						obj.getWorld().addParticleClient(splash, obj.getParticleX(0.5), obj.getBlockY() + 1, obj.getParticleZ(0.5), 0, 1, 0);
-						obj.getWorld().addParticleClient(bubble, obj.getParticleX(0.5), obj.getBlockY() + 1, obj.getParticleZ(0.5), 0, 0.2, 0);
+						obj.getEntityWorld().addParticleClient(splash, obj.getParticleX(0.5), obj.getBlockY() + 1, obj.getParticleZ(0.5), 0, 1, 0);
+						obj.getEntityWorld().addParticleClient(bubble, obj.getParticleX(0.5), obj.getBlockY() + 1, obj.getParticleZ(0.5), 0, 0.2, 0);
 					}
 				}
 			}
@@ -128,7 +128,7 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 
 	private boolean shouldAddVelocity() {
 		if (obj.getControllingPassenger() instanceof PlayerEntity) {
-			return obj.getWorld().isClient;
+			return obj.getEntityWorld().isClient();
 		}
 		return true;
 	}

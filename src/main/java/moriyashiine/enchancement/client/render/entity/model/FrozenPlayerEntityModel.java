@@ -43,7 +43,7 @@ public class FrozenPlayerEntityModel extends BipedEntityModel<FrozenPlayerEntity
 	}
 
 	@Override
-	public void setArmAngle(Arm arm, MatrixStack matrices) {
+	public void setArmAngle(FrozenPlayerEntityRenderState state, Arm arm, MatrixStack matrices) {
 		getRootPart().applyTransform(matrices);
 		ModelPart armPart = getArm(arm);
 		if (slim) {

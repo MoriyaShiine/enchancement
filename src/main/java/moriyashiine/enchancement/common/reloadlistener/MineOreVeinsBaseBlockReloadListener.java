@@ -8,24 +8,19 @@ import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype.MineOreVeinsEvent;
-import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.block.Block;
 import net.minecraft.registry.Registries;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
+import net.minecraft.resource.SynchronousResourceReloader;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class MineOreVeinsBaseBlockReloadListener implements SimpleSynchronousResourceReloadListener {
-	private static final Identifier ID = Enchancement.id("mine_ore_veins_base_block");
-
-	@Override
-	public Identifier getFabricId() {
-		return ID;
-	}
+public class MineOreVeinsBaseBlockReloadListener implements SynchronousResourceReloader {
+	public static final Identifier ID = Enchancement.id("mine_ore_veins_base_block");
 
 	@Override
 	public void reload(ResourceManager manager) {

@@ -51,7 +51,7 @@ public abstract class ShardEntity extends PersistentProjectileEntity {
 	@Override
 	public void tick() {
 		super.tick();
-		if (!getWorld().isClient && age > 400) {
+		if (!getEntityWorld().isClient() && age > 400) {
 			playSound(getHitSound(), 1, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
 			addParticles();
 			discard();
@@ -60,13 +60,13 @@ public abstract class ShardEntity extends PersistentProjectileEntity {
 
 	@Override
 	protected void onEntityHit(EntityHitResult entityHitResult) {
-		if (getWorld() instanceof ServerWorld serverWorld) {
+		if (getEntityWorld() instanceof ServerWorld world) {
 			Entity entity = entityHitResult.getEntity();
 			if (entity instanceof EnderDragonPart part) {
 				entity = part.owner;
 			}
 			Entity owner = getOwner();
-			if (SLibUtils.shouldHurt(owner, entity) && entity.damage(serverWorld, serverWorld.getDamageSources().create(getDamageType(), this, owner), (float) damage)) {
+			if (SLibUtils.shouldHurt(owner, entity) && entity.damage(world, world.getDamageSources().create(getDamageType(), this, owner), (float) damage)) {
 				onTargetHit(entity);
 				playSound(getHitSound(), 1, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
 				addParticles();
@@ -77,9 +77,9 @@ public abstract class ShardEntity extends PersistentProjectileEntity {
 
 	@Override
 	protected void onBlockHit(BlockHitResult blockHitResult) {
-		BlockState state = getWorld().getBlockState(blockHitResult.getBlockPos());
-		state.onProjectileHit(getWorld(), state, blockHitResult, this);
-		if (!getWorld().isClient) {
+		BlockState state = getEntityWorld().getBlockState(blockHitResult.getBlockPos());
+		state.onProjectileHit(getEntityWorld(), state, blockHitResult, this);
+		if (!getEntityWorld().isClient()) {
 			playSound(getHitSound(), 1, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
 			addParticles();
 			discard();
@@ -87,6 +87,6 @@ public abstract class ShardEntity extends PersistentProjectileEntity {
 	}
 
 	public void addParticles() {
-		((ServerWorld) getWorld()).spawnParticles(getParticleEffect(), getX(), getY(), getZ(), 8, getWidth() / 2, getHeight() / 2, getWidth() / 2, 0);
+		((ServerWorld) getEntityWorld()).spawnParticles(getParticleEffect(), getX(), getY(), getZ(), 8, getWidth() / 2, getHeight() / 2, getWidth() / 2, 0);
 	}
 }

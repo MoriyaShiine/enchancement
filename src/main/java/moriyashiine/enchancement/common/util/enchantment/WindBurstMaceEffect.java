@@ -34,8 +34,8 @@ public class WindBurstMaceEffect extends MaceEffect {
 	@Override
 	public void use(World world, PlayerEntity player, ItemStack stack) {
 		SLibUtils.playSound(player, SoundEvents.ENTITY_WIND_CHARGE_THROW, 0.5F, 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F));
-		if (!world.isClient) {
-			WindChargeEntity windChargeEntity = new WindChargeEntity(player, world, player.getPos().getX(), player.getEyePos().getY(), player.getPos().getZ());
+		if (!world.isClient()) {
+			WindChargeEntity windChargeEntity = new WindChargeEntity(player, world, player.getEntityPos().getX(), player.getEyePos().getY(), player.getEntityPos().getZ());
 			windChargeEntity.setVelocity(player, player.getPitch(), player.getYaw(), 0, 1.5F, 1);
 			((WindBurstHolder) windChargeEntity).enchancement$setFromWindBurst(true);
 			world.spawnEntity(windChargeEntity);

@@ -39,7 +39,7 @@ public record StartSlidingS2CPayload(int entityId, SlideComponent.SlideVelocity 
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<StartSlidingS2CPayload> {
 		@Override
 		public void receive(StartSlidingS2CPayload payload, ClientPlayNetworking.Context context) {
-			Entity entity = context.player().getWorld().getEntityById(payload.entityId());
+			Entity entity = context.player().getEntityWorld().getEntityById(payload.entityId());
 			if (entity instanceof PlayerEntity player) {
 				ModEntityComponents.SLIDE.get(player).startSliding(payload.velocity(), payload.adjustedVelocity(), payload.cachedYaw());
 			}

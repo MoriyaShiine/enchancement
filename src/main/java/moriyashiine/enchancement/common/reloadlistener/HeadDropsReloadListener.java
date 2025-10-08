@@ -8,25 +8,20 @@ import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.util.enchantment.BeheadingEntry;
-import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
+import net.minecraft.resource.SynchronousResourceReloader;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class HeadDropsReloadListener implements SimpleSynchronousResourceReloadListener {
-	private static final Identifier ID = Enchancement.id("head_drops");
-
-	@Override
-	public Identifier getFabricId() {
-		return ID;
-	}
+public class HeadDropsReloadListener implements SynchronousResourceReloader {
+	public static final Identifier ID = Enchancement.id("head_drops");
 
 	@Override
 	public void reload(ResourceManager manager) {

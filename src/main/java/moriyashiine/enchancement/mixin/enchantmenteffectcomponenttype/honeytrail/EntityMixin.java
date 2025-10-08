@@ -18,10 +18,10 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(Entity.class)
 public abstract class EntityMixin {
 	@Shadow
-	public abstract World getWorld();
+	public abstract World getEntityWorld();
 
 	@Shadow
-	public abstract Vec3d getPos();
+	public abstract Vec3d getEntityPos();
 
 	@ModifyReturnValue(method = "getVelocityMultiplier", at = @At("RETURN"))
 	protected float enchancement$honeyTrail(float original) {
@@ -41,9 +41,9 @@ public abstract class EntityMixin {
 
 	@Unique
 	private boolean inHoneySpot() {
-		HoneyTrailComponent honeyTrailComponent = ModWorldComponents.HONEY_TRAIL.get(getWorld());
+		HoneyTrailComponent honeyTrailComponent = ModWorldComponents.HONEY_TRAIL.get(getEntityWorld());
 		for (HoneyTrailComponent.HoneySpot spot : honeyTrailComponent.getHoneySpots()) {
-			if (spot.getBox().contains(getPos()) && SLibUtils.shouldHurt(getWorld().getEntity(spot.getOwnerId()), (Entity) (Object) this)) {
+			if (spot.getBox().contains(getEntityPos()) && SLibUtils.shouldHurt(getEntityWorld().getEntity(spot.getOwnerId()), (Entity) (Object) this)) {
 				return true;
 			}
 		}

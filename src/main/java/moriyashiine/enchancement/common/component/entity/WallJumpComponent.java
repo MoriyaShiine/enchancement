@@ -64,7 +64,7 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 			slidingPos = null;
 			hasJumped = false;
 		} else if (slidingPos != null) {
-			((HoneyBlock) Blocks.HONEY_BLOCK).addCollisionEffects(obj.getWorld(), obj);
+			((HoneyBlock) Blocks.HONEY_BLOCK).addCollisionEffects(obj.getEntityWorld(), obj);
 			((HoneyBlock) Blocks.HONEY_BLOCK).updateSlidingVelocity(obj);
 		}
 	}
@@ -93,18 +93,18 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 				for (Direction direction : Direction.values()) {
 					if (direction.getAxis().isHorizontal()) {
 						mutable.move(direction);
-						BlockState state = obj.getWorld().getBlockState(mutable);
-						if (!state.isIn(ModBlockTags.UNSTICKABLE) && !state.getCollisionShape(obj.getWorld(), mutable, ShapeContext.of(obj)).isEmpty() && !obj.isOnGround() && obj.getVelocity().getY() < -0.1) {
-							double mutableDistance = mutable.getSquaredDistance(obj.getPos());
-							if (targetPos != null && mutableDistance == targetPos.getSquaredDistance(obj.getPos())) {
+						BlockState state = obj.getEntityWorld().getBlockState(mutable);
+						if (!state.isIn(ModBlockTags.UNSTICKABLE) && !state.getCollisionShape(obj.getEntityWorld(), mutable, ShapeContext.of(obj)).isEmpty() && !obj.isOnGround() && obj.getVelocity().getY() < -0.1) {
+							double mutableDistance = mutable.getSquaredDistance(obj.getEntityPos());
+							if (targetPos != null && mutableDistance == targetPos.getSquaredDistance(obj.getEntityPos())) {
 								BlockPos p1 = mutable.offset(direction.rotateYClockwise());
 								BlockPos p2 = mutable.offset(direction.rotateYCounterclockwise());
-								if (p1.getSquaredDistance(obj.getPos()) < p2.getSquaredDistance(obj.getPos())) {
+								if (p1.getSquaredDistance(obj.getEntityPos()) < p2.getSquaredDistance(obj.getEntityPos())) {
 									targetPos = p1;
 								} else {
 									targetPos = p2;
 								}
-							} else if (targetPos == null || mutableDistance < targetPos.getSquaredDistance(obj.getPos())) {
+							} else if (targetPos == null || mutableDistance < targetPos.getSquaredDistance(obj.getEntityPos())) {
 								targetPos = mutable.toImmutable();
 							}
 						}

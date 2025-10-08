@@ -157,8 +157,8 @@ public class SlideComponent implements CommonTickingComponent {
 				Vector2d vec = new Vector2d(adjustedVelocity.x(), adjustedVelocity.z());
 				vec.normalize();
 				vec.mul(obj.getWidth() / 2);
-				obj.getWorld().addParticleClient(ModParticleTypes.VELOCITY_LINE, obj.getX() - vec.y(), obj.getY() + obj.getHeight() / 2 + MathHelper.nextFloat(obj.getRandom(), -obj.getHeight() / 3, obj.getHeight() / 3), obj.getZ() + vec.x(), adjustedVelocity.x(), 0, adjustedVelocity.z());
-				obj.getWorld().addParticleClient(ModParticleTypes.VELOCITY_LINE, obj.getX() + vec.y(), obj.getY() + obj.getHeight() / 2 + MathHelper.nextFloat(obj.getRandom(), -obj.getHeight() / 3, obj.getHeight() / 3), obj.getZ() - vec.x(), adjustedVelocity.x(), 0, adjustedVelocity.z());
+				obj.getEntityWorld().addParticleClient(ModParticleTypes.VELOCITY_LINE, obj.getX() - vec.y(), obj.getY() + obj.getHeight() / 2 + MathHelper.nextFloat(obj.getRandom(), -obj.getHeight() / 3, obj.getHeight() / 3), obj.getZ() + vec.x(), adjustedVelocity.x(), 0, adjustedVelocity.z());
+				obj.getEntityWorld().addParticleClient(ModParticleTypes.VELOCITY_LINE, obj.getX() + vec.y(), obj.getY() + obj.getHeight() / 2 + MathHelper.nextFloat(obj.getRandom(), -obj.getHeight() / 3, obj.getHeight() / 3), obj.getZ() - vec.x(), adjustedVelocity.x(), 0, adjustedVelocity.z());
 			}
 		}
 	}
@@ -202,13 +202,13 @@ public class SlideComponent implements CommonTickingComponent {
 	}
 
 	private boolean hitsBlock(BlockPos pos) {
-		return !obj.getWorld().getBlockState(pos).getCollisionShape(obj.getWorld(), pos).isEmpty();
+		return !obj.getEntityWorld().getBlockState(pos).getCollisionShape(obj.getEntityWorld(), pos).isEmpty();
 	}
 
 	private boolean updateCrawl() {
 		int height = MathHelper.floor(obj.getHeight());
 		if (height > 0) {
-			Vec3d frontPos = obj.getPos().add(0, height, 0).add(obj.getRotationVector(0, cachedYaw));
+			Vec3d frontPos = obj.getEntityPos().add(0, height, 0).add(obj.getRotationVector(0, cachedYaw));
 			BlockPos.Mutable pos = new BlockPos.Mutable(frontPos.getX(), frontPos.getY(), frontPos.getZ());
 			int y = pos.getY();
 			boolean hitsBelow = hitsBlock(pos.setY(y - 1));

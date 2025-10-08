@@ -17,7 +17,7 @@ public class LeechingTridentEvent implements ServerLivingEntityEvents.AfterDamag
 			LeechingTridentComponent leechingTridentComponent = ModEntityComponents.LEECHING_TRIDENT.get(trident);
 			if (leechingTridentComponent.hasLeech() && leechingTridentComponent.getStuckEntity() == null) {
 				if (trident.getOwner() != entity) {
-					entity.getWorld().getEntitiesByClass(TridentEntity.class, entity.getBoundingBox().expand(1), foundTrident -> true).forEach(otherTrident -> {
+					entity.getEntityWorld().getEntitiesByClass(TridentEntity.class, entity.getBoundingBox().expand(1), foundTrident -> true).forEach(otherTrident -> {
 						LeechingTridentComponent otherLeechingTridentComponent = ModEntityComponents.LEECHING_TRIDENT.get(otherTrident);
 						if (otherLeechingTridentComponent.getStuckEntity() == entity) {
 							otherLeechingTridentComponent.unleech();

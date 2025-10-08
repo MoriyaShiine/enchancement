@@ -35,7 +35,7 @@ public record WallJumpPayload(int entityId, Vec3d velocity) implements CustomPay
 	public static class Receiver implements ServerPlayNetworking.PlayPayloadHandler<WallJumpPayload> {
 		@Override
 		public void receive(WallJumpPayload payload, ServerPlayNetworking.Context context) {
-			Entity entity = context.player().getWorld().getEntityById(payload.entityId());
+			Entity entity = context.player().getEntityWorld().getEntityById(payload.entityId());
 			if (entity instanceof LivingEntity) {
 				ModEntityComponents.WALL_JUMP.get(entity).use(payload.velocity());
 			}

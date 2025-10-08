@@ -20,6 +20,6 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@ModifyArg(method = "applyMovementInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;updateVelocity(FLnet/minecraft/util/math/Vec3d;)V"))
 	private float enchancement$multiplyMovementSpeed(float value) {
-		return value * MultiplyMovementSpeedEvent.EVENT.invoker().multiply(1, getWorld(), (LivingEntity) (Object) this);
+		return value * MultiplyMovementSpeedEvent.EVENT.invoker().multiply(1, getEntityWorld(), (LivingEntity) (Object) this);
 	}
 }

@@ -30,8 +30,8 @@ public class MaceItemMixin {
 	private float enchancement$rebalanceEquipment(float original, Entity target, float baseAttackDamage, DamageSource damageSource, @Local LivingEntity living) {
 		if (ModConfig.rebalanceEquipment) {
 			float damage = (float) (6 * Math.log(living.fallDistance + 1));
-			if (target.getWorld() instanceof ServerWorld serverWorld) {
-				float bonus = EnchantmentHelper.getSmashDamagePerFallenBlock(serverWorld, living.getWeaponStack(), target, damageSource, 0);
+			if (target.getEntityWorld() instanceof ServerWorld world) {
+				float bonus = EnchantmentHelper.getSmashDamagePerFallenBlock(world, living.getWeaponStack(), target, damageSource, 0);
 				return damage + bonus * 2;
 			}
 			return damage;

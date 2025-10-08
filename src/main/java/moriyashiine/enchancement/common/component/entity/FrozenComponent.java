@@ -71,10 +71,10 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 				}
 				ticksFrozen++;
 				if (ticksFrozen > 200 && obj.getRandom().nextFloat() < 1 / 64F && !mob.isPersistent()) {
-					obj.damage((ServerWorld) obj.getWorld(), obj.getDamageSources().generic(), 2);
+					obj.damage((ServerWorld) obj.getEntityWorld(), obj.getDamageSources().generic(), 2);
 				}
 				if (obj.horizontalCollision && obj.getVelocity().length() >= 0.05) {
-					obj.damage((ServerWorld) obj.getWorld(), obj.getDamageSources().flyIntoWall(), 2);
+					obj.damage((ServerWorld) obj.getEntityWorld(), obj.getDamageSources().flyIntoWall(), 2);
 				}
 				if (ticksFrozen <= 10) {
 					obj.setVelocity(obj.getVelocity().multiply(0.25));
@@ -134,7 +134,7 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 	}
 
 	public boolean shouldFreezeOnDeath(DamageSource source) {
-		if (!obj.getWorld().isClient && !obj.getType().isIn(ModEntityTypeTags.CANNOT_FREEZE) && lastFreezingAttacker != null) {
+		if (!obj.getEntityWorld().isClient() && !obj.getType().isIn(ModEntityTypeTags.CANNOT_FREEZE) && lastFreezingAttacker != null) {
 			return source.isIn(DamageTypeTags.IS_FREEZING) || isSourceFrostbiteWeapon(source);
 		}
 		return false;

@@ -8,9 +8,14 @@ import moriyashiine.enchancement.client.render.entity.state.BrimstoneEntityRende
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.entity.projectile.BrimstoneEntity;
 import net.irisshaders.iris.api.v0.IrisApi;
-import net.minecraft.client.render.*;
+import net.minecraft.client.render.LightmapTextureManager;
+import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.ProjectileEntityRenderer;
+import net.minecraft.client.render.state.CameraRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Colors;
 import net.minecraft.util.Identifier;
@@ -35,21 +40,19 @@ public class BrimstoneEntityRenderer extends ProjectileEntityRenderer<BrimstoneE
 	}
 
 	@Override
-	public void render(BrimstoneEntityRenderState state, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
-		float scale = MathHelper.lerp(state.damage / 12F, 0.1F, 1);
-		scale *= MathHelper.lerp(MathHelper.clamp((state.ticksExisted - (BrimstoneEntity.getMaxTicks() - 10F)) / (BrimstoneEntity.getMaxTicks() - (BrimstoneEntity.getMaxTicks() - 10)), 0, 1), 1F, 0);
-		float v = (Math.floorMod(state.ticksExisted, 40) + state.age) / 4F;
+	public void render(BrimstoneEntityRenderState renderState, MatrixStack matrices, OrderedRenderCommandQueue queue, CameraRenderState cameraRenderState) {
+		float scale = MathHelper.lerp(renderState.damage / 12F, 0.1F, 1);
+		scale *= MathHelper.lerp(MathHelper.clamp((renderState.ticksExisted - (BrimstoneEntity.getMaxTicks() - 10F)) / (BrimstoneEntity.getMaxTicks() - (BrimstoneEntity.getMaxTicks() - 10)), 0, 1), 1F, 0);
+		float v = (Math.floorMod(renderState.ticksExisted, 40) + renderState.age) / 4F;
 		float u = v + 4 * -0.5F / scale;
-		VertexConsumer vertices = vertexConsumers.getBuffer(getRenderLayer());
 		matrices.push();
-		matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-state.yaw + 90));
-		matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(state.pitch + 90));
-		matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(state.ticksExisted + state.age * 12));
+		matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-renderState.yaw + 90));
+		matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(renderState.pitch + 90));
+		matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(renderState.ticksExisted + renderState.age * 12));
 		matrices.scale(scale, 1, scale);
-		MatrixStack.Entry entry = matrices.peek();
-		matrices.translate(0, state.age, 0);
-		for (int i = state.ticksExisted; i < state.distanceTraveled; i++) {
-			renderSection(state, matrices, entry, vertices, u, v);
+		matrices.translate(0, renderState.age, 0);
+		for (int i = renderState.ticksExisted; i < renderState.distanceTraveled; i++) {
+			renderSection(renderState, matrices, queue, u, v);
 		}
 		matrices.pop();
 	}
@@ -75,10 +78,12 @@ public class BrimstoneEntityRenderer extends ProjectileEntityRenderer<BrimstoneE
 		return RenderLayer.getEntityAlpha(TEXTURE);
 	}
 
-	private static void renderSection(BrimstoneEntityRenderState state, MatrixStack matrices, MatrixStack.Entry entry, VertexConsumer vertices, float u, float v) {
+	private static void renderSection(BrimstoneEntityRenderState state, MatrixStack matrices, OrderedRenderCommandQueue queue, float u, float v) {
 		matrices.scale(state.damageMultiplier, 1, state.damageMultiplier);
 		for (int i = 0; i < 360; i += 15) {
-			drawPlane(entry, vertices, u, v);
+			queue.submitCustom(matrices, getRenderLayer(), (entry, vertices) -> {
+				drawPlane(entry, vertices, u, v);
+			});
 			matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(i));
 		}
 		matrices.scale(1 / state.damageMultiplier, 1, 1 / state.damageMultiplier);

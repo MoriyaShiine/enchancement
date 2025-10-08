@@ -33,7 +33,7 @@ public record PlayBrimstoneFireSoundPayload(int entityId, UUID uuid) implements 
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<PlayBrimstoneFireSoundPayload> {
 		@Override
 		public void receive(PlayBrimstoneFireSoundPayload payload, ClientPlayNetworking.Context context) {
-			Entity entity = context.player().getWorld().getEntityById(payload.entityId());
+			Entity entity = context.player().getEntityWorld().getEntityById(payload.entityId());
 			if (entity != null) {
 				context.client().getSoundManager().play(new BrimstoneFireSoundInstance(entity, payload.uuid()));
 			}

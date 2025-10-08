@@ -45,7 +45,6 @@ import java.util.Set;
 public class BrimstoneEntity extends PersistentProjectileEntity {
 	public static final ItemStack BRIMSTONE_STACK;
 	public static final int DISTANCE_PER_TICK = 6;
-	public static boolean ALWAYS_SPAWN_PARTICLES = false;
 
 	static {
 		BRIMSTONE_STACK = new ItemStack(Items.LAVA_BUCKET);
@@ -82,8 +81,8 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 
 	@Override
 	public void tick() {
-		if (!getWorld().isClient && ticksExisted == 0) {
-			PlayerLookup.all(getWorld().getServer()).forEach(foundPlayer -> PlayBrimstoneTravelSoundPayload.send(foundPlayer, this));
+		if (!getEntityWorld().isClient() && ticksExisted == 0) {
+			PlayerLookup.all(getEntityWorld().getServer()).forEach(foundPlayer -> PlayBrimstoneTravelSoundPayload.send(foundPlayer, this));
 		}
 		if (isCritical()) {
 			setCritical(false);
@@ -94,26 +93,26 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 			if (min > 0 && min == distanceTraveled) {
 				discard();
 			}
-			Vec3d start = getPos().add(getRotationVector().multiply(distanceTraveled + (ticksExisted > 0 ? -1 : 0))), end = start.add(getRotationVector());
-			BlockHitResult hitResult = getWorld().raycast(new RaycastContext(start, end, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, this));
+			Vec3d start = getEntityPos().add(getRotationVector().multiply(distanceTraveled + (ticksExisted > 0 ? -1 : 0))), end = start.add(getRotationVector());
+			BlockHitResult hitResult = getEntityWorld().raycast(new RaycastContext(start, end, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, this));
 			if (hitResult.getType() == HitResult.Type.BLOCK) {
-				if (getWorld().isClient) {
+				if (getEntityWorld().isClient()) {
 					addParticles(PARTICLE, hitResult.getPos().getX(), hitResult.getPos().getY(), hitResult.getPos().getZ());
 				} else {
-					getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, hitResult.getPos(), GameEvent.Emitter.of(this));
+					getEntityWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, hitResult.getPos(), GameEvent.Emitter.of(this));
 				}
 				break;
 			} else {
 				Entity owner = getOwner();
-				getWorld().getOtherEntities(owner, Box.from(hitResult.getPos()).expand(0.5), EntityPredicates.EXCEPT_SPECTATOR.and(entity -> canEntityBeHit(owner, entity))).forEach(entity -> {
-					if (getWorld() instanceof ServerWorld serverWorld) {
+				getEntityWorld().getOtherEntities(owner, Box.from(hitResult.getPos()).expand(0.5), EntityPredicates.EXCEPT_SPECTATOR.and(entity -> canEntityBeHit(owner, entity))).forEach(entity -> {
+					if (getEntityWorld() instanceof ServerWorld world) {
 						double damage = getDamage();
 						if (entity instanceof LivingEntity living) {
 							damage *= living.getMaxHealth() / 20F;
 						}
 						damage *= getDamageMultiplier(distanceTraveled);
 						damage = Math.min(50, damage);
-						entity.damage(serverWorld, serverWorld.getDamageSources().create(ModDamageTypes.BRIMSTONE, this, owner), (float) damage);
+						entity.damage(world, world.getDamageSources().create(ModDamageTypes.BRIMSTONE, this, owner), (float) damage);
 						hitEntities.add(entity);
 						if (entity instanceof LivingEntity living && living.isDead()) {
 							killedEntities.add(living);
@@ -125,8 +124,8 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 			}
 			distanceTraveled++;
 		}
-		if (getWorld().isClient) {
-			Vec3d particlePos = getPos().add(getRotationVector().multiply(distanceTraveled));
+		if (getEntityWorld().isClient()) {
+			Vec3d particlePos = getEntityPos().add(getRotationVector().multiply(distanceTraveled));
 			addParticles(PARTICLE, particlePos.getX(), particlePos.getY(), particlePos.getZ());
 			addParticles(ModParticleTypes.BRIMSTONE_BUBBLE, particlePos.getX(), particlePos.getY(), particlePos.getZ());
 		} else if (ticksExisted > getMaxTicks()) {
@@ -207,10 +206,10 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 	}
 
 	private void addParticles(ParticleEffect particle, double x, double y, double z) {
-		ALWAYS_SPAWN_PARTICLES = true;
 		float range = MathHelper.lerp(getDamage() / 12, 0, 0.5F);
 		for (int i = 0; i < 8; i++) {
-			getWorld().addParticleClient(particle,
+			getEntityWorld().addImportantParticleClient(particle,
+					true,
 					x + MathHelper.nextFloat(random, -range, range),
 					y + MathHelper.nextFloat(random, -range, range),
 					z + MathHelper.nextFloat(random, -range, range),
@@ -218,7 +217,6 @@ public class BrimstoneEntity extends PersistentProjectileEntity {
 					MathHelper.nextFloat(random, -1, 1),
 					MathHelper.nextFloat(random, -1, 1));
 		}
-		ALWAYS_SPAWN_PARTICLES = false;
 	}
 
 	private boolean canEntityBeHit(Entity owner, Entity entity) {

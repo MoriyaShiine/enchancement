@@ -39,7 +39,7 @@ public record SyncHookedVelocityPayload(int entityId, Vec3d velocity) implements
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<SyncHookedVelocityPayload> {
 		@Override
 		public void receive(SyncHookedVelocityPayload payload, ClientPlayNetworking.Context context) {
-			Entity entity = context.player().getWorld().getEntityById(payload.entityId());
+			Entity entity = context.player().getEntityWorld().getEntityById(payload.entityId());
 			if (entity != null) {
 				getEntities(entity).forEach(foundEntity -> foundEntity.setVelocity(payload.velocity()));
 			}

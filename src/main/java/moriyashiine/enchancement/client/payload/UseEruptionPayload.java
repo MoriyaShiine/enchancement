@@ -33,7 +33,7 @@ public record UseEruptionPayload(int entityId) implements CustomPayload {
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<UseEruptionPayload> {
 		@Override
 		public void receive(UseEruptionPayload payload, ClientPlayNetworking.Context context) {
-			Entity entity = context.player().getWorld().getEntityById(payload.entityId());
+			Entity entity = context.player().getEntityWorld().getEntityById(payload.entityId());
 			if (entity instanceof PlayerEntity player) {
 				EruptionMaceEffect.useCommon(player);
 				EruptionMaceEffect.useClient(player);

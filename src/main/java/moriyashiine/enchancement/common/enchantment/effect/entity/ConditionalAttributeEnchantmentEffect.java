@@ -51,7 +51,7 @@ public record ConditionalAttributeEnchantmentEffect(AttributeEnchantmentEffect e
 	public static LootContext createContext(ServerWorld world, LivingEntity living) {
 		return new LootContext.Builder(new LootWorldContext.Builder(world)
 				.add(LootContextParameters.THIS_ENTITY, living)
-				.add(LootContextParameters.ORIGIN, living.getPos())
+				.add(LootContextParameters.ORIGIN, living.getEntityPos())
 				.add(LootContextParameters.DAMAGE_SOURCE, living.getRecentDamageSource())
 				.build(LootContextTypes.ENTITY)).build(Optional.empty());
 	}

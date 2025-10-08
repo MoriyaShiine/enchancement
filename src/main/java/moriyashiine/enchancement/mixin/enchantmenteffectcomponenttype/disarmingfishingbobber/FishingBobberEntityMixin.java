@@ -40,7 +40,7 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 
 	@Inject(method = "pullHookedEntity", at = @At("HEAD"), cancellable = true)
 	private void enchancment$disarmingFishingBobber(Entity entity, CallbackInfo ci) {
-		if (!entity.getType().isIn(ModEntityTypeTags.CANNOT_DISARM) && getWorld() instanceof ServerWorld serverWorld && entity instanceof LivingEntity living) {
+		if (!entity.getType().isIn(ModEntityTypeTags.CANNOT_DISARM) && getEntityWorld() instanceof ServerWorld world && entity instanceof LivingEntity living) {
 			DisarmingFishingBobberComponent disarmingFishingBobberComponent = ModEntityComponents.DISARMING_FISHING_BOBBER.get(this);
 			if (disarmingFishingBobberComponent.isEnabled()) {
 				ItemStack stack = ItemStack.EMPTY;
@@ -52,7 +52,7 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 						ItemStack handStack = living.getStackInHand(hand);
 						if (!handStack.isEmpty() && handStack == living.getActiveItem()) {
 							stack = handStack;
-							stackSlot = LivingEntity.getSlotForHand(hand);
+							stackSlot = hand.getEquipmentSlot();
 						}
 					}
 					if (stack.isEmpty()) {
@@ -83,7 +83,7 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 									observer.onInteractionWith(EntityInteraction.VILLAGER_HURT, owner);
 								}
 								if (entity instanceof PiglinEntity piglin) {
-									PiglinBrain.onAttacked(serverWorld, piglin, owner);
+									PiglinBrain.onAttacked(world, piglin, owner);
 								}
 							}
 							if (entity instanceof EndermanEntity enderman) {
@@ -107,13 +107,13 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 							}
 						}
 						if (!stack.isEmpty()) {
-							ItemEntity itemEntity = new ItemEntity(getWorld(), entity.getX(), entity.getBodyY(0.5), entity.getZ(), stack);
+							ItemEntity itemEntity = new ItemEntity(getEntityWorld(), entity.getX(), entity.getBodyY(0.5), entity.getZ(), stack);
 							itemEntity.setToDefaultPickupDelay();
 							double deltaX = owner.getX() - getX();
 							double deltaY = owner.getY() - getY();
 							double deltaZ = owner.getZ() - getZ();
 							itemEntity.setVelocity(deltaX * 0.1, deltaY * 0.1 + Math.sqrt(Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ)) * 0.08, deltaZ * 0.1);
-							getWorld().spawnEntity(itemEntity);
+							getEntityWorld().spawnEntity(itemEntity);
 							living.equipStack(stackSlot, ItemStack.EMPTY);
 						}
 					}

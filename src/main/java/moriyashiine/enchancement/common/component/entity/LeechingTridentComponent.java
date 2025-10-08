@@ -68,7 +68,7 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 			if (stuckEntity != null) {
 				setStuckEntity(null);
 			}
-		} else if (stuckEntity == null && obj.getWorld().getEntityById(stuckEntityId) instanceof LivingEntity living) {
+		} else if (stuckEntity == null && obj.getEntityWorld().getEntityById(stuckEntityId) instanceof LivingEntity living) {
 			setStuckEntity(living);
 		}
 		if (stuckEntity != null && stuckEntity.isPartOfGame()) {
@@ -88,7 +88,7 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 			if (leechingTicks % 20 == 0) {
 				int timeUntilRegen = stuckEntity.timeUntilRegen;
 				stuckEntity.timeUntilRegen = 0;
-				if (stuckEntity.damage((ServerWorld) obj.getWorld(), obj.getWorld().getDamageSources().create(ModDamageTypes.LIFE_DRAIN, obj, obj.getOwner()), leechData.damage()) && obj.getOwner() instanceof LivingEntity living && living.isPartOfGame()) {
+				if (stuckEntity.damage((ServerWorld) obj.getEntityWorld(), obj.getEntityWorld().getDamageSources().create(ModDamageTypes.LIFE_DRAIN, obj, obj.getOwner()), leechData.damage()) && obj.getOwner() instanceof LivingEntity living && living.isPartOfGame()) {
 					living.heal(leechData.healAmount());
 				}
 				stuckEntity.timeUntilRegen = timeUntilRegen;

@@ -83,7 +83,7 @@ public class MineOreVeinsEvent {
 		@Override
 		public float modify(float breakSpeed, PlayerEntity player, BlockState state, BlockView world, BlockPos pos) {
 			if (canActivate(player, player.getMainHandStack(), state)) {
-				Set<BlockPos> ores = gatherOres(new HashSet<>(), player.getWorld(), new BlockPos.Mutable().set(pos), state.getBlock());
+				Set<BlockPos> ores = gatherOres(new HashSet<>(), player.getEntityWorld(), new BlockPos.Mutable().set(pos), state.getBlock());
 				if (isValid(ores, player.getMainHandStack())) {
 					float mineOreVeinsSpeed = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.MINE_ORE_VEINS, player.getRandom(), player.getMainHandStack(), 0);
 					return MathHelper.lerp(Math.min(1, ores.size() / 12F), mineOreVeinsSpeed, mineOreVeinsSpeed * 0.1F);

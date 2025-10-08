@@ -44,7 +44,7 @@ public class ConditionalAttributesComponent implements ServerTickingComponent {
 
 	@Override
 	public void serverTick() {
-		LootContext ctx = ConditionalAttributeEnchantmentEffect.createContext((ServerWorld) obj.getWorld(), obj);
+		LootContext ctx = ConditionalAttributeEnchantmentEffect.createContext((ServerWorld) obj.getEntityWorld(), obj);
 		attributes.removeIf(attribute -> {
 			if (!removeAll && attribute.condition().test(ctx)) {
 				return false;

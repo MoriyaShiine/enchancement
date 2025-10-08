@@ -154,7 +154,7 @@ public class ModEnchantments {
 							EnchantmentEffectComponentTypes.TICK,
 							new AutomateEatingEnchantmentEffect(NumberRange.IntRange.atMost(14)),
 							AllOfLootCondition.builder(
-									EntityPropertiesLootCondition.builder(LootContext.EntityTarget.THIS, EntityPredicate.Builder.create().periodicTick(20)),
+									EntityPropertiesLootCondition.builder(LootContext.EntityReference.THIS, EntityPredicate.Builder.create().periodicTick(20)),
 									() -> InvertedLootCondition.builder(() -> InCombatLootCondition.INSTANCE).build()
 							));
 				}));
@@ -615,7 +615,7 @@ public class ModEnchantments {
 									)
 							),
 							EntityPropertiesLootCondition.builder(
-									LootContext.EntityTarget.DIRECT_ATTACKER,
+									LootContext.EntityReference.DIRECT_ATTACKER,
 									EntityPredicate.Builder.create()
 											.flags(EntityFlagsPredicate.Builder.create().flying(false))
 											.movement(MovementPredicate.fallDistance(NumberRange.DoubleRange.atLeast(1.5)))
@@ -671,7 +671,7 @@ public class ModEnchantments {
 						EnchantmentEffectTarget.ATTACKER,
 						EnchantmentEffectTarget.VICTIM,
 						new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.5F)),
-						EntityPropertiesLootCondition.builder(LootContext.EntityTarget.ATTACKER, EntityPredicate.Builder.create().type(EntityTypePredicate.create(entityTypeLookup, EntityType.PLAYER)))
+						EntityPropertiesLootCondition.builder(LootContext.EntityReference.ATTACKER, EntityPredicate.Builder.create().type(EntityTypePredicate.create(entityTypeLookup, EntityType.PLAYER)))
 				)));
 		registerable.register(LUMBERJACK, create(LUMBERJACK.getValue(),
 				itemLookup.getOrThrow(ItemTags.AXES),
@@ -701,7 +701,7 @@ public class ModEnchantments {
 							EnchantmentEffectTarget.ATTACKER,
 							EnchantmentEffectTarget.VICTIM,
 							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.01F)),
-							EntityPropertiesLootCondition.builder(LootContext.EntityTarget.ATTACKER, EntityPredicate.Builder.create().type(EntityTypePredicate.create(entityTypeLookup, EntityType.PLAYER))));
+							EntityPropertiesLootCondition.builder(LootContext.EntityReference.ATTACKER, EntityPredicate.Builder.create().type(EntityTypePredicate.create(entityTypeLookup, EntityType.PLAYER))));
 				}));
 		// hoe
 		registerable.register(APEX, create(APEX.getValue(),

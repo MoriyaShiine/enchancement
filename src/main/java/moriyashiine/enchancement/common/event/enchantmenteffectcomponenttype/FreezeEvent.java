@@ -32,7 +32,7 @@ public class FreezeEvent {
 			FrozenComponent frozenComponent = ModEntityComponents.FROZEN.get(entity);
 			if (frozenComponent.shouldFreezeOnDeath(damageSource)) {
 				if (entity instanceof ServerPlayerEntity serverPlayer) {
-					FrozenPlayerEntity frozenPlayer = ModEntityTypes.FROZEN_PLAYER.create(entity.getWorld(), SpawnReason.TRIGGERED);
+					FrozenPlayerEntity frozenPlayer = ModEntityTypes.FROZEN_PLAYER.create(entity.getEntityWorld(), SpawnReason.TRIGGERED);
 					if (frozenPlayer != null) {
 						frozenPlayer.setCustomName(entity.getName());
 						frozenPlayer.setPersistent();
@@ -43,7 +43,7 @@ public class FreezeEvent {
 						frozenPlayer.requestTeleport(entity.getX(), entity.getY(), entity.getZ());
 						ModEntityComponents.FROZEN.get(frozenPlayer).freeze();
 						SyncFrozenPlayerSlimStatusS2CPayload.send(serverPlayer, frozenPlayer.getUuid());
-						entity.getWorld().spawnEntity(frozenPlayer);
+						entity.getEntityWorld().spawnEntity(frozenPlayer);
 					}
 				} else {
 					if (entity instanceof GuardianEntity guardian) {
@@ -82,16 +82,16 @@ public class FreezeEvent {
 						return false;
 					} else {
 						for (int i = 0; i < 4; i++) {
-							if (entity.getWorld().getEntitiesByType(ModEntityTypes.ICE_SHARD, new Box(entity.getBlockPos()).expand(2), foundEntity -> true).size() < 64) {
+							if (entity.getEntityWorld().getEntitiesByType(ModEntityTypes.ICE_SHARD, new Box(entity.getBlockPos()).expand(2), foundEntity -> true).size() < 64) {
 								for (int j = 0; j < MathHelper.nextInt(entity.getRandom(), 6, 8); j++) {
-									IceShardEntity iceShard = new IceShardEntity(entity.getWorld(), entity, frozenComponent.getLastFreezingAttacker());
+									IceShardEntity iceShard = new IceShardEntity(entity.getEntityWorld(), entity, frozenComponent.getLastFreezingAttacker());
 									Vec3d random = new Vec3d(entity.getRandom().nextGaussian(), entity.getRandom().nextGaussian() / 2, entity.getRandom().nextGaussian());
 									iceShard.setVelocity(random.getX(), random.getY(), random.getZ(), 0.75F, 0);
-									entity.getWorld().spawnEntity(iceShard);
+									entity.getEntityWorld().spawnEntity(iceShard);
 								}
 							}
 						}
-						entity.getWorld().emitGameEvent(GameEvent.ENTITY_DIE, entity.getPos(), GameEvent.Emitter.of(entity, entity.getSteppingBlockState()));
+						entity.getEntityWorld().emitGameEvent(GameEvent.ENTITY_DIE, entity.getEntityPos(), GameEvent.Emitter.of(entity, entity.getSteppingBlockState()));
 						entity.discard();
 					}
 				}

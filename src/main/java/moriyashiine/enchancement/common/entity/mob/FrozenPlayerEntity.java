@@ -28,7 +28,7 @@ public class FrozenPlayerEntity extends MobEntity {
 	@Override
 	public void tick() {
 		super.tick();
-		if (!getWorld().isClient && SLIM_STATUSES.containsKey(getUuid())) {
+		if (!getEntityWorld().isClient() && SLIM_STATUSES.containsKey(getUuid())) {
 			setSlim(SLIM_STATUSES.removeBoolean(getUuid()));
 		}
 	}

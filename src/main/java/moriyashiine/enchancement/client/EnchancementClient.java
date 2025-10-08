@@ -13,6 +13,7 @@ import moriyashiine.enchancement.client.event.internal.SyncBookshelvesEvent;
 import moriyashiine.enchancement.client.gui.screen.ingame.EnchantingTableScreen;
 import moriyashiine.enchancement.client.hud.*;
 import moriyashiine.enchancement.client.particle.*;
+import moriyashiine.enchancement.client.particle.render.SparkParticleRenderer;
 import moriyashiine.enchancement.client.payload.*;
 import moriyashiine.enchancement.client.reloadlisteners.FrozenReloadListener;
 import moriyashiine.enchancement.client.render.entity.AmethystShardEntityRenderer;
@@ -20,7 +21,6 @@ import moriyashiine.enchancement.client.render.entity.BrimstoneEntityRenderer;
 import moriyashiine.enchancement.client.render.entity.IceShardEntityRenderer;
 import moriyashiine.enchancement.client.render.entity.TorchEntityRenderer;
 import moriyashiine.enchancement.client.render.entity.model.FrozenPlayerEntityModel;
-import moriyashiine.enchancement.client.util.EnchancementClientUtil;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
 import moriyashiine.enchancement.common.init.ModParticleTypes;
@@ -34,29 +34,31 @@ import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
+import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
+import net.fabricmc.fabric.api.resource.v1.reloader.ResourceReloaderKeys;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.particle.WaterBubbleParticle;
+import net.minecraft.client.render.entity.EntityRendererFactories;
 import net.minecraft.resource.ResourceType;
 import org.lwjgl.glfw.GLFW;
 import squeek.appleskin.api.event.HUDOverlayEvent;
 
-import java.util.function.Supplier;
-
 public class EnchancementClient implements ClientModInitializer {
-	public static final KeyBinding DIRECTION_BURST_KEYBINDING = registerKeyBinding(() -> KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".directionBurst", GLFW.GLFW_KEY_LEFT_SHIFT, "key.categories." + Enchancement.MOD_ID)));
-	public static final KeyBinding ROTATION_BURST_KEYBINDING = registerKeyBinding(() -> KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".rotationBurst", GLFW.GLFW_KEY_LEFT_CONTROL, "key.categories." + Enchancement.MOD_ID)));
-	public static final KeyBinding SLAM_KEYBINDING = registerKeyBinding(() -> KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".slam", GLFW.GLFW_KEY_LEFT_CONTROL, "key.categories." + Enchancement.MOD_ID)));
-	public static final KeyBinding SLIDE_KEYBINDING = registerKeyBinding(() -> KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".slide", GLFW.GLFW_KEY_LEFT_CONTROL, "key.categories." + Enchancement.MOD_ID)));
+	private static final KeyBinding.Category KEY_CATEGORY = KeyBinding.Category.create(Enchancement.id(Enchancement.MOD_ID));
+	public static final KeyBinding DIRECTION_BURST_KEYBINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".directionBurst", GLFW.GLFW_KEY_LEFT_SHIFT, KEY_CATEGORY));
+	public static final KeyBinding ROTATION_BURST_KEYBINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".rotationBurst", GLFW.GLFW_KEY_LEFT_CONTROL, KEY_CATEGORY));
+	public static final KeyBinding SLAM_KEYBINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".slam", GLFW.GLFW_KEY_LEFT_CONTROL, KEY_CATEGORY));
+	public static final KeyBinding SLIDE_KEYBINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".slide", GLFW.GLFW_KEY_LEFT_CONTROL, KEY_CATEGORY));
 
 	public static boolean betterCombatLoaded = false, irisLoaded = false;
 
@@ -69,7 +71,8 @@ public class EnchancementClient implements ClientModInitializer {
 		initEvents();
 		initPayloads();
 		HandledScreens.register(ModScreenHandlerTypes.ENCHANTING_TABLE, EnchantingTableScreen::new);
-		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(FrozenReloadListener.INSTANCE);
+		ResourceLoader.get(ResourceType.CLIENT_RESOURCES).registerReloader(FrozenReloadListener.ID, FrozenReloadListener.INSTANCE);
+		ResourceLoader.get(ResourceType.CLIENT_RESOURCES).addReloaderOrdering(ResourceReloaderKeys.Client.TEXTURES, FrozenReloadListener.ID);
 		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(Enchancement.id("alternate_air_jump"), modContainer, ResourcePackActivationType.NORMAL));
 		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(Enchancement.id("alternate_burst"), modContainer, ResourcePackActivationType.NORMAL));
 		betterCombatLoaded = FabricLoader.getInstance().isModLoaded("bettercombat");
@@ -82,10 +85,10 @@ public class EnchancementClient implements ClientModInitializer {
 	private void initEntities() {
 		EntityModelLayerRegistry.registerModelLayer(FrozenPlayerEntityModel.LAYER, () -> FrozenPlayerEntityModel.getTexturedModelData(false));
 		EntityModelLayerRegistry.registerModelLayer(FrozenPlayerEntityModel.LAYER_SLIM, () -> FrozenPlayerEntityModel.getTexturedModelData(true));
-		EntityRendererRegistry.register(ModEntityTypes.AMETHYST_SHARD, AmethystShardEntityRenderer::new);
-		EntityRendererRegistry.register(ModEntityTypes.BRIMSTONE, BrimstoneEntityRenderer::new);
-		EntityRendererRegistry.register(ModEntityTypes.ICE_SHARD, IceShardEntityRenderer::new);
-		EntityRendererRegistry.register(ModEntityTypes.TORCH, TorchEntityRenderer::new);
+		EntityRendererFactories.register(ModEntityTypes.AMETHYST_SHARD, AmethystShardEntityRenderer::new);
+		EntityRendererFactories.register(ModEntityTypes.BRIMSTONE, BrimstoneEntityRenderer::new);
+		EntityRendererFactories.register(ModEntityTypes.ICE_SHARD, IceShardEntityRenderer::new);
+		EntityRendererFactories.register(ModEntityTypes.TORCH, TorchEntityRenderer::new);
 	}
 
 	private void initParticles() {
@@ -94,6 +97,7 @@ public class EnchancementClient implements ClientModInitializer {
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.CRITICAL_TIPPER, TintlessDamageParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.HONEY_BUBBLE, HoneyBubbleParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.SHORT_SMALL_FLAME, ShortFlameParticle.SmallFactory::new);
+		ParticleRendererRegistry.register(SparkParticleRenderer.SHEET, SparkParticleRenderer::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.SPARK, provider -> new SparkParticle.Factory());
 		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.VELOCITY_LINE, VelocityLineParticle.Factory::new);
 	}
@@ -147,11 +151,5 @@ public class EnchancementClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(SyncFrozenPlayerSlimStatusS2CPayload.ID, new SyncFrozenPlayerSlimStatusS2CPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(UseEruptionPayload.ID, new UseEruptionPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(UseLightningDashPayload.ID, new UseLightningDashPayload.Receiver());
-	}
-
-	private static KeyBinding registerKeyBinding(Supplier<KeyBinding> supplier) {
-		KeyBinding keyBinding = supplier.get();
-		EnchancementClientUtil.VANILLA_AND_ENCHANCEMENT_KEYBINDINGS.add(keyBinding);
-		return keyBinding;
 	}
 }

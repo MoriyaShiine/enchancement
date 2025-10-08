@@ -25,7 +25,7 @@ public class ChargeJumpEvent implements ModifyMovementEvents.JumpVelocity {
 		if (chargeJumpComponent != null && chargeJumpComponent.hasChargeJump()) {
 			float boostProgress = chargeJumpComponent.getChargeProgress();
 			if (boostProgress > 0) {
-				if (entity.getWorld() instanceof ServerWorld world) {
+				if (entity.getEntityWorld() instanceof ServerWorld world) {
 					SLibUtils.playSound(entity, SoundEvents.BLOCK_SLIME_BLOCK_FALL);
 					entity.emitGameEvent(GameEvent.ENTITY_ACTION);
 					world.spawnParticles(SLIME_PARTICLE, entity.getX(), entity.getY(), entity.getZ(), 32, 0, 0, 0, 0.15);

@@ -35,7 +35,7 @@ import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
@@ -57,9 +57,9 @@ public class Enchancement implements ModInitializer {
 		initRegistries();
 		initEvents();
 		initPayloads();
-		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(EnchantingMaterialReloadListener.ID, EnchantingMaterialReloadListener::new);
-		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new HeadDropsReloadListener());
-		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new MineOreVeinsBaseBlockReloadListener());
+		ResourceLoader.get(ResourceType.SERVER_DATA).registerReloader(EnchantingMaterialReloadListener.ID, new EnchantingMaterialReloadListener());
+		ResourceLoader.get(ResourceType.SERVER_DATA).registerReloader(HeadDropsReloadListener.ID, new HeadDropsReloadListener());
+		ResourceLoader.get(ResourceType.SERVER_DATA).registerReloader(MineOreVeinsBaseBlockReloadListener.ID, new MineOreVeinsBaseBlockReloadListener());
 		isLoaded = true;
 		isApoliLoaded = FabricLoader.getInstance().isModLoaded("apoli");
 		for (String mod : new String[]{"enchdesc", "enchantedtooltips", "idwtialsimmoedm"}) {

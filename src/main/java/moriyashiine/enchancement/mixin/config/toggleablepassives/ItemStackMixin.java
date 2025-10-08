@@ -29,7 +29,7 @@ public abstract class ItemStackMixin implements ComponentHolder {
 	private void enchancement$toggleablePassives(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference, CallbackInfoReturnable<Boolean> cir) {
 		if (clickType == ClickType.RIGHT && contains(ModComponentTypes.TOGGLEABLE_PASSIVE)) {
 			set(ModComponentTypes.TOGGLEABLE_PASSIVE, !get(ModComponentTypes.TOGGLEABLE_PASSIVE));
-			if (player.getWorld().isClient) {
+			if (player.getEntityWorld().isClient()) {
 				player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 1, 1);
 			}
 			cir.setReturnValue(true);
