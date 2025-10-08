@@ -48,6 +48,7 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
 				.addOptional(key("create:super_glue"));
 		valueLookupBuilder(ModItemTags.WEAKLY_ENCHANTED)
 				.add(Items.LEATHER_HORSE_ARMOR)
+				.add(Items.COPPER_HORSE_ARMOR)
 				.add(Items.IRON_HORSE_ARMOR);
 	}
 
