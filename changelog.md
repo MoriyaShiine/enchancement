@@ -1,4 +1,10 @@
 ------------------------------------------------------
+Version 1.21.10-r3
+------------------------------------------------------
+- use new tooltip wrapping for specific cases instead of depending on tooltipfix
+- fix frozen entities inconsistently applying their texture
+
+------------------------------------------------------
 Version 1.21.10-r2
 ------------------------------------------------------
 - fix crash when rendering mannequins
