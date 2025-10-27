@@ -3,14 +3,12 @@
  */
 package moriyashiine.enchancement.client.gui.tooltip;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import moriyashiine.enchancement.client.event.config.EnchantmentDescriptionsEvent;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.util.config.OverhaulMode;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
-import net.kyrptonaught.tooltipfix.Helper;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
@@ -36,7 +34,6 @@ public final class StoredEnchantmentsTooltipComponent implements TooltipComponen
 	private static final Map<ItemStack, Identifier> TEXTURE_MAP = new LinkedHashMap<>();
 	private static final Map<RegistryEntry<Enchantment>, List<Identifier>> ICON_CACHE = new Reference2ObjectOpenHashMap<>();
 	private final ItemEnchantmentsComponent enchantments;
-	private final List<TooltipComponent> textTooltips = new ObjectArrayList<>();
 	private int width = 0, height = 0;
 
 	public StoredEnchantmentsTooltipComponent(ItemEnchantmentsComponent enchantments) {
@@ -91,14 +88,11 @@ public final class StoredEnchantmentsTooltipComponent implements TooltipComponen
 			Text name = Enchantment.getName(enchantment, enchantments.getLevel(enchantment));
 			width = Math.max(width, (getIcons(enchantment).isEmpty() ? 0 : 18) + textRenderer.getWidth(name));
 			height += 18;
-			Text description = EnchantmentDescriptionsEvent.getDescription(name, enchantment, true);
+			List<Text> description = EnchantmentDescriptionsEvent.getDescription(name, enchantment);
 			if (description != null) {
-				textTooltips.clear();
-				textTooltips.add(TooltipComponent.of(description.asOrderedText()));
-				Helper.newFix(textTooltips, textRenderer, x, screenWidth);
-				for (TooltipComponent tooltip : textTooltips) {
-					width = Math.max(width, tooltip.getWidth(textRenderer));
-					height += tooltip.getHeight(textRenderer);
+				for (Text text : description) {
+					width = Math.max(width, textRenderer.getWidth(text));
+					height += 9;
 				}
 			}
 		}
@@ -117,14 +111,11 @@ public final class StoredEnchantmentsTooltipComponent implements TooltipComponen
 			Text name = Enchantment.getName(enchantment, enchantments.getLevel(enchantment));
 			context.drawText(textRenderer, name, x + (hasIcon ? 18 : 0), y + 5, -1, true);
 			y += 18;
-			Text description = EnchantmentDescriptionsEvent.getDescription(name, enchantment, true);
+			List<Text> description = EnchantmentDescriptionsEvent.getDescription(name, enchantment);
 			if (description != null) {
-				textTooltips.clear();
-				textTooltips.add(TooltipComponent.of(description.asOrderedText()));
-				Helper.newFix(textTooltips, textRenderer, x, screenWidth);
-				for (TooltipComponent tooltip : textTooltips) {
-					tooltip.drawText(context, textRenderer, x, y);
-					y += tooltip.getHeight(textRenderer);
+				for (Text text : description) {
+					context.drawText(textRenderer, text, x, y, -1, true);
+					y += 9;
 				}
 			}
 		}

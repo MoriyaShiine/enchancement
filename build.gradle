@@ -58,7 +58,6 @@ dependencies {
     modIncludeImplementation "org.ladysnake.cardinal-components-api:cardinal-components-block:${cardinal_components_version}"
     modIncludeImplementation "org.ladysnake.cardinal-components-api:cardinal-components-world:${cardinal_components_version}"
     modIncludeImplementation "maven.modrinth:midnightlib:${midnightlib_version}"
-    modIncludeImplementation "com.github.MoriyaShiine:tooltipfix:${tooltipfix_version}"
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     modImplementation "moriyashiine:strawberrylib:${strawberrylib_version}"

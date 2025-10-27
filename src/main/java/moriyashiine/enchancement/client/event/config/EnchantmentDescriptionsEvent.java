@@ -7,6 +7,7 @@ import moriyashiine.enchancement.client.gui.tooltip.StoredEnchantmentsTooltipCom
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
@@ -34,9 +35,9 @@ public class EnchantmentDescriptionsEvent {
 			if (enableDescriptions()) {
 				EnchantmentHelper.getEnchantments(stack).getEnchantments().forEach(enchantment -> {
 					for (int i = 0; i < lines.size(); i++) {
-						Text description = getDescription(lines.get(i), enchantment, true);
+						List<Text> description = getDescription(lines.get(i), enchantment);
 						if (description != null) {
-							lines.add(i + 1, description);
+							lines.addAll(i + 1, description);
 							break;
 						}
 					}
@@ -69,12 +70,12 @@ public class EnchantmentDescriptionsEvent {
 	}
 
 	@Nullable
-	public static Text getDescription(Text text, RegistryEntry<Enchantment> enchantment, boolean hyphen) {
+	public static List<Text> getDescription(Text text, RegistryEntry<Enchantment> enchantment) {
 		String translationKey = EnchancementUtil.getTranslationKey(enchantment);
 		if (text.getContent() instanceof TranslatableTextContent textContent && textContent.getKey().equals(translationKey)) {
 			MutableText description = Text.translatable(translationKey + ".desc").formatted(Formatting.DARK_GRAY);
 			if (!description.getString().isEmpty()) {
-				return hyphen ? Text.literal(" - ").formatted(Formatting.GRAY).append(description) : description;
+				return SLibClientUtils.wrapText(Text.literal(" - ").formatted(Formatting.GRAY).append(description));
 			}
 		}
 		return null;

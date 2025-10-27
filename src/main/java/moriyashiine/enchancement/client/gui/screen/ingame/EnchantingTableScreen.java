@@ -9,6 +9,7 @@ import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.screenhandler.EnchantingTableScreenHandler;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.util.config.OverhaulMode;
+import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
@@ -29,6 +30,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static moriyashiine.enchancement.common.screenhandler.EnchantingTableScreenHandler.PAGE_SIZE;
@@ -249,7 +251,13 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 				if (infoTexts == null) {
 					MutableText name = enchantment.value().description().copy().formatted(Formatting.GRAY);
 					MutableText description = Text.translatable(EnchancementUtil.getTranslationKey(enchantment) + ".desc").formatted(Formatting.DARK_GRAY);
-					infoTexts = description.getString().isEmpty() ? List.of(name) : List.of(name, Text.literal(" - ").formatted(Formatting.GRAY).append(description));
+					if (description.getString().isEmpty()) {
+						infoTexts = List.of(name);
+					} else {
+						infoTexts = new ArrayList<>();
+						infoTexts.add(name);
+						infoTexts.addAll(SLibClientUtils.wrapText(Text.literal(" - ").formatted(Formatting.GRAY).append(description)));
+					}
 				}
 				context.drawTooltip(textRenderer, infoTexts, mouseX, mouseY);
 			} else {
