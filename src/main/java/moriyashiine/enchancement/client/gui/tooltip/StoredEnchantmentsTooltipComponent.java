@@ -105,7 +105,6 @@ public final class StoredEnchantmentsTooltipComponent implements TooltipComponen
 
 	@Override
 	public void drawText(DrawContext context, TextRenderer textRenderer, int x, int y) {
-		int screenWidth = context.getScaledWindowWidth();
 		for (RegistryEntry<Enchantment> enchantment : getSortedEnchantments()) {
 			boolean hasIcon = renderIcons(enchantment, x, y, context);
 			Text name = Enchantment.getName(enchantment, enchantments.getLevel(enchantment));
