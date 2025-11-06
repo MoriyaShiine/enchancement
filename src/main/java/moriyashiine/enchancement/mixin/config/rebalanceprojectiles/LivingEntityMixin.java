@@ -53,7 +53,7 @@ public abstract class LivingEntityMixin extends Entity {
 		return value;
 	}
 
-	@ModifyExpressionValue(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/damage/DamageSource;isIn(Lnet/minecraft/registry/tag/TagKey;)Z", ordinal = 2))
+	@ModifyExpressionValue(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/damage/DamageSource;isIn(Lnet/minecraft/registry/tag/TagKey;)Z", ordinal = 3))
 	private boolean enchancement$rebalanceProjectiles(boolean value, ServerWorld world, DamageSource source) {
 		if (ModConfig.rebalanceProjectiles && source.getSource() instanceof ProjectileEntity) {
 			return true;
