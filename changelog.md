@@ -1,4 +1,13 @@
 ------------------------------------------------------
+Version 1.21.10-r4
+------------------------------------------------------
+- horses with buoy can now be dismounted when under fluid
+- warp now works properly when traveling through dimensions
+- riptide is no longer weaker
+- brushes now have a cooldown when used on armadillos
+- fix projectiles not bypassing iframes
+
+------------------------------------------------------
 Version 1.21.10-r3
 ------------------------------------------------------
 - use new tooltip wrapping for specific cases instead of depending on tooltipfix
