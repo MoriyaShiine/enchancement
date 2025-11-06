@@ -126,7 +126,6 @@ Everything Enchancement adds is configurable:
   * Channeling can be activated without thunder.
   * Channeling chains lightning to nearby entities.
   * Lightning spawned from Channeling will not destroy items or cause fire.
-  * Trident Spin Attack enchantment effects are weaker.
   * Trident Spin Attack enchantment effects have no water drag.
   * Maces cannot have Fire Aspect.
   * Mace enchantments can be applied with less fall distance.
