@@ -12,6 +12,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,7 +25,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
 	@ModifyReturnValue(method = "shouldDismount", at = @At("RETURN"))
 	private boolean enchancement$fluidWalking(boolean original) {
-		if (original && getVehicle() instanceof MobEntity mob && EnchancementUtil.hasAnyEnchantmentsWith(mob, ModEnchantmentEffectComponentTypes.FLUID_WALKING) && SLibUtils.isSubmerged(mob, SubmersionGate.ALL)) {
+		if (original && getVehicle() instanceof MobEntity mob && EnchancementUtil.hasAnyEnchantmentsWith(mob, ModEnchantmentEffectComponentTypes.FLUID_WALKING) && getEntityWorld().getBlockState(BlockPos.ofFloored(mob.getEyePos())).isAir() && SLibUtils.isSubmerged(mob, SubmersionGate.ALL)) {
 			return false;
 		}
 		return original;
