@@ -52,7 +52,6 @@
 	"config.rebalanceenchantments.MovementPredicateMixin",
 	"config.rebalanceenchantments.ServerPlayerEntityMixin",
 	"config.rebalanceenchantments.SummonEntityEnchantmentEffectMixin",
-	"config.rebalanceenchantments.TridentItemMixin",
 	"config.rebalanceenchantments.WindBurstEntityMixin",
 	"config.rebalanceequipment.ArmorMaterialMixin",
 	"config.rebalanceequipment.BundleItemMixin",
