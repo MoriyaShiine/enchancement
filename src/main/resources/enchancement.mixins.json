@@ -172,6 +172,7 @@
 	"config.enchantmentdescriptions.client.DrawContextMixin",
 	"config.enchantmentdescriptions.client.ItemMixin",
 	"config.enchantmentdescriptions.client.ItemStackMixin",
+	"config.enchantmentdescriptions.client.SearchManagerMixin",
 	"config.overhaulenchanting.client.GrindstoneScreenMixin",
 	"config.rebalanceequipment.client.ClientPlayerEntityMixin",
 	"config.rebalanceequipment.client.HeldItemRendererMixin",
