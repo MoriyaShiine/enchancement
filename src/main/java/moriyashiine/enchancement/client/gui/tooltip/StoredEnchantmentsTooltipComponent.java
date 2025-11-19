@@ -6,8 +6,6 @@ package moriyashiine.enchancement.client.gui.tooltip;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import moriyashiine.enchancement.client.event.config.EnchantmentDescriptionsEvent;
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.util.config.OverhaulMode;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gl.RenderPipelines;
@@ -138,10 +136,6 @@ public final class StoredEnchantmentsTooltipComponent implements TooltipComponen
 		return ICON_CACHE.computeIfAbsent(registryEntry, enchantment -> {
 			Set<Identifier> icons = new HashSet<>();
 			for (Map.Entry<ItemStack, Identifier> entry : TEXTURE_MAP.entrySet()) {
-				// Skip icon if anvil enchanting is disabled and the only way for this item to be enchanted
-				if (ModConfig.overhaulEnchanting == OverhaulMode.CHISELED && !entry.getKey().isEnchantable()) {
-					continue;
-				}
 				if (entry.getKey().canBeEnchantedWith(enchantment, EnchantingContext.ACCEPTABLE)) {
 					icons.add(entry.getValue());
 				}

@@ -84,11 +84,9 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		addSlot(new Slot(inventory, 0, 15, 31) {
 			@Override
 			public boolean canInsert(ItemStack stack) {
-				if (stack.isEnchantable()) {
-					for (RegistryEntry<Enchantment> enchantment : getAllEnchantments()) {
-						if (isEnchantmentAllowed(enchantment, stack)) {
-							return true;
-						}
+				for (RegistryEntry<Enchantment> enchantment : getAllEnchantments()) {
+					if (isEnchantmentAllowed(enchantment, stack)) {
+						return true;
 					}
 				}
 				return false;
@@ -253,9 +251,6 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 
 	public boolean canEnchant(PlayerEntity player, boolean simulate) {
 		if (slots.get(0).hasStack()) {
-			if (!slots.get(0).getStack().isEnchantable()) {
-				return false;
-			}
 			if (simulate) {
 				return true;
 			}
