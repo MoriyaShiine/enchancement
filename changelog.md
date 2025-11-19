@@ -1,4 +1,11 @@
 ------------------------------------------------------
+Version 1.21.10-r5
+------------------------------------------------------
+- fix https://github.com/MoriyaShiine/enchancement/issues/265
+- fix various changes not respecting config options
+- fix enchanted books not being searchable in creative
+
+------------------------------------------------------
 Version 1.21.10-r4
 ------------------------------------------------------
 - horses with buoy can now be dismounted when under fluid
