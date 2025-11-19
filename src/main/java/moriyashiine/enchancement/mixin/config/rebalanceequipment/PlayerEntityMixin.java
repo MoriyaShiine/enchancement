@@ -69,7 +69,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
 	@Inject(method = "attack", at = @At("HEAD"), cancellable = true)
 	private void enchancement$rebalanceEquipment(Entity target, CallbackInfo ci) {
-		if (!ItemStack.areEqual(lastStack, getMainHandStack())) {
+		if (ModConfig.rebalanceEquipment && !ItemStack.areEqual(lastStack, getMainHandStack())) {
 			ci.cancel();
 		}
 	}

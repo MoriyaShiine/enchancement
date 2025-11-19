@@ -3,6 +3,7 @@
  */
 package moriyashiine.enchancement.mixin.config.rebalancestatuseffects;
 
+import moriyashiine.enchancement.common.ModConfig;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.potion.Potion;
@@ -18,7 +19,7 @@ import java.util.List;
 public class PotionsMixin {
 	@ModifyVariable(method = "register", at = @At("HEAD"), argsOnly = true)
 	private static Potion enchancement$rebalanceStatusEffects(Potion value) {
-		if (value.getBaseName().contains("turtle_master")) {
+		if (ModConfig.rebalanceStatusEffects && value.getBaseName().contains("turtle_master")) {
 			List<StatusEffectInstance> effects = new ArrayList<>();
 			for (StatusEffectInstance effect : value.getEffects()) {
 				if (effect.getEffectType() == StatusEffects.RESISTANCE) {

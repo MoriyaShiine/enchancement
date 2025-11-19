@@ -163,7 +163,6 @@
 	"util.EnchantedCountIncreaseLootFunctionMixin",
 	"util.PersistentProjectileEntityMixin",
 	"util.SetEnchantmentsLootFunctionMixin",
-	"util.TridentEntityMixin",
 	"util.maceeffect.ItemStackMixin"
   ],
   "client": [
