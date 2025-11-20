@@ -117,7 +117,7 @@ public class EnchantingTableScreen extends HandledScreen<EnchantingTableScreenHa
 		}
 		pageAngle = nextPageAngle;
 		pageTurningSpeed = nextPageTurningSpeed;
-		nextPageTurningSpeed = handler.slots.getFirst().hasStack() ? nextPageTurningSpeed + 0.2F : nextPageTurningSpeed - 0.2F;
+		nextPageTurningSpeed = EnchantingTableScreenHandler.isEnchantable(handler.slots.getFirst().getStack()) ? nextPageTurningSpeed + 0.2F : nextPageTurningSpeed - 0.2F;
 		nextPageTurningSpeed = MathHelper.clamp(nextPageTurningSpeed, 0, 1);
 		pageRotationSpeed += (MathHelper.clamp((approximatePageAngle - nextPageAngle) * 0.4F, -0.2F, 0.2F) - pageRotationSpeed) * 0.9F;
 		nextPageAngle += pageRotationSpeed;

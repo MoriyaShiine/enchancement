@@ -18,6 +18,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.EnchantingTableBlock;
 import net.minecraft.block.entity.ChiseledBookshelfBlockEntity;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
@@ -84,9 +85,11 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 		addSlot(new Slot(inventory, 0, 15, 31) {
 			@Override
 			public boolean canInsert(ItemStack stack) {
-				for (RegistryEntry<Enchantment> enchantment : getAllEnchantments()) {
-					if (isEnchantmentAllowed(enchantment, stack)) {
-						return true;
+				if (isEnchantable(stack)) {
+					for (RegistryEntry<Enchantment> enchantment : getAllEnchantments()) {
+						if (isEnchantmentAllowed(enchantment, stack)) {
+							return true;
+						}
 					}
 				}
 				return false;
@@ -251,6 +254,9 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 
 	public boolean canEnchant(PlayerEntity player, boolean simulate) {
 		if (slots.get(0).hasStack()) {
+			if (!isEnchantable(slots.get(0).getStack())) {
+				return false;
+			}
 			if (simulate) {
 				return true;
 			}
@@ -357,6 +363,11 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 			}
 		}
 		return false;
+	}
+
+	public static boolean isEnchantable(ItemStack stack) {
+		ItemEnchantmentsComponent enchantments = stack.get(DataComponentTypes.ENCHANTMENTS);
+		return enchantments != null && enchantments.isEmpty();
 	}
 
 	@SuppressWarnings("deprecation")
