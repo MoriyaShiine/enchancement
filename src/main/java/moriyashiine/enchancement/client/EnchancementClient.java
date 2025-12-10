@@ -8,7 +8,6 @@ import moriyashiine.enchancement.client.event.config.EnchantmentDescriptionsEven
 import moriyashiine.enchancement.client.event.config.SyncVelocitiesEvent;
 import moriyashiine.enchancement.client.event.config.ToggleablePassivesEvent;
 import moriyashiine.enchancement.client.event.enchantmenteffectcomponenttype.*;
-import moriyashiine.enchancement.client.event.integration.appleskin.BrimstoneAppleskinEvent;
 import moriyashiine.enchancement.client.event.internal.SyncBookshelvesEvent;
 import moriyashiine.enchancement.client.gui.screen.ingame.EnchantingTableScreen;
 import moriyashiine.enchancement.client.hud.*;
@@ -40,9 +39,8 @@ import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
+import net.fabricmc.fabric.api.resource.v1.pack.PackActivationType;
 import net.fabricmc.fabric.api.resource.v1.reloader.ResourceReloaderKeys;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
@@ -51,7 +49,6 @@ import net.minecraft.client.particle.WaterBubbleParticle;
 import net.minecraft.client.render.entity.EntityRendererFactories;
 import net.minecraft.resource.ResourceType;
 import org.lwjgl.glfw.GLFW;
-import squeek.appleskin.api.event.HUDOverlayEvent;
 
 public class EnchancementClient implements ClientModInitializer {
 	private static final KeyBinding.Category KEY_CATEGORY = KeyBinding.Category.create(Enchancement.id(Enchancement.MOD_ID));
@@ -73,13 +70,10 @@ public class EnchancementClient implements ClientModInitializer {
 		HandledScreens.register(ModScreenHandlerTypes.ENCHANTING_TABLE, EnchantingTableScreen::new);
 		ResourceLoader.get(ResourceType.CLIENT_RESOURCES).registerReloader(FrozenReloadListener.ID, FrozenReloadListener.INSTANCE);
 		ResourceLoader.get(ResourceType.CLIENT_RESOURCES).addReloaderOrdering(ResourceReloaderKeys.Client.TEXTURES, FrozenReloadListener.ID);
-		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(Enchancement.id("alternate_air_jump"), modContainer, ResourcePackActivationType.NORMAL));
-		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(Enchancement.id("alternate_burst"), modContainer, ResourcePackActivationType.NORMAL));
+		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceLoader.registerBuiltinPack(Enchancement.id("alternate_air_jump"), modContainer, PackActivationType.NORMAL));
+		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceLoader.registerBuiltinPack(Enchancement.id("alternate_burst"), modContainer, PackActivationType.NORMAL));
 		betterCombatLoaded = FabricLoader.getInstance().isModLoaded("bettercombat");
 		irisLoaded = FabricLoader.getInstance().isModLoaded("iris");
-		if (FabricLoader.getInstance().isModLoaded("appleskin")) {
-			HUDOverlayEvent.HealthRestored.EVENT.register(new BrimstoneAppleskinEvent());
-		}
 	}
 
 	private void initEntities() {

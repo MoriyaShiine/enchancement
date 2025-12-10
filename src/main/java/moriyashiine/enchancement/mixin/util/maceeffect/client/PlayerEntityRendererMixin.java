@@ -22,7 +22,7 @@ public class PlayerEntityRendererMixin {
 		if (hand == Hand.MAIN_HAND) {
 			for (ComponentKey<?> key : player.asComponentProvider().getComponentContainer().keys()) {
 				if (player.getComponent(key) instanceof UsingMaceComponent usingMaceComponent && usingMaceComponent.isUsing()) {
-					cir.setReturnValue(BipedEntityModel.ArmPose.THROW_SPEAR);
+					cir.setReturnValue(BipedEntityModel.ArmPose.THROW_TRIDENT);
 					return;
 				}
 			}

@@ -12,6 +12,7 @@ import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -32,14 +33,15 @@ public record SyncOriginalMaxLevelsPayload(
 
 	public static void send(ServerPlayerEntity player) {
 		Map<RegistryEntry<Enchantment>, Integer> map = new HashMap<>();
-		EnchancementUtil.ORIGINAL_MAX_LEVELS.forEach((key, value) -> map.put(player.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getEntry(key), value));
+		Registry<Enchantment> enchantmentRegistry = player.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT);
+		EnchancementUtil.ORIGINAL_MAX_LEVELS.forEach((key, value) -> map.put(enchantmentRegistry.getOrThrow(key), value));
 		ServerPlayNetworking.send(player, new SyncOriginalMaxLevelsPayload(map));
 	}
 
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<SyncOriginalMaxLevelsPayload> {
 		@Override
 		public void receive(SyncOriginalMaxLevelsPayload payload, ClientPlayNetworking.Context context) {
-			payload.map().forEach((key, value) -> EnchancementUtil.ORIGINAL_MAX_LEVELS.put(key.value(), value));
+			payload.map().forEach((key, value) -> EnchancementUtil.ORIGINAL_MAX_LEVELS.put(key.getKey().orElseThrow(), value));
 		}
 	}
 }

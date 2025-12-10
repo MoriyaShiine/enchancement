@@ -1,7 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
-package moriyashiine.enchancement.client.event.integration.appleskin;
+package moriyashiine.enchancement.client.integration.appleskin.event;
 
 import moriyashiine.enchancement.client.hud.BrimstoneHudElement;
 import squeek.appleskin.api.event.HUDOverlayEvent;

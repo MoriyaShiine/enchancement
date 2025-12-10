@@ -25,7 +25,7 @@ public abstract class LivingEntityMixin extends Entity {
 		super(type, world);
 	}
 
-	@ModifyExpressionValue(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;canWalkOnFluid(Lnet/minecraft/fluid/FluidState;)Z"))
+	@ModifyExpressionValue(method = "isTravellingInFluid", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;canWalkOnFluid(Lnet/minecraft/fluid/FluidState;)Z"))
 	protected boolean enchancement$fluidWalking(boolean original) {
 		return original || EnchancementUtil.shouldFluidWalk(this);
 	}

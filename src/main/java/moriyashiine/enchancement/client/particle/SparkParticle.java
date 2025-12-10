@@ -44,7 +44,7 @@ public class SparkParticle extends Particle {
 	}
 
 	public SparkParticleRenderer.State createState(Camera camera) {
-		Vec3d pos = camera.getPos();
+		Vec3d pos = camera.getCameraPos();
 		return new SparkParticleRenderer.State(new MatrixStack(), arcs.stream().map(arc -> new Vector3f((float) (arc.getX() - pos.getX()), (float) (arc.getY() - pos.getY()), (float) (arc.getZ() - pos.getZ()))).toList());
 	}
 

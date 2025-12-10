@@ -50,6 +50,7 @@
 	"config.rebalanceenchantments.LightningEntityMixin",
 	"config.rebalanceenchantments.LivingEntityMixin",
 	"config.rebalanceenchantments.MovementPredicateMixin",
+	"config.rebalanceenchantments.PlayerEntityMixin",
 	"config.rebalanceenchantments.ServerPlayerEntityMixin",
 	"config.rebalanceenchantments.SummonEntityEnchantmentEffectMixin",
 	"config.rebalanceenchantments.WindBurstEntityMixin",

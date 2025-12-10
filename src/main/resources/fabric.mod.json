@@ -38,6 +38,9 @@
 	],
 	"cardinal-components-world": [
 	  "moriyashiine.enchancement.common.init.ModWorldComponents"
+	],
+	"appleskin": [
+	  "moriyashiine.enchancement.client.integration.appleskin.ModAppleskinIntegration"
 	]
   },
   "mixins": [
@@ -46,7 +49,7 @@
   "accessWidener": "enchancement.accesswidener",
   "depends": {
 	"fabricloader": "*",
-	"minecraft": "~1.21.10",
+	"minecraft": "~1.21.11",
 	"java": ">=21",
 	"fabric-api": "*",
 	"strawberrylib": "*"

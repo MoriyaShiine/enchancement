@@ -20,6 +20,8 @@ accessible method net/minecraft/item/CrossbowItem getPullProgress (ILnet/minecra
 accessible field net/minecraft/component/type/BundleContentsComponent$Builder stacks Ljava/util/List;
 accessible field net/minecraft/enchantment/Enchantment effects Lnet/minecraft/component/ComponentMap;
 mutable field net/minecraft/enchantment/Enchantment effects Lnet/minecraft/component/ComponentMap;
+accessible field net/minecraft/enchantment/effect/AllOfEnchantmentEffects$EntityEffects effects Ljava/util/List;
+mutable field net/minecraft/enchantment/effect/AllOfEnchantmentEffects$EntityEffects effects Ljava/util/List;
 accessible field net/minecraft/enchantment/effect/EnchantmentEffectEntry requirements Ljava/util/Optional;
 mutable field net/minecraft/enchantment/effect/EnchantmentEffectEntry requirements Ljava/util/Optional;
 accessible field net/minecraft/enchantment/effect/TargetedEnchantmentEffect requirements Ljava/util/Optional;

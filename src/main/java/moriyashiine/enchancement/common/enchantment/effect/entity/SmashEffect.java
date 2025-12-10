@@ -20,7 +20,7 @@ public record SmashEffect(EnchantmentLevelBasedValue strength) implements Enchan
 	@Override
 	public void apply(ServerWorld world, int level, EnchantmentEffectContext context, Entity user, Vec3d pos) {
 		user.addVelocity(0, -strength().getValue(level), 0);
-		user.velocityModified = true;
+		user.knockedBack = true;
 	}
 
 	@Override

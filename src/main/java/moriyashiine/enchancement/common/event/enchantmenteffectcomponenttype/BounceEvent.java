@@ -29,7 +29,7 @@ public class BounceEvent {
 		ModEntityComponents.AIR_MOBILITY.get(entity).enableResetBypass();
 		bounceComponent.markBounced();
 		entity.setVelocity(entity.getVelocity().getX(), bounceStrength, entity.getVelocity().getZ());
-		entity.velocityModified = true;
+		entity.knockedBack = true;
 	}
 
 	private static void scheduleBounce(Entity entity, double bounceStrength) {

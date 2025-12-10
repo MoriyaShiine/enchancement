@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version "${loom_version}"
+    id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
     id 'io.github.ladysnake.chenille' version "${chenille_version}"
 }
 
@@ -63,7 +63,7 @@ dependencies {
     modImplementation "moriyashiine:strawberrylib:${strawberrylib_version}"
 
 //    modCompileOnly "io.github.apace100:apoli:${apoli_version}"
-    modCompileOnly("squeek.appleskin:appleskin-fabric:${appleskin_version}:api") {
+    modCompileOnly("squeek.appleskin:appleskin-fabric:${appleskin_version}") {
         transitive = false
     }
     modLocalImplementation "maven.modrinth:sodium:${sodium_version}"

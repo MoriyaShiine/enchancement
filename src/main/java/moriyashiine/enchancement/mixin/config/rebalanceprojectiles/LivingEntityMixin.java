@@ -65,7 +65,7 @@ public abstract class LivingEntityMixin extends Entity {
 	private void enchancement$rebalanceProjectiles(ServerWorld world, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
 		if (ModConfig.rebalanceProjectiles && source.getSource() instanceof ProjectileEntity) {
 			setVelocity(0, Math.min(0, getVelocity().getY()), 0);
-			velocityModified = true;
+			knockedBack = true;
 		}
 	}
 }

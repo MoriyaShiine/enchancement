@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {
-	@WrapOperation(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;addCritParticles(Lnet/minecraft/entity/Entity;)V"))
+	@WrapOperation(method = "addAttackParticlesAndSounds", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;addCritParticles(Lnet/minecraft/entity/Entity;)V"))
 	private void enchancement$criticalTipper(PlayerEntity instance, Entity target, Operation<Void> original) {
 		if (CriticalTipperEvent.particleType != null) {
 			if (!target.getEntityWorld().isClient()) {

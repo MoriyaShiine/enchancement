@@ -53,7 +53,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 		return value;
 	}
 
-	@WrapOperation(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getAttributeValue(Lnet/minecraft/registry/entry/RegistryEntry;)D", ordinal = 1))
+	@WrapOperation(method = "doSweepingAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getAttributeValue(Lnet/minecraft/registry/entry/RegistryEntry;)D"))
 	private double enchancement$rebalanceEquipment(PlayerEntity instance, RegistryEntry<EntityAttribute> registryEntry, Operation<Double> original) {
 		double value = original.call(instance, registryEntry);
 		if (ModConfig.rebalanceEquipment) {

@@ -12,7 +12,6 @@ public class ExtraRenderState {
 	public static final RenderStateDataKey<ExtraRenderState> KEY = RenderStateDataKey.create(() -> "extra");
 
 	public ItemStack activeStack = ItemStack.EMPTY;
-	public ItemStack mainHandStack = ItemStack.EMPTY;
 	public @Nullable Random random = null;
 	public boolean canCameraSee = false;
 	public boolean glowing = false;

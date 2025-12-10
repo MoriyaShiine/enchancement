@@ -41,7 +41,7 @@ public class BuryEntityComponent implements AutoSyncedComponent, ServerTickingCo
 			}
 			if (obj.getVelocity() != Vec3d.ZERO) {
 				obj.setVelocity(Vec3d.ZERO);
-				obj.velocityModified = true;
+				obj.knockedBack = true;
 			}
 			if (BuryEffect.cannotBeBuried(obj)) {
 				unbury();

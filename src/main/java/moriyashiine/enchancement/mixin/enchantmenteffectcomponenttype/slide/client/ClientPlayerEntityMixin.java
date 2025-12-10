@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ClientPlayerEntity.class)
 public class ClientPlayerEntityMixin {
-	@ModifyReturnValue(method = "canSprint()Z", at = @At("RETURN"))
+	@ModifyReturnValue(method = "canSprint", at = @At("RETURN"))
 	private boolean enchancement$slide(boolean original) {
 		return original && !ModEntityComponents.SLIDE.get(this).isSliding();
 	}

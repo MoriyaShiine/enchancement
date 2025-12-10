@@ -129,7 +129,7 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity implemen
 							player.setVelocity(player.getVelocity().getX(), 0, player.getVelocity().getZ());
 						}
 						player.setVelocity(player.getVelocity().add(new Vec3d(Math.min(getStrength() * 4, getX() - player.getX()), Math.min(getStrength() * 4, getY() - player.getY()), Math.min(getStrength() * 4, getZ() - player.getZ())).multiply(0.2)));
-						player.velocityModified = true;
+						player.knockedBack = true;
 					}
 				}
 			}

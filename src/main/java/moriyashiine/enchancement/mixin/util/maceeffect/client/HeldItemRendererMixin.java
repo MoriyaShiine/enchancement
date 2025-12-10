@@ -18,7 +18,7 @@ public class HeldItemRendererMixin {
 	private UseAction enchancement$maceEffect(UseAction original, AbstractClientPlayerEntity player) {
 		for (ComponentKey<?> key : player.asComponentProvider().getComponentContainer().keys()) {
 			if (player.getComponent(key) instanceof UsingMaceComponent usingMaceComponent && usingMaceComponent.isUsing()) {
-				return UseAction.SPEAR;
+				return UseAction.TRIDENT;
 			}
 		}
 		return original;

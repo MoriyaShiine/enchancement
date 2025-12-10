@@ -27,7 +27,7 @@ public class SyncOriginalMaxLevelsEvent {
 		public void onServerStarted(MinecraftServer server) {
 			updatingMap = true;
 			EnchancementUtil.ORIGINAL_MAX_LEVELS.clear();
-			server.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).forEach(enchantment -> EnchancementUtil.ORIGINAL_MAX_LEVELS.put(enchantment, enchantment.getMaxLevel()));
+			server.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getEntrySet().forEach(enchantment -> EnchancementUtil.ORIGINAL_MAX_LEVELS.put(enchantment.getKey(), enchantment.getValue().getMaxLevel()));
 			updatingMap = false;
 		}
 	}

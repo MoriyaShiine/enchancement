@@ -23,7 +23,6 @@ public class EntityRendererMixin<T extends Entity, S extends EntityRenderState> 
 	private void enchancement$extraRenderState(T entity, S state, float tickProgress, CallbackInfo ci) {
 		ExtraRenderState extraRenderState = new ExtraRenderState();
 		extraRenderState.activeStack = entity instanceof LivingEntity living ? living.getActiveItem() : ItemStack.EMPTY;
-		extraRenderState.mainHandStack = entity instanceof LivingEntity living ? living.getMainHandStack() : ItemStack.EMPTY;
 		extraRenderState.random = entity.getRandom();
 		extraRenderState.canCameraSee = MinecraftClient.getInstance().getCameraEntity() instanceof LivingEntity living && living.canSee(entity);
 		extraRenderState.glowing = entity.isGlowing();

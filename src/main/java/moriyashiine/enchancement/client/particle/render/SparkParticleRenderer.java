@@ -40,7 +40,7 @@ public class SparkParticleRenderer extends ParticleRenderer<SparkParticle> {
 					Vector3f normal = new Vector3f(end.x() - start.x(), end.y() - start.y(), end.z() - start.z()).normalize();
 					Vector3f verticalOffset = normal.cross(normal.x(), normal.y(), 0, new Vector3f()).normalize().mul(0.025F);
 					Vector3f horizontalOffset = normal.cross(normal.x(), 0, normal.z(), new Vector3f()).normalize().mul(0.025F);
-					queue.submitCustom(state.matrices(), RenderLayer.getLightning(), (entry, vertices) -> {
+					queue.submitCustom(state.matrices(), RenderLayers.lightning(), (entry, vertices) -> {
 						drawFace(vertices, entry,
 								start.x() + verticalOffset.x(), start.y() + verticalOffset.y(), start.z() + verticalOffset.z(),
 								end.x() + verticalOffset.x(), end.y() + verticalOffset.y(), end.z() + verticalOffset.z(),

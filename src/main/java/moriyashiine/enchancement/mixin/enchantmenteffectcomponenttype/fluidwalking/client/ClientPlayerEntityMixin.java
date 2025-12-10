@@ -20,7 +20,7 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 		super(world, profile);
 	}
 
-	@ModifyVariable(method = "canSprint(Z)Z", at = @At("HEAD"), argsOnly = true)
+	@ModifyVariable(method = "canSprint", at = @At("HEAD"), argsOnly = true)
 	private boolean enchancement$fluidWalkingStart(boolean original) {
 		return original || EnchancementUtil.hasAnyEnchantmentsWith(this, ModEnchantmentEffectComponentTypes.FLUID_WALKING);
 	}

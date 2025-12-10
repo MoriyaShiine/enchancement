@@ -48,9 +48,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class EnchantingTableScreenHandler extends ScreenHandler {
-	public static final Map<Item, EnchantingMaterial> ENCHANTING_MATERIAL_MAP = new HashMap<>();
+	public static final Map<Item, EnchantingMaterial> ENCHANTING_MATERIAL_MAP = new ConcurrentHashMap<>();
 	public static final int PAGE_SIZE = 4;
 
 	public final List<RegistryEntry<Enchantment>> validEnchantments = new ArrayList<>(), selectedEnchantments = new ArrayList<>();

@@ -44,8 +44,10 @@ public final class StoredEnchantmentsTooltipComponent implements TooltipComponen
 		TEXTURE_MAP.put(Items.IRON_LEGGINGS.getDefaultStack(), Identifier.of("container/slot/leggings"));
 		TEXTURE_MAP.put(Items.IRON_BOOTS.getDefaultStack(), Identifier.of("container/slot/boots"));
 		TEXTURE_MAP.put(Items.IRON_HORSE_ARMOR.getDefaultStack(), Enchancement.id("container/slot/animal"));
+		TEXTURE_MAP.put(Items.IRON_NAUTILUS_ARMOR.getDefaultStack(), Identifier.of("container/slot/nautilus_armor"));
 		TEXTURE_MAP.put(Items.SHIELD.getDefaultStack(), Identifier.of("container/slot/shield"));
 		TEXTURE_MAP.put(Items.IRON_SWORD.getDefaultStack(), Identifier.of("container/slot/sword"));
+		TEXTURE_MAP.put(Items.IRON_SPEAR.getDefaultStack(), Identifier.of("container/slot/spear"));
 		TEXTURE_MAP.put(Items.BOW.getDefaultStack(), Enchancement.id("container/slot/bow"));
 		TEXTURE_MAP.put(Items.CROSSBOW.getDefaultStack(), Enchancement.id("container/slot/crossbow"));
 		TEXTURE_MAP.put(Items.TRIDENT.getDefaultStack(), Enchancement.id("container/slot/trident"));

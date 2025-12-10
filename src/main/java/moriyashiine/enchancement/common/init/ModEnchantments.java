@@ -57,6 +57,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.floatprovider.ConstantFloatProvider;
 import net.minecraft.util.math.floatprovider.UniformFloatProvider;
 
+import java.util.List;
+
 public class ModEnchantments {
 	// placeholder
 	public static final RegistryKey<Enchantment> EMPTY_KEY = createKey("empty");
@@ -283,7 +285,9 @@ public class ModEnchantments {
 											EnchantmentLevelBasedValue.constant(0)
 									),
 									new PlaySoundEnchantmentEffect(
-											RegistryEntry.of(ModSoundEvents.ENTITY_GENERIC_WARDENSPINE),
+											List.of(
+													RegistryEntry.of(ModSoundEvents.ENTITY_GENERIC_WARDENSPINE)
+											),
 											ConstantFloatProvider.create(1),
 											ConstantFloatProvider.create(1)
 									)
@@ -416,7 +420,7 @@ public class ModEnchantments {
 				}));
 		// sword
 		registerable.register(BERSERK, create(BERSERK.getValue(),
-				itemLookup.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+				itemLookup.getOrThrow(ItemTags.MELEE_WEAPON_ENCHANTABLE),
 				2,
 				AttributeModifierSlot.MAINHAND,
 				builder -> builder.addNonListEffect(
@@ -428,7 +432,7 @@ public class ModEnchantments {
 						)
 				)));
 		registerable.register(FROSTBITE, create(FROSTBITE.getValue(),
-				itemLookup.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+				itemLookup.getOrThrow(ItemTags.MELEE_WEAPON_ENCHANTABLE),
 				2,
 				AttributeModifierSlot.MAINHAND,
 				builder -> {

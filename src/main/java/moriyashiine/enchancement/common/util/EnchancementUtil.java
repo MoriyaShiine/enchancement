@@ -29,6 +29,7 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.TridentEntity;
 import net.minecraft.item.*;
 import net.minecraft.item.equipment.ArmorMaterials;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryOwner;
 import net.minecraft.registry.tag.ItemTags;
@@ -52,7 +53,7 @@ public class EnchancementUtil {
 	public static final List<RegistryEntry.Reference<Enchantment>> ENCHANTMENTS = new ArrayList<>();
 	public static Random SERVER_RANDOM = null;
 
-	public static final Map<Enchantment, Integer> ORIGINAL_MAX_LEVELS = new ConcurrentHashMap<>();
+	public static final Map<RegistryKey<Enchantment>, Integer> ORIGINAL_MAX_LEVELS = new ConcurrentHashMap<>();
 	public static final Map<TagKey<Item>, TriState> VANILLA_ENCHANTMENT_STRENGTH_TAGS = new Object2ObjectArrayMap<>();
 
 	static {
@@ -188,7 +189,7 @@ public class EnchancementUtil {
 	}
 
 	public static int getOriginalMaxLevel(RegistryEntry<Enchantment> enchantment) {
-		return ORIGINAL_MAX_LEVELS.getOrDefault(enchantment.value(), enchantment.value().getMaxLevel());
+		return ORIGINAL_MAX_LEVELS.getOrDefault(enchantment.getKey().orElseThrow(), enchantment.value().getMaxLevel());
 	}
 
 	// enchantment limit

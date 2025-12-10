@@ -8,10 +8,7 @@ import moriyashiine.enchancement.client.render.entity.state.BrimstoneEntityRende
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.entity.projectile.BrimstoneEntity;
 import net.irisshaders.iris.api.v0.IrisApi;
-import net.minecraft.client.render.LightmapTextureManager;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.*;
 import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.ProjectileEntityRenderer;
@@ -73,9 +70,9 @@ public class BrimstoneEntityRenderer extends ProjectileEntityRenderer<BrimstoneE
 
 	private static RenderLayer getRenderLayer() {
 		if (EnchancementClient.irisLoaded && IrisApi.getInstance().isShaderPackInUse()) {
-			return RenderLayer.getEntityCutoutNoCull(TEXTURE);
+			return RenderLayers.entityCutoutNoCull(TEXTURE);
 		}
-		return RenderLayer.getEntityAlpha(TEXTURE);
+		return RenderLayers.entityAlpha(TEXTURE);
 	}
 
 	private static void renderSection(BrimstoneEntityRenderState state, MatrixStack matrices, OrderedRenderCommandQueue queue, float u, float v) {

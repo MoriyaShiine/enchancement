@@ -3,9 +3,8 @@
  */
 package moriyashiine.enchancement.mixin.config.rebalanceenchantments;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moriyashiine.enchancement.common.ModConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -24,12 +23,12 @@ public abstract class LivingEntityMixin extends Entity {
 		super(type, world);
 	}
 
-	@WrapOperation(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isTouchingWater()Z"))
-	private boolean enchancement$rebalanceEnchantments(LivingEntity instance, Operation<Boolean> original) {
-		if (ModConfig.rebalanceEnchantments && instance.isUsingRiptide()) {
+	@ModifyExpressionValue(method = "isTravellingInFluid", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isTouchingWater()Z"))
+	private boolean enchancement$rebalanceEnchantments(boolean original) {
+		if (ModConfig.rebalanceEnchantments && isUsingRiptide()) {
 			return false;
 		}
-		return original.call(instance);
+		return original;
 	}
 
 	@ModifyReturnValue(method = "getEffectiveGravity", at = @At("RETURN"))
