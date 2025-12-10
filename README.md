@@ -122,6 +122,7 @@ Everything Enchancement adds is configurable:
 * Rebalance Enchantments
   * Fire Aspect can be used like Flint and Steel while sneaking.
   * Ignite enchantment effects apply for less time.
+  * Lunge doesn't require hunger to use.
   * Channeling ignites entities with melee attacks.
   * Channeling can be activated without thunder.
   * Channeling chains lightning to nearby entities.
