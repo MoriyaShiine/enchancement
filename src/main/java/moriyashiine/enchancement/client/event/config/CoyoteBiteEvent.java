@@ -19,6 +19,9 @@ public class CoyoteBiteEvent implements ClientTickEvents.EndWorldTick {
 	public static int ticks = 0;
 
 	private static boolean canAttack() {
+		if (client.player.getMainHandStack().contains(DataComponentTypes.PIERCING_WEAPON)) {
+			return false;
+		}
 		AttackRangeComponent component = client.player.getMainHandStack().get(DataComponentTypes.ATTACK_RANGE);
 		return component == null || component.isWithinRange(client.player, client.crosshairTarget.getPos());
 	}
