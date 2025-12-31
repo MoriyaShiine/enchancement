@@ -33,11 +33,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(FishingBobberEntity.class)
 public abstract class FishingBobberEntityMixin extends ProjectileEntity implements StrengthHolder {
 	@Unique
-	private BlockPos grapplePos = null;
+	private static final TrackedData<Float> STRENGTH = DataTracker.registerData(FishingBobberEntityMixin.class, TrackedDataHandlerRegistry.FLOAT);
+
+	@Unique
+	private Vec3d grapplePos = null;
+	@Unique
+	private BlockPos grappleBlockPos = null;
 	@Unique
 	private BlockState grappleState = null;
-	@Unique
-	private static final TrackedData<Float> STRENGTH = DataTracker.registerData(FishingBobberEntityMixin.class, TrackedDataHandlerRegistry.FLOAT);
 
 	@Shadow
 	public abstract @Nullable PlayerEntity getPlayerOwner();
@@ -65,11 +68,13 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity implemen
 	private void enchancement$grappleFishingBobber(CallbackInfo ci) {
 		if (getStrength() != 0) {
 			if (grappleState != null) {
-				if (age % 10 == 0 && getEntityWorld().getBlockState(grapplePos) != grappleState) {
+				setPosition(grapplePos);
+				setVelocity(Vec3d.ZERO);
+				if (age % 10 == 0 && getEntityWorld().getBlockState(grappleBlockPos) != grappleState) {
 					grapplePos = null;
+					grappleBlockPos = null;
 					grappleState = null;
 				}
-				setVelocity(Vec3d.ZERO);
 				ci.cancel();
 			}
 		}
@@ -88,14 +93,14 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity implemen
 
 	@Inject(method = "onBlockHit", at = @At("TAIL"))
 	private void enchancement$grappleFishingBobber(BlockHitResult blockHitResult, CallbackInfo ci) {
-		if (getStrength() != 0) {
-			grapplePos = blockHitResult.getBlockPos();
-			grappleState = getEntityWorld().getBlockState(grapplePos);
+		if (getStrength() != 0 && getPlayerOwner() instanceof PlayerEntity owner) {
+			grapplePos = blockHitResult.getPos().offset(blockHitResult.getSide(), 0.01);
+			grappleBlockPos = blockHitResult.getBlockPos();
+			grappleState = getEntityWorld().getBlockState(grappleBlockPos);
+			setPosition(grapplePos);
+			setVelocity(Vec3d.ZERO);
 			if (getEntityWorld().isClient()) {
-				PlayerEntity owner = getPlayerOwner();
-				if (owner != null) {
-					owner.playSound(ModSoundEvents.ENTITY_FISHING_BOBBER_GRAPPLE, 1, 1);
-				}
+				owner.playSound(ModSoundEvents.ENTITY_FISHING_BOBBER_GRAPPLE, 1, 1);
 			}
 		}
 	}
