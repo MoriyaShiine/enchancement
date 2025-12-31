@@ -18,9 +18,11 @@ import net.minecraft.item.Items;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.BlockStateRaycastContext;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -76,6 +78,18 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity implemen
 					grappleState = null;
 				}
 				ci.cancel();
+			} else {
+				double hX = getVelocity().multiply(1, 0, 1).length();
+				if (hX == 0) {
+					for (Direction direction : Direction.values()) {
+						Vec3d offset = getEntityPos().offset(direction, 0.2);
+						BlockHitResult result = getEntityWorld().raycast(new BlockStateRaycastContext(getEntityPos(), offset, state -> !state.isReplaceable()));
+						if (!getEntityWorld().getBlockState(result.getBlockPos()).isReplaceable()) {
+							onBlockHit(result);
+							return;
+						}
+					}
+				}
 			}
 		}
 	}
