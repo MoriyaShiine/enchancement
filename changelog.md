@@ -1,4 +1,10 @@
 ------------------------------------------------------
+Version 1.21.11-r3
+------------------------------------------------------
+- fix https://github.com/MoriyaShiine/enchancement/issues/272
+- fix visual inconsistencies with grapple
+
+------------------------------------------------------
 Version 1.21.11-r2
 ------------------------------------------------------
 - fix https://github.com/MoriyaShiine/enchancement/issues/270
