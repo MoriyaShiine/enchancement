@@ -1,4 +1,10 @@
 ------------------------------------------------------
+Version 1.21.11-r4
+------------------------------------------------------
+- fix https://github.com/MoriyaShiine/enchancement/issues/276
+- remove `enchancement:always_selectable` and `enchancement:unselectable` enchantment tags (redundant with `minecraft:in_enchanting_table`)
+
+------------------------------------------------------
 Version 1.21.11-r3
 ------------------------------------------------------
 - fix https://github.com/MoriyaShiine/enchancement/issues/272
