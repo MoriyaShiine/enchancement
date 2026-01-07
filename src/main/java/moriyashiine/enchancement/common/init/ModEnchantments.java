@@ -497,6 +497,7 @@ public class ModEnchantments {
 				2,
 				AttributeModifierSlot.MAINHAND,
 				builder -> {
+					builder.exclusiveSet(enchantmentLookup.getOrThrow(ModEnchantmentTags.UNIQUE_CROSSBOW_PROJECTILE_EXCLUSIVE_SET));
 					builder.addEffect(
 							ModEnchantmentEffectComponentTypes.ALLOW_CROSSBOW_COOLDOWN_RELOADING);
 					builder.addEffect(
@@ -529,6 +530,7 @@ public class ModEnchantments {
 				2,
 				AttributeModifierSlot.MAINHAND,
 				builder -> {
+					builder.exclusiveSet(enchantmentLookup.getOrThrow(ModEnchantmentTags.UNIQUE_CROSSBOW_PROJECTILE_EXCLUSIVE_SET));
 					builder.addEffect(
 							ModEnchantmentEffectComponentTypes.ALLOW_LOADING_PROJECTILE,
 							new AllowLoadingProjectileEffect(

@@ -77,6 +77,7 @@ public class ModEnchantmentTagProvider extends EnchantmentTagProvider {
 		builder(ModEnchantmentTags.BOUNCY_EXCLUSIVE_SET)
 				.add(Enchantments.FEATHER_FALLING);
 		builder(ModEnchantmentTags.BRIMSTONE_EXCLUSIVE_SET)
+				.addTag(ModEnchantmentTags.UNIQUE_CROSSBOW_PROJECTILE_EXCLUSIVE_SET)
 				.add(Enchantments.PIERCING);
 		builder(ModEnchantmentTags.FROSTBITE_EXCLUSIVE_SET)
 				.add(Enchantments.FIRE_ASPECT);
@@ -86,6 +87,10 @@ public class ModEnchantmentTagProvider extends EnchantmentTagProvider {
 				.add(Enchantments.WIND_BURST);
 		builder(ModEnchantmentTags.SILK_TOUCH_EXCLUSIVE_SET)
 				.add(Enchantments.SILK_TOUCH);
+		builder(ModEnchantmentTags.UNIQUE_CROSSBOW_PROJECTILE_EXCLUSIVE_SET)
+				.add(ModEnchantments.BRIMSTONE)
+				.add(ModEnchantments.SCATTER)
+				.add(ModEnchantments.TORCH);
 		builder(ModEnchantmentTags.WARDENSPINE_EXCLUSIVE_SET)
 				.add(Enchantments.THORNS);
 

@@ -16,6 +16,7 @@
 	],
 	"enchancement:rapid_crossbow_fire": {}
   },
+  "exclusive_set": "#enchancement:exclusive_set/unique_crossbow_projectile",
   "max_cost": {
 	"base": 40,
 	"per_level_above_first": 10
