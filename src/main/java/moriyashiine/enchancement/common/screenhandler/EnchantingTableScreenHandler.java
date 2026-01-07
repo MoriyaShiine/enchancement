@@ -8,7 +8,6 @@ import moriyashiine.enchancement.client.payload.SyncEnchantingTableCostPayload;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
-import moriyashiine.enchancement.common.tag.ModEnchantmentTags;
 import moriyashiine.enchancement.common.tag.ModItemTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.util.config.OverhaulMode;
@@ -349,13 +348,10 @@ public class EnchantingTableScreenHandler extends ScreenHandler {
 	}
 
 	private boolean isEnchantmentAllowed(RegistryEntry<Enchantment> enchantment, ItemStack stack) {
-		if (stack.isEmpty() || enchantment.isIn(ModEnchantmentTags.UNSELECTABLE)) {
+		if (stack.isEmpty()) {
 			return false;
 		}
 		if (stack.canBeEnchantedWith(enchantment, EnchantingContext.ACCEPTABLE)) {
-			if (enchantment.isIn(ModEnchantmentTags.ALWAYS_SELECTABLE)) {
-				return true;
-			}
 			if (ModConfig.overhaulEnchanting != OverhaulMode.CHISELED || chiseledEnchantments.contains(enchantment)) {
 				if (ModConfig.overhaulEnchanting.allowsTreasure() && enchantment.isIn(EnchantmentTags.TREASURE)) {
 					return true;
