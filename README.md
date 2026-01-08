@@ -179,5 +179,3 @@ Everything Enchancement adds is configurable:
   * Enchantments are colored green, similar to how Curses are colored red.
 * Chiseled Bookshelf Peeking
   * Chiseled Bookshelves display the item in the slot you're looking at.
-* Allow Duplicate Keybindings
-  * All keybindings that are set to the same key will activate at the same time instead of only one applying.
