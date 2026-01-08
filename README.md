@@ -138,6 +138,7 @@ Everything Enchancement adds is configurable:
   * Golden armor has slightly less armor.
   * Animal armor can be enchanted with boots enchantments.
   * Sword sweeping damage is increased to be proportional to the primary damage dealt.
+  * Spears have damage falloff with higher velocities.
   * Bows slow you down less when charging.
   * Crossbows pull unique ammunition from your inventory instead of only from off-hand.
   * Tridents have a charge time of 1 second and can be interrupted.
@@ -147,7 +148,7 @@ Everything Enchancement adds is configurable:
   * Tridents with Loyalty linger in the world if the owner is dead instead of dropping on the ground.
   * Tridents with Loyalty that are thrown into the void will automatically return to their owner.
   * Maces have slightly faster attack speed.
-  * Maces deal less damage per block fallen using a logarithmic function.
+  * Maces have damage falloff with higher fall distance.
   * Golden tools have the mining speed of Diamond tools, Diamond tools have the mining speed of Netherite tools, and Netherite tools have the mining speed of Golden tools.
   * Hoes have slower attack speed but more attack damage and attack reach.
   * Fishing Bobbers are thrown more accurately.
