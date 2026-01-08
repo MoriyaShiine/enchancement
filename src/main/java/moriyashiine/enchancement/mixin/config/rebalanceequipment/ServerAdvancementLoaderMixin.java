@@ -33,7 +33,7 @@ public class ServerAdvancementLoaderMixin {
 					if (damagePredicate == null) {
 						continue;
 					}
-					damagePredicate.dealt = NumberRange.DoubleRange.atLeast(30);
+					damagePredicate.dealt = NumberRange.DoubleRange.atLeast(50);
 				}
 			}
 		}

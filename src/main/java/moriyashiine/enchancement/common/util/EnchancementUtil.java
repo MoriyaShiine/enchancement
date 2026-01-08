@@ -268,8 +268,8 @@ public class EnchancementUtil {
 		return stack.contains(DataComponentTypes.EQUIPPABLE) && stack.get(DataComponentTypes.EQUIPPABLE).slot() == EquipmentSlot.BODY;
 	}
 
-	public static double logBase(double base, double value) {
-		return Math.log(value) / Math.log(base);
+	public static double altLog(double base, double value, double multiplier) {
+		return Math.log(value + 1) / Math.log(base) * multiplier;
 	}
 
 	public static double logistic(double asymptote, double value) {

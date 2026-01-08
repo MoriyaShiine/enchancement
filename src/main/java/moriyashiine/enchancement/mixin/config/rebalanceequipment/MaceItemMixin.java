@@ -6,6 +6,7 @@ package moriyashiine.enchancement.mixin.config.rebalanceequipment;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -29,7 +30,7 @@ public class MaceItemMixin {
 	@ModifyReturnValue(method = "getBonusAttackDamage", at = @At(value = "RETURN", ordinal = 2))
 	private float enchancement$rebalanceEquipment(float original, Entity target, float baseAttackDamage, DamageSource damageSource, @Local LivingEntity living) {
 		if (ModConfig.rebalanceEquipment) {
-			float damage = (float) (6 * Math.log(living.fallDistance + 1));
+			float damage = (float) EnchancementUtil.altLog(2.25, living.fallDistance, 6);
 			if (target.getEntityWorld() instanceof ServerWorld world) {
 				float bonus = EnchantmentHelper.getSmashDamagePerFallenBlock(world, living.getWeaponStack(), target, damageSource, 0);
 				return damage + bonus * 2;
