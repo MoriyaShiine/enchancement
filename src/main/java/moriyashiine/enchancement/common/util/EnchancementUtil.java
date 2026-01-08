@@ -268,6 +268,14 @@ public class EnchancementUtil {
 		return stack.contains(DataComponentTypes.EQUIPPABLE) && stack.get(DataComponentTypes.EQUIPPABLE).slot() == EquipmentSlot.BODY;
 	}
 
+	public static double logBase(double base, double value) {
+		return Math.log(value) / Math.log(base);
+	}
+
+	public static double logistic(double asymptote, double value) {
+		return asymptote * 2 / (1 + Math.pow(Math.E, -value / (asymptote / 2))) - asymptote;
+	}
+
 	public static int getFlooredHealth(LivingEntity living) {
 		float percentage = living.getHealth() / living.getMaxHealth();
 		return (int) Math.floor(percentage * 10 + 0.5);

@@ -61,6 +61,7 @@
 	"config.rebalanceequipment.FishingRodItemMixin",
 	"config.rebalanceequipment.HoeItemMixin",
 	"config.rebalanceequipment.ItemsMixin",
+	"config.rebalanceequipment.KineticWeaponComponentMixin",
 	"config.rebalanceequipment.MaceItemMixin",
 	"config.rebalanceequipment.PersistentProjectileEntityMixin",
 	"config.rebalanceequipment.PlayerEntityMixin",

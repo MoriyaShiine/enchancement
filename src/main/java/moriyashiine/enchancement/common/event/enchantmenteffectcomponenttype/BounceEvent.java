@@ -43,7 +43,7 @@ public class BounceEvent {
 				SLibUtils.playSound(entity, SoundEvents.BLOCK_SLIME_BLOCK_FALL);
 				BounceComponent bounceComponent = ModEntityComponents.BOUNCE.get(entity);
 				if (shouldBounce(entity, bounceComponent)) {
-					double bounceStrength = Math.log((fallDistance / 7) + 1) / Math.log(1.05) / 16;
+					double bounceStrength = EnchancementUtil.logBase(1.05, (fallDistance / 7) + 1) / 16;
 					if (entity.isPlayer() || entity.isControlledByPlayer()) {
 						bounce(entity, bounceComponent, bounceStrength);
 					} else {
