@@ -1,4 +1,10 @@
 ------------------------------------------------------
+Version 1.21.11-r5
+------------------------------------------------------
+- spears now have damage falloff (roughly as strong normally but weaker when used with very high velocities)
+- adjust mace damage falloff (stronger than before)
+
+------------------------------------------------------
 Version 1.21.11-r4
 ------------------------------------------------------
 - fix https://github.com/MoriyaShiine/enchancement/issues/276
