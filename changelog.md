@@ -1,4 +1,11 @@
 ------------------------------------------------------
+Version 1.21.11-r6
+------------------------------------------------------
+- add enderscape compat
+- add universal ores compat
+- both of the above are partially implemented by https://github.com/MoriyaShiine/enchancement/pull/278
+
+------------------------------------------------------
 Version 1.21.11-r5
 ------------------------------------------------------
 - spears now have damage falloff (roughly as strong normally but weaker when used with very high velocities)
