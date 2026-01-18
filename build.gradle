@@ -41,7 +41,6 @@ repositories {
         name "appleskin"
         url "https://maven.ryanliptak.com/"
     }
-    chenille.repositories.jitpack()
 }
 
 dependencies {
@@ -58,7 +57,6 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     modImplementation "moriyashiine:strawberrylib:${strawberrylib_version}"
 
-//    modCompileOnly "io.github.apace100:apoli:${apoli_version}"
     modCompileOnly("squeek.appleskin:appleskin-fabric:${appleskin_version}") {
         transitive = false
     }

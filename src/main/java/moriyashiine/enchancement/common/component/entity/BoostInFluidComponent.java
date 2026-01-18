@@ -78,13 +78,9 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 				double z = obj.getZ();
 				ParticleEffect bubbleColumn = ParticleTypes.BUBBLE_COLUMN_UP, splash = ParticleTypes.SPLASH, bubble = ParticleTypes.BUBBLE;
 				if (SLibUtils.isSubmerged(obj, SubmersionGate.LAVA_ONLY)) {
-					bubbleColumn = ParticleTypes.LAVA;
-					splash = ParticleTypes.LAVA;
-					bubble = ParticleTypes.LAVA;
+					bubbleColumn = splash = bubble = ParticleTypes.LAVA;
 				} else if (SLibUtils.isSubmerged(obj, SubmersionGate.POWDER_SNOW_ONLY)) {
-					bubbleColumn = ParticleTypes.SNOWFLAKE;
-					splash = ParticleTypes.SNOWFLAKE;
-					bubble = ParticleTypes.SNOWFLAKE;
+					bubbleColumn = splash = bubble = ParticleTypes.SNOWFLAKE;
 				}
 				obj.getEntityWorld().addParticleClient(bubbleColumn, x, y, z, 0, 0.04, 0);
 				obj.getEntityWorld().addParticleClient(bubbleColumn, obj.getParticleX(0.5), y + obj.getHeight() / 8, obj.getParticleZ(0.5), 0, 0.04, 0);
