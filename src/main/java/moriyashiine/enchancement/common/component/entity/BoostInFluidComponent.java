@@ -73,17 +73,14 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 		tick();
 		if (hasBoost) {
 			if (shouldBoost) {
-				double x = obj.getX();
-				double y = obj.getY();
-				double z = obj.getZ();
 				ParticleEffect bubbleColumn = ParticleTypes.BUBBLE_COLUMN_UP, splash = ParticleTypes.SPLASH, bubble = ParticleTypes.BUBBLE;
 				if (SLibUtils.isSubmerged(obj, SubmersionGate.LAVA_ONLY)) {
 					bubbleColumn = splash = bubble = ParticleTypes.LAVA;
 				} else if (SLibUtils.isSubmerged(obj, SubmersionGate.POWDER_SNOW_ONLY)) {
 					bubbleColumn = splash = bubble = ParticleTypes.SNOWFLAKE;
 				}
-				obj.getEntityWorld().addParticleClient(bubbleColumn, x, y, z, 0, 0.04, 0);
-				obj.getEntityWorld().addParticleClient(bubbleColumn, obj.getParticleX(0.5), y + obj.getHeight() / 8, obj.getParticleZ(0.5), 0, 0.04, 0);
+				obj.getEntityWorld().addParticleClient(bubbleColumn, obj.getX(), obj.getY(), obj.getZ(), 0, 0.04, 0);
+				obj.getEntityWorld().addParticleClient(bubbleColumn, obj.getParticleX(0.5), obj.getY() + obj.getHeight() / 8, obj.getParticleZ(0.5), 0, 0.04, 0);
 				if (obj.getEntityWorld().getBlockState(obj.getBlockPos().up()).isAir()) {
 					for (int i = 0; i < 2; i++) {
 						obj.getEntityWorld().addParticleClient(splash, obj.getParticleX(0.5), obj.getBlockY() + 1, obj.getParticleZ(0.5), 0, 1, 0);
