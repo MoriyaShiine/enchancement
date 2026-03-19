@@ -1,6 +1,22 @@
 {
   "values": [
 	"#minecraft:leaves",
-	"minecraft:nether_gold_ore"
+	"minecraft:nether_gold_ore",
+	{
+	  "id": "enderscape:mirestone_nebulite_ore",
+	  "required": false
+	},
+	{
+	  "id": "enderscape:nebulite_ore",
+	  "required": false
+	},
+	{
+	  "id": "universal_ores:basalt_gold_ore",
+	  "required": false
+	},
+	{
+	  "id": "universal_ores:blackstone_gold_ore",
+	  "required": false
+	}
   ]
 }

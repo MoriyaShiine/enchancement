@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+// todo probably clean this up a lot
 public interface MultiplyMovementSpeedEvent {
 	int MAXIMUM_MOVEMENT_MULTIPLIER = 2;
 

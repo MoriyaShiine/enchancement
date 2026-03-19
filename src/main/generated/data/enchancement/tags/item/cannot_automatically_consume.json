@@ -16,6 +16,10 @@
 	  "required": false
 	},
 	{
+	  "id": "enderscape:murublight_bracket",
+	  "required": false
+	},
+	{
 	  "id": "farmersdelight:dog_food",
 	  "required": false
 	},

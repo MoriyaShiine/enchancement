@@ -19,6 +19,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BlockStateRaycastContext;
 import net.minecraft.world.World;
@@ -147,7 +148,7 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity implemen
 						if (getY() > player.getY()) {
 							player.setVelocity(player.getVelocity().getX(), 0, player.getVelocity().getZ());
 						}
-						player.setVelocity(player.getVelocity().add(new Vec3d(Math.min(getStrength() * 4, getX() - player.getX()), Math.min(getStrength() * 4, getY() - player.getY()), Math.min(getStrength() * 4, getZ() - player.getZ())).multiply(0.2)));
+						player.setVelocity(player.getVelocity().add(new Vec3d(clamp(getX() - player.getX()), clamp(getY() - player.getY()), clamp(getZ() - player.getZ())).multiply(0.2)));
 						player.knockedBack = true;
 					}
 				}
@@ -155,5 +156,11 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity implemen
 			return getEntityWorld().isClient() ? original : 1;
 		}
 		return original;
+	}
+
+	@Unique
+	private double clamp(double value) {
+		float cap = getStrength() * 4;
+		return MathHelper.clamp(value, -cap, cap);
 	}
 }

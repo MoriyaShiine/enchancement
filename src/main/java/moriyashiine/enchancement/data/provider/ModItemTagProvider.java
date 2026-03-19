@@ -13,10 +13,9 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.util.Identifier;
 
 import java.util.concurrent.CompletableFuture;
-
-import static net.minecraft.util.Identifier.of;
 
 public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
 	public ModItemTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
@@ -36,6 +35,7 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
 		builder(ModItemTags.CANNOT_AUTOMATICALLY_CONSUME)
 				.addOptionalTag(tagKey("c:foods/doughs"))
 				.addOptionalTag(tagKey("c:foods/pastas"))
+				.addOptional(key("enderscape:murublight_bracket"))
 				.addOptional(key("farmersdelight:dog_food"))
 				.addOptional(key("farmersdelight:pie_crust"))
 				.addOptional(key("spelunkery:portal_fluid_bottle"));
@@ -53,10 +53,10 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
 	}
 
 	private static TagKey<Item> tagKey(String id) {
-		return TagKey.of(RegistryKeys.ITEM, of(id));
+		return TagKey.of(RegistryKeys.ITEM, Identifier.of(id));
 	}
 
 	private static RegistryKey<Item> key(String id) {
-		return RegistryKey.of(RegistryKeys.ITEM, of(id));
+		return RegistryKey.of(RegistryKeys.ITEM, Identifier.of(id));
 	}
 }

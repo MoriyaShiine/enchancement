@@ -37,11 +37,16 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 		valueLookupBuilder(ModBlockTags.SMELTS_SELF)
 				.forceAddTag(BlockTags.LEAVES)
 				.add(Blocks.NETHER_GOLD_ORE);
+		builder(ModBlockTags.SMELTS_SELF)
+				.addOptional(key("enderscape:mirestone_nebulite_ore"))
+				.addOptional(key("enderscape:nebulite_ore"))
+				.addOptional(key("universal_ores:basalt_gold_ore"))
+				.addOptional(key("universal_ores:blackstone_gold_ore"));
 		valueLookupBuilder(ModBlockTags.UNSTICKABLE)
 				.forceAddTag(BlockTags.ICE);
 	}
 
-	private static RegistryKey<Block> key(Identifier id) {
-		return RegistryKey.of(RegistryKeys.BLOCK, id);
+	private static RegistryKey<Block> key(String id) {
+		return RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(id));
 	}
 }
