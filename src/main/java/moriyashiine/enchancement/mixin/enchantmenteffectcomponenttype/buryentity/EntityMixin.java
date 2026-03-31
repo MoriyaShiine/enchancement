@@ -1,13 +1,14 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.buryentity;
 
 import moriyashiine.enchancement.common.component.entity.BuryEntityComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.MovementType;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -15,13 +16,13 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Mixin(Entity.class)
 public class EntityMixin {
 	@ModifyVariable(method = "move", at = @At("HEAD"), argsOnly = true)
-	private Vec3d enchancement$buryEntity(Vec3d value, MovementType movementType) {
-		if (movementType == MovementType.SELF) {
+	private Vec3 enchancement$buryEntity(Vec3 delta, MoverType moverType) {
+		if (moverType == MoverType.SELF) {
 			BuryEntityComponent buryEntityComponent = ModEntityComponents.BURY_ENTITY.getNullable(this);
 			if (buryEntityComponent != null && buryEntityComponent.getBuryPos() != null) {
-				return Vec3d.ZERO;
+				return Vec3.ZERO;
 			}
 		}
-		return value;
+		return delta;
 	}
 }

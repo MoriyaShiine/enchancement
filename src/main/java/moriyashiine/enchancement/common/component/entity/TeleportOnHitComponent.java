@@ -1,24 +1,25 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.component.entity;
 
-import moriyashiine.enchancement.common.enchantment.effect.TeleportOnHitEffect;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.enchancement.common.world.item.effects.TeleportOnHitEffect;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ClientTickingComponent;
@@ -26,23 +27,23 @@ import org.ladysnake.cca.api.v3.component.tick.ClientTickingComponent;
 import java.util.Collections;
 
 public class TeleportOnHitComponent implements AutoSyncedComponent, ClientTickingComponent {
-	private final ProjectileEntity obj;
+	private final Projectile obj;
 	private boolean teleportsOnBlockHit = false, teleportsOnEntityHit = false;
 
-	public TeleportOnHitComponent(ProjectileEntity obj) {
+	public TeleportOnHitComponent(Projectile obj) {
 		this.obj = obj;
 	}
 
 	@Override
-	public void readData(ReadView readView) {
-		teleportsOnBlockHit = readView.getBoolean("TeleportsOnBlockHit", false);
-		teleportsOnEntityHit = readView.getBoolean("TeleportsOnEntityHit", false);
+	public void readData(ValueInput input) {
+		teleportsOnBlockHit = input.getBooleanOr("TeleportsOnBlockHit", false);
+		teleportsOnEntityHit = input.getBooleanOr("TeleportsOnEntityHit", false);
 	}
 
 	@Override
-	public void writeData(WriteView writeView) {
-		writeView.putBoolean("TeleportsOnBlockHit", teleportsOnBlockHit);
-		writeView.putBoolean("TeleportsOnEntityHit", teleportsOnEntityHit);
+	public void writeData(ValueOutput output) {
+		output.putBoolean("TeleportsOnBlockHit", teleportsOnBlockHit);
+		output.putBoolean("TeleportsOnEntityHit", teleportsOnEntityHit);
 	}
 
 	@Override
@@ -58,8 +59,8 @@ public class TeleportOnHitComponent implements AutoSyncedComponent, ClientTickin
 
 	public void disable() {
 		teleportsOnBlockHit = teleportsOnEntityHit = false;
-		if (obj instanceof PersistentProjectileEntity projectile && obj.getOwner() instanceof PlayerEntity player && !player.isCreative()) {
-			if (EnchancementUtil.insertToCorrectTridentSlot(projectile, player.getInventory(), projectile.asItemStack()) || player.giveItemStack(projectile.asItemStack())) {
+		if (obj instanceof AbstractArrow arrow && obj.getOwner() instanceof Player player && !player.isCreative()) {
+			if (EnchancementUtil.insertToCorrectTridentSlot(arrow, player.getInventory(), arrow.getPickupItem()) || player.addItem(arrow.getPickupItem())) {
 				obj.discard();
 			}
 		}
@@ -74,11 +75,11 @@ public class TeleportOnHitComponent implements AutoSyncedComponent, ClientTickin
 	}
 
 	public static void maybeSet(LivingEntity user, ItemStack stack, Entity entity) {
-		if (entity instanceof ProjectileEntity) {
+		if (entity instanceof Projectile) {
 			MutableBoolean teleportsOnBlockHit = new MutableBoolean(), teleportsOnEntityHit = new MutableBoolean();
-			if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.TELEPORT_ON_HIT)) {
+			if (EnchantmentHelper.has(stack, ModEnchantmentEffectComponentTypes.TELEPORT_ON_HIT)) {
 				TeleportOnHitEffect.setValues(teleportsOnBlockHit, teleportsOnEntityHit, Collections.singleton(stack));
-			} else if (!(user instanceof PlayerEntity) && EnchancementUtil.hasAnyEnchantmentsWith(user, ModEnchantmentEffectComponentTypes.TELEPORT_ON_HIT)) {
+			} else if (!(user instanceof Player) && EnchancementUtil.hasAnyEnchantmentsWith(user, ModEnchantmentEffectComponentTypes.TELEPORT_ON_HIT)) {
 				TeleportOnHitEffect.setValues(teleportsOnBlockHit, teleportsOnEntityHit, EnchancementUtil.getHeldItems(user));
 			}
 			if (teleportsOnBlockHit.booleanValue() || teleportsOnEntityHit.booleanValue()) {

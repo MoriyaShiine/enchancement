@@ -1,0 +1,195 @@
+{
+  "block.generic.smelt": {
+	"sounds": [
+	  {
+		"type": "event",
+		"name": "minecraft:block.furnace.fire_crackle"
+	  }
+	],
+	"subtitle": "subtitles.enchancement.block.generic.smelt"
+  },
+  "block.ore.extract": {
+	"sounds": [
+	  "enchancement:block/extract"
+	],
+	"subtitle": "subtitles.enchancement.block.ore.extract"
+  },
+  "entity.brimstone.travel": {
+	"sounds": [
+	  "enchancement:entity/brimstone/travel"
+	],
+	"subtitle": "subtitles.enchancement.entity.brimstone.travel"
+  },
+  "entity.fishing_bobber.grapple": {
+	"sounds": [
+	  {
+		"type": "event",
+		"name": "minecraft:entity.experience_orb.pickup",
+		"volume": 0.25
+	  }
+	],
+	"subtitle": "subtitles.enchancement.entity.fishing_bobber.grapple"
+  },
+  "entity.generic.air_jump": {
+	"sounds": [
+	  {
+		"type": "event",
+		"name": "minecraft:block.sand.break"
+	  }
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.air_jump"
+  },
+  "entity.generic.bury": {
+	"sounds": [
+	  {
+		"type": "event",
+		"name": "minecraft:item.shovel.flatten"
+	  }
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.bury"
+  },
+  "entity.generic.dash": {
+	"sounds": [
+	  {
+		"type": "event",
+		"name": "minecraft:block.sand.break"
+	  }
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.dash"
+  },
+  "entity.generic.erupt": {
+	"sounds": [
+	  "enchancement:entity/erupt"
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.erupt"
+  },
+  "entity.generic.freeze": {
+	"sounds": [
+	  {
+		"type": "event",
+		"name": "minecraft:entity.player.hurt_freeze"
+	  }
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.freeze"
+  },
+  "entity.generic.impact": {
+	"sounds": [
+	  "enchancement:entity/impact"
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.impact"
+  },
+  "entity.generic.ping": {
+	"sounds": [
+	  {
+		"type": "event",
+		"name": "minecraft:entity.experience_orb.pickup"
+	  }
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.ping"
+  },
+  "entity.generic.spark": {
+	"sounds": [
+	  "enchancement:entity/spark"
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.spark"
+  },
+  "entity.generic.strafe": {
+	"sounds": [
+	  {
+		"type": "event",
+		"name": "minecraft:block.sand.break"
+	  }
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.strafe"
+  },
+  "entity.generic.teleport": {
+	"sounds": [
+	  {
+		"type": "event",
+		"name": "minecraft:entity.player.teleport"
+	  }
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.teleport"
+  },
+  "entity.generic.wardenspine": {
+	"sounds": [
+	  {
+		"type": "event",
+		"name": "minecraft:block.sculk_sensor.clicking",
+		"pitch": 1.5
+	  }
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.wardenspine"
+  },
+  "entity.generic.zap": {
+	"sounds": [
+	  "enchancement:entity/zap"
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.zap"
+  },
+  "entity.shard.shatter": {
+	"sounds": [
+	  {
+		"type": "event",
+		"name": "minecraft:block.glass.break"
+	  }
+	],
+	"subtitle": "subtitles.enchancement.entity.shard.shatter"
+  },
+  "item.crossbow.brimstone.1": {
+	"sounds": [
+	  "enchancement:item/crossbow/brimstone1"
+	],
+	"subtitle": "subtitles.item.crossbow.shoot"
+  },
+  "item.crossbow.brimstone.2": {
+	"sounds": [
+	  "enchancement:item/crossbow/brimstone2"
+	],
+	"subtitle": "subtitles.item.crossbow.shoot"
+  },
+  "item.crossbow.brimstone.3": {
+	"sounds": [
+	  "enchancement:item/crossbow/brimstone3"
+	],
+	"subtitle": "subtitles.item.crossbow.shoot"
+  },
+  "item.crossbow.brimstone.4": {
+	"sounds": [
+	  "enchancement:item/crossbow/brimstone4"
+	],
+	"subtitle": "subtitles.item.crossbow.shoot"
+  },
+  "item.crossbow.brimstone.5": {
+	"sounds": [
+	  "enchancement:item/crossbow/brimstone5"
+	],
+	"subtitle": "subtitles.item.crossbow.shoot"
+  },
+  "item.crossbow.brimstone.6": {
+	"sounds": [
+	  "enchancement:item/crossbow/brimstone6"
+	],
+	"subtitle": "subtitles.item.crossbow.shoot"
+  },
+  "item.crossbow.loading_brimstone": {
+	"sounds": [
+	  "enchancement:item/crossbow/loading_brimstone"
+	],
+	"subtitle": "subtitles.item.crossbow.charge"
+  },
+  "item.crossbow.scatter": {
+	"sounds": [
+	  "enchancement:item/crossbow/scatter1",
+	  "enchancement:item/crossbow/scatter2",
+	  "enchancement:item/crossbow/scatter3"
+	],
+	"subtitle": "subtitles.item.crossbow.shoot"
+  },
+  "item.generic.whoosh": {
+	"sounds": [
+	  "minecraft:mob/breeze/shoot"
+	],
+	"subtitle": "subtitles.enchancement.item.generic.whoosh"
+  }
+}

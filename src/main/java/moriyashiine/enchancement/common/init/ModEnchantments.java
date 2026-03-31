@@ -1,509 +1,506 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.init;
 
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.enchantment.effect.*;
-import moriyashiine.enchancement.common.enchantment.effect.entity.*;
-import moriyashiine.enchancement.common.loot.condition.AttackerBehindLootCondition;
-import moriyashiine.enchancement.common.loot.condition.HasExtendedWaterTimeLootCondition;
-import moriyashiine.enchancement.common.loot.condition.InCombatLootCondition;
-import moriyashiine.enchancement.common.loot.condition.WetLootCondition;
 import moriyashiine.enchancement.common.tag.ModDamageTypeTags;
 import moriyashiine.enchancement.common.tag.ModEnchantmentTags;
-import moriyashiine.enchancement.common.tag.ModStatusEffectTags;
-import moriyashiine.enchancement.data.provider.ModEnchantmentTagProvider;
+import moriyashiine.enchancement.common.tag.ModMobEffectTags;
+import moriyashiine.enchancement.common.world.item.effects.*;
+import moriyashiine.enchancement.common.world.item.effects.entity.*;
+import moriyashiine.enchancement.common.world.level.storage.loot.predicates.AttackerBehindCondition;
+import moriyashiine.enchancement.common.world.level.storage.loot.predicates.HasExtendedWaterTimeCondition;
+import moriyashiine.enchancement.common.world.level.storage.loot.predicates.InCombatCondition;
+import moriyashiine.enchancement.common.world.level.storage.loot.predicates.WetCondition;
+import moriyashiine.enchancement.data.provider.ModEnchantmentTagsProvider;
 import moriyashiine.strawberrylib.api.objects.enums.SubmersionGate;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.component.EnchantmentEffectComponentTypes;
-import net.minecraft.component.type.AttributeModifierSlot;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentLevelBasedValue;
-import net.minecraft.enchantment.effect.AllOfEnchantmentEffects;
-import net.minecraft.enchantment.effect.AttributeEnchantmentEffect;
-import net.minecraft.enchantment.effect.DamageImmunityEnchantmentEffect;
-import net.minecraft.enchantment.effect.EnchantmentEffectTarget;
-import net.minecraft.enchantment.effect.entity.*;
-import net.minecraft.enchantment.effect.value.AddEnchantmentEffect;
-import net.minecraft.enchantment.effect.value.MultiplyEnchantmentEffect;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageType;
-import net.minecraft.entity.damage.DamageTypes;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.loot.condition.AllOfLootCondition;
-import net.minecraft.loot.condition.DamageSourcePropertiesLootCondition;
-import net.minecraft.loot.condition.EntityPropertiesLootCondition;
-import net.minecraft.loot.condition.InvertedLootCondition;
-import net.minecraft.loot.context.LootContext;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.predicate.NumberRange;
-import net.minecraft.predicate.TagPredicate;
-import net.minecraft.predicate.entity.*;
-import net.minecraft.registry.Registerable;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.entry.RegistryEntryList;
-import net.minecraft.registry.tag.DamageTypeTags;
-import net.minecraft.registry.tag.ItemTags;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.floatprovider.ConstantFloatProvider;
-import net.minecraft.util.math.floatprovider.UniformFloatProvider;
+import net.minecraft.advancements.criterion.EntityTypePredicate;
+import net.minecraft.advancements.criterion.MinMaxBounds;
+import net.minecraft.advancements.criterion.MovementPredicate;
+import net.minecraft.advancements.criterion.TagPredicate;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.util.valueproviders.ConstantFloat;
+import net.minecraft.util.valueproviders.UniformFloat;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
+import net.minecraft.world.item.enchantment.EnchantmentTarget;
+import net.minecraft.world.item.enchantment.LevelBasedValue;
+import net.minecraft.world.item.enchantment.effects.*;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
+import net.minecraft.world.level.storage.loot.predicates.DamageSourceCondition;
+import net.minecraft.world.level.storage.loot.predicates.InvertedLootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 
 import java.util.List;
 
 public class ModEnchantments {
 	// placeholder
-	public static final RegistryKey<Enchantment> EMPTY_KEY = createKey("empty");
-	public static final Enchantment EMPTY = Enchantment.builder(Enchantment.definition(RegistryEntryList.empty(), 1, 1, Enchantment.constantCost(0), Enchantment.constantCost(0), 0)).build(EMPTY_KEY.getValue());
+	public static final ResourceKey<Enchantment> EMPTY_KEY = createKey("empty");
+	public static final Enchantment EMPTY = Enchantment.enchantment(Enchantment.definition(HolderSet.empty(), 1, 1, Enchantment.constantCost(0), Enchantment.constantCost(0), 0)).build(EMPTY_KEY.identifier());
 	// helmet
-	public static final RegistryKey<Enchantment> ASSIMILATION = createKey("assimilation");
-	public static final RegistryKey<Enchantment> PERCEPTION = createKey("perception");
-	public static final RegistryKey<Enchantment> VEIL = createKey("veil");
+	public static final ResourceKey<Enchantment> ASSIMILATION = createKey("assimilation");
+	public static final ResourceKey<Enchantment> PERCEPTION = createKey("perception");
+	public static final ResourceKey<Enchantment> VEIL = createKey("veil");
 	// chestplate
-	public static final RegistryKey<Enchantment> ADRENALINE = createKey("adrenaline");
-	public static final RegistryKey<Enchantment> AMPHIBIOUS = createKey("amphibious");
-	public static final RegistryKey<Enchantment> STRAFE = createKey("strafe");
-	public static final RegistryKey<Enchantment> WARDENSPINE = createKey("wardenspine");
+	public static final ResourceKey<Enchantment> ADRENALINE = createKey("adrenaline");
+	public static final ResourceKey<Enchantment> AMPHIBIOUS = createKey("amphibious");
+	public static final ResourceKey<Enchantment> STRAFE = createKey("strafe");
+	public static final ResourceKey<Enchantment> WARDENSPINE = createKey("wardenspine");
 	// leggings
-	public static final RegistryKey<Enchantment> DASH = createKey("dash");
-	public static final RegistryKey<Enchantment> GALE = createKey("gale");
-	public static final RegistryKey<Enchantment> SLIDE = createKey("slide");
+	public static final ResourceKey<Enchantment> DASH = createKey("dash");
+	public static final ResourceKey<Enchantment> GALE = createKey("gale");
+	public static final ResourceKey<Enchantment> SLIDE = createKey("slide");
 	// boots
-	public static final RegistryKey<Enchantment> BOUNCY = createKey("bouncy");
-	public static final RegistryKey<Enchantment> BUOY = createKey("buoy");
-	public static final RegistryKey<Enchantment> STICKY = createKey("sticky");
+	public static final ResourceKey<Enchantment> BOUNCY = createKey("bouncy");
+	public static final ResourceKey<Enchantment> BUOY = createKey("buoy");
+	public static final ResourceKey<Enchantment> STICKY = createKey("sticky");
 	// sword
-	public static final RegistryKey<Enchantment> BERSERK = createKey("berserk");
-	public static final RegistryKey<Enchantment> FROSTBITE = createKey("frostbite");
+	public static final ResourceKey<Enchantment> BERSERK = createKey("berserk");
+	public static final ResourceKey<Enchantment> FROSTBITE = createKey("frostbite");
 	// bow
-	public static final RegistryKey<Enchantment> CHAOS = createKey("chaos");
-	public static final RegistryKey<Enchantment> DELAY = createKey("delay");
-	public static final RegistryKey<Enchantment> PHASING = createKey("phasing");
+	public static final ResourceKey<Enchantment> CHAOS = createKey("chaos");
+	public static final ResourceKey<Enchantment> DELAY = createKey("delay");
+	public static final ResourceKey<Enchantment> PHASING = createKey("phasing");
 	// crossbow
-	public static final RegistryKey<Enchantment> BRIMSTONE = createKey("brimstone");
-	public static final RegistryKey<Enchantment> SCATTER = createKey("scatter");
-	public static final RegistryKey<Enchantment> TORCH = createKey("torch");
+	public static final ResourceKey<Enchantment> BRIMSTONE = createKey("brimstone");
+	public static final ResourceKey<Enchantment> SCATTER = createKey("scatter");
+	public static final ResourceKey<Enchantment> TORCH = createKey("torch");
 	// trident
-	public static final RegistryKey<Enchantment> LEECH = createKey("leech");
-	public static final RegistryKey<Enchantment> WARP = createKey("warp");
+	public static final ResourceKey<Enchantment> LEECH = createKey("leech");
+	public static final ResourceKey<Enchantment> WARP = createKey("warp");
 	// mace
-	public static final RegistryKey<Enchantment> METEOR = createKey("meteor");
-	public static final RegistryKey<Enchantment> THUNDERSTRUCK = createKey("thunderstruck");
+	public static final ResourceKey<Enchantment> METEOR = createKey("meteor");
+	public static final ResourceKey<Enchantment> THUNDERSTRUCK = createKey("thunderstruck");
 	// mining tool
-	public static final RegistryKey<Enchantment> MOLTEN = createKey("molten");
+	public static final ResourceKey<Enchantment> MOLTEN = createKey("molten");
 	// pickaxe
-	public static final RegistryKey<Enchantment> EXTRACTING = createKey("extracting");
+	public static final ResourceKey<Enchantment> EXTRACTING = createKey("extracting");
 	// axe
-	public static final RegistryKey<Enchantment> BEHEADING = createKey("beheading");
-	public static final RegistryKey<Enchantment> LUMBERJACK = createKey("lumberjack");
+	public static final ResourceKey<Enchantment> BEHEADING = createKey("beheading");
+	public static final ResourceKey<Enchantment> LUMBERJACK = createKey("lumberjack");
 	// shovel
-	public static final RegistryKey<Enchantment> BURY = createKey("bury");
-	public static final RegistryKey<Enchantment> SCOOPING = createKey("scooping");
+	public static final ResourceKey<Enchantment> BURY = createKey("bury");
+	public static final ResourceKey<Enchantment> SCOOPING = createKey("scooping");
 	// hoe
-	public static final RegistryKey<Enchantment> APEX = createKey("apex");
+	public static final ResourceKey<Enchantment> APEX = createKey("apex");
 	// fishing rod
-	public static final RegistryKey<Enchantment> DISARM = createKey("disarm");
-	public static final RegistryKey<Enchantment> GRAPPLE = createKey("grapple");
+	public static final ResourceKey<Enchantment> DISARM = createKey("disarm");
+	public static final ResourceKey<Enchantment> GRAPPLE = createKey("grapple");
 
-	private static RegistryKey<Enchantment> createKey(String id) {
-		return RegistryKey.of(RegistryKeys.ENCHANTMENT, Enchancement.id(id));
+	private static ResourceKey<Enchantment> createKey(String id) {
+		return ResourceKey.create(Registries.ENCHANTMENT, Enchancement.id(id));
 	}
 
-	public static Enchantment create(Identifier id, boolean treasure, RegistryEntryList<Item> supportedItems, int maxLevel, AttributeModifierSlot slot, EffectsAdder effectsAdder) {
+	public static Enchantment create(Identifier id, boolean treasure, HolderSet<Item> supportedItems, int maxLevel, EquipmentSlotGroup group, EffectsAdder effectsAdder) {
 		if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
 			if (treasure) {
-				if (!ModEnchantmentTagProvider.TREASURE_ENCHANTMENTS.contains(id)) {
-					ModEnchantmentTagProvider.TREASURE_ENCHANTMENTS.add(id);
+				if (!ModEnchantmentTagsProvider.TREASURE_ENCHANTMENTS.contains(id)) {
+					ModEnchantmentTagsProvider.TREASURE_ENCHANTMENTS.add(id);
 				}
-			} else if (!ModEnchantmentTagProvider.NON_TREASURE_ENCHANTMENTS.contains(id)) {
-				ModEnchantmentTagProvider.NON_TREASURE_ENCHANTMENTS.add(id);
+			} else if (!ModEnchantmentTagsProvider.NON_TREASURE_ENCHANTMENTS.contains(id)) {
+				ModEnchantmentTagsProvider.NON_TREASURE_ENCHANTMENTS.add(id);
 			}
 		}
-		Enchantment.Builder builder = Enchantment.builder(Enchantment.definition(supportedItems, 5, maxLevel, Enchantment.leveledCost(10, 10), Enchantment.leveledCost(40, 10), 2, slot));
+		Enchantment.Builder builder = Enchantment.enchantment(Enchantment.definition(supportedItems, 5, maxLevel, Enchantment.dynamicCost(10, 10), Enchantment.dynamicCost(40, 10), 2, group));
 		effectsAdder.addEffects(builder);
 		return builder.build(id);
 	}
 
-	public static Enchantment create(Identifier id, RegistryEntryList<Item> supportedItems, int maxLevel, AttributeModifierSlot slot, EffectsAdder effectsAdder) {
-		return create(id, false, supportedItems, maxLevel, slot, effectsAdder);
+	public static Enchantment create(Identifier id, HolderSet<Item> supportedItems, int maxLevel, EquipmentSlotGroup group, EffectsAdder effectsAdder) {
+		return create(id, false, supportedItems, maxLevel, group, effectsAdder);
 	}
 
-	public static void bootstrap(Registerable<Enchantment> registerable) {
-		registerable.register(EMPTY_KEY, EMPTY);
+	public static void bootstrap(BootstrapContext<Enchantment> registry) {
+		registry.register(EMPTY_KEY, EMPTY);
 		// lookup
-		RegistryEntryLookup<DamageType> damageTypeLookup = registerable.getRegistryLookup(RegistryKeys.DAMAGE_TYPE);
-		RegistryEntryLookup<Enchantment> enchantmentLookup = registerable.getRegistryLookup(RegistryKeys.ENCHANTMENT);
-		RegistryEntryLookup<EntityType<?>> entityTypeLookup = registerable.getRegistryLookup(RegistryKeys.ENTITY_TYPE);
-		RegistryEntryLookup<Item> itemLookup = registerable.getRegistryLookup(RegistryKeys.ITEM);
+		HolderGetter<DamageType> damageTypeLookup = registry.lookup(Registries.DAMAGE_TYPE);
+		HolderGetter<Enchantment> enchantmentLookup = registry.lookup(Registries.ENCHANTMENT);
+		HolderGetter<EntityType<?>> entityTypeLookup = registry.lookup(Registries.ENTITY_TYPE);
+		HolderGetter<Item> itemLookup = registry.lookup(Registries.ITEM);
 		// helmet
-		registerable.register(ASSIMILATION, create(ASSIMILATION.getValue(),
+		registry.register(ASSIMILATION, create(ASSIMILATION.identifier(),
 				itemLookup.getOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.ARMOR,
+				EquipmentSlotGroup.ARMOR,
 				builder -> {
-					builder.addNonListEffect(
+					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.MODIFY_CONSUMPTION_TIME,
-							new MultiplyEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.875F, -0.125F)));
-					builder.addEffect(
-							EnchantmentEffectComponentTypes.TICK,
-							new AutomateEatingEnchantmentEffect(NumberRange.IntRange.atMost(14)),
-							AllOfLootCondition.builder(
-									EntityPropertiesLootCondition.builder(LootContext.EntityReference.THIS, EntityPredicate.Builder.create().periodicTick(20)),
-									() -> InvertedLootCondition.builder(() -> InCombatLootCondition.INSTANCE).build()
+							new MultiplyValue(LevelBasedValue.perLevel(0.875F, -0.125F)));
+					builder.withEffect(
+							EnchantmentEffectComponents.TICK,
+							new AutomateEatingEnchantmentEffect(MinMaxBounds.Ints.atMost(14)),
+							AllOfCondition.allOf(
+									LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, net.minecraft.advancements.criterion.EntityPredicate.Builder.entity().periodicTick(20)),
+									() -> InvertedLootItemCondition.invert(() -> InCombatCondition.INSTANCE).build()
 							));
 				}));
-		registerable.register(PERCEPTION, create(PERCEPTION.getValue(),
+		registry.register(PERCEPTION, create(PERCEPTION.identifier(),
 				itemLookup.getOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.ARMOR,
+				EquipmentSlotGroup.ARMOR,
 				builder -> {
-					builder.addNonListEffect(
+					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.ENTITY_XRAY,
-							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(8)));
-					builder.addNonListEffect(
+							new AddValue(LevelBasedValue.perLevel(8)));
+					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.NIGHT_VISION,
-							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.25F, 0.75F)));
+							new AddValue(LevelBasedValue.perLevel(0.25F, 0.75F)));
 				}));
-		registerable.register(VEIL, create(VEIL.getValue(),
+		registry.register(VEIL, create(VEIL.identifier(),
 				itemLookup.getOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.ARMOR,
+				EquipmentSlotGroup.ARMOR,
 				builder -> {
-					builder.addEffect(
+					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.HIDE_LABEL_BEHIND_WALLS);
-					builder.addNonListEffect(
+					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.MODIFY_DETECTION_RANGE,
-							new MultiplyEnchantmentEffect(new EnchantmentLevelBasedValue.Fraction(EnchantmentLevelBasedValue.constant(1), EnchantmentLevelBasedValue.linear(2))));
-					builder.addEffect(
-							EnchantmentEffectComponentTypes.ATTRIBUTES,
-							new AttributeEnchantmentEffect(Enchancement.id("enchantment.veil"),
-									EntityAttributes.WAYPOINT_TRANSMIT_RANGE,
-									EnchantmentLevelBasedValue.constant(-1),
-									EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+							new MultiplyValue(new LevelBasedValue.Fraction(LevelBasedValue.constant(1), LevelBasedValue.perLevel(2))));
+					builder.withEffect(
+							EnchantmentEffectComponents.ATTRIBUTES,
+							new EnchantmentAttributeEffect(Enchancement.id("enchantment.veil"),
+									Attributes.WAYPOINT_TRANSMIT_RANGE,
+									LevelBasedValue.constant(-1),
+									AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
 				}));
 		// chestplate
-		registerable.register(ADRENALINE, create(ADRENALINE.getValue(),
+		registry.register(ADRENALINE, create(ADRENALINE.identifier(),
 				itemLookup.getOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.ARMOR,
-				builder -> builder.addNonListEffect(
+				EquipmentSlotGroup.ARMOR,
+				builder -> builder.withSpecialEffect(
 						ModEnchantmentEffectComponentTypes.RAGE,
 						new RageEffect(
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0)),
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.2F / 14)),
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.02857142857F))
+								new AddValue(LevelBasedValue.constant(0)),
+								new AddValue(LevelBasedValue.perLevel(0.2F / 14)),
+								new AddValue(LevelBasedValue.perLevel(0.02857142857F))
 						)
 				)));
-		registerable.register(AMPHIBIOUS, create(AMPHIBIOUS.getValue(),
+		registry.register(AMPHIBIOUS, create(AMPHIBIOUS.identifier(),
 				itemLookup.getOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.ARMOR,
+				EquipmentSlotGroup.ARMOR,
 				builder -> {
-					builder.addEffect(
+					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.EXTEND_WATER_TIME);
-					builder.addEffect(
+					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.EXTENDED_WATER_SPIN_ATTACK);
-					builder.addEffect(
-							EnchantmentEffectComponentTypes.TICK,
+					builder.withEffect(
+							EnchantmentEffectComponents.TICK,
 							ExtinguishEnchantmentEffect.INSTANCE,
-							() -> HasExtendedWaterTimeLootCondition.INSTANCE);
-					builder.addEffect(
-							EnchantmentEffectComponentTypes.TICK,
+							() -> HasExtendedWaterTimeCondition.INSTANCE);
+					builder.withEffect(
+							EnchantmentEffectComponents.TICK,
 							new SetExtendedWaterTimeEffect(
-									EnchantmentLevelBasedValue.linear(6, 4)),
-							() -> WetLootCondition.INSTANCE);
-					builder.addEffect(
-							EnchantmentEffectComponentTypes.ATTRIBUTES,
-							new AttributeEnchantmentEffect(Enchancement.id("enchantment.amphibious"),
-									EntityAttributes.BURNING_TIME,
-									EnchantmentLevelBasedValue.linear(-0.25F),
-									EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-					builder.addEffect(
-							EnchantmentEffectComponentTypes.ATTRIBUTES,
-							new AttributeEnchantmentEffect(Enchancement.id("enchantment.amphibious"),
-									EntityAttributes.OXYGEN_BONUS,
-									EnchantmentLevelBasedValue.linear(1.5F),
-									EntityAttributeModifier.Operation.ADD_VALUE));
-					builder.addEffect(
-							EnchantmentEffectComponentTypes.ATTRIBUTES,
-							new AttributeEnchantmentEffect(Enchancement.id("enchantment.amphibious"),
-									EntityAttributes.SUBMERGED_MINING_SPEED,
-									EnchantmentLevelBasedValue.linear(2),
-									EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-					builder.addEffect(
-							EnchantmentEffectComponentTypes.ATTRIBUTES,
-							new AttributeEnchantmentEffect(Enchancement.id("enchantment.amphibious"),
-									EntityAttributes.WATER_MOVEMENT_EFFICIENCY,
-									EnchantmentLevelBasedValue.linear(0.5F),
-									EntityAttributeModifier.Operation.ADD_VALUE));
+									LevelBasedValue.perLevel(6, 4)),
+							() -> WetCondition.INSTANCE);
+					builder.withEffect(
+							EnchantmentEffectComponents.ATTRIBUTES,
+							new EnchantmentAttributeEffect(Enchancement.id("enchantment.amphibious"),
+									Attributes.BURNING_TIME,
+									LevelBasedValue.perLevel(-0.25F),
+									AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+					builder.withEffect(
+							EnchantmentEffectComponents.ATTRIBUTES,
+							new EnchantmentAttributeEffect(Enchancement.id("enchantment.amphibious"),
+									Attributes.OXYGEN_BONUS,
+									LevelBasedValue.perLevel(1.5F),
+									AttributeModifier.Operation.ADD_VALUE));
+					builder.withEffect(
+							EnchantmentEffectComponents.ATTRIBUTES,
+							new EnchantmentAttributeEffect(Enchancement.id("enchantment.amphibious"),
+									Attributes.SUBMERGED_MINING_SPEED,
+									LevelBasedValue.perLevel(2),
+									AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+					builder.withEffect(
+							EnchantmentEffectComponents.ATTRIBUTES,
+							new EnchantmentAttributeEffect(Enchancement.id("enchantment.amphibious"),
+									Attributes.WATER_MOVEMENT_EFFICIENCY,
+									LevelBasedValue.perLevel(0.5F),
+									AttributeModifier.Operation.ADD_VALUE));
 				}));
-		registerable.register(STRAFE, create(STRAFE.getValue(),
+		registry.register(STRAFE, create(STRAFE.identifier(),
 				itemLookup.getOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.ARMOR,
-				builder -> builder.addNonListEffect(
+				EquipmentSlotGroup.ARMOR,
+				builder -> builder.withSpecialEffect(
 						ModEnchantmentEffectComponentTypes.DIRECTION_BURST,
 						new DirectionBurstEffect(
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(1.25F, -0.5F)),
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1.1F)),
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0.8F))))));
-		registerable.register(WARDENSPINE, create(WARDENSPINE.getValue(),
+								new AddValue(LevelBasedValue.perLevel(1.25F, -0.5F)),
+								new AddValue(LevelBasedValue.constant(1.1F)),
+								new AddValue(LevelBasedValue.constant(0.8F))))));
+		registry.register(WARDENSPINE, create(WARDENSPINE.identifier(),
 				itemLookup.getOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.ARMOR,
+				EquipmentSlotGroup.ARMOR,
 				builder -> {
-					builder.exclusiveSet(enchantmentLookup.getOrThrow(ModEnchantmentTags.WARDENSPINE_EXCLUSIVE_SET));
-					builder.addEffect(
-							EnchantmentEffectComponentTypes.DAMAGE_PROTECTION,
-							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(8)),
-							AllOfLootCondition.builder(
-									DamageSourcePropertiesLootCondition.builder(DamageSourcePredicate.Builder.create().tag(TagPredicate.unexpected(ModDamageTypeTags.BYPASSES_WARDENSPINE))),
-									() -> AttackerBehindLootCondition.INSTANCE
+					builder.exclusiveWith(enchantmentLookup.getOrThrow(ModEnchantmentTags.WARDENSPINE_EXCLUSIVE_SET));
+					builder.withEffect(
+							EnchantmentEffectComponents.DAMAGE_PROTECTION,
+							new AddValue(LevelBasedValue.perLevel(8)),
+							AllOfCondition.allOf(
+									DamageSourceCondition.hasDamageSource(net.minecraft.advancements.criterion.DamageSourcePredicate.Builder.damageType().tag(TagPredicate.isNot(ModDamageTypeTags.BYPASSES_WARDENSPINE))),
+									() -> AttackerBehindCondition.INSTANCE
 							));
-					builder.addEffect(
-							EnchantmentEffectComponentTypes.POST_ATTACK,
-							EnchantmentEffectTarget.VICTIM,
-							EnchantmentEffectTarget.ATTACKER,
-							AllOfEnchantmentEffects.allOf(
-									new DamageEntityEnchantmentEffect(
-											EnchantmentLevelBasedValue.linear(2),
-											EnchantmentLevelBasedValue.linear(2),
+					builder.withEffect(
+							EnchantmentEffectComponents.POST_ATTACK,
+							EnchantmentTarget.VICTIM,
+							EnchantmentTarget.ATTACKER,
+							AllOf.entityEffects(
+									new DamageEntity(
+											LevelBasedValue.perLevel(2),
+											LevelBasedValue.perLevel(2),
 											damageTypeLookup.getOrThrow(DamageTypes.THORNS)),
-									new ApplyMobEffectEnchantmentEffect(
-											RegistryEntryList.of(StatusEffects.DARKNESS),
-											EnchantmentLevelBasedValue.linear(4),
-											EnchantmentLevelBasedValue.linear(4),
-											EnchantmentLevelBasedValue.constant(0),
-											EnchantmentLevelBasedValue.constant(0)
+									new ApplyMobEffect(
+											HolderSet.direct(MobEffects.DARKNESS),
+											LevelBasedValue.perLevel(4),
+											LevelBasedValue.perLevel(4),
+											LevelBasedValue.constant(0),
+											LevelBasedValue.constant(0)
 									),
-									new PlaySoundEnchantmentEffect(
+									new PlaySoundEffect(
 											List.of(
-													RegistryEntry.of(ModSoundEvents.ENTITY_GENERIC_WARDENSPINE)
+													Holder.direct(ModSoundEvents.ENTITY_GENERIC_WARDENSPINE)
 											),
-											ConstantFloatProvider.create(1),
-											ConstantFloatProvider.create(1)
+											ConstantFloat.of(1),
+											ConstantFloat.of(1)
 									)
 							),
-							AllOfLootCondition.builder(
-									DamageSourcePropertiesLootCondition.builder(DamageSourcePredicate.Builder.create().tag(TagPredicate.unexpected(ModDamageTypeTags.BYPASSES_WARDENSPINE))),
-									() -> AttackerBehindLootCondition.INSTANCE
+							AllOfCondition.allOf(
+									DamageSourceCondition.hasDamageSource(net.minecraft.advancements.criterion.DamageSourcePredicate.Builder.damageType().tag(TagPredicate.isNot(ModDamageTypeTags.BYPASSES_WARDENSPINE))),
+									() -> AttackerBehindCondition.INSTANCE
 							));
 				}));
 		// leggings
-		registerable.register(DASH, create(DASH.getValue(),
+		registry.register(DASH, create(DASH.identifier(),
 				itemLookup.getOrThrow(ItemTags.LEG_ARMOR_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.ARMOR,
-				builder -> builder.addNonListEffect(
+				EquipmentSlotGroup.ARMOR,
+				builder -> builder.withSpecialEffect(
 						ModEnchantmentEffectComponentTypes.ROTATION_BURST,
 						new RotationBurstEffect(
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(1.2F, -0.2F)),
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.85F, 0.15F)),
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(3)),
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1.1F))))));
-		registerable.register(GALE, create(GALE.getValue(),
+								new AddValue(LevelBasedValue.perLevel(1.2F, -0.2F)),
+								new AddValue(LevelBasedValue.perLevel(0.85F, 0.15F)),
+								new AddValue(LevelBasedValue.constant(3)),
+								new AddValue(LevelBasedValue.constant(1.1F))))));
+		registry.register(GALE, create(GALE.identifier(),
 				itemLookup.getOrThrow(ItemTags.LEG_ARMOR_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.ARMOR,
+				EquipmentSlotGroup.ARMOR,
 				builder -> {
-					builder.addNonListEffect(
+					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.AIR_JUMP,
 							new AirJumpEffect(
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(1)),
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1.45F)),
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0.5F)),
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0.5F))));
-					builder.addNonListEffect(
+									new AddValue(LevelBasedValue.perLevel(1)),
+									new AddValue(LevelBasedValue.constant(1.45F)),
+									new AddValue(LevelBasedValue.constant(0.5F)),
+									new AddValue(LevelBasedValue.constant(0.5F))));
+					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.GLIDE,
 							new GlideEffect(
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0.6F)),
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(2, 1))
+									new AddValue(LevelBasedValue.constant(0.6F)),
+									new AddValue(LevelBasedValue.perLevel(2, 1))
 							));
 				}));
-		registerable.register(SLIDE, create(SLIDE.getValue(),
+		registry.register(SLIDE, create(SLIDE.identifier(),
 				itemLookup.getOrThrow(ItemTags.LEG_ARMOR_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.ARMOR,
+				EquipmentSlotGroup.ARMOR,
 				builder -> {
-					builder.addNonListEffect(
+					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.SLAM,
-							new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0.5F)));
-					builder.addNonListEffect(
+							new AddValue(LevelBasedValue.constant(0.5F)));
+					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.SLIDE,
-							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.21F, 0.065F)));
+							new AddValue(LevelBasedValue.perLevel(0.21F, 0.065F)));
 				}));
 		// boots
-		registerable.register(BOUNCY, create(BOUNCY.getValue(),
+		registry.register(BOUNCY, create(BOUNCY.identifier(),
 				itemLookup.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.ARMOR,
+				EquipmentSlotGroup.ARMOR,
 				builder -> {
-					builder.exclusiveSet(enchantmentLookup.getOrThrow(ModEnchantmentTags.BOUNCY_EXCLUSIVE_SET));
-					builder.addEffect(
+					builder.exclusiveWith(enchantmentLookup.getOrThrow(ModEnchantmentTags.BOUNCY_EXCLUSIVE_SET));
+					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.BOUNCE);
-					builder.addNonListEffect(
+					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.CHARGE_JUMP,
 							new ChargeJumpEffect(
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1.5F)),
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.6F, 0.4F))));
+									new AddValue(LevelBasedValue.constant(1.5F)),
+									new AddValue(LevelBasedValue.perLevel(0.6F, 0.4F))));
 				}));
-		registerable.register(BUOY, create(BUOY.getValue(),
+		registry.register(BUOY, create(BUOY.identifier(),
 				itemLookup.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.ARMOR,
+				EquipmentSlotGroup.ARMOR,
 				builder -> {
-					builder.addEffect(
+					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.EXTEND_WATER_TIME);
-					builder.addNonListEffect(
+					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.BOOST_IN_FLUID,
-							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.7F, 0.3F)));
-					builder.addEffect(
+							new AddValue(LevelBasedValue.perLevel(0.7F, 0.3F)));
+					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.FLUID_WALKING);
-					builder.addEffect(
+					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.PREVENT_SWIMMING);
-					builder.addNonListEffect(
+					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.MODIFY_SUBMERGED_MOVEMENT_SPEED,
 							new ModifySubmergedMovementSpeedEffect(
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.175F)),
+									new AddValue(LevelBasedValue.perLevel(0.175F)),
 									SubmersionGate.WATER_ONLY));
-					builder.addEffect(
-							EnchantmentEffectComponentTypes.TICK,
+					builder.withEffect(
+							EnchantmentEffectComponents.TICK,
 							new SetExtendedWaterTimeEffect(
-									EnchantmentLevelBasedValue.linear(6, 4)),
-							() -> WetLootCondition.INSTANCE);
-					builder.addEffect(
-							EnchantmentEffectComponentTypes.TICK,
+									LevelBasedValue.perLevel(6, 4)),
+							() -> WetCondition.INSTANCE);
+					builder.withEffect(
+							EnchantmentEffectComponents.TICK,
 							new ConditionalAttributeEnchantmentEffect(
-									new AttributeEnchantmentEffect(Enchancement.id("enchantment.buoy"),
-											EntityAttributes.STEP_HEIGHT,
-											EnchantmentLevelBasedValue.constant(1),
-											EntityAttributeModifier.Operation.ADD_VALUE),
-									HasExtendedWaterTimeLootCondition.INSTANCE));
-					builder.addEffect(
-							EnchantmentEffectComponentTypes.TICK,
+									new EnchantmentAttributeEffect(Enchancement.id("enchantment.buoy"),
+											Attributes.STEP_HEIGHT,
+											LevelBasedValue.constant(1),
+											AttributeModifier.Operation.ADD_VALUE),
+									HasExtendedWaterTimeCondition.INSTANCE));
+					builder.withEffect(
+							EnchantmentEffectComponents.TICK,
 							new ConditionalAttributeEnchantmentEffect(
-									new AttributeEnchantmentEffect(Enchancement.id("enchantment.buoy"),
-											EntityAttributes.SAFE_FALL_DISTANCE,
-											EnchantmentLevelBasedValue.linear(2),
-											EntityAttributeModifier.Operation.ADD_VALUE),
-									HasExtendedWaterTimeLootCondition.INSTANCE));
-					builder.addEffect(
-							EnchantmentEffectComponentTypes.DAMAGE_IMMUNITY,
-							DamageImmunityEnchantmentEffect.INSTANCE,
-							DamageSourcePropertiesLootCondition.builder(
-									DamageSourcePredicate.Builder.create()
-											.tag(TagPredicate.expected(DamageTypeTags.BURN_FROM_STEPPING))
-											.tag(TagPredicate.unexpected(DamageTypeTags.BYPASSES_INVULNERABILITY))
+									new EnchantmentAttributeEffect(Enchancement.id("enchantment.buoy"),
+											Attributes.SAFE_FALL_DISTANCE,
+											LevelBasedValue.perLevel(2),
+											AttributeModifier.Operation.ADD_VALUE),
+									HasExtendedWaterTimeCondition.INSTANCE));
+					builder.withEffect(
+							EnchantmentEffectComponents.DAMAGE_IMMUNITY,
+							DamageImmunity.INSTANCE,
+							DamageSourceCondition.hasDamageSource(
+									net.minecraft.advancements.criterion.DamageSourcePredicate.Builder.damageType()
+											.tag(TagPredicate.is(DamageTypeTags.BURN_FROM_STEPPING))
+											.tag(TagPredicate.isNot(DamageTypeTags.BYPASSES_INVULNERABILITY))
 							)
 					);
 				}));
-		registerable.register(STICKY, create(STICKY.getValue(),
+		registry.register(STICKY, create(STICKY.identifier(),
 				itemLookup.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.ARMOR,
+				EquipmentSlotGroup.ARMOR,
 				builder -> {
-					builder.addNonListEffect(
+					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.HONEY_TRAIL,
-							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(1.5F))
+							new AddValue(LevelBasedValue.perLevel(1.5F))
 					);
-					builder.addNonListEffect(
+					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.WALL_JUMP,
-							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.5F, 0.2F)));
+							new AddValue(LevelBasedValue.perLevel(0.5F, 0.2F)));
 				}));
 		// sword
-		registerable.register(BERSERK, create(BERSERK.getValue(),
+		registry.register(BERSERK, create(BERSERK.identifier(),
 				itemLookup.getOrThrow(ItemTags.MELEE_WEAPON_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.MAINHAND,
-				builder -> builder.addNonListEffect(
+				EquipmentSlotGroup.MAINHAND,
+				builder -> builder.withSpecialEffect(
 						ModEnchantmentEffectComponentTypes.RAGE,
 						new RageEffect(
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.175F)),
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0)),
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0))
+								new AddValue(LevelBasedValue.perLevel(0.175F)),
+								new AddValue(LevelBasedValue.constant(0)),
+								new AddValue(LevelBasedValue.constant(0))
 						)
 				)));
-		registerable.register(FROSTBITE, create(FROSTBITE.getValue(),
+		registry.register(FROSTBITE, create(FROSTBITE.identifier(),
 				itemLookup.getOrThrow(ItemTags.MELEE_WEAPON_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.MAINHAND,
+				EquipmentSlotGroup.MAINHAND,
 				builder -> {
-					builder.exclusiveSet(enchantmentLookup.getOrThrow(ModEnchantmentTags.FROSTBITE_EXCLUSIVE_SET));
-					builder.addEffect(
-							EnchantmentEffectComponentTypes.POST_ATTACK,
-							EnchantmentEffectTarget.ATTACKER,
-							EnchantmentEffectTarget.VICTIM,
-							new FreezeEnchantmentEffect(EnchantmentLevelBasedValue.linear(6)),
-							DamageSourcePropertiesLootCondition.builder(DamageSourcePredicate.Builder.create().isDirect(true)));
+					builder.exclusiveWith(enchantmentLookup.getOrThrow(ModEnchantmentTags.FROSTBITE_EXCLUSIVE_SET));
+					builder.withEffect(
+							EnchantmentEffectComponents.POST_ATTACK,
+							EnchantmentTarget.ATTACKER,
+							EnchantmentTarget.VICTIM,
+							new FreezeEnchantmentEffect(LevelBasedValue.perLevel(6)),
+							DamageSourceCondition.hasDamageSource(net.minecraft.advancements.criterion.DamageSourcePredicate.Builder.damageType().isDirect(true)));
 				}));
 		// bow
-		registerable.register(CHAOS, create(CHAOS.getValue(),
+		registry.register(CHAOS, create(CHAOS.identifier(),
 				itemLookup.getOrThrow(ItemTags.BOW_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.MAINHAND,
-				builder -> builder.addEffect(
-						ModEnchantmentEffectComponentTypes.APPLY_RANDOM_STATUS_EFFECT,
-						new ApplyRandomStatusEffectEffect(
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(4)),
-								ModStatusEffectTags.CHAOS_UNCHOOSABLE
+				EquipmentSlotGroup.MAINHAND,
+				builder -> builder.withEffect(
+						ModEnchantmentEffectComponentTypes.APPLY_RANDOM_MOB_EFFECT,
+						new ApplyRandomMobEffectEffect(
+								new AddValue(LevelBasedValue.perLevel(4)),
+								ModMobEffectTags.CHAOS_UNCHOOSABLE
 						)
 				)));
-		registerable.register(DELAY, create(DELAY.getValue(),
+		registry.register(DELAY, create(DELAY.identifier(),
 				itemLookup.getOrThrow(ItemTags.BOW_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.MAINHAND,
-				builder -> builder.addEffect(
+				EquipmentSlotGroup.MAINHAND,
+				builder -> builder.withEffect(
 						ModEnchantmentEffectComponentTypes.DELAYED_LAUNCH,
 						new DelayedLaunchEffect(
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(10)),
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(3)),
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.5F, 0.25F)),
+								new AddValue(LevelBasedValue.constant(10)),
+								new AddValue(LevelBasedValue.constant(3)),
+								new AddValue(LevelBasedValue.perLevel(0.5F, 0.25F)),
 								true
 						)
 				)));
-		registerable.register(PHASING, create(PHASING.getValue(),
+		registry.register(PHASING, create(PHASING.identifier(),
 				itemLookup.getOrThrow(ItemTags.BOW_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.MAINHAND,
-				builder -> builder.addEffect(
+				EquipmentSlotGroup.MAINHAND,
+				builder -> builder.withEffect(
 						ModEnchantmentEffectComponentTypes.PHASE_THROUGH_BLOCKS_AND_FLOAT,
-						new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(2, 1))
+						new AddValue(LevelBasedValue.perLevel(2, 1))
 				)));
 		// crossbow
-		registerable.register(BRIMSTONE, create(BRIMSTONE.getValue(),
+		registry.register(BRIMSTONE, create(BRIMSTONE.identifier(),
 				itemLookup.getOrThrow(ItemTags.CROSSBOW_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.MAINHAND,
+				EquipmentSlotGroup.MAINHAND,
 				builder -> {
-					builder.exclusiveSet(enchantmentLookup.getOrThrow(ModEnchantmentTags.BRIMSTONE_EXCLUSIVE_SET));
-					builder.addEffect(
+					builder.exclusiveWith(enchantmentLookup.getOrThrow(ModEnchantmentTags.BRIMSTONE_EXCLUSIVE_SET));
+					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.ALLOW_CROSSBOW_COOLDOWN_RELOADING);
-					builder.addNonListEffect(
+					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.BRIMSTONE,
 							new BrimstoneEffect(
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.5F))
+									new AddValue(LevelBasedValue.perLevel(0.5F))
 							));
 				}));
-		registerable.register(SCATTER, create(SCATTER.getValue(),
+		registry.register(SCATTER, create(SCATTER.identifier(),
 				itemLookup.getOrThrow(ItemTags.CROSSBOW_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.MAINHAND,
+				EquipmentSlotGroup.MAINHAND,
 				builder -> {
-					builder.exclusiveSet(enchantmentLookup.getOrThrow(ModEnchantmentTags.UNIQUE_CROSSBOW_PROJECTILE_EXCLUSIVE_SET));
-					builder.addEffect(
+					builder.exclusiveWith(enchantmentLookup.getOrThrow(ModEnchantmentTags.UNIQUE_CROSSBOW_PROJECTILE_EXCLUSIVE_SET));
+					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.ALLOW_CROSSBOW_COOLDOWN_RELOADING);
-					builder.addEffect(
+					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.ALLOW_INTERRUPTION
 					);
-					builder.addEffect(
+					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.ALLOW_LOADING_PROJECTILE,
 							new AllowLoadingProjectileEffect(
 									Enchancement.id("crossbow_amethyst"),
@@ -512,239 +509,239 @@ public class ModEnchantments {
 									false
 							)
 					);
-					builder.addEffect(
+					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.RANGED_SHOOT_COOLDOWN,
-							new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1))
+							new AddValue(LevelBasedValue.constant(1))
 					);
-					builder.addEffect(
+					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.SCATTER_SHOT,
 							new ScatterShotEffect(
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(6)),
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(8)),
+									new AddValue(LevelBasedValue.perLevel(6)),
+									new AddValue(LevelBasedValue.perLevel(8)),
 									Items.AMETHYST_SHARD
 							)
 					);
 				}));
-		registerable.register(TORCH, create(TORCH.getValue(),
+		registry.register(TORCH, create(TORCH.identifier(),
 				itemLookup.getOrThrow(ItemTags.CROSSBOW_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.MAINHAND,
+				EquipmentSlotGroup.MAINHAND,
 				builder -> {
-					builder.exclusiveSet(enchantmentLookup.getOrThrow(ModEnchantmentTags.UNIQUE_CROSSBOW_PROJECTILE_EXCLUSIVE_SET));
-					builder.addEffect(
+					builder.exclusiveWith(enchantmentLookup.getOrThrow(ModEnchantmentTags.UNIQUE_CROSSBOW_PROJECTILE_EXCLUSIVE_SET));
+					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.ALLOW_LOADING_PROJECTILE,
 							new AllowLoadingProjectileEffect(
 									Enchancement.id("crossbow_torch"),
-									SoundEvents.ITEM_CROSSBOW_SHOOT,
+									SoundEvents.CROSSBOW_SHOOT,
 									Items.TORCH,
 									true
 							)
 					);
-					builder.addEffect(
+					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.RAPID_CROSSBOW_FIRE);
 				}));
 		// trident
-		registerable.register(LEECH, create(LEECH.getValue(),
+		registry.register(LEECH, create(LEECH.identifier(),
 				itemLookup.getOrThrow(ItemTags.TRIDENT_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.MAINHAND,
+				EquipmentSlotGroup.MAINHAND,
 				builder -> {
-					builder.addEffect(
+					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.LEECHING_TRIDENT,
 							new LeechingTridentEffect(
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1)),
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1)),
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(2))
+									new AddValue(LevelBasedValue.constant(1)),
+									new AddValue(LevelBasedValue.constant(1)),
+									new AddValue(LevelBasedValue.perLevel(2))
 							));
-					builder.addEffect(
-							EnchantmentEffectComponentTypes.POST_ATTACK,
-							EnchantmentEffectTarget.ATTACKER,
-							EnchantmentEffectTarget.ATTACKER,
-							new HealEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.5F)),
-							DamageSourcePropertiesLootCondition.builder(DamageSourcePredicate.Builder.create().isDirect(true)));
-					builder.addEffect(
-							EnchantmentEffectComponentTypes.POST_ATTACK,
-							EnchantmentEffectTarget.ATTACKER,
-							EnchantmentEffectTarget.VICTIM,
-							new SpawnParticlesEnchantmentEffect(
+					builder.withEffect(
+							EnchantmentEffectComponents.POST_ATTACK,
+							EnchantmentTarget.ATTACKER,
+							EnchantmentTarget.ATTACKER,
+							new HealEnchantmentEffect(LevelBasedValue.perLevel(0.5F)),
+							DamageSourceCondition.hasDamageSource(net.minecraft.advancements.criterion.DamageSourcePredicate.Builder.damageType().isDirect(true)));
+					builder.withEffect(
+							EnchantmentEffectComponents.POST_ATTACK,
+							EnchantmentTarget.ATTACKER,
+							EnchantmentTarget.VICTIM,
+							new SpawnParticlesEffect(
 									ParticleTypes.DAMAGE_INDICATOR,
-									SpawnParticlesEnchantmentEffect.entityPosition(0.5F),
-									SpawnParticlesEnchantmentEffect.entityPosition(0.5F),
-									SpawnParticlesEnchantmentEffect.scaledVelocity(0),
-									SpawnParticlesEnchantmentEffect.scaledVelocity(0),
-									ConstantFloatProvider.create(0)
+									SpawnParticlesEffect.offsetFromEntityPosition(0.5F),
+									SpawnParticlesEffect.offsetFromEntityPosition(0.5F),
+									SpawnParticlesEffect.movementScaled(0),
+									SpawnParticlesEffect.movementScaled(0),
+									ConstantFloat.of(0)
 							),
-							DamageSourcePropertiesLootCondition.builder(DamageSourcePredicate.Builder.create().isDirect(true)));
+							DamageSourceCondition.hasDamageSource(net.minecraft.advancements.criterion.DamageSourcePredicate.Builder.damageType().isDirect(true)));
 				}));
-		registerable.register(WARP, create(WARP.getValue(),
+		registry.register(WARP, create(WARP.identifier(),
 				itemLookup.getOrThrow(ItemTags.TRIDENT_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.MAINHAND,
-				builder -> builder.addEffect(
+				EquipmentSlotGroup.MAINHAND,
+				builder -> builder.withEffect(
 						ModEnchantmentEffectComponentTypes.TELEPORT_ON_HIT,
 						new TeleportOnHitEffect(
 								true,
 								false)
 				)));
 		// mace
-		registerable.register(METEOR, create(METEOR.getValue(), true,
+		registry.register(METEOR, create(METEOR.identifier(), true,
 				itemLookup.getOrThrow(ItemTags.MACE_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.MAINHAND,
+				EquipmentSlotGroup.MAINHAND,
 				builder -> {
-					builder.exclusiveSet(enchantmentLookup.getOrThrow(ModEnchantmentTags.MACE_EXCLUSIVE_SET));
-					builder.addNonListEffect(
+					builder.exclusiveWith(enchantmentLookup.getOrThrow(ModEnchantmentTags.MACE_EXCLUSIVE_SET));
+					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.ERUPTION,
 							new EruptionEffect(
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(1.35F)),
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(4))
+									new AddValue(LevelBasedValue.constant(1.35F)),
+									new AddValue(LevelBasedValue.perLevel(4))
 							)
 					);
-					builder.addEffect(
-							EnchantmentEffectComponentTypes.POST_ATTACK,
-							EnchantmentEffectTarget.ATTACKER,
-							EnchantmentEffectTarget.VICTIM,
-							AllOfEnchantmentEffects.allOf(
+					builder.withEffect(
+							EnchantmentEffectComponents.POST_ATTACK,
+							EnchantmentTarget.ATTACKER,
+							EnchantmentTarget.VICTIM,
+							AllOf.entityEffects(
 									BuryEffect.INSTANCE,
-									new IgniteEnchantmentEffect(EnchantmentLevelBasedValue.linear(6)),
-									new SmashEffect(EnchantmentLevelBasedValue.linear(2.5F)),
+									new Ignite(LevelBasedValue.perLevel(6)),
+									new SmashEffect(LevelBasedValue.perLevel(2.5F)),
 									new SpawnParticlesWithCountEnchantmentEffect(
-											new SpawnParticlesEnchantmentEffect(
+											new SpawnParticlesEffect(
 													ParticleTypes.LAVA,
-													SpawnParticlesEnchantmentEffect.entityPosition(0.5F),
-													SpawnParticlesEnchantmentEffect.entityPosition(0.5F),
-													SpawnParticlesEnchantmentEffect.fixedVelocity(UniformFloatProvider.create(-1, 1)),
-													SpawnParticlesEnchantmentEffect.scaledVelocity(1),
-													ConstantFloatProvider.create(1)
+													SpawnParticlesEffect.offsetFromEntityPosition(0.5F),
+													SpawnParticlesEffect.offsetFromEntityPosition(0.5F),
+													SpawnParticlesEffect.fixedVelocity(UniformFloat.of(-1, 1)),
+													SpawnParticlesEffect.movementScaled(1),
+													ConstantFloat.of(1)
 											),
-											EnchantmentLevelBasedValue.constant(48)
+											LevelBasedValue.constant(48)
 									)
 							),
-							EntityPropertiesLootCondition.builder(
-									LootContext.EntityReference.DIRECT_ATTACKER,
-									EntityPredicate.Builder.create()
-											.flags(EntityFlagsPredicate.Builder.create().flying(false))
-											.movement(MovementPredicate.fallDistance(NumberRange.DoubleRange.atLeast(1.5)))
+							LootItemEntityPropertyCondition.hasProperties(
+									LootContext.EntityTarget.DIRECT_ATTACKER,
+									net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
+											.flags(net.minecraft.advancements.criterion.EntityFlagsPredicate.Builder.flags().setIsFlying(false))
+											.moving(MovementPredicate.fallDistance(MinMaxBounds.Doubles.atLeast(1.5)))
 							));
 				}));
-		registerable.register(THUNDERSTRUCK, create(THUNDERSTRUCK.getValue(), true,
+		registry.register(THUNDERSTRUCK, create(THUNDERSTRUCK.identifier(), true,
 				itemLookup.getOrThrow(ItemTags.MACE_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.MAINHAND,
+				EquipmentSlotGroup.MAINHAND,
 				builder -> {
-					builder.exclusiveSet(enchantmentLookup.getOrThrow(ModEnchantmentTags.MACE_EXCLUSIVE_SET));
-					builder.addEffect(
+					builder.exclusiveWith(enchantmentLookup.getOrThrow(ModEnchantmentTags.MACE_EXCLUSIVE_SET));
+					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.CHAIN_LIGHTNING,
-							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.35F))
+							new AddValue(LevelBasedValue.perLevel(0.35F))
 					);
-					builder.addNonListEffect(
+					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.LIGHTNING_DASH,
 							new LightningDashEffect(
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(3)),
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.8F, 0.3F)),
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(1)),
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.8F, 0.3F))
+									new AddValue(LevelBasedValue.constant(3)),
+									new AddValue(LevelBasedValue.perLevel(0.8F, 0.3F)),
+									new AddValue(LevelBasedValue.perLevel(1)),
+									new AddValue(LevelBasedValue.perLevel(0.8F, 0.3F))
 							));
 				}));
 		// mining tool
-		registerable.register(MOLTEN, create(MOLTEN.getValue(),
+		registry.register(MOLTEN, create(MOLTEN.identifier(),
 				itemLookup.getOrThrow(ItemTags.MINING_ENCHANTABLE),
 				1,
-				AttributeModifierSlot.MAINHAND,
+				EquipmentSlotGroup.MAINHAND,
 				builder -> {
-					builder.exclusiveSet(enchantmentLookup.getOrThrow(ModEnchantmentTags.SILK_TOUCH_EXCLUSIVE_SET));
-					builder.addEffect(
+					builder.exclusiveWith(enchantmentLookup.getOrThrow(ModEnchantmentTags.SILK_TOUCH_EXCLUSIVE_SET));
+					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.SMELT_MINED_BLOCKS);
 				}));
 		// pickaxe
-		registerable.register(EXTRACTING, create(EXTRACTING.getValue(),
+		registry.register(EXTRACTING, create(EXTRACTING.identifier(),
 				itemLookup.getOrThrow(ItemTags.PICKAXES),
 				2,
-				AttributeModifierSlot.MAINHAND,
+				EquipmentSlotGroup.MAINHAND,
 				builder -> {
-					builder.exclusiveSet(enchantmentLookup.getOrThrow(ModEnchantmentTags.SILK_TOUCH_EXCLUSIVE_SET));
-					builder.addNonListEffect(
+					builder.exclusiveWith(enchantmentLookup.getOrThrow(ModEnchantmentTags.SILK_TOUCH_EXCLUSIVE_SET));
+					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.MINE_ORE_VEINS,
-							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.5F)));
+							new AddValue(LevelBasedValue.perLevel(0.5F)));
 				}));
 		// axe
-		registerable.register(BEHEADING, create(BEHEADING.getValue(),
+		registry.register(BEHEADING, create(BEHEADING.identifier(),
 				itemLookup.getOrThrow(ItemTags.AXES),
 				2,
-				AttributeModifierSlot.MAINHAND,
-				builder -> builder.addEffect(
+				EquipmentSlotGroup.MAINHAND,
+				builder -> builder.withEffect(
 						ModEnchantmentEffectComponentTypes.HEAD_DROPS,
-						EnchantmentEffectTarget.ATTACKER,
-						EnchantmentEffectTarget.VICTIM,
-						new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.5F)),
-						EntityPropertiesLootCondition.builder(LootContext.EntityReference.ATTACKER, EntityPredicate.Builder.create().type(EntityTypePredicate.create(entityTypeLookup, EntityType.PLAYER)))
+						EnchantmentTarget.ATTACKER,
+						EnchantmentTarget.VICTIM,
+						new AddValue(LevelBasedValue.perLevel(0.5F)),
+						LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.ATTACKER, net.minecraft.advancements.criterion.EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypeLookup, EntityType.PLAYER)))
 				)));
-		registerable.register(LUMBERJACK, create(LUMBERJACK.getValue(),
+		registry.register(LUMBERJACK, create(LUMBERJACK.identifier(),
 				itemLookup.getOrThrow(ItemTags.AXES),
 				2,
-				AttributeModifierSlot.MAINHAND,
-				builder -> builder.addNonListEffect(
+				EquipmentSlotGroup.MAINHAND,
+				builder -> builder.withSpecialEffect(
 						ModEnchantmentEffectComponentTypes.FELL_TREES,
-						new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.25F)))));
+						new AddValue(LevelBasedValue.perLevel(0.25F)))));
 		// shovel
-		registerable.register(BURY, create(BURY.getValue(),
+		registry.register(BURY, create(BURY.identifier(),
 				itemLookup.getOrThrow(ItemTags.SHOVELS),
 				2,
-				AttributeModifierSlot.MAINHAND,
-				builder -> builder.addEffect(
+				EquipmentSlotGroup.MAINHAND,
+				builder -> builder.withEffect(
 						ModEnchantmentEffectComponentTypes.BURY_ENTITY,
-						new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(16, -8)))));
-		registerable.register(SCOOPING, create(SCOOPING.getValue(),
+						new AddValue(LevelBasedValue.perLevel(16, -8)))));
+		registry.register(SCOOPING, create(SCOOPING.identifier(),
 				itemLookup.getOrThrow(ItemTags.SHOVELS),
 				4,
-				AttributeModifierSlot.MAINHAND,
+				EquipmentSlotGroup.MAINHAND,
 				builder -> {
-					builder.addEffect(
-							EnchantmentEffectComponentTypes.DAMAGE,
-							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.5F)));
-					builder.addEffect(
-							EnchantmentEffectComponentTypes.EQUIPMENT_DROPS,
-							EnchantmentEffectTarget.ATTACKER,
-							EnchantmentEffectTarget.VICTIM,
-							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.01F)),
-							EntityPropertiesLootCondition.builder(LootContext.EntityReference.ATTACKER, EntityPredicate.Builder.create().type(EntityTypePredicate.create(entityTypeLookup, EntityType.PLAYER))));
+					builder.withEffect(
+							EnchantmentEffectComponents.DAMAGE,
+							new AddValue(LevelBasedValue.perLevel(0.5F)));
+					builder.withEffect(
+							EnchantmentEffectComponents.EQUIPMENT_DROPS,
+							EnchantmentTarget.ATTACKER,
+							EnchantmentTarget.VICTIM,
+							new AddValue(LevelBasedValue.perLevel(0.01F)),
+							LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.ATTACKER, net.minecraft.advancements.criterion.EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypeLookup, EntityType.PLAYER))));
 				}));
 		// hoe
-		registerable.register(APEX, create(APEX.getValue(),
+		registry.register(APEX, create(APEX.identifier(),
 				itemLookup.getOrThrow(ItemTags.HOES),
 				2,
-				AttributeModifierSlot.MAINHAND,
+				EquipmentSlotGroup.MAINHAND,
 				builder -> {
-					builder.addEffect(
+					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.CRITICAL_TIPPER,
 							new CriticalTipperEffect(
-									new AddEnchantmentEffect(EnchantmentLevelBasedValue.constant(0.5F)),
+									new AddValue(LevelBasedValue.constant(0.5F)),
 									ModParticleTypes.CRITICAL_TIPPER
 							)
 					);
-					builder.addEffect(
-							EnchantmentEffectComponentTypes.DAMAGE,
-							new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.25F)));
+					builder.withEffect(
+							EnchantmentEffectComponents.DAMAGE,
+							new AddValue(LevelBasedValue.perLevel(0.25F)));
 				}));
 		// fishing rod
-		registerable.register(DISARM, create(DISARM.getValue(),
+		registry.register(DISARM, create(DISARM.identifier(),
 				itemLookup.getOrThrow(ItemTags.FISHING_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.MAINHAND,
-				builder -> builder.addEffect(
+				EquipmentSlotGroup.MAINHAND,
+				builder -> builder.withEffect(
 						ModEnchantmentEffectComponentTypes.DISARMING_FISHING_BOBBER,
 						new DisarmingFishingBobberEffect(
 								false,
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(2.5F)),
-								new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(12, -2))
+								new AddValue(LevelBasedValue.perLevel(2.5F)),
+								new AddValue(LevelBasedValue.perLevel(12, -2))
 						))));
-		registerable.register(GRAPPLE, create(GRAPPLE.getValue(),
+		registry.register(GRAPPLE, create(GRAPPLE.identifier(),
 				itemLookup.getOrThrow(ItemTags.FISHING_ENCHANTABLE),
 				2,
-				AttributeModifierSlot.MAINHAND,
-				builder -> builder.addEffect(
+				EquipmentSlotGroup.MAINHAND,
+				builder -> builder.withEffect(
 						ModEnchantmentEffectComponentTypes.GRAPPLING_FISHING_BOBBER,
-						new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(1)))));
+						new AddValue(LevelBasedValue.perLevel(1)))));
 	}
 
 	public interface EffectsAdder {

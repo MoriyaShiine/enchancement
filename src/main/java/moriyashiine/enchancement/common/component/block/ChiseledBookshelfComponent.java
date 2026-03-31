@@ -1,16 +1,17 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.component.block;
 
 import moriyashiine.enchancement.common.init.ModBlockComponents;
-import net.minecraft.block.entity.ChiseledBookshelfBlockEntity;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.block.entity.ChiseledBookShelfBlockEntity;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 
 import java.util.ArrayList;
@@ -19,29 +20,29 @@ import java.util.List;
 public class ChiseledBookshelfComponent implements AutoSyncedComponent {
 	private static final Item PLACEHOLDER = Items.BEDROCK;
 
-	private final ChiseledBookshelfBlockEntity obj;
+	private final ChiseledBookShelfBlockEntity obj;
 	private final List<ItemStack> stacks = new ArrayList<>();
 	private boolean hasEnchantments = false;
 
-	public ChiseledBookshelfComponent(ChiseledBookshelfBlockEntity obj) {
+	public ChiseledBookshelfComponent(ChiseledBookShelfBlockEntity obj) {
 		this.obj = obj;
 	}
 
 	@Override
-	public void readData(ReadView readView) {
+	public void readData(ValueInput input) {
 		stacks.clear();
-		for (ItemStack stack : readView.read("Stacks", ItemStack.CODEC.listOf()).orElse(List.of())) {
-			stacks.add(stack.isOf(PLACEHOLDER) ? ItemStack.EMPTY : stack);
+		for (ItemStack stack : input.read("Stacks", ItemStack.CODEC.listOf()).orElse(List.of())) {
+			stacks.add(stack.is(PLACEHOLDER) ? ItemStack.EMPTY : stack);
 		}
-		hasEnchantments = readView.getBoolean("HasEnchantments", false);
+		hasEnchantments = input.getBooleanOr("HasEnchantments", false);
 	}
 
 	@Override
-	public void writeData(WriteView writeView) {
+	public void writeData(ValueOutput output) {
 		List<ItemStack> stacks = this.stacks;
-		stacks.replaceAll(stack -> stack.isEmpty() ? PLACEHOLDER.getDefaultStack() : stack);
-		writeView.put("Stacks", ItemStack.CODEC.listOf(), stacks);
-		writeView.putBoolean("HasEnchantments", hasEnchantments);
+		stacks.replaceAll(stack -> stack.isEmpty() ? PLACEHOLDER.getDefaultInstance() : stack);
+		output.store("Stacks", ItemStack.CODEC.listOf(), stacks);
+		output.putBoolean("HasEnchantments", hasEnchantments);
 	}
 
 	public void sync() {
@@ -61,7 +62,7 @@ public class ChiseledBookshelfComponent implements AutoSyncedComponent {
 		hasEnchantments = false;
 		for (ItemStack stack : obj) {
 			stacks.add(stack.copy());
-			if (!hasEnchantments && !EnchantmentHelper.getEnchantments(stack).isEmpty()) {
+			if (!hasEnchantments && !EnchantmentHelper.getEnchantmentsForCrafting(stack).isEmpty()) {
 				hasEnchantments = true;
 			}
 		}

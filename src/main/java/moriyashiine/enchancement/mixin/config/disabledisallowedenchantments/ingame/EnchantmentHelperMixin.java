@@ -1,20 +1,21 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.mixin.config.disabledisallowedenchantments.ingame;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.EnchantmentLevelEntry;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.EnchantmentTags;
-import net.minecraft.util.math.random.Random;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.core.Holder;
+import net.minecraft.tags.EnchantmentTags;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -27,55 +28,55 @@ import java.util.stream.Stream;
 
 @Mixin(EnchantmentHelper.class)
 public class EnchantmentHelperMixin {
-	@Inject(method = "apply", at = @At(value = "INVOKE", target = "Ljava/util/function/Consumer;accept(Ljava/lang/Object;)V"))
-	private static void enchancement$disableDisallowedEnchantments(ItemStack stack, Consumer<ItemEnchantmentsComponent.Builder> applier, CallbackInfoReturnable<ItemEnchantmentsComponent> cir) {
-		EnchancementUtil.cachedApplyStack = stack;
+	@Inject(method = "updateEnchantments", at = @At(value = "INVOKE", target = "Ljava/util/function/Consumer;accept(Ljava/lang/Object;)V"))
+	private static void enchancement$disableDisallowedEnchantments(ItemStack itemStack, Consumer<ItemEnchantments.Mutable> consumer, CallbackInfoReturnable<ItemEnchantments> cir) {
+		EnchancementUtil.cachedApplyStack = itemStack;
 	}
 
-	@Inject(method = "apply", at = @At(value = "RETURN", ordinal = 1))
-	private static void enchancement$disableDisallowedEnchantmentsReturn(ItemStack stack, Consumer<ItemEnchantmentsComponent.Builder> applier, CallbackInfoReturnable<ItemEnchantmentsComponent> cir) {
+	@Inject(method = "updateEnchantments", at = @At(value = "RETURN", ordinal = 1))
+	private static void enchancement$disableDisallowedEnchantmentsReturn(ItemStack itemStack, Consumer<ItemEnchantments.Mutable> consumer, CallbackInfoReturnable<ItemEnchantments> cir) {
 		EnchancementUtil.cachedApplyStack = null;
 	}
 
-	@ModifyVariable(method = "set", at = @At("HEAD"), argsOnly = true)
-	private static ItemEnchantmentsComponent enchancement$disableDisallowedEnchantments(ItemEnchantmentsComponent value, ItemStack stack) {
-		ItemEnchantmentsComponent.Builder builder = new ItemEnchantmentsComponent.Builder(ItemEnchantmentsComponent.DEFAULT);
-		value.getEnchantments().forEach(enchantment -> {
-			int level = value.getLevel(enchantment);
+	@ModifyVariable(method = "setEnchantments", at = @At("HEAD"), argsOnly = true)
+	private static ItemEnchantments enchancement$disableDisallowedEnchantments(ItemEnchantments enchantments, ItemStack itemStack) {
+		ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
+		enchantments.keySet().forEach(enchantment -> {
+			int level = enchantments.getLevel(enchantment);
 			if (EnchancementUtil.isEnchantmentAllowed(enchantment)) {
-				builder.add(enchantment, level);
+				mutable.upgrade(enchantment, level);
 			} else {
-				@Nullable RegistryEntry<Enchantment> randomEnchantment = EnchancementUtil.getRandomEnchantment(stack, EnchantmentTags.ON_RANDOM_LOOT, null);
+				@Nullable Holder<Enchantment> randomEnchantment = EnchancementUtil.getRandomEnchantment(itemStack, EnchantmentTags.ON_RANDOM_LOOT, null);
 				if (randomEnchantment != null) {
-					builder.add(randomEnchantment, Math.min(level, randomEnchantment.value().getMaxLevel()));
+					mutable.upgrade(randomEnchantment, Math.min(level, randomEnchantment.value().getMaxLevel()));
 				}
 			}
 		});
-		return builder.build();
+		return mutable.toImmutable();
 	}
 
-	@WrapOperation(method = "generateEnchantments", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getPossibleEntries(ILnet/minecraft/item/ItemStack;Ljava/util/stream/Stream;)Ljava/util/List;"))
-	private static List<EnchantmentLevelEntry> enchancement$disableDisallowedEnchantments(int level, ItemStack stack, Stream<RegistryEntry<Enchantment>> possibleEnchantments, Operation<List<EnchantmentLevelEntry>> original, Random random) {
-		List<EnchantmentLevelEntry> enchantments = original.call(level, stack, possibleEnchantments);
+	@WrapOperation(method = "selectEnchantment", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getAvailableEnchantmentResults(ILnet/minecraft/world/item/ItemStack;Ljava/util/stream/Stream;)Ljava/util/List;"))
+	private static List<EnchantmentInstance> enchancement$disableDisallowedEnchantments(int value, ItemStack itemStack, Stream<Holder<Enchantment>> source, Operation<List<EnchantmentInstance>> original, RandomSource random) {
+		List<EnchantmentInstance> enchantments = original.call(value, itemStack, source);
 		for (int i = enchantments.size() - 1; i >= 0; i--) {
-			RegistryEntry<Enchantment> enchantment = enchantments.get(i).enchantment();
+			Holder<Enchantment> enchantment = enchantments.get(i).enchantment();
 			if (!EnchancementUtil.isEnchantmentAllowed(enchantment)) {
-				@Nullable RegistryEntry<Enchantment> randomEnchantment = EnchancementUtil.getRandomEnchantment(stack, EnchantmentTags.ON_RANDOM_LOOT, random);
+				@Nullable Holder<Enchantment> randomEnchantment = EnchancementUtil.getRandomEnchantment(itemStack, EnchantmentTags.ON_RANDOM_LOOT, random);
 				if (randomEnchantment == null) {
 					enchantments.remove(i);
 				} else {
 					if (enchantments.stream().anyMatch(entry -> entry.enchantment().equals(randomEnchantment))) {
 						enchantments.remove(i);
 					} else {
-						enchantments.set(i, new EnchantmentLevelEntry(randomEnchantment, 1));
+						enchantments.set(i, new EnchantmentInstance(randomEnchantment, 1));
 					}
 				}
 			}
 		}
 		if (enchantments.isEmpty()) {
-			@Nullable RegistryEntry<Enchantment> randomEnchantment = EnchancementUtil.getRandomEnchantment(stack, EnchantmentTags.IN_ENCHANTING_TABLE, random);
+			@Nullable Holder<Enchantment> randomEnchantment = EnchancementUtil.getRandomEnchantment(itemStack, EnchantmentTags.IN_ENCHANTING_TABLE, random);
 			if (randomEnchantment != null) {
-				enchantments.add(new EnchantmentLevelEntry(randomEnchantment, 1));
+				enchantments.add(new EnchantmentInstance(randomEnchantment, 1));
 			}
 		}
 		return enchantments;

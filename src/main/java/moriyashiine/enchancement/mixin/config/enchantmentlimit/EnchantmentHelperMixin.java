@@ -1,6 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.mixin.config.enchantmentlimit;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
@@ -9,13 +10,13 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.EnchantmentLevelEntry;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.core.Holder;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,35 +28,35 @@ import java.util.List;
 @Mixin(EnchantmentHelper.class)
 public class EnchantmentHelperMixin {
 	@Unique
-	private static ItemEnchantmentsComponent removeUntilReady(ItemStack stack, ItemEnchantmentsComponent itemEnchantmentsComponent) {
-		List<RegistryEntry<Enchantment>> enchantments = new ArrayList<>(itemEnchantmentsComponent.getEnchantments());
+	private static ItemEnchantments removeUntilReady(ItemStack stack, ItemEnchantments itemEnchantmentsComponent) {
+		List<Holder<Enchantment>> enchantments = new ArrayList<>(itemEnchantmentsComponent.keySet());
 		while (EnchancementUtil.exceedsLimit(stack, enchantments.size())) {
 			enchantments.removeFirst();
 		}
-		ItemEnchantmentsComponent.Builder builder = new ItemEnchantmentsComponent.Builder(itemEnchantmentsComponent);
-		builder.remove(enchantment -> !enchantments.contains(enchantment));
-		return builder.build();
+		ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(itemEnchantmentsComponent);
+		mutable.removeIf(enchantment -> !enchantments.contains(enchantment));
+		return mutable.toImmutable();
 	}
 
-	@WrapOperation(method = "apply", at = @At(value = "INVOKE", target = "Lnet/minecraft/component/type/ItemEnchantmentsComponent$Builder;build()Lnet/minecraft/component/type/ItemEnchantmentsComponent;"))
-	private static ItemEnchantmentsComponent enchancement$enchantmentLimit(ItemEnchantmentsComponent.Builder instance, Operation<ItemEnchantmentsComponent> original, ItemStack stack) {
-		return removeUntilReady(stack, original.call(instance));
+	@WrapOperation(method = "updateEnchantments", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/ItemEnchantments$Mutable;toImmutable()Lnet/minecraft/world/item/enchantment/ItemEnchantments;"))
+	private static ItemEnchantments enchancement$enchantmentLimit(ItemEnchantments.Mutable instance, Operation<ItemEnchantments> original, ItemStack itemStack) {
+		return removeUntilReady(itemStack, original.call(instance));
 	}
 
-	@ModifyVariable(method = "set", at = @At("HEAD"), argsOnly = true)
-	private static ItemEnchantmentsComponent enchancement$enchantmentLimit(ItemEnchantmentsComponent value, ItemStack stack) {
-		return removeUntilReady(stack, value);
+	@ModifyVariable(method = "setEnchantments", at = @At("HEAD"), argsOnly = true)
+	private static ItemEnchantments enchancement$enchantmentLimit(ItemEnchantments enchantments, ItemStack itemStack) {
+		return removeUntilReady(itemStack, enchantments);
 	}
 
-	@ModifyReturnValue(method = "generateEnchantments", at = @At(value = "RETURN", ordinal = 1))
-	private static List<EnchantmentLevelEntry> enchancement$enchantmentLimit(List<EnchantmentLevelEntry> original, Random random, ItemStack stack) {
-		while (EnchancementUtil.exceedsLimit(stack, original.size())) {
+	@ModifyReturnValue(method = "selectEnchantment", at = @At(value = "RETURN", ordinal = 1))
+	private static List<EnchantmentInstance> enchancement$enchantmentLimit(List<EnchantmentInstance> original, RandomSource random, ItemStack itemStack) {
+		while (EnchancementUtil.exceedsLimit(itemStack, original.size())) {
 			original.removeFirst();
 		}
 		return original;
 	}
 
-	@ModifyExpressionValue(method = "method_60106", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/Enchantment;getMinPower(I)I"))
+	@ModifyExpressionValue(method = "lambda$getAvailableEnchantmentResults$1", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/Enchantment;getMinCost(I)I"))
 	private static int enchancement$enchantmentLimitMin(int original) {
 		if (ModConfig.enchantmentLimit > 0) {
 			return 0;
@@ -63,7 +64,7 @@ public class EnchantmentHelperMixin {
 		return original;
 	}
 
-	@ModifyExpressionValue(method = "method_60106", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/Enchantment;getMaxPower(I)I"))
+	@ModifyExpressionValue(method = "lambda$getAvailableEnchantmentResults$1", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/Enchantment;getMaxCost(I)I"))
 	private static int enchancement$enchantmentLimitMax(int original) {
 		if (ModConfig.enchantmentLimit > 0) {
 			return Integer.MAX_VALUE;

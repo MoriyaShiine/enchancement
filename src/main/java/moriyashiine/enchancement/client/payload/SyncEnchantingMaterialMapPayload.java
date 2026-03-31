@@ -1,47 +1,50 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.client.payload;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.screenhandler.EnchantingTableScreenHandler;
+import moriyashiine.enchancement.common.util.enchantment.EnchantingMaterial;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.item.Item;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public record SyncEnchantingMaterialMapPayload(
-		Map<RegistryEntry<Item>, EnchantingTableScreenHandler.EnchantingMaterial> map) implements CustomPayload {
-	public static final CustomPayload.Id<SyncEnchantingMaterialMapPayload> ID = new Id<>(Enchancement.id("sync_enchanting_material_map"));
-	public static final PacketCodec<RegistryByteBuf, SyncEnchantingMaterialMapPayload> CODEC = PacketCodec.tuple(PacketCodecs.map(Object2ObjectOpenHashMap::new, PacketCodecs.registryEntry(RegistryKeys.ITEM), EnchantingTableScreenHandler.EnchantingMaterial.PACKET_CODEC), SyncEnchantingMaterialMapPayload::map, SyncEnchantingMaterialMapPayload::new);
+		Map<Holder<Item>, EnchantingMaterial> map) implements CustomPacketPayload {
+	public static final Type<SyncEnchantingMaterialMapPayload> TYPE = new Type<>(Enchancement.id("sync_enchanting_material_map"));
+	public static final StreamCodec<RegistryFriendlyByteBuf, SyncEnchantingMaterialMapPayload> CODEC = StreamCodec.composite(
+			ByteBufCodecs.map(Object2ObjectOpenHashMap::new, ByteBufCodecs.holderRegistry(Registries.ITEM), EnchantingMaterial.STREAM_CODEC), SyncEnchantingMaterialMapPayload::map,
+			SyncEnchantingMaterialMapPayload::new);
 
 	@Override
-	public CustomPayload.Id<? extends CustomPayload> getId() {
-		return ID;
+	public Type<SyncEnchantingMaterialMapPayload> type() {
+		return TYPE;
 	}
 
-	public static void send(ServerPlayerEntity player) {
-		Map<RegistryEntry<Item>, EnchantingTableScreenHandler.EnchantingMaterial> map = new HashMap<>();
-		EnchantingTableScreenHandler.ENCHANTING_MATERIAL_MAP.forEach((key, value) -> map.put(Registries.ITEM.getEntry(key), value));
+	public static void send(ServerPlayer player) {
+		Map<Holder<Item>, EnchantingMaterial> map = new HashMap<>();
+		EnchantingMaterial.MATERIAL_MAP.forEach((key, value) -> map.put(BuiltInRegistries.ITEM.wrapAsHolder(key), value));
 		ServerPlayNetworking.send(player, new SyncEnchantingMaterialMapPayload(map));
 	}
 
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<SyncEnchantingMaterialMapPayload> {
 		@Override
 		public void receive(SyncEnchantingMaterialMapPayload payload, ClientPlayNetworking.Context context) {
-			EnchantingTableScreenHandler.ENCHANTING_MATERIAL_MAP.clear();
-			payload.map().forEach((key, value) -> EnchantingTableScreenHandler.ENCHANTING_MATERIAL_MAP.put(key.value(), value));
+			EnchantingMaterial.MATERIAL_MAP.clear();
+			payload.map().forEach((holder, value) -> EnchantingMaterial.MATERIAL_MAP.put(holder.value(), value));
 		}
 	}
 }

@@ -1,34 +1,35 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import net.minecraft.entity.passive.SquidEntity;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
+import net.minecraft.world.entity.animal.squid.Squid;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 
 public class FrozenSquidComponent implements AutoSyncedComponent {
-	private final SquidEntity obj;
-	private float forcedTentacleAngle = 0, forcedTiltAngle = 0, forcedRollAngle = 0;
+	private final Squid obj;
+	private float forcedTentacleAngle = 0, forcedXBodyRot = 0, forcedZBodyRot = 0;
 
-	public FrozenSquidComponent(SquidEntity obj) {
+	public FrozenSquidComponent(Squid obj) {
 		this.obj = obj;
 	}
 
 	@Override
-	public void readData(ReadView readView) {
-		forcedTentacleAngle = readView.getFloat("ForceTentacleAngle", 0);
-		forcedTiltAngle = readView.getFloat("ForcedTiltAngle", 0);
-		forcedRollAngle = readView.getFloat("ForcedRollAngle", 0);
+	public void readData(ValueInput input) {
+		forcedTentacleAngle = input.getFloatOr("ForceTentacleAngle", 0);
+		forcedXBodyRot = input.getFloatOr("ForcedXBodyRot", 0);
+		forcedZBodyRot = input.getFloatOr("ForcedZBodyRot", 0);
 	}
 
 	@Override
-	public void writeData(WriteView writeView) {
-		writeView.putFloat("ForceTentacleAngle", forcedTentacleAngle);
-		writeView.putFloat("ForcedTiltAngle", forcedTiltAngle);
-		writeView.putFloat("ForcedRollAngle", forcedRollAngle);
+	public void writeData(ValueOutput output) {
+		output.putFloat("ForceTentacleAngle", forcedTentacleAngle);
+		output.putFloat("ForcedXBodyRot", forcedXBodyRot);
+		output.putFloat("ForcedZBodyRot", forcedZBodyRot);
 	}
 
 	public void sync() {
@@ -43,19 +44,19 @@ public class FrozenSquidComponent implements AutoSyncedComponent {
 		this.forcedTentacleAngle = forcedTentacleAngle;
 	}
 
-	public float getForcedTiltAngle() {
-		return forcedTiltAngle;
+	public float getForcedXBodyRot() {
+		return forcedXBodyRot;
 	}
 
-	public void setForcedTiltAngle(float forcedTiltAngle) {
-		this.forcedTiltAngle = forcedTiltAngle;
+	public void setForcedXBodyRot(float forcedXBodyRot) {
+		this.forcedXBodyRot = forcedXBodyRot;
 	}
 
-	public float getForcedRollAngle() {
-		return forcedRollAngle;
+	public float getForcedZBodyRot() {
+		return forcedZBodyRot;
 	}
 
-	public void setForcedRollAngle(float forcedRollAngle) {
-		this.forcedRollAngle = forcedRollAngle;
+	public void setForcedZBodyRot(float forcedZBodyRot) {
+		this.forcedZBodyRot = forcedZBodyRot;
 	}
 }

@@ -1,43 +1,44 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.payload;
 
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 
-public record WallJumpPayload(int entityId, Vec3d velocity) implements CustomPayload {
-	public static final Id<WallJumpPayload> ID = new Id<>(Enchancement.id("wall_jump"));
-	public static final PacketCodec<PacketByteBuf, WallJumpPayload> CODEC = PacketCodec.tuple(
-			PacketCodecs.VAR_INT, WallJumpPayload::entityId,
-			Vec3d.PACKET_CODEC, WallJumpPayload::velocity,
+public record WallJumpPayload(int entityId, Vec3 delta) implements CustomPacketPayload {
+	public static final Type<WallJumpPayload> TYPE = new Type<>(Enchancement.id("wall_jump"));
+	public static final StreamCodec<FriendlyByteBuf, WallJumpPayload> CODEC = StreamCodec.composite(
+			ByteBufCodecs.VAR_INT, WallJumpPayload::entityId,
+			Vec3.STREAM_CODEC, WallJumpPayload::delta,
 			WallJumpPayload::new
 	);
 
 	@Override
-	public Id<? extends CustomPayload> getId() {
-		return ID;
+	public Type<WallJumpPayload> type() {
+		return TYPE;
 	}
 
-	public static void send(Entity entity, Vec3d velocity) {
-		ClientPlayNetworking.send(new WallJumpPayload(entity.getId(), velocity));
+	public static void send(Entity entity, Vec3 delta) {
+		ClientPlayNetworking.send(new WallJumpPayload(entity.getId(), delta));
 	}
 
 	public static class Receiver implements ServerPlayNetworking.PlayPayloadHandler<WallJumpPayload> {
 		@Override
 		public void receive(WallJumpPayload payload, ServerPlayNetworking.Context context) {
-			Entity entity = context.player().getEntityWorld().getEntityById(payload.entityId());
+			Entity entity = context.player().level().getEntity(payload.entityId());
 			if (entity instanceof LivingEntity) {
-				ModEntityComponents.WALL_JUMP.get(entity).use(payload.velocity());
+				ModEntityComponents.WALL_JUMP.get(entity).use(payload.delta());
 			}
 		}
 	}

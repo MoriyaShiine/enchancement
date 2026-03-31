@@ -1,29 +1,30 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
 import moriyashiine.enchancement.common.component.entity.BuryEntityComponent;
-import moriyashiine.enchancement.common.enchantment.effect.entity.BuryEffect;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.enchancement.common.world.item.effects.entity.BuryEffect;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.stat.Stats;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.stats.Stats;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
+import org.jspecify.annotations.Nullable;
 
 public class BuryEntityEvent {
 	public static class Unbury implements ServerLivingEntityEvents.AllowDamage {
@@ -31,7 +32,7 @@ public class BuryEntityEvent {
 		public boolean allowDamage(LivingEntity entity, DamageSource source, float amount) {
 			BuryEntityComponent buryEntityComponent = ModEntityComponents.BURY_ENTITY.get(entity);
 			if (buryEntityComponent.getBuryPos() != null) {
-				entity.setPosition(entity.getX(), entity.getY() + 0.5, entity.getZ());
+				entity.setPos(entity.getX(), entity.getY() + 0.5, entity.getZ());
 				buryEntityComponent.unbury();
 				return false;
 			}
@@ -41,23 +42,23 @@ public class BuryEntityEvent {
 
 	public static class Use implements UseEntityCallback {
 		@Override
-		public ActionResult interact(PlayerEntity player, World world, Hand hand, Entity entity, @Nullable EntityHitResult hitResult) {
-			if (player.isPartOfGame()) {
-				ItemStack stack = player.getStackInHand(hand);
-				if (!player.getItemCooldownManager().isCoolingDown(stack) && EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.BURY_ENTITY) && BuryEffect.bury(world, entity, () -> {
-					if (!world.isClient()) {
-						int cooldown = MathHelper.floor(EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.BURY_ENTITY, (ServerWorld) world, stack, 0) * 20);
+		public InteractionResult interact(Player player, Level level, InteractionHand hand, Entity entity, @Nullable EntityHitResult hitResult) {
+			if (!player.isSpectator()) {
+				ItemStack stack = player.getItemInHand(hand);
+				if (!player.getCooldowns().isOnCooldown(stack) && EnchantmentHelper.has(stack, ModEnchantmentEffectComponentTypes.BURY_ENTITY) && BuryEffect.bury(level, entity, () -> {
+					if (!level.isClientSide()) {
+						int cooldown = Mth.floor(EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.BURY_ENTITY, (ServerLevel) level, stack, 0) * 20);
 						if (cooldown > 0) {
-							player.getItemCooldownManager().set(stack, cooldown);
+							player.getCooldowns().addCooldown(stack, cooldown);
 						}
-						player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
-						stack.damage(1, player, hand.getEquipmentSlot());
+						player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
+						stack.hurtAndBreak(1, player, hand.asEquipmentSlot());
 					}
 				})) {
-					return ActionResult.SUCCESS;
+					return InteractionResult.SUCCESS;
 				}
 			}
-			return ActionResult.PASS;
+			return InteractionResult.PASS;
 		}
 	}
 }

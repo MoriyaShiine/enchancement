@@ -1,25 +1,27 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.grapplingfishingbobber;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import moriyashiine.enchancement.common.entity.projectile.StrengthHolder;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.FishingRodItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
+import moriyashiine.enchancement.common.world.entity.projectile.arrow.StrengthHolder;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.FishingRodItem;
+import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(FishingRodItem.class)
 public class FishingRodItemMixin {
-	@WrapWithCondition(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/ProjectileEntity;spawn(Lnet/minecraft/entity/projectile/ProjectileEntity;Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/item/ItemStack;)Lnet/minecraft/entity/projectile/ProjectileEntity;"))
-	private <T extends ProjectileEntity> boolean enchancement$grappleFishingBobber(T projectile, ServerWorld world, ItemStack stack) {
+	@SuppressWarnings("WrapWithConditionTargetsNonVoid")
+	@WrapWithCondition(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/projectile/Projectile;spawnProjectile(Lnet/minecraft/world/entity/projectile/Projectile;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/entity/projectile/Projectile;"))
+	private <T extends Projectile> boolean enchancement$grappleFishingBobber(T projectile, ServerLevel serverLevel, ItemStack itemStack) {
 		if (projectile instanceof StrengthHolder strengthHolder) {
-			float grapplingStrength = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.GRAPPLING_FISHING_BOBBER, world, stack, 0);
+			float grapplingStrength = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.GRAPPLING_FISHING_BOBBER, serverLevel, itemStack, 0);
 			if (grapplingStrength != 0) {
 				strengthHolder.enchancement$setStrength(grapplingStrength);
 			}

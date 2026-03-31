@@ -1,9 +1,10 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.init;
 
-import net.minecraft.sound.SoundEvent;
+import net.minecraft.sounds.SoundEvent;
 
 import static moriyashiine.strawberrylib.api.module.SLibRegistries.registerSoundEvent;
 

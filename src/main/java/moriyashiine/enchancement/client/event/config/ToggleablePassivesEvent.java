@@ -1,20 +1,21 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.client.event.config;
 
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.registry.tag.ItemTags;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,18 +30,19 @@ public class ToggleablePassivesEvent implements ItemTooltipCallback {
 		KEY_MAP.put(ItemTags.TRIDENT_ENCHANTABLE, "tooltip.enchancement.has_loyalty");
 	}
 
+
 	@Override
-	public void getTooltip(ItemStack stack, Item.TooltipContext tooltipContext, TooltipType tooltipType, List<Text> lines) {
-		if (ModConfig.toggleablePassives && stack.hasEnchantments() && stack.contains(ModComponentTypes.TOGGLEABLE_PASSIVE)) {
+	public void getTooltip(ItemStack stack, Item.TooltipContext tooltipContext, TooltipFlag tooltipFlag, List<Component> lines) {
+		if (ModConfig.toggleablePassives && stack.isEnchanted() && stack.has(ModComponentTypes.TOGGLEABLE_PASSIVE)) {
 			KEY_MAP.forEach((tag, key) -> {
-				if (stack.isIn(tag) || (tag.equals(ItemTags.CHEST_ARMOR_ENCHANTABLE) && EnchancementUtil.isBodyArmor(stack))) {
-					MutableText icon = Text.literal("× ");
-					Formatting formatting = Formatting.DARK_RED;
+				if (stack.is(tag) || (tag.equals(ItemTags.CHEST_ARMOR_ENCHANTABLE) && EnchancementUtil.isBodyArmor(stack))) {
+					MutableComponent icon = Component.literal("× ");
+					ChatFormatting formatting = ChatFormatting.DARK_RED;
 					if (stack.get(ModComponentTypes.TOGGLEABLE_PASSIVE)) {
-						icon = Text.literal("✔ ");
-						formatting = Formatting.DARK_GREEN;
+						icon = Component.literal("✔ ");
+						formatting = ChatFormatting.DARK_GREEN;
 					}
-					lines.add(1, icon.append(Text.translatable(key)).formatted(formatting));
+					lines.add(1, icon.append(Component.translatable(key)).withStyle(formatting));
 				}
 			});
 		}

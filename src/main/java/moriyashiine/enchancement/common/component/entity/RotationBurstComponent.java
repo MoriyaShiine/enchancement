@@ -1,53 +1,54 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import moriyashiine.enchancement.client.EnchancementClient;
-import moriyashiine.enchancement.common.enchantment.effect.RotationBurstEffect;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.payload.RotationBurstPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.enchancement.common.world.item.effects.RotationBurstEffect;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.event.GameEvent;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class RotationBurstComponent implements AutoSyncedComponent, CommonTickingComponent {
-	private final PlayerEntity obj;
+	private final Player obj;
 	private boolean shouldRefresh = false;
 	private int cooldown = 0, lastCooldown = 0, wavedashTicks = 0;
 
 	private boolean hasRotationBurst = false, wasPressingKey = false;
 	private int resetDelayTicks = 0, ticksPressingJump = 0;
 
-	public RotationBurstComponent(PlayerEntity obj) {
+	public RotationBurstComponent(Player obj) {
 		this.obj = obj;
 	}
 
 	@Override
-	public void readData(ReadView readView) {
-		shouldRefresh = readView.getBoolean("ShouldRefresh", false);
-		cooldown = readView.getInt("Cooldown", 0);
-		lastCooldown = readView.getInt("LastCooldown", 0);
-		wavedashTicks = readView.getInt("WavedashTicks", 0);
+	public void readData(ValueInput input) {
+		shouldRefresh = input.getBooleanOr("ShouldRefresh", false);
+		cooldown = input.getIntOr("Cooldown", 0);
+		lastCooldown = input.getIntOr("LastCooldown", 0);
+		wavedashTicks = input.getIntOr("WavedashTicks", 0);
 	}
 
 	@Override
-	public void writeData(WriteView writeView) {
-		writeView.putBoolean("ShouldRefresh", shouldRefresh);
-		writeView.putInt("Cooldown", cooldown);
-		writeView.putInt("LastCooldown", lastCooldown);
-		writeView.putInt("WavedashTicks", wavedashTicks);
+	public void writeData(ValueOutput output) {
+		output.putBoolean("ShouldRefresh", shouldRefresh);
+		output.putInt("Cooldown", cooldown);
+		output.putInt("LastCooldown", lastCooldown);
+		output.putInt("WavedashTicks", wavedashTicks);
 	}
 
 	@Override
@@ -56,7 +57,7 @@ public class RotationBurstComponent implements AutoSyncedComponent, CommonTickin
 		hasRotationBurst = entityCooldown > 0;
 		if (hasRotationBurst) {
 			if (!shouldRefresh) {
-				if (obj.isOnGround()) {
+				if (obj.onGround()) {
 					shouldRefresh = true;
 				}
 			} else if (cooldown > 0) {
@@ -84,7 +85,7 @@ public class RotationBurstComponent implements AutoSyncedComponent, CommonTickin
 			} else {
 				ticksPressingJump = 0;
 			}
-			boolean pressingKey = EnchancementClient.ROTATION_BURST_KEYBINDING.isPressed();
+			boolean pressingKey = EnchancementClient.ROTATION_BURST_KEYMAPPING.isDown();
 			if (pressingKey && !wasPressingKey && canUse()) {
 				use();
 				SLibClientUtils.addParticles(obj, ParticleTypes.CLOUD, 8, ParticleAnchor.BODY);
@@ -119,20 +120,20 @@ public class RotationBurstComponent implements AutoSyncedComponent, CommonTickin
 	}
 
 	public boolean shouldWavedash() {
-		return ticksPressingJump < 2 && wavedashTicks > 0 && obj.isOnGround();
+		return ticksPressingJump < 2 && wavedashTicks > 0 && obj.onGround();
 	}
 
 	public boolean canUse() {
-		return Math.max(cooldown, resetDelayTicks) == 0 && !obj.isOnGround() && SLibUtils.isGroundedOrAirborne(obj);
+		return Math.max(cooldown, resetDelayTicks) == 0 && !obj.onGround() && SLibUtils.isGroundedOrAirborne(obj);
 	}
 
 	public void use() {
 		reset();
 		wavedashTicks = RotationBurstEffect.getWavedashTicks(obj);
-		Vec3d velocity = obj.getRotationVector().normalize().multiply(RotationBurstEffect.getStrength(obj)).multiply(MultiplyMovementSpeedEvent.getMovementMultiplier(obj));
-		obj.setVelocity(velocity.getX(), velocity.getY(), velocity.getZ());
+		Vec3 delta = obj.getLookAngle().normalize().scale(RotationBurstEffect.getStrength(obj)).scale(MultiplyMovementSpeedEvent.getMovementMultiplier(obj));
+		obj.setDeltaMovement(delta.x(), delta.y(), delta.z());
 		obj.playSound(ModSoundEvents.ENTITY_GENERIC_DASH, 1, 1);
-		obj.emitGameEvent(GameEvent.ENTITY_ACTION);
+		obj.gameEvent(GameEvent.ENTITY_ACTION);
 		EnchancementUtil.resetFallDistance(obj);
 	}
 

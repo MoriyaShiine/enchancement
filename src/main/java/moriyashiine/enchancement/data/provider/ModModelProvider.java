@@ -5,27 +5,28 @@ package moriyashiine.enchancement.data.provider;
 
 import moriyashiine.enchancement.common.Enchancement;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.client.data.BlockStateModelGenerator;
-import net.minecraft.client.data.ItemModelGenerator;
-import net.minecraft.client.data.Models;
-import net.minecraft.client.data.TextureMap;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.resources.model.sprite.Material;
 
 public class ModModelProvider extends FabricModelProvider {
-	public ModModelProvider(FabricDataOutput output) {
+	public ModModelProvider(FabricPackOutput output) {
 		super(output);
 	}
 
 	@Override
-	public void generateBlockStateModels(BlockStateModelGenerator generator) {
+	public void generateBlockStateModels(BlockModelGenerators generators) {
 	}
 
 	@Override
-	public void generateItemModels(ItemModelGenerator generator) {
-		Models.CROSSBOW.upload(Enchancement.id("item/crossbow_amethyst"), TextureMap.layer0(Enchancement.id("item/crossbow_amethyst")), generator.modelCollector);
-		Models.CROSSBOW.upload(Enchancement.id("item/crossbow_torch"), TextureMap.layer0(Enchancement.id("item/crossbow_torch")), generator.modelCollector);
+	public void generateItemModels(ItemModelGenerators generators) {
+		ModelTemplates.CROSSBOW.create(Enchancement.id("item/crossbow_amethyst"), TextureMapping.layer0(new Material(Enchancement.id("item/crossbow_amethyst"))), generators.modelOutput);
+		ModelTemplates.CROSSBOW.create(Enchancement.id("item/crossbow_torch"), TextureMapping.layer0(new Material(Enchancement.id("item/crossbow_torch"))), generators.modelOutput);
 		for (int i = 0; i < 6; i++) {
-			Models.CROSSBOW.upload(Enchancement.id("item/crossbow_brimstone_" + i), TextureMap.layer0(Enchancement.id("item/crossbow_brimstone_" + i)), generator.modelCollector);
+			ModelTemplates.CROSSBOW.create(Enchancement.id("item/crossbow_brimstone_" + i), TextureMapping.layer0(new Material(Enchancement.id("item/crossbow_brimstone_" + i))), generators.modelOutput);
 		}
 	}
 }

@@ -1,29 +1,30 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
 import moriyashiine.enchancement.client.payload.SyncFrozenPlayerSlimStatusS2CPayload;
 import moriyashiine.enchancement.common.component.entity.FrozenComponent;
 import moriyashiine.enchancement.common.component.entity.FrozenGuardianComponent;
 import moriyashiine.enchancement.common.component.entity.FrozenSquidComponent;
-import moriyashiine.enchancement.common.entity.mob.FrozenPlayerEntity;
-import moriyashiine.enchancement.common.entity.projectile.IceShardEntity;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
+import moriyashiine.enchancement.common.world.entity.decoration.FrozenPlayer;
+import moriyashiine.enchancement.common.world.entity.projectile.arrow.IceShard;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.DamageTypes;
-import net.minecraft.entity.mob.GuardianEntity;
-import net.minecraft.entity.passive.SquidEntity;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.event.GameEvent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.squid.Squid;
+import net.minecraft.world.entity.monster.Guardian;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 public class FreezeEvent {
 	public static class HandleDeath implements ServerLivingEntityEvents.AfterDeath {
@@ -31,32 +32,32 @@ public class FreezeEvent {
 		public void afterDeath(LivingEntity entity, DamageSource damageSource) {
 			FrozenComponent frozenComponent = ModEntityComponents.FROZEN.get(entity);
 			if (frozenComponent.shouldFreezeOnDeath(damageSource)) {
-				if (entity instanceof ServerPlayerEntity serverPlayer) {
-					FrozenPlayerEntity frozenPlayer = ModEntityTypes.FROZEN_PLAYER.create(entity.getEntityWorld(), SpawnReason.TRIGGERED);
+				if (entity instanceof ServerPlayer player) {
+					FrozenPlayer frozenPlayer = ModEntityTypes.FROZEN_PLAYER.create(entity.level(), EntitySpawnReason.TRIGGERED);
 					if (frozenPlayer != null) {
 						frozenPlayer.setCustomName(entity.getName());
-						frozenPlayer.setPersistent();
-						frozenPlayer.setHeadYaw(entity.getHeadYaw());
-						frozenPlayer.setBodyYaw(entity.getBodyYaw());
-						frozenPlayer.setPitch(entity.getPitch());
-						frozenPlayer.age = entity.age;
-						frozenPlayer.requestTeleport(entity.getX(), entity.getY(), entity.getZ());
+						frozenPlayer.setPersistenceRequired();
+						frozenPlayer.setYHeadRot(entity.getYHeadRot());
+						frozenPlayer.setYBodyRot(entity.getVisualRotationYInDegrees());
+						frozenPlayer.setXRot(entity.getXRot());
+						frozenPlayer.tickCount = entity.tickCount;
+						frozenPlayer.teleportTo(entity.getX(), entity.getY(), entity.getZ());
 						ModEntityComponents.FROZEN.get(frozenPlayer).freeze();
-						SyncFrozenPlayerSlimStatusS2CPayload.send(serverPlayer, frozenPlayer.getUuid());
-						entity.getEntityWorld().spawnEntity(frozenPlayer);
+						SyncFrozenPlayerSlimStatusS2CPayload.send(player, frozenPlayer.getUUID());
+						entity.level().addFreshEntity(frozenPlayer);
 					}
 				} else {
-					if (entity instanceof GuardianEntity guardian) {
+					if (entity instanceof Guardian guardian) {
 						FrozenGuardianComponent frozenGuardianComponent = ModEntityComponents.FROZEN_GUARDIAN.get(guardian);
-						frozenGuardianComponent.setForcedTailAngle(guardian.getTailAngle(1));
-						frozenGuardianComponent.setForcedSpikesExtension(guardian.getRandom().nextFloat());
+						frozenGuardianComponent.setForcedTailAnimation(guardian.getTailAnimation(1));
+						frozenGuardianComponent.setForcedSpikesAnimation(guardian.getRandom().nextFloat());
 						frozenGuardianComponent.sync();
-						guardian.setBeamTarget(0);
-					} else if (entity instanceof SquidEntity squid) {
+						guardian.setActiveAttackTarget(0);
+					} else if (entity instanceof Squid squid) {
 						FrozenSquidComponent frozenSquidComponent = ModEntityComponents.FROZEN_SQUID.get(squid);
 						frozenSquidComponent.setForcedTentacleAngle(squid.tentacleAngle);
-						frozenSquidComponent.setForcedTiltAngle(squid.tiltAngle);
-						frozenSquidComponent.setForcedRollAngle(squid.rollAngle);
+						frozenSquidComponent.setForcedXBodyRot(squid.xBodyRot);
+						frozenSquidComponent.setForcedZBodyRot(squid.zBodyRot);
 						frozenSquidComponent.sync();
 					}
 					frozenComponent.freeze();
@@ -70,28 +71,28 @@ public class FreezeEvent {
 		public boolean allowDamage(LivingEntity entity, DamageSource source, float amount) {
 			FrozenComponent frozenComponent = ModEntityComponents.FROZEN.get(entity);
 			if (FrozenComponent.isSourceFrostbiteWeapon(source)) {
-				frozenComponent.setLastFreezingAttacker(source.getAttacker());
+				frozenComponent.setLastFreezingAttacker(source.getEntity());
 			}
 			if (frozenComponent.isFrozen()) {
-				if (source.isOf(DamageTypes.FREEZE)) {
+				if (source.is(DamageTypes.FREEZE)) {
 					return false;
 				} else {
-					Entity entitySource = source.getSource();
+					Entity entitySource = source.getDirectEntity();
 					if (entitySource != null && amount <= 1) {
-						entity.setVelocity(entity.getVelocity().add(-(entitySource.getX() - entity.getX()), 0, -(entitySource.getZ() - entity.getZ())).normalize().multiply(0.5));
+						entity.setDeltaMovement(entity.getDeltaMovement().add(-(entitySource.getX() - entity.getX()), 0, -(entitySource.getZ() - entity.getZ())).normalize().scale(0.5));
 						return false;
 					} else {
 						for (int i = 0; i < 4; i++) {
-							if (entity.getEntityWorld().getEntitiesByType(ModEntityTypes.ICE_SHARD, new Box(entity.getBlockPos()).expand(2), foundEntity -> true).size() < 64) {
-								for (int j = 0; j < MathHelper.nextInt(entity.getRandom(), 6, 8); j++) {
-									IceShardEntity iceShard = new IceShardEntity(entity.getEntityWorld(), entity, frozenComponent.getLastFreezingAttacker());
-									Vec3d random = new Vec3d(entity.getRandom().nextGaussian(), entity.getRandom().nextGaussian() / 2, entity.getRandom().nextGaussian());
-									iceShard.setVelocity(random.getX(), random.getY(), random.getZ(), 0.75F, 0);
-									entity.getEntityWorld().spawnEntity(iceShard);
+							if (entity.level().getEntities(ModEntityTypes.ICE_SHARD, new AABB(entity.blockPosition()).inflate(2), foundEntity -> true).size() < 64) {
+								for (int j = 0; j < Mth.nextInt(entity.getRandom(), 6, 8); j++) {
+									IceShard iceShard = new IceShard(entity.level(), entity, frozenComponent.getLastFreezingAttacker());
+									Vec3 random = new Vec3(entity.getRandom().nextGaussian(), entity.getRandom().nextGaussian() / 2, entity.getRandom().nextGaussian());
+									iceShard.shoot(random.x(), random.y(), random.z(), 0.75F, 0);
+									entity.level().addFreshEntity(iceShard);
 								}
 							}
 						}
-						entity.getEntityWorld().emitGameEvent(GameEvent.ENTITY_DIE, entity.getEntityPos(), GameEvent.Emitter.of(entity, entity.getSteppingBlockState()));
+						entity.level().gameEvent(GameEvent.ENTITY_DIE, entity.position(), GameEvent.Context.of(entity, entity.getBlockStateOn()));
 						entity.discard();
 					}
 				}

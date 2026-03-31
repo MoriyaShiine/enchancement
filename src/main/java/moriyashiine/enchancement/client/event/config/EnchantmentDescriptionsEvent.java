@@ -1,41 +1,42 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.client.event.config;
 
-import moriyashiine.enchancement.client.gui.tooltip.StoredEnchantmentsTooltipComponent;
+import moriyashiine.enchancement.client.gui.screens.inventory.tooltip.StoredEnchantmentsTooltipComponent;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.ClientTooltipComponentCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.tooltip.TooltipData;
-import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
-import net.minecraft.util.Formatting;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.core.Holder;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 
 public class EnchantmentDescriptionsEvent {
 	public static class DescriptionText implements ItemTooltipCallback {
 		@Override
-		public void getTooltip(ItemStack stack, Item.TooltipContext tooltipContext, TooltipType tooltipType, List<Text> lines) {
+		public void getTooltip(ItemStack stack, Item.TooltipContext tooltipContext, TooltipFlag tooltipFlag, List<Component> lines) {
 			if (enableDescriptions()) {
-				EnchantmentHelper.getEnchantments(stack).getEnchantments().forEach(enchantment -> {
+				EnchantmentHelper.getEnchantmentsForCrafting(stack).keySet().forEach(enchantment -> {
 					for (int i = 0; i < lines.size(); i++) {
-						List<Text> description = getDescription(lines.get(i), enchantment);
+						List<Component> description = getDescription(lines.get(i), enchantment);
 						if (description != null) {
 							lines.addAll(i + 1, description);
 							break;
@@ -46,10 +47,10 @@ public class EnchantmentDescriptionsEvent {
 		}
 	}
 
-	public static class Icons implements TooltipComponentCallback {
+	public static class Icons implements ClientTooltipComponentCallback {
 		@Override
-		public @Nullable TooltipComponent getComponent(TooltipData data) {
-			if (data instanceof StoredEnchantmentsTooltipComponent enchantmentsComponent) {
+		public @Nullable ClientTooltipComponent getClientComponent(TooltipComponent component) {
+			if (component instanceof StoredEnchantmentsTooltipComponent enchantmentsComponent) {
 				return enchantmentsComponent;
 			}
 			return null;
@@ -58,7 +59,7 @@ public class EnchantmentDescriptionsEvent {
 
 	public static class ClearIconCache implements CommonLifecycleEvents.TagsLoaded {
 		@Override
-		public void onTagsLoaded(DynamicRegistryManager registries, boolean client) {
+		public void onTagsLoaded(RegistryAccess registries, boolean client) {
 			if (client) {
 				StoredEnchantmentsTooltipComponent.clearIconCache();
 			}
@@ -70,12 +71,12 @@ public class EnchantmentDescriptionsEvent {
 	}
 
 	@Nullable
-	public static List<Text> getDescription(Text text, RegistryEntry<Enchantment> enchantment) {
+	public static List<Component> getDescription(Component component, Holder<Enchantment> enchantment) {
 		String translationKey = EnchancementUtil.getTranslationKey(enchantment);
-		if (text.getContent() instanceof TranslatableTextContent textContent && textContent.getKey().equals(translationKey)) {
-			MutableText description = Text.translatable(translationKey + ".desc").formatted(Formatting.DARK_GRAY);
+		if (component.getContents() instanceof TranslatableContents translatable && translatable.getKey().equals(translationKey)) {
+			MutableComponent description = Component.translatable(translationKey + ".desc").withStyle(ChatFormatting.DARK_GRAY);
 			if (!description.getString().isEmpty()) {
-				return SLibClientUtils.wrapText(Text.literal(" - ").formatted(Formatting.GRAY).append(description));
+				return SLibClientUtils.wrapText(Component.literal(" - ").withStyle(ChatFormatting.GRAY).append(description));
 			}
 		}
 		return null;

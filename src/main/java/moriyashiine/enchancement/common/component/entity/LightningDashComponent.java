@@ -1,34 +1,35 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.client.payload.AddLightningDashParticlesPayload;
-import moriyashiine.enchancement.common.enchantment.effect.LightningDashEffect;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.particle.SparkParticleEffect;
+import moriyashiine.enchancement.common.particle.SparkParticleOption;
+import moriyashiine.enchancement.common.world.item.effects.LightningDashEffect;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.util.math.Box;
-import net.minecraft.world.event.GameEvent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.AABB;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 import java.util.List;
 
 public class LightningDashComponent extends UsingMaceComponent implements CommonTickingComponent {
-	private final PlayerEntity obj;
+	private final Player obj;
 	private double cachedHeight = 0;
 	private int floatTicks = 0, smashTicks = 0;
 
@@ -36,27 +37,27 @@ public class LightningDashComponent extends UsingMaceComponent implements Common
 
 	private double nextTickFallDistance = 0;
 
-	public LightningDashComponent(PlayerEntity obj) {
+	public LightningDashComponent(Player obj) {
 		this.obj = obj;
 	}
 
 	@Override
-	public void readData(ReadView readView) {
-		super.readData(readView);
-		floatTicks = readView.getInt("FloatTicks", 0);
-		smashTicks = readView.getInt("SmashTicks", 0);
+	public void readData(ValueInput input) {
+		super.readData(input);
+		floatTicks = input.getIntOr("FloatTicks", 0);
+		smashTicks = input.getIntOr("SmashTicks", 0);
 	}
 
 	@Override
-	public void writeData(WriteView writeView) {
-		super.writeData(writeView);
-		writeView.putInt("FloatTicks", floatTicks);
-		writeView.putInt("SmashTicks", smashTicks);
+	public void writeData(ValueOutput output) {
+		super.writeData(output);
+		output.putInt("FloatTicks", floatTicks);
+		output.putInt("SmashTicks", smashTicks);
 	}
 
 	@Override
 	public void tick() {
-		boolean hasLightningDash = LightningDashEffect.getFloatTime(obj.getRandom(), obj.getMainHandStack()) != 0;
+		boolean hasLightningDash = LightningDashEffect.getFloatTime(obj.getRandom(), obj.getMainHandItem()) != 0;
 		if (isFloating() || isSmashing()) {
 			if (!hasLightningDash) {
 				cancel();
@@ -64,29 +65,29 @@ public class LightningDashComponent extends UsingMaceComponent implements Common
 		}
 		if (isFloating()) {
 			floatTicks--;
-			obj.onLanding();
-			obj.setVelocity(obj.getVelocity().multiply(0.9));
-			obj.emitGameEvent(GameEvent.ENTITY_ACTION);
-			if (obj.handSwinging && obj.getPitch() > -15) {
+			obj.resetFallDistance();
+			obj.setDeltaMovement(obj.getDeltaMovement().scale(0.9));
+			obj.gameEvent(GameEvent.ENTITY_ACTION);
+			if (obj.swinging && obj.getXRot() > -15) {
 				cachedHeight = obj.getY();
 				smashTicks = 30;
 				floatTicks = 0;
-				obj.setVelocity(obj.getRotationVector().multiply(LightningDashEffect.getSmashStrength(obj.getRandom(), obj.getMainHandStack())));
+				obj.setDeltaMovement(obj.getLookAngle().scale(LightningDashEffect.getSmashStrength(obj.getRandom(), obj.getMainHandItem())));
 				obj.playSound(ModSoundEvents.ENTITY_GENERIC_ZAP, 2, 1);
 			}
 		}
 		if (isSmashing()) {
 			smashTicks--;
-			if (obj.isOnGround()) {
+			if (obj.onGround()) {
 				if (smashTicks > 1) {
 					smashTicks = 1;
 				}
 				if (smashTicks == 1) {
-					obj.playSound(SoundEvents.ITEM_MACE_SMASH_GROUND_HEAVY, 1, 1);
+					obj.playSound(SoundEvents.MACE_SMASH_GROUND_HEAVY, 1, 1);
 				}
 			}
 		}
-		if (hasLightningDash && ItemStack.areEqual(obj.getActiveItem(), obj.getMainHandStack())) {
+		if (hasLightningDash && ItemStack.matches(obj.getUseItem(), obj.getMainHandItem())) {
 			if (ticksUsing % 18 == 0) {
 				obj.playSound(ModSoundEvents.ITEM_GENERIC_WHOOSH, 0.5F, 1);
 			}
@@ -95,7 +96,7 @@ public class LightningDashComponent extends UsingMaceComponent implements Common
 			ticksUsing = 0;
 		}
 		if (nextTickFallDistance != 0) {
-			obj.handleFallDamage(nextTickFallDistance, 1, obj.getDamageSources().fall());
+			obj.causeFallDamage(nextTickFallDistance, 1, obj.damageSources().fall());
 			nextTickFallDistance = 0;
 		}
 	}
@@ -107,22 +108,21 @@ public class LightningDashComponent extends UsingMaceComponent implements Common
 			cancel();
 			sync();
 		}
-		if (smashTicks == 1 && obj.isOnGround()) {
-			ServerWorld world = (ServerWorld) obj.getEntityWorld();
+		if (smashTicks == 1 && obj.onGround()) {
+			ServerLevel level = (ServerLevel) obj.level();
 			PlayerLookup.tracking(obj).forEach(foundPlayer -> AddLightningDashParticlesPayload.send(foundPlayer, obj));
 			obj.fallDistance = (float) Math.max(0, cachedHeight - obj.getY());
-			float base = (float) obj.getAttributeValue(EntityAttributes.ATTACK_DAMAGE);
+			float base = (float) obj.getAttributeValue(Attributes.ATTACK_DAMAGE);
 			boolean[] hurt = {true};
 			getNearby(3).forEach(entity -> {
-				DamageSource source = obj instanceof PlayerEntity player ? entity.getDamageSources().playerAttack(player) : entity.getDamageSources().mobAttack(obj);
-				float damage = EnchantmentHelper.getDamage(world, obj.getMainHandStack(), entity, source, base)
-						+ obj.getMainHandStack().getItem().getBonusAttackDamage(entity, base, source);
-				if (entity.damage(world, source, damage * LightningDashEffect.getSmashDamageMultiplier(obj.getRandom(), obj.getMainHandStack()))) {
-					entity.takeKnockback(1.5, obj.getX() - entity.getX(), obj.getZ() - entity.getZ());
+				DamageSource source = obj instanceof Player player ? entity.damageSources().playerAttack(player) : entity.damageSources().mobAttack(obj);
+				float damage = EnchantmentHelper.modifyDamage(level, obj.getMainHandItem(), entity, source, base) + obj.getMainHandItem().getItem().getAttackDamageBonus(entity, base, source);
+				if (entity.hurtServer(level, source, damage * LightningDashEffect.getSmashDamageMultiplier(obj.getRandom(), obj.getMainHandItem()))) {
+					entity.knockback(1.5, obj.getX() - entity.getX(), obj.getZ() - entity.getZ());
 					hurt[0] = false;
 				}
 			});
-			if (hurt[0] && !obj.isTouchingWater()) {
+			if (hurt[0] && !obj.isInWater()) {
 				nextTickFallDistance = obj.fallDistance;
 			}
 			obj.fallDistance = 0;
@@ -134,10 +134,10 @@ public class LightningDashComponent extends UsingMaceComponent implements Common
 		tick();
 		if (isFloating() && SLibClientUtils.shouldAddParticles(obj)) {
 			for (int i = 0; i <= 4; i++) {
-				obj.getEntityWorld().addParticleClient(new SparkParticleEffect(obj.getEntityPos().addRandom(obj.getRandom(), 1)), obj.getParticleX(1), obj.getRandomBodyY(), obj.getParticleZ(1), 0, 0, 0);
+				obj.level().addParticle(new SparkParticleOption(obj.position().offsetRandom(obj.getRandom(), 1)), obj.getRandomX(1), obj.getRandomY(), obj.getRandomZ(1), 0, 0, 0);
 			}
 		}
-		if (smashTicks == 1 && obj.isOnGround()) {
+		if (smashTicks == 1 && obj.onGround()) {
 			AddLightningDashParticlesPayload.addParticles(obj);
 		}
 	}
@@ -164,10 +164,10 @@ public class LightningDashComponent extends UsingMaceComponent implements Common
 
 	@SuppressWarnings("SameParameterValue")
 	private List<LivingEntity> getNearby(int range) {
-		return obj.getEntityWorld().getEntitiesByClass(LivingEntity.class,
-				new Box(
+		return obj.level().getEntitiesOfClass(LivingEntity.class,
+				new AABB(
 						obj.getX() - 0.5 - range, obj.getY() - 1.5, obj.getZ() - 0.5 - range,
 						obj.getX() + 0.5 + range, obj.getY() + 0.5 + range, obj.getZ() + 0.5 + range
-				), foundEntity -> foundEntity.isAlive() && foundEntity.distanceTo(obj) < 10 && SLibUtils.shouldHurt(obj, foundEntity) && SLibUtils.canSee(obj, foundEntity, range));
+				), foundEntity -> foundEntity.isAlive() && foundEntity.distanceTo(obj) < 10 && SLibUtils.shouldHurt(obj, foundEntity) && SLibUtils.hasLineOfSight(obj, foundEntity, range));
 	}
 }

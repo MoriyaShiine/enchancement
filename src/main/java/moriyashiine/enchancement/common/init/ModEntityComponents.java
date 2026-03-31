@@ -1,17 +1,22 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.init;
 
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.component.entity.*;
-import net.minecraft.entity.LightningEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.GuardianEntity;
-import net.minecraft.entity.mob.WitchEntity;
-import net.minecraft.entity.passive.SquidEntity;
-import net.minecraft.entity.passive.WanderingTraderEntity;
-import net.minecraft.entity.projectile.*;
+import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.squid.Squid;
+import net.minecraft.world.entity.monster.Guardian;
+import net.minecraft.world.entity.monster.Witch;
+import net.minecraft.world.entity.npc.wanderingtrader.WanderingTrader;
+import net.minecraft.world.entity.projectile.FishingHook;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.Arrow;
+import net.minecraft.world.entity.projectile.arrow.ThrownTrident;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
 import org.ladysnake.cca.api.v3.component.ComponentRegistry;
 import org.ladysnake.cca.api.v3.entity.EntityComponentFactoryRegistry;
@@ -21,8 +26,8 @@ import org.ladysnake.cca.api.v3.entity.RespawnCopyStrategy;
 public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<AirJumpComponent> AIR_JUMP = ComponentRegistry.getOrCreate(Enchancement.id("air_jump"), AirJumpComponent.class);
 	public static final ComponentKey<AirMobilityComponent> AIR_MOBILITY = ComponentRegistry.getOrCreate(Enchancement.id("air_mobility"), AirMobilityComponent.class);
-	public static final ComponentKey<ApplyRandomStatusEffectComponent> APPLY_RANDOM_STATUS_EFFECT = ComponentRegistry.getOrCreate(Enchancement.id("apply_random_status_effect"), ApplyRandomStatusEffectComponent.class);
-	public static final ComponentKey<ApplyRandomStatusEffectGenericComponent> APPLY_RANDOM_STATUS_EFFECT_GENERIC = ComponentRegistry.getOrCreate(Enchancement.id("apply_random_status_effect_generic"), ApplyRandomStatusEffectGenericComponent.class);
+	public static final ComponentKey<ApplyRandomMobEffectComponent> APPLY_RANDOM_MOB_EFFECT = ComponentRegistry.getOrCreate(Enchancement.id("apply_random_mob_effect"), ApplyRandomMobEffectComponent.class);
+	public static final ComponentKey<ApplyRandomMobEffectGenericComponent> APPLY_RANDOM_MOB_EFFECT_GENERIC = ComponentRegistry.getOrCreate(Enchancement.id("apply_random_mob_effect_generic"), ApplyRandomMobEffectGenericComponent.class);
 	public static final ComponentKey<BoostInFluidComponent> BOOST_IN_FLUID = ComponentRegistry.getOrCreate(Enchancement.id("boost_in_fluid"), BoostInFluidComponent.class);
 	public static final ComponentKey<BounceComponent> BOUNCE = ComponentRegistry.getOrCreate(Enchancement.id("bounce"), BounceComponent.class);
 	public static final ComponentKey<BuryEntityComponent> BURY_ENTITY = ComponentRegistry.getOrCreate(Enchancement.id("bury_entity"), BuryEntityComponent.class);
@@ -59,38 +64,38 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
 		registry.registerForPlayers(AIR_JUMP, AirJumpComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(LivingEntity.class, AIR_MOBILITY, AirMobilityComponent::new);
-		registry.registerFor(ArrowEntity.class, APPLY_RANDOM_STATUS_EFFECT, projectile -> new ApplyRandomStatusEffectComponent());
-		registry.registerFor(PersistentProjectileEntity.class, APPLY_RANDOM_STATUS_EFFECT_GENERIC, ApplyRandomStatusEffectGenericComponent::new);
+		registry.registerFor(Arrow.class, APPLY_RANDOM_MOB_EFFECT, _ -> new ApplyRandomMobEffectComponent());
+		registry.registerFor(AbstractArrow.class, APPLY_RANDOM_MOB_EFFECT_GENERIC, ApplyRandomMobEffectGenericComponent::new);
 		registry.registerFor(LivingEntity.class, BOOST_IN_FLUID, BoostInFluidComponent::new);
 		registry.beginRegistration(LivingEntity.class, BOUNCE).respawnStrategy(RespawnCopyStrategy.ALWAYS_COPY).end(BounceComponent::new);
 		registry.registerFor(LivingEntity.class, BURY_ENTITY, BuryEntityComponent::new);
 		registry.registerForPlayers(CHARGE_JUMP, ChargeJumpComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(LivingEntity.class, CONDITIONAL_ATTRIBUTES, ConditionalAttributesComponent::new);
-		registry.registerFor(PersistentProjectileEntity.class, DELAYED_LAUNCH, DelayedLaunchComponent::new);
+		registry.registerFor(AbstractArrow.class, DELAYED_LAUNCH, DelayedLaunchComponent::new);
 		registry.registerForPlayers(DIRECTION_BURST, DirectionBurstComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
-		registry.registerFor(FishingBobberEntity.class, DISARMING_FISHING_BOBBER, fishingBobber -> new DisarmingFishingBobberComponent());
+		registry.registerFor(FishingHook.class, DISARMING_FISHING_BOBBER, _ -> new DisarmingFishingBobberComponent());
 		registry.registerForPlayers(DISARMED_PLAYER, DisarmedPlayerComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
-		registry.registerFor(WanderingTraderEntity.class, DISARMED_WANDERING_TRADER, wanderingTrader -> new DisarmedWanderingTraderComponent());
-		registry.registerFor(WitchEntity.class, DISARMED_WITCH, witch -> new DisarmedWitchComponent());
-		registry.registerForPlayers(ERUPTION, player -> new UsingMaceComponent(), RespawnCopyStrategy.LOSSLESS_ONLY);
+		registry.registerFor(WanderingTrader.class, DISARMED_WANDERING_TRADER, _ -> new DisarmedWanderingTraderComponent());
+		registry.registerFor(Witch.class, DISARMED_WITCH, _ -> new DisarmedWitchComponent());
+		registry.registerForPlayers(ERUPTION, _ -> new UsingMaceComponent(), RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(LivingEntity.class, EXTENDED_WATER_TIME, ExtendedWaterTimeComponent::new);
 		registry.registerFor(LivingEntity.class, FROZEN, FrozenComponent::new);
-		registry.registerFor(GuardianEntity.class, FROZEN_GUARDIAN, FrozenGuardianComponent::new);
-		registry.registerFor(SquidEntity.class, FROZEN_SQUID, FrozenSquidComponent::new);
+		registry.registerFor(Guardian.class, FROZEN_GUARDIAN, FrozenGuardianComponent::new);
+		registry.registerFor(Squid.class, FROZEN_SQUID, FrozenSquidComponent::new);
 		registry.registerFor(LivingEntity.class, GLIDE, GlideComponent::new);
 		registry.registerForPlayers(GROUNDED_COOLDOWN, GroundedCooldownComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
-		registry.registerFor(LivingEntity.class, IN_COMBAT, living -> new InCombatComponent());
-		registry.registerForPlayers(LAUNCH_WIND_CHARGE, player -> new UsingMaceComponent(), RespawnCopyStrategy.LOSSLESS_ONLY);
-		registry.registerFor(TridentEntity.class, LEECHING_TRIDENT, LeechingTridentComponent::new);
+		registry.registerFor(LivingEntity.class, IN_COMBAT, _ -> new InCombatComponent());
+		registry.registerForPlayers(LAUNCH_WIND_CHARGE, _ -> new UsingMaceComponent(), RespawnCopyStrategy.LOSSLESS_ONLY);
+		registry.registerFor(ThrownTrident.class, LEECHING_TRIDENT, LeechingTridentComponent::new);
 		registry.registerForPlayers(LIGHTNING_DASH, LightningDashComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
-		registry.registerFor(TridentEntity.class, OWNED_TRIDENT, OwnedTridentComponent::new);
-		registry.registerFor(PersistentProjectileEntity.class, PHASE_THROUGH_BLOCKS_AND_FLOAT, PhaseThroughBlocksAndFloatComponent::new);
-		registry.registerFor(LivingEntity.class, PROJECTILE_TIMER, living -> new ProjectileTimerComponent());
+		registry.registerFor(ThrownTrident.class, OWNED_TRIDENT, OwnedTridentComponent::new);
+		registry.registerFor(AbstractArrow.class, PHASE_THROUGH_BLOCKS_AND_FLOAT, PhaseThroughBlocksAndFloatComponent::new);
+		registry.registerFor(LivingEntity.class, PROJECTILE_TIMER, _ -> new ProjectileTimerComponent());
 		registry.registerForPlayers(ROTATION_BURST, RotationBurstComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
-		registry.registerFor(LightningEntity.class, SAFE_LIGHTNING, lightning -> new SafeLightningComponent());
+		registry.registerFor(LightningBolt.class, SAFE_LIGHTNING, _ -> new SafeLightningComponent());
 		registry.registerForPlayers(SLAM, SlamComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(SLIDE, SlideComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
-		registry.registerFor(ProjectileEntity.class, TELEPORT_ON_HIT, TeleportOnHitComponent::new);
+		registry.registerFor(Projectile.class, TELEPORT_ON_HIT, TeleportOnHitComponent::new);
 		registry.registerFor(LivingEntity.class, WALL_JUMP, WallJumpComponent::new);
 	}
 }

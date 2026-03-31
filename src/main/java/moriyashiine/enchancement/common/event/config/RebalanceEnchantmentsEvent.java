@@ -1,6 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.event.config;
 
 import moriyashiine.enchancement.common.ModConfig;
@@ -10,33 +11,23 @@ import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.fabricmc.fabric.api.item.v1.EnchantmentEvents;
 import net.fabricmc.fabric.api.util.TriState;
-import net.minecraft.component.Component;
-import net.minecraft.component.ComponentMap;
-import net.minecraft.component.EnchantmentEffectComponentTypes;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentLevelBasedValue;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.enchantment.effect.*;
-import net.minecraft.enchantment.effect.entity.ApplyExhaustionEnchantmentEffect;
-import net.minecraft.enchantment.effect.entity.IgniteEnchantmentEffect;
-import net.minecraft.enchantment.effect.value.AddEnchantmentEffect;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.item.Items;
-import net.minecraft.item.MaceItem;
-import net.minecraft.loot.condition.AllOfLootCondition;
-import net.minecraft.loot.condition.DamageSourcePropertiesLootCondition;
-import net.minecraft.loot.condition.LootCondition;
-import net.minecraft.loot.condition.LootConditionTypes;
-import net.minecraft.predicate.entity.DamageSourcePredicate;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.TypedDataComponent;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.MaceItem;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.enchantment.*;
+import net.minecraft.world.item.enchantment.effects.*;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.loot.predicates.*;
+import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +36,8 @@ import java.util.Optional;
 public class RebalanceEnchantmentsEvent {
 	public static class AllowEnchanting implements EnchantmentEvents.AllowEnchanting {
 		@Override
-		public TriState allowEnchanting(RegistryEntry<Enchantment> enchantment, ItemStack target, EnchantingContext enchantingContext) {
-			if (ModConfig.rebalanceEnchantments && target.getItem() instanceof MaceItem && enchantment.matchesKey(Enchantments.FIRE_ASPECT)) {
+		public TriState allowEnchanting(Holder<Enchantment> enchantment, ItemStack target, EnchantingContext enchantingContext) {
+			if (ModConfig.rebalanceEnchantments && target.getItem() instanceof MaceItem && enchantment.is(Enchantments.FIRE_ASPECT)) {
 				return TriState.FALSE;
 			}
 			return TriState.DEFAULT;
@@ -59,65 +50,70 @@ public class RebalanceEnchantmentsEvent {
 		public void onServerStarted(MinecraftServer server) {
 			if (ModConfig.rebalanceEnchantments) {
 				{
-					Enchantment channeling = server.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).get(Enchantments.CHANNELING);
+					Enchantment channeling = server.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getValue(Enchantments.CHANNELING);
 					if (channeling != null) {
-						ComponentMap.Builder builder = ComponentMap.builder().addAll(channeling.effects());
-						for (Component<?> effect : channeling.effects()) {
-							if (effect.type() == EnchantmentEffectComponentTypes.POST_ATTACK) {
-								List<TargetedEnchantmentEffect<EnchantmentEntityEffect>> list = new ArrayList<>((List<TargetedEnchantmentEffect<EnchantmentEntityEffect>>) effect.value());
-								for (TargetedEnchantmentEffect<?> targetedEnchantmentEffect : list) {
-									if (targetedEnchantmentEffect.requirements().isPresent() && targetedEnchantmentEffect.requirements().get() instanceof AllOfLootCondition all) {
-										List<LootCondition> terms = new ArrayList<>(all.terms);
-										terms.removeIf(term -> term.getType() == LootConditionTypes.WEATHER_CHECK);
-										targetedEnchantmentEffect.requirements = Optional.of(AllOfLootCondition.create(terms));
+						DataComponentMap.Builder builder = DataComponentMap.builder().addAll(channeling.effects());
+						for (TypedDataComponent<?> component : channeling.effects()) {
+							if (component.type() == EnchantmentEffectComponents.POST_ATTACK) {
+								List<TargetedConditionalEffect<EnchantmentEntityEffect>> list = new ArrayList<>((List<TargetedConditionalEffect<EnchantmentEntityEffect>>) component.value());
+								for (TargetedConditionalEffect<?> effect : list) {
+									if (effect.requirements().isPresent() && effect.requirements().get() instanceof AllOfCondition allOf) {
+										List<LootItemCondition> conditions = new ArrayList<>(allOf.terms);
+										conditions.removeIf(term -> term.codec() == WeatherCheck.MAP_CODEC);
+										effect.requirements = Optional.of(AllOfCondition.allOf(conditions));
 									}
 								}
-								list.add(new TargetedEnchantmentEffect<>(
-										EnchantmentEffectTarget.ATTACKER,
-										EnchantmentEffectTarget.VICTIM,
-										new IgniteEnchantmentEffect(EnchantmentLevelBasedValue.linear(4.0F)),
-										Optional.of(DamageSourcePropertiesLootCondition.builder(DamageSourcePredicate.Builder.create().isDirect(true)).build())
+								list.add(new TargetedConditionalEffect<>(
+										EnchantmentTarget.ATTACKER,
+										EnchantmentTarget.VICTIM,
+										new Ignite(LevelBasedValue.perLevel(4.0F)),
+										Optional.of(DamageSourceCondition.hasDamageSource(net.minecraft.advancements.criterion.DamageSourcePredicate.Builder.damageType().isDirect(true)).build())
 								));
-								builder.add(EnchantmentEffectComponentTypes.POST_ATTACK, list);
+								builder.set(EnchantmentEffectComponents.POST_ATTACK, list);
 								continue;
 							}
-							if (effect.type() == EnchantmentEffectComponentTypes.HIT_BLOCK) {
-								List<EnchantmentEffectEntry<EnchantmentEntityEffect>> list = (List<EnchantmentEffectEntry<EnchantmentEntityEffect>>) effect.value();
-								for (EnchantmentEffectEntry<?> effectEntry : list) {
-									if (effectEntry.requirements().isPresent() && effectEntry.requirements().get() instanceof AllOfLootCondition all) {
-										List<LootCondition> terms = new ArrayList<>(all.terms);
-										terms.removeIf(term -> term.getType() == LootConditionTypes.WEATHER_CHECK);
-										effectEntry.requirements = Optional.of(AllOfLootCondition.create(terms));
+							if (component.type() == EnchantmentEffectComponents.HIT_BLOCK) {
+								List<ConditionalEffect<EnchantmentEntityEffect>> list = (List<ConditionalEffect<EnchantmentEntityEffect>>) component.value();
+								for (ConditionalEffect<?> effect : list) {
+									if (effect.requirements().isPresent() && effect.requirements().get() instanceof AllOfCondition allOf) {
+										List<LootItemCondition> conditions = new ArrayList<>(allOf.terms);
+										conditions.removeIf(condition -> condition.codec() == WeatherCheck.MAP_CODEC);
+										effect.requirements = Optional.of(AllOfCondition.allOf(conditions));
 									}
 								}
 							}
-							addEffect(effect, builder);
+							addEffect(component, builder);
 						}
-						builder.add(
+						builder.set(
 								ModEnchantmentEffectComponentTypes.CHAIN_LIGHTNING,
-								List.of(new EnchantmentEffectEntry<>(new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(0.35F)), Optional.empty()))
+								List.of(new ConditionalEffect<>(new AddValue(LevelBasedValue.perLevel(0.35F)), Optional.empty()))
 						);
 						channeling.effects = builder.build();
 					}
 				}
 				{
-					Enchantment lunge = server.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).get(Enchantments.LUNGE);
+					Enchantment lunge = server.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getValue(Enchantments.LUNGE);
 					if (lunge != null) {
-						ComponentMap.Builder builder = ComponentMap.builder().addAll(lunge.effects());
-						for (Component<?> effect : lunge.effects()) {
-							if (effect.type() == EnchantmentEffectComponentTypes.POST_PIERCING_ATTACK) {
-								List<EnchantmentEffectEntry<EnchantmentEntityEffect>> list = new ArrayList<>((List<EnchantmentEffectEntry<EnchantmentEntityEffect>>) effect.value());
-								for (EnchantmentEffectEntry<?> effectEntry : list) {
-									if (effectEntry.effect() instanceof AllOfEnchantmentEffects.EntityEffects entityEffects) {
-										List<EnchantmentEntityEffect> effects = new ArrayList<>(entityEffects.effects());
-										effects.removeIf(e -> e instanceof ApplyExhaustionEnchantmentEffect);
-										entityEffects.effects = effects;
+						DataComponentMap.Builder builder = DataComponentMap.builder().addAll(lunge.effects());
+						for (TypedDataComponent<?> component : lunge.effects()) {
+							if (component.type() == EnchantmentEffectComponents.POST_PIERCING_ATTACK) {
+								List<ConditionalEffect<EnchantmentEntityEffect>> list = (List<ConditionalEffect<EnchantmentEntityEffect>>) component.value();
+								for (ConditionalEffect<?> effect : list) {
+									if (effect.effect() instanceof AllOf.EntityEffects allOf) {
+										List<EnchantmentEntityEffect> effects = new ArrayList<>(allOf.effects());
+										effects.removeIf(e -> e.codec() == ApplyExhaustion.CODEC);
+										allOf.effects = effects;
+									}
+									if (effect.requirements().isPresent() && effect.requirements().get() instanceof AllOfCondition allOf) {
+										List<LootItemCondition> conditions = new ArrayList<>(allOf.terms);
+										conditions.removeIf(condition -> condition.codec() == AnyOfCondition.MAP_CODEC);
+										effect.requirements = Optional.of(AllOfCondition.allOf(conditions));
 									}
 								}
-								builder.add(EnchantmentEffectComponentTypes.POST_PIERCING_ATTACK, list);
+								builder.set(EnchantmentEffectComponents.POST_PIERCING_ATTACK, list);
 								continue;
 							}
-							addEffect(effect, builder);
+							addEffect(component, builder);
 						}
 						lunge.effects = builder.build();
 					}
@@ -125,27 +121,27 @@ public class RebalanceEnchantmentsEvent {
 			}
 		}
 
-		private static <T> void addEffect(Component<T> component, ComponentMap.Builder builder) {
-			builder.add(component.type(), component.value());
+		private static <T> void addEffect(TypedDataComponent<T> component, DataComponentMap.Builder builder) {
+			builder.set(component.type(), component.value());
 		}
 	}
 
 	public static class UseBlock implements UseBlockCallback {
 		@Override
-		public ActionResult interact(PlayerEntity player, World world, Hand hand, BlockHitResult hitResult) {
-			if (ModConfig.rebalanceEnchantments && player.isSneaking() && hasIgnite(player.getStackInHand(hand))) {
-				ActionResult result = Items.FLINT_AND_STEEL.useOnBlock(new ItemUsageContext(player, hand, hitResult));
-				if (result != ActionResult.FAIL) {
+		public InteractionResult interact(Player player, Level level, InteractionHand hand, BlockHitResult hitResult) {
+			if (ModConfig.rebalanceEnchantments && player.isShiftKeyDown() && hasIgnite(player.getItemInHand(hand))) {
+				InteractionResult result = Items.FLINT_AND_STEEL.useOn(new UseOnContext(player, hand, hitResult));
+				if (result != InteractionResult.FAIL) {
 					return result;
 				}
 			}
-			return ActionResult.PASS;
+			return InteractionResult.PASS;
 		}
 
 		private static boolean hasIgnite(ItemStack stack) {
-			for (RegistryEntry<Enchantment> enchantment : stack.getEnchantments().getEnchantments()) {
-				for (TargetedEnchantmentEffect<EnchantmentEntityEffect> targetedEnchantmentEffect : enchantment.value().getEffect(EnchantmentEffectComponentTypes.POST_ATTACK)) {
-					if (targetedEnchantmentEffect.effect() instanceof IgniteEnchantmentEffect) {
+			for (Holder<Enchantment> enchantment : stack.getEnchantments().keySet()) {
+				for (TargetedConditionalEffect<EnchantmentEntityEffect> targetedEnchantmentEffect : enchantment.value().getEffects(EnchantmentEffectComponents.POST_ATTACK)) {
+					if (targetedEnchantmentEffect.effect() instanceof Ignite) {
 						return true;
 					}
 				}

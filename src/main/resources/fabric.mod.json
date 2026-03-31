@@ -36,8 +36,8 @@
 	"cardinal-components-entity": [
 	  "moriyashiine.enchancement.common.init.ModEntityComponents"
 	],
-	"cardinal-components-world": [
-	  "moriyashiine.enchancement.common.init.ModWorldComponents"
+	"cardinal-components-level": [
+	  "moriyashiine.enchancement.common.init.ModLevelComponents"
 	],
 	"appleskin": [
 	  "moriyashiine.enchancement.client.integration.appleskin.ModAppleskinIntegration"
@@ -49,8 +49,8 @@
   "accessWidener": "enchancement.classtweaker",
   "depends": {
 	"fabricloader": "*",
-	"minecraft": "~1.21.11",
-	"java": ">=21",
+	"minecraft": "~26.1",
+	"java": ">=25",
 	"fabric-api": "*",
 	"strawberrylib": "*"
   },
@@ -59,8 +59,8 @@
 	  "enchancement:chiseled_bookshelf",
 	  "enchancement:air_jump",
 	  "enchancement:air_mobility",
-	  "enchancement:apply_random_status_effect",
-	  "enchancement:apply_random_status_effect_generic",
+	  "enchancement:apply_random_mob_effect",
+	  "enchancement:apply_random_mob_effect_generic",
 	  "enchancement:boost_in_fluid",
 	  "enchancement:bounce",
 	  "enchancement:bury_entity",

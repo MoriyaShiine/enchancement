@@ -1,0 +1,104 @@
+/*
+ * Copyright (c) MoriyaShiine. All Rights Reserved.
+ */
+
+package moriyashiine.enchancement.client.reloadlistener;
+
+import com.mojang.blaze3d.platform.NativeImage;
+import moriyashiine.enchancement.common.Enchancement;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.client.renderer.texture.TextureContents;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * @author UpcraftLP (<a href="https://github.com/UpcraftLP">https://github.com/UpcraftLP</a>)
+ */
+public class FrozenReloadListener implements ResourceManagerReloadListener {
+	public static final FrozenReloadListener INSTANCE = new FrozenReloadListener();
+	public static final Identifier ID = Enchancement.id("frozen");
+
+	private static final Identifier PACKED_ICE_TEXTURE = Identifier.parse("textures/block/packed_ice.png");
+	private static final boolean DEBUG_TEXTURES = Boolean.getBoolean(Enchancement.MOD_ID + ".debug_frozen_textures");
+
+	private final Map<Identifier, Identifier> TEXTURE_CACHE = new HashMap<>();
+
+	@Override
+	public void onResourceManagerReload(ResourceManager manager) {
+		// make sure resourcepack changes affect frozen entities
+		TEXTURE_CACHE.clear();
+	}
+
+	public Identifier getTexture(Identifier original) {
+		// generate a suitably sized texture on the fly, if it doesn't exist in cache already
+		return TEXTURE_CACHE.computeIfAbsent(original, id -> {
+			ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
+			try (NativeImage tex = loadNative(resourceManager, id)) {
+				return generateTexture(resourceManager, tex.getWidth(), tex.getHeight());
+			} catch (IOException exception) {
+				Enchancement.LOGGER.warn("Unable to generate frozen texture for {}", original, exception);
+				return original;
+			}
+		});
+	}
+
+	/**
+	 * create a new texture of width x height by repeating the source texture in a grid-like fashion
+	 */
+	private static Identifier generateTexture(ResourceManager resourceManager, int texWidth, int texHeight) throws IOException {
+		try (NativeImage srcTex = loadNative(resourceManager, PACKED_ICE_TEXTURE)) {
+			if (srcTex.getWidth() == 0 || srcTex.getHeight() == 0) {
+				throw new IllegalStateException(String.format("bad resourcepack, texture for %s was %sx%s, this is not allowed!", PACKED_ICE_TEXTURE, srcTex.getWidth(), srcTex.getHeight()));
+			}
+			int width = texWidth;
+			int height = texHeight;
+			// only apply to properly scaled textures
+			if (texWidth % 16 == 0 && texHeight % 16 == 0) {
+				// if there is a resource pack with larger than 16x textures, scale the result texture resolution accordingly
+				width = srcTex.getWidth() * (texWidth / 16);
+				height = srcTex.getHeight() * (texHeight / 16);
+			}
+			NativeImage destTex = new NativeImage(width, height, false);
+			// manually write each pixel of the target texture
+			// this bypasses having to deal with shaders, and should™ be fine for reasonably sized textures
+			// (TL;DR: if someone has a 16384x16384 resource pack they're expected to have a computer that can copy a
+			// few of these textures on the CPU just fine)
+			for (int dx = 0; dx < width; dx++) {
+				for (int dy = 0; dy < height; dy++) {
+					destTex.setPixel(dx, dy, srcTex.getPixel(dx % srcTex.getWidth(), dy % srcTex.getHeight()));
+				}
+			}
+			Identifier textureID = Enchancement.id(String.format("textures/generated/frozen_%sx%s", width, height));
+			// if in debug mode, output generated textures to the current game directory
+			if (DEBUG_TEXTURES) {
+				try {
+					Path dir = FabricLoader.getInstance().getGameDir().resolve(Enchancement.MOD_ID + "_debug");
+					Files.createDirectories(dir);
+					Path output = dir.resolve(String.format("frozen_%sx%s.png", width, height));
+					destTex.writeToFile(output);
+				} catch (IOException exception) {
+					// print stacktrace but keep the game running
+					Enchancement.LOGGER.warn(exception.getLocalizedMessage());
+				}
+			}
+			Minecraft.getInstance().getTextureManager().register(textureID, new DynamicTexture(textureID::toString, destTex));
+			return textureID;
+		}
+	}
+
+	/**
+	 * load the NativeImage for a given MC texture
+	 */
+	private static NativeImage loadNative(ResourceManager resourceManager, Identifier identifier) throws IOException {
+		return TextureContents.load(resourceManager, identifier).image();
+	}
+}

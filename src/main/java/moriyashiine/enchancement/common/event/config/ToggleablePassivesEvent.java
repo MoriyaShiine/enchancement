@@ -1,6 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.event.config;
 
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
@@ -12,21 +13,20 @@ import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.event.TickEntityEvent;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.tag.ItemTags;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public class ToggleablePassivesEvent {
 	public static class AirMobility implements MultiplyMovementSpeedEvent {
 		@Override
-		public float multiply(float currentMultiplier, World world, LivingEntity living) {
-			if (ModConfig.toggleablePassives && !living.isOnGround()) {
+		public float multiply(float currentMultiplier, Level level, LivingEntity living) {
+			if (ModConfig.toggleablePassives && !living.onGround()) {
 				AirMobilityComponent airMobilityComponent = ModEntityComponents.AIR_MOBILITY.getNullable(living);
 				if (airMobilityComponent != null && airMobilityComponent.getTicksInAir() > 10) {
 					return currentMultiplier * 1.5F;
@@ -42,22 +42,22 @@ public class ToggleablePassivesEvent {
 	}
 
 	public static class Efficiency implements TickEntityEvent {
-		private static final EntityAttributeModifier WEAK_EFFICIENCY = new EntityAttributeModifier(Enchancement.id("toggleable_passive_efficiency"), 9, EntityAttributeModifier.Operation.ADD_VALUE);
-		private static final EntityAttributeModifier STRONG_EFFICIENCY = new EntityAttributeModifier(Enchancement.id("toggleable_passive_efficiency"), 25, EntityAttributeModifier.Operation.ADD_VALUE);
+		private static final AttributeModifier WEAK_EFFICIENCY = new AttributeModifier(Enchancement.id("toggleable_passive_efficiency"), 9, AttributeModifier.Operation.ADD_VALUE);
+		private static final AttributeModifier STRONG_EFFICIENCY = new AttributeModifier(Enchancement.id("toggleable_passive_efficiency"), 25, AttributeModifier.Operation.ADD_VALUE);
 
 		@Override
-		public void tick(ServerWorld world, Entity entity) {
-			if (entity instanceof PlayerEntity player) {
-				ItemStack stack = player.getInventory().getStack(player.getInventory().getSelectedSlot());
+		public void tick(Level level, Entity entity) {
+			if (entity instanceof ServerPlayer player) {
+				ItemStack stack = player.getInventory().getItem(player.getInventory().getSelectedSlot());
 				boolean hasEfficiency = hasEfficiency(stack);
-				SLibUtils.conditionallyApplyAttributeModifier(player, EntityAttributes.MINING_EFFICIENCY, EnchancementUtil.hasWeakEnchantments(stack) ? WEAK_EFFICIENCY : STRONG_EFFICIENCY, hasEfficiency);
+				SLibUtils.conditionallyApplyAttributeModifier(player, Attributes.MINING_EFFICIENCY, EnchancementUtil.hasWeakEnchantments(stack) ? WEAK_EFFICIENCY : STRONG_EFFICIENCY, hasEfficiency);
 			}
 		}
 
 		private static boolean hasEfficiency(ItemStack stack) {
 			if (ModConfig.toggleablePassives) {
-				if (stack.isIn(ItemTags.MINING_ENCHANTABLE) && stack.getOrDefault(ModComponentTypes.TOGGLEABLE_PASSIVE, false)) {
-					if (stack.hasEnchantments()) {
+				if (stack.is(ItemTags.MINING_ENCHANTABLE) && stack.getOrDefault(ModComponentTypes.TOGGLEABLE_PASSIVE, false)) {
+					if (stack.isEnchanted()) {
 						return true;
 					}
 					stack.remove(ModComponentTypes.TOGGLEABLE_PASSIVE);

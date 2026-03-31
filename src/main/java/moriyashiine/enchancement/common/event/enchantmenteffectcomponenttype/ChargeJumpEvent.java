@@ -1,38 +1,39 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
 import moriyashiine.enchancement.common.component.entity.ChargeJumpComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.strawberrylib.api.event.ModifyMovementEvents;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.particle.BlockStateParticleEffect;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.event.GameEvent;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.Vec3;
 
-public class ChargeJumpEvent implements ModifyMovementEvents.JumpVelocity {
-	private static final BlockStateParticleEffect SLIME_PARTICLE = new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.getDefaultState());
+public class ChargeJumpEvent implements ModifyMovementEvents.JumpDelta {
+	private static final BlockParticleOption SLIME_PARTICLE = new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.defaultBlockState());
 
 	@Override
-	public Vec3d modify(Vec3d velocity, LivingEntity entity) {
+	public Vec3 modify(Vec3 delta, LivingEntity entity) {
 		ChargeJumpComponent chargeJumpComponent = ModEntityComponents.CHARGE_JUMP.getNullable(entity);
 		if (chargeJumpComponent != null && chargeJumpComponent.hasChargeJump()) {
 			float boostProgress = chargeJumpComponent.getChargeProgress();
 			if (boostProgress > 0) {
-				if (entity.getEntityWorld() instanceof ServerWorld world) {
-					SLibUtils.playSound(entity, SoundEvents.BLOCK_SLIME_BLOCK_FALL);
-					entity.emitGameEvent(GameEvent.ENTITY_ACTION);
-					world.spawnParticles(SLIME_PARTICLE, entity.getX(), entity.getY(), entity.getZ(), 32, 0, 0, 0, 0.15);
+				if (entity.level() instanceof ServerLevel level) {
+					SLibUtils.playSound(entity, SoundEvents.SLIME_BLOCK_FALL);
+					entity.gameEvent(GameEvent.ENTITY_ACTION);
+					level.sendParticles(SLIME_PARTICLE, entity.getX(), entity.getY(), entity.getZ(), 32, 0, 0, 0, 0.15);
 				}
-				return velocity.add(0, chargeJumpComponent.getBoost(), 0);
+				return delta.add(0, chargeJumpComponent.getBoost(), 0);
 			}
 		}
-		return velocity;
+		return delta;
 	}
 }

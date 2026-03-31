@@ -1,6 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
@@ -10,24 +11,24 @@ import moriyashiine.enchancement.common.payload.WallJumpPayload;
 import moriyashiine.enchancement.common.payload.WallJumpSlidingPayload;
 import moriyashiine.enchancement.common.tag.ModBlockTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.HoneyBlock;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttributeInstance;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.event.GameEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.Identifier;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HoneyBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
@@ -37,7 +38,7 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 	private final LivingEntity obj;
 	private BlockPos slidingPos = null;
 
-	private final BlockPos.Mutable mutable = new BlockPos.Mutable();
+	private final BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
 	private float jumpStrength = 0;
 	private boolean hasJumped = false;
 
@@ -46,40 +47,40 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 	}
 
 	@Override
-	public void readData(ReadView readView) {
-		slidingPos = readView.read("SlidingPos", BlockPos.CODEC).orElse(null);
+	public void readData(ValueInput input) {
+		slidingPos = input.read("SlidingPos", BlockPos.CODEC).orElse(null);
 	}
 
 	@Override
-	public void writeData(WriteView writeView) {
+	public void writeData(ValueOutput output) {
 		if (slidingPos != null) {
-			writeView.put("SlidingPos", BlockPos.CODEC, slidingPos);
+			output.store("SlidingPos", BlockPos.CODEC, slidingPos);
 		}
 	}
 
 	@Override
 	public void tick() {
 		jumpStrength = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.WALL_JUMP, obj, 0);
-		if (jumpStrength == 0 || obj.isOnGround()) {
+		if (jumpStrength == 0 || obj.onGround()) {
 			slidingPos = null;
 			hasJumped = false;
 		} else if (slidingPos != null) {
-			((HoneyBlock) Blocks.HONEY_BLOCK).addCollisionEffects(obj.getEntityWorld(), obj);
-			((HoneyBlock) Blocks.HONEY_BLOCK).updateSlidingVelocity(obj);
+			((HoneyBlock) Blocks.HONEY_BLOCK).maybeDoSlideEffects(obj.level(), obj);
+			((HoneyBlock) Blocks.HONEY_BLOCK).doSlideMovement(obj);
 		}
 	}
 
 	@Override
 	public void serverTick() {
 		tick();
-		EntityAttributeInstance safeFallDistanceAttribute = obj.getAttributeInstance(EntityAttributes.SAFE_FALL_DISTANCE);
+		AttributeInstance safeFallDistance = obj.getAttribute(Attributes.SAFE_FALL_DISTANCE);
 		if (hasJumped()) {
-			if (!safeFallDistanceAttribute.hasModifier(SAFE_FALL_DISTANCE_ID)) {
-				int reduction = MathHelper.floor(MultiplyMovementSpeedEvent.getJumpStrength(obj, jumpStrength * 3) * 10);
-				safeFallDistanceAttribute.addPersistentModifier(new EntityAttributeModifier(SAFE_FALL_DISTANCE_ID, reduction, EntityAttributeModifier.Operation.ADD_VALUE));
+			if (!safeFallDistance.hasModifier(SAFE_FALL_DISTANCE_ID)) {
+				int reduction = Mth.floor(MultiplyMovementSpeedEvent.getJumpStrength(obj, jumpStrength * 3) * 10);
+				safeFallDistance.addPermanentModifier(new AttributeModifier(SAFE_FALL_DISTANCE_ID, reduction, AttributeModifier.Operation.ADD_VALUE));
 			}
-		} else if (safeFallDistanceAttribute.hasModifier(SAFE_FALL_DISTANCE_ID)) {
-			safeFallDistanceAttribute.removeModifier(SAFE_FALL_DISTANCE_ID);
+		} else if (safeFallDistance.hasModifier(SAFE_FALL_DISTANCE_ID)) {
+			safeFallDistance.removeModifier(SAFE_FALL_DISTANCE_ID);
 		}
 	}
 
@@ -93,30 +94,30 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 				for (Direction direction : Direction.values()) {
 					if (direction.getAxis().isHorizontal()) {
 						mutable.move(direction);
-						BlockState state = obj.getEntityWorld().getBlockState(mutable);
-						if (!state.isIn(ModBlockTags.UNSTICKABLE) && !state.getCollisionShape(obj.getEntityWorld(), mutable, ShapeContext.of(obj)).isEmpty() && !obj.isOnGround() && obj.getVelocity().getY() < -0.1) {
-							double mutableDistance = mutable.getSquaredDistance(obj.getEntityPos());
-							if (targetPos != null && mutableDistance == targetPos.getSquaredDistance(obj.getEntityPos())) {
-								BlockPos p1 = mutable.offset(direction.rotateYClockwise());
-								BlockPos p2 = mutable.offset(direction.rotateYCounterclockwise());
-								if (p1.getSquaredDistance(obj.getEntityPos()) < p2.getSquaredDistance(obj.getEntityPos())) {
+						BlockState state = obj.level().getBlockState(mutable);
+						if (!state.is(ModBlockTags.UNSTICKABLE) && !state.getCollisionShape(obj.level(), mutable, CollisionContext.of(obj)).isEmpty() && !obj.onGround() && obj.getDeltaMovement().y() < -0.1) {
+							double mutableDistance = mutable.distToCenterSqr(obj.position());
+							if (targetPos != null && mutableDistance == targetPos.distToCenterSqr(obj.position())) {
+								BlockPos p1 = mutable.relative(direction.getClockWise());
+								BlockPos p2 = mutable.relative(direction.getCounterClockWise());
+								if (p1.distToCenterSqr(obj.position()) < p2.distToCenterSqr(obj.position())) {
 									targetPos = p1;
 								} else {
 									targetPos = p2;
 								}
-							} else if (targetPos == null || mutableDistance < targetPos.getSquaredDistance(obj.getEntityPos())) {
-								targetPos = mutable.toImmutable();
+							} else if (targetPos == null || mutableDistance < targetPos.distToCenterSqr(obj.position())) {
+								targetPos = mutable.immutable();
 							}
 						}
 						mutable.move(direction.getOpposite());
 					}
 				}
 			}
-			if (slidingPos != null && (obj.getControllingPassenger() instanceof PlayerEntity player ? player : obj).jumping) {
-				Vec3d diff = obj.getBlockPos().toCenterPos().subtract(slidingPos.toCenterPos()).normalize().multiply(jumpStrength);
-				Vec3d velocity = new Vec3d(diff.getX(), MultiplyMovementSpeedEvent.getJumpStrength(obj, jumpStrength * (obj instanceof PlayerEntity ? 3 : 2)), diff.getZ());
-				use(velocity);
-				WallJumpPayload.send(obj, velocity);
+			if (slidingPos != null && (obj.getControllingPassenger() instanceof Player player ? player : obj).jumping) {
+				Vec3 diff = obj.blockPosition().getCenter().subtract(slidingPos.getCenter()).normalize().scale(jumpStrength);
+				Vec3 delta = new Vec3(diff.x(), MultiplyMovementSpeedEvent.getJumpStrength(obj, jumpStrength * (obj instanceof Player ? 3 : 2)), diff.z());
+				use(delta);
+				WallJumpPayload.send(obj, delta);
 				targetPos = null;
 			}
 		}
@@ -138,10 +139,10 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 		return slidingPos != null;
 	}
 
-	public void use(Vec3d velocity) {
-		obj.setVelocity(velocity);
-		obj.playSound(SoundEvents.BLOCK_SLIME_BLOCK_FALL);
-		obj.emitGameEvent(GameEvent.ENTITY_ACTION);
+	public void use(Vec3 delta) {
+		obj.setDeltaMovement(delta);
+		obj.playSound(SoundEvents.SLIME_BLOCK_FALL);
+		obj.gameEvent(GameEvent.ENTITY_ACTION);
 		slidingPos = null;
 		hasJumped = true;
 	}

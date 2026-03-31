@@ -1,33 +1,34 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import net.minecraft.entity.projectile.TridentEntity;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
+import net.minecraft.world.entity.projectile.arrow.ThrownTrident;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 
 public class OwnedTridentComponent implements AutoSyncedComponent {
-	private final TridentEntity obj;
+	private final ThrownTrident obj;
 	private boolean ownedByPlayer = false;
 	private int slot = -1;
 
-	public OwnedTridentComponent(TridentEntity obj) {
+	public OwnedTridentComponent(ThrownTrident obj) {
 		this.obj = obj;
 	}
 
 	@Override
-	public void readData(ReadView readView) {
-		ownedByPlayer = readView.getBoolean("OwnedByPlayer", false);
-		slot = readView.getInt("Slot", -1);
+	public void readData(ValueInput input) {
+		ownedByPlayer = input.getBooleanOr("OwnedByPlayer", false);
+		slot = input.getIntOr("Slot", -1);
 	}
 
 	@Override
-	public void writeData(WriteView writeView) {
-		writeView.putBoolean("OwnedByPlayer", ownedByPlayer);
-		writeView.putInt("Slot", slot);
+	public void writeData(ValueOutput output) {
+		output.putBoolean("OwnedByPlayer", ownedByPlayer);
+		output.putInt("Slot", slot);
 	}
 
 	public void sync() {

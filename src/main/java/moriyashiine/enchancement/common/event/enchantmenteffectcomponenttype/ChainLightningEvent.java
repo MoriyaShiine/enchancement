@@ -1,21 +1,22 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.particle.SparkParticleEffect;
+import moriyashiine.enchancement.common.particle.SparkParticleOption;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.event.AfterDamageIncludingDeathEvent;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,29 +29,29 @@ public class ChainLightningEvent implements AfterDamageIncludingDeathEvent {
 	public void afterDamage(LivingEntity entity, DamageSource source, float baseDamageTaken, float damageTaken, boolean blocked) {
 		if (!blocked && first) {
 			float multiplier = 0;
-			if (source.getSource() instanceof LivingEntity living) {
-				multiplier = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.CHAIN_LIGHTNING, (ServerWorld) entity.getEntityWorld(), living.getMainHandStack(), 0);
-			} else if (source.getSource() instanceof PersistentProjectileEntity projectile) {
-				multiplier = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.CHAIN_LIGHTNING, (ServerWorld) entity.getEntityWorld(), projectile.asItemStack(), 0);
+			if (source.getDirectEntity() instanceof LivingEntity living) {
+				multiplier = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.CHAIN_LIGHTNING, (ServerLevel) entity.level(), living.getMainHandItem(), 0);
+			} else if (source.getDirectEntity() instanceof AbstractArrow arrow) {
+				multiplier = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.CHAIN_LIGHTNING, (ServerLevel) entity.level(), arrow.getPickupItem(), 0);
 			}
 			if (multiplier != 0) {
 				first = false;
-				chain(new ArrayList<>(), (ServerWorld) entity.getEntityWorld(), entity, source, baseDamageTaken, multiplier);
+				chain(new ArrayList<>(), (ServerLevel) entity.level(), entity, source, baseDamageTaken, multiplier);
 				first = true;
 			}
 		}
 	}
 
-	private static void chain(List<LivingEntity> hitEntities, ServerWorld world, LivingEntity target, DamageSource source, float damage, float multiplier) {
+	private static void chain(List<LivingEntity> hitEntities, ServerLevel level, LivingEntity target, DamageSource source, float damage, float multiplier) {
 		if (damage > 1 && !hitEntities.contains(target)) {
 			hitEntities.add(target);
-			getNearest(hitEntities, target, source.getSource()).ifPresent(nearest -> {
-				target.playSound(ModSoundEvents.ENTITY_GENERIC_ZAP);
-				world.spawnParticles(new SparkParticleEffect(nearest.getEyePos()), target.getX(), target.getEyeY(), target.getZ(), 1, 0, 0, 0, 0);
-				Vec3d random = target.getEyePos().addRandom(target.getRandom(), 1.5F);
-				world.spawnParticles(new SparkParticleEffect(target.getEyePos()), random.getX(), random.getY(), random.getZ(), 1, 0, 0, 0, 0);
-				nearest.damage(world, source, damage * multiplier);
-				chain(hitEntities, world, nearest, source, damage * multiplier, multiplier);
+			getNearest(hitEntities, target, source.getDirectEntity()).ifPresent(nearest -> {
+				target.makeSound(ModSoundEvents.ENTITY_GENERIC_ZAP);
+				level.sendParticles(new SparkParticleOption(nearest.getEyePosition()), target.getX(), target.getEyeY(), target.getZ(), 1, 0, 0, 0, 0);
+				Vec3 random = target.getEyePosition().offsetRandom(target.getRandom(), 1.5F);
+				level.sendParticles(new SparkParticleOption(target.getEyePosition()), random.x(), random.y(), random.z(), 1, 0, 0, 0, 0);
+				nearest.hurtServer(level, source, damage * multiplier);
+				chain(hitEntities, level, nearest, source, damage * multiplier, multiplier);
 			});
 		}
 	}
@@ -59,8 +60,8 @@ public class ChainLightningEvent implements AfterDamageIncludingDeathEvent {
 		if (attacker == null) {
 			return Optional.empty();
 		}
-		List<LivingEntity> nearby = target.getEntityWorld().getEntitiesByClass(LivingEntity.class, target.getBoundingBox().expand(3, 1, 3), foundEntity ->
-						!hitEntities.contains(foundEntity) && foundEntity.distanceTo(attacker) < 8 && !(foundEntity instanceof PlayerEntity) && SLibUtils.shouldHurt(attacker, foundEntity))
+		List<LivingEntity> nearby = target.level().getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(3, 1, 3), foundEntity ->
+						!hitEntities.contains(foundEntity) && foundEntity.distanceTo(attacker) < 8 && !(foundEntity instanceof Player) && SLibUtils.shouldHurt(attacker, foundEntity))
 				.stream().sorted((e1, e2) -> Float.compare(e1.distanceTo(attacker), e2.distanceTo(attacker))).toList();
 		return nearby.isEmpty() ? Optional.empty() : Optional.of(nearby.getFirst());
 	}

@@ -1,9 +1,10 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.init;
 
-import moriyashiine.enchancement.common.enchantment.effect.entity.*;
+import moriyashiine.enchancement.common.world.item.effects.entity.*;
 
 import static moriyashiine.strawberrylib.api.module.SLibRegistries.registerEnchantmentEntityEffectType;
 

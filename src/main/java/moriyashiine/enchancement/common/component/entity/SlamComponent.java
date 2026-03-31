@@ -1,6 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
@@ -16,24 +17,28 @@ import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
 import moriyashiine.strawberrylib.api.objects.records.ParticleVelocity;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.enums.Thickness;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.particle.BlockStateParticleEffect;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.state.property.Properties;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.util.math.*;
-import net.minecraft.world.event.GameEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DripstoneThickness;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class SlamComponent implements CommonTickingComponent {
 	public static final int DEFAULT_SLAM_COOLDOWN = 7;
 
-	private final PlayerEntity obj;
+	private final Player obj;
 	private boolean isSlamming = false;
 	private int slamCooldown = DEFAULT_SLAM_COOLDOWN, ticksLeftToJump = 0;
 
@@ -42,22 +47,22 @@ public class SlamComponent implements CommonTickingComponent {
 
 	private boolean wasPressingKey = false;
 
-	public SlamComponent(PlayerEntity obj) {
+	public SlamComponent(Player obj) {
 		this.obj = obj;
 	}
 
 	@Override
-	public void readData(ReadView readView) {
-		isSlamming = readView.getBoolean("IsSlamming", false);
-		slamCooldown = readView.getInt("SlamCooldown", 0);
-		ticksLeftToJump = readView.getInt("TicksLeftToJump", 0);
+	public void readData(ValueInput input) {
+		isSlamming = input.getBooleanOr("IsSlamming", false);
+		slamCooldown = input.getIntOr("SlamCooldown", 0);
+		ticksLeftToJump = input.getIntOr("TicksLeftToJump", 0);
 	}
 
 	@Override
-	public void writeData(WriteView writeView) {
-		writeView.putBoolean("IsSlamming", isSlamming);
-		writeView.putInt("SlamCooldown", slamCooldown);
-		writeView.putInt("TicksLeftToJump", ticksLeftToJump);
+	public void writeData(ValueOutput output) {
+		output.putBoolean("IsSlamming", isSlamming);
+		output.putInt("SlamCooldown", slamCooldown);
+		output.putInt("TicksLeftToJump", ticksLeftToJump);
 	}
 
 	@Override
@@ -70,7 +75,7 @@ public class SlamComponent implements CommonTickingComponent {
 					isSlamming = false;
 					return;
 				}
-				obj.setVelocity(obj.getVelocity().getX() * 0.98, Math.min(-3, obj.getVelocity().getY()), obj.getVelocity().getZ() * 0.98);
+				obj.setDeltaMovement(obj.getDeltaMovement().x() * 0.98, Math.min(-3, obj.getDeltaMovement().y()), obj.getDeltaMovement().z() * 0.98);
 				EnchancementUtil.resetFallDistance(obj);
 			}
 			if (slamCooldown > 0) {
@@ -91,14 +96,14 @@ public class SlamComponent implements CommonTickingComponent {
 		tick();
 		if (hasSlam) {
 			if (isSlamming) {
-				SLibClientUtils.addParticles(obj, ModParticleTypes.VELOCITY_LINE, 4, ParticleAnchor.BODY, ParticleVelocity.of(new Vec3d(0, 1, 0)));
+				SLibClientUtils.addParticles(obj, ModParticleTypes.VELOCITY_LINE, 4, ParticleAnchor.BODY, ParticleVelocity.of(new Vec3(0, 1, 0)));
 			}
 			if (!obj.isSpectator() && SLibClientUtils.isHost(obj)) {
-				if (isSlamming && obj.isOnGround()) {
+				if (isSlamming && obj.onGround()) {
 					stopSlammingClient(obj.getY());
 					StopSlammingC2SPayload.send(obj.getY());
 				}
-				boolean pressingKey = EnchancementClient.SLAM_KEYBINDING.isPressed();
+				boolean pressingKey = EnchancementClient.SLAM_KEYMAPPING.isDown();
 				if (pressingKey && !wasPressingKey && canSlam()) {
 					isSlamming = true;
 					slamCooldown = DEFAULT_SLAM_COOLDOWN;
@@ -123,7 +128,7 @@ public class SlamComponent implements CommonTickingComponent {
 
 	public float getJumpBoostStrength() {
 		if (ticksLeftToJump > 0) {
-			return MultiplyMovementSpeedEvent.getJumpStrength(obj, (1 + strength) / obj.getJumpVelocity());
+			return MultiplyMovementSpeedEvent.getJumpStrength(obj, (1 + strength) / obj.getJumpPower());
 		}
 		return 1;
 	}
@@ -137,7 +142,7 @@ public class SlamComponent implements CommonTickingComponent {
 		if (slideComponent != null && slideComponent.isSliding()) {
 			return false;
 		}
-		return slamCooldown == 0 && !obj.isOnGround() && SLibUtils.isGroundedOrAirborne(obj);
+		return slamCooldown == 0 && !obj.onGround() && SLibUtils.isGroundedOrAirborne(obj);
 	}
 
 	private void stopSlamming() {
@@ -148,28 +153,28 @@ public class SlamComponent implements CommonTickingComponent {
 
 	public void stopSlammingServer() {
 		stopSlamming();
-		obj.getEntityWorld().getOtherEntities(obj, new Box(obj.getBlockPos()).expand(3, 1, 3), foundEntity -> foundEntity.isAlive() && foundEntity.distanceTo(obj) < 5).forEach(foundEntity -> {
-			if (foundEntity instanceof LivingEntity living && SLibUtils.shouldHurt(obj, living) && SLibUtils.canSee(obj, foundEntity, 0)) {
-				living.takeKnockback(1, obj.getX() - living.getX(), obj.getZ() - living.getZ());
+		obj.level().getEntities(obj, new AABB(obj.blockPosition()).inflate(3, 1, 3), foundEntity -> foundEntity.isAlive() && foundEntity.distanceTo(obj) < 5).forEach(foundEntity -> {
+			if (foundEntity instanceof LivingEntity living && SLibUtils.shouldHurt(obj, living) && SLibUtils.hasLineOfSight(obj, foundEntity, 0)) {
+				living.knockback(1, obj.getX() - living.getX(), obj.getZ() - living.getZ());
 			}
 		});
-		obj.getEntityWorld().emitGameEvent(GameEvent.STEP, obj.getEntityPos(), GameEvent.Emitter.of(obj.getSteppingBlockState()));
-		@SuppressWarnings("deprecation") BlockState state = obj.getEntityWorld().getBlockState(obj.getLandingPos());
-		if (state.contains(Properties.THICKNESS) && state.contains(Properties.VERTICAL_DIRECTION) && state.get(Properties.THICKNESS) == Thickness.TIP && state.get(Properties.VERTICAL_DIRECTION) == Direction.UP) {
-			obj.damage((ServerWorld) obj.getEntityWorld(), obj.getDamageSources().stalagmite(), Integer.MAX_VALUE);
+		obj.level().gameEvent(GameEvent.STEP, obj.position(), GameEvent.Context.of(obj.getBlockStateOn()));
+		@SuppressWarnings("deprecation") BlockState state = obj.level().getBlockState(obj.getOnPosLegacy());
+		if (state.hasProperty(BlockStateProperties.DRIPSTONE_THICKNESS) && state.hasProperty(BlockStateProperties.VERTICAL_DIRECTION) && state.getValue(BlockStateProperties.DRIPSTONE_THICKNESS) == DripstoneThickness.TIP && state.getValue(BlockStateProperties.VERTICAL_DIRECTION) == Direction.UP) {
+			obj.hurtServer((ServerLevel) obj.level(), obj.damageSources().stalagmite(), Integer.MAX_VALUE);
 		}
 	}
 
 	public void stopSlammingClient(double posY) {
 		stopSlamming();
-		BlockPos.Mutable mutable = new BlockPos.Mutable();
+		BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
 		double y = Math.round(posY - 1);
 		for (int i = 0; i < 360; i += 15) {
 			for (int j = 1; j < 5; j++) {
-				double x = obj.getX() + MathHelper.sin(i) * j / 2, z = obj.getZ() + MathHelper.cos(i) * j / 2;
-				BlockState state = obj.getEntityWorld().getBlockState(mutable.set(x, y, z));
-				if (!state.isReplaceable() && obj.getEntityWorld().getBlockState(mutable.move(Direction.UP)).isReplaceable()) {
-					obj.getEntityWorld().addParticleClient(new BlockStateParticleEffect(ParticleTypes.BLOCK, state), x, mutable.getY(), z, 0, 0, 0);
+				double x = obj.getX() + Mth.sin(i) * j / 2, z = obj.getZ() + Mth.cos(i) * j / 2;
+				BlockState state = obj.level().getBlockState(mutable.set(x, y, z));
+				if (!state.canBeReplaced() && obj.level().getBlockState(mutable.move(Direction.UP)).canBeReplaced()) {
+					obj.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, state), x, mutable.getY(), z, 0, 0, 0);
 				}
 			}
 		}

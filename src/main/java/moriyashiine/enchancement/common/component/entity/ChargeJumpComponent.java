@@ -1,36 +1,37 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.component.entity;
 
-import moriyashiine.enchancement.common.enchantment.effect.ChargeJumpEffect;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.util.math.MathHelper;
+import moriyashiine.enchancement.common.world.item.effects.ChargeJumpEffect;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class ChargeJumpComponent implements AutoSyncedComponent, CommonTickingComponent {
-	private final PlayerEntity obj;
+	private final Player obj;
 	public int strength = 0;
 
 	private float chargeStrength = 0;
 	private int chargeTime = 0;
 	private boolean hasChargeJump = false;
 
-	public ChargeJumpComponent(PlayerEntity obj) {
+	public ChargeJumpComponent(Player obj) {
 		this.obj = obj;
 	}
 
 	@Override
-	public void readData(ReadView readView) {
-		strength = readView.getInt("Strength", 0);
+	public void readData(ValueInput input) {
+		strength = input.getIntOr("Strength", 0);
 	}
 
 	@Override
-	public void writeData(WriteView writeView) {
-		writeView.putInt("Strength", strength);
+	public void writeData(ValueOutput output) {
+		output.putInt("Strength", strength);
 	}
 
 	@Override
@@ -39,7 +40,7 @@ public class ChargeJumpComponent implements AutoSyncedComponent, CommonTickingCo
 		chargeStrength = ChargeJumpEffect.getStrength(obj, 0);
 		hasChargeJump = chargeStrength > 0;
 		if (hasChargeJump) {
-			if (obj.isOnGround() && obj.isSneaking()) {
+			if (obj.onGround() && obj.isShiftKeyDown()) {
 				if (strength < chargeTime) {
 					strength++;
 				}
@@ -52,7 +53,7 @@ public class ChargeJumpComponent implements AutoSyncedComponent, CommonTickingCo
 	}
 
 	public float getChargeProgress() {
-		return MathHelper.lerp((strength - 2) / (Math.max(1, chargeTime - 2F)), 0F, 1F);
+		return Mth.lerp((strength - 2) / (Math.max(1, chargeTime - 2F)), 0F, 1F);
 	}
 
 	public float getBoost() {

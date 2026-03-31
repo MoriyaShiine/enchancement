@@ -1,31 +1,32 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.component.entity;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import moriyashiine.enchancement.common.enchantment.effect.LeechingTridentEffect;
 import moriyashiine.enchancement.common.init.ModDamageTypes;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.enchancement.common.world.item.effects.LeechingTridentEffect;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.TridentEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.arrow.ThrownTrident;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.mutable.MutableFloat;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
@@ -34,32 +35,32 @@ import java.util.Collections;
 public class LeechingTridentComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private static final int NO_ENTITY = -1;
 
-	private final TridentEntity obj;
+	private final ThrownTrident obj;
 	private LeechData leechData = null;
 	private LivingEntity stuckEntity = null;
 	private int stuckEntityId = NO_ENTITY;
 	private int leechingTicks = 0, stabTicks = 0;
 
-	public LeechingTridentComponent(TridentEntity obj) {
+	public LeechingTridentComponent(ThrownTrident obj) {
 		this.obj = obj;
 	}
 
 	@Override
-	public void readData(ReadView readView) {
-		leechData = readView.read("LeechData", LeechData.CODEC).orElse(null);
-		stuckEntityId = readView.getInt("StuckEntityId", NO_ENTITY);
-		leechingTicks = readView.getInt("LeechingTicks", 0);
-		stabTicks = readView.getInt("StabTicks", 0);
+	public void readData(ValueInput input) {
+		leechData = input.read("LeechData", LeechData.CODEC).orElse(null);
+		stuckEntityId = input.getIntOr("StuckEntityId", NO_ENTITY);
+		leechingTicks = input.getIntOr("LeechingTicks", 0);
+		stabTicks = input.getIntOr("StabTicks", 0);
 	}
 
 	@Override
-	public void writeData(WriteView writeView) {
+	public void writeData(ValueOutput output) {
 		if (leechData != null) {
-			writeView.put("LeechData", LeechData.CODEC, leechData);
+			output.store("LeechData", LeechData.CODEC, leechData);
 		}
-		writeView.putInt("StuckEntityId", stuckEntityId);
-		writeView.putInt("LeechingTicks", leechingTicks);
-		writeView.putInt("StabTicks", stabTicks);
+		output.putInt("StuckEntityId", stuckEntityId);
+		output.putInt("LeechingTicks", leechingTicks);
+		output.putInt("StabTicks", stabTicks);
 	}
 
 	@Override
@@ -68,12 +69,12 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 			if (stuckEntity != null) {
 				setStuckEntity(null);
 			}
-		} else if (stuckEntity == null && obj.getEntityWorld().getEntityById(stuckEntityId) instanceof LivingEntity living) {
+		} else if (stuckEntity == null && obj.level().getEntity(stuckEntityId) instanceof LivingEntity living) {
 			setStuckEntity(living);
 		}
-		if (stuckEntity != null && stuckEntity.isPartOfGame()) {
-			obj.refreshPositionAfterTeleport(stuckEntity.getX(), stuckEntity.getEyeY(), stuckEntity.getZ());
-			obj.setVelocity(Vec3d.ZERO);
+		if (stuckEntity != null && stuckEntity.slib$exists()) {
+			obj.snapTo(stuckEntity.getX(), stuckEntity.getEyeY(), stuckEntity.getZ());
+			obj.setDeltaMovement(Vec3.ZERO);
 			leechingTicks++;
 			if (stabTicks > 0) {
 				stabTicks--;
@@ -84,14 +85,14 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 	@Override
 	public void serverTick() {
 		tick();
-		if (stuckEntity != null && stuckEntity.isPartOfGame()) {
+		if (stuckEntity != null && stuckEntity.slib$exists()) {
 			if (leechingTicks % 20 == 0) {
-				int timeUntilRegen = stuckEntity.timeUntilRegen;
-				stuckEntity.timeUntilRegen = 0;
-				if (stuckEntity.damage((ServerWorld) obj.getEntityWorld(), obj.getEntityWorld().getDamageSources().create(ModDamageTypes.LIFE_DRAIN, obj, obj.getOwner()), leechData.damage()) && obj.getOwner() instanceof LivingEntity living && living.isPartOfGame()) {
+				int timeUntilRegen = stuckEntity.invulnerableTime;
+				stuckEntity.invulnerableTime = 0;
+				if (stuckEntity.hurtServer((ServerLevel) obj.level(), obj.level().damageSources().source(ModDamageTypes.LIFE_DRAIN, obj, obj.getOwner()), leechData.damage()) && obj.getOwner() instanceof LivingEntity living && living.slib$exists()) {
 					living.heal(leechData.healAmount());
 				}
-				stuckEntity.timeUntilRegen = timeUntilRegen;
+				stuckEntity.invulnerableTime = timeUntilRegen;
 				stabTicks = 20;
 				sync();
 			}
@@ -106,7 +107,7 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 	@Override
 	public void clientTick() {
 		tick();
-		if (stuckEntity != null && stuckEntity.isPartOfGame() && stabTicks == 19) {
+		if (stuckEntity != null && stuckEntity.slib$exists() && stabTicks == 19) {
 			SLibClientUtils.addParticles(stuckEntity, ParticleTypes.DAMAGE_INDICATOR, 5, ParticleAnchor.BODY);
 		}
 	}
@@ -144,16 +145,16 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 	}
 
 	public static void maybeSet(LivingEntity user, ItemStack stack, Entity entity) {
-		if (entity instanceof TridentEntity) {
+		if (entity instanceof ThrownTrident) {
 			MutableFloat damage = new MutableFloat(), healAmount = new MutableFloat(), duration = new MutableFloat();
-			if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.LEECHING_TRIDENT)) {
+			if (EnchantmentHelper.has(stack, ModEnchantmentEffectComponentTypes.LEECHING_TRIDENT)) {
 				LeechingTridentEffect.setValues(user.getRandom(), damage, healAmount, duration, Collections.singleton(stack));
-			} else if (!(user instanceof PlayerEntity) && EnchancementUtil.hasAnyEnchantmentsWith(user, ModEnchantmentEffectComponentTypes.LEECHING_TRIDENT)) {
+			} else if (!(user instanceof Player) && EnchancementUtil.hasAnyEnchantmentsWith(user, ModEnchantmentEffectComponentTypes.LEECHING_TRIDENT)) {
 				LeechingTridentEffect.setValues(user.getRandom(), damage, healAmount, duration, EnchancementUtil.getHeldItems(user));
 			}
 			if (damage.floatValue() != 0) {
 				LeechingTridentComponent leechingTridentComponent = ModEntityComponents.LEECHING_TRIDENT.get(entity);
-				leechingTridentComponent.leechData = new LeechData(damage.floatValue(), healAmount.floatValue(), MathHelper.floor(duration.floatValue() * 20));
+				leechingTridentComponent.leechData = new LeechData(damage.floatValue(), healAmount.floatValue(), Mth.floor(duration.floatValue() * 20));
 				leechingTridentComponent.sync();
 			}
 		}

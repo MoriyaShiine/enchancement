@@ -1,18 +1,19 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.component.entity;
 
-import moriyashiine.enchancement.common.enchantment.effect.GlideEffect;
 import moriyashiine.enchancement.common.payload.GlideC2SPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.enchancement.common.world.item.effects.GlideEffect;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
@@ -28,15 +29,15 @@ public class GlideComponent implements AutoSyncedComponent, CommonTickingCompone
 	}
 
 	@Override
-	public void readData(ReadView readView) {
-		gliding = readView.getBoolean("Gliding", false);
-		airTicks = readView.getInt("AirTicks", 0);
+	public void readData(ValueInput input) {
+		gliding = input.getBooleanOr("Gliding", false);
+		airTicks = input.getIntOr("AirTicks", 0);
 	}
 
 	@Override
-	public void writeData(WriteView writeView) {
-		writeView.putBoolean("Gliding", gliding);
-		writeView.putInt("AirTicks", airTicks);
+	public void writeData(ValueOutput output) {
+		output.putBoolean("Gliding", gliding);
+		output.putInt("AirTicks", airTicks);
 	}
 
 	@Override
@@ -46,7 +47,7 @@ public class GlideComponent implements AutoSyncedComponent, CommonTickingCompone
 			if (gliding) {
 				EnchancementUtil.resetFallDistance(obj);
 			}
-			if (obj.isOnGround()) {
+			if (obj.onGround()) {
 				airTicks = 0;
 			} else if (airTicks < minDuration || obj.jumping) {
 				airTicks++;

@@ -1,11 +1,12 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.component.entity;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
@@ -19,17 +20,17 @@ public class BounceComponent implements ServerTickingComponent, AutoSyncedCompon
 	}
 
 	@Override
-	public void readData(ReadView readView) {
-		invertedBounce = readView.getBoolean("InvertedBounce", false);
-		justBounced = readView.getBoolean("JustBounced", false);
-		ticksOnGround = readView.getInt("TicksOnGround", 0);
+	public void readData(ValueInput input) {
+		invertedBounce = input.getBooleanOr("InvertedBounce", false);
+		justBounced = input.getBooleanOr("JustBounced", false);
+		ticksOnGround = input.getIntOr("TicksOnGround", 0);
 	}
 
 	@Override
-	public void writeData(WriteView writeView) {
-		writeView.putBoolean("InvertedBounce", invertedBounce);
-		writeView.putBoolean("JustBounced", justBounced);
-		writeView.putInt("TicksOnGround", ticksOnGround);
+	public void writeData(ValueOutput output) {
+		output.putBoolean("InvertedBounce", invertedBounce);
+		output.putBoolean("JustBounced", justBounced);
+		output.putInt("TicksOnGround", ticksOnGround);
 	}
 
 	@Override
@@ -37,7 +38,7 @@ public class BounceComponent implements ServerTickingComponent, AutoSyncedCompon
 		if (ticksOnGround == 5) {
 			justBounced = false;
 		}
-		if (ticksOnGround < 5 && obj.isOnGround()) {
+		if (ticksOnGround < 5 && obj.onGround()) {
 			ticksOnGround++;
 		} else {
 			ticksOnGround = 0;

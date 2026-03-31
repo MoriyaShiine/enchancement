@@ -1,17 +1,18 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.mixin.config.enchantmentdescriptions.client;
 
 import moriyashiine.enchancement.client.event.config.EnchantmentDescriptionsEvent;
-import net.minecraft.component.ComponentType;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.TooltipDisplayComponent;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.tooltip.TooltipAppender;
-import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.text.Text;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.item.component.TooltipProvider;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -21,9 +22,9 @@ import java.util.function.Consumer;
 
 @Mixin(ItemStack.class)
 public class ItemStackMixin {
-	@Inject(method = "appendComponentTooltip", at = @At("HEAD"), cancellable = true)
-	private <T extends TooltipAppender> void enchancement$enchantmentDescriptions(ComponentType<T> componentType, Item.TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> textConsumer, TooltipType type, CallbackInfo ci) {
-		if (componentType == DataComponentTypes.STORED_ENCHANTMENTS && EnchantmentDescriptionsEvent.enableDescriptions()) {
+	@Inject(method = "addToTooltip", at = @At("HEAD"), cancellable = true)
+	private <T extends TooltipProvider> void enchancement$enchantmentDescriptions(DataComponentType<T> type, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> consumer, TooltipFlag flag, CallbackInfo ci) {
+		if (type == DataComponents.STORED_ENCHANTMENTS && EnchantmentDescriptionsEvent.enableDescriptions()) {
 			ci.cancel();
 		}
 	}

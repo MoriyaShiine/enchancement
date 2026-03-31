@@ -1,26 +1,27 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.client.particle;
 
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleFactory;
-import net.minecraft.client.particle.SpriteProvider;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particle.SimpleParticleType;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
 
 public class ShortFlameParticle extends FlameParticle {
-	public ShortFlameParticle(ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, SpriteProvider spriteProvider) {
-		super(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider.getFirst());
-		maxAge /= 4;
+	public ShortFlameParticle(ClientLevel level, double x, double y, double z, double xa, double ya, double za, SpriteSet sprites) {
+		super(level, x, y, z, xa, ya, za, sprites.first());
+		lifetime /= 4;
 	}
 
-	public record SmallFactory(SpriteProvider spriteProvider) implements ParticleFactory<SimpleParticleType> {
+	public record SmallProvider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 		@Override
-		public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, Random random) {
-			ShortFlameParticle shortFlameParticle = new ShortFlameParticle(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider());
+		public Particle createParticle(SimpleParticleType options, ClientLevel level, double x, double y, double z, double xAux, double yAux, double zAux, RandomSource random) {
+			ShortFlameParticle shortFlameParticle = new ShortFlameParticle(level, x, y, z, xAux, yAux, zAux, sprites());
 			shortFlameParticle.scale(0.5F);
 			return shortFlameParticle;
 		}

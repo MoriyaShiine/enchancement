@@ -1,6 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.payload;
 
 import moriyashiine.enchancement.client.payload.StopSlammingS2CPayload;
@@ -10,18 +11,20 @@ import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
-public record StopSlammingC2SPayload(double posY) implements CustomPayload {
-	public static final Id<StopSlammingC2SPayload> ID = new Id<>(Enchancement.id("stop_slamming_c2s"));
-	public static final PacketCodec<PacketByteBuf, StopSlammingC2SPayload> CODEC = PacketCodec.tuple(PacketCodecs.DOUBLE, StopSlammingC2SPayload::posY, StopSlammingC2SPayload::new);
+public record StopSlammingC2SPayload(double posY) implements CustomPacketPayload {
+	public static final Type<StopSlammingC2SPayload> TYPE = new Type<>(Enchancement.id("stop_slamming_c2s"));
+	public static final StreamCodec<FriendlyByteBuf, StopSlammingC2SPayload> CODEC = StreamCodec.composite(
+			ByteBufCodecs.DOUBLE, StopSlammingC2SPayload::posY,
+			StopSlammingC2SPayload::new);
 
 	@Override
-	public Id<? extends CustomPayload> getId() {
-		return ID;
+	public Type<StopSlammingC2SPayload> type() {
+		return TYPE;
 	}
 
 	public static void send(double posY) {
@@ -34,7 +37,7 @@ public record StopSlammingC2SPayload(double posY) implements CustomPayload {
 			SlamComponent slamComponent = ModEntityComponents.SLAM.get(context.player());
 			if (slamComponent.hasSlam() && slamComponent.isSlamming()) {
 				slamComponent.stopSlammingServer();
-				PlayerLookup.tracking(context.player()).forEach(foundPlayer -> StopSlammingS2CPayload.send(foundPlayer, context.player(), payload.posY()));
+				PlayerLookup.tracking(context.player()).forEach(receiver -> StopSlammingS2CPayload.send(receiver, context.player(), payload.posY()));
 			}
 		}
 	}

@@ -1,23 +1,24 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.component.entity;
 
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import org.ladysnake.cca.api.v3.component.Component;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import org.ladysnake.cca.api.v8.component.CardinalComponent;
 
-public class SafeLightningComponent implements Component {
+public class SafeLightningComponent implements CardinalComponent {
 	private boolean safe = false;
 
 	@Override
-	public void readData(ReadView readView) {
-		safe = readView.getBoolean("Safe", false);
+	public void readData(ValueInput input) {
+		safe = input.getBooleanOr("Safe", false);
 	}
 
 	@Override
-	public void writeData(WriteView writeView) {
-		writeView.putBoolean("Safe", safe);
+	public void writeData(ValueOutput output) {
+		output.putBoolean("Safe", safe);
 	}
 
 	public boolean isSafe() {

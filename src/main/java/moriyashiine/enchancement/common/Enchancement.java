@@ -1,6 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common;
 
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
@@ -11,13 +12,13 @@ import moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype.*;
 import moriyashiine.enchancement.common.event.internal.*;
 import moriyashiine.enchancement.common.init.*;
 import moriyashiine.enchancement.common.payload.*;
-import moriyashiine.enchancement.common.reloadlistener.EnchantingMaterialReloadListener;
+import moriyashiine.enchancement.common.reloadlistener.BaseBlocksReloadListener;
+import moriyashiine.enchancement.common.reloadlistener.EnchantingMaterialsReloadListener;
 import moriyashiine.enchancement.common.reloadlistener.HeadDropsReloadListener;
-import moriyashiine.enchancement.common.reloadlistener.MineOreVeinsBaseBlockReloadListener;
-import moriyashiine.enchancement.common.util.enchantment.EruptionMaceEffect;
-import moriyashiine.enchancement.common.util.enchantment.LightningDashMaceEffect;
-import moriyashiine.enchancement.common.util.enchantment.MaceEffect;
-import moriyashiine.enchancement.common.util.enchantment.WindBurstMaceEffect;
+import moriyashiine.enchancement.common.util.enchantment.effect.EruptionMaceEffect;
+import moriyashiine.enchancement.common.util.enchantment.effect.LightningDashMaceEffect;
+import moriyashiine.enchancement.common.util.enchantment.effect.MaceEffect;
+import moriyashiine.enchancement.common.util.enchantment.effect.WindBurstMaceEffect;
 import moriyashiine.strawberrylib.api.SLib;
 import moriyashiine.strawberrylib.api.event.*;
 import net.fabricmc.api.ModInitializer;
@@ -37,11 +38,12 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.resource.ResourceType;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.packs.PackType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+// todo re-renable forced trade rebalance somehow (maybe datapacks?)
 public class Enchancement implements ModInitializer {
 	public static final String MOD_ID = "enchancement";
 
@@ -55,11 +57,11 @@ public class Enchancement implements ModInitializer {
 	public void onInitialize() {
 		SLib.init(MOD_ID);
 		initRegistries();
-		initEvents();
 		initPayloads();
-		ResourceLoader.get(ResourceType.SERVER_DATA).registerReloader(EnchantingMaterialReloadListener.ID, new EnchantingMaterialReloadListener());
-		ResourceLoader.get(ResourceType.SERVER_DATA).registerReloader(HeadDropsReloadListener.ID, new HeadDropsReloadListener());
-		ResourceLoader.get(ResourceType.SERVER_DATA).registerReloader(MineOreVeinsBaseBlockReloadListener.ID, new MineOreVeinsBaseBlockReloadListener());
+		initEvents();
+		ResourceLoader.get(PackType.SERVER_DATA).registerReloadListener(id("base_blocks"), new BaseBlocksReloadListener());
+		ResourceLoader.get(PackType.SERVER_DATA).registerReloadListener(id("enchanting_materials"), new EnchantingMaterialsReloadListener());
+		ResourceLoader.get(PackType.SERVER_DATA).registerReloadListener(id("head_drops"), new HeadDropsReloadListener());
 		isLoaded = true;
 		isApoliLoaded = FabricLoader.getInstance().isModLoaded("apoli");
 		for (String mod : new String[]{"enchdesc", "enchantedtooltips", "idwtialsimmoedm"}) {
@@ -71,7 +73,7 @@ public class Enchancement implements ModInitializer {
 	}
 
 	public static Identifier id(String value) {
-		return Identifier.of(MOD_ID, value);
+		return Identifier.fromNamespaceAndPath(MOD_ID, value);
 	}
 
 	private void initRegistries() {
@@ -81,13 +83,66 @@ public class Enchancement implements ModInitializer {
 		ModEntityTypes.init();
 		ModLootConditionTypes.init();
 		ModLootFunctionTypes.init();
+		ModMenuTypes.init();
 		ModParticleTypes.init();
-		ModScreenHandlerTypes.init();
 		ModSoundEvents.init();
 
 		MaceEffect.EFFECTS.add(new EruptionMaceEffect());
 		MaceEffect.EFFECTS.add(new LightningDashMaceEffect());
 		MaceEffect.EFFECTS.add(new WindBurstMaceEffect());
+	}
+
+	private void initPayloads() {
+		// client payloads
+		PayloadTypeRegistry.clientboundPlay().register(EnforceConfigMatchPayload.TYPE, EnforceConfigMatchPayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(SyncBookshelvesPayload.TYPE, SyncBookshelvesPayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(SyncEnchantingMaterialMapPayload.TYPE, SyncEnchantingMaterialMapPayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(SyncEnchantingTableCostPayload.TYPE, SyncEnchantingTableCostPayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(SyncHookedMovementDeltaPayload.TYPE, SyncHookedMovementDeltaPayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(SyncOriginalMaxLevelsPayload.TYPE, SyncOriginalMaxLevelsPayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(AddLightningDashParticlesPayload.TYPE, AddLightningDashParticlesPayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(AddMoltenParticlesPayload.TYPE, AddMoltenParticlesPayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(BoostInFluidS2CPayload.TYPE, BoostInFluidS2CPayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(GlideS2CPayload.TYPE, GlideS2CPayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(PlayBrimstoneFireSoundPayload.TYPE, PlayBrimstoneFireSoundPayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(PlayBrimstoneTravelSoundPayload.TYPE, PlayBrimstoneTravelSoundPayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(StartSlammingS2CPayload.TYPE, StartSlammingS2CPayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(StartSlidingS2CPayload.TYPE, StartSlidingS2CPayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(StopSlammingS2CPayload.TYPE, StopSlammingS2CPayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(StopSlidingS2CPayload.TYPE, StopSlidingS2CPayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(SyncFrozenPlayerSlimStatusS2CPayload.TYPE, SyncFrozenPlayerSlimStatusS2CPayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(UseEruptionPayload.TYPE, UseEruptionPayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(UseLightningDashPayload.TYPE, UseLightningDashPayload.CODEC);
+		// common payloads
+		PayloadTypeRegistry.serverboundPlay().register(SyncDeltaMovementPayload.TYPE, SyncDeltaMovementPayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(AirJumpPayload.TYPE, AirJumpPayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(BoostInFluidC2SPayload.TYPE, BoostInFluidC2SPayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(DirectionBurstPayload.TYPE, DirectionBurstPayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(GlideC2SPayload.TYPE, GlideC2SPayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(RotationBurstPayload.TYPE, RotationBurstPayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(StartSlammingC2SPayload.TYPE, StartSlammingC2SPayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(StartSlidingC2SPayload.TYPE, StartSlidingC2SPayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(StopSlammingC2SPayload.TYPE, StopSlammingC2SPayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(StopSlidingC2SPayload.TYPE, StopSlidingC2SPayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(SyncFrozenPlayerSlimStatusC2SPayload.TYPE, SyncFrozenPlayerSlimStatusC2SPayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(SyncInvertedBounceStatusPayload.TYPE, SyncInvertedBounceStatusPayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(WallJumpPayload.TYPE, WallJumpPayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(WallJumpSlidingPayload.TYPE, WallJumpSlidingPayload.CODEC);
+		// server receivers
+		ServerPlayNetworking.registerGlobalReceiver(SyncDeltaMovementPayload.TYPE, new SyncDeltaMovementPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(AirJumpPayload.TYPE, new AirJumpPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(BoostInFluidC2SPayload.TYPE, new BoostInFluidC2SPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(DirectionBurstPayload.TYPE, new DirectionBurstPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(GlideC2SPayload.TYPE, new GlideC2SPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(RotationBurstPayload.TYPE, new RotationBurstPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(StartSlammingC2SPayload.TYPE, new StartSlammingC2SPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(StartSlidingC2SPayload.TYPE, new StartSlidingC2SPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(StopSlammingC2SPayload.TYPE, new StopSlammingC2SPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(StopSlidingC2SPayload.TYPE, new StopSlidingC2SPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(SyncFrozenPlayerSlimStatusC2SPayload.TYPE, new SyncFrozenPlayerSlimStatusC2SPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(SyncInvertedBounceStatusPayload.TYPE, new SyncInvertedBounceStatusPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(WallJumpPayload.TYPE, new WallJumpPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(WallJumpSlidingPayload.TYPE, new WallJumpSlidingPayload.Receiver());
 	}
 
 	private void initEvents() {
@@ -100,7 +155,7 @@ public class Enchancement implements ModInitializer {
 		ServerTickEvents.END_SERVER_TICK.register(new SyncEnchantingMaterialMapEvent.Tick());
 		ServerPlayConnectionEvents.JOIN.register(new SyncOriginalMaxLevelsEvent.Join());
 		ServerLifecycleEvents.SERVER_STARTED.register(new SyncOriginalMaxLevelsEvent.ServerStarted());
-		ServerTickEvents.END_SERVER_TICK.register(new SyncVelocitiesEvent());
+		ServerTickEvents.END_SERVER_TICK.register(new SyncDeltaMovementsEvent());
 		// config
 		DefaultItemComponentEvents.MODIFY.register(new AnimalArmorEnchantmentEvent.AllowComponent());
 		EnchantmentEvents.ALLOW_ENCHANTING.register(new AnimalArmorEnchantmentEvent.AllowEnchanting());
@@ -121,10 +176,10 @@ public class Enchancement implements ModInitializer {
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new BuryEntityEvent.Unbury());
 		UseEntityCallback.EVENT.register(new BuryEntityEvent.Use());
 		AfterDamageIncludingDeathEvent.EVENT.register(new ChainLightningEvent());
-		ModifyMovementEvents.JUMP_VELOCITY.register(new ChargeJumpEvent());
+		ModifyMovementEvents.JUMP_DELTA.register(new ChargeJumpEvent());
 		ModifyCriticalStatusEvent.EVENT.register(new CriticalTipperEvent());
 		ServerEntityEvents.EQUIPMENT_CHANGE.register(new EquipmentResetEvent());
-		ModifyBlockBreakingSpeedEvent.MULTIPLY_TOTAL.register(new FellTreesEvent.BreakSpeed());
+		ModifyDestroyProgressEvent.MULTIPLY_TOTAL.register(new FellTreesEvent.BreakSpeed());
 		PlayerBlockBreakEvents.BEFORE.register(new FellTreesEvent.FellTree());
 		PreventFallDamageEvent.EVENT.register(new FluidWalkingEvent());
 		ServerLivingEntityEvents.AFTER_DEATH.register(new FreezeEvent.HandleDeath());
@@ -132,67 +187,14 @@ public class Enchancement implements ModInitializer {
 		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register(new HeadDropsEvent());
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(new LeechingTridentEvent());
 		PreventFallDamageEvent.EVENT.register(new LightningDashEvent());
-		ModifyBlockBreakingSpeedEvent.MULTIPLY_TOTAL.register(new MineOreVeinsEvent.BreakSpeed());
+		ModifyDestroyProgressEvent.MULTIPLY_TOTAL.register(new MineOreVeinsEvent.BreakSpeed());
 		PlayerBlockBreakEvents.BEFORE.register(new MineOreVeinsEvent.MineOres());
 		ModifyDamageTakenEvent.ADD.register(new RageEvent.DamageDealtBonus());
 		ModifyDamageTakenEvent.MULTIPLY_TOTAL.register(new RageEvent.DamageTakenReduction());
 		MultiplyMovementSpeedEvent.EVENT.register(new RageEvent.SpeedBonus());
-		ModifyMovementEvents.JUMP_VELOCITY.register(new RotationBurstEvent());
+		ModifyMovementEvents.JUMP_DELTA.register(new RotationBurstEvent());
 		PreventFallDamageEvent.EVENT.register(new SlamEvent.FallImmunity());
-		ModifyMovementEvents.JUMP_VELOCITY.register(new SlamEvent.JumpBoost());
-		ModifyMovementEvents.JUMP_VELOCITY.register(new SlideEvent());
-	}
-
-	private void initPayloads() {
-		// client payloads
-		PayloadTypeRegistry.playS2C().register(EnforceConfigMatchPayload.ID, EnforceConfigMatchPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(SyncBookshelvesPayload.ID, SyncBookshelvesPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(SyncEnchantingMaterialMapPayload.ID, SyncEnchantingMaterialMapPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(SyncEnchantingTableCostPayload.ID, SyncEnchantingTableCostPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(SyncHookedVelocityPayload.ID, SyncHookedVelocityPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(SyncOriginalMaxLevelsPayload.ID, SyncOriginalMaxLevelsPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(AddLightningDashParticlesPayload.ID, AddLightningDashParticlesPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(AddMoltenParticlesPayload.ID, AddMoltenParticlesPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(BoostInFluidS2CPayload.ID, BoostInFluidS2CPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(GlideS2CPayload.ID, GlideS2CPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(PlayBrimstoneFireSoundPayload.ID, PlayBrimstoneFireSoundPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(PlayBrimstoneTravelSoundPayload.ID, PlayBrimstoneTravelSoundPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(StartSlammingS2CPayload.ID, StartSlammingS2CPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(StartSlidingS2CPayload.ID, StartSlidingS2CPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(StopSlammingS2CPayload.ID, StopSlammingS2CPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(StopSlidingS2CPayload.ID, StopSlidingS2CPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(SyncFrozenPlayerSlimStatusS2CPayload.ID, SyncFrozenPlayerSlimStatusS2CPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(UseEruptionPayload.ID, UseEruptionPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(UseLightningDashPayload.ID, UseLightningDashPayload.CODEC);
-		// common payloads
-		PayloadTypeRegistry.playC2S().register(SyncVelocityPayload.ID, SyncVelocityPayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(AirJumpPayload.ID, AirJumpPayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(BoostInFluidC2SPayload.ID, BoostInFluidC2SPayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(DirectionBurstPayload.ID, DirectionBurstPayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(GlideC2SPayload.ID, GlideC2SPayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(RotationBurstPayload.ID, RotationBurstPayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(StartSlammingC2SPayload.ID, StartSlammingC2SPayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(StartSlidingC2SPayload.ID, StartSlidingC2SPayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(StopSlammingC2SPayload.ID, StopSlammingC2SPayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(StopSlidingC2SPayload.ID, StopSlidingC2SPayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(SyncFrozenPlayerSlimStatusC2SPayload.ID, SyncFrozenPlayerSlimStatusC2SPayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(SyncInvertedBounceStatusPayload.ID, SyncInvertedBounceStatusPayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(WallJumpPayload.ID, WallJumpPayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(WallJumpSlidingPayload.ID, WallJumpSlidingPayload.CODEC);
-		// server receivers
-		ServerPlayNetworking.registerGlobalReceiver(SyncVelocityPayload.ID, new SyncVelocityPayload.Receiver());
-		ServerPlayNetworking.registerGlobalReceiver(AirJumpPayload.ID, new AirJumpPayload.Receiver());
-		ServerPlayNetworking.registerGlobalReceiver(BoostInFluidC2SPayload.ID, new BoostInFluidC2SPayload.Receiver());
-		ServerPlayNetworking.registerGlobalReceiver(DirectionBurstPayload.ID, new DirectionBurstPayload.Receiver());
-		ServerPlayNetworking.registerGlobalReceiver(GlideC2SPayload.ID, new GlideC2SPayload.Receiver());
-		ServerPlayNetworking.registerGlobalReceiver(RotationBurstPayload.ID, new RotationBurstPayload.Receiver());
-		ServerPlayNetworking.registerGlobalReceiver(StartSlammingC2SPayload.ID, new StartSlammingC2SPayload.Receiver());
-		ServerPlayNetworking.registerGlobalReceiver(StartSlidingC2SPayload.ID, new StartSlidingC2SPayload.Receiver());
-		ServerPlayNetworking.registerGlobalReceiver(StopSlammingC2SPayload.ID, new StopSlammingC2SPayload.Receiver());
-		ServerPlayNetworking.registerGlobalReceiver(StopSlidingC2SPayload.ID, new StopSlidingC2SPayload.Receiver());
-		ServerPlayNetworking.registerGlobalReceiver(SyncFrozenPlayerSlimStatusC2SPayload.ID, new SyncFrozenPlayerSlimStatusC2SPayload.Receiver());
-		ServerPlayNetworking.registerGlobalReceiver(SyncInvertedBounceStatusPayload.ID, new SyncInvertedBounceStatusPayload.Receiver());
-		ServerPlayNetworking.registerGlobalReceiver(WallJumpPayload.ID, new WallJumpPayload.Receiver());
-		ServerPlayNetworking.registerGlobalReceiver(WallJumpSlidingPayload.ID, new WallJumpSlidingPayload.Receiver());
+		ModifyMovementEvents.JUMP_DELTA.register(new SlamEvent.JumpBoost());
+		ModifyMovementEvents.JUMP_DELTA.register(new SlideEvent());
 	}
 }

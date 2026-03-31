@@ -4,7 +4,7 @@
 	"translate": "enchantment.enchancement.chaos"
   },
   "effects": {
-	"enchancement:apply_random_status_effect": [
+	"enchancement:apply_random_mob_effect": [
 	  {
 		"effect": {
 		  "disallowed_tag": "#enchancement:chaos_unchoosable",

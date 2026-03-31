@@ -1,6 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
@@ -9,14 +10,15 @@ import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import moriyashiine.strawberrylib.api.objects.enums.SubmersionGate;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.event.GameEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
@@ -32,15 +34,15 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 	}
 
 	@Override
-	public void readData(ReadView readView) {
-		shouldBoost = readView.getBoolean("ShouldBoost", false);
-		boost = readView.getFloat("Boost", 0);
+	public void readData(ValueInput input) {
+		shouldBoost = input.getBooleanOr("ShouldBoost", false);
+		boost = input.getFloatOr("Boost", 0);
 	}
 
 	@Override
-	public void writeData(WriteView writeView) {
-		writeView.putBoolean("ShouldBoost", shouldBoost);
-		writeView.putFloat("Boost", boost);
+	public void writeData(ValueOutput output) {
+		output.putBoolean("ShouldBoost", shouldBoost);
+		output.putFloat("Boost", boost);
 	}
 
 	@Override
@@ -48,12 +50,15 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 		float boostStrength = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.BOOST_IN_FLUID, obj, 0);
 		hasBoost = boostStrength > 0;
 		if (hasBoost) {
+			if (!obj.slib$isPlayer() && !obj.hasControllingPassenger() && !obj.level().getBlockState(BlockPos.containing(obj.getEyePosition())).isAir() && SLibUtils.isSubmerged(obj, SubmersionGate.ALL)) {
+				shouldBoost = true;
+			}
 			if (shouldBoost) {
 				if (canUse(true)) {
-					if (shouldAddVelocity()) {
-						boost = (float) MathHelper.clamp(boost + 0.0025, boostStrength * 0.075, boostStrength);
-						obj.addVelocity(0, boost, 0);
-						obj.emitGameEvent(GameEvent.ENTITY_ACTION);
+					if (shouldAddDeltaMovement()) {
+						boost = (float) Mth.clamp(boost + 0.0025, boostStrength * 0.075, boostStrength);
+						obj.push(0, boost, 0);
+						obj.gameEvent(GameEvent.ENTITY_ACTION);
 					}
 				} else {
 					shouldBoost = false;
@@ -73,22 +78,22 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 		tick();
 		if (hasBoost) {
 			if (shouldBoost) {
-				ParticleEffect bubbleColumn = ParticleTypes.BUBBLE_COLUMN_UP, splash = ParticleTypes.SPLASH, bubble = ParticleTypes.BUBBLE;
+				ParticleOptions bubbleColumn = ParticleTypes.BUBBLE_COLUMN_UP, splash = ParticleTypes.SPLASH, bubble = ParticleTypes.BUBBLE;
 				if (SLibUtils.isSubmerged(obj, SubmersionGate.LAVA_ONLY)) {
 					bubbleColumn = splash = bubble = ParticleTypes.LAVA;
 				} else if (SLibUtils.isSubmerged(obj, SubmersionGate.POWDER_SNOW_ONLY)) {
 					bubbleColumn = splash = bubble = ParticleTypes.SNOWFLAKE;
 				}
-				obj.getEntityWorld().addParticleClient(bubbleColumn, obj.getX(), obj.getY(), obj.getZ(), 0, 0.04, 0);
-				obj.getEntityWorld().addParticleClient(bubbleColumn, obj.getParticleX(0.5), obj.getY() + obj.getHeight() / 8, obj.getParticleZ(0.5), 0, 0.04, 0);
-				if (obj.getEntityWorld().getBlockState(obj.getBlockPos().up()).isAir()) {
+				obj.level().addParticle(bubbleColumn, obj.getX(), obj.getY(), obj.getZ(), 0, 0.04, 0);
+				obj.level().addParticle(bubbleColumn, obj.getRandomX(0.5), obj.getY() + obj.getBbHeight() / 8, obj.getRandomZ(0.5), 0, 0.04, 0);
+				if (obj.level().getBlockState(obj.blockPosition().above()).isAir()) {
 					for (int i = 0; i < 2; i++) {
-						obj.getEntityWorld().addParticleClient(splash, obj.getParticleX(0.5), obj.getBlockY() + 1, obj.getParticleZ(0.5), 0, 1, 0);
-						obj.getEntityWorld().addParticleClient(bubble, obj.getParticleX(0.5), obj.getBlockY() + 1, obj.getParticleZ(0.5), 0, 0.2, 0);
+						obj.level().addParticle(splash, obj.getRandomX(0.5), obj.getBlockY() + 1, obj.getRandomZ(0.5), 0, 1, 0);
+						obj.level().addParticle(bubble, obj.getRandomX(0.5), obj.getBlockY() + 1, obj.getRandomZ(0.5), 0, 0.2, 0);
 					}
 				}
 			}
-			LivingEntity entity = obj.getControllingPassenger() instanceof PlayerEntity player ? player : obj;
+			LivingEntity entity = obj.getControllingPassenger() instanceof Player player ? player : obj;
 			if (SLibClientUtils.isHost(entity)) {
 				if (entity.jumping) {
 					if (canUse(false)) {
@@ -119,9 +124,9 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 		return (ignoreBoost || !shouldBoost) && SLibUtils.isGroundedOrAirborne(obj, true) && SLibUtils.isSubmerged(obj, SubmersionGate.ALL);
 	}
 
-	private boolean shouldAddVelocity() {
-		if (obj.getControllingPassenger() instanceof PlayerEntity) {
-			return obj.getEntityWorld().isClient();
+	private boolean shouldAddDeltaMovement() {
+		if (obj.getControllingPassenger() instanceof Player) {
+			return obj.level().isClientSide();
 		}
 		return true;
 	}

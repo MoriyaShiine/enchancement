@@ -1,36 +1,37 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.component.entity;
 
-import net.minecraft.potion.Potion;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import org.ladysnake.cca.api.v3.component.Component;
+import net.minecraft.core.Holder;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import org.ladysnake.cca.api.v8.component.CardinalComponent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DisarmedWitchComponent implements Component {
-	private final List<RegistryEntry<Potion>> disabledPotions = new ArrayList<>();
+public class DisarmedWitchComponent implements CardinalComponent {
+	private final List<Holder<Potion>> disabledPotions = new ArrayList<>();
 
 	@Override
-	public void readData(ReadView readView) {
+	public void readData(ValueInput input) {
 		disabledPotions.clear();
-		disabledPotions.addAll(readView.read("DisabledPotions", Potion.CODEC.listOf()).orElse(List.of()));
+		disabledPotions.addAll(input.read("DisabledPotions", Potion.CODEC.listOf()).orElse(List.of()));
 	}
 
 	@Override
-	public void writeData(WriteView writeView) {
-		writeView.put("DisabledPotions", Potion.CODEC.listOf(), disabledPotions);
+	public void writeData(ValueOutput output) {
+		output.store("DisabledPotions", Potion.CODEC.listOf(), disabledPotions);
 	}
 
-	public boolean isDisabled(RegistryEntry<Potion> potion) {
+	public boolean isDisabled(Holder<Potion> potion) {
 		return disabledPotions.contains(potion);
 	}
 
-	public void disablePotion(RegistryEntry<Potion> potion) {
+	public void disablePotion(Holder<Potion> potion) {
 		disabledPotions.add(potion);
 	}
 }

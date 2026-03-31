@@ -1,11 +1,12 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.init;
 
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.component.block.ChiseledBookshelfComponent;
-import net.minecraft.block.entity.ChiseledBookshelfBlockEntity;
+import net.minecraft.world.level.block.entity.ChiseledBookShelfBlockEntity;
 import org.ladysnake.cca.api.v3.block.BlockComponentFactoryRegistry;
 import org.ladysnake.cca.api.v3.block.BlockComponentInitializer;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
@@ -16,6 +17,6 @@ public class ModBlockComponents implements BlockComponentInitializer {
 
 	@Override
 	public void registerBlockComponentFactories(BlockComponentFactoryRegistry registry) {
-		registry.registerFor(ChiseledBookshelfBlockEntity.class, CHISELED_BOOKSHELF, ChiseledBookshelfComponent::new);
+		registry.registerFor(ChiseledBookShelfBlockEntity.class, CHISELED_BOOKSHELF, ChiseledBookshelfComponent::new);
 	}
 }

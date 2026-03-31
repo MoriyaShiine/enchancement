@@ -1,6 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.component.entity;
 
 import com.mojang.serialization.Codec;
@@ -15,32 +16,34 @@ import moriyashiine.enchancement.common.payload.StopSlidingC2SPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.GameOptions;
-import net.minecraft.entity.attribute.EntityAttributeInstance;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Vector2d;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class SlideComponent implements CommonTickingComponent {
-	private static final EntityAttributeModifier SAFE_FALL_DISTANCE_MODIFIER = new EntityAttributeModifier(Enchancement.id("slide_safe_fall_distance"), 6, EntityAttributeModifier.Operation.ADD_VALUE);
-	private static final EntityAttributeModifier STEP_HEIGHT_MODIFIER = new EntityAttributeModifier(Enchancement.id("slide_step_height"), 1, EntityAttributeModifier.Operation.ADD_VALUE);
+	private static final AttributeModifier SAFE_FALL_DISTANCE_MODIFIER = new AttributeModifier(Enchancement.id("slide_safe_fall_distance"), 6, AttributeModifier.Operation.ADD_VALUE);
+	private static final AttributeModifier STEP_HEIGHT_MODIFIER = new AttributeModifier(Enchancement.id("slide_step_height"), 1, AttributeModifier.Operation.ADD_VALUE);
 
 	private static final int MAX_SLIDING_TICKS = 40, MAX_WATER_SKIP_TICKS = 30;
 
-	private final PlayerEntity obj;
-	private SlideVelocity velocity = SlideVelocity.ZERO, adjustedVelocity = SlideVelocity.ZERO;
-	private float cachedYaw = 0;
+	private final Player obj;
+	private SlideDeltaMovement delta = SlideDeltaMovement.ZERO, adjustedDelta = SlideDeltaMovement.ZERO;
+	private float cachedYRot = 0;
 	private int slidingTicks = 0;
 
 	private float strength = 0;
@@ -48,24 +51,24 @@ public class SlideComponent implements CommonTickingComponent {
 
 	private int crawlTimer = 0, waterSkipTicks = 0;
 
-	public SlideComponent(PlayerEntity obj) {
+	public SlideComponent(Player obj) {
 		this.obj = obj;
 	}
 
 	@Override
-	public void readData(ReadView readView) {
-		velocity = readView.read("Velocity", SlideVelocity.CODEC).orElse(SlideVelocity.ZERO);
-		adjustedVelocity = readView.read("AdjustedVelocity", SlideVelocity.CODEC).orElse(SlideVelocity.ZERO);
-		cachedYaw = readView.getFloat("CachedYaw", 0);
-		slidingTicks = readView.getInt("SlidingTicks", 0);
+	public void readData(ValueInput input) {
+		delta = input.read("Delta", SlideDeltaMovement.CODEC).orElse(SlideDeltaMovement.ZERO);
+		adjustedDelta = input.read("AdjustedDelta", SlideDeltaMovement.CODEC).orElse(SlideDeltaMovement.ZERO);
+		cachedYRot = input.getFloatOr("CachedYRot", 0);
+		slidingTicks = input.getIntOr("SlidingTicks", 0);
 	}
 
 	@Override
-	public void writeData(WriteView writeView) {
-		writeView.put("Velocity", SlideVelocity.CODEC, velocity);
-		writeView.put("AdjustedVelocity", SlideVelocity.CODEC, adjustedVelocity);
-		writeView.putFloat("CachedYaw", cachedYaw);
-		writeView.putInt("SlidingTicks", slidingTicks);
+	public void writeData(ValueOutput output) {
+		output.store("Delta", SlideDeltaMovement.CODEC, delta);
+		output.store("AdjustedDelta", SlideDeltaMovement.CODEC, adjustedDelta);
+		output.putFloat("CachedYRot", cachedYRot);
+		output.putInt("SlidingTicks", slidingTicks);
 	}
 
 	@Override
@@ -77,24 +80,24 @@ public class SlideComponent implements CommonTickingComponent {
 			crawlTimer--;
 		}
 		if (hasSlide) {
-			if (waterSkipTicks >= MAX_WATER_SKIP_TICKS || obj.isSneaking() || !obj.isPartOfGame() || (obj.isTouchingWater() && !hasFluidWalking)) {
+			if (waterSkipTicks >= MAX_WATER_SKIP_TICKS || obj.isShiftKeyDown() || obj.isSpectator() || (obj.isInWater() && !hasFluidWalking)) {
 				stopSliding();
 			}
 			if (isSliding()) {
 				if (updateCrawl()) {
 					crawlTimer = 3;
 				}
-				obj.spawnSprintingParticles();
-				double dX = adjustedVelocity.x(), dZ = adjustedVelocity.z();
-				if (!obj.isOnGround()) {
+				obj.spawnSprintParticle();
+				double dX = adjustedDelta.x(), dZ = adjustedDelta.z();
+				if (!obj.onGround()) {
 					dX *= 0.2;
 					dZ *= 0.2;
 				}
 				float multiplier = MultiplyMovementSpeedEvent.getMovementMultiplier(obj);
 				multiplier *= 1 - (waterSkipTicks / (MAX_WATER_SKIP_TICKS * 2F));
-				obj.addVelocity(dX * multiplier, 0, dZ * multiplier);
-				if (obj.isTouchingWater() && hasFluidWalking) {
-					obj.setVelocity(obj.getVelocity().getX(), strength, obj.getVelocity().getZ());
+				obj.push(dX * multiplier, 0, dZ * multiplier);
+				if (obj.isInWater() && hasFluidWalking) {
+					obj.setDeltaMovement(obj.getDeltaMovement().x(), strength, obj.getDeltaMovement().z());
 					waterSkipTicks++;
 				}
 				if (slidingTicks < MAX_SLIDING_TICKS) {
@@ -116,21 +119,21 @@ public class SlideComponent implements CommonTickingComponent {
 	@Override
 	public void serverTick() {
 		tick();
-		EntityAttributeInstance safeFallDistanceAttribute = obj.getAttributeInstance(EntityAttributes.SAFE_FALL_DISTANCE);
-		EntityAttributeInstance stepHeightAttribute = obj.getAttributeInstance(EntityAttributes.STEP_HEIGHT);
+		AttributeInstance safeFallDistance = obj.getAttribute(Attributes.SAFE_FALL_DISTANCE);
+		AttributeInstance stepHeight = obj.getAttribute(Attributes.STEP_HEIGHT);
 		if (hasSlide && isSliding()) {
-			if (!safeFallDistanceAttribute.hasModifier(SAFE_FALL_DISTANCE_MODIFIER.id())) {
-				safeFallDistanceAttribute.addPersistentModifier(SAFE_FALL_DISTANCE_MODIFIER);
+			if (!safeFallDistance.hasModifier(SAFE_FALL_DISTANCE_MODIFIER.id())) {
+				safeFallDistance.addPermanentModifier(SAFE_FALL_DISTANCE_MODIFIER);
 			}
-			if (!stepHeightAttribute.hasModifier(STEP_HEIGHT_MODIFIER.id())) {
-				stepHeightAttribute.addPersistentModifier(STEP_HEIGHT_MODIFIER);
+			if (!stepHeight.hasModifier(STEP_HEIGHT_MODIFIER.id())) {
+				stepHeight.addPermanentModifier(STEP_HEIGHT_MODIFIER);
 			}
 		} else {
-			if (safeFallDistanceAttribute.hasModifier(SAFE_FALL_DISTANCE_MODIFIER.id())) {
-				safeFallDistanceAttribute.removeModifier(SAFE_FALL_DISTANCE_MODIFIER);
+			if (safeFallDistance.hasModifier(SAFE_FALL_DISTANCE_MODIFIER.id())) {
+				safeFallDistance.removeModifier(SAFE_FALL_DISTANCE_MODIFIER);
 			}
-			if (stepHeightAttribute.hasModifier(STEP_HEIGHT_MODIFIER.id())) {
-				stepHeightAttribute.removeModifier(STEP_HEIGHT_MODIFIER);
+			if (stepHeight.hasModifier(STEP_HEIGHT_MODIFIER.id())) {
+				stepHeight.removeModifier(STEP_HEIGHT_MODIFIER);
 			}
 		}
 	}
@@ -140,53 +143,52 @@ public class SlideComponent implements CommonTickingComponent {
 		tick();
 		if (hasSlide) {
 			if (!obj.isSpectator() && SLibClientUtils.isHost(obj)) {
-				GameOptions options = MinecraftClient.getInstance().options;
-				if (EnchancementClient.SLIDE_KEYBINDING.isPressed() && !obj.isSneaking() && !obj.jumping) {
+				if (EnchancementClient.SLIDE_KEYMAPPING.isDown() && !obj.isShiftKeyDown() && !obj.jumping) {
 					if (canSlide()) {
-						velocity = getVelocityFromInput(options);
-						adjustedVelocity = velocity.rotateY((float) Math.toRadians(-(obj.getYaw() + 90)));
-						cachedYaw = obj.getYaw();
-						StartSlidingC2SPayload.send(velocity, adjustedVelocity, cachedYaw);
+						delta = getDeltaMovementFromInput();
+						adjustedDelta = delta.rotateY((float) Math.toRadians(-(obj.getYRot() + 90)));
+						cachedYRot = obj.getYRot();
+						StartSlidingC2SPayload.send(delta, adjustedDelta, cachedYRot);
 					}
-				} else if (velocity != SlideVelocity.ZERO) {
+				} else if (delta != SlideDeltaMovement.ZERO) {
 					stopSliding();
 					StopSlidingC2SPayload.send();
 				}
 			}
 			if (isSliding() && SLibClientUtils.shouldAddParticles(obj)) {
-				Vector2d vec = new Vector2d(adjustedVelocity.x(), adjustedVelocity.z());
+				Vector2d vec = new Vector2d(adjustedDelta.x(), adjustedDelta.z());
 				vec.normalize();
-				vec.mul(obj.getWidth() / 2);
-				obj.getEntityWorld().addParticleClient(ModParticleTypes.VELOCITY_LINE, obj.getX() - vec.y(), obj.getY() + obj.getHeight() / 2 + MathHelper.nextFloat(obj.getRandom(), -obj.getHeight() / 3, obj.getHeight() / 3), obj.getZ() + vec.x(), adjustedVelocity.x(), 0, adjustedVelocity.z());
-				obj.getEntityWorld().addParticleClient(ModParticleTypes.VELOCITY_LINE, obj.getX() + vec.y(), obj.getY() + obj.getHeight() / 2 + MathHelper.nextFloat(obj.getRandom(), -obj.getHeight() / 3, obj.getHeight() / 3), obj.getZ() - vec.x(), adjustedVelocity.x(), 0, adjustedVelocity.z());
+				vec.mul(obj.getBbWidth() / 2);
+				obj.level().addParticle(ModParticleTypes.VELOCITY_LINE, obj.getX() - vec.y(), obj.getY() + obj.getBbHeight() / 2 + Mth.nextFloat(obj.getRandom(), -obj.getBbHeight() / 3, obj.getBbHeight() / 3), obj.getZ() + vec.x(), adjustedDelta.x(), 0, adjustedDelta.z());
+				obj.level().addParticle(ModParticleTypes.VELOCITY_LINE, obj.getX() + vec.y(), obj.getY() + obj.getBbHeight() / 2 + Mth.nextFloat(obj.getRandom(), -obj.getBbHeight() / 3, obj.getBbHeight() / 3), obj.getZ() - vec.x(), adjustedDelta.x(), 0, adjustedDelta.z());
 			}
 		}
 	}
 
-	public SlideVelocity getVelocity() {
-		return velocity;
+	public SlideDeltaMovement getDelta() {
+		return delta;
 	}
 
-	public float getCachedYaw() {
-		return cachedYaw;
+	public float getCachedYRot() {
+		return cachedYRot;
 	}
 
-	public void startSliding(SlideVelocity velocity, SlideVelocity adjustedVelocity, float cachedYaw) {
-		this.velocity = velocity;
-		this.adjustedVelocity = adjustedVelocity;
-		this.cachedYaw = cachedYaw;
+	public void startSliding(SlideDeltaMovement delta, SlideDeltaMovement adjustedDelta, float cachedYRot) {
+		this.delta = delta;
+		this.adjustedDelta = adjustedDelta;
+		this.cachedYRot = cachedYRot;
 	}
 
 	public void stopSliding() {
-		startSliding(SlideVelocity.ZERO, SlideVelocity.ZERO, 0);
+		startSliding(SlideDeltaMovement.ZERO, SlideDeltaMovement.ZERO, 0);
 	}
 
 	public boolean isSliding() {
-		return !velocity.equals(SlideVelocity.ZERO);
+		return !delta.equals(SlideDeltaMovement.ZERO);
 	}
 
 	public float getJumpBonus() {
-		return MathHelper.lerp(slidingTicks / (float) MAX_SLIDING_TICKS, 1F, 3F);
+		return Mth.lerp(slidingTicks / (float) MAX_SLIDING_TICKS, 1F, 3F);
 	}
 
 	public boolean hasSlide() {
@@ -198,78 +200,80 @@ public class SlideComponent implements CommonTickingComponent {
 	}
 
 	public boolean canSlide() {
-		return !isSliding() && obj.isOnGround() && SLibUtils.isGroundedOrAirborne(obj);
+		return !isSliding() && obj.onGround() && SLibUtils.isGroundedOrAirborne(obj);
 	}
 
 	private boolean hitsBlock(BlockPos pos) {
-		return !obj.getEntityWorld().getBlockState(pos).getCollisionShape(obj.getEntityWorld(), pos).isEmpty();
+		return !obj.level().getBlockState(pos).getCollisionShape(obj.level(), pos).isEmpty();
 	}
 
 	private boolean updateCrawl() {
-		int height = MathHelper.floor(obj.getHeight());
+		int height = Mth.floor(obj.getBbHeight());
 		if (height > 0) {
-			Vec3d frontPos = obj.getEntityPos().add(0, height, 0).add(obj.getRotationVector(0, cachedYaw));
-			BlockPos.Mutable pos = new BlockPos.Mutable(frontPos.getX(), frontPos.getY(), frontPos.getZ());
+			Vec3 frontPos = obj.position().add(0, height, 0).add(obj.calculateViewVector(0, cachedYRot));
+			BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(frontPos.x(), frontPos.y(), frontPos.z());
 			int y = pos.getY();
 			boolean hitsBelow = hitsBlock(pos.setY(y - 1));
 			if (hitsBlock(pos.setY(y))) {
 				return !hitsBelow;
 			} else if (hitsBelow) {
-				return hitsBlock(pos.setY(y + 1)) || hitsBlock(obj.getBlockPos().up(height + 1));
+				return hitsBlock(pos.setY(y + 1)) || hitsBlock(obj.blockPosition().above(height + 1));
 			}
 		}
 		return false;
 	}
 
-	private SlideVelocity getVelocityFromInput(GameOptions options) {
+	@Environment(EnvType.CLIENT)
+	private SlideDeltaMovement getDeltaMovementFromInput() {
+		Options options = Minecraft.getInstance().options;
 		boolean any = false, forward = false, sideways = false;
 		int x = 0, z = 0;
-		if (options.forwardKey.isPressed()) {
+		if (options.keyUp.isDown()) {
 			any = true;
 			forward = true;
 			x = 1;
 		}
-		if (options.backKey.isPressed()) {
+		if (options.keyDown.isDown()) {
 			any = true;
 			forward = true;
 			x = -1;
 		}
-		if (options.leftKey.isPressed()) {
+		if (options.keyLeft.isDown()) {
 			any = true;
 			sideways = true;
 			z = -1;
 		}
-		if (options.rightKey.isPressed()) {
+		if (options.keyRight.isDown()) {
 			any = true;
 			sideways = true;
 			z = 1;
 		}
-		return new SlideVelocity(any ? x : 1, z).multiply(forward && sideways ? 2 / 3F : 1).multiply(strength);
+		return new SlideDeltaMovement(any ? x : 1, z).multiply(forward && sideways ? 2 / 3F : 1).multiply(strength);
 	}
 
-	public record SlideVelocity(float x, float z) {
-		public static final Codec<SlideVelocity> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-						Codec.FLOAT.fieldOf("x").forGetter(SlideVelocity::x),
-						Codec.FLOAT.fieldOf("z").forGetter(SlideVelocity::z))
-				.apply(instance, SlideVelocity::new));
-		public static final PacketCodec<PacketByteBuf, SlideVelocity> PACKET_CODEC = PacketCodec.tuple(
-				PacketCodecs.FLOAT, SlideVelocity::x,
-				PacketCodecs.FLOAT, SlideVelocity::z,
-				SlideVelocity::new
+	public record SlideDeltaMovement(float x, float z) {
+		public static final Codec<SlideDeltaMovement> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+						Codec.FLOAT.fieldOf("x").forGetter(SlideDeltaMovement::x),
+						Codec.FLOAT.fieldOf("z").forGetter(SlideDeltaMovement::z))
+				.apply(instance, SlideDeltaMovement::new));
+		public static final StreamCodec<FriendlyByteBuf, SlideDeltaMovement> STREAM_CODEC = StreamCodec.composite(
+				ByteBufCodecs.FLOAT, SlideDeltaMovement::x,
+				ByteBufCodecs.FLOAT, SlideDeltaMovement::z,
+				SlideDeltaMovement::new
 		);
 
-		public static final SlideVelocity ZERO = new SlideVelocity(0, 0);
+		public static final SlideDeltaMovement ZERO = new SlideDeltaMovement(0, 0);
 
-		SlideVelocity multiply(float value) {
-			return new SlideVelocity(x() * value, z() * value);
+		SlideDeltaMovement multiply(float value) {
+			return new SlideDeltaMovement(x() * value, z() * value);
 		}
 
-		SlideVelocity rotateY(float angle) {
-			float cos = MathHelper.cos(angle);
-			float sin = MathHelper.sin(angle);
+		SlideDeltaMovement rotateY(float angle) {
+			float cos = Mth.cos(angle);
+			float sin = Mth.sin(angle);
 			float nX = x() * cos + z() * sin;
 			float nZ = z() * cos - x() * sin;
-			return new SlideVelocity(nX, nZ);
+			return new SlideDeltaMovement(nX, nZ);
 		}
 	}
 }

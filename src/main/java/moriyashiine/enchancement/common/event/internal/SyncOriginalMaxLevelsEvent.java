@@ -1,6 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.event.internal;
 
 import moriyashiine.enchancement.client.payload.SyncOriginalMaxLevelsPayload;
@@ -8,17 +9,17 @@ import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
-import net.minecraft.registry.RegistryKeys;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
 
 public class SyncOriginalMaxLevelsEvent {
 	public static boolean updatingMap = false;
 
 	public static class Join implements ServerPlayConnectionEvents.Join {
 		@Override
-		public void onPlayReady(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
-			SyncOriginalMaxLevelsPayload.send(handler.getPlayer());
+		public void onPlayReady(ServerGamePacketListenerImpl listener, PacketSender sender, MinecraftServer server) {
+			SyncOriginalMaxLevelsPayload.send(listener.getPlayer());
 		}
 	}
 
@@ -27,7 +28,7 @@ public class SyncOriginalMaxLevelsEvent {
 		public void onServerStarted(MinecraftServer server) {
 			updatingMap = true;
 			EnchancementUtil.ORIGINAL_MAX_LEVELS.clear();
-			server.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getEntrySet().forEach(enchantment -> EnchancementUtil.ORIGINAL_MAX_LEVELS.put(enchantment.getKey(), enchantment.getValue().getMaxLevel()));
+			server.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).entrySet().forEach(enchantment -> EnchancementUtil.ORIGINAL_MAX_LEVELS.put(enchantment.getKey(), enchantment.getValue().getMaxLevel()));
 			updatingMap = false;
 		}
 	}

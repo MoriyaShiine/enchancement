@@ -1,26 +1,26 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.component.entity;
 
-import moriyashiine.enchancement.common.enchantment.effect.DelayedLaunchEffect;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import net.minecraft.command.argument.EntityAnchorArgumentType;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.entity.projectile.ProjectileUtil;
-import net.minecraft.item.ItemStack;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import moriyashiine.enchancement.common.world.item.effects.DelayedLaunchEffect;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableFloat;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
@@ -29,59 +29,59 @@ import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 import java.util.Collections;
 
 public class DelayedLaunchComponent implements AutoSyncedComponent, CommonTickingComponent {
-	private final PersistentProjectileEntity obj;
-	private ItemStack stackShotFrom = null;
+	private final AbstractArrow obj;
+	private ItemStack weapon = null;
 	private int maxDuration = 0, peakDuration = 0;
 	private float maxMultiplier = 0;
 	private boolean allowRedirect = false;
 
-	private Vec3d storedVelocity = null;
-	private float forcedPitch = 0, forcedYaw = 0;
-	private float cachedSpeed = 0, cachedDivergence = 0;
+	private Vec3 storedDeltaMovement = null;
+	private float forcedXRot = 0, forcedYRot = 0;
+	private float cachedPower = 0, cachedUncertainty = 0;
 	private int ticksFloating = 0;
 
-	public DelayedLaunchComponent(PersistentProjectileEntity obj) {
+	public DelayedLaunchComponent(AbstractArrow obj) {
 		this.obj = obj;
 	}
 
 	@Override
-	public void readData(ReadView readView) {
-		storedVelocity = readView.read("StoredVelocity", Vec3d.CODEC).orElse(null);
-		maxDuration = readView.getInt("MaxDuration", 0);
-		peakDuration = readView.getInt("PeakDuration", 0);
-		maxMultiplier = readView.getFloat("MaxMultiplier", 0);
-		allowRedirect = readView.getBoolean("AllowRedirect", false);
+	public void readData(ValueInput input) {
+		storedDeltaMovement = input.read("StoredDeltaMovement", Vec3.CODEC).orElse(null);
+		maxDuration = input.getIntOr("MaxDuration", 0);
+		peakDuration = input.getIntOr("PeakDuration", 0);
+		maxMultiplier = input.getFloatOr("MaxMultiplier", 0);
+		allowRedirect = input.getBooleanOr("AllowRedirect", false);
 
-		ticksFloating = readView.getInt("TicksFloating", 0);
-		forcedPitch = readView.getFloat("ForcedPitch", 0);
-		forcedYaw = readView.getFloat("ForcedYaw", 0);
-		cachedSpeed = readView.getFloat("CachedSpeed", 0);
-		cachedDivergence = readView.getFloat("CachedDivergence", 0);
+		ticksFloating = input.getIntOr("TicksFloating", 0);
+		forcedXRot = input.getFloatOr("ForcedXRot", 0);
+		forcedYRot = input.getFloatOr("ForcedYRot", 0);
+		cachedPower = input.getFloatOr("CachedPower", 0);
+		cachedUncertainty = input.getFloatOr("CachedUncertainty", 0);
 	}
 
 	@Override
-	public void writeData(WriteView writeView) {
-		if (storedVelocity != null) {
-			writeView.put("StoredVelocity", Vec3d.CODEC, storedVelocity);
+	public void writeData(ValueOutput output) {
+		if (storedDeltaMovement != null) {
+			output.store("StoredDeltaMovement", Vec3.CODEC, storedDeltaMovement);
 		}
-		writeView.putInt("MaxDuration", maxDuration);
-		writeView.putInt("PeakDuration", peakDuration);
-		writeView.putFloat("MaxMultiplier", maxMultiplier);
-		writeView.putBoolean("AllowRedirect", allowRedirect);
+		output.putInt("MaxDuration", maxDuration);
+		output.putInt("PeakDuration", peakDuration);
+		output.putFloat("MaxMultiplier", maxMultiplier);
+		output.putBoolean("AllowRedirect", allowRedirect);
 
-		writeView.putInt("TicksFloating", ticksFloating);
-		writeView.putFloat("ForcedPitch", forcedPitch);
-		writeView.putFloat("ForcedYaw", forcedYaw);
-		writeView.putFloat("CachedSpeed", cachedSpeed);
-		writeView.putFloat("CachedDivergence", cachedDivergence);
+		output.putInt("TicksFloating", ticksFloating);
+		output.putFloat("ForcedXRot", forcedXRot);
+		output.putFloat("ForcedYRot", forcedYRot);
+		output.putFloat("CachedPower", cachedPower);
+		output.putFloat("CachedUncertainty", cachedUncertainty);
 	}
 
 	@Override
 	public void tick() {
 		if (isEnabled()) {
-			obj.setVelocity(Vec3d.ZERO);
-			obj.setPitch(forcedPitch);
-			obj.setYaw(forcedYaw);
+			obj.setDeltaMovement(Vec3.ZERO);
+			obj.setXRot(forcedXRot);
+			obj.setYRot(forcedYRot);
 			ticksFloating++;
 		}
 	}
@@ -89,30 +89,29 @@ public class DelayedLaunchComponent implements AutoSyncedComponent, CommonTickin
 	@Override
 	public void serverTick() {
 		if (isEnabled()) {
-			if (storedVelocity == null) {
-				storedVelocity = obj.getVelocity();
-				forcedPitch = obj.getPitch();
-				forcedYaw = obj.getYaw();
+			if (storedDeltaMovement == null) {
+				storedDeltaMovement = obj.getDeltaMovement();
+				forcedXRot = obj.getXRot();
+				forcedYRot = obj.getYRot();
 				sync();
+				obj.needsSync = true;
 			}
-			boolean punching = obj.getOwner() instanceof LivingEntity living && living.handSwinging && (living.getMainHandStack() == stackShotFrom || living.getOffHandStack() == stackShotFrom);
+			boolean punching = obj.getOwner() instanceof LivingEntity living && living.swinging && (living.getMainHandItem() == weapon || living.getOffhandItem() == weapon);
 			if (ticksFloating > maxDuration || punching) {
-				if (allowRedirect && punching && obj.getOwner() instanceof LivingEntity living && living.isSneaking()) {
-					HitResult result = ProjectileUtil.getCollision(living, entity -> !entity.isSpectator() && entity.canHit(), 64);
-					Vec3d pos;
+				if (allowRedirect && punching && obj.getOwner() instanceof LivingEntity living && living.isShiftKeyDown()) {
+					HitResult result = ProjectileUtil.getHitResultOnViewVector(living, entity -> !entity.isSpectator() && entity.isPickable(), 64);
+					Vec3 pos;
 					if (result instanceof EntityHitResult entityHitResult) {
-						pos = entityHitResult.getEntity().getEyePos();
+						pos = entityHitResult.getEntity().getEyePosition();
 					} else {
-						pos = result.getPos();
+						pos = result.getLocation();
 					}
-					obj.setVelocity(pos.getX() - obj.getX(), pos.getY() - obj.getY(), pos.getZ() - obj.getZ(), cachedSpeed, cachedDivergence);
-					storedVelocity = obj.getVelocity();
-					obj.lookAt(EntityAnchorArgumentType.EntityAnchor.FEET, pos);
-					forcedPitch = MathHelper.wrapDegrees(obj.getPitch() + 180);
-					forcedYaw = MathHelper.wrapDegrees(-(obj.getYaw() + 180));
+					obj.shoot(pos.x() - obj.getX(), pos.y() - obj.getY(), pos.z() - obj.getZ(), cachedPower, cachedUncertainty);
+					storedDeltaMovement = obj.getDeltaMovement();
 				}
-				obj.setDamage(obj.damage * MathHelper.lerp(Math.min(1, (float) ticksFloating / peakDuration), 1, 1 + maxMultiplier));
-				obj.setVelocity(storedVelocity);
+				obj.setBaseDamage(obj.baseDamage * Mth.lerp(Math.min(1, (float) ticksFloating / peakDuration), 1, 1 + maxMultiplier));
+				obj.setDeltaMovement(storedDeltaMovement);
+				obj.needsSync = true;
 				maxDuration = peakDuration = 0;
 				maxMultiplier = 0;
 				allowRedirect = false;
@@ -131,35 +130,35 @@ public class DelayedLaunchComponent implements AutoSyncedComponent, CommonTickin
 	}
 
 	public boolean alwaysHurt() {
-		return storedVelocity != null;
+		return storedDeltaMovement != null;
 	}
 
 	public boolean shouldChangeParticles() {
 		return peakDuration > 0 && ticksFloating >= peakDuration;
 	}
 
-	public static void maybeSet(LivingEntity user, ItemStack stack, Entity entity, float speed, float divergence) {
-		if (entity instanceof PersistentProjectileEntity projectile) {
+	public static void maybeSet(LivingEntity shooter, ItemStack weapon, Entity projectile, float power, float uncertainty) {
+		if (projectile instanceof AbstractArrow arrow) {
 			MutableFloat maxDuration = new MutableFloat(), peakDuration = new MutableFloat(), maxMultiplier = new MutableFloat();
 			MutableBoolean allowRedirect = new MutableBoolean();
-			if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.DELAYED_LAUNCH)) {
-				DelayedLaunchEffect.setValues(user.getRandom(), maxDuration, peakDuration, maxMultiplier, allowRedirect, Collections.singleton(stack));
-			} else if (!(user instanceof PlayerEntity) && EnchancementUtil.hasAnyEnchantmentsWith(user, ModEnchantmentEffectComponentTypes.DELAYED_LAUNCH)) {
-				DelayedLaunchEffect.setValues(user.getRandom(), maxDuration, peakDuration, maxMultiplier, allowRedirect, EnchancementUtil.getHeldItems(user));
+			if (EnchantmentHelper.has(weapon, ModEnchantmentEffectComponentTypes.DELAYED_LAUNCH)) {
+				DelayedLaunchEffect.setValues(shooter.getRandom(), maxDuration, peakDuration, maxMultiplier, allowRedirect, Collections.singleton(weapon));
+			} else if (!(shooter instanceof Player) && EnchancementUtil.hasAnyEnchantmentsWith(shooter, ModEnchantmentEffectComponentTypes.DELAYED_LAUNCH)) {
+				DelayedLaunchEffect.setValues(shooter.getRandom(), maxDuration, peakDuration, maxMultiplier, allowRedirect, EnchancementUtil.getHeldItems(shooter));
 			}
 			if (maxDuration.floatValue() != 0) {
-				DelayedLaunchComponent delayedLaunchComponent = ModEntityComponents.DELAYED_LAUNCH.get(entity);
-				delayedLaunchComponent.stackShotFrom = stack;
-				delayedLaunchComponent.maxDuration = MathHelper.floor(maxDuration.floatValue() * 20);
-				delayedLaunchComponent.peakDuration = MathHelper.floor(peakDuration.floatValue() * 20);
+				DelayedLaunchComponent delayedLaunchComponent = ModEntityComponents.DELAYED_LAUNCH.get(projectile);
+				delayedLaunchComponent.weapon = weapon;
+				delayedLaunchComponent.maxDuration = Mth.floor(maxDuration.floatValue() * 20);
+				delayedLaunchComponent.peakDuration = Mth.floor(peakDuration.floatValue() * 20);
 				delayedLaunchComponent.maxMultiplier = maxMultiplier.floatValue();
 				delayedLaunchComponent.allowRedirect = allowRedirect.booleanValue();
 
-				delayedLaunchComponent.cachedSpeed = speed;
-				delayedLaunchComponent.cachedDivergence = divergence;
+				delayedLaunchComponent.cachedPower = power;
+				delayedLaunchComponent.cachedUncertainty = uncertainty;
 
 				delayedLaunchComponent.sync();
-				projectile.setCritical(true);
+				arrow.setCritArrow(true);
 			}
 		}
 	}

@@ -1,29 +1,30 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
 import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.component.world.FellTreesComponent;
+import moriyashiine.enchancement.common.component.level.FellTreesComponent;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.init.ModWorldComponents;
+import moriyashiine.enchancement.common.init.ModLevelComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import moriyashiine.strawberrylib.api.event.ModifyBlockBreakingSpeedEvent;
+import moriyashiine.strawberrylib.api.event.ModifyDestroyProgressEvent;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3i;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -32,18 +33,18 @@ import java.util.List;
 public class FellTreesEvent {
 	public static final List<Entry> ENTRIES = new ArrayList<>();
 
-	public static List<BlockPos> gatherTree(List<BlockPos> tree, BlockView world, BlockPos.Mutable pos, Block original) {
+	public static List<BlockPos> gatherTree(List<BlockPos> tree, BlockGetter level, BlockPos.MutableBlockPos pos, Block original) {
 		if (tree.size() < ModConfig.maxFellTreesBlocks) {
 			int originalX = pos.getX(), originalY = pos.getY(), originalZ = pos.getZ();
 			for (int x = -1; x <= 1; x++) {
 				for (int y = -1; y <= 1; y++) {
 					for (int z = -1; z <= 1; z++) {
 						pos.set(originalX + x, originalY + y, originalZ + z);
-						if (!(world instanceof World borderWorld) || borderWorld.getWorldBorder().contains(pos)) {
-							BlockState state = world.getBlockState(pos);
-							if (state.isIn(BlockTags.LOGS) && !tree.contains(pos) && state.getBlock() == original) {
-								tree.add(pos.toImmutable());
-								gatherTree(tree, world, pos, original);
+						if (!(level instanceof Level borderLevel) || borderLevel.getWorldBorder().isWithinBounds(pos)) {
+							BlockState state = level.getBlockState(pos);
+							if (state.is(BlockTags.LOGS) && !tree.contains(pos) && state.getBlock() == original) {
+								tree.add(pos.immutable());
+								gatherTree(tree, level, pos, original);
 							}
 						}
 					}
@@ -75,29 +76,29 @@ public class FellTreesEvent {
 		return Math.abs(maxX - minX) < ModConfig.maxFellTreesHorizontalLength && Math.abs(maxZ - minZ) < ModConfig.maxFellTreesHorizontalLength;
 	}
 
-	public static boolean canActivate(PlayerEntity player, ItemStack stack, BlockState state) {
-		return !player.isSneaking() && EnchantmentHelper.hasAnyEnchantmentsWith(stack, ModEnchantmentEffectComponentTypes.FELL_TREES) && state.isIn(BlockTags.LOGS) && player.canHarvest(state);
+	public static boolean canActivate(Player player, ItemStack stack, BlockState state) {
+		return !player.isShiftKeyDown() && EnchantmentHelper.has(stack, ModEnchantmentEffectComponentTypes.FELL_TREES) && state.is(BlockTags.LOGS) && player.hasCorrectToolForDrops(state);
 	}
 
 	public static boolean isValid(List<BlockPos> tree, ItemStack stack) {
-		if (!stack.isDamageable() || stack.getDamage() + tree.size() <= stack.getMaxDamage()) {
+		if (!stack.isDamageableItem() || stack.getDamageValue() + tree.size() <= stack.getMaxDamage()) {
 			return tree.size() > 1 && tree.size() <= ModConfig.maxFellTreesBlocks && isWithinHorizontalBounds(tree);
 		}
 		return false;
 	}
 
-	public static class BreakSpeed implements ModifyBlockBreakingSpeedEvent {
+	public static class BreakSpeed implements ModifyDestroyProgressEvent {
 		@Override
-		public float modify(float breakSpeed, PlayerEntity player, BlockState state, BlockView world, BlockPos pos) {
-			if (canActivate(player, player.getMainHandStack(), state)) {
+		public float modify(Player player, BlockState state, BlockGetter level, BlockPos pos) {
+			if (canActivate(player, player.getMainHandItem(), state)) {
 				Entry entry = Entry.get(player);
 				if (entry == null) {
-					entry = new Entry(player, gatherTree(new ArrayList<>(), world, new BlockPos.Mutable().set(pos), state.getBlock()));
+					entry = new Entry(player, gatherTree(new ArrayList<>(), level, new BlockPos.MutableBlockPos().set(pos), state.getBlock()));
 					ENTRIES.add(entry);
 				}
-				if (isValid(entry.tree(), player.getMainHandStack())) {
-					float fellTreesSpeed = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.FELL_TREES, player.getRandom(), player.getMainHandStack(), 0);
-					return MathHelper.lerp(Math.min(1, entry.tree().size() / 32F), fellTreesSpeed, fellTreesSpeed * 0.05F);
+				if (isValid(entry.tree(), player.getMainHandItem())) {
+					float fellTreesSpeed = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.FELL_TREES, player.getRandom(), player.getMainHandItem(), 0);
+					return Mth.lerp(Math.min(1, entry.tree().size() / 32F), fellTreesSpeed, fellTreesSpeed * 0.05F);
 				}
 			}
 			return 1;
@@ -106,15 +107,15 @@ public class FellTreesEvent {
 
 	public static class FellTree implements PlayerBlockBreakEvents.Before {
 		@Override
-		public boolean beforeBlockBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity blockEntity) {
-			ItemStack stack = player.getMainHandStack();
+		public boolean beforeBlockBreak(Level level, Player player, BlockPos pos, BlockState state, BlockEntity blockEntity) {
+			ItemStack stack = player.getMainHandItem();
 			if (canActivate(player, stack, state)) {
 				Entry entry = Entry.get(player);
 				if (entry != null && isValid(entry.tree(), stack)) {
 					entry.tree().sort(Comparator.comparingInt(Vec3i::getY).reversed());
-					ModWorldComponents.FELL_TREES.get(world).addTree(FellTreesComponent.Tree.of(entry.tree(), pos, stack));
+					ModLevelComponents.FELL_TREES.get(level).addTree(FellTreesComponent.Tree.of(entry.tree(), pos, stack));
 					ENTRIES.remove(entry);
-					stack.damage(entry.tree().size(), player, EquipmentSlot.MAINHAND);
+					stack.hurtAndBreak(entry.tree().size(), player, EquipmentSlot.MAINHAND);
 					return false;
 				}
 			}
@@ -122,9 +123,9 @@ public class FellTreesEvent {
 		}
 	}
 
-	public record Entry(PlayerEntity player, List<BlockPos> tree) {
+	public record Entry(Player player, List<BlockPos> tree) {
 		@Nullable
-		public static Entry get(PlayerEntity player) {
+		public static Entry get(Player player) {
 			for (Entry entry : ENTRIES) {
 				if (entry.player == player) {
 					return entry;

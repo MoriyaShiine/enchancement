@@ -1,25 +1,26 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.component.entity;
 
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import org.ladysnake.cca.api.v3.component.Component;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import org.ladysnake.cca.api.v8.component.CardinalComponent;
 
-public class DisarmedWanderingTraderComponent implements Component {
+public class DisarmedWanderingTraderComponent implements CardinalComponent {
 	private boolean disarmedPotion = false, disarmedMilk = false;
 
 	@Override
-	public void readData(ReadView readView) {
-		disarmedMilk = readView.getBoolean("DisarmedMilk", false);
-		disarmedPotion = readView.getBoolean("DisarmedPotion", false);
+	public void readData(ValueInput input) {
+		disarmedMilk = input.getBooleanOr("DisarmedMilk", false);
+		disarmedPotion = input.getBooleanOr("DisarmedPotion", false);
 	}
 
 	@Override
-	public void writeData(WriteView writeView) {
-		writeView.putBoolean("DisarmedMilk", disarmedMilk);
-		writeView.putBoolean("DisarmedPotion", disarmedPotion);
+	public void writeData(ValueOutput output) {
+		output.putBoolean("DisarmedMilk", disarmedMilk);
+		output.putBoolean("DisarmedPotion", disarmedPotion);
 	}
 
 	public boolean disarmedMilk() {

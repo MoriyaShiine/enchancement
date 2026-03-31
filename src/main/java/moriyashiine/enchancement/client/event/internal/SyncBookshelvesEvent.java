@@ -1,32 +1,34 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.client.event.internal;
 
-import moriyashiine.enchancement.client.gui.screen.ingame.EnchantingTableScreen;
-import moriyashiine.enchancement.common.screenhandler.EnchantingTableScreenHandler;
+import moriyashiine.enchancement.client.gui.screens.inventory.ModEnchantmentScreen;
+import moriyashiine.enchancement.common.world.inventory.ModEnchantmentMenu;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.Holder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.enchantment.Enchantment;
 
 import java.util.Set;
 
-public class SyncBookshelvesEvent implements ClientTickEvents.EndWorldTick {
-	public static Set<RegistryEntry<Enchantment>> CHISELED_ENCHANTMENTS = null;
+public class SyncBookshelvesEvent implements ClientTickEvents.EndLevelTick {
+	public static Set<Holder<Enchantment>> CHISELED_ENCHANTMENTS = null;
 
 	@Override
-	public void onEndTick(ClientWorld world) {
+	public void onEndTick(ClientLevel level) {
 		if (CHISELED_ENCHANTMENTS != null) {
-			ClientPlayerEntity player = MinecraftClient.getInstance().player;
-			if (player != null && player.currentScreenHandler instanceof EnchantingTableScreenHandler handler) {
-				if (MinecraftClient.getInstance().currentScreen instanceof EnchantingTableScreen screen) {
+			Minecraft client = Minecraft.getInstance();
+			Player player = client.player;
+			if (player != null && player.containerMenu instanceof ModEnchantmentMenu menu) {
+				if (client.screen instanceof ModEnchantmentScreen screen) {
 					screen.receivedPacket = true;
 				}
-				handler.chiseledEnchantments.clear();
-				handler.chiseledEnchantments.addAll(CHISELED_ENCHANTMENTS);
+				menu.chiseledEnchantments.clear();
+				menu.chiseledEnchantments.addAll(CHISELED_ENCHANTMENTS);
 				CHISELED_ENCHANTMENTS = null;
 			}
 		}

@@ -1,28 +1,26 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.allowloadingprojectile;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import moriyashiine.enchancement.common.enchantment.effect.AllowLoadingProjectileEffect;
-import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
+import moriyashiine.enchancement.common.world.item.effects.AllowLoadingProjectileEffect;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ProjectileWeaponItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-import java.util.Set;
 import java.util.function.Predicate;
 
-@Mixin({PlayerEntity.class, HostileEntity.class})
+@Mixin({Player.class, Monster.class})
 public class CrossbowMixin {
-	@ModifyExpressionValue(method = "getProjectileType", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/RangedWeaponItem;getHeldProjectiles()Ljava/util/function/Predicate;"))
-	private Predicate<ItemStack> enchancement$allowLoadingProjectile(Predicate<ItemStack> original, ItemStack stack) {
-		Set<Item> items = AllowLoadingProjectileEffect.getItems(stack);
-		for (Item item : items) {
-			original = original.or(projectile -> projectile.isOf(item));
-		}
-		return original;
+	@WrapOperation(method = "getProjectile", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ProjectileWeaponItem;getSupportedHeldProjectiles()Ljava/util/function/Predicate;"))
+	private Predicate<ItemStack> enchancement$allowLoadingProjectile(ProjectileWeaponItem instance, Operation<Predicate<ItemStack>> original, @Local(argsOnly = true) ItemStack heldWeapon) {
+		return original.call(instance).or(stack -> AllowLoadingProjectileEffect.getItems(heldWeapon).contains(stack.getItem()));
 	}
 }

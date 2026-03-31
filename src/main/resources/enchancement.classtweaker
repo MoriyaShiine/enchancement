@@ -1,41 +1,42 @@
-classTweaker v1 named
-accessible class net/minecraft/entity/effect/InstantHealthOrDamageStatusEffect
-accessible class net/minecraft/entity/mob/ShulkerEntity$PeekGoal
-accessible class net/minecraft/entity/mob/ShulkerEntity$ShootBulletGoal
+classTweaker v1 official
+accessible class net/minecraft/world/effect/HealOrHarmMobEffect
+accessible class net/minecraft/world/entity/monster/Shulker$ShulkerAttackGoal
+accessible class net/minecraft/world/entity/monster/Shulker$ShulkerPeekGoal
 
-accessible method net/minecraft/block/HoneyBlock addCollisionEffects (Lnet/minecraft/world/World;Lnet/minecraft/entity/Entity;)V
-accessible method net/minecraft/block/HoneyBlock updateSlidingVelocity (Lnet/minecraft/entity/Entity;)V
-accessible method net/minecraft/block/entity/AbstractFurnaceBlockEntity dropExperience (Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/math/Vec3d;IF)V
-accessible method net/minecraft/entity/Entity spawnSprintingParticles ()V
-accessible method net/minecraft/entity/ItemEntity tryMerge (Lnet/minecraft/entity/ItemEntity;)V
-accessible method net/minecraft/entity/LivingEntity getJumpVelocity ()F
-accessible method net/minecraft/entity/projectile/ArrowEntity setPotionContents (Lnet/minecraft/component/type/PotionContentsComponent;)V
-accessible method net/minecraft/entity/projectile/PersistentProjectileEntity asItemStack ()Lnet/minecraft/item/ItemStack;
-accessible method net/minecraft/entity/projectile/PersistentProjectileEntity isInGround ()Z
-accessible method net/minecraft/entity/projectile/TridentEntity isOwnerAlive ()Z
-accessible method net/minecraft/entity/mob/GuardianEntity setBeamTarget (I)V
-accessible method net/minecraft/entity/mob/PiglinBrain onAttacked (Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/mob/PiglinEntity;Lnet/minecraft/entity/LivingEntity;)V
-accessible method net/minecraft/item/CrossbowItem getPullProgress (ILnet/minecraft/item/ItemStack;Lnet/minecraft/entity/LivingEntity;)F
+accessible method net/minecraft/world/entity/Entity spawnSprintParticle ()V
+accessible method net/minecraft/world/entity/LivingEntity getJumpPower ()F
+accessible method net/minecraft/world/entity/item/ItemEntity tryToMerge (Lnet/minecraft/world/entity/item/ItemEntity;)V
+accessible method net/minecraft/world/entity/monster/Guardian setActiveAttackTarget (I)V
+accessible method net/minecraft/world/entity/monster/piglin/PiglinAi wasHurtBy (Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/monster/piglin/Piglin;Lnet/minecraft/world/entity/LivingEntity;)V
+accessible method net/minecraft/world/entity/projectile/arrow/AbstractArrow getPickupItem ()Lnet/minecraft/world/item/ItemStack;
+accessible method net/minecraft/world/entity/projectile/arrow/AbstractArrow isInGround ()Z
+accessible method net/minecraft/world/entity/projectile/arrow/Arrow setPotionContents (Lnet/minecraft/world/item/alchemy/PotionContents;)V
+accessible method net/minecraft/world/entity/projectile/arrow/ThrownTrident isAcceptibleReturnOwner ()Z
+accessible method net/minecraft/world/item/CrossbowItem getPowerForTime (ILnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/LivingEntity;)F
+accessible method net/minecraft/world/item/enchantment/EnchantmentEffectComponents validatedListCodec (Lcom/mojang/serialization/Codec;Lnet/minecraft/util/context/ContextKeySet;)Lcom/mojang/serialization/Codec;
+accessible method net/minecraft/world/level/block/HoneyBlock maybeDoSlideEffects (Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/Entity;)V
+accessible method net/minecraft/world/level/block/HoneyBlock doSlideMovement (Lnet/minecraft/world/entity/Entity;)V
+accessible method net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity createExperience (Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/phys/Vec3;IF)V
 
-accessible field net/minecraft/component/type/BundleContentsComponent$Builder stacks Ljava/util/List;
-accessible field net/minecraft/enchantment/Enchantment effects Lnet/minecraft/component/ComponentMap;
-mutable field net/minecraft/enchantment/Enchantment effects Lnet/minecraft/component/ComponentMap;
-accessible field net/minecraft/enchantment/effect/AllOfEnchantmentEffects$EntityEffects effects Ljava/util/List;
-mutable field net/minecraft/enchantment/effect/AllOfEnchantmentEffects$EntityEffects effects Ljava/util/List;
-accessible field net/minecraft/enchantment/effect/EnchantmentEffectEntry requirements Ljava/util/Optional;
-mutable field net/minecraft/enchantment/effect/EnchantmentEffectEntry requirements Ljava/util/Optional;
-accessible field net/minecraft/enchantment/effect/TargetedEnchantmentEffect requirements Ljava/util/Optional;
-mutable field net/minecraft/enchantment/effect/TargetedEnchantmentEffect requirements Ljava/util/Optional;
-accessible field net/minecraft/entity/LivingEntity jumping Z
-accessible field net/minecraft/entity/projectile/PersistentProjectileEntity damage D
-accessible field net/minecraft/entity/projectile/PersistentProjectileEntity inGroundTime I
-accessible field net/minecraft/entity/projectile/TridentEntity LOYALTY Lnet/minecraft/entity/data/TrackedData;
-accessible field net/minecraft/loot/condition/AlternativeLootCondition terms Ljava/util/List;
-accessible field net/minecraft/predicate/DamagePredicate dealt Lnet/minecraft/predicate/NumberRange$DoubleRange;
-mutable field net/minecraft/predicate/DamagePredicate dealt Lnet/minecraft/predicate/NumberRange$DoubleRange;
-accessible field net/minecraft/registry/tag/TagEntry id Lnet/minecraft/util/Identifier;
+accessible field net/minecraft/advancements/criterion/DamagePredicate dealtDamage Lnet/minecraft/advancements/criterion/MinMaxBounds$Doubles;
+mutable field net/minecraft/advancements/criterion/DamagePredicate dealtDamage Lnet/minecraft/advancements/criterion/MinMaxBounds$Doubles;
+accessible field net/minecraft/tags/TagEntry id Lnet/minecraft/resources/Identifier;
+accessible field net/minecraft/world/entity/LivingEntity jumping Z
+accessible field net/minecraft/world/entity/projectile/arrow/AbstractArrow baseDamage D
+accessible field net/minecraft/world/entity/projectile/arrow/AbstractArrow inGroundTime I
+accessible field net/minecraft/world/entity/projectile/arrow/ThrownTrident ID_LOYALTY Lnet/minecraft/network/syncher/EntityDataAccessor;
+accessible field net/minecraft/world/item/component/BundleContents$Mutable items Ljava/util/List;
+accessible field net/minecraft/world/item/enchantment/ConditionalEffect requirements Ljava/util/Optional;
+mutable field net/minecraft/world/item/enchantment/ConditionalEffect requirements Ljava/util/Optional;
+accessible field net/minecraft/world/item/enchantment/Enchantment effects Lnet/minecraft/core/component/DataComponentMap;
+mutable field net/minecraft/world/item/enchantment/Enchantment effects Lnet/minecraft/core/component/DataComponentMap;
+accessible field net/minecraft/world/item/enchantment/TargetedConditionalEffect requirements Ljava/util/Optional;
+mutable field net/minecraft/world/item/enchantment/TargetedConditionalEffect requirements Ljava/util/Optional;
+accessible field net/minecraft/world/item/enchantment/effects/AllOf$EntityEffects effects Ljava/util/List;
+mutable field net/minecraft/world/item/enchantment/effects/AllOf$EntityEffects effects Ljava/util/List;
+accessible field net/minecraft/world/level/storage/loot/predicates/CompositeLootItemCondition terms Ljava/util/List;
 
-accessible method net/minecraft/client/particle/ConnectionParticle <init> (Lnet/minecraft/client/world/ClientWorld;DDDDDDLnet/minecraft/client/texture/Sprite;)V
-accessible method net/minecraft/client/particle/DamageParticle <init> (Lnet/minecraft/client/world/ClientWorld;DDDDDDLnet/minecraft/client/texture/Sprite;)V
-accessible method net/minecraft/client/particle/FlameParticle <init> (Lnet/minecraft/client/world/ClientWorld;DDDDDDLnet/minecraft/client/texture/Sprite;)V
-accessible method net/minecraft/client/gui/hud/InGameHud renderHealthBar (Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/entity/player/PlayerEntity;IIIIFIIIZ)V
+accessible method net/minecraft/client/gui/Gui extractHearts (Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/world/entity/player/Player;IIIIFIIIZ)V
+accessible method net/minecraft/client/particle/CritParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V
+accessible method net/minecraft/client/particle/FlameParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V
+accessible method net/minecraft/client/particle/FlyTowardsPositionParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V

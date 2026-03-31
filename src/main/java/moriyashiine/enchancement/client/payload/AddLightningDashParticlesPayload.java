@@ -1,51 +1,52 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.client.payload;
 
 import moriyashiine.enchancement.common.Enchancement;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.particle.BlockStateParticleEffect;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.RaycastContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.block.state.BlockState;
 
-public record AddLightningDashParticlesPayload(int entityId) implements CustomPayload {
-	public static final Id<AddLightningDashParticlesPayload> ID = new Id<>(Enchancement.id("add_lightning_dash_particles"));
-	public static final PacketCodec<PacketByteBuf, AddLightningDashParticlesPayload> CODEC = PacketCodec.tuple(
-			PacketCodecs.VAR_INT, AddLightningDashParticlesPayload::entityId,
+public record AddLightningDashParticlesPayload(int entityId) implements CustomPacketPayload {
+	public static final Type<AddLightningDashParticlesPayload> TYPE = new Type<>(Enchancement.id("add_lightning_dash_particles"));
+	public static final StreamCodec<FriendlyByteBuf, AddLightningDashParticlesPayload> CODEC = StreamCodec.composite(
+			ByteBufCodecs.VAR_INT, AddLightningDashParticlesPayload::entityId,
 			AddLightningDashParticlesPayload::new);
 
 	@Override
-	public Id<? extends CustomPayload> getId() {
-		return ID;
+	public Type<AddLightningDashParticlesPayload> type() {
+		return TYPE;
 	}
 
-	public static void send(ServerPlayerEntity player, Entity entity) {
+	public static void send(ServerPlayer player, Entity entity) {
 		ServerPlayNetworking.send(player, new AddLightningDashParticlesPayload(entity.getId()));
 	}
 
 	public static void addParticles(Entity entity) {
-		BlockPos.Mutable mutable = new BlockPos.Mutable();
-		double y = Math.round(entity.getEntityWorld().raycast(new RaycastContext(entity.getEntityPos(), entity.getEntityPos().add(entity.getRotationVector().multiply(4)), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.ANY, entity)).getPos().getY() - 1);
+		BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+		double y = Math.round(entity.level().clip(new ClipContext(entity.position(), entity.position().add(entity.getLookAngle().scale(4)), ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, entity)).getLocation().y() - 1);
 		for (int i = 0; i < 360; i += 15) {
 			for (int j = 1; j < 7; j++) {
-				double x = entity.getX() + MathHelper.sin(i) * j / 2, z = entity.getZ() + MathHelper.cos(i) * j / 2;
-				BlockState state = entity.getEntityWorld().getBlockState(mutable.set(x, y, z));
-				if (!state.isReplaceable() && entity.getEntityWorld().getBlockState(mutable.move(Direction.UP)).isReplaceable()) {
-					BlockStateParticleEffect particle = new BlockStateParticleEffect(ParticleTypes.BLOCK, state);
+				double x = entity.getX() + Mth.sin(i) * j / 2, z = entity.getZ() + Mth.cos(i) * j / 2;
+				BlockState state = entity.level().getBlockState(mutable.set(x, y, z));
+				if (!state.canBeReplaced() && entity.level().getBlockState(mutable.move(Direction.UP)).canBeReplaced()) {
+					BlockParticleOption particle = new BlockParticleOption(ParticleTypes.BLOCK, state);
 					for (int k = 0; k < 8; k++) {
-						entity.getEntityWorld().addParticleClient(particle, x, mutable.getY() + 0.5, z, 0, 0, 0);
+						entity.level().addParticle(particle, x, mutable.getY() + 0.5, z, 0, 0, 0);
 					}
 				}
 			}
@@ -55,7 +56,7 @@ public record AddLightningDashParticlesPayload(int entityId) implements CustomPa
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<AddLightningDashParticlesPayload> {
 		@Override
 		public void receive(AddLightningDashParticlesPayload payload, ClientPlayNetworking.Context context) {
-			Entity entity = context.player().getEntityWorld().getEntityById(payload.entityId());
+			Entity entity = context.player().level().getEntity(payload.entityId());
 			if (entity != null) {
 				addParticles(entity);
 			}

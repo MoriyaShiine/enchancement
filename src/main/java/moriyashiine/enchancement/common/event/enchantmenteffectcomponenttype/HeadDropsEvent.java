@@ -1,44 +1,45 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.util.enchantment.BeheadingEntry;
+import moriyashiine.enchancement.common.util.enchantment.HeadDrop;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.ProfileComponent;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.effect.EnchantmentEffectTarget;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.loot.context.LootContext;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.ItemScatterer;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Containers;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.ResolvableProfile;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.EnchantmentTarget;
+import net.minecraft.world.level.storage.loot.LootContext;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 public class HeadDropsEvent implements ServerEntityCombatEvents.AfterKilledOtherEntity {
 	@Override
-	public void afterKilledOtherEntity(ServerWorld world, Entity entity, LivingEntity killedEntity, DamageSource damageSource) {
+	public void afterKilledOtherEntity(ServerLevel level, Entity entity, LivingEntity killedEntity, DamageSource damageSource) {
 		if (entity instanceof LivingEntity attacker) {
-			float dropModifier = getDropChance(world, attacker, new DamageSource(attacker.getDamageSources().generic().getTypeRegistryEntry(), attacker, attacker));
+			float dropModifier = getDropChance(level, attacker, new DamageSource(attacker.damageSources().generic().typeHolder(), attacker, attacker));
 			if (dropModifier > 0) {
-				for (EntityType<?> entityType : BeheadingEntry.DROP_MAP.keySet()) {
+				for (EntityType<?> entityType : HeadDrop.DROP_MAP.keySet()) {
 					if (killedEntity.getType() == entityType) {
-						BeheadingEntry entry = BeheadingEntry.DROP_MAP.get(entityType);
+						HeadDrop entry = HeadDrop.DROP_MAP.get(entityType);
 						if (killedEntity.getRandom().nextFloat() * dropModifier < entry.chance()) {
 							ItemStack stack = new ItemStack(entry.drop());
-							if (stack.getItem() == Items.PLAYER_HEAD && killedEntity instanceof PlayerEntity player) {
-								stack.set(DataComponentTypes.PROFILE, ProfileComponent.ofStatic(player.getGameProfile()));
+							if (stack.getItem() == Items.PLAYER_HEAD && killedEntity instanceof Player player) {
+								stack.set(DataComponents.PROFILE, ResolvableProfile.createResolved(player.getGameProfile()));
 							}
-							ItemScatterer.spawn(world, killedEntity.getX(), killedEntity.getY(), killedEntity.getZ(), stack);
+							Containers.dropItemStack(level, killedEntity.getX(), killedEntity.getY(), killedEntity.getZ(), stack);
 						}
 					}
 				}
@@ -46,23 +47,23 @@ public class HeadDropsEvent implements ServerEntityCombatEvents.AfterKilledOther
 		}
 	}
 
-	private static float getDropChance(ServerWorld world, LivingEntity attacker, DamageSource damageSource) {
+	private static float getDropChance(ServerLevel level, LivingEntity attacker, DamageSource damageSource) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		Random random = attacker.getRandom();
-		EnchantmentHelper.forEachEnchantment(attacker, (enchantment, level, context) -> {
-			LootContext lootContext = Enchantment.createEnchantedDamageLootContext(world, level, attacker, damageSource);
-			enchantment.value().getEffect(ModEnchantmentEffectComponentTypes.HEAD_DROPS).forEach(effect -> {
-				if (effect.enchanted() == EnchantmentEffectTarget.VICTIM && effect.affected() == EnchantmentEffectTarget.VICTIM && effect.test(lootContext)) {
-					mutableFloat.setValue(effect.effect().apply(level, random, mutableFloat.floatValue()));
+		RandomSource random = attacker.getRandom();
+		EnchantmentHelper.runIterationOnEquipment(attacker, (enchantment, enchantmentLevel, _) -> {
+			LootContext lootContext = Enchantment.damageContext(level, enchantmentLevel, attacker, damageSource);
+			enchantment.value().getEffects(ModEnchantmentEffectComponentTypes.HEAD_DROPS).forEach(effect -> {
+				if (effect.enchanted() == EnchantmentTarget.VICTIM && effect.affected() == EnchantmentTarget.VICTIM && effect.matches(lootContext)) {
+					mutableFloat.setValue(effect.effect().process(enchantmentLevel, random, mutableFloat.floatValue()));
 				}
 			});
 		});
-		if (damageSource.getAttacker() instanceof LivingEntity livingEntity) {
-			EnchantmentHelper.forEachEnchantment(livingEntity, (enchantment, level, context) -> {
-				LootContext lootContext = Enchantment.createEnchantedDamageLootContext(world, level, attacker, damageSource);
-				enchantment.value().getEffect(ModEnchantmentEffectComponentTypes.HEAD_DROPS).forEach(effect -> {
-					if (effect.enchanted() == EnchantmentEffectTarget.ATTACKER && effect.affected() == EnchantmentEffectTarget.VICTIM && effect.test(lootContext)) {
-						mutableFloat.setValue(effect.effect().apply(level, random, mutableFloat.floatValue()));
+		if (damageSource.getEntity() instanceof LivingEntity living) {
+			EnchantmentHelper.runIterationOnEquipment(living, (enchantment, enchantmentLevel, _) -> {
+				LootContext lootContext = Enchantment.damageContext(level, enchantmentLevel, attacker, damageSource);
+				enchantment.value().getEffects(ModEnchantmentEffectComponentTypes.HEAD_DROPS).forEach(effect -> {
+					if (effect.enchanted() == EnchantmentTarget.ATTACKER && effect.affected() == EnchantmentTarget.VICTIM && effect.matches(lootContext)) {
+						mutableFloat.setValue(effect.effect().process(enchantmentLevel, random, mutableFloat.floatValue()));
 					}
 				});
 			});

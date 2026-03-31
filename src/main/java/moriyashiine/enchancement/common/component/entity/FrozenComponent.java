@@ -1,6 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.common.init.ModDamageTypes;
@@ -8,18 +9,14 @@ import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.tag.ModEnchantmentTags;
 import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MovementType;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.registry.tag.DamageTypeTags;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
@@ -28,63 +25,63 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 	private Entity lastFreezingAttacker = null;
 	private boolean frozen = false;
 	private int ticksFrozen = 0;
-	private EntityPose forcedPose = EntityPose.STANDING;
-	private float forcedHeadYaw = 0, forcedBodyYaw = 0, forcedPitch = 0, forcedLimbSwingAnimationProgress = 0, forcedLimbSwingAmplitude = 0;
-	private int forcedClientAge = 0;
+	private Pose forcedPose = Pose.STANDING;
+	private float forcedYHeadRot = 0, forcedVisualRotationYInDegrees = 0, forcedXRot = 0, forcedWalkAnimationPos = 0, forcedWalkAnimationSpeed = 0;
+	private int forcedClientTickCount = 0;
 
 	public FrozenComponent(LivingEntity obj) {
 		this.obj = obj;
 	}
 
 	@Override
-	public void readData(ReadView readView) {
-		frozen = readView.getBoolean("Frozen", false);
-		ticksFrozen = readView.getInt("TicksFrozen", 0);
-		forcedPose = EntityPose.valueOf(readView.getString("ForcedPose", EntityPose.STANDING.toString()));
-		forcedHeadYaw = readView.getFloat("ForcedHeadYaw", 0);
-		forcedBodyYaw = readView.getFloat("ForcedBodyYaw", 0);
-		forcedPitch = readView.getFloat("ForcedPitch", 0);
-		forcedLimbSwingAnimationProgress = readView.getFloat("ForcedLimbSwingAnimationProgress", 0);
-		forcedLimbSwingAmplitude = readView.getFloat("ForcedLimbAmplitude", 0);
-		forcedClientAge = readView.getInt("ForcedClientAge", 0);
+	public void readData(ValueInput input) {
+		frozen = input.getBooleanOr("Frozen", false);
+		ticksFrozen = input.getIntOr("TicksFrozen", 0);
+		forcedPose = Pose.valueOf(input.getStringOr("ForcedPose", Pose.STANDING.toString()));
+		forcedYHeadRot = input.getFloatOr("ForcedYHeadRot", 0);
+		forcedVisualRotationYInDegrees = input.getFloatOr("ForcedVisualRotationYInDegrees", 0);
+		forcedXRot = input.getFloatOr("ForcedXRot", 0);
+		forcedWalkAnimationPos = input.getFloatOr("ForcedWalkAnimationPos", 0);
+		forcedWalkAnimationSpeed = input.getFloatOr("ForcedWalkAnimationSpeed", 0);
+		forcedClientTickCount = input.getIntOr("ForcedClientTickCount", 0);
 	}
 
 	@Override
-	public void writeData(WriteView writeView) {
-		writeView.putBoolean("Frozen", frozen);
-		writeView.putInt("TicksFrozen", ticksFrozen);
-		writeView.putString("ForcedPose", forcedPose.toString());
-		writeView.putFloat("ForcedHeadYaw", forcedHeadYaw);
-		writeView.putFloat("ForcedBodyYaw", forcedBodyYaw);
-		writeView.putFloat("ForcedPitch", forcedPitch);
-		writeView.putFloat("ForcedLimbSwingAnimationProgress", forcedLimbSwingAnimationProgress);
-		writeView.putFloat("ForcedLimbAmplitude", forcedLimbSwingAmplitude);
-		writeView.putInt("ForcedClientAge", forcedClientAge);
+	public void writeData(ValueOutput output) {
+		output.putBoolean("Frozen", frozen);
+		output.putInt("TicksFrozen", ticksFrozen);
+		output.putString("ForcedPose", forcedPose.toString());
+		output.putFloat("ForcedYHeadRot", forcedYHeadRot);
+		output.putFloat("ForcedVisualRotationYInDegrees", forcedVisualRotationYInDegrees);
+		output.putFloat("ForcedXRot", forcedXRot);
+		output.putFloat("ForcedWalkAnimationPos", forcedWalkAnimationPos);
+		output.putFloat("ForcedWalkAnimationSpeed", forcedWalkAnimationSpeed);
+		output.putInt("ForcedClientTickCount", forcedClientTickCount);
 	}
 
 	@Override
 	public void serverTick() {
 		if (frozen) {
-			if (obj instanceof MobEntity mob) {
-				if (!mob.isAiDisabled()) {
-					mob.setAiDisabled(true);
+			if (obj instanceof Mob mob) {
+				if (!mob.isNoAi()) {
+					mob.setNoAi(true);
 				}
 				ticksFrozen++;
-				if (ticksFrozen > 200 && obj.getRandom().nextFloat() < 1 / 64F && !mob.isPersistent()) {
-					obj.damage((ServerWorld) obj.getEntityWorld(), obj.getDamageSources().generic(), 2);
+				if (ticksFrozen > 200 && obj.getRandom().nextFloat() < 1 / 64F && !mob.isPersistenceRequired()) {
+					obj.hurtServer((ServerLevel) obj.level(), obj.damageSources().generic(), 2);
 				}
-				if (obj.horizontalCollision && obj.getVelocity().length() >= 0.05) {
-					obj.damage((ServerWorld) obj.getEntityWorld(), obj.getDamageSources().flyIntoWall(), 2);
+				if (obj.horizontalCollision && obj.getDeltaMovement().length() >= 0.05) {
+					obj.hurtServer((ServerLevel) obj.level(), obj.damageSources().flyIntoWall(), 2);
 				}
 				if (ticksFrozen <= 10) {
-					obj.setVelocity(obj.getVelocity().multiply(0.25));
+					obj.setDeltaMovement(obj.getDeltaMovement().scale(0.25));
 				}
-				if (!obj.hasNoGravity()) {
-					obj.setVelocity(obj.getVelocity().add(0, -0.02, 0));
+				if (!obj.isNoGravity()) {
+					obj.setDeltaMovement(obj.getDeltaMovement().add(0, -0.02, 0));
 				}
-				obj.move(MovementType.SELF, obj.getVelocity());
+				obj.move(MoverType.SELF, obj.getDeltaMovement());
 			}
-		} else if (lastFreezingAttacker != null && obj.getFrozenTicks() <= 0) {
+		} else if (lastFreezingAttacker != null && obj.getTicksFrozen() <= 0) {
 			lastFreezingAttacker = null;
 		}
 	}
@@ -105,37 +102,37 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 		return frozen;
 	}
 
-	public EntityPose getForcedPose() {
+	public Pose getForcedPose() {
 		return forcedPose;
 	}
 
-	public float getForcedHeadYaw() {
-		return forcedHeadYaw;
+	public float getForcedYHeadRot() {
+		return forcedYHeadRot;
 	}
 
-	public float getForcedBodyYaw() {
-		return forcedBodyYaw;
+	public float getForcedVisualRotationYInDegrees() {
+		return forcedVisualRotationYInDegrees;
 	}
 
-	public float getForcedPitch() {
-		return forcedPitch;
+	public float getForcedXRot() {
+		return forcedXRot;
 	}
 
-	public float getForcedLimbSwingAnimationProgress() {
-		return forcedLimbSwingAnimationProgress;
+	public float getForcedWalkAnimationPos() {
+		return forcedWalkAnimationPos;
 	}
 
-	public float getForcedLimbSwingAmplitude() {
-		return forcedLimbSwingAmplitude;
+	public float getForcedWalkAnimationSpeed() {
+		return forcedWalkAnimationSpeed;
 	}
 
-	public int getForcedClientAge() {
-		return forcedClientAge;
+	public int getForcedClientTickCount() {
+		return forcedClientTickCount;
 	}
 
 	public boolean shouldFreezeOnDeath(DamageSource source) {
-		if (!obj.getEntityWorld().isClient() && !obj.getType().isIn(ModEntityTypeTags.CANNOT_FREEZE) && lastFreezingAttacker != null) {
-			return source.isIn(DamageTypeTags.IS_FREEZING) || isSourceFrostbiteWeapon(source);
+		if (!obj.level().isClientSide() && !obj.is(ModEntityTypeTags.CANNOT_FREEZE) && lastFreezingAttacker != null) {
+			return source.is(DamageTypeTags.IS_FREEZING) || isSourceFrostbiteWeapon(source);
 		}
 		return false;
 	}
@@ -145,17 +142,17 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 		obj.setSilent(true);
 		obj.setHealth(1);
 		forcedPose = obj.getPose();
-		forcedHeadYaw = obj.getHeadYaw();
-		forcedBodyYaw = obj.getBodyYaw();
-		forcedPitch = obj.getPitch();
-		forcedLimbSwingAnimationProgress = MathHelper.nextFloat(obj.getRandom(), -1, 1);
-		forcedLimbSwingAmplitude = MathHelper.nextFloat(obj.getRandom(), -1, 1);
-		forcedClientAge = obj.age;
+		forcedYHeadRot = obj.getYHeadRot();
+		forcedVisualRotationYInDegrees = obj.getVisualRotationYInDegrees();
+		forcedXRot = obj.getXRot();
+		forcedWalkAnimationPos = Mth.nextFloat(obj.getRandom(), -1, 1);
+		forcedWalkAnimationSpeed = Mth.nextFloat(obj.getRandom(), -1, 1);
+		forcedClientTickCount = obj.tickCount;
 		frozen = true;
 		sync();
 	}
 
 	public static boolean isSourceFrostbiteWeapon(DamageSource source) {
-		return source.isOf(ModDamageTypes.ICE_SHARD) || (source.getSource() instanceof LivingEntity living && EnchantmentHelper.hasAnyEnchantmentsIn(living.getMainHandStack(), ModEnchantmentTags.FREEZES_ENTITIES));
+		return source.is(ModDamageTypes.ICE_SHARD) || (source.getDirectEntity() instanceof LivingEntity living && EnchantmentHelper.hasTag(living.getMainHandItem(), ModEnchantmentTags.FREEZES_ENTITIES));
 	}
 }

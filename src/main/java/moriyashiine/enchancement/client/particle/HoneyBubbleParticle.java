@@ -1,33 +1,34 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.client.particle;
 
-import moriyashiine.enchancement.common.particle.HoneyBubbleParticleEffect;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.particle.BillboardParticle;
+import moriyashiine.enchancement.common.particle.HoneyBubbleParticleOption;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleFactory;
-import net.minecraft.client.particle.SpriteProvider;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
 
 import java.util.UUID;
 
-public class HoneyBubbleParticle extends BillboardParticle {
-	private final SpriteProvider spriteProvider;
+public class HoneyBubbleParticle extends SingleQuadParticle {
+	private final SpriteSet sprites;
 
-	public HoneyBubbleParticle(UUID ownerId, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, SpriteProvider spriteProvider) {
-		super(world, x, y, z, spriteProvider.getFirst());
-		this.spriteProvider = spriteProvider;
-		this.velocityX = velocityX;
-		this.velocityY = velocityY;
-		this.velocityZ = velocityZ;
-		maxAge = 3;
-		gravityStrength = 0.008F;
-		PlayerEntity player = MinecraftClient.getInstance().player;
-		if (player != null && player.getUuid().equals(ownerId)) {
+	public HoneyBubbleParticle(UUID ownerId, ClientLevel level, double x, double y, double z, double xa, double ya, double za, SpriteSet sprites) {
+		super(level, x, y, z, sprites.first());
+		this.sprites = sprites;
+		this.xd = xa;
+		this.yd = ya;
+		this.zd = za;
+		lifetime = 3;
+		gravity = 0.008F;
+		Player player = Minecraft.getInstance().player;
+		if (player != null && player.getUUID().equals(ownerId)) {
 			alpha = 0.2F;
 		} else {
 			alpha = 0.5F;
@@ -36,27 +37,27 @@ public class HoneyBubbleParticle extends BillboardParticle {
 
 	@Override
 	public void tick() {
-		lastX = x;
-		lastY = y;
-		lastZ = z;
-		if (age++ >= maxAge) {
-			markDead();
+		xo = x;
+		yo = y;
+		zo = z;
+		if (age++ >= lifetime) {
+			remove();
 		} else {
-			velocityY = velocityY - gravityStrength;
-			move(velocityX, velocityY, velocityZ);
-			updateSprite(spriteProvider);
+			yd = yd - gravity;
+			move(xd, yd, zd);
+			setSpriteFromAge(sprites);
 		}
 	}
 
 	@Override
-	protected RenderType getRenderType() {
-		return RenderType.PARTICLE_ATLAS_TRANSLUCENT;
+	protected Layer getLayer() {
+		return Layer.TRANSLUCENT;
 	}
 
-	public record Factory(SpriteProvider spriteProvider) implements ParticleFactory<HoneyBubbleParticleEffect> {
+	public record Provider(SpriteSet sprites) implements ParticleProvider<HoneyBubbleParticleOption> {
 		@Override
-		public Particle createParticle(HoneyBubbleParticleEffect parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, Random random) {
-			return new HoneyBubbleParticle(parameters.ownerId(), world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider());
+		public Particle createParticle(HoneyBubbleParticleOption options, ClientLevel level, double x, double y, double z, double xAux, double yAux, double zAux, RandomSource random) {
+			return new HoneyBubbleParticle(options.ownerId(), level, x, y, z, xAux, yAux, zAux, sprites());
 		}
 	}
 }

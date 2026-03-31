@@ -1,20 +1,21 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.mixin.util.maceeffect;
 
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import moriyashiine.enchancement.common.util.enchantment.MaceEffect;
+import moriyashiine.enchancement.common.util.enchantment.effect.MaceEffect;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.stat.Stats;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -28,25 +29,25 @@ public abstract class ItemStackMixin {
 	public abstract Item getItem();
 
 	@Shadow
-	public abstract int getMaxUseTime(LivingEntity user);
+	public abstract int getUseDuration(LivingEntity user);
 
 	@Inject(method = "use", at = @At("HEAD"), cancellable = true)
-	private void enchancement$maceEffect(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+	private void enchancement$maceEffect(Level level, Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
 		for (MaceEffect effect : MaceEffect.EFFECTS) {
-			ItemStack stack = user.getStackInHand(hand);
-			effect.setUsing(user, false);
-			if (hand == Hand.MAIN_HAND && !SLibUtils.isSufficientlyHigh(user, 0.25) && effect.canUse(user.getRandom(), stack)) {
-				effect.setUsing(user, true);
-				user.setCurrentHand(hand);
-				cir.setReturnValue(ActionResult.CONSUME);
+			ItemStack stack = player.getItemInHand(hand);
+			effect.setUsing(player, false);
+			if (hand == InteractionHand.MAIN_HAND && !SLibUtils.isSufficientlyHigh(player, 0.25) && effect.canUse(player.getRandom(), stack)) {
+				effect.setUsing(player, true);
+				player.startUsingItem(hand);
+				cir.setReturnValue(InteractionResult.CONSUME);
 				return;
 			}
 		}
 	}
 
-	@Inject(method = "getMaxUseTime", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "getUseDuration", at = @At("HEAD"), cancellable = true)
 	private void enchancement$maceEffect(LivingEntity user, CallbackInfoReturnable<Integer> cir) {
-		if (user instanceof PlayerEntity player) {
+		if (user instanceof Player player) {
 			for (MaceEffect effect : MaceEffect.EFFECTS) {
 				if (effect.isUsing(player)) {
 					cir.setReturnValue(72000);
@@ -56,25 +57,25 @@ public abstract class ItemStackMixin {
 		}
 	}
 
-	@Inject(method = "usageTick", at = @At("HEAD"))
-	private void enchancement$maceEffectTick(World world, LivingEntity user, int remainingUseTicks, CallbackInfo ci) {
-		if (user instanceof PlayerEntity player) {
+	@Inject(method = "onUseTick", at = @At("HEAD"))
+	private void enchancement$maceEffectTick(Level level, LivingEntity livingEntity, int ticksRemaining, CallbackInfo ci) {
+		if (livingEntity instanceof Player player) {
 			for (MaceEffect effect : MaceEffect.EFFECTS) {
-				effect.setUsing(player, effect.canUse(user.getRandom(), (ItemStack) (Object) this));
+				effect.setUsing(player, effect.canUse(livingEntity.getRandom(), (ItemStack) (Object) this));
 			}
 		}
 	}
 
-	@Inject(method = "onStoppedUsing", at = @At("HEAD"), cancellable = true)
-	private void enchancement$maceEffect(World world, LivingEntity user, int remainingUseTicks, CallbackInfo ci) {
-		if (user instanceof PlayerEntity player) {
+	@Inject(method = "releaseUsing", at = @At("HEAD"), cancellable = true)
+	private void enchancement$maceEffect(Level level, LivingEntity entity, int remainingTime, CallbackInfo ci) {
+		if (entity instanceof Player player) {
 			ItemStack stack = (ItemStack) (Object) this;
 			for (MaceEffect effect : MaceEffect.EFFECTS) {
 				if (effect.isUsing(player)) {
-					int useTime = getMaxUseTime(user) - remainingUseTicks;
+					int useTime = getUseDuration(entity) - remainingTime;
 					if (useTime >= EnchancementUtil.getTridentChargeTime()) {
-						player.incrementStat(Stats.USED.getOrCreateStat(getItem()));
-						effect.use(world, player, stack);
+						player.awardStat(Stats.ITEM_USED.get(getItem()));
+						effect.use(level, player, stack);
 						ModEntityComponents.GROUNDED_COOLDOWN.get(player).putOnCooldown(stack, 60);
 					}
 					ci.cancel();

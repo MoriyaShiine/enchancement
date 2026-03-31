@@ -1,51 +1,52 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import net.minecraft.entity.mob.GuardianEntity;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
+import net.minecraft.world.entity.monster.Guardian;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 
 public class FrozenGuardianComponent implements AutoSyncedComponent {
-	private final GuardianEntity obj;
-	private float forcedTailAngle = 0, forcedSpikesExtension = 0;
+	private final Guardian obj;
+	private float forcedTailAnimation = 0, forcedSpikesAnimation = 0;
 
-	public FrozenGuardianComponent(GuardianEntity obj) {
+	public FrozenGuardianComponent(Guardian obj) {
 		this.obj = obj;
 	}
 
 	@Override
-	public void readData(ReadView readView) {
-		forcedTailAngle = readView.getFloat("ForcedTailAngle", 0);
-		forcedSpikesExtension = readView.getFloat("ForcedSpikesExtension", 0);
+	public void readData(ValueInput input) {
+		forcedTailAnimation = input.getFloatOr("ForcedTailAnimation", 0);
+		forcedSpikesAnimation = input.getFloatOr("ForcedSpikesAnimation", 0);
 	}
 
 	@Override
-	public void writeData(WriteView writeView) {
-		writeView.putFloat("ForcedTailAngle", forcedTailAngle);
-		writeView.putFloat("ForcedSpikesExtension", forcedSpikesExtension);
+	public void writeData(ValueOutput output) {
+		output.putFloat("ForcedTailAnimation", forcedTailAnimation);
+		output.putFloat("ForcedSpikesAnimation", forcedSpikesAnimation);
 	}
 
 	public void sync() {
 		ModEntityComponents.FROZEN_GUARDIAN.sync(obj);
 	}
 
-	public float getForcedTailAngle() {
-		return forcedTailAngle;
+	public float getForcedTailAnimation() {
+		return forcedTailAnimation;
 	}
 
-	public void setForcedTailAngle(float forcedTailAngle) {
-		this.forcedTailAngle = forcedTailAngle;
+	public void setForcedTailAnimation(float forcedTailAnimation) {
+		this.forcedTailAnimation = forcedTailAnimation;
 	}
 
-	public float getForcedSpikesExtension() {
-		return forcedSpikesExtension;
+	public float getForcedSpikesAnimation() {
+		return forcedSpikesAnimation;
 	}
 
-	public void setForcedSpikesExtension(float forcedSpikesExtension) {
-		this.forcedSpikesExtension = forcedSpikesExtension;
+	public void setForcedSpikesAnimation(float forcedSpikesAnimation) {
+		this.forcedSpikesAnimation = forcedSpikesAnimation;
 	}
 }

@@ -1,13 +1,14 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.common.init.ModEntityComponents;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
@@ -15,29 +16,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DisarmedPlayerComponent implements AutoSyncedComponent, CommonTickingComponent {
-	private final PlayerEntity obj;
+	private final Player obj;
 	private final List<ItemStack> disarmedStacks = new ArrayList<>();
 
-	public DisarmedPlayerComponent(PlayerEntity obj) {
+	public DisarmedPlayerComponent(Player obj) {
 		this.obj = obj;
 	}
 
 	@Override
-	public void readData(ReadView readView) {
+	public void readData(ValueInput input) {
 		disarmedStacks.clear();
-		disarmedStacks.addAll(readView.read("DisarmedStacks", ItemStack.CODEC.listOf()).orElse(List.of()));
+		disarmedStacks.addAll(input.read("DisarmedStacks", ItemStack.CODEC.listOf()).orElse(List.of()));
 	}
 
 	@Override
-	public void writeData(WriteView writeView) {
-		writeView.put("DisarmedStacks", ItemStack.CODEC.listOf(), disarmedStacks);
+	public void writeData(ValueOutput output) {
+		output.store("DisarmedStacks", ItemStack.CODEC.listOf(), disarmedStacks);
 	}
 
 	@Override
 	public void tick() {
 		for (int i = disarmedStacks.size() - 1; i >= 0; i--) {
 			ItemStack stack = disarmedStacks.get(i);
-			if (stack.isEmpty() || !obj.getItemCooldownManager().isCoolingDown(stack)) {
+			if (stack.isEmpty() || !obj.getCooldowns().isOnCooldown(stack)) {
 				disarmedStacks.remove(i);
 			}
 		}

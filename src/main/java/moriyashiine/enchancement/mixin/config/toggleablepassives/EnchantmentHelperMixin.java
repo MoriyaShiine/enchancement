@@ -1,6 +1,7 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.mixin.config.toggleablepassives;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
@@ -10,13 +11,13 @@ import moriyashiine.enchancement.common.init.ModComponentTypes;
 import moriyashiine.enchancement.common.tag.ModEnchantmentTags;
 import moriyashiine.enchancement.common.tag.ModItemTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.ItemTags;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.core.Holder;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,12 +30,12 @@ import java.util.function.Consumer;
 @Mixin(EnchantmentHelper.class)
 public class EnchantmentHelperMixin {
 	@Unique
-	private static void checkPassive(ItemStack stack, ItemEnchantmentsComponent enchantmentsComponent) {
+	private static void checkPassive(ItemStack stack, ItemEnchantments enchantments) {
 		if (ModConfig.toggleablePassives && isApplicable(stack)) {
-			if (stack.hasEnchantments()) {
-				if (!stack.contains(ModComponentTypes.TOGGLEABLE_PASSIVE)) {
-					for (RegistryEntry<Enchantment> enchantment : enchantmentsComponent.getEnchantments()) {
-						if (enchantment.isIn(ModEnchantmentTags.DISALLOWS_TOGGLEABLE_PASSIVE)) {
+			if (stack.isEnchanted()) {
+				if (!stack.has(ModComponentTypes.TOGGLEABLE_PASSIVE)) {
+					for (Holder<Enchantment> enchantment : enchantments.keySet()) {
+						if (enchantment.is(ModEnchantmentTags.DISALLOWS_TOGGLEABLE_PASSIVE)) {
 							return;
 						}
 					}
@@ -48,27 +49,27 @@ public class EnchantmentHelperMixin {
 
 	@Unique
 	private static boolean isApplicable(ItemStack stack) {
-		return EnchancementUtil.isBodyArmor(stack) || stack.isIn(ItemTags.CHEST_ARMOR_ENCHANTABLE) || stack.isIn(ItemTags.MINING_ENCHANTABLE) || stack.isIn(ItemTags.TRIDENT_ENCHANTABLE);
+		return EnchancementUtil.isBodyArmor(stack) || stack.is(ItemTags.CHEST_ARMOR_ENCHANTABLE) || stack.is(ItemTags.MINING_ENCHANTABLE) || stack.is(ItemTags.TRIDENT_ENCHANTABLE);
 	}
 
-	@Inject(method = "apply", at = @At(value = "RETURN", ordinal = 1))
-	private static void enchancement$toggleablePassives(ItemStack stack, Consumer<ItemEnchantmentsComponent.Builder> applier, CallbackInfoReturnable<ItemEnchantmentsComponent> cir, @Local(ordinal = 1) ItemEnchantmentsComponent enchantments) {
-		checkPassive(stack, enchantments);
+	@Inject(method = "updateEnchantments", at = @At(value = "RETURN", ordinal = 1))
+	private static void enchancement$toggleablePassives(ItemStack itemStack, Consumer<ItemEnchantments.Mutable> consumer, CallbackInfoReturnable<ItemEnchantments> cir, @Local(name = "newEnchantments") ItemEnchantments newEnchantments) {
+		checkPassive(itemStack, newEnchantments);
 	}
 
-	@Inject(method = "set", at = @At("TAIL"))
-	private static void enchancement$toggleablePassives(ItemStack stack, ItemEnchantmentsComponent enchantments, CallbackInfo ci) {
-		checkPassive(stack, enchantments);
+	@Inject(method = "setEnchantments", at = @At("TAIL"))
+	private static void enchancement$toggleablePassives(ItemStack itemStack, ItemEnchantments enchantments, CallbackInfo ci) {
+		checkPassive(itemStack, enchantments);
 	}
 
-	@ModifyReturnValue(method = "getTridentReturnAcceleration", at = @At("RETURN"))
-	private static int enchancement$toggleablePassives(int original, ServerWorld world, ItemStack stack) {
-		if (ModConfig.toggleablePassives && stack.isIn(ItemTags.TRIDENT_ENCHANTABLE) && !stack.isIn(ModItemTags.NO_LOYALTY) && stack.getOrDefault(ModComponentTypes.TOGGLEABLE_PASSIVE, false)) {
-			if (!stack.hasEnchantments()) {
-				stack.remove(ModComponentTypes.TOGGLEABLE_PASSIVE);
+	@ModifyReturnValue(method = "getTridentReturnToOwnerAcceleration", at = @At("RETURN"))
+	private static int enchancement$toggleablePassives(int original, ServerLevel serverLevel, ItemStack weapon) {
+		if (ModConfig.toggleablePassives && weapon.is(ItemTags.TRIDENT_ENCHANTABLE) && !weapon.is(ModItemTags.NO_LOYALTY) && weapon.getOrDefault(ModComponentTypes.TOGGLEABLE_PASSIVE, false)) {
+			if (!weapon.isEnchanted()) {
+				weapon.remove(ModComponentTypes.TOGGLEABLE_PASSIVE);
 				return original;
 			}
-			return EnchancementUtil.hasWeakEnchantments(stack) ? 1 : 3;
+			return EnchancementUtil.hasWeakEnchantments(weapon) ? 1 : 3;
 		}
 		return original;
 	}

@@ -1,25 +1,26 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.component.entity;
 
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class ProjectileTimerComponent implements CommonTickingComponent {
 	private int resetTicks = 0, timesHit = 0;
 
 	@Override
-	public void readData(ReadView readView) {
-		resetTicks = readView.getInt("ResetTicks", 0);
-		timesHit = readView.getInt("TimesHit", 0);
+	public void readData(ValueInput input) {
+		resetTicks = input.getIntOr("ResetTicks", 0);
+		timesHit = input.getIntOr("TimesHit", 0);
 	}
 
 	@Override
-	public void writeData(WriteView writeView) {
-		writeView.putInt("ResetTicks", resetTicks);
-		writeView.putInt("TimesHit", timesHit);
+	public void writeData(ValueOutput output) {
+		output.putInt("ResetTicks", resetTicks);
+		output.putInt("TimesHit", timesHit);
 	}
 
 	@Override

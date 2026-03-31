@@ -5,37 +5,37 @@ package moriyashiine.enchancement.client;
 
 import moriyashiine.enchancement.client.event.config.CoyoteBiteEvent;
 import moriyashiine.enchancement.client.event.config.EnchantmentDescriptionsEvent;
-import moriyashiine.enchancement.client.event.config.SyncVelocitiesEvent;
+import moriyashiine.enchancement.client.event.config.SyncDeltaMovementsEvent;
 import moriyashiine.enchancement.client.event.config.ToggleablePassivesEvent;
 import moriyashiine.enchancement.client.event.enchantmenteffectcomponenttype.*;
 import moriyashiine.enchancement.client.event.internal.SyncBookshelvesEvent;
-import moriyashiine.enchancement.client.gui.screen.ingame.EnchantingTableScreen;
-import moriyashiine.enchancement.client.hud.*;
+import moriyashiine.enchancement.client.gui.hud.*;
+import moriyashiine.enchancement.client.gui.screens.inventory.ModEnchantmentScreen;
 import moriyashiine.enchancement.client.particle.*;
-import moriyashiine.enchancement.client.particle.render.SparkParticleRenderer;
+import moriyashiine.enchancement.client.particle.group.SparkParticleGroup;
 import moriyashiine.enchancement.client.payload.*;
-import moriyashiine.enchancement.client.reloadlisteners.FrozenReloadListener;
-import moriyashiine.enchancement.client.render.entity.AmethystShardEntityRenderer;
-import moriyashiine.enchancement.client.render.entity.BrimstoneEntityRenderer;
-import moriyashiine.enchancement.client.render.entity.IceShardEntityRenderer;
-import moriyashiine.enchancement.client.render.entity.TorchEntityRenderer;
-import moriyashiine.enchancement.client.render.entity.model.FrozenPlayerEntityModel;
+import moriyashiine.enchancement.client.reloadlistener.FrozenReloadListener;
+import moriyashiine.enchancement.client.renderer.entity.AmethystShardRenderer;
+import moriyashiine.enchancement.client.renderer.entity.BrimstoneRenderer;
+import moriyashiine.enchancement.client.renderer.entity.IceShardRenderer;
+import moriyashiine.enchancement.client.renderer.entity.TorchRenderer;
+import moriyashiine.enchancement.client.renderer.entity.model.FrozenPlayerModel;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
+import moriyashiine.enchancement.common.init.ModMenuTypes;
 import moriyashiine.enchancement.common.init.ModParticleTypes;
-import moriyashiine.enchancement.common.init.ModScreenHandlerTypes;
-import moriyashiine.strawberrylib.api.event.client.DisableHudBarEvent;
-import moriyashiine.strawberrylib.api.event.client.ModifyNightVisionStrengthEvent;
+import moriyashiine.strawberrylib.api.event.client.AddNightVisionScaleEvent;
+import moriyashiine.strawberrylib.api.event.client.DisableContextualInfoEvent;
 import moriyashiine.strawberrylib.api.event.client.OutlineEntityEvent;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
-import net.fabricmc.fabric.api.client.particle.v1.ParticleRendererRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleGroupRegistry;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.ClientTooltipComponentCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.ModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
@@ -43,21 +43,21 @@ import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.fabric.api.resource.v1.pack.PackActivationType;
 import net.fabricmc.fabric.api.resource.v1.reloader.ResourceReloaderKeys;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.gui.screen.ingame.HandledScreens;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.particle.WaterBubbleParticle;
-import net.minecraft.client.render.entity.EntityRendererFactories;
-import net.minecraft.resource.ResourceType;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.particle.BubbleParticle;
+import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.server.packs.PackType;
 import org.lwjgl.glfw.GLFW;
 
 public class EnchancementClient implements ClientModInitializer {
-	private static final KeyBinding.Category KEY_CATEGORY = KeyBinding.Category.create(Enchancement.id(Enchancement.MOD_ID));
-	public static final KeyBinding DIRECTION_BURST_KEYBINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".directionBurst", GLFW.GLFW_KEY_LEFT_SHIFT, KEY_CATEGORY));
-	public static final KeyBinding ROTATION_BURST_KEYBINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".rotationBurst", GLFW.GLFW_KEY_LEFT_CONTROL, KEY_CATEGORY));
-	public static final KeyBinding SLAM_KEYBINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".slam", GLFW.GLFW_KEY_LEFT_CONTROL, KEY_CATEGORY));
-	public static final KeyBinding SLIDE_KEYBINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + Enchancement.MOD_ID + ".slide", GLFW.GLFW_KEY_LEFT_CONTROL, KEY_CATEGORY));
+	private static final KeyMapping.Category KEYMAPPING_CATEGORY = KeyMapping.Category.register(Enchancement.id(Enchancement.MOD_ID));
+	public static final KeyMapping DIRECTION_BURST_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".directionBurst", GLFW.GLFW_KEY_LEFT_SHIFT, KEYMAPPING_CATEGORY));
+	public static final KeyMapping ROTATION_BURST_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".rotationBurst", GLFW.GLFW_KEY_LEFT_CONTROL, KEYMAPPING_CATEGORY));
+	public static final KeyMapping SLAM_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".slam", GLFW.GLFW_KEY_LEFT_CONTROL, KEYMAPPING_CATEGORY));
+	public static final KeyMapping SLIDE_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".slide", GLFW.GLFW_KEY_LEFT_CONTROL, KEYMAPPING_CATEGORY));
 
-	public static boolean betterCombatLoaded = false, irisLoaded = false;
+	public static boolean betterCombatLoaded = false;
 
 	public static boolean drawTooltipsImmediately = false;
 
@@ -65,54 +65,77 @@ public class EnchancementClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		initEntities();
 		initParticles();
-		initEvents();
 		initPayloads();
-		HandledScreens.register(ModScreenHandlerTypes.ENCHANTING_TABLE, EnchantingTableScreen::new);
-		ResourceLoader.get(ResourceType.CLIENT_RESOURCES).registerReloader(FrozenReloadListener.ID, FrozenReloadListener.INSTANCE);
-		ResourceLoader.get(ResourceType.CLIENT_RESOURCES).addReloaderOrdering(ResourceReloaderKeys.Client.TEXTURES, FrozenReloadListener.ID);
+		initEvents();
+		MenuScreens.register(ModMenuTypes.ENCHANTING_TABLE, ModEnchantmentScreen::new);
+		ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloadListener(FrozenReloadListener.ID, FrozenReloadListener.INSTANCE);
+		ResourceLoader.get(PackType.CLIENT_RESOURCES).addListenerOrdering(ResourceReloaderKeys.Client.TEXTURES, FrozenReloadListener.ID);
 		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceLoader.registerBuiltinPack(Enchancement.id("alternate_air_jump"), modContainer, PackActivationType.NORMAL));
 		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceLoader.registerBuiltinPack(Enchancement.id("alternate_burst"), modContainer, PackActivationType.NORMAL));
 		betterCombatLoaded = FabricLoader.getInstance().isModLoaded("bettercombat");
-		irisLoaded = FabricLoader.getInstance().isModLoaded("iris");
 	}
 
 	private void initEntities() {
-		EntityModelLayerRegistry.registerModelLayer(FrozenPlayerEntityModel.LAYER, () -> FrozenPlayerEntityModel.getTexturedModelData(false));
-		EntityModelLayerRegistry.registerModelLayer(FrozenPlayerEntityModel.LAYER_SLIM, () -> FrozenPlayerEntityModel.getTexturedModelData(true));
-		EntityRendererFactories.register(ModEntityTypes.AMETHYST_SHARD, AmethystShardEntityRenderer::new);
-		EntityRendererFactories.register(ModEntityTypes.BRIMSTONE, BrimstoneEntityRenderer::new);
-		EntityRendererFactories.register(ModEntityTypes.ICE_SHARD, IceShardEntityRenderer::new);
-		EntityRendererFactories.register(ModEntityTypes.TORCH, TorchEntityRenderer::new);
+		ModelLayerRegistry.registerModelLayer(FrozenPlayerModel.LAYER, () -> FrozenPlayerModel.createBodyLayer(false));
+		ModelLayerRegistry.registerModelLayer(FrozenPlayerModel.LAYER_SLIM, () -> FrozenPlayerModel.createBodyLayer(true));
+		EntityRenderers.register(ModEntityTypes.AMETHYST_SHARD, AmethystShardRenderer::new);
+		EntityRenderers.register(ModEntityTypes.BRIMSTONE, BrimstoneRenderer::new);
+		EntityRenderers.register(ModEntityTypes.ICE_SHARD, IceShardRenderer::new);
+		EntityRenderers.register(ModEntityTypes.TORCH, TorchRenderer::new);
 	}
 
 	private void initParticles() {
-		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.BRIMSTONE_BUBBLE, WaterBubbleParticle.Factory::new);
-		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.CHISELED_ENCHANTMENT, PurpleConnectionParticle.Factory::new);
-		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.CRITICAL_TIPPER, TintlessDamageParticle.Factory::new);
-		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.HONEY_BUBBLE, HoneyBubbleParticle.Factory::new);
-		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.SHORT_SMALL_FLAME, ShortFlameParticle.SmallFactory::new);
-		ParticleRendererRegistry.register(SparkParticleRenderer.SHEET, SparkParticleRenderer::new);
-		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.SPARK, provider -> new SparkParticle.Factory());
-		ParticleFactoryRegistry.getInstance().register(ModParticleTypes.VELOCITY_LINE, VelocityLineParticle.Factory::new);
+		ParticleProviderRegistry.getInstance().register(ModParticleTypes.BRIMSTONE_BUBBLE, BubbleParticle.Provider::new);
+		ParticleProviderRegistry.getInstance().register(ModParticleTypes.CHISELED_ENCHANT, PurpleFlyTowardsPositionParticle.Provider::new);
+		ParticleProviderRegistry.getInstance().register(ModParticleTypes.CRITICAL_TIPPER, TintlessDamageParticle.Provider::new);
+		ParticleProviderRegistry.getInstance().register(ModParticleTypes.HONEY_BUBBLE, HoneyBubbleParticle.Provider::new);
+		ParticleProviderRegistry.getInstance().register(ModParticleTypes.SHORT_SMALL_FLAME, ShortFlameParticle.SmallProvider::new);
+		ParticleGroupRegistry.register(SparkParticleGroup.SHEET, SparkParticleGroup::new);
+		ParticleProviderRegistry.getInstance().register(ModParticleTypes.SPARK, _ -> new SparkParticle.Provider());
+		ParticleProviderRegistry.getInstance().register(ModParticleTypes.VELOCITY_LINE, VelocityLineParticle.Provider::new);
+	}
+
+	private void initPayloads() {
+		// internal
+		ClientPlayNetworking.registerGlobalReceiver(EnforceConfigMatchPayload.TYPE, new EnforceConfigMatchPayload.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(SyncBookshelvesPayload.TYPE, new SyncBookshelvesPayload.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(SyncEnchantingMaterialMapPayload.TYPE, new SyncEnchantingMaterialMapPayload.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(SyncEnchantingTableCostPayload.TYPE, new SyncEnchantingTableCostPayload.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(SyncHookedMovementDeltaPayload.TYPE, new SyncHookedMovementDeltaPayload.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(SyncOriginalMaxLevelsPayload.TYPE, new SyncOriginalMaxLevelsPayload.Receiver());
+		// enchantment
+		ClientPlayNetworking.registerGlobalReceiver(AddLightningDashParticlesPayload.TYPE, new AddLightningDashParticlesPayload.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(AddMoltenParticlesPayload.TYPE, new AddMoltenParticlesPayload.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(BoostInFluidS2CPayload.TYPE, new BoostInFluidS2CPayload.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(GlideS2CPayload.TYPE, new GlideS2CPayload.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(PlayBrimstoneFireSoundPayload.TYPE, new PlayBrimstoneFireSoundPayload.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(PlayBrimstoneTravelSoundPayload.TYPE, new PlayBrimstoneTravelSoundPayload.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(StartSlammingS2CPayload.TYPE, new StartSlammingS2CPayload.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(StartSlidingS2CPayload.TYPE, new StartSlidingS2CPayload.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(StopSlammingS2CPayload.TYPE, new StopSlammingS2CPayload.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(StopSlidingS2CPayload.TYPE, new StopSlidingS2CPayload.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(SyncFrozenPlayerSlimStatusS2CPayload.TYPE, new SyncFrozenPlayerSlimStatusS2CPayload.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(UseEruptionPayload.TYPE, new UseEruptionPayload.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(UseLightningDashPayload.TYPE, new UseLightningDashPayload.Receiver());
 	}
 
 	private void initEvents() {
 		// internal
-		ClientTickEvents.END_WORLD_TICK.register(new SyncBookshelvesEvent());
+		ClientTickEvents.END_LEVEL_TICK.register(new SyncBookshelvesEvent());
 		// config
-		ClientTickEvents.END_WORLD_TICK.register(new CoyoteBiteEvent());
+		ClientTickEvents.END_LEVEL_TICK.register(new CoyoteBiteEvent());
 		ItemTooltipCallback.EVENT.register(new EnchantmentDescriptionsEvent.DescriptionText());
-		TooltipComponentCallback.EVENT.register(new EnchantmentDescriptionsEvent.Icons());
+		ClientTooltipComponentCallback.EVENT.register(new EnchantmentDescriptionsEvent.Icons());
 		CommonLifecycleEvents.TAGS_LOADED.register(new EnchantmentDescriptionsEvent.ClearIconCache());
-		ClientTickEvents.START_WORLD_TICK.register(new SyncVelocitiesEvent());
+		ClientTickEvents.START_LEVEL_TICK.register(new SyncDeltaMovementsEvent());
 		ItemTooltipCallback.EVENT.register(new ToggleablePassivesEvent());
 		// enchantment
 		ItemTooltipCallback.EVENT.register(new AutomaticallyFeedsTooltipClientEvent());
-		ClientTickEvents.END_WORLD_TICK.register(new BounceClientEvent());
-		DisableHudBarEvent.EVENT.register(new ChargeJumpClientEvent());
-		ClientTickEvents.END_WORLD_TICK.register(new EntityXrayClientEvent.Tick());
+		ClientTickEvents.END_LEVEL_TICK.register(new BounceClientEvent());
+		DisableContextualInfoEvent.EVENT.register(new ChargeJumpClientEvent());
+		ClientTickEvents.END_LEVEL_TICK.register(new EntityXrayClientEvent.Tick());
 		OutlineEntityEvent.EVENT.register(new EntityXrayClientEvent.Outline());
-		ModifyNightVisionStrengthEvent.ADD.register(new NightVisionClientEvent());
+		AddNightVisionScaleEvent.EVENT.register(new NightVisionClientEvent());
 		ItemTooltipCallback.EVENT.register(new RageClientEvent());
 		// hud elements
 		HudElementRegistry.attachElementBefore(VanillaHudElements.HELD_ITEM_TOOLTIP, Enchancement.id("chiseled_bookshelf_peeking"), new ChiseledBookshelfPeekingHudElement());
@@ -121,29 +144,5 @@ public class EnchancementClient implements ClientModInitializer {
 		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("charge_jump"), new ChargeJumpHudElement());
 		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("direction_burst"), new DirectionBurstHudElement());
 		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("rotation_burst"), new RotationBurstHudElement());
-	}
-
-	private void initPayloads() {
-		// internal
-		ClientPlayNetworking.registerGlobalReceiver(EnforceConfigMatchPayload.ID, new EnforceConfigMatchPayload.Receiver());
-		ClientPlayNetworking.registerGlobalReceiver(SyncBookshelvesPayload.ID, new SyncBookshelvesPayload.Receiver());
-		ClientPlayNetworking.registerGlobalReceiver(SyncEnchantingMaterialMapPayload.ID, new SyncEnchantingMaterialMapPayload.Receiver());
-		ClientPlayNetworking.registerGlobalReceiver(SyncEnchantingTableCostPayload.ID, new SyncEnchantingTableCostPayload.Receiver());
-		ClientPlayNetworking.registerGlobalReceiver(SyncHookedVelocityPayload.ID, new SyncHookedVelocityPayload.Receiver());
-		ClientPlayNetworking.registerGlobalReceiver(SyncOriginalMaxLevelsPayload.ID, new SyncOriginalMaxLevelsPayload.Receiver());
-		// enchantment
-		ClientPlayNetworking.registerGlobalReceiver(AddLightningDashParticlesPayload.ID, new AddLightningDashParticlesPayload.Receiver());
-		ClientPlayNetworking.registerGlobalReceiver(AddMoltenParticlesPayload.ID, new AddMoltenParticlesPayload.Receiver());
-		ClientPlayNetworking.registerGlobalReceiver(BoostInFluidS2CPayload.ID, new BoostInFluidS2CPayload.Receiver());
-		ClientPlayNetworking.registerGlobalReceiver(GlideS2CPayload.ID, new GlideS2CPayload.Receiver());
-		ClientPlayNetworking.registerGlobalReceiver(PlayBrimstoneFireSoundPayload.ID, new PlayBrimstoneFireSoundPayload.Receiver());
-		ClientPlayNetworking.registerGlobalReceiver(PlayBrimstoneTravelSoundPayload.ID, new PlayBrimstoneTravelSoundPayload.Receiver());
-		ClientPlayNetworking.registerGlobalReceiver(StartSlammingS2CPayload.ID, new StartSlammingS2CPayload.Receiver());
-		ClientPlayNetworking.registerGlobalReceiver(StartSlidingS2CPayload.ID, new StartSlidingS2CPayload.Receiver());
-		ClientPlayNetworking.registerGlobalReceiver(StopSlammingS2CPayload.ID, new StopSlammingS2CPayload.Receiver());
-		ClientPlayNetworking.registerGlobalReceiver(StopSlidingS2CPayload.ID, new StopSlidingS2CPayload.Receiver());
-		ClientPlayNetworking.registerGlobalReceiver(SyncFrozenPlayerSlimStatusS2CPayload.ID, new SyncFrozenPlayerSlimStatusS2CPayload.Receiver());
-		ClientPlayNetworking.registerGlobalReceiver(UseEruptionPayload.ID, new UseEruptionPayload.Receiver());
-		ClientPlayNetworking.registerGlobalReceiver(UseLightningDashPayload.ID, new UseLightningDashPayload.Receiver());
 	}
 }

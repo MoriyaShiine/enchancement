@@ -1,34 +1,35 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.component.entity;
 
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.enchantment.effect.DirectionBurstEffect;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.payload.DirectionBurstPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.enchancement.common.world.item.effects.DirectionBurstEffect;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.GameOptions;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.event.GameEvent;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class DirectionBurstComponent implements AutoSyncedComponent, CommonTickingComponent {
-	private final PlayerEntity obj;
+	private final Player obj;
 	private boolean shouldRefresh = false;
 	private int cooldown = 0, lastCooldown = 0, gravityTicks = 0;
 
@@ -37,24 +38,24 @@ public class DirectionBurstComponent implements AutoSyncedComponent, CommonTicki
 	private boolean wasPressingKey = false;
 	private int ticksLeftToPressActivationKey = 0;
 
-	public DirectionBurstComponent(PlayerEntity obj) {
+	public DirectionBurstComponent(Player obj) {
 		this.obj = obj;
 	}
 
 	@Override
-	public void readData(ReadView readView) {
-		shouldRefresh = readView.getBoolean("ShouldRefresh", false);
-		cooldown = readView.getInt("Cooldown", 0);
-		lastCooldown = readView.getInt("LastCooldown", 0);
-		gravityTicks = readView.getInt("GravityTicks", 0);
+	public void readData(ValueInput input) {
+		shouldRefresh = input.getBooleanOr("ShouldRefresh", false);
+		cooldown = input.getIntOr("Cooldown", 0);
+		lastCooldown = input.getIntOr("LastCooldown", 0);
+		gravityTicks = input.getIntOr("GravityTicks", 0);
 	}
 
 	@Override
-	public void writeData(WriteView writeView) {
-		writeView.putBoolean("ShouldRefresh", shouldRefresh);
-		writeView.putInt("Cooldown", cooldown);
-		writeView.putInt("LastCooldown", lastCooldown);
-		writeView.putInt("GravityTicks", gravityTicks);
+	public void writeData(ValueOutput output) {
+		output.putBoolean("ShouldRefresh", shouldRefresh);
+		output.putInt("Cooldown", cooldown);
+		output.putInt("LastCooldown", lastCooldown);
+		output.putInt("GravityTicks", gravityTicks);
 	}
 
 	@Override
@@ -63,7 +64,7 @@ public class DirectionBurstComponent implements AutoSyncedComponent, CommonTicki
 		hasDirectionBurst = entityCooldown > 0;
 		if (hasDirectionBurst) {
 			if (!shouldRefresh) {
-				if (obj.isOnGround()) {
+				if (obj.onGround()) {
 					shouldRefresh = true;
 				}
 			} else if (cooldown > 0) {
@@ -83,20 +84,19 @@ public class DirectionBurstComponent implements AutoSyncedComponent, CommonTicki
 	public void clientTick() {
 		tick();
 		if (hasDirectionBurst && canUse() && SLibClientUtils.isHost(obj)) {
-			GameOptions options = MinecraftClient.getInstance().options;
-			boolean pressingKey = EnchancementClient.DIRECTION_BURST_KEYBINDING.isPressed();
+			boolean pressingKey = EnchancementClient.DIRECTION_BURST_KEYMAPPING.isDown();
 			if (ticksLeftToPressActivationKey > 0) {
 				ticksLeftToPressActivationKey--;
 			}
 			if (pressingKey && !wasPressingKey) {
 				if (!ModConfig.doublePressDirectionBurst || ticksLeftToPressActivationKey > 0) {
 					ticksLeftToPressActivationKey = 0;
-					Vec3d inputVelocity = getVelocityFromInput(options);
-					if (inputVelocity != Vec3d.ZERO) {
-						Vec3d velocity = inputVelocity.rotateY((float) Math.toRadians(-(obj.getHeadYaw() + 90))).multiply(MultiplyMovementSpeedEvent.getMovementMultiplier(obj));
-						use(velocity.getX(), velocity.getZ());
+					Vec3 inputDelta = getDeltaMovementFromInput();
+					if (inputDelta != Vec3.ZERO) {
+						Vec3 delta = inputDelta.yRot((float) Math.toRadians(-(obj.getYHeadRot() + 90))).scale(MultiplyMovementSpeedEvent.getMovementMultiplier(obj));
+						use(delta.x(), delta.z());
 						SLibClientUtils.addParticles(obj, ParticleTypes.CLOUD, 8, ParticleAnchor.BODY);
-						DirectionBurstPayload.send(velocity);
+						DirectionBurstPayload.send(delta);
 					}
 				} else {
 					ticksLeftToPressActivationKey = 7;
@@ -135,14 +135,14 @@ public class DirectionBurstComponent implements AutoSyncedComponent, CommonTicki
 		return gravityTicks > 0;
 	}
 
-	public void use(double velocityX, double velocityZ) {
+	public void use(double x, double z) {
 		reset();
-		if (!obj.isOnGround()) {
+		if (!obj.onGround()) {
 			gravityTicks = 3;
 		}
-		obj.setVelocity(velocityX, 0, velocityZ);
+		obj.setDeltaMovement(x, 0, z);
 		obj.playSound(ModSoundEvents.ENTITY_GENERIC_STRAFE, 1, 1);
-		obj.emitGameEvent(GameEvent.ENTITY_ACTION);
+		obj.gameEvent(GameEvent.ENTITY_ACTION);
 		EnchancementUtil.resetFallDistance(obj);
 		ModEntityComponents.AIR_MOBILITY.get(obj).resetTicksInAir();
 	}
@@ -153,24 +153,25 @@ public class DirectionBurstComponent implements AutoSyncedComponent, CommonTicki
 	}
 
 	@Environment(EnvType.CLIENT)
-	private Vec3d getVelocityFromInput(GameOptions options) {
-		float strength = obj.isOnGround() ? DirectionBurstEffect.getGroundStrength(obj) : DirectionBurstEffect.getAirStrength(obj);
-		Vec3d velocity = Vec3d.ZERO;
-		if (options.forwardKey.isPressed()) {
-			velocity = new Vec3d(strength, 0, 0);
+	private Vec3 getDeltaMovementFromInput() {
+		Options options = Minecraft.getInstance().options;
+		float strength = obj.onGround() ? DirectionBurstEffect.getGroundStrength(obj) : DirectionBurstEffect.getAirStrength(obj);
+		Vec3 delta = Vec3.ZERO;
+		if (options.keyUp.isDown()) {
+			delta = new Vec3(strength, 0, 0);
 		}
-		if (options.backKey.isPressed()) {
-			velocity = new Vec3d(-strength, 0, 0);
+		if (options.keyDown.isDown()) {
+			delta = new Vec3(-strength, 0, 0);
 		}
-		if (options.leftKey.isPressed()) {
-			velocity = new Vec3d(0, 0, -strength);
+		if (options.keyLeft.isDown()) {
+			delta = new Vec3(0, 0, -strength);
 		}
-		if (options.rightKey.isPressed()) {
-			velocity = new Vec3d(0, 0, strength);
+		if (options.keyRight.isDown()) {
+			delta = new Vec3(0, 0, strength);
 		}
-		if (ModConfig.inputlessDirectionBurst && !obj.isOnGround() && velocity.equals(Vec3d.ZERO)) {
-			velocity = new Vec3d(strength, 0, 0);
+		if (ModConfig.inputlessDirectionBurst && !obj.onGround() && delta.equals(Vec3.ZERO)) {
+			delta = new Vec3(strength, 0, 0);
 		}
-		return velocity;
+		return delta;
 	}
 }

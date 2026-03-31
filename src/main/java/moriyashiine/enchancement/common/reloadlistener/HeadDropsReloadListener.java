@@ -1,52 +1,39 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common.reloadlistener;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonReader;
+import com.mojang.serialization.JsonOps;
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.util.enchantment.BeheadingEntry;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
-import net.minecraft.resource.Resource;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.resource.SynchronousResourceReloader;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
+import moriyashiine.enchancement.common.util.enchantment.HeadDrop;
+import moriyashiine.strawberrylib.api.module.SLibRegistries;
+import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
+import net.fabricmc.fabric.api.resource.v1.reloader.SimpleReloadListener;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.FileToIdConverter;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
+import net.minecraft.world.entity.EntityType;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
-public class HeadDropsReloadListener implements SynchronousResourceReloader {
-	public static final Identifier ID = Enchancement.id("head_drops");
+public class HeadDropsReloadListener extends SimpleReloadListener<Map<EntityType<?>, HeadDrop>> {
+	public static final String DIRECTORY = Enchancement.MOD_ID + "/head_drops";
 
 	@Override
-	public void reload(ResourceManager manager) {
-		BeheadingEntry.DROP_MAP.clear();
-		manager.findAllResources("head_drops", path -> path.getNamespace().equals(Enchancement.MOD_ID) && path.getPath().endsWith(".json")).forEach((identifier, resources) -> {
-			for (Resource resource : resources) {
-				try (InputStream stream = resource.getInputStream()) {
-					JsonObject object = JsonParser.parseReader(new JsonReader(new InputStreamReader(stream))).getAsJsonObject();
-					Identifier entityId = Identifier.of(identifier.getPath().substring(identifier.getPath().indexOf("/") + 1, identifier.getPath().length() - 5).replace("/", ":"));
-					EntityType<?> entity_type = Registries.ENTITY_TYPE.get(entityId);
-					if (entity_type == Registries.ENTITY_TYPE.get(Registries.ENTITY_TYPE.getDefaultId()) && !entityId.equals(Registries.ENTITY_TYPE.getDefaultId())) {
-						continue;
-					}
-					Identifier dropId = Identifier.of(JsonHelper.getString(object, "drop"));
-					Item drop = Registries.ITEM.get(dropId);
-					if (drop == Registries.ITEM.get(Registries.ITEM.getDefaultId()) && !dropId.equals(Registries.ITEM.getDefaultId())) {
-						Enchancement.LOGGER.error("Unknown item '{}' in file '{}'", dropId, identifier);
-						continue;
-					}
-					float chance = JsonHelper.getFloat(object, "chance");
-					BeheadingEntry.DROP_MAP.put(entity_type, new BeheadingEntry(drop, chance));
-				} catch (Exception exception) {
-					Enchancement.LOGGER.error("{} in file '{}'", exception.getLocalizedMessage(), identifier);
-				}
-			}
-		});
+	protected Map<EntityType<?>, HeadDrop> prepare(SharedState sharedState) {
+		Map<Identifier, HeadDrop> unmapped = new HashMap<>();
+		SLibRegistries.scanErrorless(DIRECTORY, () -> SimpleJsonResourceReloadListener.scanDirectory(sharedState.resourceManager(), FileToIdConverter.json(DIRECTORY), sharedState.get(ResourceLoader.REGISTRY_LOOKUP_KEY).createSerializationContext(JsonOps.INSTANCE), HeadDrop.CODEC, unmapped));
+		Map<EntityType<?>, HeadDrop> map = new HashMap<>();
+		unmapped.forEach((identifier, entry) -> BuiltInRegistries.ENTITY_TYPE.getOptional(identifier).ifPresent(type -> map.put(type, entry)));
+		return map;
+	}
+
+	@Override
+	protected void apply(Map<EntityType<?>, HeadDrop> map, SharedState sharedState) {
+		HeadDrop.DROP_MAP.clear();
+		HeadDrop.DROP_MAP.putAll(map);
 	}
 }

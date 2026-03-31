@@ -1,10 +1,11 @@
 /*
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
+
 package moriyashiine.enchancement.common;
 
 import eu.midnightdust.lib.config.MidnightConfig;
-import moriyashiine.enchancement.client.gui.tooltip.StoredEnchantmentsTooltipComponent;
+import moriyashiine.enchancement.client.gui.screens.inventory.tooltip.StoredEnchantmentsTooltipComponent;
 import moriyashiine.enchancement.common.util.config.OverhaulMode;
 
 import java.util.Arrays;
