@@ -1,4 +1,13 @@
 ------------------------------------------------------
+Version 1.21.11-r8
+------------------------------------------------------
+- update Turkish translation, thanks Hexasan!
+  - merges https://github.com/MoriyaShiine/enchancement/pull/287
+- finish Enderscape compatbility, thanks notNoita!
+  - merges https://github.com/MoriyaShiine/enchancement/pull/286
+- fix game freeze if camera player is ever null
+
+------------------------------------------------------
 Version 1.21.11-r7
 ------------------------------------------------------
 - fix https://github.com/MoriyaShiine/enchancement/issues/282
