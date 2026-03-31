@@ -23,7 +23,7 @@ chenille {
 }
 
 loom {
-    accessWidenerPath = file("src/main/resources/enchancement.accesswidener")
+    accessWidenerPath = file("src/main/resources/enchancement.classtweaker")
 }
 
 fabricApi {
@@ -54,7 +54,7 @@ dependencies {
     modIncludeImplementation "org.ladysnake.cardinal-components-api:cardinal-components-world:${cardinal_components_version}"
     modIncludeImplementation "maven.modrinth:midnightlib:${midnightlib_version}"
 
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
     modImplementation "moriyashiine:strawberrylib:${strawberrylib_version}"
 
     modCompileOnly("squeek.appleskin:appleskin-fabric:${appleskin_version}") {
@@ -86,7 +86,9 @@ java {
 }
 
 jar {
+    inputs.property "archivesName", project.base.archivesName
+
     from("LICENSE") {
-        rename { "${it}_${project.base.archivesName.get()}" }
+        rename { "${it}_${inputs.properties.archivesName}" }
     }
 }

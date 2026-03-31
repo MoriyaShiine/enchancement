@@ -215,7 +215,9 @@
 	"util.maceeffect.client.PlayerEntityRendererMixin"
   ],
   "injectors": {
-	"defaultRequire": 1,
-	"maxShiftBy": 5
+	"defaultRequire": 1
+  },
+  "overwrites": {
+	"requireAnnotations": true
   }
 }

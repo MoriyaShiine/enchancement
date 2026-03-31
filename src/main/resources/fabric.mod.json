@@ -46,7 +46,7 @@
   "mixins": [
 	"enchancement.mixins.json"
   ],
-  "accessWidener": "enchancement.accesswidener",
+  "accessWidener": "enchancement.classtweaker",
   "depends": {
 	"fabricloader": "*",
 	"minecraft": "~1.21.11",
@@ -57,8 +57,6 @@
   "custom": {
 	"cardinal-components": [
 	  "enchancement:chiseled_bookshelf",
-	  "enchancement:fell_trees",
-	  "enchancement:honey_trail",
 	  "enchancement:air_jump",
 	  "enchancement:air_mobility",
 	  "enchancement:apply_random_status_effect",
@@ -93,7 +91,9 @@
 	  "enchancement:slam",
 	  "enchancement:slide",
 	  "enchancement:teleport_on_hit",
-	  "enchancement:wall_jump"
+	  "enchancement:wall_jump",
+	  "enchancement:fell_trees",
+	  "enchancement:honey_trail"
 	],
 	"lithium:options": {
 	  "mixin.shapes.lazy_shape_context": false
