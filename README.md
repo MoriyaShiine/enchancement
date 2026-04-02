@@ -86,13 +86,13 @@ Everything Enchancement adds is configurable:
   * Enchantments can be transferred off of enchanted items and onto books using a grindstone.
   * Enchanted Books cannot be applied to tools in an anvil.
   * Villagers only sell unenchanted items.
-  * Librarians sell specific enchanted books related to the biome they're from.
-  * Various types of Enchanted Books are guaranteed to spawn in specific structures.
+  * Various types of Enchanted Books spawn much more commonly in specific structures.
     * Helmet Enchantments - Nether Fortresses
     * Chestplate Enchantments - Trial Chambers
     * Leggings Enchantments - Ancient Cities
     * Boots Enchantments - Desert Pyramids
     * Sword Enchantments - Dungeons
+    * Spear Enchantments - Strongholds
     * Bow Enchantments - Jungle Pyramids
     * Crossbow Enchantments - Pillager Outposts
     * Trident Enchantments - Ocean Ruins
