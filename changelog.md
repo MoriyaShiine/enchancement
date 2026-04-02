@@ -1,4 +1,17 @@
 ------------------------------------------------------
+Version 26.1-r1
+------------------------------------------------------
+- update to 26.1
+- trade rebalance is no longer enabled by default
+- add spear enchanted books to strongholds
+- adjust the chances of a few other enchanted book spawns
+- horses no longer attempt to swim while riding them with buoy
+- horses now propel themselves out of water if they have no passenger with buoy
+- add netherite horse armor enchanting material
+- add beheading drops for various mobs that were missing them
+- fix visual inconsistencies with delay
+
+------------------------------------------------------
 Version 1.21.11-r8
 ------------------------------------------------------
 - update Turkish translation, thanks Hexasan!
