@@ -1,4 +1,11 @@
 ------------------------------------------------------
+Version 26.1-r2
+------------------------------------------------------
+- mangrove roots can now be cut down with lumberjack
+- increase default maximum tree width from 7 to 11 blocks for lumberjack
+- fix rare instances of passive efficiency not being activated
+
+------------------------------------------------------
 Version 26.1-r1
 ------------------------------------------------------
 - update to 26.1
