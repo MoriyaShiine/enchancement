@@ -86,7 +86,7 @@ public class ModConfig extends MidnightConfig {
 	@Entry(min = 1)
 	public static int maxFellTreesBlocks = 1024;
 	@Entry(min = 1)
-	public static int maxFellTreesHorizontalLength = 7;
+	public static int maxFellTreesHorizontalLength = 11;
 	@Entry(min = 1)
 	public static int maxMineOreVeinsBlocks = 64;
 	@Entry(min = 0)
