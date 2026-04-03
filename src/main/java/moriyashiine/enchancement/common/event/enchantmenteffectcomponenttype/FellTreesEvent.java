@@ -9,7 +9,7 @@ import moriyashiine.enchancement.common.component.level.FellTreesComponent;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModLevelComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import moriyashiine.strawberrylib.api.event.ModifyDestroyProgressEvent;
+import moriyashiine.strawberrylib.api.event.ModifyDestroySpeedEvent;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
@@ -87,17 +87,17 @@ public class FellTreesEvent {
 		return false;
 	}
 
-	public static class BreakSpeed implements ModifyDestroyProgressEvent {
+	public static class DestroySpeed implements ModifyDestroySpeedEvent {
 		@Override
-		public float modify(Player player, BlockState state, BlockGetter level, BlockPos pos) {
-			if (canActivate(player, player.getMainHandItem(), state)) {
+		public float modify(Player player, ItemStack stack, Level level, BlockState state, @Nullable BlockPos pos) {
+			if (pos != null && canActivate(player, stack, state)) {
 				Entry entry = Entry.get(player);
 				if (entry == null) {
 					entry = new Entry(player, gatherTree(new ArrayList<>(), level, new BlockPos.MutableBlockPos().set(pos), state.getBlock()));
 					ENTRIES.add(entry);
 				}
-				if (isValid(entry.tree(), player.getMainHandItem())) {
-					float fellTreesSpeed = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.FELL_TREES, player.getRandom(), player.getMainHandItem(), 0);
+				if (isValid(entry.tree(), stack)) {
+					float fellTreesSpeed = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.FELL_TREES, player.getRandom(), stack, 0);
 					return Mth.lerp(Math.min(1, entry.tree().size() / 32F), fellTreesSpeed, fellTreesSpeed * 0.05F);
 				}
 			}

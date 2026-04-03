@@ -29,6 +29,7 @@ loom {
 fabricApi {
     configureDataGeneration() {
         client = true
+        modId = project.archives_base_name
     }
 }
 

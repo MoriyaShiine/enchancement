@@ -43,7 +43,6 @@ import net.minecraft.server.packs.PackType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-// todo re-renable forced trade rebalance somehow (maybe datapacks?)
 public class Enchancement implements ModInitializer {
 	public static final String MOD_ID = "enchancement";
 
@@ -166,7 +165,7 @@ public class Enchancement implements ModInitializer {
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(new RebalanceEquipmentEvent.Interrupt());
 		TickEntityEvent.EVENT.register(new RebalanceEquipmentEvent.Tick());
 		MultiplyMovementSpeedEvent.EVENT.register(new ToggleablePassivesEvent.AirMobility());
-		TickEntityEvent.EVENT.register(new ToggleablePassivesEvent.Efficiency());
+		ModifyDestroySpeedEvent.ADD_EFFICIENCY.register(new ToggleablePassivesEvent.Efficiency());
 		// enchantment effect
 		MultiplyMovementSpeedEvent.EVENT.register(new ModifySubmergedMovementSpeedEvent());
 		// enchantment effect component type
@@ -179,7 +178,7 @@ public class Enchancement implements ModInitializer {
 		ModifyMovementEvents.JUMP_DELTA.register(new ChargeJumpEvent());
 		ModifyCriticalStatusEvent.EVENT.register(new CriticalTipperEvent());
 		ServerEntityEvents.EQUIPMENT_CHANGE.register(new EquipmentResetEvent());
-		ModifyDestroyProgressEvent.MULTIPLY_TOTAL.register(new FellTreesEvent.BreakSpeed());
+		ModifyDestroySpeedEvent.MULTIPLY_TOTAL.register(new FellTreesEvent.DestroySpeed());
 		PlayerBlockBreakEvents.BEFORE.register(new FellTreesEvent.FellTree());
 		PreventFallDamageEvent.EVENT.register(new FluidWalkingEvent());
 		ServerLivingEntityEvents.AFTER_DEATH.register(new FreezeEvent.HandleDeath());
@@ -187,7 +186,7 @@ public class Enchancement implements ModInitializer {
 		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register(new HeadDropsEvent());
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(new LeechingTridentEvent());
 		PreventFallDamageEvent.EVENT.register(new LightningDashEvent());
-		ModifyDestroyProgressEvent.MULTIPLY_TOTAL.register(new MineOreVeinsEvent.BreakSpeed());
+		ModifyDestroySpeedEvent.MULTIPLY_TOTAL.register(new MineOreVeinsEvent.DestroySpeed());
 		PlayerBlockBreakEvents.BEFORE.register(new MineOreVeinsEvent.MineOres());
 		ModifyDamageTakenEvent.ADD.register(new RageEvent.DamageDealtBonus());
 		ModifyDamageTakenEvent.MULTIPLY_TOTAL.register(new RageEvent.DamageTakenReduction());

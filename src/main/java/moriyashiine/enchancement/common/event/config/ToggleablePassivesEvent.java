@@ -5,22 +5,20 @@
 package moriyashiine.enchancement.common.event.config;
 
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
-import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.component.entity.AirMobilityComponent;
 import moriyashiine.enchancement.common.init.ModComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import moriyashiine.strawberrylib.api.event.TickEntityEvent;
-import moriyashiine.strawberrylib.api.module.SLibUtils;
-import net.minecraft.server.level.ServerPlayer;
+import moriyashiine.strawberrylib.api.event.ModifyDestroySpeedEvent;
+import net.minecraft.core.BlockPos;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jspecify.annotations.Nullable;
 
 public class ToggleablePassivesEvent {
 	public static class AirMobility implements MultiplyMovementSpeedEvent {
@@ -41,17 +39,13 @@ public class ToggleablePassivesEvent {
 		}
 	}
 
-	public static class Efficiency implements TickEntityEvent {
-		private static final AttributeModifier WEAK_EFFICIENCY = new AttributeModifier(Enchancement.id("toggleable_passive_efficiency"), 9, AttributeModifier.Operation.ADD_VALUE);
-		private static final AttributeModifier STRONG_EFFICIENCY = new AttributeModifier(Enchancement.id("toggleable_passive_efficiency"), 25, AttributeModifier.Operation.ADD_VALUE);
-
+	public static class Efficiency implements ModifyDestroySpeedEvent {
 		@Override
-		public void tick(Level level, Entity entity) {
-			if (entity instanceof ServerPlayer player) {
-				ItemStack stack = player.getInventory().getItem(player.getInventory().getSelectedSlot());
-				boolean hasEfficiency = hasEfficiency(stack);
-				SLibUtils.conditionallyApplyAttributeModifier(player, Attributes.MINING_EFFICIENCY, EnchancementUtil.hasWeakEnchantments(stack) ? WEAK_EFFICIENCY : STRONG_EFFICIENCY, hasEfficiency);
+		public float modify(Player player, ItemStack stack, Level level, BlockState state, @Nullable BlockPos pos) {
+			if (hasEfficiency(stack)) {
+				return EnchancementUtil.hasWeakEnchantments(stack) ? 9 : 25;
 			}
+			return 0;
 		}
 
 		private static boolean hasEfficiency(ItemStack stack) {

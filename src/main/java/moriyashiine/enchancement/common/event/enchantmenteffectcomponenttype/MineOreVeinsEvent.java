@@ -10,7 +10,7 @@ import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.tag.ModBlockTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.util.enchantment.BaseBlock;
-import moriyashiine.strawberrylib.api.event.ModifyDestroyProgressEvent;
+import moriyashiine.strawberrylib.api.event.ModifyDestroySpeedEvent;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 import net.minecraft.core.BlockPos;
@@ -22,12 +22,12 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -82,13 +82,13 @@ public class MineOreVeinsEvent {
 		return Blocks.STONE;
 	}
 
-	public static class BreakSpeed implements ModifyDestroyProgressEvent {
+	public static class DestroySpeed implements ModifyDestroySpeedEvent {
 		@Override
-		public float modify(Player player, BlockState state, BlockGetter level, BlockPos pos) {
-			if (canActivate(player, player.getMainHandItem(), state)) {
-				Set<BlockPos> ores = gatherOres(new HashSet<>(), player.level(), new BlockPos.MutableBlockPos().set(pos), state.getBlock());
-				if (isValid(ores, player.getMainHandItem())) {
-					float mineOreVeinsSpeed = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.MINE_ORE_VEINS, player.getRandom(), player.getMainHandItem(), 0);
+		public float modify(Player player, ItemStack stack, Level level, BlockState state, @Nullable BlockPos pos) {
+			if (pos != null && canActivate(player, stack, state)) {
+				Set<BlockPos> ores = gatherOres(new HashSet<>(), level, new BlockPos.MutableBlockPos().set(pos), state.getBlock());
+				if (isValid(ores, stack)) {
+					float mineOreVeinsSpeed = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.MINE_ORE_VEINS, player.getRandom(), stack, 0);
 					return Mth.lerp(Math.min(1, ores.size() / 12F), mineOreVeinsSpeed, mineOreVeinsSpeed * 0.1F);
 				}
 			}
