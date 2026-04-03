@@ -32,6 +32,9 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
 				.forceAddTag(BlockTags.SNOW)
 				.add(Blocks.COBWEB)
 				.add(Blocks.NETHERRACK);
+		valueLookupBuilder(ModBlockTags.FELLABLE)
+				.forceAddTag(BlockTags.LOGS)
+				.add(Blocks.MANGROVE_ROOTS);
 		valueLookupBuilder(ModBlockTags.NETHER_ORES)
 				.forceAddTag(ConventionalBlockTags.ORES_IN_GROUND_NETHERRACK)
 				.forceAddTag(ConventionalBlockTags.NETHERITE_SCRAP_ORES);

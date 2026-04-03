@@ -8,12 +8,12 @@ import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.component.level.FellTreesComponent;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModLevelComponents;
+import moriyashiine.enchancement.common.tag.ModBlockTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.event.ModifyDestroySpeedEvent;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -42,7 +42,7 @@ public class FellTreesEvent {
 						pos.set(originalX + x, originalY + y, originalZ + z);
 						if (!(level instanceof Level borderLevel) || borderLevel.getWorldBorder().isWithinBounds(pos)) {
 							BlockState state = level.getBlockState(pos);
-							if (state.is(BlockTags.LOGS) && !tree.contains(pos) && state.getBlock() == original) {
+							if (state.is(ModBlockTags.FELLABLE) && !tree.contains(pos) && state.getBlock() == original) {
 								tree.add(pos.immutable());
 								gatherTree(tree, level, pos, original);
 							}
@@ -77,7 +77,7 @@ public class FellTreesEvent {
 	}
 
 	public static boolean canActivate(Player player, ItemStack stack, BlockState state) {
-		return !player.isShiftKeyDown() && EnchantmentHelper.has(stack, ModEnchantmentEffectComponentTypes.FELL_TREES) && state.is(BlockTags.LOGS) && player.hasCorrectToolForDrops(state);
+		return !player.isShiftKeyDown() && EnchantmentHelper.has(stack, ModEnchantmentEffectComponentTypes.FELL_TREES) && state.is(ModBlockTags.FELLABLE) && player.hasCorrectToolForDrops(state);
 	}
 
 	public static boolean isValid(List<BlockPos> tree, ItemStack stack) {
