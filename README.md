@@ -136,7 +136,7 @@ Everything Enchancement adds is configurable:
   * Enchanted armor has additional damage reduction.
   * Iron armor has slightly more armor, and gains armor toughness.
   * Golden armor has slightly less armor.
-  * Animal armor can be enchanted with boots enchantments.
+  * Ground animal armor can be enchanted with boots enchantments.
   * Sword sweeping damage is increased to be proportional to the primary damage dealt.
   * Spears have damage falloff with higher velocities.
   * Bows slow you down less when charging.
