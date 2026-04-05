@@ -16,5 +16,5 @@ public class ExtraRenderState {
 	public @Nullable RandomSource random = null;
 	public boolean canCameraSee = false;
 	public boolean glowing = false;
-	public boolean hidesNameDisplays = false;
+	public boolean hideName = false;
 }

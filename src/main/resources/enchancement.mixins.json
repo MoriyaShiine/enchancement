@@ -187,7 +187,7 @@
 	"enchantmenteffectcomponenttype.buryentity.client.ShulkerRendererMixin",
 	"enchantmenteffectcomponenttype.disarmingfishingbobber.client.MinecraftMixin",
 	"enchantmenteffectcomponenttype.fluidwalking.client.LocalPlayerMixin",
-	"enchantmenteffectcomponenttype.hidelabelbehindwalls.client.EntityRendererMixin",
+	"enchantmenteffectcomponenttype.hidenamebehindwalls.client.EntityRendererMixin",
 	"enchantmenteffectcomponenttype.leechingtrident.client.ThrownTridentRendererMixin",
 	"enchantmenteffectcomponenttype.lightningdash.client.ItemInHandLayerMixin",
 	"enchantmenteffectcomponenttype.lightningdash.client.ItemInHandRendererMixin",

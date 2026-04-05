@@ -4,7 +4,7 @@
 	"translate": "enchantment.enchancement.veil"
   },
   "effects": {
-	"enchancement:hide_label_behind_walls": {},
+	"enchancement:hide_name_behind_walls": {},
 	"enchancement:modify_detection_range": {
 	  "type": "minecraft:multiply",
 	  "factor": {

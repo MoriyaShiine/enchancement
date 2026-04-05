@@ -175,7 +175,7 @@ public class ModEnchantments {
 				EquipmentSlotGroup.ARMOR,
 				builder -> {
 					builder.withEffect(
-							ModEnchantmentEffectComponentTypes.HIDE_LABEL_BEHIND_WALLS);
+							ModEnchantmentEffectComponentTypes.HIDE_NAME_BEHIND_WALLS);
 					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.MODIFY_DETECTION_RANGE,
 							new MultiplyValue(new LevelBasedValue.Fraction(LevelBasedValue.constant(1), LevelBasedValue.perLevel(2))));

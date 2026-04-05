@@ -37,7 +37,7 @@ public class EntityXrayClientEvent {
 			if (xrayDistance > 0) {
 				Player player = client.player;
 				if (player != null && entity instanceof LivingEntity living && !living.isShiftKeyDown() && !living.isInvisible()) {
-					if (entity.distanceTo(player) < xrayDistance && !EnchancementUtil.hasAnyEnchantmentsWith(living, ModEnchantmentEffectComponentTypes.HIDE_LABEL_BEHIND_WALLS) && !living.hasLineOfSight(player)) {
+					if (entity.distanceTo(player) < xrayDistance && !EnchancementUtil.hasAnyEnchantmentsWith(living, ModEnchantmentEffectComponentTypes.HIDE_NAME_BEHIND_WALLS) && !living.hasLineOfSight(player)) {
 						return DATA;
 					}
 				}

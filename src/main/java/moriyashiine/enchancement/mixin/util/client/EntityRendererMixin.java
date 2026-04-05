@@ -27,7 +27,7 @@ public class EntityRendererMixin<T extends Entity, S extends EntityRenderState> 
 		extraRenderState.random = entity.getRandom();
 		extraRenderState.canCameraSee = Minecraft.getInstance().getCameraEntity() instanceof LivingEntity living && living.hasLineOfSight(entity);
 		extraRenderState.glowing = entity.isCurrentlyGlowing();
-		extraRenderState.hidesNameDisplays = EnchancementUtil.hasAnyEnchantmentsWith(entity, ModEnchantmentEffectComponentTypes.HIDE_LABEL_BEHIND_WALLS);
+		extraRenderState.hideName = EnchancementUtil.hasAnyEnchantmentsWith(entity, ModEnchantmentEffectComponentTypes.HIDE_NAME_BEHIND_WALLS);
 		state.setData(ExtraRenderState.KEY, extraRenderState);
 	}
 }
