@@ -13,6 +13,7 @@ import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.tag.ModItemTags;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderOwner;
 import net.minecraft.core.component.DataComponentType;
@@ -265,8 +266,8 @@ public class EnchancementUtil {
 		return stacks;
 	}
 
-	public static boolean isBodyArmor(ItemStack stack) {
-		return stack.has(DataComponents.EQUIPPABLE) && stack.get(DataComponents.EQUIPPABLE).slot() == EquipmentSlot.BODY;
+	public static boolean isGroundAnimalArmor(ItemStack stack) {
+		return stack.is(ConventionalItemTags.HORSE_ARMORS) || stack.is(ConventionalItemTags.WOLF_ARMORS);
 	}
 
 	public static double altLog(double base, double value, double multiplier) {
