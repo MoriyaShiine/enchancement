@@ -20,7 +20,7 @@ import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Util;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
@@ -30,7 +30,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.*;
 
 public final class StoredEnchantmentsTooltipComponent implements ClientTooltipComponent, TooltipComponent {
-	private static final Map<ItemStack, Identifier> TEXTURE_MAP = new LinkedHashMap<>();
+	private static final Map<Item, Identifier> TEXTURE_MAP = new LinkedHashMap<>();
 	private static final Map<Holder<Enchantment>, List<Identifier>> ICON_CACHE = new Reference2ObjectOpenHashMap<>();
 	private final ItemEnchantments enchantments;
 	private int width = 0, height = 0;
@@ -40,31 +40,30 @@ public final class StoredEnchantmentsTooltipComponent implements ClientTooltipCo
 	}
 
 	static {
-		TEXTURE_MAP.put(Items.IRON_HELMET.getDefaultInstance(), Identifier.parse("container/slot/helmet"));
-		TEXTURE_MAP.put(Items.IRON_CHESTPLATE.getDefaultInstance(), Identifier.parse("container/slot/chestplate"));
-		TEXTURE_MAP.put(Items.IRON_LEGGINGS.getDefaultInstance(), Identifier.parse("container/slot/leggings"));
-		TEXTURE_MAP.put(Items.IRON_BOOTS.getDefaultInstance(), Identifier.parse("container/slot/boots"));
-		TEXTURE_MAP.put(Items.IRON_HORSE_ARMOR.getDefaultInstance(), Enchancement.id("container/slot/animal"));
-		TEXTURE_MAP.put(Items.IRON_NAUTILUS_ARMOR.getDefaultInstance(), Identifier.parse("container/slot/nautilus_armor"));
-		TEXTURE_MAP.put(Items.SHIELD.getDefaultInstance(), Identifier.parse("container/slot/shield"));
-		TEXTURE_MAP.put(Items.IRON_SWORD.getDefaultInstance(), Identifier.parse("container/slot/sword"));
-		TEXTURE_MAP.put(Items.IRON_SPEAR.getDefaultInstance(), Identifier.parse("container/slot/spear"));
-		TEXTURE_MAP.put(Items.BOW.getDefaultInstance(), Enchancement.id("container/slot/bow"));
-		TEXTURE_MAP.put(Items.CROSSBOW.getDefaultInstance(), Enchancement.id("container/slot/crossbow"));
-		TEXTURE_MAP.put(Items.TRIDENT.getDefaultInstance(), Enchancement.id("container/slot/trident"));
-		TEXTURE_MAP.put(Items.MACE.getDefaultInstance(), Enchancement.id("container/slot/mace"));
-		TEXTURE_MAP.put(Items.IRON_PICKAXE.getDefaultInstance(), Identifier.parse("container/slot/pickaxe"));
-		TEXTURE_MAP.put(Items.IRON_AXE.getDefaultInstance(), Identifier.parse("container/slot/axe"));
-		TEXTURE_MAP.put(Items.IRON_SHOVEL.getDefaultInstance(), Identifier.parse("container/slot/shovel"));
-		TEXTURE_MAP.put(Items.IRON_HOE.getDefaultInstance(), Identifier.parse("container/slot/hoe"));
-		TEXTURE_MAP.put(Items.FISHING_ROD.getDefaultInstance(), Enchancement.id("container/slot/fishing_rod"));
-		TEXTURE_MAP.put(Items.SHIELD.getDefaultInstance(), Identifier.parse("container/slot/shield"));
-		TEXTURE_MAP.put(Items.SADDLE.getDefaultInstance(), Enchancement.id("container/slot/saddle"));
-		TEXTURE_MAP.put(Items.ELYTRA.getDefaultInstance(), Enchancement.id("container/slot/elytra"));
-		TEXTURE_MAP.put(Items.FLINT_AND_STEEL.getDefaultInstance(), Enchancement.id("container/slot/flint_and_steel"));
-		TEXTURE_MAP.put(Items.SHEARS.getDefaultInstance(), Enchancement.id("container/slot/shears"));
-		TEXTURE_MAP.put(Items.BRUSH.getDefaultInstance(), Enchancement.id("container/slot/brush"));
-		TEXTURE_MAP.put(Items.COMPASS.getDefaultInstance(), Enchancement.id("container/slot/compass"));
+		TEXTURE_MAP.put(Items.IRON_HELMET, Identifier.parse("container/slot/helmet"));
+		TEXTURE_MAP.put(Items.IRON_CHESTPLATE, Identifier.parse("container/slot/chestplate"));
+		TEXTURE_MAP.put(Items.IRON_LEGGINGS, Identifier.parse("container/slot/leggings"));
+		TEXTURE_MAP.put(Items.IRON_BOOTS, Identifier.parse("container/slot/boots"));
+		TEXTURE_MAP.put(Items.IRON_HORSE_ARMOR, Enchancement.id("container/slot/animal"));
+		TEXTURE_MAP.put(Items.IRON_NAUTILUS_ARMOR, Identifier.parse("container/slot/nautilus_armor"));
+		TEXTURE_MAP.put(Items.SHIELD, Identifier.parse("container/slot/shield"));
+		TEXTURE_MAP.put(Items.IRON_SWORD, Identifier.parse("container/slot/sword"));
+		TEXTURE_MAP.put(Items.IRON_SPEAR, Identifier.parse("container/slot/spear"));
+		TEXTURE_MAP.put(Items.BOW, Enchancement.id("container/slot/bow"));
+		TEXTURE_MAP.put(Items.CROSSBOW, Enchancement.id("container/slot/crossbow"));
+		TEXTURE_MAP.put(Items.TRIDENT, Enchancement.id("container/slot/trident"));
+		TEXTURE_MAP.put(Items.MACE, Enchancement.id("container/slot/mace"));
+		TEXTURE_MAP.put(Items.IRON_PICKAXE, Identifier.parse("container/slot/pickaxe"));
+		TEXTURE_MAP.put(Items.IRON_AXE, Identifier.parse("container/slot/axe"));
+		TEXTURE_MAP.put(Items.IRON_SHOVEL, Identifier.parse("container/slot/shovel"));
+		TEXTURE_MAP.put(Items.IRON_HOE, Identifier.parse("container/slot/hoe"));
+		TEXTURE_MAP.put(Items.FISHING_ROD, Enchancement.id("container/slot/fishing_rod"));
+		TEXTURE_MAP.put(Items.SADDLE, Enchancement.id("container/slot/saddle"));
+		TEXTURE_MAP.put(Items.ELYTRA, Enchancement.id("container/slot/elytra"));
+		TEXTURE_MAP.put(Items.FLINT_AND_STEEL, Enchancement.id("container/slot/flint_and_steel"));
+		TEXTURE_MAP.put(Items.SHEARS, Enchancement.id("container/slot/shears"));
+		TEXTURE_MAP.put(Items.BRUSH, Enchancement.id("container/slot/brush"));
+		TEXTURE_MAP.put(Items.COMPASS, Enchancement.id("container/slot/compass"));
 	}
 
 	public static void clearIconCache() {
@@ -138,8 +137,8 @@ public final class StoredEnchantmentsTooltipComponent implements ClientTooltipCo
 	private static List<Identifier> getIcons(Holder<Enchantment> enchantment) {
 		return ICON_CACHE.computeIfAbsent(enchantment, holder -> {
 			Set<Identifier> icons = new HashSet<>();
-			for (Map.Entry<ItemStack, Identifier> entry : TEXTURE_MAP.entrySet()) {
-				if (entry.getKey().canBeEnchantedWith(holder, EnchantingContext.ACCEPTABLE)) {
+			for (Map.Entry<Item, Identifier> entry : TEXTURE_MAP.entrySet()) {
+				if (entry.getKey().getDefaultInstance().canBeEnchantedWith(holder, EnchantingContext.ACCEPTABLE)) {
 					icons.add(entry.getValue());
 				}
 			}
