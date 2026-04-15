@@ -36,7 +36,7 @@ public class BrimstoneRenderer extends ArrowRenderer<Brimstone, BrimstoneEntityR
 						.affectsCrumbling()
 						.setOutline(RenderSetup.OutlineProperty.AFFECTS_OUTLINE)
 						.createRenderSetup();
-				return RenderType.create("entity_cutout_cull", state);
+				return RenderType.create("entity_cutout_brimstone", state);
 			}
 	);
 

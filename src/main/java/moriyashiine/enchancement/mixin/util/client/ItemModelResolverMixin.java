@@ -33,8 +33,7 @@ public class ItemModelResolverMixin {
 	}
 
 	@Unique
-	@Nullable
-	private static Identifier getChargedModel(ItemStack stack) {
+	private static @Nullable Identifier getChargedModel(ItemStack stack) {
 		for (ItemStackTemplate projectile : stack.getOrDefault(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.EMPTY).items()) {
 			@Nullable Identifier chargedModel = getChargedModel(stack, projectile.item().value());
 			if (chargedModel != null) {
@@ -45,8 +44,7 @@ public class ItemModelResolverMixin {
 	}
 
 	@Unique
-	@Nullable
-	private static Identifier getChargedModel(ItemStack stack, Item item) {
+	private static @Nullable Identifier getChargedModel(ItemStack stack, Item item) {
 		int brimstoneDamage = stack.getOrDefault(ModComponentTypes.BRIMSTONE_DAMAGE, 0);
 		if (brimstoneDamage > 0) {
 			return Enchancement.id("crossbow_brimstone_" + (brimstoneDamage / 2 - 1));

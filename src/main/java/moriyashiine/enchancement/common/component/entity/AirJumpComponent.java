@@ -42,7 +42,7 @@ public class AirJumpComponent implements AutoSyncedComponent, CommonTickingCompo
 		shouldRefresh = input.getBooleanOr("ShouldRefresh", false);
 		cooldown = input.getIntOr("Cooldown", 0);
 		lastCooldown = input.getIntOr("LastCooldown", 0);
-		jumpCooldown = input.getIntOr("JumpCooldown", 0);
+		jumpCooldown = input.getIntOr("JumpCooldown", 10);
 		jumpsLeft = input.getIntOr("JumpsLeft", 0);
 		ticksInAir = input.getIntOr("TicksInAir", 0);
 	}

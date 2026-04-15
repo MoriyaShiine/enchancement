@@ -15,8 +15,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.effects.EnchantmentValueEffect;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
-public record DirectionBurstEffect(EnchantmentValueEffect cooldown, EnchantmentValueEffect groundStrength,
-								   EnchantmentValueEffect airStrength) {
+public record DirectionBurstEffect(EnchantmentValueEffect cooldown, EnchantmentValueEffect groundStrength, EnchantmentValueEffect airStrength) {
 	public static final Codec<DirectionBurstEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 					EnchantmentValueEffect.CODEC.fieldOf("cooldown").forGetter(DirectionBurstEffect::cooldown),
 					EnchantmentValueEffect.CODEC.fieldOf("ground_strength").forGetter(DirectionBurstEffect::groundStrength),

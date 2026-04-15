@@ -15,8 +15,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.effects.EnchantmentValueEffect;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
-public record AirJumpEffect(EnchantmentValueEffect airJumps, EnchantmentValueEffect airJumpStrength,
-							EnchantmentValueEffect chargeCooldown, EnchantmentValueEffect jumpCooldown) {
+public record AirJumpEffect(EnchantmentValueEffect airJumps, EnchantmentValueEffect airJumpStrength, EnchantmentValueEffect chargeCooldown, EnchantmentValueEffect jumpCooldown) {
 	public static final Codec<AirJumpEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 					EnchantmentValueEffect.CODEC.fieldOf("air_jumps").forGetter(AirJumpEffect::airJumps),
 					EnchantmentValueEffect.CODEC.fieldOf("air_jump_strength").forGetter(AirJumpEffect::airJumpStrength),

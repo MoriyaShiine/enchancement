@@ -23,8 +23,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.Optional;
 
-public record ConditionalAttributeEnchantmentEffect(EnchantmentAttributeEffect effect,
-													LootItemCondition condition) implements EnchantmentEntityEffect {
+public record ConditionalAttributeEnchantmentEffect(EnchantmentAttributeEffect effect, LootItemCondition condition) implements EnchantmentEntityEffect {
 	public static final MapCodec<ConditionalAttributeEnchantmentEffect> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 					EnchantmentAttributeEffect.MAP_CODEC.fieldOf("attribute").forGetter(ConditionalAttributeEnchantmentEffect::effect),
 					LootItemCondition.DIRECT_CODEC.fieldOf("condition").forGetter(ConditionalAttributeEnchantmentEffect::condition))

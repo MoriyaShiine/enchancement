@@ -53,9 +53,7 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 
 	@Override
 	public void writeData(ValueOutput output) {
-		if (slidingPos != null) {
-			output.store("SlidingPos", BlockPos.CODEC, slidingPos);
-		}
+		output.storeNullable("SlidingPos", BlockPos.CODEC, slidingPos);
 	}
 
 	@Override

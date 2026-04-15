@@ -25,7 +25,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -119,23 +118,9 @@ public class SlideComponent implements CommonTickingComponent {
 	@Override
 	public void serverTick() {
 		tick();
-		AttributeInstance safeFallDistance = obj.getAttribute(Attributes.SAFE_FALL_DISTANCE);
-		AttributeInstance stepHeight = obj.getAttribute(Attributes.STEP_HEIGHT);
-		if (hasSlide && isSliding()) {
-			if (!safeFallDistance.hasModifier(SAFE_FALL_DISTANCE_MODIFIER.id())) {
-				safeFallDistance.addPermanentModifier(SAFE_FALL_DISTANCE_MODIFIER);
-			}
-			if (!stepHeight.hasModifier(STEP_HEIGHT_MODIFIER.id())) {
-				stepHeight.addPermanentModifier(STEP_HEIGHT_MODIFIER);
-			}
-		} else {
-			if (safeFallDistance.hasModifier(SAFE_FALL_DISTANCE_MODIFIER.id())) {
-				safeFallDistance.removeModifier(SAFE_FALL_DISTANCE_MODIFIER);
-			}
-			if (stepHeight.hasModifier(STEP_HEIGHT_MODIFIER.id())) {
-				stepHeight.removeModifier(STEP_HEIGHT_MODIFIER);
-			}
-		}
+		boolean sliding = hasSlide && isSliding();
+		SLibUtils.conditionallyApplyAttributeModifier(obj, Attributes.SAFE_FALL_DISTANCE, SAFE_FALL_DISTANCE_MODIFIER, sliding);
+		SLibUtils.conditionallyApplyAttributeModifier(obj, Attributes.STEP_HEIGHT, STEP_HEIGHT_MODIFIER, sliding);
 	}
 
 	@Override

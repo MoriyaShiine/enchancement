@@ -15,8 +15,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.effects.EnchantmentValueEffect;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
-public record RotationBurstEffect(EnchantmentValueEffect cooldown, EnchantmentValueEffect strength,
-								  EnchantmentValueEffect wavedashTicks, EnchantmentValueEffect wavedashStrength) {
+public record RotationBurstEffect(EnchantmentValueEffect cooldown, EnchantmentValueEffect strength, EnchantmentValueEffect wavedashTicks, EnchantmentValueEffect wavedashStrength) {
 	public static final Codec<RotationBurstEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 					EnchantmentValueEffect.CODEC.fieldOf("cooldown").forGetter(RotationBurstEffect::cooldown),
 					EnchantmentValueEffect.CODEC.fieldOf("strength").forGetter(RotationBurstEffect::strength),

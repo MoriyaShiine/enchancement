@@ -1,8 +1,5 @@
 {
   "values": [
-	{
-	  "id": "enchancement:ice_shard",
-	  "required": false
-	}
+	"enchancement:ice_shard"
   ]
 }

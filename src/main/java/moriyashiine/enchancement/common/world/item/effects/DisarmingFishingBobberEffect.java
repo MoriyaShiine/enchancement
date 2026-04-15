@@ -17,8 +17,7 @@ import org.apache.commons.lang3.mutable.MutableFloat;
 
 import java.util.List;
 
-public record DisarmingFishingBobberEffect(boolean stealsFromPlayers, EnchantmentValueEffect playerCooldown,
-										   EnchantmentValueEffect userCooldown) {
+public record DisarmingFishingBobberEffect(boolean stealsFromPlayers, EnchantmentValueEffect playerCooldown, EnchantmentValueEffect userCooldown) {
 	public static final Codec<DisarmingFishingBobberEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 					Codec.BOOL.fieldOf("steals_from_players").forGetter(DisarmingFishingBobberEffect::stealsFromPlayers),
 					EnchantmentValueEffect.CODEC.fieldOf("player_cooldown").forGetter(DisarmingFishingBobberEffect::playerCooldown),

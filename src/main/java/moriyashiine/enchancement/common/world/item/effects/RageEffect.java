@@ -16,8 +16,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.effects.EnchantmentValueEffect;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
-public record RageEffect(EnchantmentValueEffect damageDealtModifier, EnchantmentValueEffect damageTakenModifier,
-						 EnchantmentValueEffect movementSpeedModifier) {
+public record RageEffect(EnchantmentValueEffect damageDealtModifier, EnchantmentValueEffect damageTakenModifier, EnchantmentValueEffect movementSpeedModifier) {
 	public static final Codec<RageEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 					EnchantmentValueEffect.CODEC.fieldOf("damage_dealt_modifier").forGetter(RageEffect::damageDealtModifier),
 					EnchantmentValueEffect.CODEC.fieldOf("damage_taken_modifier").forGetter(RageEffect::damageTakenModifier),

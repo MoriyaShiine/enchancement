@@ -24,8 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public record ScatterShotEffect(EnchantmentValueEffect minimum, EnchantmentValueEffect maximum,
-								Item allowedProjectile) {
+public record ScatterShotEffect(EnchantmentValueEffect minimum, EnchantmentValueEffect maximum, Item allowedProjectile) {
 	public static final Codec<ScatterShotEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 					EnchantmentValueEffect.CODEC.fieldOf("minimum").forGetter(ScatterShotEffect::minimum),
 					EnchantmentValueEffect.CODEC.fieldOf("maximum").forGetter(ScatterShotEffect::maximum),

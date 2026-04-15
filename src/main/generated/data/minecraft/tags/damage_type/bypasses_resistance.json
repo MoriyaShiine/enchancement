@@ -1,12 +1,6 @@
 {
   "values": [
-	{
-	  "id": "enchancement:brimstone",
-	  "required": false
-	},
-	{
-	  "id": "enchancement:life_drain",
-	  "required": false
-	}
+	"enchancement:brimstone",
+	"enchancement:life_drain"
   ]
 }

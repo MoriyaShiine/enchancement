@@ -33,8 +33,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.*;
 
-public record AllowLoadingProjectileEffect(Identifier model, SoundEvent soundEvent, Item projectileItem,
-										   boolean onlyAllow) {
+public record AllowLoadingProjectileEffect(Identifier model, SoundEvent soundEvent, Item projectileItem, boolean onlyAllow) {
 	public static final Codec<AllowLoadingProjectileEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 					Identifier.CODEC.fieldOf("model").forGetter(AllowLoadingProjectileEffect::model),
 					BuiltInRegistries.SOUND_EVENT.byNameCodec().fieldOf("sound_event").forGetter(AllowLoadingProjectileEffect::soundEvent),
@@ -71,8 +70,7 @@ public record AllowLoadingProjectileEffect(Identifier model, SoundEvent soundEve
 		});
 	}
 
-	@Nullable
-	public static Identifier getModel(ItemStack stack, Item projectileItem) {
+	public static @Nullable Identifier getModel(ItemStack stack, Item projectileItem) {
 		final Identifier[] model = {null};
 		EnchantmentHelper.runIterationOnItem(stack, (enchantment, _) -> {
 			List<ConditionalEffect<AllowLoadingProjectileEffect>> effects = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.ALLOW_LOADING_PROJECTILE);
@@ -87,8 +85,7 @@ public record AllowLoadingProjectileEffect(Identifier model, SoundEvent soundEve
 		return model[0];
 	}
 
-	@Nullable
-	public static SoundEvent getSoundEvent(ItemStack stack, Item projectile) {
+	public static @Nullable SoundEvent getSoundEvent(ItemStack stack, Item projectile) {
 		final SoundEvent[] soundEvent = {null};
 		EnchantmentHelper.runIterationOnItem(stack, (enchantment, _) -> {
 			List<ConditionalEffect<AllowLoadingProjectileEffect>> effects = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.ALLOW_LOADING_PROJECTILE);

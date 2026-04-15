@@ -16,9 +16,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
-public record StartSlidingC2SPayload(SlideComponent.SlideDeltaMovement delta,
-									 SlideComponent.SlideDeltaMovement adjustedDelta,
-									 float cachedYRot) implements CustomPacketPayload {
+public record StartSlidingC2SPayload(SlideComponent.SlideDeltaMovement delta, SlideComponent.SlideDeltaMovement adjustedDelta, float cachedYRot) implements CustomPacketPayload {
 	public static final Type<StartSlidingC2SPayload> TYPE = new Type<>(Enchancement.id("start_sliding_c2s"));
 	public static final StreamCodec<FriendlyByteBuf, StartSlidingC2SPayload> CODEC = StreamCodec.composite(
 			SlideComponent.SlideDeltaMovement.STREAM_CODEC, StartSlidingC2SPayload::delta,

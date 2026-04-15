@@ -16,8 +16,7 @@ import org.apache.commons.lang3.mutable.MutableFloat;
 
 import java.util.List;
 
-public record LeechingTridentEffect(EnchantmentValueEffect damage, EnchantmentValueEffect healAmount,
-									EnchantmentValueEffect duration) {
+public record LeechingTridentEffect(EnchantmentValueEffect damage, EnchantmentValueEffect healAmount, EnchantmentValueEffect duration) {
 	public static final Codec<LeechingTridentEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 					EnchantmentValueEffect.CODEC.fieldOf("damage").forGetter(LeechingTridentEffect::damage),
 					EnchantmentValueEffect.CODEC.fieldOf("heal_amount").forGetter(LeechingTridentEffect::healAmount),

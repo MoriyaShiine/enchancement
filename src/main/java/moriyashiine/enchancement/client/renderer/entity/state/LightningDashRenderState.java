@@ -9,12 +9,9 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.Nullable;
 
-public class ExtraRenderState {
-	public static final RenderStateDataKey<ExtraRenderState> KEY = RenderStateDataKey.create(() -> "extra");
+public class LightningDashRenderState {
+	public static final RenderStateDataKey<LightningDashRenderState> KEY = RenderStateDataKey.create(() -> "lightning dash");
 
 	public ItemStack activeStack = ItemStack.EMPTY;
 	public @Nullable RandomSource random = null;
-	public boolean canCameraSee = false;
-	public boolean glowing = false;
-	public boolean hideName = false;
 }

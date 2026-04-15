@@ -104,8 +104,7 @@ public class EnchancementUtil {
 
 	// disable disallowed enchantments
 
-	@Nullable
-	public static Holder<Enchantment> getRandomEnchantment(ItemStack stack, TagKey<Enchantment> checkedTag, @Nullable RandomSource random) {
+	public static @Nullable Holder<Enchantment> getRandomEnchantment(ItemStack stack, TagKey<Enchantment> checkedTag, @Nullable RandomSource random) {
 		List<Holder<Enchantment>> enchantments = new ArrayList<>();
 		for (Holder<Enchantment> enchantment : ENCHANTMENTS) {
 			if (enchantment.is(checkedTag)) {

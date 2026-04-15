@@ -14,8 +14,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.effects.EnchantmentValueEffect;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
-public record LightningDashEffect(EnchantmentValueEffect floatTime, EnchantmentValueEffect lungeStrength,
-								  EnchantmentValueEffect smashStrength, EnchantmentValueEffect smashDamageMultiplier) {
+public record LightningDashEffect(EnchantmentValueEffect floatTime, EnchantmentValueEffect lungeStrength, EnchantmentValueEffect smashStrength, EnchantmentValueEffect smashDamageMultiplier) {
 	public static final Codec<LightningDashEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 					EnchantmentValueEffect.CODEC.fieldOf("float_time").forGetter(LightningDashEffect::floatTime),
 					EnchantmentValueEffect.CODEC.fieldOf("lunge_strength").forGetter(LightningDashEffect::lungeStrength),

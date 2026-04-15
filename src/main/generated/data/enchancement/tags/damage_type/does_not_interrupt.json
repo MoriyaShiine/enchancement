@@ -1,9 +1,6 @@
 {
   "values": [
 	"#minecraft:bypasses_invulnerability",
-	{
-	  "id": "enchancement:life_drain",
-	  "required": false
-	}
+	"enchancement:life_drain"
   ]
 }

@@ -61,9 +61,7 @@ public class DelayedLaunchComponent implements AutoSyncedComponent, CommonTickin
 
 	@Override
 	public void writeData(ValueOutput output) {
-		if (storedDeltaMovement != null) {
-			output.store("StoredDeltaMovement", Vec3.CODEC, storedDeltaMovement);
-		}
+		output.storeNullable("StoredDeltaMovement", Vec3.CODEC, storedDeltaMovement);
 		output.putInt("MaxDuration", maxDuration);
 		output.putInt("PeakDuration", peakDuration);
 		output.putFloat("MaxMultiplier", maxMultiplier);

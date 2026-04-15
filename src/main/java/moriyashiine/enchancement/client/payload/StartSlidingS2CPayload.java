@@ -17,9 +17,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 
-public record StartSlidingS2CPayload(int entityId, SlideComponent.SlideDeltaMovement delta,
-									 SlideComponent.SlideDeltaMovement adjustedDelta,
-									 float cachedYRot) implements CustomPacketPayload {
+public record StartSlidingS2CPayload(int entityId, SlideComponent.SlideDeltaMovement delta, SlideComponent.SlideDeltaMovement adjustedDelta, float cachedYRot) implements CustomPacketPayload {
 	public static final Type<StartSlidingS2CPayload> TYPE = new Type<>(Enchancement.id("start_sliding_s2c"));
 	public static final StreamCodec<FriendlyByteBuf, StartSlidingS2CPayload> CODEC = StreamCodec.composite(
 			ByteBufCodecs.VAR_INT, StartSlidingS2CPayload::entityId,

@@ -17,8 +17,7 @@ import org.apache.commons.lang3.mutable.MutableFloat;
 
 import java.util.List;
 
-public record DelayedLaunchEffect(EnchantmentValueEffect maxDuration, EnchantmentValueEffect peakDuration,
-								  EnchantmentValueEffect maxMultiplier, boolean allowRedirect) {
+public record DelayedLaunchEffect(EnchantmentValueEffect maxDuration, EnchantmentValueEffect peakDuration, EnchantmentValueEffect maxMultiplier, boolean allowRedirect) {
 	public static final Codec<DelayedLaunchEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 					EnchantmentValueEffect.CODEC.fieldOf("max_duration").forGetter(DelayedLaunchEffect::maxDuration),
 					EnchantmentValueEffect.CODEC.fieldOf("peak_duration").forGetter(DelayedLaunchEffect::peakDuration),

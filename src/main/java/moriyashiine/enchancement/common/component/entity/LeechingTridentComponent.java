@@ -55,9 +55,7 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 
 	@Override
 	public void writeData(ValueOutput output) {
-		if (leechData != null) {
-			output.store("LeechData", LeechData.CODEC, leechData);
-		}
+		output.storeNullable("LeechData", LeechData.CODEC, leechData);
 		output.putInt("StuckEntityId", stuckEntityId);
 		output.putInt("LeechingTicks", leechingTicks);
 		output.putInt("StabTicks", stabTicks);

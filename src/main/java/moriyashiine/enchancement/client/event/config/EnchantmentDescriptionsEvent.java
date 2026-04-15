@@ -70,8 +70,7 @@ public class EnchantmentDescriptionsEvent {
 		return ModConfig.enchantmentDescriptions && !Enchancement.commonEnchantmentDescriptionsModLoaded;
 	}
 
-	@Nullable
-	public static List<Component> getDescription(Component component, Holder<Enchantment> enchantment) {
+	public static @Nullable List<Component> getDescription(Component component, Holder<Enchantment> enchantment) {
 		String translationKey = EnchancementUtil.getTranslationKey(enchantment);
 		if (component.getContents() instanceof TranslatableContents translatable && translatable.getKey().equals(translationKey)) {
 			MutableComponent description = Component.translatable(translationKey + ".desc").withStyle(ChatFormatting.DARK_GRAY);

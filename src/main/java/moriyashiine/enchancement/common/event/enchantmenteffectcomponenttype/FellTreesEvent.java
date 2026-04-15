@@ -124,8 +124,7 @@ public class FellTreesEvent {
 	}
 
 	public record Entry(Player player, List<BlockPos> tree) {
-		@Nullable
-		public static Entry get(Player player) {
+		public static @Nullable Entry get(Player player) {
 			for (Entry entry : ENTRIES) {
 				if (entry.player == player) {
 					return entry;

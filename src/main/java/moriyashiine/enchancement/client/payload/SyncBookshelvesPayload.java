@@ -21,8 +21,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import java.util.HashSet;
 import java.util.Set;
 
-public record SyncBookshelvesPayload(Set<Holder<Enchantment>> chiseledEnchantments,
-									 int bookshelfCount) implements CustomPacketPayload {
+public record SyncBookshelvesPayload(Set<Holder<Enchantment>> chiseledEnchantments, int bookshelfCount) implements CustomPacketPayload {
 	public static final Type<SyncBookshelvesPayload> TYPE = new Type<>(Enchancement.id("sync_bookshelves"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, SyncBookshelvesPayload> CODEC = StreamCodec.composite(
 			ByteBufCodecs.collection(HashSet::new, ByteBufCodecs.holderRegistry(Registries.ENCHANTMENT)), SyncBookshelvesPayload::chiseledEnchantments,

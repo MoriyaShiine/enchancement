@@ -27,29 +27,29 @@ public class ModDamageTypeTagsProvider extends FabricTagsProvider<DamageType> {
 				.forceAddTag(DamageTypeTags.BYPASSES_INVULNERABILITY);
 		builder(ModDamageTypeTags.DOES_NOT_INTERRUPT)
 				.forceAddTag(DamageTypeTags.BYPASSES_INVULNERABILITY)
-				.addOptional(ModDamageTypes.LIFE_DRAIN);
+				.add(ModDamageTypes.LIFE_DRAIN);
 
 		builder(DamageTypeTags.BYPASSES_ARMOR)
-				.addOptional(ModDamageTypes.BRIMSTONE)
-				.addOptional(ModDamageTypes.LIFE_DRAIN);
+				.add(ModDamageTypes.BRIMSTONE)
+				.add(ModDamageTypes.LIFE_DRAIN);
 		builder(DamageTypeTags.BYPASSES_COOLDOWN)
-				.addOptional(ModDamageTypes.AMETHYST_SHARD)
-				.addOptional(ModDamageTypes.ICE_SHARD);
+				.add(ModDamageTypes.AMETHYST_SHARD)
+				.add(ModDamageTypes.ICE_SHARD);
 		builder(DamageTypeTags.BYPASSES_ENCHANTMENTS)
-				.addOptional(ModDamageTypes.BRIMSTONE)
-				.addOptional(ModDamageTypes.LIFE_DRAIN);
+				.add(ModDamageTypes.BRIMSTONE)
+				.add(ModDamageTypes.LIFE_DRAIN);
 		builder(DamageTypeTags.BYPASSES_RESISTANCE)
-				.addOptional(ModDamageTypes.BRIMSTONE)
-				.addOptional(ModDamageTypes.LIFE_DRAIN);
+				.add(ModDamageTypes.BRIMSTONE)
+				.add(ModDamageTypes.LIFE_DRAIN);
 		builder(DamageTypeTags.IS_FREEZING)
-				.addOptional(ModDamageTypes.ICE_SHARD);
+				.add(ModDamageTypes.ICE_SHARD);
 		builder(DamageTypeTags.IS_PROJECTILE)
-				.addOptional(ModDamageTypes.AMETHYST_SHARD)
-				.addOptional(ModDamageTypes.BRIMSTONE)
-				.addOptional(ModDamageTypes.ICE_SHARD);
+				.add(ModDamageTypes.AMETHYST_SHARD)
+				.add(ModDamageTypes.BRIMSTONE)
+				.add(ModDamageTypes.ICE_SHARD);
 		builder(DamageTypeTags.NO_IMPACT)
-				.addOptional(ModDamageTypes.LIFE_DRAIN);
+				.add(ModDamageTypes.LIFE_DRAIN);
 		builder(DamageTypeTags.NO_KNOCKBACK)
-				.addOptional(ModDamageTypes.LIFE_DRAIN);
+				.add(ModDamageTypes.LIFE_DRAIN);
 	}
 }
