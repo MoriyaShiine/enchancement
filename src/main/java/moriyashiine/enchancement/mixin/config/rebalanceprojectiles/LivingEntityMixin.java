@@ -18,6 +18,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -33,17 +34,16 @@ public abstract class LivingEntityMixin extends Entity {
 	@ModifyVariable(method = "hurtServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;applyItemBlocking(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;F)F"), argsOnly = true)
 	private float enchancement$rebalanceProjectiles(float damage, ServerLevel level, DamageSource source) {
 		if (source.getDirectEntity() instanceof Projectile projectile) {
-			boolean bypass = ModConfig.rebalanceProjectiles;
-			if (!bypass) {
-				DelayedLaunchComponent delayedLaunchComponent = ModEntityComponents.DELAYED_LAUNCH.getNullable(projectile);
-				if (delayedLaunchComponent != null && delayedLaunchComponent.isEnabled()) {
-					bypass = true;
+			boolean enabled = ModConfig.rebalanceProjectiles;
+			if (!enabled) {
+				@Nullable DelayedLaunchComponent delayedLaunchComponent = ModEntityComponents.DELAYED_LAUNCH.getNullable(projectile);
+				if (delayedLaunchComponent != null && delayedLaunchComponent.wasEverEnabled()) {
+					enabled = true;
 				}
 			}
-			if (bypass && !projectile.is(ModEntityTypeTags.BYPASSES_DECREASING_DAMAGE)) {
+			if (enabled && !projectile.is(ModEntityTypeTags.BYPASSES_DECREASING_DAMAGE)) {
 				ProjectileTimerComponent projectileTimerComponent = ModEntityComponents.PROJECTILE_TIMER.get(this);
-				projectileTimerComponent.incrementTimesHit();
-				projectileTimerComponent.markAsHit();
+				projectileTimerComponent.hit();
 				boolean aboveOrEqualToOne = damage >= 1;
 				damage *= (float) Math.pow(source.is(DamageTypeTags.BYPASSES_ARMOR) ? 0.2 : 0.8, projectileTimerComponent.getTimesHit() - 1);
 				if (aboveOrEqualToOne) {
@@ -56,8 +56,15 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@ModifyExpressionValue(method = "hurtServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/damagesource/DamageSource;is(Lnet/minecraft/tags/TagKey;)Z", ordinal = 3))
 	private boolean enchancement$rebalanceProjectiles(boolean value, ServerLevel level, DamageSource source) {
-		if (ModConfig.rebalanceProjectiles && source.getDirectEntity() instanceof Projectile) {
-			return true;
+		if (!value && source.getDirectEntity() instanceof Projectile projectile) {
+			boolean enabled = ModConfig.rebalanceProjectiles;
+			if (!enabled) {
+				@Nullable DelayedLaunchComponent delayedLaunchComponent = ModEntityComponents.DELAYED_LAUNCH.getNullable(projectile);
+				if (delayedLaunchComponent != null && delayedLaunchComponent.wasEverEnabled()) {
+					enabled = true;
+				}
+			}
+			return enabled;
 		}
 		return value;
 	}

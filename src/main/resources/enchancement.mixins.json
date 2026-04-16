@@ -105,7 +105,6 @@
 	"enchantmenteffectcomponenttype.chargejump.AbstractHorseMixin",
 	"enchantmenteffectcomponenttype.criticaltipper.PlayerMixin",
 	"enchantmenteffectcomponenttype.delayedlaunch.AbstractArrowMixin",
-	"enchantmenteffectcomponenttype.delayedlaunch.LivingEntityMixin",
 	"enchantmenteffectcomponenttype.delayedlaunch.ProjectileWeaponItemMixin",
 	"enchantmenteffectcomponenttype.directionburst.EntityMixin",
 	"enchantmenteffectcomponenttype.disarmingfishingbobber.FishingHookMixin",

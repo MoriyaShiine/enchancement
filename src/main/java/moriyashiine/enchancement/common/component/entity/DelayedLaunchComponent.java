@@ -127,7 +127,7 @@ public class DelayedLaunchComponent implements AutoSyncedComponent, CommonTickin
 		return maxDuration > 0;
 	}
 
-	public boolean alwaysHurt() {
+	public boolean wasEverEnabled() {
 		return storedDeltaMovement != null;
 	}
 

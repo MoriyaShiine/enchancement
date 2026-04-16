@@ -37,11 +37,8 @@ public class ProjectileTimerComponent implements CommonTickingComponent {
 		return timesHit;
 	}
 
-	public void incrementTimesHit() {
-		timesHit++;
-	}
-
-	public void markAsHit() {
+	public void hit() {
 		resetTicks = 20;
+		timesHit++;
 	}
 }
