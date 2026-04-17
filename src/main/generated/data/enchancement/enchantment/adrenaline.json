@@ -13,8 +13,8 @@
 		"type": "minecraft:add",
 		"value": {
 		  "type": "minecraft:linear",
-		  "base": 0.014285714,
-		  "per_level_above_first": 0.014285714
+		  "base": 0.028571429,
+		  "per_level_above_first": 0.028571429
 		}
 	  },
 	  "movement_speed_modifier": {

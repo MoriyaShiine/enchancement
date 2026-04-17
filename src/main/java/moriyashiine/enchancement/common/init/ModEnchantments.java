@@ -195,7 +195,7 @@ public class ModEnchantments {
 						ModEnchantmentEffectComponentTypes.RAGE,
 						new RageEffect(
 								new AddValue(LevelBasedValue.constant(0)),
-								new AddValue(LevelBasedValue.perLevel(0.2F / 14)),
+								new AddValue(LevelBasedValue.perLevel(0.4F / 14)),
 								new AddValue(LevelBasedValue.perLevel(0.02857142857F))
 						)
 				)));
