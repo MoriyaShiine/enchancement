@@ -41,7 +41,7 @@ import java.util.Set;
 
 public class Brimstone extends AbstractArrow {
 	public static final ItemStack BRIMSTONE_STACK;
-	public static final int DISTANCE_PER_TICK = 6;
+	public static final int DISTANCE_PER_TICK = 10;
 
 	static {
 		BRIMSTONE_STACK = new ItemStack(Items.LAVA_BUCKET);
