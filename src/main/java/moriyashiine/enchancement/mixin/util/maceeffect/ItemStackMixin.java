@@ -7,7 +7,6 @@ package moriyashiine.enchancement.mixin.util.maceeffect;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.util.enchantment.effect.MaceEffect;
-import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -36,7 +35,7 @@ public abstract class ItemStackMixin {
 		for (MaceEffect effect : MaceEffect.EFFECTS) {
 			ItemStack stack = player.getItemInHand(hand);
 			effect.setUsing(player, false);
-			if (hand == InteractionHand.MAIN_HAND && !SLibUtils.isSufficientlyHigh(player, 0.25) && effect.canUse(player.getRandom(), stack)) {
+			if (hand == InteractionHand.MAIN_HAND && effect.canUse(player.getRandom(), stack)) {
 				effect.setUsing(player, true);
 				player.startUsingItem(hand);
 				cir.setReturnValue(InteractionResult.CONSUME);
