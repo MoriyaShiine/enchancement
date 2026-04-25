@@ -5,11 +5,11 @@ package moriyashiine.enchancement.client;
 
 import moriyashiine.enchancement.client.event.config.CoyoteBiteEvent;
 import moriyashiine.enchancement.client.event.config.EnchantmentDescriptionsEvent;
-import moriyashiine.enchancement.client.event.config.SyncDeltaMovementsEvent;
 import moriyashiine.enchancement.client.event.config.ToggleablePassivesEvent;
 import moriyashiine.enchancement.client.event.enchantmenteffectcomponenttype.*;
 import moriyashiine.enchancement.client.event.enchantmenteffecttype.AutomaticallyFeedsTooltipClientEvent;
 import moriyashiine.enchancement.client.event.internal.SyncBookshelvesEvent;
+import moriyashiine.enchancement.client.event.internal.SyncDeltaMovementsEvent;
 import moriyashiine.enchancement.client.gui.hud.*;
 import moriyashiine.enchancement.client.gui.screens.inventory.ModEnchantmentScreen;
 import moriyashiine.enchancement.client.particle.*;
@@ -124,12 +124,12 @@ public class EnchancementClient implements ClientModInitializer {
 	private void initEvents() {
 		// internal
 		ClientTickEvents.END_LEVEL_TICK.register(new SyncBookshelvesEvent());
+		ClientTickEvents.START_LEVEL_TICK.register(new SyncDeltaMovementsEvent());
 		// config
 		ClientTickEvents.END_LEVEL_TICK.register(new CoyoteBiteEvent());
 		ItemTooltipCallback.EVENT.register(new EnchantmentDescriptionsEvent.DescriptionText());
 		ClientTooltipComponentCallback.EVENT.register(new EnchantmentDescriptionsEvent.Icons());
 		CommonLifecycleEvents.TAGS_LOADED.register(new EnchantmentDescriptionsEvent.ClearIconCache());
-		ClientTickEvents.START_LEVEL_TICK.register(new SyncDeltaMovementsEvent());
 		ItemTooltipCallback.EVENT.register(new ToggleablePassivesEvent());
 		// enchantment effect type
 		ItemTooltipCallback.EVENT.register(new AutomaticallyFeedsTooltipClientEvent());

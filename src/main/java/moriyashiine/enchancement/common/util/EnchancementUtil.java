@@ -7,6 +7,7 @@ package moriyashiine.enchancement.common.util;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.LightningDashComponent;
+import moriyashiine.enchancement.common.event.internal.SyncDeltaMovementsEvent;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
@@ -39,6 +40,7 @@ import net.minecraft.world.item.enchantment.*;
 import net.minecraft.world.item.enchantment.effects.EnchantmentValueEffect;
 import net.minecraft.world.item.equipment.ArmorMaterials;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.apache.commons.lang3.mutable.MutableFloat;
 import org.jspecify.annotations.Nullable;
@@ -278,6 +280,10 @@ public class EnchancementUtil {
 			}
 		}
 		return stacks;
+	}
+
+	public static Vec3 getSyncedDeltaMovement(Entity entity) {
+		return SyncDeltaMovementsEvent.DELTAS.getOrDefault(entity.getUUID(), entity.getDeltaMovement());
 	}
 
 	public static boolean isGroundAnimalArmor(ItemStack stack) {

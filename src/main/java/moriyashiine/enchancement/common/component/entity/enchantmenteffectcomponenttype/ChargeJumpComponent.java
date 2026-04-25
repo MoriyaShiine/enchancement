@@ -5,9 +5,9 @@
 package moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype;
 
 import moriyashiine.enchancement.client.EnchancementClient;
-import moriyashiine.enchancement.common.event.internal.SyncDeltaMovementsEvent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.payload.ChargeJumpPayload;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.world.item.effects.ChargeJumpEffect;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import net.minecraft.util.Mth;
@@ -64,7 +64,7 @@ public class ChargeJumpComponent implements AutoSyncedComponent, CommonTickingCo
 				if (pressingChargeJump) {
 					renderTicks = Math.max(renderTicks, 5);
 				}
-				double add = SyncDeltaMovementsEvent.DELTAS.getOrDefault(obj.getUUID(), obj.getDeltaMovement()).multiply(1, 0, 1).length();
+				double add = EnchancementUtil.getSyncedDeltaMovement(obj).multiply(1, 0, 1).length();
 				if (obj.isShiftKeyDown()) {
 					add += ChargeJumpEffect.getActiveChargeRate(obj);
 				}
