@@ -38,7 +38,7 @@ public class SlideComponent implements CommonTickingComponent {
 	private static final AttributeModifier SAFE_FALL_DISTANCE_MODIFIER = new AttributeModifier(Enchancement.id("slide_safe_fall_distance"), 6, AttributeModifier.Operation.ADD_VALUE);
 	private static final AttributeModifier STEP_HEIGHT_MODIFIER = new AttributeModifier(Enchancement.id("slide_step_height"), 1, AttributeModifier.Operation.ADD_VALUE);
 
-	private static final int MAX_SLIDING_TICKS = 40, MAX_WATER_SKIP_TICKS = 30;
+	private static final int MAX_SLIDING_TICKS = 10, MAX_WATER_SKIP_TICKS = 30;
 
 	private final Player obj;
 	private SlideDeltaMovement delta = SlideDeltaMovement.ZERO, adjustedDelta = SlideDeltaMovement.ZERO;
