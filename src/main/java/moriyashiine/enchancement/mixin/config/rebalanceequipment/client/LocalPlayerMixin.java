@@ -4,15 +4,15 @@
 
 package moriyashiine.enchancement.mixin.config.rebalanceequipment.client;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.authlib.GameProfile;
+import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import moriyashiine.enchancement.common.ModConfig;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.world.item.BowItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(LocalPlayer.class)
 public abstract class LocalPlayerMixin extends AbstractClientPlayer {
@@ -20,11 +20,11 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
 		super(level, gameProfile);
 	}
 
-	@ModifyArg(method = "modifyInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec2;scale(F)Lnet/minecraft/world/phys/Vec2;", ordinal = 1))
-	private float enchancement$rebalanceEquipment(float s) {
-		if (ModConfig.rebalanceEquipment && getUseItem().getItem() instanceof BowItem) {
-			return s * 3;
+	@ModifyReturnValue(method = "itemUseSpeedMultiplier", at = @At("RETURN"))
+	private float enchancement$rebalanceEquipment(float original) {
+		if (ModConfig.rebalanceEquipment) {
+			return MultiplyMovementSpeedEvent.getItemUseSpeedMultiplier(getUseItem(), original);
 		}
-		return s;
+		return original;
 	}
 }
