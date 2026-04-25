@@ -94,7 +94,14 @@ public class DirectionBurstComponent implements AutoSyncedComponent, CommonTicki
 					Vec3 inputDelta = getDeltaMovementFromInput();
 					if (inputDelta != Vec3.ZERO) {
 						Vec3 delta = inputDelta.yRot((float) Math.toRadians(-(obj.getYHeadRot() + 90))).scale(MultiplyMovementSpeedEvent.getMovementMultiplier(obj));
-						use(delta.x(), delta.z());
+						double x = delta.x(), z = delta.z();
+						if (Double.compare(x, obj.getDeltaMovement().x()) * Math.signum(obj.getDeltaMovement().x()) > 0) {
+							x += obj.getDeltaMovement().x();
+						}
+						if (Double.compare(z, obj.getDeltaMovement().z()) * Math.signum(obj.getDeltaMovement().z()) > 0) {
+							z += obj.getDeltaMovement().z();
+						}
+						use(x, z);
 						SLibClientUtils.addParticles(obj, ParticleTypes.CLOUD, 8, ParticleAnchor.BODY);
 						DirectionBurstPayload.send(delta);
 					}
