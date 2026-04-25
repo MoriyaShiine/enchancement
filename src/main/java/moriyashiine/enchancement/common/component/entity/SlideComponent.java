@@ -140,7 +140,7 @@ public class SlideComponent implements CommonTickingComponent {
 					StopSlidingC2SPayload.send();
 				}
 			}
-			if (isSliding() && SLibClientUtils.shouldAddParticles(obj)) {
+			if (isSliding()) {
 				Vector2d vec = new Vector2d(adjustedDelta.x(), adjustedDelta.z());
 				vec.normalize();
 				vec.mul(obj.getBbWidth() / 2);

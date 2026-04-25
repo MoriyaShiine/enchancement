@@ -15,8 +15,6 @@ import moriyashiine.enchancement.common.payload.StopSlammingC2SPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
-import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
-import moriyashiine.strawberrylib.api.objects.records.ParticleVelocity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -32,7 +30,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class SlamComponent implements CommonTickingComponent {
@@ -105,7 +102,9 @@ public class SlamComponent implements CommonTickingComponent {
 		tick();
 		if (hasSlam) {
 			if (isSlamming) {
-				SLibClientUtils.addParticles(obj, ModParticleTypes.VELOCITY_LINE, 4, ParticleAnchor.BODY, ParticleVelocity.of(new Vec3(0, 1, 0)));
+				for (int i = 0; i < (SLibClientUtils.shouldAddParticles(obj) ? 4 : 1); i++) {
+					obj.level().addParticle(ModParticleTypes.VELOCITY_LINE, obj.getRandomX(1), obj.getRandomY(), obj.getRandomZ(1), 0, 1, 0);
+				}
 			}
 			if (!obj.isSpectator() && SLibClientUtils.isHost(obj)) {
 				if (isSlamming && obj.onGround()) {
