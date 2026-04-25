@@ -30,7 +30,6 @@ import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class DirectionBurstComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private final Player obj;
-	private boolean shouldRefresh = false;
 	private int cooldown = 0, lastCooldown = 0, gravityTicks = 0;
 
 	private boolean hasDirectionBurst = false;
@@ -44,7 +43,6 @@ public class DirectionBurstComponent implements AutoSyncedComponent, CommonTicki
 
 	@Override
 	public void readData(ValueInput input) {
-		shouldRefresh = input.getBooleanOr("ShouldRefresh", false);
 		cooldown = input.getIntOr("Cooldown", 0);
 		lastCooldown = input.getIntOr("LastCooldown", 0);
 		gravityTicks = input.getIntOr("GravityTicks", 0);
@@ -52,7 +50,6 @@ public class DirectionBurstComponent implements AutoSyncedComponent, CommonTicki
 
 	@Override
 	public void writeData(ValueOutput output) {
-		output.putBoolean("ShouldRefresh", shouldRefresh);
 		output.putInt("Cooldown", cooldown);
 		output.putInt("LastCooldown", lastCooldown);
 		output.putInt("GravityTicks", gravityTicks);
@@ -63,18 +60,13 @@ public class DirectionBurstComponent implements AutoSyncedComponent, CommonTicki
 		int entityCooldown = DirectionBurstEffect.getCooldown(obj);
 		hasDirectionBurst = entityCooldown > 0;
 		if (hasDirectionBurst) {
-			if (!shouldRefresh) {
-				if (obj.onGround()) {
-					shouldRefresh = true;
-				}
-			} else if (cooldown > 0) {
+			if (cooldown > 0) {
 				cooldown--;
 			}
 			if (gravityTicks > 0) {
 				gravityTicks--;
 			}
 		} else {
-			shouldRefresh = false;
 			setCooldown(0);
 			gravityTicks = 0;
 		}
@@ -156,7 +148,6 @@ public class DirectionBurstComponent implements AutoSyncedComponent, CommonTicki
 
 	public void reset() {
 		setCooldown(DirectionBurstEffect.getCooldown(obj));
-		shouldRefresh = false;
 	}
 
 	@Environment(EnvType.CLIENT)
