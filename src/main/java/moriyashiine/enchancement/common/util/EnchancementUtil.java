@@ -228,6 +228,21 @@ public class EnchancementUtil {
 
 	// rebalance equipment
 
+	public static float getItemUseSpeedMultiplier(ItemStack stack, float original) {
+		if (isFastItem(stack)) {
+			return Math.min(1, original * 3);
+		}
+		return original;
+	}
+
+	public static boolean isFastItem(ItemStack stack) {
+		if (ModConfig.rebalanceEquipment) {
+			Item item = stack.getItem();
+			return item instanceof BowItem || item instanceof MaceItem || item instanceof TridentItem;
+		}
+		return false;
+	}
+
 	public static boolean insertToCorrectTridentSlot(AbstractArrow arrow, Inventory inventory, ItemStack stack) {
 		if (ModConfig.rebalanceEquipment && arrow instanceof ThrownTrident) {
 			int slot = ModEntityComponents.OWNED_TRIDENT.get(arrow).getSlot();
