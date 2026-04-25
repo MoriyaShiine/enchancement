@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.common.world.level.storage.loot.predicates;
 
 import com.mojang.serialization.MapCodec;
-import moriyashiine.enchancement.common.component.entity.ExtendedWaterTimeComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.ExtendedWaterTimeComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModLootConditionTypes;
 import net.minecraft.world.entity.Entity;

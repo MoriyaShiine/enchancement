@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.enchantmententityeffecttype.freeze.client;
 
-import moriyashiine.enchancement.common.component.entity.FrozenSquidComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffecttype.FrozenSquidComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.client.renderer.entity.SquidRenderer;
 import net.minecraft.client.renderer.entity.state.SquidRenderState;

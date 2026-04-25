@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.client.event.enchantmenteffectcomponenttype;
 
 import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.component.entity.BounceComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.BounceComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.payload.SyncInvertedBounceStatusPayload;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;

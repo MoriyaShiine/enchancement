@@ -10,8 +10,9 @@ import moriyashiine.enchancement.common.event.config.OverhaulEnchantingEvent;
 import moriyashiine.enchancement.common.event.config.RebalanceEnchantmentsEvent;
 import moriyashiine.enchancement.common.event.config.RebalanceEquipmentEvent;
 import moriyashiine.enchancement.common.event.config.ToggleablePassivesEvent;
-import moriyashiine.enchancement.common.event.enchantmenteffect.ModifySubmergedMovementSpeedEvent;
 import moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype.*;
+import moriyashiine.enchancement.common.event.enchantmenteffecttype.FreezeEvent;
+import moriyashiine.enchancement.common.event.enchantmenteffecttype.ModifySubmergedMovementSpeedEvent;
 import moriyashiine.enchancement.common.event.internal.*;
 import moriyashiine.enchancement.common.init.*;
 import moriyashiine.enchancement.common.payload.*;
@@ -153,11 +154,11 @@ public class Enchancement implements ModInitializer {
 		ServerPlayConnectionEvents.JOIN.register(new EnforceConfigMatchEvent.Join());
 		ServerTickEvents.END_SERVER_TICK.register(new EnforceConfigMatchEvent.Tick());
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(new InCombatEvent());
+		ServerTickEvents.END_SERVER_TICK.register(new SyncDeltaMovementsEvent());
 		ServerPlayConnectionEvents.JOIN.register(new SyncEnchantingMaterialMapEvent.Join());
 		ServerTickEvents.END_SERVER_TICK.register(new SyncEnchantingMaterialMapEvent.Tick());
 		ServerPlayConnectionEvents.JOIN.register(new SyncOriginalMaxLevelsEvent.Join());
 		ServerLifecycleEvents.SERVER_STARTED.register(new SyncOriginalMaxLevelsEvent.ServerStarted());
-		ServerTickEvents.END_SERVER_TICK.register(new SyncDeltaMovementsEvent());
 		// config
 		LootTableEvents.MODIFY.register(new OverhaulEnchantingEvent());
 		EnchantmentEvents.ALLOW_ENCHANTING.register(new RebalanceEnchantmentsEvent.AllowEnchanting());
@@ -169,7 +170,9 @@ public class Enchancement implements ModInitializer {
 		TickEntityEvent.EVENT.register(new RebalanceEquipmentEvent.Tick());
 		MultiplyMovementSpeedEvent.EVENT.register(new ToggleablePassivesEvent.AirMobility());
 		ModifyDestroySpeedEvent.ADD_EFFICIENCY.register(new ToggleablePassivesEvent.Efficiency());
-		// enchantment effect
+		// enchantment effect type
+		ServerLivingEntityEvents.AFTER_DEATH.register(new FreezeEvent.HandleDeath());
+		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new FreezeEvent.HandleDamage());
 		MultiplyMovementSpeedEvent.EVENT.register(new ModifySubmergedMovementSpeedEvent());
 		// enchantment effect component type
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(new AllowInterruptionEvent());
@@ -185,8 +188,6 @@ public class Enchancement implements ModInitializer {
 		PlayerBlockBreakEvents.BEFORE.register(new FellTreesEvent.FellTree());
 		ModifyMovementEvents.MOVEMENT_DELTA.register(new FluidWalkingEvent.DolphinsGrace());
 		PreventFallDamageEvent.EVENT.register(new FluidWalkingEvent.FallImmunity());
-		ServerLivingEntityEvents.AFTER_DEATH.register(new FreezeEvent.HandleDeath());
-		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new FreezeEvent.HandleDamage());
 		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register(new HeadDropsEvent());
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(new LeechingTridentEvent());
 		PreventFallDamageEvent.EVENT.register(new LightningDashEvent());

@@ -4,9 +4,9 @@
 
 package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
-import moriyashiine.enchancement.common.component.entity.AirJumpComponent;
-import moriyashiine.enchancement.common.component.entity.DirectionBurstComponent;
-import moriyashiine.enchancement.common.component.entity.RotationBurstComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.AirJumpComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.DirectionBurstComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.RotationBurstComponent;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;

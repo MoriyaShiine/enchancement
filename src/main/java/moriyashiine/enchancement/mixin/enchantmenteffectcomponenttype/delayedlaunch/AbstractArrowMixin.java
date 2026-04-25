@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.delayedlaunch;
 
-import moriyashiine.enchancement.common.component.entity.DelayedLaunchComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.DelayedLaunchComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;

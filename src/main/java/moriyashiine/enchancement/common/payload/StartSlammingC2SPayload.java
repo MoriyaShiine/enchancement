@@ -6,7 +6,7 @@ package moriyashiine.enchancement.common.payload;
 
 import moriyashiine.enchancement.client.payload.StartSlammingS2CPayload;
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.component.entity.SlamComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.SlamComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;

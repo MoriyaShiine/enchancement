@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.enchantmententityeffecttype.freeze;
 
-import moriyashiine.enchancement.common.component.entity.FrozenComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffecttype.FrozenComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.minecraft.server.level.ServerLevel;

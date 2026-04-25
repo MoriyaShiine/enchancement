@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.leechingtrident;
 
-import moriyashiine.enchancement.common.component.entity.LeechingTridentComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.LeechingTridentComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;

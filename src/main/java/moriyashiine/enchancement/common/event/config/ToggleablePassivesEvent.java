@@ -6,7 +6,7 @@ package moriyashiine.enchancement.common.event.config;
 
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.component.entity.AirMobilityComponent;
+import moriyashiine.enchancement.common.component.entity.config.AirMobilityComponent;
 import moriyashiine.enchancement.common.init.ModComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;

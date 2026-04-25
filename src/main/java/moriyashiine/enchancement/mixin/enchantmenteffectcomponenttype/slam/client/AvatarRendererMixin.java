@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.slam.client;
 
-import moriyashiine.enchancement.common.component.entity.SlamComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.SlamComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.client.entity.ClientAvatarEntity;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;

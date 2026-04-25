@@ -5,8 +5,8 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.applyrandommobeffect;
 
 import com.google.common.base.MoreObjects;
-import moriyashiine.enchancement.common.component.entity.ApplyRandomMobEffectComponent;
-import moriyashiine.enchancement.common.component.entity.ApplyRandomMobEffectGenericComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.ApplyRandomMobEffectComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.ApplyRandomMobEffectGenericComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

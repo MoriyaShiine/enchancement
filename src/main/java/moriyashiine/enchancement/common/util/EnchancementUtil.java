@@ -6,7 +6,7 @@ package moriyashiine.enchancement.common.util;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.component.entity.LightningDashComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.LightningDashComponent;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModEntityComponents;

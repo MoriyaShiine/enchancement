@@ -5,8 +5,8 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.disarmingfishingbobber;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import moriyashiine.enchancement.common.component.entity.DisarmedWanderingTraderComponent;
-import moriyashiine.enchancement.common.component.entity.DisarmingFishingBobberComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.DisarmedWanderingTraderComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.DisarmingFishingBobberComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
 import net.minecraft.core.component.DataComponents;

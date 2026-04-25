@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.util.maceeffect.client;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import moriyashiine.enchancement.common.component.entity.UsingMaceComponent;
+import moriyashiine.enchancement.common.component.entity.internal.UsingMaceComponent;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.world.item.ItemUseAnimation;

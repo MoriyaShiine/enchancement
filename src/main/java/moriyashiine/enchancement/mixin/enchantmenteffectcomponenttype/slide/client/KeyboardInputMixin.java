@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.slide.client;
 
-import moriyashiine.enchancement.common.component.entity.SlideComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.SlideComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.ClientInput;

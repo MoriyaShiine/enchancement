@@ -8,6 +8,7 @@ import moriyashiine.enchancement.client.event.config.EnchantmentDescriptionsEven
 import moriyashiine.enchancement.client.event.config.SyncDeltaMovementsEvent;
 import moriyashiine.enchancement.client.event.config.ToggleablePassivesEvent;
 import moriyashiine.enchancement.client.event.enchantmenteffectcomponenttype.*;
+import moriyashiine.enchancement.client.event.enchantmenteffecttype.AutomaticallyFeedsTooltipClientEvent;
 import moriyashiine.enchancement.client.event.internal.SyncBookshelvesEvent;
 import moriyashiine.enchancement.client.gui.hud.*;
 import moriyashiine.enchancement.client.gui.screens.inventory.ModEnchantmentScreen;
@@ -129,8 +130,9 @@ public class EnchancementClient implements ClientModInitializer {
 		CommonLifecycleEvents.TAGS_LOADED.register(new EnchantmentDescriptionsEvent.ClearIconCache());
 		ClientTickEvents.START_LEVEL_TICK.register(new SyncDeltaMovementsEvent());
 		ItemTooltipCallback.EVENT.register(new ToggleablePassivesEvent());
-		// enchantment
+		// enchantment effect type
 		ItemTooltipCallback.EVENT.register(new AutomaticallyFeedsTooltipClientEvent());
+		// enchantment effect component type
 		ClientTickEvents.END_LEVEL_TICK.register(new BounceClientEvent());
 		DisableContextualInfoEvent.EVENT.register(new ChargeJumpClientEvent());
 		ClientTickEvents.END_LEVEL_TICK.register(new EntityXrayClientEvent.Tick());

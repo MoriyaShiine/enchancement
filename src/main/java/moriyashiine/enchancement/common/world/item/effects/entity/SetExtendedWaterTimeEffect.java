@@ -6,7 +6,7 @@ package moriyashiine.enchancement.common.world.item.effects.entity;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import moriyashiine.enchancement.common.component.entity.ExtendedWaterTimeComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.ExtendedWaterTimeComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;

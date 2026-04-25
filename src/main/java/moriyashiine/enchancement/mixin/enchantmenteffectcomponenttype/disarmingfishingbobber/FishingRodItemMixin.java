@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.disarmingfishingbobber;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import moriyashiine.enchancement.common.component.entity.DisarmingFishingBobberComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.DisarmingFishingBobberComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;

@@ -6,8 +6,8 @@ package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.applyrand
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import moriyashiine.enchancement.common.component.entity.ApplyRandomMobEffectComponent;
-import moriyashiine.enchancement.common.component.entity.ApplyRandomMobEffectGenericComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.ApplyRandomMobEffectComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.ApplyRandomMobEffectGenericComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;

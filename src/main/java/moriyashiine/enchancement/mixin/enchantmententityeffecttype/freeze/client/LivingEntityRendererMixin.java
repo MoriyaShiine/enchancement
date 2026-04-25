@@ -7,7 +7,7 @@ package moriyashiine.enchancement.mixin.enchantmententityeffecttype.freeze.clien
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import moriyashiine.enchancement.client.reloadlistener.FrozenReloadListener;
 import moriyashiine.enchancement.client.renderer.entity.state.FrozenRenderState;
-import moriyashiine.enchancement.common.component.entity.FrozenComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffecttype.FrozenComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

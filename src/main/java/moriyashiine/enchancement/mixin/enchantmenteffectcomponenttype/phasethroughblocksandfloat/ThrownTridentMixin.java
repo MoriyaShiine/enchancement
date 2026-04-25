@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.phasethroughblocksandfloat;
 
-import moriyashiine.enchancement.common.component.entity.PhaseThroughBlocksAndFloatComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.PhaseThroughBlocksAndFloatComponent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;

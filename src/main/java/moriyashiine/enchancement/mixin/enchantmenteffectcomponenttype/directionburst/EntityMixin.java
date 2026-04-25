@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.directionburst;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import moriyashiine.enchancement.common.component.entity.DirectionBurstComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.DirectionBurstComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;

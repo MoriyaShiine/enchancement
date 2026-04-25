@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.client.resources.sound;
 
-import moriyashiine.enchancement.common.component.entity.LightningDashComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.LightningDashComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;

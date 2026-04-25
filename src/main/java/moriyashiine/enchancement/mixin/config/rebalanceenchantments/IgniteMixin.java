@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.config.rebalanceenchantments;
 
 import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.component.entity.IgniteKnockbackComponent;
+import moriyashiine.enchancement.common.component.entity.config.IgniteKnockbackComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;

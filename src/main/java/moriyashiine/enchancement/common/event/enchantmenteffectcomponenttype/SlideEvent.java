@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
-import moriyashiine.enchancement.common.component.entity.SlideComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.SlideComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.payload.StopSlidingC2SPayload;
 import moriyashiine.strawberrylib.api.event.ModifyMovementEvents;

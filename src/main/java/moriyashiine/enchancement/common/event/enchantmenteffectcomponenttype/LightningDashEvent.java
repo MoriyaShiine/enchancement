@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
-import moriyashiine.enchancement.common.component.entity.LightningDashComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.LightningDashComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.strawberrylib.api.event.PreventFallDamageEvent;
 import net.fabricmc.fabric.api.util.TriState;

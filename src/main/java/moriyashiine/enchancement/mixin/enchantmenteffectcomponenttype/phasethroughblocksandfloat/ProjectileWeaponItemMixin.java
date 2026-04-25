@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.phasethroughblocksandfloat;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import moriyashiine.enchancement.common.component.entity.PhaseThroughBlocksAndFloatComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.PhaseThroughBlocksAndFloatComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;

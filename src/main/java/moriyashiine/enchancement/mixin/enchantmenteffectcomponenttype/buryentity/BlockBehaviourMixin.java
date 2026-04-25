@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.buryentity;
 
-import moriyashiine.enchancement.common.component.entity.BuryEntityComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.BuryEntityComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

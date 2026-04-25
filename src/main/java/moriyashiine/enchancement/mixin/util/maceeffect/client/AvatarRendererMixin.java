@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.util.maceeffect.client;
 
-import moriyashiine.enchancement.common.component.entity.UsingMaceComponent;
+import moriyashiine.enchancement.common.component.entity.internal.UsingMaceComponent;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.world.InteractionHand;

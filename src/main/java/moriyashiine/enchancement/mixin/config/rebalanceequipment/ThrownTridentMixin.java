@@ -6,7 +6,7 @@ package moriyashiine.enchancement.mixin.config.rebalanceequipment;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.component.entity.OwnedTridentComponent;
+import moriyashiine.enchancement.common.component.entity.config.OwnedTridentComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;

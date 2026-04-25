@@ -8,7 +8,7 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import moriyashiine.enchancement.client.renderer.entity.state.LeechingTridentRenderState;
-import moriyashiine.enchancement.common.component.entity.LeechingTridentComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.LeechingTridentComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;

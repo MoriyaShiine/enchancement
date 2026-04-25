@@ -6,8 +6,8 @@ package moriyashiine.enchancement.mixin.config.rebalanceprojectiles;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.component.entity.DelayedLaunchComponent;
-import moriyashiine.enchancement.common.component.entity.ProjectileTimerComponent;
+import moriyashiine.enchancement.common.component.entity.config.ProjectileTimerComponent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.DelayedLaunchComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
 import net.minecraft.server.level.ServerLevel;
