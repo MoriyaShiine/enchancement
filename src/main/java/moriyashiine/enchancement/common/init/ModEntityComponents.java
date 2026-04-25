@@ -46,6 +46,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<FrozenSquidComponent> FROZEN_SQUID = ComponentRegistry.getOrCreate(Enchancement.id("frozen_squid"), FrozenSquidComponent.class);
 	public static final ComponentKey<GlideComponent> GLIDE = ComponentRegistry.getOrCreate(Enchancement.id("glide"), GlideComponent.class);
 	public static final ComponentKey<GroundedCooldownComponent> GROUNDED_COOLDOWN = ComponentRegistry.getOrCreate(Enchancement.id("grounded_cooldown"), GroundedCooldownComponent.class);
+	public static final ComponentKey<IgniteKnockbackComponent> IGNITE_KNOCKBACK = ComponentRegistry.getOrCreate(Enchancement.id("ignite_knockback"), IgniteKnockbackComponent.class);
 	public static final ComponentKey<InCombatComponent> IN_COMBAT = ComponentRegistry.getOrCreate(Enchancement.id("in_combat"), InCombatComponent.class);
 	public static final ComponentKey<UsingMaceComponent> LAUNCH_WIND_CHARGE = ComponentRegistry.getOrCreate(Enchancement.id("launch_wind_charge"), UsingMaceComponent.class);
 	public static final ComponentKey<LeechingTridentComponent> LEECHING_TRIDENT = ComponentRegistry.getOrCreate(Enchancement.id("leeching_trident"), LeechingTridentComponent.class);
@@ -84,6 +85,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerFor(Squid.class, FROZEN_SQUID, FrozenSquidComponent::new);
 		registry.registerFor(LivingEntity.class, GLIDE, GlideComponent::new);
 		registry.registerForPlayers(GROUNDED_COOLDOWN, GroundedCooldownComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+		registry.registerFor(LivingEntity.class, IGNITE_KNOCKBACK, IgniteKnockbackComponent::new);
 		registry.registerFor(LivingEntity.class, IN_COMBAT, _ -> new InCombatComponent());
 		registry.registerForPlayers(LAUNCH_WIND_CHARGE, _ -> new UsingMaceComponent(), RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(ThrownTrident.class, LEECHING_TRIDENT, LeechingTridentComponent::new);
