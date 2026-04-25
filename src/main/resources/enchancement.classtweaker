@@ -14,8 +14,7 @@ accessible method net/minecraft/world/entity/projectile/arrow/Arrow setPotionCon
 accessible method net/minecraft/world/entity/projectile/arrow/ThrownTrident isAcceptibleReturnOwner ()Z
 accessible method net/minecraft/world/item/CrossbowItem getPowerForTime (ILnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/LivingEntity;)F
 accessible method net/minecraft/world/item/enchantment/EnchantmentEffectComponents validatedListCodec (Lcom/mojang/serialization/Codec;Lnet/minecraft/util/context/ContextKeySet;)Lcom/mojang/serialization/Codec;
-accessible method net/minecraft/world/level/block/HoneyBlock maybeDoSlideEffects (Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/Entity;)V
-accessible method net/minecraft/world/level/block/HoneyBlock doSlideMovement (Lnet/minecraft/world/entity/Entity;)V
+accessible method net/minecraft/world/level/block/HoneyBlock getNewDeltaY (D)D
 accessible method net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity createExperience (Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/phys/Vec3;IF)V
 
 accessible field net/minecraft/advancements/criterion/DamagePredicate dealtDamage Lnet/minecraft/advancements/criterion/MinMaxBounds$Doubles;

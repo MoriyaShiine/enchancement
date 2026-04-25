@@ -413,7 +413,7 @@ public class ModEnchantments {
 					);
 					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.WALL_JUMP,
-							new AddValue(LevelBasedValue.perLevel(0.5F, 0.2F)));
+							new AddValue(LevelBasedValue.perLevel(0.65F, 0.15F)));
 				}));
 		// sword
 		registry.register(BERSERK, create(BERSERK.identifier(),

@@ -11,17 +11,21 @@ import moriyashiine.enchancement.common.payload.WallJumpPayload;
 import moriyashiine.enchancement.common.payload.WallJumpSlidingPayload;
 import moriyashiine.enchancement.common.tag.ModBlockTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HoneyBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -40,6 +44,7 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 
 	private final BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
 	private float jumpStrength = 0;
+	private Vec3 slidingDelta = null;
 	private boolean hasJumped = false;
 
 	public WallJumpComponent(LivingEntity obj) {
@@ -61,10 +66,20 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 		jumpStrength = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.WALL_JUMP, obj, 0);
 		if (jumpStrength == 0 || obj.onGround()) {
 			slidingPos = null;
+			slidingDelta = null;
 			hasJumped = false;
-		} else if (slidingPos != null) {
-			((HoneyBlock) Blocks.HONEY_BLOCK).maybeDoSlideEffects(obj.level(), obj);
-			((HoneyBlock) Blocks.HONEY_BLOCK).doSlideMovement(obj);
+		} else if (isSliding()) {
+			if (obj.tickCount % 2 == 0) {
+				obj.playSound(SoundEvents.HONEY_BLOCK_SLIDE, 1, 1);
+				obj.level().broadcastEntityEvent(obj, EntityEvent.HONEY_SLIDE);
+			}
+			if (slidingDelta == null) {
+				slidingDelta = obj.getDeltaMovement();
+			}
+			obj.setDeltaMovement(slidingDelta.x(), Math.max(obj.getDeltaMovement().y(), HoneyBlock.getNewDeltaY(-0.025)), slidingDelta.z());
+			obj.resetFallDistance();
+		} else {
+			slidingDelta = null;
 		}
 	}
 
@@ -111,17 +126,25 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 					}
 				}
 			}
-			if (slidingPos != null && (obj.getControllingPassenger() instanceof Player player ? player : obj).jumping) {
-				Vec3 diff = obj.blockPosition().getCenter().subtract(slidingPos.getCenter()).normalize().scale(jumpStrength);
-				Vec3 delta = new Vec3(diff.x(), MultiplyMovementSpeedEvent.getJumpStrength(obj, jumpStrength * (obj instanceof Player ? 3 : 2)), diff.z());
-				use(delta);
-				WallJumpPayload.send(obj, delta);
-				targetPos = null;
-			}
 		}
 		if (slidingPos != targetPos) {
 			slidingPos = targetPos;
 			WallJumpSlidingPayload.send(obj, slidingPos);
+		}
+		if (jumpStrength != 0) {
+			if (slidingPos != null && (obj.getControllingPassenger() instanceof Player player ? player : obj).jumping) {
+				float x = Integer.compare(obj.getBlockX(), slidingPos.getX()), z = Integer.compare(obj.getBlockZ(), slidingPos.getZ());
+				Vec3 difference = new Vec3(x, 0, z);
+				Vec3 withInput = difference.add(getDeltaMovementFromInput());
+				if (withInput.length() >= 1) {
+					difference = withInput;
+				}
+				Vec3 delta = difference
+						.normalize().scale(jumpStrength)
+						.add(0, MultiplyMovementSpeedEvent.getJumpStrength(obj, jumpStrength * (obj.slib$isPlayer() ? 3 : 2)), 0);
+				use(delta);
+				WallJumpPayload.send(obj, delta);
+			}
 		}
 	}
 
@@ -142,6 +165,13 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 		obj.playSound(SoundEvents.SLIME_BLOCK_FALL);
 		obj.gameEvent(GameEvent.ENTITY_ACTION);
 		slidingPos = null;
+		slidingDelta = null;
 		hasJumped = true;
+	}
+
+	@Environment(EnvType.CLIENT)
+	private Vec3 getDeltaMovementFromInput() {
+		Options options = Minecraft.getInstance().options;
+		return new Vec3(options.keyUp.isDown() ? 1 : options.keyDown.isDown() ? -1 : 0, 0, 0).yRot((float) Math.toRadians(-(obj.getYHeadRot() + 90)));
 	}
 }
