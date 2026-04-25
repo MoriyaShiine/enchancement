@@ -173,7 +173,7 @@ public class SlideComponent implements CommonTickingComponent {
 	}
 
 	public float getJumpBonus() {
-		return Mth.lerp(slidingTicks / (float) MAX_SLIDING_TICKS, 1F, 3F);
+		return Mth.lerp(slidingTicks / (float) MAX_SLIDING_TICKS, 1, 3);
 	}
 
 	public boolean hasSlide() {

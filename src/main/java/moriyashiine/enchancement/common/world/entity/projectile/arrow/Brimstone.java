@@ -199,7 +199,7 @@ public class Brimstone extends AbstractArrow {
 		if (distanceTraveled < threshold) {
 			return Mth.lerp(distanceTraveled / threshold, 0.25F, 1);
 		}
-		return Math.min(2, Mth.lerp((distanceTraveled - threshold) / 200F, 1F, 2F));
+		return Math.min(2, Mth.lerp((distanceTraveled - threshold) / 200F, 1, 2));
 	}
 
 	private void addParticles(ParticleOptions particle, double x, double y, double z) {

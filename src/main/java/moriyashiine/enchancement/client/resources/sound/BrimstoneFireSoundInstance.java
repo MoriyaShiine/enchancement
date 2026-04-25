@@ -39,7 +39,7 @@ public class BrimstoneFireSoundInstance extends AbstractTickableSoundInstance {
 		y = entity.getY();
 		z = entity.getZ();
 		age++;
-		pitch = Mth.lerp(age / 60F, 1F, 2F);
+		pitch = Mth.lerp(age / 60F, 1, 2);
 	}
 
 	private boolean isEntityUsing(Entity entity) {

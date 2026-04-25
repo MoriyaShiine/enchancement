@@ -94,6 +94,6 @@ public class ApplyRandomMobEffectComponent implements CardinalComponent {
 	}
 
 	public static float getDurationMultiplier(LivingEntity user, float speed) {
-		return Mth.lerp(Math.min(1, (speed * (user.isShiftKeyDown() ? 3 : 1)) / 3F), 0F, 1);
+		return Mth.lerp(Math.min(1, (speed * (user.isShiftKeyDown() ? 3 : 1)) / 3F), 0, 1);
 	}
 }

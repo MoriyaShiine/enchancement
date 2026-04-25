@@ -53,7 +53,7 @@ public class ChargeJumpComponent implements AutoSyncedComponent, CommonTickingCo
 	}
 
 	public float getChargeProgress() {
-		return Mth.lerp((strength - 2) / (Math.max(1, chargeTime - 2F)), 0F, 1F);
+		return Mth.lerp((strength - 2) / (Math.max(1, chargeTime - 2F)), 0, 1);
 	}
 
 	public float getBoost() {

@@ -59,7 +59,7 @@ public class BrimstoneRenderer extends ArrowRenderer<Brimstone, BrimstoneEntityR
 	@Override
 	public void submit(BrimstoneEntityRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
 		float scale = Mth.lerp(state.damage / 12F, 0.1F, 1);
-		scale *= Mth.lerp(Mth.clamp((state.ticksExisted - (Brimstone.getMaxTicks() - 10F)) / (Brimstone.getMaxTicks() - (Brimstone.getMaxTicks() - 10)), 0, 1), 1F, 0);
+		scale *= Mth.lerp(Mth.clamp((state.ticksExisted - (Brimstone.getMaxTicks() - 10F)) / (Brimstone.getMaxTicks() - (Brimstone.getMaxTicks() - 10)), 0, 1), 1, 0);
 		float v = (Math.floorMod(state.ticksExisted, 40) + state.ageInTicks) / 4F;
 		float u = v + 4 * -0.5F / scale;
 		poseStack.pushPose();
