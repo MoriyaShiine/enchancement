@@ -349,7 +349,8 @@ public class ModEnchantments {
 					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.CHARGE_JUMP,
 							new ChargeJumpEffect(
-									new AddValue(LevelBasedValue.constant(1.5F)),
+									new AddValue(LevelBasedValue.constant(30)),
+									new AddValue(LevelBasedValue.constant(0.5F)),
 									new AddValue(LevelBasedValue.perLevel(0.6F, 0.4F))));
 				}));
 		registry.register(BUOY, create(BUOY.identifier(),

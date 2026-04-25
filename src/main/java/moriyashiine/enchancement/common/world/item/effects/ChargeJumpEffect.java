@@ -15,32 +15,46 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.effects.EnchantmentValueEffect;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
-public record ChargeJumpEffect(EnchantmentValueEffect chargeTime, EnchantmentValueEffect strength) {
+public record ChargeJumpEffect(EnchantmentValueEffect maximumCharge, EnchantmentValueEffect activeChargeRate, EnchantmentValueEffect jumpStrength) {
 	public static final Codec<ChargeJumpEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-					EnchantmentValueEffect.CODEC.fieldOf("charge_time").forGetter(ChargeJumpEffect::chargeTime),
-					EnchantmentValueEffect.CODEC.fieldOf("strength").forGetter(ChargeJumpEffect::strength))
+					EnchantmentValueEffect.CODEC.fieldOf("maximum_charge").forGetter(ChargeJumpEffect::maximumCharge),
+					EnchantmentValueEffect.CODEC.fieldOf("active_charge_rate").forGetter(ChargeJumpEffect::activeChargeRate),
+					EnchantmentValueEffect.CODEC.fieldOf("jump_strength").forGetter(ChargeJumpEffect::jumpStrength))
 			.apply(instance, ChargeJumpEffect::new));
 
-	public static int getChargeTime(LivingEntity entity) {
+	public static int getMaximumCharge(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
 		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
 			EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
 				ChargeJumpEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.CHARGE_JUMP);
 				if (effect != null) {
-					mutableFloat.setValue(effect.chargeTime().process(level, entity.getRandom(), mutableFloat.floatValue()));
+					mutableFloat.setValue(effect.maximumCharge().process(level, entity.getRandom(), mutableFloat.floatValue()));
 				}
 			});
 		}
-		return Mth.floor(mutableFloat.floatValue() * 20);
+		return Mth.floor(mutableFloat.floatValue());
 	}
 
-	public static float getStrength(LivingEntity entity, float base) {
-		MutableFloat mutableFloat = new MutableFloat(base);
+	public static float getActiveChargeRate(LivingEntity entity) {
+		MutableFloat mutableFloat = new MutableFloat();
 		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
 			EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
 				ChargeJumpEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.CHARGE_JUMP);
 				if (effect != null) {
-					mutableFloat.setValue(effect.strength().process(level, entity.getRandom(), mutableFloat.floatValue()));
+					mutableFloat.setValue(effect.activeChargeRate().process(level, entity.getRandom(), mutableFloat.floatValue()));
+				}
+			});
+		}
+		return mutableFloat.floatValue();
+	}
+
+	public static float getJumpStrength(LivingEntity entity) {
+		MutableFloat mutableFloat = new MutableFloat();
+		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
+			EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
+				ChargeJumpEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.CHARGE_JUMP);
+				if (effect != null) {
+					mutableFloat.setValue(effect.jumpStrength().process(level, entity.getRandom(), mutableFloat.floatValue()));
 				}
 			});
 		}

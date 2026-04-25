@@ -23,16 +23,15 @@ public class ChargeJumpEvent implements ModifyMovementEvents.JumpDelta {
 	@Override
 	public Vec3 modify(Vec3 delta, LivingEntity entity) {
 		ChargeJumpComponent chargeJumpComponent = ModEntityComponents.CHARGE_JUMP.getNullable(entity);
-		if (chargeJumpComponent != null && chargeJumpComponent.hasChargeJump()) {
-			float boostProgress = chargeJumpComponent.getChargeProgress();
-			if (boostProgress > 0) {
-				if (entity.level() instanceof ServerLevel level) {
-					SLibUtils.playSound(entity, SoundEvents.SLIME_BLOCK_FALL);
-					entity.gameEvent(GameEvent.ENTITY_ACTION);
-					level.sendParticles(SLIME_PARTICLE, entity.getX(), entity.getY(), entity.getZ(), 32, 0, 0, 0, 0.15);
-				}
-				return delta.add(0, chargeJumpComponent.getBoost(), 0);
+		if (chargeJumpComponent != null && chargeJumpComponent.hasChargeJump() && chargeJumpComponent.isPressingChargeJump()) {
+			double progress = chargeJumpComponent.getChargeProgress();
+			double boost = chargeJumpComponent.getBoost();
+			if (progress >= 2 / 18F && entity.level() instanceof ServerLevel level) {
+				SLibUtils.playSound(entity, SoundEvents.SLIME_BLOCK_FALL);
+				entity.gameEvent(GameEvent.ENTITY_ACTION);
+				level.sendParticles(SLIME_PARTICLE, entity.getX(), entity.getY(), entity.getZ(), 32, 0, 0, 0, 0.15);
 			}
+			return delta.add(0, boost, 0);
 		}
 		return delta;
 	}

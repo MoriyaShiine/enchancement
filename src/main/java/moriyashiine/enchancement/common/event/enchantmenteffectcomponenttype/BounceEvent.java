@@ -43,14 +43,15 @@ public class BounceEvent {
 			if (!source.is(DamageTypes.STALAGMITE) && fallDistance > entity.getMaxFallDistance() && EnchancementUtil.hasAnyEnchantmentsWith(entity, ModEnchantmentEffectComponentTypes.BOUNCE)) {
 				SLibUtils.playSound(entity, SoundEvents.SLIME_BLOCK_FALL);
 				BounceComponent bounceComponent = ModEntityComponents.BOUNCE.get(entity);
+				double bounceStrength = EnchancementUtil.altLog(1.05, fallDistance / 7, 1 / 16F);
 				if (shouldBounce(entity, bounceComponent)) {
-					double bounceStrength = EnchancementUtil.altLog(1.05, fallDistance / 7, 1 / 16F);
 					if (entity.isAlwaysTicking() || entity.isClientAuthoritative()) {
 						bounce(entity, bounceComponent, bounceStrength);
 					} else {
 						scheduleBounce(entity, bounceStrength);
 					}
 				}
+				ModEntityComponents.CHARGE_JUMP.maybeGet(entity).ifPresent(chargeJumpComponent -> chargeJumpComponent.addChargeDelayed(bounceStrength * 4));
 				return TriState.TRUE;
 			}
 			return TriState.DEFAULT;

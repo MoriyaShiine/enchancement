@@ -15,6 +15,6 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class AbstractHorseMixin {
 	@ModifyVariable(method = "executeRidersJump", at = @At("HEAD"), argsOnly = true)
 	private float enchancement$chargeJump(float amount) {
-		return amount + amount * ChargeJumpEffect.getStrength((LivingEntity) (Object) this, 0);
+		return amount + amount * ChargeJumpEffect.getJumpStrength((LivingEntity) (Object) this);
 	}
 }

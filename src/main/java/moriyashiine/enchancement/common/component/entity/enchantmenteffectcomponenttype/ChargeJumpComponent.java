@@ -4,7 +4,12 @@
 
 package moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype;
 
+import moriyashiine.enchancement.client.EnchancementClient;
+import moriyashiine.enchancement.common.event.internal.SyncDeltaMovementsEvent;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.payload.ChargeJumpPayload;
 import moriyashiine.enchancement.common.world.item.effects.ChargeJumpEffect;
+import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.storage.ValueInput;
@@ -14,10 +19,11 @@ import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class ChargeJumpComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private final Player obj;
-	public int strength = 0;
+	private double charge = 0, toAdd = 0;
+	private int addTicks = 0;
+	private boolean pressingChargeJump = false;
 
-	private float chargeStrength = 0;
-	private int chargeTime = 0;
+	private int maximumCharge = 0, renderTicks = 0;
 	private boolean hasChargeJump = false;
 
 	public ChargeJumpComponent(Player obj) {
@@ -26,41 +32,102 @@ public class ChargeJumpComponent implements AutoSyncedComponent, CommonTickingCo
 
 	@Override
 	public void readData(ValueInput input) {
-		strength = input.getIntOr("Strength", 0);
+		charge = input.getDoubleOr("Charge", 0);
+		toAdd = input.getDoubleOr("ToAdd", 0);
+		addTicks = input.getIntOr("AddTicks", 0);
+		pressingChargeJump = input.getBooleanOr("PressingChargeJump", false);
 	}
 
 	@Override
 	public void writeData(ValueOutput output) {
-		output.putInt("Strength", strength);
+		output.putDouble("Charge", charge);
+		output.putDouble("ToAdd", toAdd);
+		output.putInt("AddTicks", addTicks);
+		output.putBoolean("PressingChargeJump", pressingChargeJump);
 	}
 
 	@Override
 	public void tick() {
-		chargeTime = ChargeJumpEffect.getChargeTime(obj);
-		chargeStrength = ChargeJumpEffect.getStrength(obj, 0);
-		hasChargeJump = chargeStrength > 0;
+		maximumCharge = ChargeJumpEffect.getMaximumCharge(obj);
+		hasChargeJump = maximumCharge > 0;
 		if (hasChargeJump) {
-			if (obj.onGround() && obj.isShiftKeyDown()) {
-				if (strength < chargeTime) {
-					strength++;
+			if (addTicks > 0) {
+				addCharge(toAdd / 4);
+				if (--addTicks == 0) {
+					toAdd = 0;
 				}
-			} else {
-				strength = 0;
+			}
+			if (renderTicks > 0) {
+				renderTicks--;
+			}
+			if (obj.onGround()) {
+				if (pressingChargeJump) {
+					renderTicks = Math.max(renderTicks, 5);
+				}
+				double add = SyncDeltaMovementsEvent.DELTAS.getOrDefault(obj.getUUID(), obj.getDeltaMovement()).multiply(1, 0, 1).length();
+				if (obj.isShiftKeyDown()) {
+					add += ChargeJumpEffect.getActiveChargeRate(obj);
+				}
+				if (add > 0) {
+					addCharge(add);
+				}
 			}
 		} else {
-			strength = 0;
+			charge = toAdd = addTicks = renderTicks = 0;
 		}
 	}
 
-	public float getChargeProgress() {
-		return Mth.lerp((strength - 2) / (Math.max(1, chargeTime - 2F)), 0, 1);
+	@Override
+	public void clientTick() {
+		tick();
+		if (SLibClientUtils.isHost(obj)) {
+			boolean pressing = hasChargeJump() && EnchancementClient.CHARGE_JUMP_KEYMAPPING.isDown();
+			if (pressingChargeJump != pressing) {
+				pressingChargeJump = pressing;
+				ChargeJumpPayload.send(pressingChargeJump);
+			}
+		}
 	}
 
-	public float getBoost() {
-		return getChargeProgress() * chargeStrength;
+	public void sync() {
+		ModEntityComponents.CHARGE_JUMP.sync(obj);
+	}
+
+	public void addCharge(double added) {
+		if (charge < maximumCharge) {
+			renderTicks = 20;
+		}
+		charge = Math.min(maximumCharge, charge + added);
+	}
+
+	public void addChargeDelayed(double added) {
+		toAdd = added;
+		addTicks = 4;
+	}
+
+	public double getChargeProgress() {
+		return Mth.lerp(charge / maximumCharge, 0, 1);
+	}
+
+	public double getBoost() {
+		double boost = getChargeProgress() * ChargeJumpEffect.getJumpStrength(obj);
+		charge = renderTicks = 0;
+		return boost;
+	}
+
+	public boolean shouldRender() {
+		return renderTicks > 0;
 	}
 
 	public boolean hasChargeJump() {
 		return hasChargeJump;
+	}
+
+	public boolean isPressingChargeJump() {
+		return pressingChargeJump;
+	}
+
+	public void setPressingChargeJump(boolean pressingChargeJump) {
+		this.pressingChargeJump = pressingChargeJump;
 	}
 }

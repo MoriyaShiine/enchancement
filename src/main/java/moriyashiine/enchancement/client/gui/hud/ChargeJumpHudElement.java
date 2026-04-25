@@ -23,13 +23,10 @@ public class ChargeJumpHudElement implements HudElement {
 		Player player = Minecraft.getInstance().player;
 		if (player != null && !player.isSpectator()) {
 			ChargeJumpComponent chargeJumpComponent = ModEntityComponents.CHARGE_JUMP.get(player);
-			if (chargeJumpComponent.hasChargeJump()) {
-				float boostProgress = chargeJumpComponent.getChargeProgress();
-				if (boostProgress > 0) {
-					int x = graphics.guiWidth() / 2 - 91, y = graphics.guiHeight() - 29;
-					graphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_TEXTURE, x, y, 182, 5);
-					graphics.blitSprite(RenderPipelines.GUI_TEXTURED, PROGRESS_TEXTURE, 182, 5, 0, 0, x, y, (int) (182 * boostProgress), 5);
-				}
+			if (chargeJumpComponent.shouldRender()) {
+				int x = graphics.guiWidth() / 2 - 91, y = graphics.guiHeight() - 29;
+				graphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_TEXTURE, x, y, 182, 5);
+				graphics.blitSprite(RenderPipelines.GUI_TEXTURED, PROGRESS_TEXTURE, 182, 5, 0, 0, x, y, (int) (182 * chargeJumpComponent.getChargeProgress()), 5);
 			}
 		}
 	}

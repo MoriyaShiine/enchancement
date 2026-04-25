@@ -120,6 +120,7 @@ public class Enchancement implements ModInitializer {
 		PayloadTypeRegistry.serverboundPlay().register(SyncDeltaMovementPayload.TYPE, SyncDeltaMovementPayload.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(AirJumpPayload.TYPE, AirJumpPayload.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(BoostInFluidC2SPayload.TYPE, BoostInFluidC2SPayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(ChargeJumpPayload.TYPE, ChargeJumpPayload.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(DirectionBurstPayload.TYPE, DirectionBurstPayload.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(GlideC2SPayload.TYPE, GlideC2SPayload.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(RotationBurstPayload.TYPE, RotationBurstPayload.CODEC);
@@ -135,6 +136,7 @@ public class Enchancement implements ModInitializer {
 		ServerPlayNetworking.registerGlobalReceiver(SyncDeltaMovementPayload.TYPE, new SyncDeltaMovementPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(AirJumpPayload.TYPE, new AirJumpPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(BoostInFluidC2SPayload.TYPE, new BoostInFluidC2SPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(ChargeJumpPayload.TYPE, new ChargeJumpPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(DirectionBurstPayload.TYPE, new DirectionBurstPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(GlideC2SPayload.TYPE, new GlideC2SPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(RotationBurstPayload.TYPE, new RotationBurstPayload.Receiver());

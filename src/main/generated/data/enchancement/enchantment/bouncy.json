@@ -6,17 +6,21 @@
   "effects": {
 	"enchancement:bounce": {},
 	"enchancement:charge_jump": {
-	  "charge_time": {
+	  "active_charge_rate": {
 		"type": "minecraft:add",
-		"value": 1.5
+		"value": 0.5
 	  },
-	  "strength": {
+	  "jump_strength": {
 		"type": "minecraft:add",
 		"value": {
 		  "type": "minecraft:linear",
 		  "base": 0.6,
 		  "per_level_above_first": 0.4
 		}
+	  },
+	  "maximum_charge": {
+		"type": "minecraft:add",
+		"value": 30.0
 	  }
 	}
   },
