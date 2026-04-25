@@ -183,7 +183,8 @@ public class Enchancement implements ModInitializer {
 		ServerEntityEvents.EQUIPMENT_CHANGE.register(new EquipmentResetEvent());
 		ModifyDestroySpeedEvent.MULTIPLY_TOTAL.register(new FellTreesEvent.DestroySpeed());
 		PlayerBlockBreakEvents.BEFORE.register(new FellTreesEvent.FellTree());
-		PreventFallDamageEvent.EVENT.register(new FluidWalkingEvent());
+		ModifyMovementEvents.MOVEMENT_DELTA.register(new FluidWalkingEvent.DolphinsGrace());
+		PreventFallDamageEvent.EVENT.register(new FluidWalkingEvent.FallImmunity());
 		ServerLivingEntityEvents.AFTER_DEATH.register(new FreezeEvent.HandleDeath());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new FreezeEvent.HandleDamage());
 		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register(new HeadDropsEvent());

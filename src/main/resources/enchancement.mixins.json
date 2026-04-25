@@ -116,6 +116,7 @@
 	"enchantmenteffectcomponenttype.extendwatertime.AbstractThrownPotionMixin",
 	"enchantmenteffectcomponenttype.felltrees.PlayerMixin",
 	"enchantmenteffectcomponenttype.fluidwalking.AbstractBlockStateMixin",
+	"enchantmenteffectcomponenttype.fluidwalking.DolphinSwimWIthPlayerGoalMixin",
 	"enchantmenteffectcomponenttype.fluidwalking.EntityCollisionContextMixin",
 	"enchantmenteffectcomponenttype.fluidwalking.EntityMixin",
 	"enchantmenteffectcomponenttype.fluidwalking.LivingEntityMixin",
