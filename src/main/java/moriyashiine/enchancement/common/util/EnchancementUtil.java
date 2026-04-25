@@ -254,8 +254,8 @@ public class EnchancementUtil {
 		return false;
 	}
 
-	public static int getTridentChargeTime() {
-		return TridentItem.THROW_THRESHOLD_TIME * (ModConfig.rebalanceEquipment ? 2 : 1);
+	public static int getTridentChargeTime(ItemStack stack) {
+		return TridentItem.THROW_THRESHOLD_TIME * (ModConfig.rebalanceEquipment && stack.getEnchantments().keySet().stream().noneMatch(enchantment -> enchantment.is(Enchantments.RIPTIDE)) ? 2 : 1);
 	}
 
 	// misc
