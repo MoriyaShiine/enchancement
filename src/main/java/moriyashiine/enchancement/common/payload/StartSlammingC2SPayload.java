@@ -34,7 +34,6 @@ public record StartSlammingC2SPayload() implements CustomPacketPayload {
 			SlamComponent slamComponent = ModEntityComponents.SLAM.get(context.player());
 			if (slamComponent.hasSlam() && slamComponent.canSlam()) {
 				slamComponent.setSlamming(true);
-				slamComponent.setSlamCooldown(SlamComponent.DEFAULT_SLAM_COOLDOWN);
 				PlayerLookup.tracking(context.player()).forEach(receiver -> StartSlammingS2CPayload.send(receiver, context.player()));
 			}
 		}

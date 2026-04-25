@@ -5,7 +5,6 @@
 package moriyashiine.enchancement.client.payload;
 
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.component.entity.SlamComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -37,9 +36,7 @@ public record StartSlammingS2CPayload(int entityId) implements CustomPacketPaylo
 		public void receive(StartSlammingS2CPayload payload, ClientPlayNetworking.Context context) {
 			Entity entity = context.player().level().getEntity(payload.entityId());
 			if (entity instanceof Player player) {
-				SlamComponent slamComponent = ModEntityComponents.SLAM.get(player);
-				slamComponent.setSlamming(true);
-				slamComponent.setSlamCooldown(SlamComponent.DEFAULT_SLAM_COOLDOWN);
+				ModEntityComponents.SLAM.get(player).setSlamming(true);
 			}
 		}
 	}

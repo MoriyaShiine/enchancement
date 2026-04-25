@@ -40,7 +40,7 @@ public class SlamComponent implements CommonTickingComponent {
 
 	private final Player obj;
 	private boolean isSlamming = false;
-	private int slamCooldown = DEFAULT_SLAM_COOLDOWN, ticksLeftToJump = 0;
+	private int slamCooldown = DEFAULT_SLAM_COOLDOWN, ticksLeftToJump = 0, slamStorageTicks = 0;
 
 	private float strength = 0;
 	private boolean hasSlam = false;
@@ -56,6 +56,7 @@ public class SlamComponent implements CommonTickingComponent {
 		isSlamming = input.getBooleanOr("IsSlamming", false);
 		slamCooldown = input.getIntOr("SlamCooldown", 0);
 		ticksLeftToJump = input.getIntOr("TicksLeftToJump", 0);
+		slamStorageTicks = input.getIntOr("SlamStorageTicks", 0);
 	}
 
 	@Override
@@ -63,6 +64,7 @@ public class SlamComponent implements CommonTickingComponent {
 		output.putBoolean("IsSlamming", isSlamming);
 		output.putInt("SlamCooldown", slamCooldown);
 		output.putInt("TicksLeftToJump", ticksLeftToJump);
+		output.putInt("SlamStorageTicks", slamStorageTicks);
 	}
 
 	@Override
@@ -72,22 +74,29 @@ public class SlamComponent implements CommonTickingComponent {
 		if (hasSlam) {
 			if (isSlamming) {
 				if (!SLibUtils.isGroundedOrAirborne(obj, true)) {
-					isSlamming = false;
+					setSlamming(false);
 					return;
 				}
-				obj.setDeltaMovement(obj.getDeltaMovement().x() * 0.98, Math.min(-3, obj.getDeltaMovement().y()), obj.getDeltaMovement().z() * 0.98);
+				if (slamStorageTicks == 0) {
+					obj.setDeltaMovement(obj.getDeltaMovement().x() * 0.98, Math.min(-3, obj.getDeltaMovement().y()), obj.getDeltaMovement().z() * 0.98);
+				}
 				EnchancementUtil.resetFallDistance(obj);
 			}
 			if (slamCooldown > 0) {
 				slamCooldown--;
 			}
-			if (ticksLeftToJump > 0) {
+			if (slamStorageTicks > 0 && slamStorageTicks < 80) {
+				slamStorageTicks++;
+			}
+			if (ticksLeftToJump > 0 && obj.onGround()) {
 				ticksLeftToJump--;
+				if (ticksLeftToJump == 0) {
+					slamStorageTicks = 0;
+				}
 			}
 		} else {
-			isSlamming = false;
-			slamCooldown = DEFAULT_SLAM_COOLDOWN;
-			ticksLeftToJump = 0;
+			setSlamming(false);
+			resetCooldowns();
 		}
 	}
 
@@ -105,8 +114,7 @@ public class SlamComponent implements CommonTickingComponent {
 				}
 				boolean pressingKey = EnchancementClient.SLAM_KEYMAPPING.isDown();
 				if (pressingKey && !wasPressingKey && canSlam()) {
-					isSlamming = true;
-					slamCooldown = DEFAULT_SLAM_COOLDOWN;
+					setSlamming(true);
 					StartSlammingC2SPayload.send();
 				}
 				wasPressingKey = pressingKey;
@@ -116,19 +124,32 @@ public class SlamComponent implements CommonTickingComponent {
 
 	public void setSlamming(boolean slamming) {
 		this.isSlamming = slamming;
+		if (slamming) {
+			resetCooldowns();
+		}
 	}
 
 	public boolean isSlamming() {
 		return isSlamming;
 	}
 
-	public void setSlamCooldown(int slamCooldown) {
-		this.slamCooldown = slamCooldown;
+	public void resetCooldowns() {
+		slamCooldown = DEFAULT_SLAM_COOLDOWN;
+		ticksLeftToJump = 0;
+		slamStorageTicks = 0;
+	}
+
+	public void startSlamStorage() {
+		if (slamStorageTicks == 0) {
+			slamStorageTicks = 1;
+		}
 	}
 
 	public float getJumpBoostStrength() {
 		if (ticksLeftToJump > 0) {
-			return MultiplyMovementSpeedEvent.getJumpStrength(obj, (1 + strength) / obj.getJumpPower());
+			float boost = MultiplyMovementSpeedEvent.getJumpStrength(obj, (1 + strength + (slamStorageTicks / 12F)) / obj.getJumpPower());
+			ticksLeftToJump = slamStorageTicks = 0;
+			return boost;
 		}
 		return 1;
 	}
@@ -146,7 +167,7 @@ public class SlamComponent implements CommonTickingComponent {
 	}
 
 	private void stopSlamming() {
-		isSlamming = false;
+		setSlamming(false);
 		ticksLeftToJump = 5;
 		obj.playSound(ModSoundEvents.ENTITY_GENERIC_IMPACT, 1, 1);
 	}

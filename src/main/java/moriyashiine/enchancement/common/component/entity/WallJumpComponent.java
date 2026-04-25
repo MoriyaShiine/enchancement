@@ -7,6 +7,7 @@ package moriyashiine.enchancement.common.component.entity;
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.payload.WallJumpPayload;
 import moriyashiine.enchancement.common.payload.WallJumpSlidingPayload;
 import moriyashiine.enchancement.common.tag.ModBlockTags;
@@ -167,6 +168,7 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 		slidingPos = null;
 		slidingDelta = null;
 		hasJumped = true;
+		ModEntityComponents.SLAM.maybeGet(obj).ifPresent(SlamComponent::startSlamStorage);
 	}
 
 	@Environment(EnvType.CLIENT)
