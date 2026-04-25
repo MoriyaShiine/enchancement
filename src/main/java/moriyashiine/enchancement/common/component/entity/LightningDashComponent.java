@@ -68,11 +68,11 @@ public class LightningDashComponent extends UsingMaceComponent implements Common
 			obj.resetFallDistance();
 			obj.setDeltaMovement(obj.getDeltaMovement().scale(0.9));
 			obj.gameEvent(GameEvent.ENTITY_ACTION);
-			if (obj.swinging && obj.getXRot() > -15) {
+			if (obj.swinging) {
 				cachedHeight = obj.getY();
 				smashTicks = 30;
 				floatTicks = 0;
-				obj.setDeltaMovement(obj.getLookAngle().scale(LightningDashEffect.getSmashStrength(obj.getRandom(), obj.getMainHandItem())));
+				obj.setDeltaMovement(obj.calculateViewVector(Math.max(-15, obj.getXRot()), obj.getYRot()).scale(LightningDashEffect.getSmashStrength(obj.getRandom(), obj.getMainHandItem())));
 				obj.playSound(ModSoundEvents.ENTITY_GENERIC_ZAP, 2, 1);
 			}
 		}
