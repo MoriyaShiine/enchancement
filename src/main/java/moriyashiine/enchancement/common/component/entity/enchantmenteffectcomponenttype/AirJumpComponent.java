@@ -135,7 +135,7 @@ public class AirJumpComponent implements AutoSyncedComponent, CommonTickingCompo
 	}
 
 	public boolean canUse() {
-		return jumpCooldown == 0 && jumpsLeft > 0 && ticksInAir >= 5 && !obj.onGround() && SLibUtils.isGroundedOrAirborne(obj);
+		return jumpCooldown == 0 && jumpsLeft > 0 && ticksInAir >= 5 && !obj.onGround() && SLibUtils.isGroundedOrAirborne(obj) && !ModEntityComponents.BOOST_IN_FLUID.get(obj).blocksAirEffects();
 	}
 
 	public void use() {

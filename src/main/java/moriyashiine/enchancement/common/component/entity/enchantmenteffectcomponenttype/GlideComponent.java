@@ -4,6 +4,7 @@
 
 package moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype;
 
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.payload.GlideC2SPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.world.item.effects.GlideEffect;
@@ -80,6 +81,6 @@ public class GlideComponent implements AutoSyncedComponent, CommonTickingCompone
 	}
 
 	public boolean canGlide() {
-		return minDuration > 0 && SLibUtils.isGroundedOrAirborne(obj);
+		return minDuration > 0 && SLibUtils.isGroundedOrAirborne(obj) && !ModEntityComponents.BOOST_IN_FLUID.get(obj).blocksAirEffects();
 	}
 }

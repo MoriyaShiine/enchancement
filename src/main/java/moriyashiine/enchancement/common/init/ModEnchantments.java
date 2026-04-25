@@ -362,7 +362,7 @@ public class ModEnchantments {
 							ModEnchantmentEffectComponentTypes.EXTEND_WATER_TIME);
 					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.BOOST_IN_FLUID,
-							new AddValue(LevelBasedValue.perLevel(0.7F, 0.3F)));
+							new AddValue(LevelBasedValue.perLevel(0.5F)));
 					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.FLUID_WALKING);
 					builder.withEffect(
