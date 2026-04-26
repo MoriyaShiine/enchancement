@@ -1,4 +1,32 @@
 ------------------------------------------------------
+Version 26.1-r4
+------------------------------------------------------
+- doubled adrenaline's damage reduction bonus
+- strafe now chains your current movement if you're already moving in the direction you would be strafing
+- strafe no longer needs you to be on the ground to recharge
+- slide now reaches its max jump bonus much faster
+- slide and slam particles are now visible in first person
+- slide and sticky now have a slam storage synergy
+- bouncy now passively charges when moving or bouncing, and keeps its charge when not sneaking
+- buoy can now propel you outside of fluid as long as you're wet
+- buoy now plays sounds when boosting
+- entities with buoy can now receive and use dolphin's grace
+- sticky is now slightly stronger, keeps your horizontal momentum, descends slightly slower, and respects forward and back keys being held
+- fire caused by fire aspect and meteor no longer affects movement
+- bows now play a ready sound when fully charged
+- brimstone now travels much faster
+- riptide now functions like in vanilla again
+- thunderstruck now launches you forward when looking up instead of not at all
+- mace enchantments no longer need you to be on the ground to activate
+- using tridents and maces now slows you down less like with bows
+- using bows, tridents, and maces no longer prevents sprinting
+- lower ready sound volume of bows, tridents, and maces
+  - they will get their own unique sounds in a future update
+- grapple now has a unique sound (thanks EightSidedSquare!)
+- fix being unable to edit config in mod menu until a world is loaded
+- fix delayed projectiles not reducing in damage with consecutive hits when rebalanceProjectiles is false
+
+------------------------------------------------------
 Version 26.1-r3
 ------------------------------------------------------
 - fix harnesses and nautilus armor being enchantable
