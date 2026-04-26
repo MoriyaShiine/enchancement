@@ -138,7 +138,8 @@
 	"sounds": [
 	  {
 		"type": "event",
-		"name": "minecraft:entity.experience_orb.pickup"
+		"name": "minecraft:entity.experience_orb.pickup",
+		"volume": 0.5
 	  }
 	],
 	"subtitle": "subtitles.enchancement.item.bow.ready"
@@ -203,7 +204,8 @@
 	"sounds": [
 	  {
 		"type": "event",
-		"name": "minecraft:entity.experience_orb.pickup"
+		"name": "minecraft:entity.experience_orb.pickup",
+		"volume": 0.5
 	  }
 	],
 	"subtitle": "subtitles.enchancement.item.mace.ready"
@@ -212,7 +214,8 @@
 	"sounds": [
 	  {
 		"type": "event",
-		"name": "minecraft:entity.experience_orb.pickup"
+		"name": "minecraft:entity.experience_orb.pickup",
+		"volume": 0.5
 	  }
 	],
 	"subtitle": "subtitles.enchancement.item.trident.ready"

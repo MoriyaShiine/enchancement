@@ -82,11 +82,11 @@ public class ModSoundsProvider extends FabricSoundsProvider {
 				.sound(ofFile(id("item/crossbow/scatter2")))
 				.sound(ofFile(id("item/crossbow/scatter3"))));
 		exporter.add(ModSoundEvents.BOW_READY, of().subtitle("subtitles.enchancement.item.bow.ready")
-				.sound(ofEvent(SoundEvents.EXPERIENCE_ORB_PICKUP)));
+				.sound(ofEvent(SoundEvents.EXPERIENCE_ORB_PICKUP).volume(0.5F)));
 		exporter.add(ModSoundEvents.MACE_READY, of().subtitle("subtitles.enchancement.item.mace.ready")
-				.sound(ofEvent(SoundEvents.EXPERIENCE_ORB_PICKUP)));
+				.sound(ofEvent(SoundEvents.EXPERIENCE_ORB_PICKUP).volume(0.5F)));
 		exporter.add(ModSoundEvents.TRIDENT_READY, of().subtitle("subtitles.enchancement.item.trident.ready")
-				.sound(ofEvent(SoundEvents.EXPERIENCE_ORB_PICKUP)));
+				.sound(ofEvent(SoundEvents.EXPERIENCE_ORB_PICKUP).volume(0.5F)));
 		exporter.add(ModSoundEvents.GENERIC_WHOOSH, of().subtitle("subtitles.enchancement.item.generic.whoosh")
 				.sound(ofFile(withDefaultNamespace("mob/breeze/shoot"))));
 	}
