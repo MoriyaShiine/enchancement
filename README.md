@@ -27,8 +27,8 @@ Leggings Enchantments:
 * Slide: Holding Left Control (configurable) while grounded causes you to slide constantly. Pressing Left Control (configurable) in the air causes you to slam towards the ground, knocking back mobs and negating fall damage.
 
 Boots Enchantments:
-* Buoy: Causes you to walk on fluids, descending via sneaking. Holding jump while submerged rapidly propels you upwards. Prevents floating. Grants a speed boost for some time after leaving water.
-* Bouncy: Negates fall damage. Launches you upwards upon landing while not sneaking. Sneaking while grounded will charge a super jump.
+* Buoy: Causes you to walk on fluids, descending via sneaking. Holding jump while submerged or wet propels you upwards. Prevents floating. Grants a speed boost for some time after leaving water.
+* Bouncy: Negates fall damage. Launches you upwards upon landing while not sneaking. Sneaking, moving, or bouncing will charge a super jump that can be released by jumping while holding Left Shift (configurable).
 * Sticky: Allows sliding down and jumping off walls. Leaves a trail of honey where you walk that slows mobs.
 
 Sword Enchantments:
@@ -121,13 +121,12 @@ Everything Enchancement adds is configurable:
   * (Enchanted) Golden Apples can only be consumed when hungry.
 * Rebalance Enchantments
   * Fire Aspect can be used like Flint and Steel while sneaking.
-  * Ignite enchantment effects apply for less time.
+  * Ignite enchantment effects apply for less time and do not affect movement.
   * Lunge doesn't require hunger to use.
   * Channeling ignites entities with melee attacks.
   * Channeling can be activated without thunder.
   * Channeling chains lightning to nearby entities.
   * Lightning spawned from Channeling will not destroy items or cause fire.
-  * Trident Spin Attack enchantment effects have no water drag.
   * Maces cannot have Fire Aspect.
   * Mace enchantments can be applied with less fall distance.
   * Wind Burst can launch Wind Charges on use.
@@ -139,10 +138,10 @@ Everything Enchancement adds is configurable:
   * Ground animal armor can be enchanted with boots enchantments.
   * Sword sweeping damage is increased to be proportional to the primary damage dealt.
   * Spears have damage falloff with higher velocities.
-  * Bows slow you down less when charging.
+  * Bows, Tridents, and Maces play a ready sound when they are fully charged.
+  * Bows, Tridents, and Maces slow you down less when charging and do not prevent sprinting.
   * Crossbows pull unique ammunition from your inventory instead of only from off-hand.
-  * Tridents have a charge time of 1 second and can be interrupted.
-  * Tridents play a ping sound when they are ready to be used.
+  * Tridents have a charge time of 1 second (excluding those with Riptide) and can be interrupted.
   * Tridents thrown by players never despawn.
   * Tridents return to the slot they were thrown from.
   * Tridents with Loyalty linger in the world if the owner is dead instead of dropping on the ground.
