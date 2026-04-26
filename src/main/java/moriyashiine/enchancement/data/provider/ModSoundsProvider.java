@@ -31,7 +31,9 @@ public class ModSoundsProvider extends FabricSoundsProvider {
 		exporter.add(ModSoundEvents.SHARD_SHATTER, of().subtitle("subtitles.enchancement.entity.shard.shatter")
 				.sound(ofEvent(SoundEvents.GLASS_BREAK)));
 		exporter.add(ModSoundEvents.FISHING_BOBBER_GRAPPLE, of().subtitle("subtitles.enchancement.entity.fishing_bobber.grapple")
-				.sound(ofEvent(SoundEvents.EXPERIENCE_ORB_PICKUP).volume(0.25F)));
+				.sound(ofFile(id("entity/fishing_bobber/grapple1")).volume(0.5F))
+				.sound(ofFile(id("entity/fishing_bobber/grapple2")).volume(0.5F))
+				.sound(ofFile(id("entity/fishing_bobber/grapple3")).volume(0.5F)));
 
 		exporter.add(ModSoundEvents.GENERIC_AIR_JUMP, of().subtitle("subtitles.enchancement.entity.generic.air_jump")
 				.sound(ofEvent(SoundEvents.SAND_BREAK)));

@@ -23,9 +23,16 @@
   "entity.fishing_bobber.grapple": {
 	"sounds": [
 	  {
-		"type": "event",
-		"name": "minecraft:entity.experience_orb.pickup",
-		"volume": 0.25
+		"name": "enchancement:entity/fishing_bobber/grapple1",
+		"volume": 0.5
+	  },
+	  {
+		"name": "enchancement:entity/fishing_bobber/grapple2",
+		"volume": 0.5
+	  },
+	  {
+		"name": "enchancement:entity/fishing_bobber/grapple3",
+		"volume": 0.5
 	  }
 	],
 	"subtitle": "subtitles.enchancement.entity.fishing_bobber.grapple"
