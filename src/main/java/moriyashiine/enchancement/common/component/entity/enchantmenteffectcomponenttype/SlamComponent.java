@@ -168,7 +168,7 @@ public class SlamComponent implements CommonTickingComponent {
 	private void stopSlamming() {
 		setSlamming(false);
 		ticksLeftToJump = 5;
-		obj.playSound(ModSoundEvents.ENTITY_GENERIC_IMPACT, 1, 1);
+		obj.playSound(ModSoundEvents.GENERIC_IMPACT, 1, 1);
 	}
 
 	public void stopSlammingServer() {

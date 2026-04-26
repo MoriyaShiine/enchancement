@@ -283,7 +283,7 @@ public class ModEnchantments {
 									),
 									new PlaySoundEffect(
 											List.of(
-													Holder.direct(ModSoundEvents.ENTITY_GENERIC_WARDENSPINE)
+													Holder.direct(ModSoundEvents.GENERIC_WARDENSPINE)
 											),
 											ConstantFloat.of(1),
 											ConstantFloat.of(1)
@@ -505,7 +505,7 @@ public class ModEnchantments {
 							ModEnchantmentEffectComponentTypes.ALLOW_LOADING_PROJECTILE,
 							new AllowLoadingProjectileEffect(
 									Enchancement.id("crossbow_amethyst"),
-									ModSoundEvents.ITEM_CROSSBOW_SCATTER,
+									ModSoundEvents.CROSSBOW_SCATTER,
 									Items.AMETHYST_SHARD,
 									false
 							)

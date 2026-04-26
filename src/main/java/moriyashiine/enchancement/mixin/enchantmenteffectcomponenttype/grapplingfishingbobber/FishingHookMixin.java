@@ -116,7 +116,7 @@ public abstract class FishingHookMixin extends Projectile implements StrengthHol
 			setPos(grapplePos);
 			setDeltaMovement(Vec3.ZERO);
 			if (level().isClientSide()) {
-				player.playSound(ModSoundEvents.ENTITY_FISHING_BOBBER_GRAPPLE, 1, 1);
+				player.playSound(ModSoundEvents.FISHING_BOBBER_GRAPPLE, 1, 1);
 			}
 		}
 	}
@@ -126,7 +126,7 @@ public abstract class FishingHookMixin extends Projectile implements StrengthHol
 		if (getStrength() != 0 && level().isClientSide()) {
 			Player player = getPlayerOwner();
 			if (player != null) {
-				player.playSound(ModSoundEvents.ENTITY_FISHING_BOBBER_GRAPPLE, 1, 1);
+				player.playSound(ModSoundEvents.FISHING_BOBBER_GRAPPLE, 1, 1);
 			}
 		}
 	}

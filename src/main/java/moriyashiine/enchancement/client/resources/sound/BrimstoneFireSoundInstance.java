@@ -19,7 +19,7 @@ public class BrimstoneFireSoundInstance extends AbstractTickableSoundInstance {
 	private int age = 0;
 
 	public BrimstoneFireSoundInstance(Entity entity, UUID uuid) {
-		super(ModSoundEvents.ITEM_CROSSBOW_LOADING_BRIMSTONE, entity.getSoundSource(), entity.getRandom());
+		super(ModSoundEvents.CROSSBOW_LOADING_BRIMSTONE, entity.getSoundSource(), entity.getRandom());
 		this.entity = entity;
 		this.uuid = uuid;
 		x = entity.getX();

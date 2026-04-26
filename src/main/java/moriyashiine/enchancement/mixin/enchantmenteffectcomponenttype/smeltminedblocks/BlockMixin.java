@@ -68,7 +68,7 @@ public class BlockMixin {
 		Tuple<ItemStack, Float> smelted = getSmeltedStack(level, stack);
 		if (smelted != null) {
 			PlayerLookup.tracking(level, pos).forEach(foundPlayer -> AddMoltenParticlesPayload.send(foundPlayer, pos));
-			level.playSound(null, pos, ModSoundEvents.BLOCK_GENERIC_SMELT, SoundSource.BLOCKS, 1, 1);
+			level.playSound(null, pos, ModSoundEvents.GENERIC_SMELT, SoundSource.BLOCKS, 1, 1);
 			FurnaceBlockEntity.createExperience(level, entity != null && EnchantmentHelper.has(stack, ModEnchantmentEffectComponentTypes.MINE_ORE_VEINS) ? entity.position() : Vec3.atCenterOf(pos), 1, smelted.getB());
 			return smelted.getA();
 		}

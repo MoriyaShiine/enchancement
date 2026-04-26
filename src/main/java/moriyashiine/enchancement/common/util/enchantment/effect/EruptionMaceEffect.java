@@ -57,7 +57,7 @@ public class EruptionMaceEffect extends MaceEffect {
 	}
 
 	public static void useCommon(Player player) {
-		SLibUtils.playSound(player, ModSoundEvents.ENTITY_GENERIC_ERUPT, 1, Mth.nextFloat(player.getRandom(), 0.8F, 1.2F));
+		SLibUtils.playSound(player, ModSoundEvents.GENERIC_ERUPT, 1, Mth.nextFloat(player.getRandom(), 0.8F, 1.2F));
 		player.setDeltaMovement(player.getDeltaMovement().x(), EruptionEffect.getJumpStrength(player.getRandom(), player.getMainHandItem()), player.getDeltaMovement().z());
 		player.gameEvent(GameEvent.ENTITY_ACTION);
 	}

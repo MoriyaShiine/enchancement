@@ -132,7 +132,7 @@ public class RotationBurstComponent implements AutoSyncedComponent, CommonTickin
 		wavedashTicks = RotationBurstEffect.getWavedashTicks(obj);
 		Vec3 delta = obj.getLookAngle().normalize().scale(RotationBurstEffect.getStrength(obj)).scale(MultiplyMovementSpeedEvent.getMovementMultiplier(obj));
 		obj.setDeltaMovement(delta.x(), delta.y(), delta.z());
-		obj.playSound(ModSoundEvents.ENTITY_GENERIC_DASH, 1, 1);
+		obj.playSound(ModSoundEvents.GENERIC_DASH, 1, 1);
 		obj.gameEvent(GameEvent.ENTITY_ACTION);
 		EnchancementUtil.resetFallDistance(obj);
 	}

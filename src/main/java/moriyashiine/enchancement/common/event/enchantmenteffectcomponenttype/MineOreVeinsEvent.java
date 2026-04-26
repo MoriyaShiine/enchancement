@@ -112,7 +112,7 @@ public class MineOreVeinsEvent {
 						level.destroyBlock(ore, false);
 						level.setBlockAndUpdate(ore, replace);
 					});
-					level.playSound(null, pos, ModSoundEvents.BLOCK_ORE_EXTRACT, SoundSource.BLOCKS, 1, 1);
+					level.playSound(null, pos, ModSoundEvents.ORE_EXTRACT, SoundSource.BLOCKS, 1, 1);
 					if (!drops.isEmpty()) {
 						EnchancementUtil.mergeItemEntities(drops.stream().map(drop -> new ItemEntity(level, player.getX(), player.getY() + 0.5, player.getZ(), drop)).collect(Collectors.toList())).forEach(level::addFreshEntity);
 					}

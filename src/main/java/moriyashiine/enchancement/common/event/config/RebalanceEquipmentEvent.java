@@ -63,7 +63,7 @@ public class RebalanceEquipmentEvent {
 		@Override
 		public void tick(Level level, Entity entity) {
 			if (ModConfig.rebalanceEquipment && entity instanceof Player player && player.getTicksUsingItem() == EnchancementUtil.getTridentChargeTime(player.getUseItem()) && isValid(player)) {
-				SLibUtils.playSound(entity, ModSoundEvents.ENTITY_GENERIC_PING);
+				SLibUtils.playSound(entity, ModSoundEvents.GENERIC_PING);
 			}
 		}
 	}

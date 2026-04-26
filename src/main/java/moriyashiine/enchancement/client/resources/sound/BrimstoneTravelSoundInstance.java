@@ -18,7 +18,7 @@ public class BrimstoneTravelSoundInstance extends AbstractTickableSoundInstance 
 	private float pitchModifier = 0;
 
 	public BrimstoneTravelSoundInstance(Brimstone entity) {
-		super(ModSoundEvents.ENTITY_BRIMSTONE_TRAVEL, entity.getSoundSource(), entity.getRandom());
+		super(ModSoundEvents.BRIMSTONE_TRAVEL, entity.getSoundSource(), entity.getRandom());
 		this.entity = entity;
 		x = entity.getX();
 		y = entity.getY();

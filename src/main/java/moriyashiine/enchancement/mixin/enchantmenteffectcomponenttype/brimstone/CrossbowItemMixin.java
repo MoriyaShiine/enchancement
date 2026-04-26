@@ -102,16 +102,16 @@ public abstract class CrossbowItemMixin {
 	@Unique
 	private static SoundEvent getFireSound(int damage) {
 		if (damage >= 12) {
-			return ModSoundEvents.ITEM_CROSSBOW_BRIMSTONE_6;
+			return ModSoundEvents.CROSSBOW_BRIMSTONE_6;
 		} else if (damage >= 10) {
-			return ModSoundEvents.ITEM_CROSSBOW_BRIMSTONE_5;
+			return ModSoundEvents.CROSSBOW_BRIMSTONE_5;
 		} else if (damage >= 8) {
-			return ModSoundEvents.ITEM_CROSSBOW_BRIMSTONE_4;
+			return ModSoundEvents.CROSSBOW_BRIMSTONE_4;
 		} else if (damage >= 6) {
-			return ModSoundEvents.ITEM_CROSSBOW_BRIMSTONE_3;
+			return ModSoundEvents.CROSSBOW_BRIMSTONE_3;
 		} else if (damage >= 4) {
-			return ModSoundEvents.ITEM_CROSSBOW_BRIMSTONE_2;
+			return ModSoundEvents.CROSSBOW_BRIMSTONE_2;
 		}
-		return ModSoundEvents.ITEM_CROSSBOW_BRIMSTONE_1;
+		return ModSoundEvents.CROSSBOW_BRIMSTONE_1;
 	}
 }

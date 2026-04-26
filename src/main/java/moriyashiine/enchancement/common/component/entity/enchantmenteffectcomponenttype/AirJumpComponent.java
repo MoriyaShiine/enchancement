@@ -150,7 +150,7 @@ public class AirJumpComponent implements AutoSyncedComponent, CommonTickingCompo
 			float rad = (float) Math.toRadians(obj.getYRot());
 			obj.addDeltaMovement(new Vec3(-Mth.sin(rad) * 0.2, 0, Mth.cos(rad) * 0.2));
 		}
-		obj.playSound(ModSoundEvents.ENTITY_GENERIC_AIR_JUMP, 1, 1);
+		obj.playSound(ModSoundEvents.GENERIC_AIR_JUMP, 1, 1);
 		obj.gameEvent(GameEvent.ENTITY_ACTION);
 		EnchancementUtil.resetFallDistance(obj);
 	}

@@ -14,7 +14,7 @@ public class SparkSoundInstance extends AbstractTickableSoundInstance {
 	private final Entity entity;
 
 	public SparkSoundInstance(Entity entity) {
-		super(ModSoundEvents.ENTITY_GENERIC_SPARK, entity.getSoundSource(), entity.getRandom());
+		super(ModSoundEvents.GENERIC_SPARK, entity.getSoundSource(), entity.getRandom());
 		this.entity = entity;
 		x = entity.getX();
 		y = entity.getY();

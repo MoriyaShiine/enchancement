@@ -138,7 +138,7 @@ public class FrozenComponent implements AutoSyncedComponent, ServerTickingCompon
 	}
 
 	public void freeze() {
-		obj.playSound(ModSoundEvents.ENTITY_GENERIC_FREEZE, 1, 1);
+		obj.playSound(ModSoundEvents.GENERIC_FREEZE, 1, 1);
 		obj.setSilent(true);
 		obj.setHealth(1);
 		forcedPose = obj.getPose();

@@ -60,10 +60,10 @@ public abstract class ProjectileMixin extends Entity {
 
 	@Unique
 	private void teleport(LivingEntity living, ServerLevel targetWorld, Vec3 targetPos, TeleportOnHitComponent teleportOnHitComponent) {
-		SLibUtils.playSound(living, ModSoundEvents.ENTITY_GENERIC_TELEPORT);
+		SLibUtils.playSound(living, ModSoundEvents.GENERIC_TELEPORT);
 		living.level().gameEvent(GameEvent.TELEPORT, living.position(), GameEvent.Context.of(living, living.getBlockStateOn()));
 		living.teleport(new TeleportTransition(targetWorld, targetPos, Vec3.ZERO, living.getYHeadRot(), living.getXRot(), TeleportTransition.DO_NOTHING));
-		SLibUtils.playSound(living, ModSoundEvents.ENTITY_GENERIC_TELEPORT);
+		SLibUtils.playSound(living, ModSoundEvents.GENERIC_TELEPORT);
 		targetWorld.broadcastEntityEvent(living, EntityEvent.TELEPORT);
 		if (living instanceof PathfinderMob mob) {
 			mob.getNavigation().stop();

@@ -46,7 +46,7 @@ public abstract class ShardEntity extends AbstractArrow {
 
 	@Override
 	protected SoundEvent getDefaultHitGroundSoundEvent() {
-		return ModSoundEvents.ENTITY_SHARD_SHATTER;
+		return ModSoundEvents.SHARD_SHATTER;
 	}
 
 	@Override

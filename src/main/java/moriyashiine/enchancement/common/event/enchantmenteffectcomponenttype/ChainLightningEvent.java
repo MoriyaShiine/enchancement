@@ -46,7 +46,7 @@ public class ChainLightningEvent implements AfterDamageIncludingDeathEvent {
 		if (damage > 1 && !hitEntities.contains(target)) {
 			hitEntities.add(target);
 			getNearest(hitEntities, target, source.getDirectEntity()).ifPresent(nearest -> {
-				target.makeSound(ModSoundEvents.ENTITY_GENERIC_ZAP);
+				target.makeSound(ModSoundEvents.GENERIC_ZAP);
 				level.sendParticles(new SparkParticleOption(nearest.getEyePosition()), target.getX(), target.getEyeY(), target.getZ(), 1, 0, 0, 0, 0);
 				Vec3 random = target.getEyePosition().offsetRandom(target.getRandom(), 1.5F);
 				level.sendParticles(new SparkParticleOption(target.getEyePosition()), random.x(), random.y(), random.z(), 1, 0, 0, 0, 0);

@@ -140,7 +140,7 @@ public class DirectionBurstComponent implements AutoSyncedComponent, CommonTicki
 			gravityTicks = 3;
 		}
 		obj.setDeltaMovement(x, 0, z);
-		obj.playSound(ModSoundEvents.ENTITY_GENERIC_STRAFE, 1, 1);
+		obj.playSound(ModSoundEvents.GENERIC_STRAFE, 1, 1);
 		obj.gameEvent(GameEvent.ENTITY_ACTION);
 		EnchancementUtil.resetFallDistance(obj);
 		ModEntityComponents.AIR_MOBILITY.get(obj).resetTicksInAir();

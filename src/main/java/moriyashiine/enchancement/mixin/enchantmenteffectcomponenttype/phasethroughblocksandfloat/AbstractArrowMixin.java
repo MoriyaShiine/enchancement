@@ -64,7 +64,7 @@ public abstract class AbstractArrowMixin extends Entity {
 							onHitEntity(new EntityHitResult(entities.get(i)));
 						}
 						level().gameEvent(GameEvent.TELEPORT, hitResult.getLocation(), GameEvent.Context.of(this));
-						SLibUtils.playSound(this, ModSoundEvents.ENTITY_GENERIC_TELEPORT, 0.75F, 1);
+						SLibUtils.playSound(this, ModSoundEvents.GENERIC_TELEPORT, 0.75F, 1);
 						setPos(end);
 					} else {
 						for (int i = 0; i < 6; i++) {

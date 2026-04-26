@@ -74,7 +74,7 @@ public class LightningDashComponent extends UsingMaceComponent implements Common
 				smashTicks = 30;
 				floatTicks = 0;
 				obj.setDeltaMovement(obj.calculateViewVector(Math.max(-15, obj.getXRot()), obj.getYRot()).scale(LightningDashEffect.getSmashStrength(obj.getRandom(), obj.getMainHandItem())));
-				obj.playSound(ModSoundEvents.ENTITY_GENERIC_ZAP, 2, 1);
+				obj.playSound(ModSoundEvents.GENERIC_ZAP, 2, 1);
 			}
 		}
 		if (isSmashing()) {
@@ -90,7 +90,7 @@ public class LightningDashComponent extends UsingMaceComponent implements Common
 		}
 		if (hasLightningDash && ItemStack.matches(obj.getUseItem(), obj.getMainHandItem())) {
 			if (ticksUsing % 18 == 0) {
-				obj.playSound(ModSoundEvents.ITEM_GENERIC_WHOOSH, 0.5F, 1);
+				obj.playSound(ModSoundEvents.GENERIC_WHOOSH, 0.5F, 1);
 			}
 			ticksUsing++;
 		} else {
