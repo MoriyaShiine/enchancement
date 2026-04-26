@@ -19,6 +19,7 @@ import net.fabricmc.fabric.api.item.v1.EnchantmentEvents;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -52,7 +53,7 @@ public class RebalanceEquipmentEvent {
 	public static class Interrupt implements ServerLivingEntityEvents.AfterDamage {
 		@Override
 		public void afterDamage(LivingEntity entity, DamageSource source, float baseDamageTaken, float damageTaken, boolean blocked) {
-			if (ModConfig.rebalanceEquipment && source.getEntity() != null && !source.is(ModDamageTypeTags.DOES_NOT_INTERRUPT) && entity instanceof Player player && isValid(player)) {
+			if (ModConfig.rebalanceEquipment && source.getEntity() != null && !source.is(ModDamageTypeTags.DOES_NOT_INTERRUPT) && entity instanceof Player player && isMaceOrTrident(player)) {
 				player.getCooldowns().addCooldown(entity.getUseItem(), 20);
 				entity.releaseUsingItem();
 			}
@@ -62,13 +63,15 @@ public class RebalanceEquipmentEvent {
 	public static class Tick implements TickEntityEvent {
 		@Override
 		public void tick(Level level, Entity entity) {
-			if (ModConfig.rebalanceEquipment && entity instanceof Player player && player.getTicksUsingItem() == EnchancementUtil.getTridentChargeTime(player.getUseItem()) && isValid(player)) {
-				SLibUtils.playSound(entity, ModSoundEvents.GENERIC_PING);
+			if (ModConfig.rebalanceEquipment && entity instanceof Player player) {
+				if (player.getTicksUsingItem() == EnchancementUtil.getMaceOrTridentChargeTime(player.getUseItem()) && isMaceOrTrident(player)) {
+					SLibUtils.playSound(entity, player.getUseItem().is(ItemTags.MACE_ENCHANTABLE) ? ModSoundEvents.MACE_READY : ModSoundEvents.TRIDENT_READY);
+				}
 			}
 		}
 	}
 
-	private static boolean isValid(Player player) {
+	private static boolean isMaceOrTrident(Player player) {
 		return player.getUseItem().getItem() instanceof TridentItem || MaceEffect.EFFECTS.stream().anyMatch(effect -> effect.isUsing(player));
 	}
 }

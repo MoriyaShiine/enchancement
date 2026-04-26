@@ -45,8 +45,6 @@ public class ModSoundsProvider extends FabricSoundsProvider {
 				.sound(ofEvent(SoundEvents.PLAYER_HURT_FREEZE)));
 		exporter.add(ModSoundEvents.GENERIC_IMPACT, of().subtitle("subtitles.enchancement.entity.generic.impact")
 				.sound(ofFile(id("entity/impact"))));
-		exporter.add(ModSoundEvents.GENERIC_PING, of().subtitle("subtitles.enchancement.entity.generic.ping")
-				.sound(ofEvent(SoundEvents.EXPERIENCE_ORB_PICKUP)));
 		exporter.add(ModSoundEvents.GENERIC_SPARK, of().subtitle("subtitles.enchancement.entity.generic.spark")
 				.sound(ofFile(id("entity/spark"))));
 		exporter.add(ModSoundEvents.GENERIC_STRAFE, of().subtitle("subtitles.enchancement.entity.generic.strafe")
@@ -81,6 +79,10 @@ public class ModSoundsProvider extends FabricSoundsProvider {
 				.sound(ofFile(id("item/crossbow/scatter1")))
 				.sound(ofFile(id("item/crossbow/scatter2")))
 				.sound(ofFile(id("item/crossbow/scatter3"))));
+		exporter.add(ModSoundEvents.MACE_READY, of().subtitle("subtitles.enchancement.item.mace.ready")
+				.sound(ofEvent(SoundEvents.EXPERIENCE_ORB_PICKUP)));
+		exporter.add(ModSoundEvents.TRIDENT_READY, of().subtitle("subtitles.enchancement.item.trident.ready")
+				.sound(ofEvent(SoundEvents.EXPERIENCE_ORB_PICKUP)));
 		exporter.add(ModSoundEvents.GENERIC_WHOOSH, of().subtitle("subtitles.enchancement.item.generic.whoosh")
 				.sound(ofFile(withDefaultNamespace("mob/breeze/shoot"))));
 	}

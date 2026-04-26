@@ -78,15 +78,6 @@
 	],
 	"subtitle": "subtitles.enchancement.entity.generic.impact"
   },
-  "entity.generic.ping": {
-	"sounds": [
-	  {
-		"type": "event",
-		"name": "minecraft:entity.experience_orb.pickup"
-	  }
-	],
-	"subtitle": "subtitles.enchancement.entity.generic.ping"
-  },
   "entity.generic.spark": {
 	"sounds": [
 	  "enchancement:entity/spark"
@@ -191,5 +182,23 @@
 	  "minecraft:mob/breeze/shoot"
 	],
 	"subtitle": "subtitles.enchancement.item.generic.whoosh"
+  },
+  "item.mace.ready": {
+	"sounds": [
+	  {
+		"type": "event",
+		"name": "minecraft:entity.experience_orb.pickup"
+	  }
+	],
+	"subtitle": "subtitles.enchancement.item.mace.ready"
+  },
+  "item.trident.ready": {
+	"sounds": [
+	  {
+		"type": "event",
+		"name": "minecraft:entity.experience_orb.pickup"
+	  }
+	],
+	"subtitle": "subtitles.enchancement.item.trident.ready"
   }
 }

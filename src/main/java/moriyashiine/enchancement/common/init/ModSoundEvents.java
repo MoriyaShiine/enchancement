@@ -19,7 +19,6 @@ public class ModSoundEvents {
 	public static final SoundEvent GENERIC_ERUPT = registerSoundEvent("entity.generic.erupt");
 	public static final SoundEvent GENERIC_FREEZE = registerSoundEvent("entity.generic.freeze");
 	public static final SoundEvent GENERIC_IMPACT = registerSoundEvent("entity.generic.impact");
-	public static final SoundEvent GENERIC_PING = registerSoundEvent("entity.generic.ping");
 	public static final SoundEvent GENERIC_SPARK = registerSoundEvent("entity.generic.spark");
 	public static final SoundEvent GENERIC_STRAFE = registerSoundEvent("entity.generic.strafe");
 	public static final SoundEvent GENERIC_TELEPORT = registerSoundEvent("entity.generic.teleport");
@@ -37,6 +36,8 @@ public class ModSoundEvents {
 	public static final SoundEvent CROSSBOW_BRIMSTONE_5 = registerSoundEvent("item.crossbow.brimstone.5");
 	public static final SoundEvent CROSSBOW_BRIMSTONE_6 = registerSoundEvent("item.crossbow.brimstone.6");
 	public static final SoundEvent CROSSBOW_SCATTER = registerSoundEvent("item.crossbow.scatter");
+	public static final SoundEvent MACE_READY = registerSoundEvent("item.mace.ready");
+	public static final SoundEvent TRIDENT_READY = registerSoundEvent("item.trident.ready");
 	public static final SoundEvent GENERIC_WHOOSH = registerSoundEvent("item.generic.whoosh");
 
 	public static void init() {

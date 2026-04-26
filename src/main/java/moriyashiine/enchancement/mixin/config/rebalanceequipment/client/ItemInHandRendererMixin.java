@@ -16,6 +16,6 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 public class ItemInHandRendererMixin {
 	@ModifyConstant(method = "renderArmWithItem", constant = @Constant(floatValue = 10, ordinal = 1))
 	private float enchancement$rebalanceEquipment(float value, @Local(argsOnly = true) ItemStack itemStack) {
-		return EnchancementUtil.getTridentChargeTime(itemStack);
+		return EnchancementUtil.getMaceOrTridentChargeTime(itemStack);
 	}
 }

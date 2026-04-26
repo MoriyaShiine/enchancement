@@ -72,7 +72,7 @@ public abstract class ItemStackMixin {
 			for (MaceEffect effect : MaceEffect.EFFECTS) {
 				if (effect.isUsing(player)) {
 					int useTime = getUseDuration(entity) - remainingTime;
-					if (useTime >= EnchancementUtil.getTridentChargeTime(stack)) {
+					if (useTime >= EnchancementUtil.getMaceOrTridentChargeTime(stack)) {
 						player.awardStat(Stats.ITEM_USED.get(getItem()));
 						effect.use(level, player, stack);
 						ModEntityComponents.GROUNDED_COOLDOWN.get(player).putOnCooldown(stack, 60);

@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public class TridentItemMixin {
 	@ModifyExpressionValue(method = "releaseUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;nextDamageWillBreak()Z"))
 	private boolean enchancement$rebalanceEquipment(boolean original, @Local(argsOnly = true) ItemStack itemStack, @Local(name = "timeHeld") int timeHeld) {
-		if (timeHeld < EnchancementUtil.getTridentChargeTime(itemStack)) {
+		if (timeHeld < EnchancementUtil.getMaceOrTridentChargeTime(itemStack)) {
 			return true;
 		}
 		return original;
