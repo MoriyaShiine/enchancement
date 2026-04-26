@@ -148,6 +148,7 @@
   "subtitles.enchancement.block.ore.extract": "Ores extracted",
   "subtitles.enchancement.block.generic.smelt": "Block smelts",
   "subtitles.enchancement.item.generic.whoosh": "Item whooshes",
+  "subtitles.enchancement.item.bow.ready": "Bow readies",
   "subtitles.enchancement.item.mace.ready": "Mace readies",
   "subtitles.enchancement.item.trident.ready": "Trident readies",
   "death.attack.enchancement.life_drain": "%1$s had their life drained",

@@ -36,6 +36,7 @@ public class ModSoundEvents {
 	public static final SoundEvent CROSSBOW_BRIMSTONE_5 = registerSoundEvent("item.crossbow.brimstone.5");
 	public static final SoundEvent CROSSBOW_BRIMSTONE_6 = registerSoundEvent("item.crossbow.brimstone.6");
 	public static final SoundEvent CROSSBOW_SCATTER = registerSoundEvent("item.crossbow.scatter");
+	public static final SoundEvent BOW_READY = registerSoundEvent("item.bow.ready");
 	public static final SoundEvent MACE_READY = registerSoundEvent("item.mace.ready");
 	public static final SoundEvent TRIDENT_READY = registerSoundEvent("item.trident.ready");
 	public static final SoundEvent GENERIC_WHOOSH = registerSoundEvent("item.generic.whoosh");

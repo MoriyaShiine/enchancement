@@ -79,6 +79,8 @@ public class ModSoundsProvider extends FabricSoundsProvider {
 				.sound(ofFile(id("item/crossbow/scatter1")))
 				.sound(ofFile(id("item/crossbow/scatter2")))
 				.sound(ofFile(id("item/crossbow/scatter3"))));
+		exporter.add(ModSoundEvents.BOW_READY, of().subtitle("subtitles.enchancement.item.bow.ready")
+				.sound(ofEvent(SoundEvents.EXPERIENCE_ORB_PICKUP)));
 		exporter.add(ModSoundEvents.MACE_READY, of().subtitle("subtitles.enchancement.item.mace.ready")
 				.sound(ofEvent(SoundEvents.EXPERIENCE_ORB_PICKUP)));
 		exporter.add(ModSoundEvents.TRIDENT_READY, of().subtitle("subtitles.enchancement.item.trident.ready")

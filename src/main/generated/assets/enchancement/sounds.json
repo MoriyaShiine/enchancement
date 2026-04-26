@@ -127,6 +127,15 @@
 	],
 	"subtitle": "subtitles.enchancement.entity.shard.shatter"
   },
+  "item.bow.ready": {
+	"sounds": [
+	  {
+		"type": "event",
+		"name": "minecraft:entity.experience_orb.pickup"
+	  }
+	],
+	"subtitle": "subtitles.enchancement.item.bow.ready"
+  },
   "item.crossbow.brimstone.1": {
 	"sounds": [
 	  "enchancement:item/crossbow/brimstone1"

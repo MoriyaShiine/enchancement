@@ -24,6 +24,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.item.enchantment.Enchantable;
@@ -64,6 +65,9 @@ public class RebalanceEquipmentEvent {
 		@Override
 		public void tick(Level level, Entity entity) {
 			if (ModConfig.rebalanceEquipment && entity instanceof Player player) {
+				if (player.getTicksUsingItem() == BowItem.MAX_DRAW_DURATION && player.getUseItem().is(ItemTags.BOW_ENCHANTABLE)) {
+					SLibUtils.playSound(entity, ModSoundEvents.BOW_READY);
+				}
 				if (player.getTicksUsingItem() == EnchancementUtil.getMaceOrTridentChargeTime(player.getUseItem()) && isMaceOrTrident(player)) {
 					SLibUtils.playSound(entity, player.getUseItem().is(ItemTags.MACE_ENCHANTABLE) ? ModSoundEvents.MACE_READY : ModSoundEvents.TRIDENT_READY);
 				}
