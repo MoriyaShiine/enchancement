@@ -73,12 +73,13 @@ public class DirectionBurstComponent extends PushComponent {
 					Vec3 inputDelta = getDeltaMovementFromInput();
 					if (inputDelta != Vec3.ZERO) {
 						Vec3 delta = inputDelta.yRot((float) Math.toRadians(-(obj.getYHeadRot() + 90))).scale(MultiplyMovementSpeedEvent.getMovementMultiplier(obj));
+						Vec3 current = obj.getDeltaMovement().scale(0.5);
 						double x = delta.x(), z = delta.z();
-						if (Double.compare(x, obj.getDeltaMovement().x()) * Math.signum(obj.getDeltaMovement().x()) > 0) {
-							x += obj.getDeltaMovement().x();
+						if (Double.compare(x, current.x()) * Math.signum(current.x()) > 0) {
+							x += current.x();
 						}
-						if (Double.compare(z, obj.getDeltaMovement().z()) * Math.signum(obj.getDeltaMovement().z()) > 0) {
-							z += obj.getDeltaMovement().z();
+						if (Double.compare(z, current.z()) * Math.signum(current.z()) > 0) {
+							z += current.z();
 						}
 						use(x, z);
 						SLibClientUtils.addParticles(obj, ParticleTypes.CLOUD, 8, ParticleAnchor.BODY);

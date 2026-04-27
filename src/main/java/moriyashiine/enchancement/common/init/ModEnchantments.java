@@ -249,7 +249,7 @@ public class ModEnchantments {
 				builder -> builder.withSpecialEffect(
 						ModEnchantmentEffectComponentTypes.DIRECTION_BURST,
 						new DirectionBurstEffect(
-								new AddValue(LevelBasedValue.perLevel(1.25F, -0.5F)),
+								new AddValue(LevelBasedValue.perLevel(1.5F, -0.5F)),
 								new AddValue(LevelBasedValue.constant(1.1F)),
 								new AddValue(LevelBasedValue.constant(0.8F))))));
 		registry.register(WARDENSPINE, create(WARDENSPINE.identifier(),
