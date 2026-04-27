@@ -21,7 +21,7 @@ import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 public class GlideComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private final LivingEntity obj;
 	private boolean gliding = false;
-	private int airTicks = 0;
+	private int airTicks = -1;
 
 	private int minDuration = 0;
 
@@ -32,7 +32,7 @@ public class GlideComponent implements AutoSyncedComponent, CommonTickingCompone
 	@Override
 	public void readData(ValueInput input) {
 		gliding = input.getBooleanOr("Gliding", false);
-		airTicks = input.getIntOr("AirTicks", 0);
+		airTicks = input.getIntOr("AirTicks", -1);
 	}
 
 	@Override
@@ -50,12 +50,12 @@ public class GlideComponent implements AutoSyncedComponent, CommonTickingCompone
 			}
 			if (obj.onGround()) {
 				airTicks = 0;
-			} else if (airTicks < minDuration || obj.jumping) {
+			} else if (airTicks >= 0 && (airTicks < minDuration || obj.jumping)) {
 				airTicks++;
 			}
 		} else {
 			gliding = false;
-			airTicks = 0;
+			airTicks = -1;
 		}
 	}
 
