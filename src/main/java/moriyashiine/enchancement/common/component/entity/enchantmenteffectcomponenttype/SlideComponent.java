@@ -46,7 +46,6 @@ public class SlideComponent implements CommonTickingComponent {
 	private int slidingTicks = 0;
 
 	private float strength = 0;
-	private boolean hasSlide = false;
 
 	private int crawlTimer = 0, waterSkipTicks = 0;
 
@@ -74,11 +73,10 @@ public class SlideComponent implements CommonTickingComponent {
 	public void tick() {
 		boolean hasFluidWalking = EnchancementUtil.hasAnyEnchantmentsWith(obj, ModEnchantmentEffectComponentTypes.FLUID_WALKING);
 		strength = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.SLIDE, obj, 0);
-		hasSlide = strength > 0;
-		if (crawlTimer > 0) {
-			crawlTimer--;
-		}
-		if (hasSlide) {
+		if (hasSlide()) {
+			if (crawlTimer > 0) {
+				crawlTimer--;
+			}
 			if (waterSkipTicks >= MAX_WATER_SKIP_TICKS || obj.isShiftKeyDown() || obj.isSpectator() || (obj.isInWater() && !hasFluidWalking)) {
 				stopSliding();
 			}
@@ -111,14 +109,14 @@ public class SlideComponent implements CommonTickingComponent {
 		} else {
 			stopSliding();
 			slidingTicks = 0;
-			waterSkipTicks = 0;
+			crawlTimer = waterSkipTicks = 0;
 		}
 	}
 
 	@Override
 	public void serverTick() {
 		tick();
-		boolean sliding = hasSlide && isSliding();
+		boolean sliding = hasSlide() && isSliding();
 		SLibUtils.conditionallyApplyAttributeModifier(obj, Attributes.SAFE_FALL_DISTANCE, SAFE_FALL_DISTANCE_MODIFIER, sliding);
 		SLibUtils.conditionallyApplyAttributeModifier(obj, Attributes.STEP_HEIGHT, STEP_HEIGHT_MODIFIER, sliding);
 	}
@@ -126,7 +124,7 @@ public class SlideComponent implements CommonTickingComponent {
 	@Override
 	public void clientTick() {
 		tick();
-		if (hasSlide) {
+		if (hasSlide()) {
 			if (!obj.isSpectator() && SLibClientUtils.isHost(obj)) {
 				if (EnchancementClient.SLIDE_KEYMAPPING.isDown() && !obj.isShiftKeyDown() && !obj.jumping) {
 					if (canSlide()) {
@@ -177,7 +175,7 @@ public class SlideComponent implements CommonTickingComponent {
 	}
 
 	public boolean hasSlide() {
-		return hasSlide;
+		return strength > 0;
 	}
 
 	public boolean shouldCrawl() {

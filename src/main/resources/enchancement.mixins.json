@@ -139,7 +139,6 @@
 	"enchantmenteffectcomponenttype.rapidcrossbowfire.CrossbowAttackMixin",
 	"enchantmenteffectcomponenttype.rapidcrossbowfire.CrossbowItemMixin",
 	"enchantmenteffectcomponenttype.rapidcrossbowfire.RangedCrossbowAttackGoalMixin",
-	"enchantmenteffectcomponenttype.rotationburst.PlayerMixin",
 	"enchantmenteffectcomponenttype.scattershot.CrossbowItemMixin",
 	"enchantmenteffectcomponenttype.scattershot.ProjectileWeaponItemMixin",
 	"enchantmenteffectcomponenttype.slam.HoneyBlockMixin",

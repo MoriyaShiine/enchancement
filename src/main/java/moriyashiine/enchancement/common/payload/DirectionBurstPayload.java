@@ -40,7 +40,7 @@ public record DirectionBurstPayload(float x, float z) implements CustomPacketPay
 		@Override
 		public void receive(DirectionBurstPayload payload, ServerPlayNetworking.Context context) {
 			DirectionBurstComponent directionBurstComponent = ModEntityComponents.DIRECTION_BURST.get(context.player());
-			if (directionBurstComponent.hasDirectionBurst() && directionBurstComponent.canUse()) {
+			if (directionBurstComponent.hasEffect() && directionBurstComponent.canUse()) {
 				directionBurstComponent.use(payload.x(), payload.z());
 				SLibUtils.addParticles(context.player(), ParticleTypes.CLOUD, 8, ParticleAnchor.BODY, PayloadTarget.OTHERS, ParticleVelocity.ZERO);
 			}

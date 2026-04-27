@@ -35,7 +35,7 @@ public record AirJumpPayload() implements CustomPacketPayload {
 		@Override
 		public void receive(AirJumpPayload payload, ServerPlayNetworking.Context context) {
 			AirJumpComponent airJumpComponent = ModEntityComponents.AIR_JUMP.get(context.player());
-			if (airJumpComponent.hasAirJump() && airJumpComponent.canUse()) {
+			if (airJumpComponent.hasEffect() && airJumpComponent.canUse()) {
 				airJumpComponent.use();
 				SLibUtils.addParticles(context.player(), ParticleTypes.CLOUD, 8, ParticleAnchor.BASE, PayloadTarget.OTHERS, ParticleVelocity.ZERO);
 			}

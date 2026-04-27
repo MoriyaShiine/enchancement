@@ -24,7 +24,7 @@ public class DirectionBurstHudElement implements HudElement {
 		Player player = Minecraft.getInstance().player;
 		if (player != null && !player.isSpectator()) {
 			DirectionBurstComponent directionBurstComponent = ModEntityComponents.DIRECTION_BURST.get(player);
-			if (directionBurstComponent.hasDirectionBurst() && directionBurstComponent.getCooldown() > 0) {
+			if (directionBurstComponent.hasEffect() && directionBurstComponent.getCooldown() > 0) {
 				int x = graphics.guiWidth() / 2 - 5, y = graphics.guiHeight() / 2 - 14;
 				graphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_TEXTURE, x, y, 10, 4);
 				if (directionBurstComponent.getCooldown() < directionBurstComponent.getLastCooldown()) {

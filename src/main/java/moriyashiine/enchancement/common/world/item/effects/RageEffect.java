@@ -94,7 +94,7 @@ public record RageEffect(EnchantmentValueEffect damageDealtModifier, Enchantment
 				value.setValue(effect.movementSpeedModifier().process(level, entity.getRandom(), value.floatValue()));
 			}
 		});
-		return (10 - Math.max(3, EnchancementUtil.getFlooredHealth(entity))) * value.floatValue();
+		return Math.max(0, Mth.ceil((10 - Math.max(3, EnchancementUtil.getFlooredHealth(entity))) * value.floatValue() * 100) / 100F);
 	}
 
 	public static float getMovementSpeedModifier(LivingEntity entity) {

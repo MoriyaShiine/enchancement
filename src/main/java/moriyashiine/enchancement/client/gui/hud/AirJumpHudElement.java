@@ -29,7 +29,7 @@ public class AirJumpHudElement implements HudElement {
 		Player player = Minecraft.getInstance().player;
 		if (player != null && !player.isSpectator()) {
 			AirJumpComponent airJumpComponent = ModEntityComponents.AIR_JUMP.get(player);
-			if (airJumpComponent.hasAirJump()) {
+			if (airJumpComponent.hasEffect()) {
 				int jumpsLeft = airJumpComponent.getJumpsLeft();
 				if (jumpsLeft < airJumpComponent.getMaxJumps()) {
 					Identifier first = getTexture(jumpsLeft + 1);

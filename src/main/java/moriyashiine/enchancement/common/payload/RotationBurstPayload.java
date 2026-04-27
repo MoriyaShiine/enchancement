@@ -35,7 +35,7 @@ public record RotationBurstPayload() implements CustomPacketPayload {
 		@Override
 		public void receive(RotationBurstPayload payload, ServerPlayNetworking.Context context) {
 			RotationBurstComponent rotationBurstComponent = ModEntityComponents.ROTATION_BURST.get(context.player());
-			if (rotationBurstComponent.hasRotationBurst() && rotationBurstComponent.canUse()) {
+			if (rotationBurstComponent.hasEffect() && rotationBurstComponent.canUse()) {
 				rotationBurstComponent.use();
 				SLibUtils.addParticles(context.player(), ParticleTypes.CLOUD, 8, ParticleAnchor.BODY, PayloadTarget.OTHERS, ParticleVelocity.ZERO);
 			}

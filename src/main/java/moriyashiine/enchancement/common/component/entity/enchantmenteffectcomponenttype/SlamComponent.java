@@ -33,14 +33,13 @@ import net.minecraft.world.phys.AABB;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class SlamComponent implements CommonTickingComponent {
-	public static final int DEFAULT_SLAM_COOLDOWN = 7;
+	private static final int DEFAULT_SLAM_COOLDOWN = 7;
 
 	private final Player obj;
 	private boolean isSlamming = false;
 	private int slamCooldown = DEFAULT_SLAM_COOLDOWN, ticksLeftToJump = 0, slamStorageTicks = 0;
 
 	private float strength = 0;
-	private boolean hasSlam = false;
 
 	private boolean wasPressingKey = false;
 
@@ -67,8 +66,7 @@ public class SlamComponent implements CommonTickingComponent {
 	@Override
 	public void tick() {
 		strength = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.SLAM, obj, 0);
-		hasSlam = strength > 0;
-		if (hasSlam) {
+		if (hasSlam()) {
 			if (isSlamming) {
 				if (!SLibUtils.isGroundedOrAirborne(obj, true)) {
 					setSlamming(false);
@@ -100,7 +98,7 @@ public class SlamComponent implements CommonTickingComponent {
 	@Override
 	public void clientTick() {
 		tick();
-		if (hasSlam) {
+		if (hasSlam()) {
 			if (isSlamming) {
 				for (int i = 0; i < (SLibClientUtils.shouldAddParticles(obj) ? 4 : 1); i++) {
 					obj.level().addParticle(ModParticleTypes.VELOCITY_LINE, obj.getRandomX(1), obj.getRandomY(), obj.getRandomZ(1), 0, 1, 0);
@@ -154,7 +152,7 @@ public class SlamComponent implements CommonTickingComponent {
 	}
 
 	public boolean hasSlam() {
-		return hasSlam;
+		return strength > 0;
 	}
 
 	public boolean canSlam() {

@@ -7,6 +7,8 @@ package moriyashiine.enchancement.common.component.entity.enchantmenteffectcompo
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.util.PushComponent;
+import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.payload.DirectionBurstPayload;
@@ -19,68 +21,53 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
-import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
-import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
-public class DirectionBurstComponent implements AutoSyncedComponent, CommonTickingComponent {
-	private final Player obj;
-	private int cooldown = 0, lastCooldown = 0, gravityTicks = 0;
-
-	private boolean hasDirectionBurst = false;
+public class DirectionBurstComponent extends PushComponent {
+	private int gravityTicks = 0;
 
 	private boolean wasPressingKey = false;
 	private int ticksLeftToPressActivationKey = 0;
 
 	public DirectionBurstComponent(Player obj) {
-		this.obj = obj;
+		super(obj);
 	}
 
 	@Override
 	public void readData(ValueInput input) {
-		cooldown = input.getIntOr("Cooldown", 0);
-		lastCooldown = input.getIntOr("LastCooldown", 0);
+		super.readData(input);
 		gravityTicks = input.getIntOr("GravityTicks", 0);
 	}
 
 	@Override
 	public void writeData(ValueOutput output) {
-		output.putInt("Cooldown", cooldown);
-		output.putInt("LastCooldown", lastCooldown);
+		super.writeData(output);
 		output.putInt("GravityTicks", gravityTicks);
 	}
 
 	@Override
 	public void tick() {
-		int entityCooldown = DirectionBurstEffect.getCooldown(obj);
-		hasDirectionBurst = entityCooldown > 0;
-		if (hasDirectionBurst) {
-			if (cooldown > 0) {
-				cooldown--;
-			}
-			if (gravityTicks > 0) {
-				gravityTicks--;
-			}
-		} else {
-			setCooldown(0);
-			gravityTicks = 0;
+		super.tick();
+		if (hasEffect() && gravityTicks > 0) {
+			gravityTicks--;
 		}
 	}
 
 	@Override
 	public void clientTick() {
 		tick();
-		if (hasDirectionBurst && canUse() && SLibClientUtils.isHost(obj)) {
+		if (hasEffect() && !obj.isSpectator() && SLibClientUtils.isHost(obj)) {
 			boolean pressingKey = EnchancementClient.DIRECTION_BURST_KEYMAPPING.isDown();
 			if (ticksLeftToPressActivationKey > 0) {
 				ticksLeftToPressActivationKey--;
 			}
-			if (pressingKey && !wasPressingKey) {
+			if (pressingKey && !wasPressingKey && canUse()) {
 				if (!ModConfig.doublePressDirectionBurst || ticksLeftToPressActivationKey > 0) {
 					ticksLeftToPressActivationKey = 0;
 					Vec3 inputDelta = getDeltaMovementFromInput();
@@ -105,25 +92,32 @@ public class DirectionBurstComponent implements AutoSyncedComponent, CommonTicki
 		}
 	}
 
+	@Override
 	public void sync() {
 		ModEntityComponents.DIRECTION_BURST.sync(obj);
 	}
 
-	public int getCooldown() {
-		return cooldown;
+	@Override
+	public DataComponentType<?> getEffectType() {
+		return ModEnchantmentEffectComponentTypes.DIRECTION_BURST;
 	}
 
-	private void setCooldown(int cooldown) {
-		this.cooldown = cooldown;
-		lastCooldown = cooldown;
+	@Override
+	protected CooldownSupplier getCooldownSupplier() {
+		return DirectionBurstEffect::getCooldown;
 	}
 
-	public int getLastCooldown() {
-		return lastCooldown;
+	@Override
+	protected boolean updateRefresh() {
+		return true;
 	}
 
-	public boolean hasDirectionBurst() {
-		return hasDirectionBurst;
+	@Override
+	public void reset() {
+		super.reset();
+		gravityTicks = 0;
+		wasPressingKey = false;
+		ticksLeftToPressActivationKey = 0;
 	}
 
 	public boolean canUse() {
@@ -144,10 +138,6 @@ public class DirectionBurstComponent implements AutoSyncedComponent, CommonTicki
 		obj.gameEvent(GameEvent.ENTITY_ACTION);
 		EnchancementUtil.resetFallDistance(obj);
 		ModEntityComponents.AIR_MOBILITY.get(obj).resetTicksInAir();
-	}
-
-	public void reset() {
-		setCooldown(DirectionBurstEffect.getCooldown(obj));
 	}
 
 	@Environment(EnvType.CLIENT)

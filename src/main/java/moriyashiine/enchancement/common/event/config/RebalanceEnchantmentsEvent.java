@@ -11,6 +11,7 @@ import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.fabricmc.fabric.api.item.v1.EnchantmentEvents;
 import net.fabricmc.fabric.api.util.TriState;
+import net.minecraft.advancements.criterion.DamageSourcePredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.TypedDataComponent;
@@ -67,7 +68,7 @@ public class RebalanceEnchantmentsEvent {
 										EnchantmentTarget.ATTACKER,
 										EnchantmentTarget.VICTIM,
 										new Ignite(LevelBasedValue.perLevel(4.0F)),
-										Optional.of(DamageSourceCondition.hasDamageSource(net.minecraft.advancements.criterion.DamageSourcePredicate.Builder.damageType().isDirect(true)).build())
+										Optional.of(DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().isDirect(true)).build())
 								));
 								builder.set(EnchantmentEffectComponents.POST_ATTACK, list);
 								continue;

@@ -16,7 +16,7 @@ public class LivingEntityMixin {
 	@ModifyReturnValue(method = "calculateFallPower", at = @At("RETURN"))
 	private double enchancement$airJump(double original) {
 		AirJumpComponent airJumpComponent = ModEntityComponents.AIR_JUMP.getNullable(this);
-		if (airJumpComponent != null && airJumpComponent.hasAirJump()) {
+		if (airJumpComponent != null && airJumpComponent.hasEffect()) {
 			original -= airJumpComponent.getMaxJumps() - airJumpComponent.getJumpsLeft();
 		}
 		return original;

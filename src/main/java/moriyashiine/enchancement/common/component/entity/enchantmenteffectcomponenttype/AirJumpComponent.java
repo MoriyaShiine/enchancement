@@ -5,6 +5,8 @@
 package moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype;
 
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.util.PushComponent;
+import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.payload.AirJumpPayload;
@@ -13,6 +15,7 @@ import moriyashiine.enchancement.common.world.item.effects.AirJumpEffect;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -20,38 +23,31 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
-import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
-import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
-public class AirJumpComponent implements AutoSyncedComponent, CommonTickingComponent {
-	private final Player obj;
-	private boolean shouldRefresh = false;
-	private int cooldown = 0, lastCooldown = 0, jumpCooldown = 10, jumpsLeft = 0, ticksInAir = 0;
+public class AirJumpComponent extends PushComponent {
+	private static final int DEFAULT_JUMP_COOLDOWN = 10;
 
-	private int maxJumps = 0;
-	private boolean hasAirJump = false;
+	private int jumpCooldown = DEFAULT_JUMP_COOLDOWN, jumpsLeft = 0, ticksInAir = 0;
+
+	private int lastTickedCooldown = 0;
 
 	private boolean wasJumping = false;
 
 	public AirJumpComponent(Player obj) {
-		this.obj = obj;
+		super(obj);
 	}
 
 	@Override
 	public void readData(ValueInput input) {
-		shouldRefresh = input.getBooleanOr("ShouldRefresh", false);
-		cooldown = input.getIntOr("Cooldown", 0);
-		lastCooldown = input.getIntOr("LastCooldown", 0);
-		jumpCooldown = input.getIntOr("JumpCooldown", 10);
+		super.readData(input);
+		jumpCooldown = input.getIntOr("JumpCooldown", DEFAULT_JUMP_COOLDOWN);
 		jumpsLeft = input.getIntOr("JumpsLeft", 0);
 		ticksInAir = input.getIntOr("TicksInAir", 0);
 	}
 
 	@Override
 	public void writeData(ValueOutput output) {
-		output.putBoolean("ShouldRefresh", shouldRefresh);
-		output.putInt("Cooldown", cooldown);
-		output.putInt("LastCooldown", lastCooldown);
+		super.writeData(output);
 		output.putInt("JumpCooldown", jumpCooldown);
 		output.putInt("JumpsLeft", jumpsLeft);
 		output.putInt("TicksInAir", ticksInAir);
@@ -59,20 +55,11 @@ public class AirJumpComponent implements AutoSyncedComponent, CommonTickingCompo
 
 	@Override
 	public void tick() {
-		int entityCooldown = AirJumpEffect.getChargeCooldown(obj);
-		maxJumps = AirJumpEffect.getAirJumps(obj);
-		hasAirJump = maxJumps > 0;
-		if (hasAirJump) {
-			if (!shouldRefresh) {
-				if (obj.onGround()) {
-					shouldRefresh = true;
-				}
-			} else if (cooldown > 0) {
-				cooldown--;
-				if (cooldown == 0 && jumpsLeft < maxJumps) {
-					jumpsLeft++;
-					setCooldown(entityCooldown);
-				}
+		super.tick();
+		if (hasEffect()) {
+			if (lastTickedCooldown != 0 && cooldown == 0 && jumpsLeft < getMaxJumps()) {
+				jumpsLeft++;
+				setCooldown(entityCooldown);
 			}
 			if (jumpCooldown > 0) {
 				jumpCooldown--;
@@ -82,44 +69,47 @@ public class AirJumpComponent implements AutoSyncedComponent, CommonTickingCompo
 			} else {
 				ticksInAir++;
 			}
-		} else {
-			shouldRefresh = false;
-			setCooldown(0);
-			jumpCooldown = 0;
-			jumpsLeft = 0;
-			ticksInAir = 0;
+			if (ModEntityComponents.WALL_JUMP.get(obj).isSliding()) {
+				jumpCooldown = AirJumpEffect.getJumpCooldown(obj);
+			}
 		}
-		if (ModEntityComponents.WALL_JUMP.get(obj).isSliding()) {
-			jumpCooldown = AirJumpEffect.getJumpCooldown(obj);
-		}
+		lastTickedCooldown = cooldown;
 	}
 
 	@Override
 	public void clientTick() {
 		tick();
-		if (hasAirJump && obj.jumping && !wasJumping && canUse()) {
-			use();
-			SLibClientUtils.addParticles(obj, ParticleTypes.CLOUD, 8, ParticleAnchor.BASE);
-			AirJumpPayload.send();
+		if (hasEffect() && !obj.isSpectator() && SLibClientUtils.isHost(obj)) {
+			if (obj.jumping && !wasJumping && canUse()) {
+				use();
+				SLibClientUtils.addParticles(obj, ParticleTypes.CLOUD, 8, ParticleAnchor.BASE);
+				AirJumpPayload.send();
+			}
+			wasJumping = obj.jumping;
 		}
-		wasJumping = obj.jumping;
 	}
 
+	@Override
 	public void sync() {
 		ModEntityComponents.AIR_JUMP.sync(obj);
 	}
 
-	public int getCooldown() {
-		return cooldown;
+	@Override
+	public DataComponentType<?> getEffectType() {
+		return ModEnchantmentEffectComponentTypes.AIR_JUMP;
 	}
 
-	private void setCooldown(int cooldown) {
-		this.cooldown = cooldown;
-		lastCooldown = cooldown;
+	@Override
+	protected CooldownSupplier getCooldownSupplier() {
+		return AirJumpEffect::getChargeCooldown;
 	}
 
-	public int getLastCooldown() {
-		return lastCooldown;
+	@Override
+	public void reset() {
+		super.reset();
+		jumpCooldown = DEFAULT_JUMP_COOLDOWN;
+		jumpsLeft = ticksInAir = 0;
+		wasJumping = false;
 	}
 
 	public int getJumpsLeft() {
@@ -127,11 +117,7 @@ public class AirJumpComponent implements AutoSyncedComponent, CommonTickingCompo
 	}
 
 	public int getMaxJumps() {
-		return maxJumps;
-	}
-
-	public boolean hasAirJump() {
-		return hasAirJump;
+		return AirJumpEffect.getAirJumps(obj);
 	}
 
 	public boolean canUse() {
@@ -139,10 +125,10 @@ public class AirJumpComponent implements AutoSyncedComponent, CommonTickingCompo
 	}
 
 	public void use() {
-		if (cooldown == 0 || jumpsLeft == maxJumps) {
+		shouldRefresh = false;
+		if (cooldown == 0 || getJumpsLeft() == getMaxJumps()) {
 			setCooldown(AirJumpEffect.getChargeCooldown(obj));
 		}
-		shouldRefresh = false;
 		jumpCooldown = AirJumpEffect.getJumpCooldown(obj);
 		jumpsLeft--;
 		obj.setDeltaMovement(obj.getDeltaMovement().x(), MultiplyMovementSpeedEvent.getJumpStrength(obj, AirJumpEffect.getAirJumpStrength(obj)), obj.getDeltaMovement().z());
@@ -153,10 +139,5 @@ public class AirJumpComponent implements AutoSyncedComponent, CommonTickingCompo
 		obj.playSound(ModSoundEvents.GENERIC_AIR_JUMP, 1, 1);
 		obj.gameEvent(GameEvent.ENTITY_ACTION);
 		EnchancementUtil.resetFallDistance(obj);
-	}
-
-	public void reset() {
-		setCooldown(AirJumpEffect.getChargeCooldown(obj));
-		jumpsLeft = 0;
 	}
 }

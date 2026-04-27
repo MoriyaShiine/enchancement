@@ -24,7 +24,6 @@ public class ChargeJumpComponent implements AutoSyncedComponent, CommonTickingCo
 	private boolean pressingChargeJump = false;
 
 	private int maximumCharge = 0, renderTicks = 0;
-	private boolean hasChargeJump = false;
 
 	public ChargeJumpComponent(Player obj) {
 		this.obj = obj;
@@ -49,8 +48,7 @@ public class ChargeJumpComponent implements AutoSyncedComponent, CommonTickingCo
 	@Override
 	public void tick() {
 		maximumCharge = ChargeJumpEffect.getMaximumCharge(obj);
-		hasChargeJump = maximumCharge > 0;
-		if (hasChargeJump) {
+		if (hasChargeJump()) {
 			if (addTicks > 0) {
 				addCharge(toAdd / 4);
 				if (--addTicks == 0) {
@@ -120,7 +118,7 @@ public class ChargeJumpComponent implements AutoSyncedComponent, CommonTickingCo
 	}
 
 	public boolean hasChargeJump() {
-		return hasChargeJump;
+		return maximumCharge > 0;
 	}
 
 	public boolean isPressingChargeJump() {

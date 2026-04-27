@@ -196,7 +196,7 @@ public class ModEnchantments {
 						new RageEffect(
 								new AddValue(LevelBasedValue.constant(0)),
 								new AddValue(LevelBasedValue.perLevel(0.4F / 14)),
-								new AddValue(LevelBasedValue.perLevel(0.02857142857F))
+								new AddValue(LevelBasedValue.perLevel(0.4F / 14))
 						)
 				)));
 		registry.register(AMPHIBIOUS, create(AMPHIBIOUS.identifier(),

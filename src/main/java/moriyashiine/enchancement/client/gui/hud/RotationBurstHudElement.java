@@ -24,7 +24,7 @@ public class RotationBurstHudElement implements HudElement {
 		Player player = Minecraft.getInstance().player;
 		if (player != null && !player.isSpectator()) {
 			RotationBurstComponent rotationBurstComponent = ModEntityComponents.ROTATION_BURST.get(player);
-			if (rotationBurstComponent.hasRotationBurst() && rotationBurstComponent.getCooldown() > 0) {
+			if (rotationBurstComponent.hasEffect() && rotationBurstComponent.getCooldown() > 0) {
 				int x = graphics.guiWidth() / 2 - 5, y = graphics.guiHeight() / 2 + 18;
 				graphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_TEXTURE, x, y, 10, 4);
 				if (rotationBurstComponent.getCooldown() < rotationBurstComponent.getLastCooldown()) {

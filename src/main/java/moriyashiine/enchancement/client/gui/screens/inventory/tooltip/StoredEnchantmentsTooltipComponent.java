@@ -65,7 +65,7 @@ public final class StoredEnchantmentsTooltipComponent implements ClientTooltipCo
 		addIcon(Items.BRUSH, Enchancement.id("container/slot/brush"));
 		addIcon(Items.COMPASS, Enchancement.id("container/slot/compass"));
 	}
-	
+
 	public static void addIcon(Item item, Identifier texture) {
 		TEXTURE_MAP.put(item, texture);
 	}
