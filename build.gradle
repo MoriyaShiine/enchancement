@@ -46,9 +46,9 @@ dependencies {
 
     api "org.ladysnake.cardinal-components-api:cardinal-components-base:${cardinal_components_version}"
     api "org.ladysnake.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}"
-    includeImplementation "org.ladysnake.cardinal-components-api:cardinal-components-block:${cardinal_components_version}"
-    includeImplementation "org.ladysnake.cardinal-components-api:cardinal-components-level:${cardinal_components_version}"
-    includeImplementation "maven.modrinth:midnightlib:${midnightlib_version}"
+    includeApi "org.ladysnake.cardinal-components-api:cardinal-components-block:${cardinal_components_version}"
+    includeApi "org.ladysnake.cardinal-components-api:cardinal-components-level:${cardinal_components_version}"
+    includeApi "maven.modrinth:midnightlib:${midnightlib_version}"
 
     implementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
     implementation "moriyashiine:strawberrylib:${strawberrylib_version}"
