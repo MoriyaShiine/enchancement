@@ -19,6 +19,8 @@ public abstract class PushComponent implements AutoSyncedComponent, CommonTickin
 
 	protected int entityCooldown = 0;
 
+	private boolean resetNextTick = false;
+
 	protected PushComponent(Player obj) {
 		this.obj = obj;
 	}
@@ -53,6 +55,16 @@ public abstract class PushComponent implements AutoSyncedComponent, CommonTickin
 		}
 	}
 
+	@Override
+	public void serverTick() {
+		tick();
+		if (resetNextTick) {
+			reset();
+			sync();
+			resetNextTick = false;
+		}
+	}
+
 	public abstract void sync();
 
 	public abstract DataComponentType<?> getEffectType();
@@ -62,6 +74,10 @@ public abstract class PushComponent implements AutoSyncedComponent, CommonTickin
 	public void reset() {
 		setCooldown(entityCooldown);
 		shouldRefresh = false;
+	}
+
+	public void resetNextTick() {
+		resetNextTick = true;
 	}
 
 	public boolean hasEffect() {

@@ -18,8 +18,7 @@ public class EquipmentResetEvent implements ServerEntityEvents.EquipmentChange {
 		if (equipmentSlot.isArmor()) {
 			for (ComponentKey<?> key : livingEntity.asComponentProvider().getComponentContainer().keys()) {
 				if (livingEntity.getComponent(key) instanceof PushComponent pushComponent && EnchantmentHelper.has(currentStack, pushComponent.getEffectType())) {
-					pushComponent.reset();
-					pushComponent.sync();
+					pushComponent.resetNextTick();
 				}
 			}
 		}
