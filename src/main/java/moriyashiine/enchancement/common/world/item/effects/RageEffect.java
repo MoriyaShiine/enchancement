@@ -71,7 +71,7 @@ public record RageEffect(EnchantmentValueEffect damageDealtModifier, Enchantment
 				value.setValue(effect.damageTakenModifier().process(level, entity.getRandom(), value.floatValue()));
 			}
 		});
-		return Math.max(0, 1 - Mth.ceil((10 - Math.max(3, EnchancementUtil.getFlooredHealth(entity))) * value.floatValue() * 100) / 100F);
+		return Math.max(0, 1 - Mth.floor((10 - Math.max(3, EnchancementUtil.getFlooredHealth(entity))) * value.floatValue() * 100) / 100F);
 	}
 
 	public static float getDamageTakenModifier(LivingEntity entity) {
@@ -94,7 +94,7 @@ public record RageEffect(EnchantmentValueEffect damageDealtModifier, Enchantment
 				value.setValue(effect.movementSpeedModifier().process(level, entity.getRandom(), value.floatValue()));
 			}
 		});
-		return Math.max(0, Mth.ceil((10 - Math.max(3, EnchancementUtil.getFlooredHealth(entity))) * value.floatValue() * 100) / 100F);
+		return Math.max(0, Mth.floor((10 - Math.max(3, EnchancementUtil.getFlooredHealth(entity))) * value.floatValue() * 100) / 100F);
 	}
 
 	public static float getMovementSpeedModifier(LivingEntity entity) {
