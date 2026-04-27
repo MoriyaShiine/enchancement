@@ -1,4 +1,17 @@
 ------------------------------------------------------
+Version 26.1-r5
+------------------------------------------------------
+- update Turkish translation (thanks Hexasan!)
+    - merges https://github.com/MoriyaShiine/enchancement/pull/292
+- fix cooldowns not applying properly when changing back from dark form in nycto
+- fix gale's glide cooldown not applying when swapping items
+- add helper method for adding enchanted book icons
+- increase adrenaline's speed bonus
+- increase strafe's cooldown
+- reduce the impact your movement has on strafe
+- reduce buoy's horizontal movement when boosting out of water
+
+------------------------------------------------------
 Version 26.1-r4
 ------------------------------------------------------
 - doubled adrenaline's damage reduction bonus
