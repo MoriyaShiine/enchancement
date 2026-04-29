@@ -4,7 +4,6 @@
 
 package moriyashiine.enchancement.client.gui.hud;
 
-import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModBlockComponents;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
@@ -41,8 +40,8 @@ public class ChiseledBookshelfPeekingHudElement implements HudElement {
 					if (!stacks.isEmpty()) {
 						ItemStack stack = stacks.get(slot);
 						if (!stack.isEmpty()) {
-							EnchancementClient.drawTooltipsImmediately = true;
 							graphics.setTooltipForNextFrame(client.font, stack, width, height);
+							graphics.extractDeferredElements(0, 0, 0);
 						}
 					}
 				});

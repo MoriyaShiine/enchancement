@@ -4,7 +4,6 @@
 
 package moriyashiine.enchancement.client.gui.screens.inventory;
 
-import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
@@ -195,8 +194,8 @@ public class ModEnchantmentScreen extends AbstractContainerScreen<ModEnchantment
 		graphics.pose().pushMatrix();
 		graphics.pose().scale(0.5F, 0.5F);
 		String bookshelfCountText = bookshelfCount + "/" + 15;
-		EnchancementClient.drawTooltipsImmediately = true;
 		graphics.setTooltipForNextFrame(minecraft.font, Component.literal(bookshelfCountText), (left + 178) * 2, (top + BOOKSHELF_Y + 20) * 2);
+		graphics.extractDeferredElements(0, 0, 0);
 		graphics.pose().scale(1, 1);
 		graphics.pose().popMatrix();
 	}

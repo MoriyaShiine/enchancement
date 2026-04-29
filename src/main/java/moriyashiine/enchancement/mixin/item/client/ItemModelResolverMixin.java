@@ -2,7 +2,7 @@
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
 
-package moriyashiine.enchancement.mixin.util.client;
+package moriyashiine.enchancement.mixin.item.client;
 
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModComponentTypes;

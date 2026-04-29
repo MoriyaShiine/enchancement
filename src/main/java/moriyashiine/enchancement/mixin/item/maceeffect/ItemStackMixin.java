@@ -2,7 +2,7 @@
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
 
-package moriyashiine.enchancement.mixin.util.maceeffect;
+package moriyashiine.enchancement.mixin.item.maceeffect;
 
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;

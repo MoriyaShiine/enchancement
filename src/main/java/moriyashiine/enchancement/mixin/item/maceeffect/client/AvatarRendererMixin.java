@@ -2,7 +2,7 @@
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
 
-package moriyashiine.enchancement.mixin.util.maceeffect.client;
+package moriyashiine.enchancement.mixin.item.maceeffect.client;
 
 import moriyashiine.enchancement.common.component.entity.internal.UsingMaceComponent;
 import net.minecraft.client.model.HumanoidModel;

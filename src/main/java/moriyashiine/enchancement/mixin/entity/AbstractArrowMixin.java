@@ -2,7 +2,7 @@
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
 
-package moriyashiine.enchancement.mixin.util;
+package moriyashiine.enchancement.mixin.entity;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.mojang.serialization.Codec;

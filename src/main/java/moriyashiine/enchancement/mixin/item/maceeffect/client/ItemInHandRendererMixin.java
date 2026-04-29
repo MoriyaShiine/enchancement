@@ -2,7 +2,7 @@
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
 
-package moriyashiine.enchancement.mixin.util.maceeffect.client;
+package moriyashiine.enchancement.mixin.item.maceeffect.client;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import moriyashiine.enchancement.common.component.entity.internal.UsingMaceComponent;

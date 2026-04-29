@@ -61,8 +61,6 @@ public class EnchancementClient implements ClientModInitializer {
 
 	public static boolean betterCombatLoaded = false;
 
-	public static boolean drawTooltipsImmediately = false;
-
 	@Override
 	public void onInitializeClient() {
 		initEntities();
