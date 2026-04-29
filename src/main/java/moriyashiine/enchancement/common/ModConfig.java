@@ -64,8 +64,6 @@ public class ModConfig extends MidnightConfig {
 	@Entry
 	public static boolean disableDurability = true;
 	@Entry
-	public static boolean disableVelocityChecks = true;
-	@Entry
 	public static boolean enhanceMobs = true;
 	@Entry
 	public static boolean rebalanceConsumables = true;
@@ -114,7 +112,7 @@ public class ModConfig extends MidnightConfig {
 				invertedList +
 				overhaulEnchanting +
 				singleLevelMode + enchantmentLimit +
-				disableDurability + disableVelocityChecks +
+				disableDurability +
 				enhanceMobs +
 				rebalanceConsumables + rebalanceEnchantments + rebalanceEquipment + rebalanceProjectiles + rebalanceStatusEffects +
 				toggleablePassives +
