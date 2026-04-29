@@ -33,7 +33,7 @@ import java.util.List;
 
 public class OverhaulEnchantingEvent implements LootTableEvents.Modify {
 	@Override
-	public void modifyLootTable(ResourceKey<LootTable> key, LootTable.Builder tableBuilder, LootTableSource source, HolderLookup.Provider registries) {
+	public void modifyLootTable(ResourceKey<LootTable> key, LootTable.Builder tableBuilder, LootTableSource source, HolderLookup.Provider holder) {
 		if (ModConfig.overhaulEnchanting != OverhaulMode.DISABLED) {
 			if (key == BuiltInLootTables.NETHER_BRIDGE) {
 				addChanceBook(tableBuilder, Items.IRON_HELMET);
@@ -63,7 +63,7 @@ public class OverhaulEnchantingEvent implements LootTableEvents.Modify {
 				addChanceBook(tableBuilder, Items.TRIDENT);
 			}
 			if (key == BuiltInLootTables.RUINED_PORTAL) {
-				addGuaranteedBook(tableBuilder, registries.lookupOrThrow(Registries.ENCHANTMENT), ItemTags.MINING_ENCHANTABLE, ItemTags.MINING_LOOT_ENCHANTABLE);
+				addGuaranteedBook(tableBuilder, holder.lookupOrThrow(Registries.ENCHANTMENT), ItemTags.MINING_ENCHANTABLE, ItemTags.MINING_LOOT_ENCHANTABLE);
 			}
 			if (key == BuiltInLootTables.ABANDONED_MINESHAFT) {
 				addChanceBook(tableBuilder, Items.IRON_PICKAXE);

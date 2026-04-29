@@ -161,8 +161,7 @@
 	"item.maceeffect.ItemStackMixin",
 	"level.gamerule.GameRulesMixin",
 	"level.gamerule.ServerGamePacketListenerImplMixin",
-	"level.loot.EnchantedCountIncreaseFunctionMixin",
-	"level.loot.SetEnchantmentsFunctionMixin"
+	"level.loot.EnchantedCountIncreaseFunctionMixin"
   ],
   "client": [
 	"config.chiseledbookshelfpeeking.client.GuiGraphicsExtractorMixin",

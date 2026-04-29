@@ -156,6 +156,7 @@ public class Enchancement implements ModInitializer {
 		ServerPlayConnectionEvents.JOIN.register(new EnforceConfigMatchEvent.Join());
 		ServerTickEvents.END_SERVER_TICK.register(new EnforceConfigMatchEvent.Tick());
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(new InCombatEvent());
+		LootTableEvents.MODIFY.register(new MaceEnchantmentsEvent());
 		ServerTickEvents.END_SERVER_TICK.register(new SyncDeltaMovementsEvent());
 		ServerPlayConnectionEvents.JOIN.register(new SyncEnchantingMaterialMapEvent.Join());
 		ServerTickEvents.END_SERVER_TICK.register(new SyncEnchantingMaterialMapEvent.Tick());
