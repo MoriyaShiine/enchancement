@@ -15,24 +15,18 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFunction;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(EnchantedCountIncreaseFunction.class)
 public class EnchantedCountIncreaseFunctionMixin {
-	@Shadow
-	@Final
-	private Holder<Enchantment> enchantment;
-
 	@WrapOperation(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getEnchantmentLevel(Lnet/minecraft/core/Holder;Lnet/minecraft/world/entity/LivingEntity;)I"))
 	private int enchancement$fixHardcodedLooting(Holder<Enchantment> enchantment, LivingEntity entity, Operation<Integer> original, ItemStack itemStack) {
 		int level = original.call(enchantment, entity);
-		Registry<Enchantment> registry = entity.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
-		for (Enchantment object : registry) {
-			Holder<Enchantment> entry = registry.wrapAsHolder(object);
-			if (entry.is(ConventionalEnchantmentTags.INCREASE_ENTITY_DROPS) && !entry.equals(this.enchantment)) {
+		Registry<Enchantment> enchantments = entity.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+		for (Enchantment object : enchantments) {
+			Holder<Enchantment> entry = enchantments.wrapAsHolder(object);
+			if (entry.is(ConventionalEnchantmentTags.INCREASE_ENTITY_DROPS) && !entry.equals(enchantment)) {
 				level += EnchantmentHelper.getEnchantmentLevel(entry, entity);
 			}
 		}

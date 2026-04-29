@@ -23,6 +23,7 @@ import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.EnchantRandomlyFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
@@ -116,10 +117,9 @@ public class OverhaulEnchantingEvent implements LootTableEvents.Modify {
 		builder.withPool(LootPool.lootPool()
 				.setRolls(ConstantValue.exactly(1))
 				.add(
-						LootItem.lootTableItem(
-										Items.BOOK)
+						LootItem.lootTableItem(Items.BOOK)
 								.setWeight(1)
-								.apply(new net.minecraft.world.level.storage.loot.functions.EnchantRandomlyFunction.Builder().withOneOf(HolderSet.direct(enchantments)))
+								.apply(new EnchantRandomlyFunction.Builder().withOneOf(HolderSet.direct(enchantments)))
 				));
 	}
 }
