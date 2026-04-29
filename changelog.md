@@ -1,4 +1,15 @@
 ------------------------------------------------------
+Version 26.1-r6
+------------------------------------------------------
+**If you are playing on an existing world, please delete the enchancement configuration file and set the `minecraft:player_movement_check` gamerule to false**
+- remove disableVelocityChecks config
+  - the vanilla `minecraft:player_movement_check` gamerule now controls all "moved too quickly" and "moved wrongly" cases, and now defaults to false
+- mace enchanted books are now more common in ominous vaults
+- fix Turkish translation for overhaulEnchanting config option (thanks Hexasan!)
+- add Brazilian Portuguese translation (Thanks RenanOSX)
+  - merges https://github.com/MoriyaShiine/enchancement/pull/294
+
+------------------------------------------------------
 Version 26.1-r5
 ------------------------------------------------------
 - update Turkish translation (thanks Hexasan!)
