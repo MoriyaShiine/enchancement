@@ -173,7 +173,7 @@
   "enchancement.midnightconfig.category.client": "İstemci",
   "enchancement.midnightconfig.disallowedEnchantments": "İzin Verilmeyen Büyüler",
   "enchancement.midnightconfig.invertedList": "Ters Liste",
-  "enchancement.midnightconfig.overhaulEnchantingTable": "Büyü Masasını Değiştir",
+  "enchancement.midnightconfig.overhaulEnchanting": "Büyülemeyi Değiştir",
   "enchancement.midnightconfig.enum.OverhaulMode.CHISELED": "Yontulmuş",
   "enchancement.midnightconfig.enum.OverhaulMode.FREE_CHOOSE": "Özgür Şeçim",
   "enchancement.midnightconfig.enum.OverhaulMode.NON_TREASURE": "Hazine Büyüler Olmadan",
