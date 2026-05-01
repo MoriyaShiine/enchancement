@@ -43,7 +43,7 @@ public class ModItemTagsProvider extends FabricTagsProvider.ItemTagsProvider {
 		valueLookupBuilder(ModItemTags.DEFAULT_ENCHANTING_MATERIAL)
 				.add(Items.AMETHYST_SHARD);
 		valueLookupBuilder(ModItemTags.RETAINS_DURABILITY)
-				.add(Items.WOLF_ARMOR);
+				.forceAddTag(ConventionalItemTags.WOLF_ARMORS);
 		builder(ModItemTags.RETAINS_DURABILITY)
 				.addOptionalTag(tagKey("create:sandpaper"))
 				.addOptional(key("create:super_glue"));
