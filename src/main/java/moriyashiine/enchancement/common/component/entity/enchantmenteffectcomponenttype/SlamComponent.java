@@ -68,7 +68,7 @@ public class SlamComponent implements CommonTickingComponent {
 		strength = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.SLAM, obj, 0);
 		if (hasSlam()) {
 			if (isSlamming) {
-				if (!SLibUtils.isGroundedOrAirborne(obj, true)) {
+				if (obj.hurtTime != 0 || !SLibUtils.isGroundedOrAirborne(obj, true)) {
 					setSlamming(false);
 					return;
 				}
