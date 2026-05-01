@@ -14,6 +14,7 @@ public class ModEnchantmentTags {
 	public static final TagKey<Enchantment> AUTOMATICALLY_FEEDS = TagKey.create(Registries.ENCHANTMENT, Enchancement.id("automatically_feeds"));
 	public static final TagKey<Enchantment> DISALLOWS_TOGGLEABLE_PASSIVE = TagKey.create(Registries.ENCHANTMENT, Enchancement.id("disallows_toggleable_passive"));
 	public static final TagKey<Enchantment> FREEZES_ENTITIES = TagKey.create(Registries.ENCHANTMENT, Enchancement.id("freezes_entities"));
+	public static final TagKey<Enchantment> SADDLE_ENCHANTMENTS = TagKey.create(Registries.ENCHANTMENT, Enchancement.id("saddle_enchantments"));
 
 	public static final TagKey<Enchantment> BOUNCY_EXCLUSIVE_SET = TagKey.create(Registries.ENCHANTMENT, Enchancement.id("exclusive_set/bouncy"));
 	public static final TagKey<Enchantment> BRIMSTONE_EXCLUSIVE_SET = TagKey.create(Registries.ENCHANTMENT, Enchancement.id("exclusive_set/brimstone"));

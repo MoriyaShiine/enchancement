@@ -26,6 +26,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.item.enchantment.Enchantable;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -36,7 +37,7 @@ public class RebalanceEquipmentEvent {
 		@Override
 		public void modify(DefaultItemComponentEvents.ModifyContext context) {
 			if (ModConfig.rebalanceEquipment) {
-				context.modify(item -> EnchancementUtil.isGroundAnimalArmor(item.getDefaultInstance()), (builder, _) -> builder.set(DataComponents.ENCHANTABLE, new Enchantable(1)));
+				context.modify(item -> EnchancementUtil.isGroundAnimalArmor(item.getDefaultInstance()) || item == Items.SADDLE, (builder, _) -> builder.set(DataComponents.ENCHANTABLE, new Enchantable(1)));
 			}
 		}
 	}
@@ -44,8 +45,13 @@ public class RebalanceEquipmentEvent {
 	public static class AllowEnchanting implements EnchantmentEvents.AllowEnchanting {
 		@Override
 		public TriState allowEnchanting(Holder<Enchantment> enchantment, ItemStack target, EnchantingContext enchantingContext) {
-			if (ModConfig.rebalanceEquipment && EnchancementUtil.isGroundAnimalArmor(target) && enchantment.is(ModEnchantmentTags.ANIMAL_ARMOR_ENCHANTMENTS)) {
-				return TriState.TRUE;
+			if (ModConfig.rebalanceEquipment) {
+				if (EnchancementUtil.isGroundAnimalArmor(target) && enchantment.is(ModEnchantmentTags.ANIMAL_ARMOR_ENCHANTMENTS)) {
+					return TriState.TRUE;
+				}
+				if (target.is(Items.SADDLE) && enchantment.is(ModEnchantmentTags.SADDLE_ENCHANTMENTS)) {
+					return TriState.TRUE;
+				}
 			}
 			return TriState.DEFAULT;
 		}

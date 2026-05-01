@@ -46,6 +46,7 @@ public class ModEnchantingMaterialsProvider extends FabricCodecDataProvider<ModE
 		output.accept(Items.IRON_HORSE_ARMOR, ItemTags.REPAIRS_IRON_ARMOR);
 		output.accept(Items.LEATHER_HORSE_ARMOR, ItemTags.REPAIRS_LEATHER_ARMOR);
 		output.accept(Items.NETHERITE_HORSE_ARMOR, ItemTags.REPAIRS_DIAMOND_ARMOR);
+		output.accept(Items.SADDLE, ItemTags.IRON_TOOL_MATERIALS);
 		output.accept(Items.SHEARS, ItemTags.IRON_TOOL_MATERIALS);
 		output.accept(Items.SHIELD, ItemTags.IRON_TOOL_MATERIALS);
 		output.accept(Items.TRIDENT, Items.PRISMARINE_SHARD);

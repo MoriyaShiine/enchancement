@@ -40,17 +40,22 @@ public class ModEnchantmentTagsProvider extends FabricTagsProvider<Enchantment> 
 		NON_TREASURE_ENCHANTMENTS.forEach(id -> tooltipOrder.add(ResourceKey.create(Registries.ENCHANTMENT, id)));
 		TREASURE_ENCHANTMENTS.forEach(id -> tooltipOrder.add(ResourceKey.create(Registries.ENCHANTMENT, id)));
 
+		builder(ModEnchantmentTags.ANIMAL_ARMOR_ENCHANTMENTS)
+				.add(ModEnchantments.ADRENALINE)
+				.add(ModEnchantments.AMPHIBIOUS)
+				.add(ModEnchantments.STRAFE)
+				.add(ModEnchantments.WARDENSPINE);
 		builder(ModEnchantmentTags.AUTOMATICALLY_FEEDS)
 				.add(ModEnchantments.ASSIMILATION);
-		builder(ModEnchantmentTags.ANIMAL_ARMOR_ENCHANTMENTS)
-				.add(ModEnchantments.BOUNCY)
-				.add(ModEnchantments.BUOY)
-				.add(ModEnchantments.STICKY);
 		builder(ModEnchantmentTags.DISALLOWS_TOGGLEABLE_PASSIVE)
 				.add(Enchantments.EFFICIENCY)
 				.add(Enchantments.RIPTIDE);
 		builder(ModEnchantmentTags.FREEZES_ENTITIES)
 				.add(ModEnchantments.FROSTBITE);
+		builder(ModEnchantmentTags.SADDLE_ENCHANTMENTS)
+				.add(ModEnchantments.BOUNCY)
+				.add(ModEnchantments.BUOY)
+				.add(ModEnchantments.STICKY);
 
 		builder(ConventionalEnchantmentTags.ENTITY_AUXILIARY_MOVEMENT_ENHANCEMENTS)
 				.add(ModEnchantments.STRAFE)
@@ -117,6 +122,6 @@ public class ModEnchantmentTagsProvider extends FabricTagsProvider<Enchantment> 
 
 	@SafeVarargs
 	private void addLibrarianTrades(TagKey<Enchantment> common, ResourceKey<Enchantment>... enchantments) {
-		builder(common).addAll(List.of(enchantments));
+		builder(common).add(enchantments);
 	}
 }

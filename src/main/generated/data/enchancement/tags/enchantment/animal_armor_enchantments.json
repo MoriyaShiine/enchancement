@@ -1,7 +1,8 @@
 {
   "values": [
-	"enchancement:bouncy",
-	"enchancement:buoy",
-	"enchancement:sticky"
+	"enchancement:adrenaline",
+	"enchancement:amphibious",
+	"enchancement:strafe",
+	"enchancement:wardenspine"
   ]
 }
