@@ -15,7 +15,7 @@ import org.ladysnake.cca.api.v3.component.ComponentKey;
 public class EquipmentResetEvent implements ServerEntityEvents.EquipmentChange {
 	@Override
 	public void onChange(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack previousStack, ItemStack currentStack) {
-		if (equipmentSlot.isArmor()) {
+		if (equipmentSlot.getType() != EquipmentSlot.Type.HAND) {
 			for (ComponentKey<?> key : livingEntity.asComponentProvider().getComponentContainer().keys()) {
 				if (livingEntity.getComponent(key) instanceof PushComponent pushComponent && EnchantmentHelper.has(currentStack, pushComponent.getEffectType())) {
 					pushComponent.resetNextTick();

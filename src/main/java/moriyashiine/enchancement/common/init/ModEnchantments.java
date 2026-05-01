@@ -54,6 +54,7 @@ import net.minecraft.world.level.storage.loot.predicates.DamageSourceCondition;
 import net.minecraft.world.level.storage.loot.predicates.InvertedLootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ModEnchantments {
@@ -124,7 +125,13 @@ public class ModEnchantments {
 				ModEnchantmentTagsProvider.NON_TREASURE_ENCHANTMENTS.add(id);
 			}
 		}
-		Enchantment.Builder builder = Enchantment.enchantment(Enchantment.definition(supportedItems, 5, maxLevel, Enchantment.dynamicCost(10, 10), Enchantment.dynamicCost(40, 10), 2, group));
+		List<EquipmentSlotGroup> groups = new ArrayList<>();
+		groups.add(group);
+		if (group == EquipmentSlotGroup.ARMOR) {
+			groups.add(EquipmentSlotGroup.BODY);
+			groups.add(EquipmentSlotGroup.SADDLE);
+		}
+		Enchantment.Builder builder = Enchantment.enchantment(Enchantment.definition(supportedItems, 5, maxLevel, Enchantment.dynamicCost(10, 10), Enchantment.dynamicCost(40, 10), 2, groups.toArray(new EquipmentSlotGroup[0])));
 		effectsAdder.addEffects(builder);
 		return builder.build(id);
 	}
@@ -185,6 +192,7 @@ public class ModEnchantments {
 									Attributes.WAYPOINT_TRANSMIT_RANGE,
 									LevelBasedValue.constant(-1),
 									AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+					builder.withEffect(ModEnchantmentEffectComponentTypes.HIDE_NON_ARMOR_ATTRIBUTE_TOOLTIPS);
 				}));
 		// chestplate
 		registry.register(ADRENALINE, create(ADRENALINE.identifier(),
@@ -241,6 +249,7 @@ public class ModEnchantments {
 									Attributes.WATER_MOVEMENT_EFFICIENCY,
 									LevelBasedValue.perLevel(0.5F),
 									AttributeModifier.Operation.ADD_VALUE));
+					builder.withEffect(ModEnchantmentEffectComponentTypes.HIDE_NON_ARMOR_ATTRIBUTE_TOOLTIPS);
 				}));
 		registry.register(STRAFE, create(STRAFE.identifier(),
 				itemLookup.getOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),

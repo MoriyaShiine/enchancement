@@ -22,7 +22,7 @@ public class CombatRulesMixin {
 		if (ModConfig.rebalanceEquipment && damage > 1) {
 			double[] enchantedArmor = {0};
 			for (EquipmentSlot slot : EquipmentSlot.values()) {
-				if (slot.isArmor()) {
+				if (slot.getType() != EquipmentSlot.Type.HAND) {
 					ItemStack stack = victim.getItemBySlot(slot);
 					if (stack.isEnchanted()) {
 						stack.forEachModifier(slot, (entry, modifier) -> {

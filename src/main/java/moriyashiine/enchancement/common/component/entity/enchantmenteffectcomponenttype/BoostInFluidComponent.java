@@ -58,38 +58,38 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 		float boostStrength = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.BOOST_IN_FLUID, obj, 0);
 		hasBoost = boostStrength > 0;
 		currentSubmersion = null;
-		if (hasBoost) {
+		if (hasBoost()) {
 			if (!obj.slib$isPlayer() && !obj.hasControllingPassenger()) {
 				shouldBoost = !obj.level().getBlockState(BlockPos.containing(obj.getEyePosition())).isAir() && SLibUtils.isSubmerged(obj, SubmersionGate.ALL);
 			}
 			if (shouldBoost) {
 				currentSubmersion = Arrays.stream(SubmersionGate.values()).filter(gate -> gate != SubmersionGate.ALL && SLibUtils.isSubmerged(obj, gate)).findFirst().orElse(null);
 				if (canUse(true)) {
-					if (shouldAddDeltaMovement()) {
-						boolean submerged = SLibUtils.isSubmerged(obj, SubmersionGate.ALL);
-						if (!submerged) {
-							boostStrength /= 2;
-						}
-						float targetBoost = submerged ? boostStrength : boostStrength / 4;
-						if (boost <= targetBoost) {
-							boost = Math.min(targetBoost, boost + boostStrength / 30F);
-						} else {
-							boost = Math.max(targetBoost, boost - 0.025F);
-						}
+					boolean submerged = SLibUtils.isSubmerged(obj, SubmersionGate.ALL);
+					if (!submerged) {
+						boostStrength /= 2;
+					}
+					float targetBoost = submerged ? boostStrength : boostStrength / 4;
+					if (boost <= targetBoost) {
+						boost = Math.min(targetBoost, boost + boostStrength / 30F);
+					} else {
+						boost = Math.max(targetBoost, boost - 0.025F);
+					}
+					if (shouldApplyDeltaMovement()) {
 						obj.setDeltaMovement(obj.getDeltaMovement().x() * (submerged ? 1 : 0.95), Math.max(boost, obj.getDeltaMovement().y()), obj.getDeltaMovement().z() * (submerged ? 1 : 0.95));
-						obj.gameEvent(GameEvent.ENTITY_ACTION);
-						EnchancementUtil.resetFallDistance(obj);
-						if ((obj.tickCount + obj.getId()) % 3 == 0) {
-							SoundEvent sound = SoundEvents.POINTED_DRIPSTONE_DRIP_WATER;
-							if (currentSubmersion == SubmersionGate.WATER_ONLY) {
-								sound = SoundEvents.BUBBLE_POP;
-							} else if (currentSubmersion == SubmersionGate.LAVA_ONLY) {
-								sound = SoundEvents.LAVA_POP;
-							} else if (currentSubmersion == SubmersionGate.POWDER_SNOW_ONLY) {
-								sound = SoundEvents.POWDER_SNOW_BREAK;
-							}
-							SLibUtils.playSound(obj, sound, 1, Mth.nextFloat(obj.getRandom(), 0.9F, 1.1F));
+					}
+					obj.gameEvent(GameEvent.ENTITY_ACTION);
+					EnchancementUtil.resetFallDistance(obj);
+					if ((obj.tickCount + obj.getId()) % 3 == 0) {
+						SoundEvent sound = SoundEvents.POINTED_DRIPSTONE_DRIP_WATER;
+						if (currentSubmersion == SubmersionGate.WATER_ONLY) {
+							sound = SoundEvents.BUBBLE_POP;
+						} else if (currentSubmersion == SubmersionGate.LAVA_ONLY) {
+							sound = SoundEvents.LAVA_POP;
+						} else if (currentSubmersion == SubmersionGate.POWDER_SNOW_ONLY) {
+							sound = SoundEvents.POWDER_SNOW_BREAK;
 						}
+						SLibUtils.playSound(obj, sound, 1, Mth.nextFloat(obj.getRandom(), 0.9F, 1.1F));
 					}
 				} else {
 					shouldBoost = false;
@@ -107,7 +107,7 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 	@Override
 	public void clientTick() {
 		tick();
-		if (hasBoost) {
+		if (hasBoost()) {
 			if (shouldBoost) {
 				ParticleOptions main = ParticleTypes.SPLASH, secondary = ParticleTypes.SPLASH, tertiary = ParticleTypes.SPLASH;
 				if (currentSubmersion == SubmersionGate.WATER_ONLY) {
@@ -155,18 +155,23 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 	}
 
 	public boolean canUse(boolean ignoreBoost) {
-		return (ignoreBoost || !shouldBoost) && SLibUtils.isGroundedOrAirborne(obj, true) && (SLibUtils.isSubmerged(obj, SubmersionGate.ALL) || ModEntityComponents.EXTENDED_WATER_TIME.get(obj).getTicksWet() > 0);
+		SlamComponent slamComponent = ModEntityComponents.SLAM.getNullable(obj);
+		if (slamComponent != null && slamComponent.isSlamming()) {
+			return false;
+		}
+		if (ignoreBoost || !shouldBoost) {
+			if (SLibUtils.isGroundedOrAirborne(obj, true)) {
+				return SLibUtils.isSubmerged(obj, SubmersionGate.ALL) || ModEntityComponents.EXTENDED_WATER_TIME.get(obj).getTicksWet() > 0;
+			}
+		}
+		return false;
 	}
 
 	public boolean blocksAirEffects() {
 		return hasBoost() && canUse(true);
 	}
 
-	private boolean shouldAddDeltaMovement() {
-		SlamComponent slamComponent = ModEntityComponents.SLAM.getNullable(obj);
-		if (slamComponent != null && slamComponent.isSlamming()) {
-			return false;
-		}
+	private boolean shouldApplyDeltaMovement() {
 		if (obj.getControllingPassenger() instanceof Player) {
 			return obj.level().isClientSide();
 		}

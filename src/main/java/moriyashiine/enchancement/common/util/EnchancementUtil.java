@@ -45,9 +45,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.apache.commons.lang3.mutable.MutableFloat;
 import org.jspecify.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class EnchancementUtil {
@@ -262,18 +260,18 @@ public class EnchancementUtil {
 
 	// misc
 
-	public static List<ItemStack> getArmorItems(LivingEntity entity) {
-		List<ItemStack> stacks = new ArrayList<>();
+	public static Set<ItemStack> getArmorItems(LivingEntity entity) {
+		Set<ItemStack> stacks = new HashSet<>();
 		for (EquipmentSlot slot : EquipmentSlot.values()) {
-			if (slot.isArmor()) {
+			if (slot.getType() != EquipmentSlot.Type.HAND) {
 				stacks.add(entity.getItemBySlot(slot));
 			}
 		}
 		return stacks;
 	}
 
-	public static List<ItemStack> getHeldItems(LivingEntity entity) {
-		List<ItemStack> stacks = new ArrayList<>();
+	public static Set<ItemStack> getHeldItems(LivingEntity entity) {
+		Set<ItemStack> stacks = new HashSet<>();
 		for (EquipmentSlot slot : EquipmentSlot.values()) {
 			if (slot.getType() == EquipmentSlot.Type.HAND) {
 				stacks.add(entity.getItemBySlot(slot));

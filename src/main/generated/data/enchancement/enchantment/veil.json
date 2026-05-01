@@ -5,6 +5,7 @@
   },
   "effects": {
 	"enchancement:hide_name_behind_walls": {},
+	"enchancement:hide_non_armor_attribute_tooltips": {},
 	"enchancement:modify_detection_range": {
 	  "type": "minecraft:multiply",
 	  "factor": {
@@ -36,7 +37,9 @@
 	"per_level_above_first": 10
   },
   "slots": [
-	"armor"
+	"armor",
+	"body",
+	"saddle"
   ],
   "supported_items": "#minecraft:enchantable/head_armor",
   "weight": 5

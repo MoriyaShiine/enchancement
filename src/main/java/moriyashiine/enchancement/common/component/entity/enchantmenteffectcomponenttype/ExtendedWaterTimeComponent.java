@@ -62,7 +62,7 @@ public class ExtendedWaterTimeComponent implements AutoSyncedComponent, CommonTi
 		tick();
 		if (ticksWet > 0 && !obj.isInvisible() && !obj.isInWaterOrRain()) {
 			for (EquipmentSlot slot : EquipmentSlot.values()) {
-				if (slot.isArmor()) {
+				if (slot.getType() != EquipmentSlot.Type.HAND) {
 					if (EnchantmentHelper.has(obj.getItemBySlot(slot), ModEnchantmentEffectComponentTypes.EXTEND_WATER_TIME)) {
 						if (slot == EquipmentSlot.FEET) {
 							SLibClientUtils.addParticles(obj, ParticleTypes.FALLING_WATER, 1, ParticleAnchor.FEET);

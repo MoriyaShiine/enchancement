@@ -6,6 +6,7 @@
   "effects": {
 	"enchancement:extend_water_time": {},
 	"enchancement:extended_water_spin_attack": {},
+	"enchancement:hide_non_armor_attribute_tooltips": {},
 	"minecraft:attributes": [
 	  {
 		"amount": {
@@ -82,7 +83,9 @@
 	"per_level_above_first": 10
   },
   "slots": [
-	"armor"
+	"armor",
+	"body",
+	"saddle"
   ],
   "supported_items": "#minecraft:enchantable/chest_armor",
   "weight": 5

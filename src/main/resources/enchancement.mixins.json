@@ -124,6 +124,7 @@
 	"enchantmenteffectcomponenttype.glide.LivingEntityMixin",
 	"enchantmenteffectcomponenttype.grapplingfishingbobber.FishingHookMixin",
 	"enchantmenteffectcomponenttype.grapplingfishingbobber.FishingRodItemMixin",
+	"enchantmenteffectcomponenttype.hidenonarmorattributetooltips.ItemStackMixin",
 	"enchantmenteffectcomponenttype.honeytrail.EntityMixin",
 	"enchantmenteffectcomponenttype.honeytrail.LivingEntityMixin",
 	"enchantmenteffectcomponenttype.leechingtrident.ThrownTridentMixin",
