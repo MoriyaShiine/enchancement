@@ -21,7 +21,6 @@ import net.minecraft.world.entity.monster.Guardian;
 import net.minecraft.world.entity.monster.Witch;
 import net.minecraft.world.entity.npc.wanderingtrader.WanderingTrader;
 import net.minecraft.world.entity.projectile.FishingHook;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.entity.projectile.arrow.ThrownTrident;
@@ -103,7 +102,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerFor(LivingEntity.class, ROTATION_BURST, RotationBurstComponent::new);
 		registry.registerForPlayers(SLAM, SlamComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(SLIDE, SlideComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
-		registry.registerFor(Projectile.class, TELEPORT_ON_HIT, TeleportOnHitComponent::new);
+		registry.registerFor(AbstractArrow.class, TELEPORT_ON_HIT, TeleportOnHitComponent::new);
 		registry.registerFor(LivingEntity.class, WALL_JUMP, WallJumpComponent::new);
 		// enchantment effect type
 		registry.registerFor(LivingEntity.class, CONDITIONAL_ATTRIBUTES, ConditionalAttributesComponent::new);

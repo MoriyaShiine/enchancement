@@ -136,6 +136,7 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 	}
 
 	public void unleech() {
+		leechData = null;
 		stuckEntityId = NO_ENTITY;
 		leechingTicks = 0;
 		stabTicks = 0;

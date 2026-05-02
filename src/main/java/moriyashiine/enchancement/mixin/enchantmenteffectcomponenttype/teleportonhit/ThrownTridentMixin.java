@@ -30,7 +30,7 @@ public abstract class ThrownTridentMixin extends AbstractArrow {
 	}
 
 	@ModifyExpressionValue(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/projectile/arrow/ThrownTrident;isNoPhysics()Z"))
-	private boolean enchancement$rebalanceEquipment(boolean value) {
+	private boolean enchancement$teleportOnHit(boolean value) {
 		TeleportOnHitComponent teleportOnHitComponent = ModEntityComponents.TELEPORT_ON_HIT.get(this);
 		if (teleportOnHitComponent.teleportsOnBlockHit() || teleportOnHitComponent.teleportsOnEntityHit()) {
 			if (getOwner() instanceof LivingEntity living && living.hurtTime != 0) {

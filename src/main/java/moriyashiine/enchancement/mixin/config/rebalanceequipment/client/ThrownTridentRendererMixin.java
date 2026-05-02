@@ -35,18 +35,15 @@ public class ThrownTridentRendererMixin {
 	@Unique
 	private ItemModelResolver itemModelResolver;
 
-	@Unique
-	private FloatingTridentRenderState floatingTridentRenderState;
-
 	@Inject(method = "<init>", at = @At("TAIL"))
 	private void enchancement$rebalanceEquipment(EntityRendererProvider.Context context, CallbackInfo ci) {
 		itemModelResolver = context.getItemModelResolver();
-		floatingTridentRenderState = new FloatingTridentRenderState();
 	}
 
 	@Inject(method = "submit(Lnet/minecraft/client/renderer/entity/state/ThrownTridentRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/level/CameraRenderState;)V", at = @At("HEAD"), cancellable = true)
 	private void enchancement$rebalanceEquipment(ThrownTridentRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera, CallbackInfo ci) {
-		if (floatingTridentRenderState.floating) {
+		FloatingTridentRenderState floatingTridentRenderState = state.getData(FloatingTridentRenderState.KEY);
+		if (floatingTridentRenderState != null && floatingTridentRenderState.floating) {
 			poseStack.pushPose();
 			poseStack.translate(0.0F, Mth.sin(state.ageInTicks / 10) * 0.1F + 0.1F + 0.25F, 0);
 			poseStack.mulPose(Axis.YP.rotation(ItemEntity.getSpin(state.ageInTicks, 0)));
@@ -58,7 +55,9 @@ public class ThrownTridentRendererMixin {
 
 	@Inject(method = "extractRenderState(Lnet/minecraft/world/entity/projectile/arrow/ThrownTrident;Lnet/minecraft/client/renderer/entity/state/ThrownTridentRenderState;F)V", at = @At("TAIL"))
 	private void enchancement$rebalanceEquipment(ThrownTrident entity, ThrownTridentRenderState state, float partialTicks, CallbackInfo ci) {
+		FloatingTridentRenderState floatingTridentRenderState = new FloatingTridentRenderState();
 		floatingTridentRenderState.floating = ModConfig.rebalanceEquipment && entity.getEntityData().get(ThrownTrident.ID_LOYALTY) > 0 && !entity.isAcceptibleReturnOwner() && ModEntityComponents.OWNED_TRIDENT.get(entity).isOwnedByPlayer() && ModEntityComponents.LEECHING_TRIDENT.get(entity).getStuckEntity() == null;
 		floatingTridentRenderState.item.extractItemGroupRenderState(entity, entity.getPickupItem(), itemModelResolver);
+		state.setData(FloatingTridentRenderState.KEY, floatingTridentRenderState);
 	}
 }

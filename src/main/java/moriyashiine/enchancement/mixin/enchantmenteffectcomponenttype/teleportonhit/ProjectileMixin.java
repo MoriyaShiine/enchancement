@@ -4,6 +4,7 @@
 
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.teleportonhit;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.TeleportOnHitComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
@@ -36,11 +37,19 @@ public abstract class ProjectileMixin extends Entity {
 		super(type, level);
 	}
 
+	@ModifyReturnValue(method = "spawnProjectile(Lnet/minecraft/world/entity/projectile/Projectile;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/item/ItemStack;Ljava/util/function/Consumer;)Lnet/minecraft/world/entity/projectile/Projectile;", at = @At("RETURN"))
+	private static <T extends Projectile> T enchancement$teleportOnHit(T original) {
+		if (original.getOwner() instanceof LivingEntity owner) {
+			TeleportOnHitComponent.maybeSet(owner, owner.getActiveItem(), original);
+		}
+		return original;
+	}
+
 	@Inject(method = "onHitBlock", at = @At("TAIL"))
 	private void enchancement$teleportOnHit(BlockHitResult hitResult, CallbackInfo ci) {
 		if (getOwner() instanceof LivingEntity living && level() instanceof ServerLevel level) {
-			TeleportOnHitComponent teleportOnHitComponent = ModEntityComponents.TELEPORT_ON_HIT.get(this);
-			if (teleportOnHitComponent.teleportsOnBlockHit()) {
+			TeleportOnHitComponent teleportOnHitComponent = ModEntityComponents.TELEPORT_ON_HIT.getNullable(this);
+			if (teleportOnHitComponent != null && teleportOnHitComponent.teleportsOnBlockHit()) {
 				BlockPos pos = hitResult.getBlockPos().relative(hitResult.getDirection());
 				teleport(living, level, new Vec3(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5), teleportOnHitComponent);
 			}
@@ -50,8 +59,8 @@ public abstract class ProjectileMixin extends Entity {
 	@Inject(method = "onHitEntity", at = @At("TAIL"))
 	private void enchancement$teleportOnHit(EntityHitResult hitResult, CallbackInfo ci) {
 		if (getOwner() instanceof LivingEntity living && level() instanceof ServerLevel level) {
-			TeleportOnHitComponent teleportOnHitComponent = ModEntityComponents.TELEPORT_ON_HIT.get(this);
-			if (teleportOnHitComponent.teleportsOnEntityHit()) {
+			TeleportOnHitComponent teleportOnHitComponent = ModEntityComponents.TELEPORT_ON_HIT.getNullable(this);
+			if (teleportOnHitComponent != null && teleportOnHitComponent.teleportsOnEntityHit()) {
 				Vec3 pos = hitResult.getLocation();
 				teleport(living, level, pos.add(0, 0.5, 0), teleportOnHitComponent);
 			}

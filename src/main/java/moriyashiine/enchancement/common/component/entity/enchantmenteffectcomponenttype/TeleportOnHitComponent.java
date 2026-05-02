@@ -14,7 +14,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -27,10 +26,10 @@ import org.ladysnake.cca.api.v3.component.tick.ClientTickingComponent;
 import java.util.Collections;
 
 public class TeleportOnHitComponent implements AutoSyncedComponent, ClientTickingComponent {
-	private final Projectile obj;
+	private final AbstractArrow obj;
 	private boolean teleportsOnBlockHit = false, teleportsOnEntityHit = false;
 
-	public TeleportOnHitComponent(Projectile obj) {
+	public TeleportOnHitComponent(AbstractArrow obj) {
 		this.obj = obj;
 	}
 
@@ -59,8 +58,8 @@ public class TeleportOnHitComponent implements AutoSyncedComponent, ClientTickin
 
 	public void disable() {
 		teleportsOnBlockHit = teleportsOnEntityHit = false;
-		if (obj instanceof AbstractArrow arrow && obj.getOwner() instanceof Player player && !player.isCreative()) {
-			if (EnchancementUtil.insertToCorrectTridentSlot(arrow, player.getInventory(), arrow.getPickupItem()) || player.addItem(arrow.getPickupItem())) {
+		if (obj.getOwner() instanceof Player player && !player.isCreative()) {
+			if (EnchancementUtil.insertToCorrectTridentSlot(obj, player.getInventory(), obj.getPickupItem()) || player.addItem(obj.getPickupItem())) {
 				obj.discard();
 			}
 		}
@@ -75,7 +74,7 @@ public class TeleportOnHitComponent implements AutoSyncedComponent, ClientTickin
 	}
 
 	public static void maybeSet(LivingEntity user, ItemStack stack, Entity entity) {
-		if (entity instanceof Projectile) {
+		if (entity instanceof AbstractArrow) {
 			MutableBoolean teleportsOnBlockHit = new MutableBoolean(), teleportsOnEntityHit = new MutableBoolean();
 			if (EnchantmentHelper.has(stack, ModEnchantmentEffectComponentTypes.TELEPORT_ON_HIT)) {
 				TeleportOnHitEffect.setValues(teleportsOnBlockHit, teleportsOnEntityHit, Collections.singleton(stack));

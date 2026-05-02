@@ -12,7 +12,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -22,11 +21,11 @@ import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class PhaseThroughBlocksAndFloatComponent implements AutoSyncedComponent, CommonTickingComponent {
-	private final Projectile obj;
+	private final AbstractArrow obj;
 	private int maxPhaseBlocks = 0;
 	private int ticksInAir = 0;
 
-	public PhaseThroughBlocksAndFloatComponent(Projectile obj) {
+	public PhaseThroughBlocksAndFloatComponent(AbstractArrow obj) {
 		this.obj = obj;
 	}
 
@@ -45,7 +44,7 @@ public class PhaseThroughBlocksAndFloatComponent implements AutoSyncedComponent,
 	@Override
 	public void tick() {
 		if (shouldPhase()) {
-			if (++ticksInAir >= 200 || (obj instanceof AbstractArrow arrow && arrow.isInGround())) {
+			if (++ticksInAir >= 200 || obj.isInGround()) {
 				disable();
 			}
 		}

@@ -55,7 +55,7 @@ public class ApplyRandomMobEffectComponent implements CardinalComponent {
 		this.originalStack = originalStack;
 	}
 
-	public static void maybeSet(LivingEntity user, ItemStack projectile, float durationMultiplier, @Nullable ItemStack weapon, Consumer<List<MobEffectInstance>> consumer) {
+	public static void maybeSet(LivingEntity user, ItemStack projectile, double durationMultiplier, @Nullable ItemStack weapon, Consumer<List<MobEffectInstance>> consumer) {
 		MutableFloat duration = new MutableFloat();
 		AtomicReference<TagKey<MobEffect>> disallowedTag = new AtomicReference<>();
 		if (weapon != null && EnchantmentHelper.has(weapon, ModEnchantmentEffectComponentTypes.APPLY_RANDOM_MOB_EFFECT)) {
@@ -93,7 +93,7 @@ public class ApplyRandomMobEffectComponent implements CardinalComponent {
 		}
 	}
 
-	public static float getDurationMultiplier(LivingEntity user, float speed) {
+	public static double getDurationMultiplier(LivingEntity user, double speed) {
 		return Mth.lerp(Math.min(1, (speed * (user.isShiftKeyDown() ? 3 : 1)) / 3F), 0, 1);
 	}
 }
