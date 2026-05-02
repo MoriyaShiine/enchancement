@@ -32,6 +32,7 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 	private final LivingEntity obj;
 	private boolean shouldBoost = false;
 	private float boost = 0;
+	private int damageTicks = 0;
 
 	private boolean hasBoost = false;
 	@Nullable
@@ -45,12 +46,14 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 	public void readData(ValueInput input) {
 		shouldBoost = input.getBooleanOr("ShouldBoost", false);
 		boost = input.getFloatOr("Boost", 0);
+		damageTicks = input.getIntOr("DamageTicks", 0);
 	}
 
 	@Override
 	public void writeData(ValueOutput output) {
 		output.putBoolean("ShouldBoost", shouldBoost);
 		output.putFloat("Boost", boost);
+		output.putInt("DamageTicks", 0);
 	}
 
 	@Override
@@ -59,10 +62,16 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 		hasBoost = boostStrength > 0;
 		currentSubmersion = null;
 		if (hasBoost()) {
+			if (damageTicks > 0) {
+				damageTicks--;
+			}
+			if (obj.hurtTime != 0) {
+				damageTicks = 10;
+			}
 			if (!obj.slib$isPlayer() && !obj.hasControllingPassenger()) {
 				shouldBoost = !obj.level().getBlockState(BlockPos.containing(obj.getEyePosition())).isAir() && SLibUtils.isSubmerged(obj, SubmersionGate.ALL);
 			}
-			if (shouldBoost) {
+			if (shouldBoost && damageTicks == 0) {
 				currentSubmersion = Arrays.stream(SubmersionGate.values()).filter(gate -> gate != SubmersionGate.ALL && SLibUtils.isSubmerged(obj, gate)).findFirst().orElse(null);
 				if (canUse(true)) {
 					boolean submerged = SLibUtils.isSubmerged(obj, SubmersionGate.ALL);
@@ -100,7 +109,7 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 			}
 		} else {
 			shouldBoost = false;
-			boost = 0;
+			boost = damageTicks = 0;
 		}
 	}
 
@@ -110,14 +119,16 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 		if (hasBoost()) {
 			LivingEntity controllingObj = obj.getControllingPassenger() instanceof Player player ? player : obj;
 			if (!controllingObj.isSpectator() && SLibClientUtils.isHost(controllingObj)) {
+				boolean lastShouldBoost = shouldBoost;
 				if (controllingObj.jumping) {
 					if (canUse(false)) {
 						shouldBoost = true;
-						BoostInFluidC2SPayload.send(obj, true);
 					}
 				} else if (shouldBoost) {
 					shouldBoost = false;
-					BoostInFluidC2SPayload.send(obj, false);
+				}
+				if (shouldBoost != lastShouldBoost) {
+					BoostInFluidC2SPayload.send(obj, shouldBoost);
 				}
 			}
 			if (shouldBoost) {
