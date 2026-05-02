@@ -20,7 +20,7 @@ import java.util.OptionalInt;
 public class EntityXrayClientEvent {
 	private static final Minecraft client = Minecraft.getInstance();
 
-	private static float xrayDistance = 0;
+	public static float xrayDistance = 0;
 
 	public static class Tick implements ClientTickEvents.EndLevelTick {
 		@Override
