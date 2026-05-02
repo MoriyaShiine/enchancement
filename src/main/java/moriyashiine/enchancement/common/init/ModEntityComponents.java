@@ -82,7 +82,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerFor(LivingEntity.class, PROJECTILE_TIMER, _ -> new ProjectileTimerComponent());
 		registry.registerFor(LightningBolt.class, SAFE_LIGHTNING, _ -> new SafeLightningComponent());
 		// enchantment effect component type
-		registry.registerForPlayers(AIR_JUMP, AirJumpComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+		registry.registerFor(LivingEntity.class, AIR_JUMP, AirJumpComponent::new);
 		registry.registerFor(Arrow.class, APPLY_RANDOM_MOB_EFFECT, _ -> new ApplyRandomMobEffectComponent());
 		registry.registerFor(AbstractArrow.class, APPLY_RANDOM_MOB_EFFECT_GENERIC, ApplyRandomMobEffectGenericComponent::new);
 		registry.registerFor(LivingEntity.class, BOOST_IN_FLUID, BoostInFluidComponent::new);
@@ -90,7 +90,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerFor(LivingEntity.class, BURY_ENTITY, BuryEntityComponent::new);
 		registry.registerForPlayers(CHARGE_JUMP, ChargeJumpComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(AbstractArrow.class, DELAYED_LAUNCH, DelayedLaunchComponent::new);
-		registry.registerForPlayers(DIRECTION_BURST, DirectionBurstComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+		registry.registerFor(LivingEntity.class, DIRECTION_BURST, DirectionBurstComponent::new);
 		registry.registerFor(FishingHook.class, DISARMING_FISHING_BOBBER, _ -> new DisarmingFishingBobberComponent());
 		registry.registerForPlayers(DISARMED_PLAYER, DisarmedPlayerComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(WanderingTrader.class, DISARMED_WANDERING_TRADER, _ -> new DisarmedWanderingTraderComponent());
@@ -100,7 +100,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerFor(ThrownTrident.class, LEECHING_TRIDENT, LeechingTridentComponent::new);
 		registry.registerForPlayers(LIGHTNING_DASH, LightningDashComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(AbstractArrow.class, PHASE_THROUGH_BLOCKS_AND_FLOAT, PhaseThroughBlocksAndFloatComponent::new);
-		registry.registerForPlayers(ROTATION_BURST, RotationBurstComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+		registry.registerFor(LivingEntity.class, ROTATION_BURST, RotationBurstComponent::new);
 		registry.registerForPlayers(SLAM, SlamComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(SLIDE, SlideComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(Projectile.class, TELEPORT_ON_HIT, TeleportOnHitComponent::new);

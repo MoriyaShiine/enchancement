@@ -13,6 +13,7 @@ import moriyashiine.strawberrylib.api.module.SLibUtils;
 import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
@@ -62,10 +63,13 @@ public class GlideComponent implements AutoSyncedComponent, CommonTickingCompone
 	@Override
 	public void clientTick() {
 		tick();
-		boolean shouldBeGliding = obj.jumping && airTicks >= minDuration && airTicks <= GlideEffect.getMaxDuration(obj) && canGlide();
-		if (gliding != shouldBeGliding && SLibClientUtils.isHost(obj)) {
-			gliding = shouldBeGliding;
-			GlideC2SPayload.send(gliding);
+		LivingEntity controllingObj = obj.getControllingPassenger() instanceof Player player ? player : obj;
+		if (!controllingObj.isSpectator() && SLibClientUtils.isHost(controllingObj)) {
+			boolean shouldBeGliding = controllingObj.jumping && airTicks >= minDuration && airTicks <= GlideEffect.getMaxDuration(obj) && canGlide();
+			if (gliding != shouldBeGliding) {
+				gliding = shouldBeGliding;
+				GlideC2SPayload.send(obj, gliding);
+			}
 		}
 		if (isGliding()) {
 			SLibClientUtils.addParticles(obj, ParticleTypes.SMALL_GUST, 4, ParticleAnchor.BASE);

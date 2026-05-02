@@ -13,6 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 public class AirJumpHudElement implements HudElement {
@@ -28,7 +29,7 @@ public class AirJumpHudElement implements HudElement {
 	public void extractRenderState(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
 		Player player = Minecraft.getInstance().player;
 		if (player != null && !player.isSpectator()) {
-			AirJumpComponent airJumpComponent = ModEntityComponents.AIR_JUMP.get(player);
+			AirJumpComponent airJumpComponent = ModEntityComponents.AIR_JUMP.get(player.getControlledVehicle() instanceof LivingEntity living ? living : player);
 			if (airJumpComponent.hasEffect()) {
 				int jumpsLeft = airJumpComponent.getJumpsLeft();
 				if (jumpsLeft < airJumpComponent.getMaxJumps()) {

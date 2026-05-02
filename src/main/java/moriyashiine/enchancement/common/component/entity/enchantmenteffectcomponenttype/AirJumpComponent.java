@@ -18,7 +18,7 @@ import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -33,7 +33,7 @@ public class AirJumpComponent extends PushComponent {
 
 	private boolean wasJumping = false;
 
-	public AirJumpComponent(Player obj) {
+	public AirJumpComponent(LivingEntity obj) {
 		super(obj);
 	}
 
@@ -79,13 +79,16 @@ public class AirJumpComponent extends PushComponent {
 	@Override
 	public void clientTick() {
 		tick();
-		if (hasEffect() && !obj.isSpectator() && SLibClientUtils.isHost(obj)) {
-			if (obj.jumping && !wasJumping && canUse()) {
-				use();
-				SLibClientUtils.addParticles(obj, ParticleTypes.CLOUD, 8, ParticleAnchor.BASE);
-				AirJumpPayload.send();
+		if (hasEffect()) {
+			LivingEntity controllingObj = getControllingObj();
+			if (!controllingObj.isSpectator() && SLibClientUtils.isHost(controllingObj)) {
+				if (controllingObj.jumping && !wasJumping && canUse()) {
+					use();
+					SLibClientUtils.addParticles(obj, ParticleTypes.CLOUD, 8, ParticleAnchor.BASE);
+					AirJumpPayload.send(obj);
+				}
+				wasJumping = controllingObj.jumping;
 			}
-			wasJumping = obj.jumping;
 		}
 	}
 
@@ -131,10 +134,12 @@ public class AirJumpComponent extends PushComponent {
 		}
 		jumpCooldown = AirJumpEffect.getJumpCooldown(obj);
 		jumpsLeft--;
-		obj.setDeltaMovement(obj.getDeltaMovement().x(), MultiplyMovementSpeedEvent.getJumpStrength(obj, AirJumpEffect.getAirJumpStrength(obj)), obj.getDeltaMovement().z());
-		if (obj.isSprinting()) {
-			float rad = (float) Math.toRadians(obj.getYRot());
-			obj.addDeltaMovement(new Vec3(-Mth.sin(rad) * 0.2, 0, Mth.cos(rad) * 0.2));
+		if (shouldApplyDeltaMovement()) {
+			obj.setDeltaMovement(obj.getDeltaMovement().x(), MultiplyMovementSpeedEvent.getJumpStrength(obj, AirJumpEffect.getAirJumpStrength(obj)), obj.getDeltaMovement().z());
+			if (obj.isSprinting()) {
+				float rad = (float) Math.toRadians(obj.getYRot());
+				obj.addDeltaMovement(new Vec3(-Mth.sin(rad) * 0.2, 0, Mth.cos(rad) * 0.2));
+			}
 		}
 		obj.playSound(ModSoundEvents.GENERIC_AIR_JUMP, 1, 1);
 		obj.gameEvent(GameEvent.ENTITY_ACTION);

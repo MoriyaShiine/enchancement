@@ -13,6 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 public class RotationBurstHudElement implements HudElement {
@@ -23,7 +24,7 @@ public class RotationBurstHudElement implements HudElement {
 	public void extractRenderState(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
 		Player player = Minecraft.getInstance().player;
 		if (player != null && !player.isSpectator()) {
-			RotationBurstComponent rotationBurstComponent = ModEntityComponents.ROTATION_BURST.get(player);
+			RotationBurstComponent rotationBurstComponent = ModEntityComponents.ROTATION_BURST.get(player.getControlledVehicle() instanceof LivingEntity living ? living : player);
 			if (rotationBurstComponent.hasEffect() && rotationBurstComponent.getCooldown() > 0) {
 				int x = graphics.guiWidth() / 2 - 5, y = graphics.guiHeight() / 2 + 18;
 				graphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_TEXTURE, x, y, 10, 4);

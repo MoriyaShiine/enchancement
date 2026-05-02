@@ -12,7 +12,6 @@ import moriyashiine.strawberrylib.api.objects.enums.SubmersionGate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,7 +25,7 @@ public abstract class PlayerMixin extends LivingEntity {
 
 	@ModifyReturnValue(method = "wantsToStopRiding", at = @At("RETURN"))
 	private boolean enchancement$fluidWalking(boolean original) {
-		if (original && getVehicle() instanceof Mob mob && EnchancementUtil.hasAnyEnchantmentsWith(mob, ModEnchantmentEffectComponentTypes.FLUID_WALKING) && level().getBlockState(BlockPos.containing(mob.getEyePosition())).isAir() && SLibUtils.isSubmerged(mob, SubmersionGate.ALL)) {
+		if (original && getVehicle() instanceof LivingEntity living && EnchancementUtil.hasAnyEnchantmentsWith(living, ModEnchantmentEffectComponentTypes.FLUID_WALKING) && level().getBlockState(BlockPos.containing(living.getEyePosition())).isAir() && SLibUtils.isSubmerged(living, SubmersionGate.ALL)) {
 			return false;
 		}
 		return original;

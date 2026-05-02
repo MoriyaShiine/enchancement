@@ -5,7 +5,6 @@
 package moriyashiine.enchancement.client.payload;
 
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.GlideComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -15,7 +14,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 
 public record GlideS2CPayload(int entityId, boolean gliding) implements CustomPacketPayload {
 	public static final Type<GlideS2CPayload> TYPE = new Type<>(Enchancement.id("glide_s2c"));
@@ -37,12 +35,11 @@ public record GlideS2CPayload(int entityId, boolean gliding) implements CustomPa
 		@Override
 		public void receive(GlideS2CPayload payload, ClientPlayNetworking.Context context) {
 			Entity entity = context.player().level().getEntity(payload.entityId());
-			if (entity instanceof LivingEntity) {
-				GlideComponent glideComponent = ModEntityComponents.GLIDE.get(entity);
+			ModEntityComponents.GLIDE.maybeGet(entity).ifPresent(glideComponent -> {
 				if (glideComponent.canGlide()) {
 					glideComponent.setGliding(payload.gliding());
 				}
-			}
+			});
 		}
 	}
 }

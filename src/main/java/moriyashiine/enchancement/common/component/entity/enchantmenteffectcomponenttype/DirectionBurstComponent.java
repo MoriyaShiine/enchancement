@@ -23,7 +23,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -35,7 +35,7 @@ public class DirectionBurstComponent extends PushComponent {
 	private boolean wasPressingKey = false;
 	private int ticksLeftToPressActivationKey = 0;
 
-	public DirectionBurstComponent(Player obj) {
+	public DirectionBurstComponent(LivingEntity obj) {
 		super(obj);
 	}
 
@@ -62,34 +62,37 @@ public class DirectionBurstComponent extends PushComponent {
 	@Override
 	public void clientTick() {
 		tick();
-		if (hasEffect() && !obj.isSpectator() && SLibClientUtils.isHost(obj)) {
-			boolean pressingKey = EnchancementClient.DIRECTION_BURST_KEYMAPPING.isDown();
-			if (ticksLeftToPressActivationKey > 0) {
-				ticksLeftToPressActivationKey--;
-			}
-			if (pressingKey && !wasPressingKey && canUse()) {
-				if (!ModConfig.doublePressDirectionBurst || ticksLeftToPressActivationKey > 0) {
-					ticksLeftToPressActivationKey = 0;
-					Vec3 inputDelta = getDeltaMovementFromInput();
-					if (inputDelta != Vec3.ZERO) {
-						Vec3 delta = inputDelta.yRot((float) Math.toRadians(-(obj.getYHeadRot() + 90))).scale(MultiplyMovementSpeedEvent.getMovementMultiplier(obj));
-						Vec3 current = obj.getDeltaMovement().scale(0.5);
-						double x = delta.x(), z = delta.z();
-						if (Double.compare(x, current.x()) * Math.signum(current.x()) > 0) {
-							x += current.x();
-						}
-						if (Double.compare(z, current.z()) * Math.signum(current.z()) > 0) {
-							z += current.z();
-						}
-						use(x, z);
-						SLibClientUtils.addParticles(obj, ParticleTypes.CLOUD, 8, ParticleAnchor.BODY);
-						DirectionBurstPayload.send(delta);
-					}
-				} else {
-					ticksLeftToPressActivationKey = 7;
+		if (hasEffect()) {
+			LivingEntity controllingObj = getControllingObj();
+			if (!controllingObj.isSpectator() && SLibClientUtils.isHost(controllingObj)) {
+				boolean pressingKey = EnchancementClient.DIRECTION_BURST_KEYMAPPING.isDown();
+				if (ticksLeftToPressActivationKey > 0) {
+					ticksLeftToPressActivationKey--;
 				}
+				if (pressingKey && !wasPressingKey && canUse()) {
+					if (!ModConfig.doublePressDirectionBurst || ticksLeftToPressActivationKey > 0) {
+						ticksLeftToPressActivationKey = 0;
+						Vec3 inputDelta = getDeltaMovementFromInput();
+						if (inputDelta != Vec3.ZERO) {
+							Vec3 delta = inputDelta.yRot((float) Math.toRadians(-(obj.getYHeadRot() + 90))).scale(MultiplyMovementSpeedEvent.getMovementMultiplier(obj));
+							Vec3 current = obj.getDeltaMovement().scale(0.5);
+							double x = delta.x(), z = delta.z();
+							if (Double.compare(x, current.x()) * Math.signum(current.x()) > 0) {
+								x += current.x();
+							}
+							if (Double.compare(z, current.z()) * Math.signum(current.z()) > 0) {
+								z += current.z();
+							}
+							use(x, z);
+							SLibClientUtils.addParticles(obj, ParticleTypes.CLOUD, 8, ParticleAnchor.BODY);
+							DirectionBurstPayload.send(obj, delta);
+						}
+					} else {
+						ticksLeftToPressActivationKey = 7;
+					}
+				}
+				wasPressingKey = pressingKey;
 			}
-			wasPressingKey = pressingKey;
 		}
 	}
 
@@ -134,7 +137,9 @@ public class DirectionBurstComponent extends PushComponent {
 		if (!obj.onGround()) {
 			gravityTicks = 3;
 		}
-		obj.setDeltaMovement(x, 0, z);
+		if (shouldApplyDeltaMovement()) {
+			obj.setDeltaMovement(x, 0, z);
+		}
 		obj.playSound(ModSoundEvents.GENERIC_STRAFE, 1, 1);
 		obj.gameEvent(GameEvent.ENTITY_ACTION);
 		EnchancementUtil.resetFallDistance(obj);

@@ -13,6 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 public class DirectionBurstHudElement implements HudElement {
@@ -23,7 +24,7 @@ public class DirectionBurstHudElement implements HudElement {
 	public void extractRenderState(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
 		Player player = Minecraft.getInstance().player;
 		if (player != null && !player.isSpectator()) {
-			DirectionBurstComponent directionBurstComponent = ModEntityComponents.DIRECTION_BURST.get(player);
+			DirectionBurstComponent directionBurstComponent = ModEntityComponents.DIRECTION_BURST.get(player.getControlledVehicle() instanceof LivingEntity living ? living : player);
 			if (directionBurstComponent.hasEffect() && directionBurstComponent.getCooldown() > 0) {
 				int x = graphics.guiWidth() / 2 - 5, y = graphics.guiHeight() / 2 - 14;
 				graphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_TEXTURE, x, y, 10, 4);

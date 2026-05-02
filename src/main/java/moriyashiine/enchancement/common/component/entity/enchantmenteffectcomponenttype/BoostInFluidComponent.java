@@ -108,6 +108,18 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 	public void clientTick() {
 		tick();
 		if (hasBoost()) {
+			LivingEntity controllingObj = obj.getControllingPassenger() instanceof Player player ? player : obj;
+			if (!controllingObj.isSpectator() && SLibClientUtils.isHost(controllingObj)) {
+				if (controllingObj.jumping) {
+					if (canUse(false)) {
+						shouldBoost = true;
+						BoostInFluidC2SPayload.send(obj, true);
+					}
+				} else if (shouldBoost) {
+					shouldBoost = false;
+					BoostInFluidC2SPayload.send(obj, false);
+				}
+			}
 			if (shouldBoost) {
 				ParticleOptions main = ParticleTypes.SPLASH, secondary = ParticleTypes.SPLASH, tertiary = ParticleTypes.SPLASH;
 				if (currentSubmersion == SubmersionGate.WATER_ONLY) {
@@ -125,18 +137,6 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 						obj.level().addParticle(secondary, obj.getRandomX(0.5), obj.getBlockY() + 1, obj.getRandomZ(0.5), 0, 1, 0);
 						obj.level().addParticle(tertiary, obj.getRandomX(0.5), obj.getBlockY() + 1, obj.getRandomZ(0.5), 0, 0.2, 0);
 					}
-				}
-			}
-			LivingEntity entity = obj.getControllingPassenger() instanceof Player player ? player : obj;
-			if (SLibClientUtils.isHost(entity)) {
-				if (entity.jumping) {
-					if (canUse(false)) {
-						shouldBoost = true;
-						BoostInFluidC2SPayload.send(obj, true);
-					}
-				} else if (shouldBoost) {
-					shouldBoost = false;
-					BoostInFluidC2SPayload.send(obj, false);
 				}
 			}
 		}

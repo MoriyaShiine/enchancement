@@ -13,7 +13,7 @@ import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public abstract class PushComponent implements AutoSyncedComponent, CommonTickingComponent {
-	protected final Player obj;
+	protected final LivingEntity obj;
 	protected boolean shouldRefresh = false;
 	protected int cooldown = 0, lastCooldown = 0;
 
@@ -21,7 +21,7 @@ public abstract class PushComponent implements AutoSyncedComponent, CommonTickin
 
 	private boolean resetNextTick = false;
 
-	protected PushComponent(Player obj) {
+	protected PushComponent(LivingEntity obj) {
 		this.obj = obj;
 	}
 
@@ -95,6 +95,17 @@ public abstract class PushComponent implements AutoSyncedComponent, CommonTickin
 
 	public int getLastCooldown() {
 		return lastCooldown;
+	}
+
+	protected LivingEntity getControllingObj() {
+		return obj.getControllingPassenger() instanceof Player player ? player : obj;
+	}
+
+	protected boolean shouldApplyDeltaMovement() {
+		if (obj.getControllingPassenger() instanceof Player) {
+			return obj.level().isClientSide();
+		}
+		return true;
 	}
 
 	protected boolean updateRefresh() {

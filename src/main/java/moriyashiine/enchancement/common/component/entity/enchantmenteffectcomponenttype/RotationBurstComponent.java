@@ -18,7 +18,7 @@ import moriyashiine.strawberrylib.api.module.SLibUtils;
 import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -30,7 +30,7 @@ public class RotationBurstComponent extends PushComponent {
 	private boolean wasPressingKey = false;
 	private int ticksPressingJump = 0;
 
-	public RotationBurstComponent(Player obj) {
+	public RotationBurstComponent(LivingEntity obj) {
 		super(obj);
 	}
 
@@ -57,19 +57,22 @@ public class RotationBurstComponent extends PushComponent {
 	@Override
 	public void clientTick() {
 		tick();
-		if (hasEffect() && !obj.isSpectator() && SLibClientUtils.isHost(obj)) {
-			if (obj.jumping) {
-				ticksPressingJump = Math.min(2, ++ticksPressingJump);
-			} else {
-				ticksPressingJump = 0;
+		if (hasEffect()) {
+			LivingEntity controllingObj = getControllingObj();
+			if (!controllingObj.isSpectator() && SLibClientUtils.isHost(controllingObj)) {
+				if (controllingObj.jumping) {
+					ticksPressingJump = Math.min(2, ++ticksPressingJump);
+				} else {
+					ticksPressingJump = 0;
+				}
+				boolean pressingKey = EnchancementClient.ROTATION_BURST_KEYMAPPING.isDown();
+				if (pressingKey && !wasPressingKey && canUse()) {
+					use();
+					SLibClientUtils.addParticles(obj, ParticleTypes.CLOUD, 8, ParticleAnchor.BODY);
+					RotationBurstPayload.send(obj);
+				}
+				wasPressingKey = pressingKey;
 			}
-			boolean pressingKey = EnchancementClient.ROTATION_BURST_KEYMAPPING.isDown();
-			if (pressingKey && !wasPressingKey && canUse()) {
-				use();
-				SLibClientUtils.addParticles(obj, ParticleTypes.CLOUD, 8, ParticleAnchor.BODY);
-				RotationBurstPayload.send();
-			}
-			wasPressingKey = pressingKey;
 		}
 	}
 
@@ -107,8 +110,10 @@ public class RotationBurstComponent extends PushComponent {
 	public void use() {
 		reset();
 		wavedashTicks = RotationBurstEffect.getWavedashTicks(obj);
-		Vec3 delta = obj.getLookAngle().normalize().scale(RotationBurstEffect.getStrength(obj)).scale(MultiplyMovementSpeedEvent.getMovementMultiplier(obj));
-		obj.setDeltaMovement(delta.x(), delta.y(), delta.z());
+		if (shouldApplyDeltaMovement()) {
+			Vec3 delta = obj.getLookAngle().normalize().scale(RotationBurstEffect.getStrength(obj)).scale(MultiplyMovementSpeedEvent.getMovementMultiplier(obj));
+			obj.setDeltaMovement(delta.x(), delta.y(), delta.z());
+		}
 		obj.playSound(ModSoundEvents.GENERIC_DASH, 1, 1);
 		obj.gameEvent(GameEvent.ENTITY_ACTION);
 		EnchancementUtil.resetFallDistance(obj);
