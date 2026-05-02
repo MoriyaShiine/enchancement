@@ -74,16 +74,8 @@ public class DirectionBurstComponent extends PushComponent {
 						ticksLeftToPressActivationKey = 0;
 						Vec3 inputDelta = getDeltaMovementFromInput();
 						if (inputDelta != Vec3.ZERO) {
-							Vec3 delta = inputDelta.yRot((float) Math.toRadians(-(obj.getYHeadRot() + 90))).scale(MultiplyMovementSpeedEvent.getMovementMultiplier(obj));
-							Vec3 current = obj.getDeltaMovement().scale(0.5);
-							double x = delta.x(), z = delta.z();
-							if (Double.compare(x, current.x()) * Math.signum(current.x()) > 0) {
-								x += current.x();
-							}
-							if (Double.compare(z, current.z()) * Math.signum(current.z()) > 0) {
-								z += current.z();
-							}
-							use(x, z);
+							Vec3 delta = createDelta(inputDelta);
+							use(delta);
 							SLibClientUtils.addParticles(obj, ParticleTypes.CLOUD, 8, ParticleAnchor.BODY);
 							DirectionBurstPayload.send(obj, delta);
 						}
@@ -132,18 +124,31 @@ public class DirectionBurstComponent extends PushComponent {
 		return gravityTicks > 0;
 	}
 
-	public void use(double x, double z) {
+	public void use(Vec3 delta) {
 		reset();
 		if (!obj.onGround()) {
 			gravityTicks = 3;
 		}
 		if (shouldApplyDeltaMovement()) {
-			obj.setDeltaMovement(x, 0, z);
+			obj.setDeltaMovement(delta.x(), 0, delta.z());
 		}
 		obj.playSound(ModSoundEvents.GENERIC_STRAFE, 1, 1);
 		obj.gameEvent(GameEvent.ENTITY_ACTION);
 		EnchancementUtil.resetFallDistance(obj);
 		ModEntityComponents.AIR_MOBILITY.get(obj).resetTicksInAir();
+	}
+
+	public Vec3 createDelta(Vec3 inputDelta) {
+		Vec3 delta = inputDelta.yRot((float) Math.toRadians(-(obj.getYHeadRot() + 90))).scale(MultiplyMovementSpeedEvent.getMovementMultiplier(obj));
+		Vec3 current = obj.getDeltaMovement().scale(0.5);
+		double x = delta.x(), z = delta.z();
+		if (Double.compare(x, current.x()) * Math.signum(current.x()) > 0) {
+			x += current.x();
+		}
+		if (Double.compare(z, current.z()) * Math.signum(current.z()) > 0) {
+			z += current.z();
+		}
+		return new Vec3(x, delta.y(), z);
 	}
 
 	@Environment(EnvType.CLIENT)
