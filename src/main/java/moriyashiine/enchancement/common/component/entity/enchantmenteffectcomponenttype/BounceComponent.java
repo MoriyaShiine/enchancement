@@ -8,12 +8,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
-import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
+import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
-public class BounceComponent implements ServerTickingComponent, AutoSyncedComponent {
+public class BounceComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private final LivingEntity obj;
-	private boolean invertedBounce = false, justBounced = false;
-	private int ticksOnGround = 0;
+	private boolean invertedBounce = false;
+	private double nextBounceStrength = 0;
 
 	public BounceComponent(LivingEntity obj) {
 		this.obj = obj;
@@ -22,26 +22,22 @@ public class BounceComponent implements ServerTickingComponent, AutoSyncedCompon
 	@Override
 	public void readData(ValueInput input) {
 		invertedBounce = input.getBooleanOr("InvertedBounce", false);
-		justBounced = input.getBooleanOr("JustBounced", false);
-		ticksOnGround = input.getIntOr("TicksOnGround", 0);
+		nextBounceStrength = input.getDoubleOr("NextBounceStrength", 0);
 	}
 
 	@Override
 	public void writeData(ValueOutput output) {
 		output.putBoolean("InvertedBounce", invertedBounce);
-		output.putBoolean("JustBounced", justBounced);
-		output.putInt("TicksOnGround", ticksOnGround);
+		output.putDouble("NextBounceStrength", nextBounceStrength);
 	}
 
 	@Override
-	public void serverTick() {
-		if (ticksOnGround == 5) {
-			justBounced = false;
-		}
-		if (ticksOnGround < 5 && obj.onGround()) {
-			ticksOnGround++;
-		} else {
-			ticksOnGround = 0;
+	public void tick() {
+		if (nextBounceStrength != 0) {
+			if (obj.canSimulateMovement()) {
+				obj.setDeltaMovement(obj.getDeltaMovement().x(), nextBounceStrength, obj.getDeltaMovement().z());
+			}
+			nextBounceStrength = 0;
 		}
 	}
 
@@ -53,11 +49,7 @@ public class BounceComponent implements ServerTickingComponent, AutoSyncedCompon
 		this.invertedBounce = invertedBounce;
 	}
 
-	public boolean justBounced() {
-		return justBounced;
-	}
-
-	public void markBounced() {
-		justBounced = true;
+	public void bounce(double bounceStrength) {
+		nextBounceStrength = bounceStrength;
 	}
 }

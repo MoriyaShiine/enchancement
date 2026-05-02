@@ -179,8 +179,7 @@ public class Enchancement implements ModInitializer {
 		MultiplyMovementSpeedEvent.EVENT.register(new ModifySubmergedMovementSpeedEvent());
 		// enchantment effect component type
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(new AllowInterruptionEvent());
-		PreventFallDamageEvent.EVENT.register(new BounceEvent.Bounce());
-		ServerTickEvents.END_SERVER_TICK.register(new BounceEvent.DelayedBounce());
+		PreventFallDamageEvent.EVENT.register(new BounceEvent());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new BuryEntityEvent.Unbury());
 		UseEntityCallback.EVENT.register(new BuryEntityEvent.Use());
 		AfterDamageIncludingDeathEvent.EVENT.register(new ChainLightningEvent());
