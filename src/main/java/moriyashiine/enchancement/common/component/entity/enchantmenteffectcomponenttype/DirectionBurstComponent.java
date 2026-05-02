@@ -129,7 +129,7 @@ public class DirectionBurstComponent extends PushComponent {
 		if (!obj.onGround()) {
 			gravityTicks = 3;
 		}
-		if (shouldApplyDeltaMovement()) {
+		if (obj.canSimulateMovement()) {
 			obj.setDeltaMovement(delta.x(), 0, delta.z());
 		}
 		obj.playSound(ModSoundEvents.GENERIC_STRAFE, 1, 1);

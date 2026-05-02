@@ -16,7 +16,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.level.Level;
@@ -30,7 +29,6 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
-import java.util.Set;
 
 @Mixin(ProjectileWeaponItem.class)
 public abstract class ProjectileWeaponItemMixin {
@@ -80,7 +78,6 @@ public abstract class ProjectileWeaponItemMixin {
 
 	@Unique
 	private static boolean shouldApply(LivingEntity shooter, ItemStack weaponStack, ItemStack projectileStack) {
-		Set<Item> allowedProjectiles = ScatterShotEffect.getAllowedProjectiles(shooter, weaponStack);
-		return !(shooter instanceof Player) || allowedProjectiles.contains(projectileStack.getItem());
+		return !(shooter instanceof Player) || ScatterShotEffect.getAllowedProjectiles(shooter, weaponStack).contains(projectileStack.getItem());
 	}
 }

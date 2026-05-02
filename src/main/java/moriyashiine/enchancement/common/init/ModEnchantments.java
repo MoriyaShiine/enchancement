@@ -17,10 +17,7 @@ import moriyashiine.enchancement.common.world.level.storage.loot.predicates.WetC
 import moriyashiine.enchancement.data.provider.ModEnchantmentTagsProvider;
 import moriyashiine.strawberrylib.api.objects.enums.SubmersionGate;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.advancements.criterion.EntityTypePredicate;
-import net.minecraft.advancements.criterion.MinMaxBounds;
-import net.minecraft.advancements.criterion.MovementPredicate;
-import net.minecraft.advancements.criterion.TagPredicate;
+import net.minecraft.advancements.criterion.*;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
@@ -160,7 +157,7 @@ public class ModEnchantments {
 							EnchantmentEffectComponents.TICK,
 							new AutomateEatingEnchantmentEffect(MinMaxBounds.Ints.atMost(14)),
 							AllOfCondition.allOf(
-									LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, net.minecraft.advancements.criterion.EntityPredicate.Builder.entity().periodicTick(20)),
+									LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().periodicTick(20)),
 									() -> InvertedLootItemCondition.invert(() -> InCombatCondition.INSTANCE).build()
 							));
 				}));
@@ -271,7 +268,7 @@ public class ModEnchantments {
 							EnchantmentEffectComponents.DAMAGE_PROTECTION,
 							new AddValue(LevelBasedValue.perLevel(8)),
 							AllOfCondition.allOf(
-									DamageSourceCondition.hasDamageSource(net.minecraft.advancements.criterion.DamageSourcePredicate.Builder.damageType().tag(TagPredicate.isNot(ModDamageTypeTags.BYPASSES_WARDENSPINE))),
+									DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().tag(TagPredicate.isNot(ModDamageTypeTags.BYPASSES_WARDENSPINE))),
 									() -> AttackerBehindCondition.INSTANCE
 							));
 					builder.withEffect(
@@ -299,7 +296,7 @@ public class ModEnchantments {
 									)
 							),
 							AllOfCondition.allOf(
-									DamageSourceCondition.hasDamageSource(net.minecraft.advancements.criterion.DamageSourcePredicate.Builder.damageType().tag(TagPredicate.isNot(ModDamageTypeTags.BYPASSES_WARDENSPINE))),
+									DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().tag(TagPredicate.isNot(ModDamageTypeTags.BYPASSES_WARDENSPINE))),
 									() -> AttackerBehindCondition.INSTANCE
 							));
 				}));
@@ -406,7 +403,7 @@ public class ModEnchantments {
 							EnchantmentEffectComponents.DAMAGE_IMMUNITY,
 							DamageImmunity.INSTANCE,
 							DamageSourceCondition.hasDamageSource(
-									net.minecraft.advancements.criterion.DamageSourcePredicate.Builder.damageType()
+									DamageSourcePredicate.Builder.damageType()
 											.tag(TagPredicate.is(DamageTypeTags.BURN_FROM_STEPPING))
 											.tag(TagPredicate.isNot(DamageTypeTags.BYPASSES_INVULNERABILITY))
 							)
@@ -449,7 +446,7 @@ public class ModEnchantments {
 							EnchantmentTarget.ATTACKER,
 							EnchantmentTarget.VICTIM,
 							new FreezeEnchantmentEffect(LevelBasedValue.perLevel(6)),
-							DamageSourceCondition.hasDamageSource(net.minecraft.advancements.criterion.DamageSourcePredicate.Builder.damageType().isDirect(true)));
+							DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().isDirect(true)));
 				}));
 		// bow
 		registry.register(CHAOS, create(CHAOS.identifier(),
@@ -568,7 +565,7 @@ public class ModEnchantments {
 							EnchantmentTarget.ATTACKER,
 							EnchantmentTarget.ATTACKER,
 							new HealEnchantmentEffect(LevelBasedValue.perLevel(0.5F)),
-							DamageSourceCondition.hasDamageSource(net.minecraft.advancements.criterion.DamageSourcePredicate.Builder.damageType().isDirect(true)));
+							DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().isDirect(true)));
 					builder.withEffect(
 							EnchantmentEffectComponents.POST_ATTACK,
 							EnchantmentTarget.ATTACKER,
@@ -581,7 +578,7 @@ public class ModEnchantments {
 									SpawnParticlesEffect.movementScaled(0),
 									ConstantFloat.of(0)
 							),
-							DamageSourceCondition.hasDamageSource(net.minecraft.advancements.criterion.DamageSourcePredicate.Builder.damageType().isDirect(true)));
+							DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().isDirect(true)));
 				}));
 		registry.register(WARP, create(WARP.identifier(),
 				itemLookup.getOrThrow(ItemTags.TRIDENT_ENCHANTABLE),
@@ -629,8 +626,8 @@ public class ModEnchantments {
 							),
 							LootItemEntityPropertyCondition.hasProperties(
 									LootContext.EntityTarget.DIRECT_ATTACKER,
-									net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
-											.flags(net.minecraft.advancements.criterion.EntityFlagsPredicate.Builder.flags().setIsFlying(false))
+									EntityPredicate.Builder.entity()
+											.flags(EntityFlagsPredicate.Builder.flags().setIsFlying(false))
 											.moving(MovementPredicate.fallDistance(MinMaxBounds.Doubles.atLeast(1.5)))
 							));
 				}));
@@ -684,7 +681,7 @@ public class ModEnchantments {
 						EnchantmentTarget.ATTACKER,
 						EnchantmentTarget.VICTIM,
 						new AddValue(LevelBasedValue.perLevel(0.5F)),
-						LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.ATTACKER, net.minecraft.advancements.criterion.EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypeLookup, EntityType.PLAYER)))
+						LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.ATTACKER, EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypeLookup, EntityType.PLAYER)))
 				)));
 		registry.register(LUMBERJACK, create(LUMBERJACK.identifier(),
 				itemLookup.getOrThrow(ItemTags.AXES),
@@ -714,7 +711,7 @@ public class ModEnchantments {
 							EnchantmentTarget.ATTACKER,
 							EnchantmentTarget.VICTIM,
 							new AddValue(LevelBasedValue.perLevel(0.01F)),
-							LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.ATTACKER, net.minecraft.advancements.criterion.EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypeLookup, EntityType.PLAYER))));
+							LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.ATTACKER, EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypeLookup, EntityType.PLAYER))));
 				}));
 		// hoe
 		registry.register(APEX, create(APEX.identifier(),

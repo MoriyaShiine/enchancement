@@ -75,7 +75,7 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 					} else {
 						boost = Math.max(targetBoost, boost - 0.025F);
 					}
-					if (shouldApplyDeltaMovement()) {
+					if (obj.canSimulateMovement()) {
 						obj.setDeltaMovement(obj.getDeltaMovement().x() * (submerged ? 1 : 0.95), Math.max(boost, obj.getDeltaMovement().y()), obj.getDeltaMovement().z() * (submerged ? 1 : 0.95));
 					}
 					obj.gameEvent(GameEvent.ENTITY_ACTION);
@@ -169,12 +169,5 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 
 	public boolean blocksAirEffects() {
 		return hasBoost() && canUse(true);
-	}
-
-	private boolean shouldApplyDeltaMovement() {
-		if (obj.getControllingPassenger() instanceof Player) {
-			return obj.level().isClientSide();
-		}
-		return true;
 	}
 }

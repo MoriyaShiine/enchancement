@@ -101,13 +101,6 @@ public abstract class PushComponent implements AutoSyncedComponent, CommonTickin
 		return obj.getControllingPassenger() instanceof Player player ? player : obj;
 	}
 
-	protected boolean shouldApplyDeltaMovement() {
-		if (obj.getControllingPassenger() instanceof Player) {
-			return obj.level().isClientSide();
-		}
-		return true;
-	}
-
 	protected boolean updateRefresh() {
 		return obj.onGround();
 	}

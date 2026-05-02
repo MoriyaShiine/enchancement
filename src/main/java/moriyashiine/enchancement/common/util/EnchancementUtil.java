@@ -298,7 +298,7 @@ public class EnchancementUtil {
 
 	public static int getFlooredHealth(LivingEntity living) {
 		float percentage = living.getHealth() / living.getMaxHealth();
-		return (int) Math.floor(percentage * 10 + 0.5);
+		return Mth.floor(percentage * 10 + 0.5);
 	}
 
 	public static void resetFallDistance(Entity entity) {

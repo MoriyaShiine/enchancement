@@ -134,7 +134,7 @@ public class AirJumpComponent extends PushComponent {
 		}
 		jumpCooldown = AirJumpEffect.getJumpCooldown(obj);
 		jumpsLeft--;
-		if (shouldApplyDeltaMovement()) {
+		if (obj.canSimulateMovement()) {
 			obj.setDeltaMovement(obj.getDeltaMovement().x(), MultiplyMovementSpeedEvent.getJumpStrength(obj, AirJumpEffect.getAirJumpStrength(obj)), obj.getDeltaMovement().z());
 			if (obj.isSprinting()) {
 				float rad = (float) Math.toRadians(obj.getYRot());
