@@ -114,7 +114,7 @@ public class ChargeJumpComponent implements AutoSyncedComponent, CommonTickingCo
 	}
 
 	public boolean shouldRender() {
-		return renderTicks > 0;
+		return renderTicks > 0 && !obj.isPassenger();
 	}
 
 	public boolean hasChargeJump() {
