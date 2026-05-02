@@ -8,6 +8,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,6 +27,14 @@ public record RageEffect(EnchantmentValueEffect damageDealtModifier, Enchantment
 	// damage dealt
 	public static int color = -1;
 
+	private static int getFlooredPercentage(LivingEntity living, ItemStack stack) {
+		float percentage = living.getHealth() / living.getMaxHealth();
+		if (stack.is(ConventionalItemTags.WOLF_ARMORS)) {
+			percentage = (stack.getMaxDamage() - stack.getDamageValue()) / (float) stack.getMaxDamage();
+		}
+		return Mth.floor(percentage * 10 + 0.5);
+	}
+
 	public static float getDamageDealtModifier(LivingEntity entity, ItemStack stack) {
 		MutableFloat value = new MutableFloat();
 		EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
@@ -34,7 +43,7 @@ public record RageEffect(EnchantmentValueEffect damageDealtModifier, Enchantment
 				value.setValue(effect.damageDealtModifier().process(level, entity.getRandom(), value.floatValue()));
 			}
 		});
-		return (10 - Math.max(3, EnchancementUtil.getFlooredHealth(entity))) * value.floatValue();
+		return (10 - Math.max(3, getFlooredPercentage(entity, stack))) * value.floatValue();
 	}
 
 	public static float getDamageDealtModifierMax(LivingEntity entity, ItemStack stack) {
@@ -71,7 +80,7 @@ public record RageEffect(EnchantmentValueEffect damageDealtModifier, Enchantment
 				value.setValue(effect.damageTakenModifier().process(level, entity.getRandom(), value.floatValue()));
 			}
 		});
-		return Math.max(0, 1 - Mth.floor((10 - Math.max(3, EnchancementUtil.getFlooredHealth(entity))) * value.floatValue() * 100) / 100F);
+		return Math.max(0, 1 - Mth.floor((10 - Math.max(3, getFlooredPercentage(entity, stack))) * value.floatValue() * 100) / 100F);
 	}
 
 	public static float getDamageTakenModifier(LivingEntity entity) {
@@ -94,7 +103,7 @@ public record RageEffect(EnchantmentValueEffect damageDealtModifier, Enchantment
 				value.setValue(effect.movementSpeedModifier().process(level, entity.getRandom(), value.floatValue()));
 			}
 		});
-		return Math.max(0, Mth.floor((10 - Math.max(3, EnchancementUtil.getFlooredHealth(entity))) * value.floatValue() * 100) / 100F);
+		return Math.max(0, Mth.floor((10 - Math.max(3, getFlooredPercentage(entity, stack))) * value.floatValue() * 100) / 100F);
 	}
 
 	public static float getMovementSpeedModifier(LivingEntity entity) {

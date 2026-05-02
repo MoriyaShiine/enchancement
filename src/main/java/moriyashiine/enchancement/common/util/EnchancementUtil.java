@@ -296,11 +296,6 @@ public class EnchancementUtil {
 		return asymptote * 2 / (1 + Math.pow(Math.E, -value / (asymptote / 2))) - asymptote;
 	}
 
-	public static int getFlooredHealth(LivingEntity living) {
-		float percentage = living.getHealth() / living.getMaxHealth();
-		return Mth.floor(percentage * 10 + 0.5);
-	}
-
 	public static void resetFallDistance(Entity entity) {
 		entity.resetFallDistance();
 		ModEntityComponents.LIGHTNING_DASH.maybeGet(entity).ifPresent(LightningDashComponent::cancel);
