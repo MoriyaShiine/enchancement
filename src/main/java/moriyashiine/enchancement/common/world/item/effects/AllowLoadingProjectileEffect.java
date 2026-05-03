@@ -64,7 +64,7 @@ public record AllowLoadingProjectileEffect(Identifier model, SoundEvent soundEve
 		});
 		PROJECTILE_MAP.put(Items.TORCH, (level, mob, projectile, firedFromWeapon) -> {
 			Torch torch = new Torch(level, mob, projectile, firedFromWeapon);
-			torch.setBaseDamage(torch.baseDamage / 2);
+			torch.setBaseDamage(torch.baseDamage / 3);
 			int enchantmentLevel = 0;
 			if (firedFromWeapon != null) {
 				for (Holder<Enchantment> enchantment : firedFromWeapon.getEnchantments().keySet()) {

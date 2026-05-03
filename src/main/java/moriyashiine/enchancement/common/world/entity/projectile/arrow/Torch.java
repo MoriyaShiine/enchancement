@@ -27,6 +27,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class Torch extends AbstractArrow {
@@ -51,12 +52,33 @@ public class Torch extends AbstractArrow {
 	}
 
 	@Override
+	protected void readAdditionalSaveData(ValueInput input) {
+		super.readAdditionalSaveData(input);
+		canFunction = input.getBooleanOr("CanFunction", false);
+		shouldPlaceTorch = input.getBooleanOr("ShouldPlaceTorch", false);
+		ignitionTime = input.getIntOr("IgnitionTime", 0);
+	}
+
+	@Override
+	protected void addAdditionalSaveData(ValueOutput output) {
+		super.addAdditionalSaveData(output);
+		output.putBoolean("CanFunction", canFunction);
+		output.putBoolean("ShouldPlaceTorch", shouldPlaceTorch);
+		output.putInt("IgnitionTime", ignitionTime);
+	}
+
+	@Override
 	public void tick() {
 		super.tick();
 		if (level().isClientSide()) {
 			level().addParticle(ParticleTypes.FLAME, getX(), getY(), getZ(), 0, 0, 0);
 			level().addParticle(ParticleTypes.SMOKE, getX(), getY(), getZ(), 0, 0, 0);
 		}
+	}
+
+	@Override
+	public Vec3 getMovementToShoot(double xd, double yd, double zd, float pow, float uncertainty) {
+		return super.getMovementToShoot(xd, yd, zd, pow, uncertainty).scale(2);
 	}
 
 	@Override
@@ -105,22 +127,6 @@ public class Torch extends AbstractArrow {
 				}
 			}
 		}
-	}
-
-	@Override
-	protected void readAdditionalSaveData(ValueInput input) {
-		super.readAdditionalSaveData(input);
-		canFunction = input.getBooleanOr("CanFunction", false);
-		shouldPlaceTorch = input.getBooleanOr("ShouldPlaceTorch", false);
-		ignitionTime = input.getIntOr("IgnitionTime", 0);
-	}
-
-	@Override
-	protected void addAdditionalSaveData(ValueOutput output) {
-		super.addAdditionalSaveData(output);
-		output.putBoolean("CanFunction", canFunction);
-		output.putBoolean("ShouldPlaceTorch", shouldPlaceTorch);
-		output.putInt("IgnitionTime", ignitionTime);
 	}
 
 	@Override
