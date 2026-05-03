@@ -14,7 +14,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 
 public record StartSlammingS2CPayload(int entityId) implements CustomPacketPayload {
 	public static final Type<StartSlammingS2CPayload> TYPE = new Type<>(Enchancement.id("start_slamming_s2c"));
@@ -35,9 +34,7 @@ public record StartSlammingS2CPayload(int entityId) implements CustomPacketPaylo
 		@Override
 		public void receive(StartSlammingS2CPayload payload, ClientPlayNetworking.Context context) {
 			Entity entity = context.player().level().getEntity(payload.entityId());
-			if (entity instanceof Player player) {
-				ModEntityComponents.SLAM.get(player).setSlamming(true);
-			}
+			ModEntityComponents.SLAM.maybeGet(entity).ifPresent(slamComponent -> slamComponent.setSlamming(true));
 		}
 	}
 }

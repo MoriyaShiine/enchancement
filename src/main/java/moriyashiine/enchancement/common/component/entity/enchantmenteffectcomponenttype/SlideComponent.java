@@ -8,16 +8,18 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import moriyashiine.enchancement.client.EnchancementClient;
+import moriyashiine.enchancement.client.payload.SlideS2CPayload;
 import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModParticleTypes;
-import moriyashiine.enchancement.common.payload.StartSlidingC2SPayload;
-import moriyashiine.enchancement.common.payload.StopSlidingC2SPayload;
+import moriyashiine.enchancement.common.payload.SlideC2SPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.core.BlockPos;
@@ -25,9 +27,10 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
@@ -40,7 +43,7 @@ public class SlideComponent implements CommonTickingComponent {
 
 	private static final int MAX_SLIDING_TICKS = 10, MAX_WATER_SKIP_TICKS = 30;
 
-	private final Player obj;
+	private final LivingEntity obj;
 	private SlideDeltaMovement delta = SlideDeltaMovement.ZERO, adjustedDelta = SlideDeltaMovement.ZERO;
 	private float cachedYRot = 0;
 	private int slidingTicks = 0;
@@ -49,7 +52,7 @@ public class SlideComponent implements CommonTickingComponent {
 
 	private int crawlTimer = 0, waterSkipTicks = 0;
 
-	public SlideComponent(Player obj) {
+	public SlideComponent(LivingEntity obj) {
 		this.obj = obj;
 	}
 
@@ -116,6 +119,7 @@ public class SlideComponent implements CommonTickingComponent {
 	@Override
 	public void serverTick() {
 		tick();
+		tickMob();
 		boolean sliding = hasSlide() && isSliding();
 		SLibUtils.conditionallyApplyAttributeModifier(obj, Attributes.SAFE_FALL_DISTANCE, SAFE_FALL_DISTANCE_MODIFIER, sliding);
 		SLibUtils.conditionallyApplyAttributeModifier(obj, Attributes.STEP_HEIGHT, STEP_HEIGHT_MODIFIER, sliding);
@@ -129,13 +133,13 @@ public class SlideComponent implements CommonTickingComponent {
 				if (EnchancementClient.SLIDE_KEYMAPPING.isDown() && !obj.isShiftKeyDown() && !obj.jumping) {
 					if (canSlide()) {
 						delta = getDeltaMovementFromInput();
-						adjustedDelta = delta.rotateY((float) Math.toRadians(-(obj.getYRot() + 90)));
+						adjustedDelta = createAdjustedDelta(delta);
 						cachedYRot = obj.getYRot();
-						StartSlidingC2SPayload.send(delta, adjustedDelta, cachedYRot);
+						SlideC2SPayload.send(obj, delta, adjustedDelta, cachedYRot);
 					}
 				} else if (delta != SlideDeltaMovement.ZERO) {
 					stopSliding();
-					StopSlidingC2SPayload.send();
+					SlideC2SPayload.sendStop(obj);
 				}
 			}
 			if (isSliding()) {
@@ -186,6 +190,10 @@ public class SlideComponent implements CommonTickingComponent {
 		return !isSliding() && obj.onGround() && SLibUtils.isGroundedOrAirborne(obj);
 	}
 
+	public SlideDeltaMovement createAdjustedDelta(SlideDeltaMovement delta) {
+		return delta.rotateY((float) Math.toRadians(-(obj.getYRot() + 90)));
+	}
+
 	private boolean hitsBlock(BlockPos pos) {
 		return !obj.level().getBlockState(pos).getCollisionShape(obj.level(), pos).isEmpty();
 	}
@@ -202,6 +210,36 @@ public class SlideComponent implements CommonTickingComponent {
 			} else if (hitsBelow) {
 				return hitsBlock(pos.setY(y + 1)) || hitsBlock(obj.blockPosition().above(height + 1));
 			}
+		}
+		return false;
+	}
+
+	private void tickMob() {
+		if (obj instanceof Mob mob) {
+			boolean send = false;
+			if (hasSlide() && canSlide() && canSlideAsMob(mob)) {
+				if (!isSliding()) {
+					delta = new SlideDeltaMovement(1, 0).multiply(strength);
+					adjustedDelta = createAdjustedDelta(delta);
+					cachedYRot = obj.getYRot();
+					send = true;
+				}
+			} else if (isSliding()) {
+				stopSliding();
+				send = true;
+			}
+			if (send) {
+				PlayerLookup.tracking(obj).forEach(receiver -> SlideS2CPayload.send(receiver, obj, delta, adjustedDelta, cachedYRot));
+			}
+		}
+	}
+
+	private boolean canSlideAsMob(Mob mob) {
+		if (ModConfig.enhanceMobs) {
+			if (mob.getNavigation().getPath() != null && mob.getNavigation().getPath().getEndNode() != null && mob.getNavigation().getPath().getEndNode().asVec3().distanceTo(obj.position()) > 1) {
+				return true;
+			}
+			return mob.getTarget() != null && mob.getTarget().slib$exists();
 		}
 		return false;
 	}
@@ -246,6 +284,11 @@ public class SlideComponent implements CommonTickingComponent {
 		);
 
 		public static final SlideDeltaMovement ZERO = new SlideDeltaMovement(0, 0);
+
+		@Override
+		public boolean equals(Object o) {
+			return o == this || o instanceof SlideDeltaMovement(float oX, float oZ) && Float.compare(x(), oX) == 0 && Float.compare(z(), oZ) == 0;
+		}
 
 		SlideDeltaMovement multiply(float value) {
 			return new SlideDeltaMovement(x() * value, z() * value);

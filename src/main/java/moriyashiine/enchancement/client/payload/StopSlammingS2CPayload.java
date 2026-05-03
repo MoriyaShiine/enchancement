@@ -14,7 +14,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 
 public record StopSlammingS2CPayload(int entityId, double posY) implements CustomPacketPayload {
 	public static final Type<StopSlammingS2CPayload> TYPE = new Type<>(Enchancement.id("stop_slamming_s2c"));
@@ -36,9 +35,7 @@ public record StopSlammingS2CPayload(int entityId, double posY) implements Custo
 		@Override
 		public void receive(StopSlammingS2CPayload payload, ClientPlayNetworking.Context context) {
 			Entity entity = context.player().level().getEntity(payload.entityId());
-			if (entity instanceof Player player) {
-				ModEntityComponents.SLAM.get(player).stopSlammingClient(payload.posY());
-			}
+			ModEntityComponents.SLAM.maybeGet(entity).ifPresent(slamComponent -> slamComponent.stopSlammingClient(payload.posY()));
 		}
 	}
 }

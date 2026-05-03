@@ -101,7 +101,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerFor(AbstractArrow.class, PHASE_THROUGH_BLOCKS_AND_FLOAT, PhaseThroughBlocksAndFloatComponent::new);
 		registry.registerFor(LivingEntity.class, ROTATION_BURST, RotationBurstComponent::new);
 		registry.registerForPlayers(SLAM, SlamComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
-		registry.registerForPlayers(SLIDE, SlideComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+		registry.registerFor(LivingEntity.class, SLIDE, SlideComponent::new);
 		registry.registerFor(AbstractArrow.class, TELEPORT_ON_HIT, TeleportOnHitComponent::new);
 		registry.registerFor(LivingEntity.class, WALL_JUMP, WallJumpComponent::new);
 		// enchantment effect type
