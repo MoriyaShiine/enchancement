@@ -158,7 +158,6 @@
 	"enchantmenteffectcomponenttype.smeltminedblocks.BlockMixin",
 	"enchantmenteffectcomponenttype.teleportonhit.ProjectileMixin",
 	"enchantmenteffectcomponenttype.teleportonhit.ThrownTridentMixin",
-	"enchantmenteffectcomponenttype.walljump.LivingEntityMixin",
 	"enchantmententityeffecttype.conditionalattribute.EnchantmentMixin",
 	"enchantmententityeffecttype.freeze.GuardianMixin",
 	"enchantmententityeffecttype.freeze.LivingEntityMixin",

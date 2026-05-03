@@ -77,8 +77,10 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 			if (slidingDelta == null) {
 				slidingDelta = obj.getDeltaMovement();
 			}
-			obj.setDeltaMovement(slidingDelta.x(), Math.max(obj.getDeltaMovement().y(), HoneyBlock.getNewDeltaY(-0.025)), slidingDelta.z());
-			obj.resetFallDistance();
+			if (obj.canSimulateMovement()) {
+				obj.setDeltaMovement(slidingDelta.x(), Math.max(obj.getDeltaMovement().y(), HoneyBlock.getNewDeltaY(-0.025)), slidingDelta.z());
+			}
+			EnchancementUtil.resetFallDistance(obj);
 		} else {
 			slidingDelta = null;
 		}
@@ -88,7 +90,7 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 	public void serverTick() {
 		tick();
 		AttributeInstance safeFallDistance = obj.getAttribute(Attributes.SAFE_FALL_DISTANCE);
-		if (hasJumped()) {
+		if (hasJumped) {
 			if (!safeFallDistance.hasModifier(SAFE_FALL_DISTANCE_ID)) {
 				int reduction = Mth.floor(MultiplyMovementSpeedEvent.getJumpStrength(obj, jumpStrength * 3) * 10);
 				safeFallDistance.addPermanentModifier(new AttributeModifier(SAFE_FALL_DISTANCE_ID, reduction, AttributeModifier.Operation.ADD_VALUE));
@@ -149,10 +151,6 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 		}
 	}
 
-	public boolean hasJumped() {
-		return hasJumped;
-	}
-
 	public void setSlidingPos(BlockPos slidingPos) {
 		this.slidingPos = slidingPos;
 	}
@@ -162,7 +160,9 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 	}
 
 	public void use(Vec3 delta) {
-		obj.setDeltaMovement(delta);
+		if (obj.canSimulateMovement()) {
+			obj.setDeltaMovement(delta);
+		}
 		obj.playSound(SoundEvents.SLIME_BLOCK_FALL);
 		obj.gameEvent(GameEvent.ENTITY_ACTION);
 		slidingPos = null;
