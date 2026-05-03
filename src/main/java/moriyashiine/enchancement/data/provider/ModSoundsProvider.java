@@ -37,6 +37,14 @@ public class ModSoundsProvider extends FabricSoundsProvider {
 
 		exporter.add(ModSoundEvents.GENERIC_AIR_JUMP, of().subtitle("subtitles.enchancement.entity.generic.air_jump")
 				.sound(ofEvent(SoundEvents.SAND_BREAK)));
+		exporter.add(ModSoundEvents.GENERIC_BOOST_DEFAULT, of().subtitle("subtitles.enchancement.entity.generic.boost")
+				.sound(ofEvent(SoundEvents.POINTED_DRIPSTONE_DRIP_WATER)));
+		exporter.add(ModSoundEvents.GENERIC_BOOST_WATER, of().subtitle("subtitles.enchancement.entity.generic.boost")
+				.sound(ofEvent(SoundEvents.BUBBLE_POP)));
+		exporter.add(ModSoundEvents.GENERIC_BOOST_LAVA, of().subtitle("subtitles.enchancement.entity.generic.boost")
+				.sound(ofEvent(SoundEvents.LAVA_POP)));
+		exporter.add(ModSoundEvents.GENERIC_BOOST_POWDER_SNOW, of().subtitle("subtitles.enchancement.entity.generic.boost")
+				.sound(ofEvent(SoundEvents.POWDER_SNOW_BREAK)));
 		exporter.add(ModSoundEvents.GENERIC_BURY, of().subtitle("subtitles.enchancement.entity.generic.bury")
 				.sound(ofEvent(SoundEvents.SHOVEL_FLATTEN)));
 		exporter.add(ModSoundEvents.GENERIC_DASH, of().subtitle("subtitles.enchancement.entity.generic.dash")

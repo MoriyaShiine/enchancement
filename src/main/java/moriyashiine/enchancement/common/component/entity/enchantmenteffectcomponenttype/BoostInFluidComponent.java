@@ -8,6 +8,7 @@ import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.ModSoundEvents;
 import moriyashiine.enchancement.common.payload.BoostInFluidC2SPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
@@ -17,7 +18,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -94,13 +94,13 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 					obj.gameEvent(GameEvent.ENTITY_ACTION);
 					EnchancementUtil.resetFallDistance(obj);
 					if ((obj.tickCount + obj.getId()) % 3 == 0) {
-						SoundEvent sound = SoundEvents.POINTED_DRIPSTONE_DRIP_WATER;
+						SoundEvent sound = ModSoundEvents.GENERIC_BOOST_DEFAULT;
 						if (currentSubmersion == SubmersionGate.WATER_ONLY) {
-							sound = SoundEvents.BUBBLE_POP;
+							sound = ModSoundEvents.GENERIC_BOOST_WATER;
 						} else if (currentSubmersion == SubmersionGate.LAVA_ONLY) {
-							sound = SoundEvents.LAVA_POP;
+							sound = ModSoundEvents.GENERIC_BOOST_LAVA;
 						} else if (currentSubmersion == SubmersionGate.POWDER_SNOW_ONLY) {
-							sound = SoundEvents.POWDER_SNOW_BREAK;
+							sound = ModSoundEvents.GENERIC_BOOST_POWDER_SNOW;
 						}
 						SLibUtils.playSound(obj, sound, 1, Mth.nextFloat(obj.getRandom(), 0.9F, 1.1F));
 					}

@@ -46,6 +46,42 @@
 	],
 	"subtitle": "subtitles.enchancement.entity.generic.air_jump"
   },
+  "entity.generic.boost.default": {
+	"sounds": [
+	  {
+		"type": "event",
+		"name": "minecraft:block.pointed_dripstone.drip_water"
+	  }
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.boost"
+  },
+  "entity.generic.boost.lava": {
+	"sounds": [
+	  {
+		"type": "event",
+		"name": "minecraft:block.lava.pop"
+	  }
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.boost"
+  },
+  "entity.generic.boost.powder_snow": {
+	"sounds": [
+	  {
+		"type": "event",
+		"name": "minecraft:block.powder_snow.break"
+	  }
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.boost"
+  },
+  "entity.generic.boost.water": {
+	"sounds": [
+	  {
+		"type": "event",
+		"name": "minecraft:ui.hud.bubble_pop"
+	  }
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.boost"
+  },
   "entity.generic.bury": {
 	"sounds": [
 	  {

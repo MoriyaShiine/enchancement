@@ -14,6 +14,10 @@ public class ModSoundEvents {
 	public static final SoundEvent FISHING_BOBBER_GRAPPLE = registerSoundEvent("entity.fishing_bobber.grapple");
 
 	public static final SoundEvent GENERIC_AIR_JUMP = registerSoundEvent("entity.generic.air_jump");
+	public static final SoundEvent GENERIC_BOOST_DEFAULT = registerSoundEvent("entity.generic.boost.default");
+	public static final SoundEvent GENERIC_BOOST_WATER = registerSoundEvent("entity.generic.boost.water");
+	public static final SoundEvent GENERIC_BOOST_LAVA = registerSoundEvent("entity.generic.boost.lava");
+	public static final SoundEvent GENERIC_BOOST_POWDER_SNOW = registerSoundEvent("entity.generic.boost.powder_snow");
 	public static final SoundEvent GENERIC_BURY = registerSoundEvent("entity.generic.bury");
 	public static final SoundEvent GENERIC_DASH = registerSoundEvent("entity.generic.dash");
 	public static final SoundEvent GENERIC_ERUPT = registerSoundEvent("entity.generic.erupt");
