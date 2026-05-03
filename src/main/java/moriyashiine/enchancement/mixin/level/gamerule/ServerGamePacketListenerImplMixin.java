@@ -4,6 +4,7 @@
 
 package moriyashiine.enchancement.mixin.level.gamerule;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,5 +26,10 @@ public abstract class ServerGamePacketListenerImplMixin {
 			return 0;
 		}
 		return movedDist;
+	}
+
+	@ModifyReturnValue(method = "getMaximumFlyingTicks", at = @At("RETURN"))
+	private int enchancement$gameRule(int original) {
+		return shouldCheckPlayerMovement(false) ? original : Integer.MAX_VALUE;
 	}
 }
