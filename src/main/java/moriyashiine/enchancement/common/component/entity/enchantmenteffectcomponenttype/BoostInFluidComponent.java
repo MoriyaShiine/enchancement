@@ -4,6 +4,7 @@
 
 package moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype;
 
+import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
@@ -73,7 +74,7 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 				shouldBoost = !obj.level().getBlockState(BlockPos.containing(obj.getEyePosition())).isAir() && SLibUtils.isSubmerged(obj, SubmersionGate.ALL);
 			}
 			if (shouldBoost && damageTicks == 0) {
-				currentSubmersion = Arrays.stream(SubmersionGate.values()).filter(gate -> gate != SubmersionGate.ALL && SLibUtils.isSubmerged(obj, gate)).findFirst().orElse(null);
+				currentSubmersion = getSubmersion();
 				if (canUse(true)) {
 					boolean submerged = SLibUtils.isSubmerged(obj, SubmersionGate.ALL);
 					if (!submerged) {
@@ -123,7 +124,7 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 			LivingEntity controllingObj = obj.getControllingPassenger() instanceof Player player ? player : obj;
 			if (!controllingObj.isSpectator() && SLibClientUtils.isHost(controllingObj)) {
 				boolean lastShouldBoost = shouldBoost;
-				if (controllingObj.jumping) {
+				if (isPressingUseKey(controllingObj)) {
 					if (canUse(false)) {
 						shouldBoost = true;
 					}
@@ -183,5 +184,16 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 
 	public boolean blocksAirEffects() {
 		return hasBoost() && canUse(true);
+	}
+
+	private SubmersionGate getSubmersion() {
+		return Arrays.stream(SubmersionGate.values()).filter(gate -> gate != SubmersionGate.ALL && SLibUtils.isSubmerged(obj, gate)).findFirst().orElse(null);
+	}
+
+	private boolean isPressingUseKey(LivingEntity controllingObj) {
+		if (getSubmersion() == null) {
+			return EnchancementClient.BOOST_IN_FLUID_HOVER_KEYMAPPING.isDown();
+		}
+		return controllingObj.jumping;
 	}
 }

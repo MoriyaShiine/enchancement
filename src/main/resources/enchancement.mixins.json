@@ -184,6 +184,7 @@
 	"config.rebalanceequipment.client.MinecraftMixin",
 	"config.rebalanceequipment.client.ThrownTridentRendererMixin",
 	"enchantment.bouncy.client.TranslatableContentsMixin",
+	"enchantment.buoy.client.TranslatableContentsMixin",
 	"enchantment.dash.client.TranslatableContentsMixin",
 	"enchantment.gale.client.TranslatableContentsMixin",
 	"enchantment.slide.client.TranslatableContentsMixin",

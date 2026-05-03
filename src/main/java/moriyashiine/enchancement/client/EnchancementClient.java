@@ -54,6 +54,7 @@ import org.lwjgl.glfw.GLFW;
 
 public class EnchancementClient implements ClientModInitializer {
 	private static final KeyMapping.Category KEYMAPPING_CATEGORY = KeyMapping.Category.register(Enchancement.id(Enchancement.MOD_ID));
+	public static final KeyMapping BOOST_IN_FLUID_HOVER_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".boostInFluidHover", GLFW.GLFW_KEY_SPACE, KEYMAPPING_CATEGORY));
 	public static final KeyMapping CHARGE_JUMP_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".chargeJump", GLFW.GLFW_KEY_LEFT_SHIFT, KEYMAPPING_CATEGORY));
 	public static final KeyMapping DIRECTION_BURST_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".directionBurst", GLFW.GLFW_KEY_LEFT_SHIFT, KEYMAPPING_CATEGORY));
 	public static final KeyMapping ROTATION_BURST_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".rotationBurst", GLFW.GLFW_KEY_LEFT_CONTROL, KEYMAPPING_CATEGORY));
