@@ -146,6 +146,7 @@ public class EnchancementClient implements ClientModInitializer {
 		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("brimstone"), new BrimstoneHudElement());
 		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("charge_jump"), new ChargeJumpHudElement());
 		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("direction_burst"), new DirectionBurstHudElement());
+		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("extended_water_time"), new ExtendedWaterTimeHudElement());
 		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("rotation_burst"), new RotationBurstHudElement());
 	}
 }

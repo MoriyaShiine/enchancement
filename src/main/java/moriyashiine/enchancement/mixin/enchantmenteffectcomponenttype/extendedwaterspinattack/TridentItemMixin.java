@@ -28,7 +28,7 @@ public class TridentItemMixin {
 
 	@Inject(method = "releaseUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;startAutoSpinAttack(IFLnet/minecraft/world/item/ItemStack;)V"))
 	private void enchancement$extendedWaterSpinAttack(ItemStack itemStack, Level level, LivingEntity entity, int remainingTime, CallbackInfoReturnable<Boolean> cir) {
-		if (shouldApply(entity)) {
+		if (!entity.isInWaterOrRain() && shouldApply(entity)) {
 			ModEntityComponents.EXTENDED_WATER_TIME.get(entity).decrement(60);
 		}
 	}

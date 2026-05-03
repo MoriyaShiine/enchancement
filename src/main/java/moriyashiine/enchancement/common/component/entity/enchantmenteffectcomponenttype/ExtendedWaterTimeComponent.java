@@ -22,7 +22,7 @@ import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class ExtendedWaterTimeComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private final LivingEntity obj;
-	private int ticksWet = 0;
+	private int ticksWet = 0, lastMarked = 0, delayTicks = 0;
 
 	public ExtendedWaterTimeComponent(LivingEntity obj) {
 		this.obj = obj;
@@ -31,18 +31,26 @@ public class ExtendedWaterTimeComponent implements AutoSyncedComponent, CommonTi
 	@Override
 	public void readData(ValueInput input) {
 		ticksWet = input.getIntOr("TicksWet", 0);
+		lastMarked = input.getIntOr("LastMarked", 0);
+		delayTicks = input.getIntOr("DelayTicks", 0);
 	}
 
 	@Override
 	public void writeData(ValueOutput output) {
 		output.putInt("TicksWet", ticksWet);
+		output.putInt("LastMarked", lastMarked);
+		output.putInt("DelayTicks", delayTicks);
 	}
 
 	@Override
 	public void tick() {
 		if (ticksWet > 0) {
 			if (EnchancementUtil.hasAnyEnchantmentsWith(obj, ModEnchantmentEffectComponentTypes.EXTEND_WATER_TIME)) {
-				ticksWet--;
+				if (delayTicks > 0) {
+					delayTicks--;
+				} else {
+					ticksWet--;
+				}
 			} else {
 				ticksWet = 0;
 			}
@@ -83,10 +91,15 @@ public class ExtendedWaterTimeComponent implements AutoSyncedComponent, CommonTi
 		return ticksWet;
 	}
 
+	public int getLastMarked() {
+		return lastMarked;
+	}
+
 	public void markWet(int ticks) {
 		if (ticksWet < ticks) {
-			ticksWet = ticks;
+			ticksWet = lastMarked = ticks;
 		}
+		delayTicks = 3;
 	}
 
 	public void decrement(int ticks) {

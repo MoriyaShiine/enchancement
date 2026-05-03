@@ -77,6 +77,7 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 					boolean submerged = SLibUtils.isSubmerged(obj, SubmersionGate.ALL);
 					if (!submerged) {
 						boostStrength /= 2;
+						ModEntityComponents.EXTENDED_WATER_TIME.get(obj).decrement(obj.level().getGameTime() % 2 == 0 ? 1 : 2);
 					}
 					float targetBoost = submerged ? boostStrength : boostStrength / 4;
 					if (boost <= targetBoost) {
@@ -85,11 +86,11 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 						boost = Math.max(targetBoost, boost - 0.025F);
 					}
 					if (obj.canSimulateMovement()) {
-						obj.setDeltaMovement(obj.getDeltaMovement().x() * (submerged ? 1 : 0.95), Math.max(boost, obj.getDeltaMovement().y()), obj.getDeltaMovement().z() * (submerged ? 1 : 0.95));
+						double multiplier = submerged ? 1 : 0.95;
+						obj.setDeltaMovement(obj.getDeltaMovement().x() * multiplier, Math.max(boost, obj.getDeltaMovement().y()), obj.getDeltaMovement().z() * multiplier);
 					}
 					obj.gameEvent(GameEvent.ENTITY_ACTION);
 					EnchancementUtil.resetFallDistance(obj);
-					ModEntityComponents.EXTENDED_WATER_TIME.get(obj).decrement(obj.tickCount % 2 == 0 ? 1 : 2);
 					if ((obj.tickCount + obj.getId()) % 3 == 0) {
 						SoundEvent sound = SoundEvents.POINTED_DRIPSTONE_DRIP_WATER;
 						if (currentSubmersion == SubmersionGate.WATER_ONLY) {
