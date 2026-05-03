@@ -27,7 +27,7 @@ Leggings Enchantments:
 * Slide: Holding Left Control (configurable) while grounded causes you to slide constantly. Pressing Left Control (configurable) in the air causes you to slam towards the ground, knocking back mobs and negating fall damage.
 
 Boots Enchantments:
-* Buoy: Causes you to walk on fluids, descending via sneaking. Holding jump while submerged or wet propels you upwards. Prevents floating. Grants a speed boost for some time after leaving water.
+* Buoy: Causes you to walk on fluids, descending via sneaking. Holding jump while submerged or Space (configurable) while wet propels you upwards. Prevents floating. Grants a speed boost for some time after leaving water.
 * Bouncy: Negates fall damage. Launches you upwards upon landing while not sneaking. Sneaking, moving, or bouncing will charge a super jump that can be released by jumping while holding Left Shift (configurable).
 * Sticky: Allows sliding down and jumping off walls. Leaves a trail of honey where you walk that slows mobs.
 
@@ -77,11 +77,11 @@ Fishing Rod Enchantments:
 
 Everything Enchancement adds is configurable:
 * Disallowed Enchantments:
-  * Remove most vanilla enchantments from the game. Enchancement tries to make choosing your enchantments more fun and engaging by replacing many of the stat change enchantments with enchantments that grant the player unique abilities.
+  * Removes most vanilla enchantments from the game. Enchancement tries to make choosing your enchantments more fun and engaging by replacing many of the stat change enchantments with enchantments that grant the player unique abilities.
 * Overhaul Enchanting
   * Replaces the Enchanting Table UI with a new version that removes the RNG involved in enchanting; you may simply choose the enchantments you wish to have.
   * Enchanting Tables require Chiseled Bookshelves with Enchanted Books in them to access their enchantments.
-  * Enchanting items has an additional material cost related to the item being enchanted, such as Diamonds for Diamond equipment.
+  * Enchanting items has an additional material cost related to the item being enchanted (for example, Diamond equipment's material cost is Diamonds).
   * Bookshelves reduce the experience, lapis lazuli, and material cost of enchanting.
   * Enchantments can be transferred off of enchanted items and onto books using a grindstone.
   * Enchanted Books cannot be applied to tools in an anvil.
@@ -104,48 +104,52 @@ Everything Enchancement adds is configurable:
     * Hoe Enchantments - Village Houses
     * Fishing Rod Enchantments - Shipwrecks
 * Single Level Mode
-  * Remove leveling from enchantments, meaning that the max level for all enchantments will be 1. Enchantments that are brought down to this level will act as their original max level counterpart, an example being Luck of the Sea I will function the same as Luck of the Sea III. Enchantments on gear made from materials easier to obtain will be weaker.
+  * Removes leveling from enchantments, meaning that the maximum level for all enchantments will be 1. Enchantments that are brought down to this level will act as their original maximum level counterpart (for example, Luck of the Sea I will function the same as Luck of the Sea III). Enchantments on gear made from materials easier to obtain are weaker.
 * Enchantment Limit
-  * Force items to only allow one enchantment by default.
+  * Forces items to only allow one enchantment by default.
   * All enchantments are equally weighted and selectable during generation.
 * Disable Durability
-  * Remove durability from most aspects of the game. Items in the `enchancement:retains_durability` tag will continue to have durability.
+  * Removes durability from most aspects of the game. Items in the `enchancement:retains_durability` tag will continue to have durability.
   * Anvils will not break when used, unless they are part of the tag.
-* Disable Velocity Checks
-  * Removes the checks to determine if a player is moving too fast, since Enchancement adds many forms of movement that may trigger that.
 * Enhance Mobs
-  * Hostile monsters will spawn with random enchantments.
+  * Mobs will spawn with random enchantments.
+  * Mobs will use active enchantment abilities.
 * Rebalance Consumables
   * Arrows shot by players will drop on the ground after hitting an entity.
   * Ender Pearls deal no damage upon use.
   * (Enchanted) Golden Apples can only be consumed when hungry.
 * Rebalance Enchantments
   * Fire Aspect can be used like Flint and Steel while sneaking.
-  * Ignite enchantment effects apply for less time and do not affect movement.
+  * Fire Aspect applies for less time and its fire does not affect movement.
   * Lunge doesn't require hunger to use.
   * Channeling ignites entities with melee attacks.
   * Channeling can be activated without thunder.
   * Channeling chains lightning to nearby entities.
   * Lightning spawned from Channeling will not destroy items or cause fire.
+  * Riptide is weaker.
   * Maces cannot have Fire Aspect.
   * Mace enchantments can be applied with less fall distance.
   * Wind Burst can launch Wind Charges on use.
   * Luck of the Sea also reduces fishing time.
+  * Fixes Riptide being slower with Water Movement Efficiency enchantments (such as Amphibious and Depth Strider).
+  * Fixes Riptide rendering with a rotation while swimming.
 * Rebalance Equipment
   * Enchanted armor has additional damage reduction.
   * Iron armor has slightly more armor, and gains armor toughness.
   * Golden armor has slightly less armor.
-  * Ground animal armor can be enchanted with boots enchantments.
+  * Elytra are temporarily disabled when attacked.
+  * Horse and Wolf armor can be enchanted with chestplate enchantments.
+  * Saddles can be enchanted with boots enchantments.
   * Sword sweeping damage is increased to be proportional to the primary damage dealt.
   * Spears have damage falloff with higher velocities.
   * Bows, Tridents, and Maces play a ready sound when they are fully charged.
   * Bows, Tridents, and Maces slow you down less when charging and do not prevent sprinting.
-  * Crossbows pull unique ammunition from your inventory instead of only from off-hand.
-  * Tridents have a charge time of 1 second (excluding those with Riptide) and can be interrupted.
+  * Crossbows pull unique ammunition from your inventory instead of only from your off-hand.
   * Tridents thrown by players never despawn.
   * Tridents return to the slot they were thrown from.
   * Tridents with Loyalty linger in the world if the owner is dead instead of dropping on the ground.
   * Tridents with Loyalty that are thrown into the void will automatically return to their owner.
+  * Tridents and Maces have a charge time of 1 second (excluding those with Riptide) and can be interrupted.
   * Maces have slightly faster attack speed.
   * Maces have damage falloff with higher fall distance.
   * Golden tools have the mining speed of Diamond tools, Diamond tools have the mining speed of Netherite tools, and Netherite tools have the mining speed of Golden tools.
@@ -164,13 +168,13 @@ Everything Enchancement adds is configurable:
   * Turtle master gives 1 less level of Resistance.
   * Wither Skulls apply Wither for less time.
 * Toggleable Passives
-  * Enchanted chestplates increase air velocity.
+  * Enchanted chestplates increase air mobility.
   * Enchanted Tridents have Loyalty built in.
   * Enchanted mining tools have Efficiency built in.
 * Weapon Enchantment Cooldown Requirement
   * Enchantments such as Fire Aspect or Frostbite require your weapon cooldown to be near full to activate.
 * Coyote Bite
-  * Entities can be attacked for a few ticks after they leave your crosshair,
+  * Entities can be attacked for a few ticks after they leave your crosshair.
 * Enchantment Descriptions
   * Enchantments display what they do under their name.
   * Enchanted Books display what items they can be applied to.
