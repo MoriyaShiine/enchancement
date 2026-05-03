@@ -10,6 +10,8 @@ import moriyashiine.enchancement.common.init.ModLootConditionTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
@@ -34,6 +36,9 @@ public class AttackerBehindCondition implements LootItemCondition {
 		Entity attackingEntity = context.getOptionalParameter(LootContextParams.ATTACKING_ENTITY);
 		if (entity == null || attackingEntity == null) {
 			return false;
+		}
+		if (entity instanceof LivingEntity living && !living.getItemBySlot(EquipmentSlot.BODY).isEmpty()) {
+			return Mth.degreesDifference(entity.getXRot(), attackingEntity.getXRot()) > 10;
 		}
 		return Math.abs(Mth.degreesDifference(entity.getYHeadRot(), attackingEntity.getYHeadRot())) <= 75;
 	}
