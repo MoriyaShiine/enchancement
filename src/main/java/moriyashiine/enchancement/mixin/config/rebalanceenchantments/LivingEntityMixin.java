@@ -44,4 +44,12 @@ public abstract class LivingEntityMixin {
 		}
 		return original;
 	}
+
+	@ModifyReturnValue(method = "getSwimAmount", at = @At("RETURN"))
+	private float enchancement$rebalanceEnchantments(float original) {
+		if (ModConfig.rebalanceEnchantments && isAutoSpinAttack()) {
+			return 0;
+		}
+		return original;
+	}
 }
