@@ -6,7 +6,7 @@ package moriyashiine.enchancement.mixin.config.enchantmentdescriptions.client;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import moriyashiine.enchancement.client.event.config.EnchantmentDescriptionsEvent;
+import moriyashiine.enchancement.client.event.config.EnchantmentDescriptionsClientEvent;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.client.multiplayer.SessionSearchTrees;
 import net.minecraft.core.Holder;
@@ -25,7 +25,7 @@ import java.util.List;
 public class SessionSearchTreesMixin {
 	@ModifyExpressionValue(method = "lambda$getTooltipLines$0", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getTooltipLines(Lnet/minecraft/world/item/Item$TooltipContext;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/item/TooltipFlag;)Ljava/util/List;"))
 	private static List<Component> enchancement$enchantmentDescriptions(List<Component> original, @Local(argsOnly = true) ItemStack item) {
-		if (EnchantmentDescriptionsEvent.enableDescriptions() && item.has(DataComponents.STORED_ENCHANTMENTS)) {
+		if (EnchantmentDescriptionsClientEvent.enableDescriptions() && item.has(DataComponents.STORED_ENCHANTMENTS)) {
 			original = new ArrayList<>(original);
 			ItemEnchantments component = item.get(DataComponents.STORED_ENCHANTMENTS);
 			for (Holder<Enchantment> enchantment : component.keySet()) {

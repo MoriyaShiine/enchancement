@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.client.gui.screens.inventory.tooltip;
 
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
-import moriyashiine.enchancement.client.event.config.EnchantmentDescriptionsEvent;
+import moriyashiine.enchancement.client.event.config.EnchantmentDescriptionsClientEvent;
 import moriyashiine.enchancement.common.Enchancement;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.minecraft.client.gui.Font;
@@ -92,7 +92,7 @@ public final class StoredEnchantmentsTooltipComponent implements ClientTooltipCo
 			Component name = Enchantment.getFullname(enchantment, enchantments.getLevel(enchantment));
 			width = Math.max(width, (getIcons(enchantment).isEmpty() ? 0 : 18) + font.width(name));
 			height += 18;
-			List<Component> description = EnchantmentDescriptionsEvent.getDescription(name, enchantment);
+			List<Component> description = EnchantmentDescriptionsClientEvent.getDescription(name, enchantment);
 			if (description != null) {
 				for (Component text : description) {
 					width = Math.max(width, font.width(text));
@@ -114,7 +114,7 @@ public final class StoredEnchantmentsTooltipComponent implements ClientTooltipCo
 			Component name = Enchantment.getFullname(enchantment, enchantments.getLevel(enchantment));
 			graphics.text(font, name, x + (hasIcon ? 18 : 0), y + 5, -1, true);
 			y += 18;
-			List<Component> description = EnchantmentDescriptionsEvent.getDescription(name, enchantment);
+			List<Component> description = EnchantmentDescriptionsClientEvent.getDescription(name, enchantment);
 			if (description != null) {
 				for (Component component : description) {
 					graphics.text(font, component, x, y, -1, true);

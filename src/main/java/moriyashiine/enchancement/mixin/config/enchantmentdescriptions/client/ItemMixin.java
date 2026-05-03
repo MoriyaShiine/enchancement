@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.config.enchantmentdescriptions.client;
 
-import moriyashiine.enchancement.client.event.config.EnchantmentDescriptionsEvent;
+import moriyashiine.enchancement.client.event.config.EnchantmentDescriptionsClientEvent;
 import moriyashiine.enchancement.client.gui.screens.inventory.tooltip.StoredEnchantmentsTooltipComponent;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
@@ -22,7 +22,7 @@ import java.util.Optional;
 public class ItemMixin {
 	@Inject(method = "getTooltipImage", at = @At("HEAD"), cancellable = true)
 	private void enchancement$enchantmentDescriptions(ItemStack itemStack, CallbackInfoReturnable<Optional<TooltipComponent>> cir) {
-		if (EnchantmentDescriptionsEvent.enableDescriptions()) {
+		if (EnchantmentDescriptionsClientEvent.enableDescriptions()) {
 			ItemEnchantments enchantments = itemStack.get(DataComponents.STORED_ENCHANTMENTS);
 			if (enchantments != null) {
 				cir.setReturnValue(Optional.of(new StoredEnchantmentsTooltipComponent(enchantments)));

@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.config.enchantmentdescriptions.client;
 
-import moriyashiine.enchancement.client.event.config.EnchantmentDescriptionsEvent;
+import moriyashiine.enchancement.client.event.config.EnchantmentDescriptionsClientEvent;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
@@ -24,7 +24,7 @@ import java.util.function.Consumer;
 public class ItemStackMixin {
 	@Inject(method = "addToTooltip", at = @At("HEAD"), cancellable = true)
 	private <T extends TooltipProvider> void enchancement$enchantmentDescriptions(DataComponentType<T> type, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> consumer, TooltipFlag flag, CallbackInfo ci) {
-		if (type == DataComponents.STORED_ENCHANTMENTS && EnchantmentDescriptionsEvent.enableDescriptions()) {
+		if (type == DataComponents.STORED_ENCHANTMENTS && EnchantmentDescriptionsClientEvent.enableDescriptions()) {
 			ci.cancel();
 		}
 	}

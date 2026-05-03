@@ -13,7 +13,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.component.AttackRange;
 
-public class CoyoteBiteEvent implements ClientTickEvents.EndLevelTick {
+public class CoyoteBiteClientEvent implements ClientTickEvents.EndLevelTick {
 	private static final Minecraft client = Minecraft.getInstance();
 
 	public static Entity target = null;

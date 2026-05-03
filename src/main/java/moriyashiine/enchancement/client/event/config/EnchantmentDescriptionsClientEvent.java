@@ -29,7 +29,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 
-public class EnchantmentDescriptionsEvent {
+public class EnchantmentDescriptionsClientEvent {
 	public static class DescriptionText implements ItemTooltipCallback {
 		@Override
 		public void getTooltip(ItemStack stack, Item.TooltipContext tooltipContext, TooltipFlag tooltipFlag, List<Component> lines) {

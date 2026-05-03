@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ToggleablePassivesEvent implements ItemTooltipCallback {
+public class ToggleablePassivesClientEvent implements ItemTooltipCallback {
 	private static final Map<TagKey<Item>, String> KEY_MAP = new HashMap<>();
 
 	static {
@@ -29,7 +29,6 @@ public class ToggleablePassivesEvent implements ItemTooltipCallback {
 		KEY_MAP.put(ItemTags.MINING_ENCHANTABLE, "tooltip.enchancement.has_efficiency");
 		KEY_MAP.put(ItemTags.TRIDENT_ENCHANTABLE, "tooltip.enchancement.has_loyalty");
 	}
-
 
 	@Override
 	public void getTooltip(ItemStack stack, Item.TooltipContext tooltipContext, TooltipFlag tooltipFlag, List<Component> lines) {

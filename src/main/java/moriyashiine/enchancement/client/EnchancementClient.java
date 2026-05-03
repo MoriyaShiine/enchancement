@@ -3,10 +3,10 @@
  */
 package moriyashiine.enchancement.client;
 
-import moriyashiine.enchancement.client.event.config.CoyoteBiteEvent;
-import moriyashiine.enchancement.client.event.config.EnchantmentDescriptionsEvent;
+import moriyashiine.enchancement.client.event.config.CoyoteBiteClientEvent;
+import moriyashiine.enchancement.client.event.config.EnchantmentDescriptionsClientEvent;
 import moriyashiine.enchancement.client.event.config.RebalanceEquipmentClientEvent;
-import moriyashiine.enchancement.client.event.config.ToggleablePassivesEvent;
+import moriyashiine.enchancement.client.event.config.ToggleablePassivesClientEvent;
 import moriyashiine.enchancement.client.event.enchantmenteffectcomponenttype.*;
 import moriyashiine.enchancement.client.event.enchantmenteffecttype.AutomaticallyFeedsTooltipClientEvent;
 import moriyashiine.enchancement.client.event.internal.SyncBookshelvesEvent;
@@ -128,12 +128,12 @@ public class EnchancementClient implements ClientModInitializer {
 		ClientTickEvents.END_LEVEL_TICK.register(new SyncBookshelvesEvent());
 		ClientTickEvents.START_LEVEL_TICK.register(new SyncDeltaMovementsEvent());
 		// config
-		ClientTickEvents.END_LEVEL_TICK.register(new CoyoteBiteEvent());
-		ItemTooltipCallback.EVENT.register(new EnchantmentDescriptionsEvent.DescriptionText());
-		ClientTooltipComponentCallback.EVENT.register(new EnchantmentDescriptionsEvent.Icons());
-		CommonLifecycleEvents.TAGS_LOADED.register(new EnchantmentDescriptionsEvent.ClearIconCache());
+		ClientTickEvents.END_LEVEL_TICK.register(new CoyoteBiteClientEvent());
+		ItemTooltipCallback.EVENT.register(new EnchantmentDescriptionsClientEvent.DescriptionText());
+		ClientTooltipComponentCallback.EVENT.register(new EnchantmentDescriptionsClientEvent.Icons());
+		CommonLifecycleEvents.TAGS_LOADED.register(new EnchantmentDescriptionsClientEvent.ClearIconCache());
 		ClientTickEvents.END_LEVEL_TICK.register(new RebalanceEquipmentClientEvent());
-		ItemTooltipCallback.EVENT.register(new ToggleablePassivesEvent());
+		ItemTooltipCallback.EVENT.register(new ToggleablePassivesClientEvent());
 		// enchantment effect type
 		ItemTooltipCallback.EVENT.register(new AutomaticallyFeedsTooltipClientEvent());
 		// enchantment effect component type
