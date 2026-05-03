@@ -22,4 +22,12 @@ public class EnchantmentHelperMixin {
 		}
 		return original;
 	}
+
+	@ModifyReturnValue(method = "getTridentSpinAttackStrength", at = @At("RETURN"))
+	private static float enchancement$rebalanceEnchantments(float original) {
+		if (ModConfig.rebalanceEnchantments) {
+			return original * 0.7F;
+		}
+		return original;
+	}
 }
