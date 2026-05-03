@@ -6,10 +6,7 @@ package moriyashiine.enchancement.common;
 
 import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
 import moriyashiine.enchancement.client.payload.*;
-import moriyashiine.enchancement.common.event.config.OverhaulEnchantingEvent;
-import moriyashiine.enchancement.common.event.config.RebalanceEnchantmentsEvent;
-import moriyashiine.enchancement.common.event.config.RebalanceEquipmentEvent;
-import moriyashiine.enchancement.common.event.config.ToggleablePassivesEvent;
+import moriyashiine.enchancement.common.event.config.*;
 import moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype.*;
 import moriyashiine.enchancement.common.event.enchantmenteffecttype.FreezeEvent;
 import moriyashiine.enchancement.common.event.enchantmenteffecttype.ModifySubmergedMovementSpeedEvent;
@@ -160,10 +157,10 @@ public class Enchancement implements ModInitializer {
 		ServerPlayConnectionEvents.JOIN.register(new SyncOriginalMaxLevelsEvent.Join());
 		ServerLifecycleEvents.SERVER_STARTED.register(new SyncOriginalMaxLevelsEvent.ServerStarted());
 		// config
+		TickEntityEvent.EVENT.register(new EnhanceMobsEvent());
 		LootTableEvents.MODIFY.register(new OverhaulEnchantingEvent());
 		EnchantmentEvents.ALLOW_ENCHANTING.register(new RebalanceEnchantmentsEvent.AllowEnchanting());
 		ServerLifecycleEvents.SERVER_STARTED.register(new RebalanceEnchantmentsEvent.ServerStarted());
-		TickEntityEvent.EVENT.register(new RebalanceEnchantmentsEvent.Tick());
 		UseBlockCallback.EVENT.register(new RebalanceEnchantmentsEvent.UseBlock());
 		DefaultItemComponentEvents.MODIFY.register(new RebalanceEquipmentEvent.AllowComponent());
 		EnchantmentEvents.ALLOW_ENCHANTING.register(new RebalanceEquipmentEvent.AllowEnchanting());

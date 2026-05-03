@@ -40,7 +40,6 @@ public record DirectionBurstPayload(int entityId, Vec3 delta) implements CustomP
 	public static void use(Entity entity, Vec3 delta, DirectionBurstComponent directionBurstComponent) {
 		directionBurstComponent.use(delta);
 		SLibUtils.addParticles(entity, ParticleTypes.CLOUD, 8, ParticleAnchor.BODY, PayloadTarget.OTHERS, ParticleVelocity.ZERO);
-
 	}
 
 	public static class Receiver implements ServerPlayNetworking.PlayPayloadHandler<DirectionBurstPayload> {
