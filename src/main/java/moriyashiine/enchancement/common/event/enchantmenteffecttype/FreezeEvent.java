@@ -86,6 +86,7 @@ public class FreezeEvent {
 							if (entity.level().getEntities(ModEntityTypes.ICE_SHARD, new AABB(entity.blockPosition()).inflate(2), foundEntity -> true).size() < 64) {
 								for (int j = 0; j < Mth.nextInt(entity.getRandom(), 6, 8); j++) {
 									IceShard iceShard = new IceShard(entity.level(), entity, frozenComponent.getLastFreezingAttacker());
+									iceShard.setBaseDamage(3);
 									Vec3 random = new Vec3(entity.getRandom().nextGaussian(), entity.getRandom().nextGaussian() / 2, entity.getRandom().nextGaussian());
 									iceShard.shoot(random.x(), random.y(), random.z(), 0.75F, 0);
 									entity.level().addFreshEntity(iceShard);

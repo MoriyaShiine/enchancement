@@ -52,8 +52,16 @@ public record AllowLoadingProjectileEffect(Identifier model, SoundEvent soundEve
 		PROJECTILE_MAP.put(Items.SNOWBALL, (level, mob, projectile, _) -> new Snowball(level, mob, projectile));
 		PROJECTILE_MAP.put(Items.TRIDENT, (level, owner, projectile, _) -> new ThrownTrident(level, owner, projectile));
 
-		PROJECTILE_MAP.put(Items.AMETHYST_SHARD, (level, mob, _, firedFromWeapon) -> new AmethystShard(level, mob, firedFromWeapon));
-		PROJECTILE_MAP.put(Items.ICE, (level, mob, _, firedFromWeapon) -> new IceShard(level, mob, firedFromWeapon));
+		PROJECTILE_MAP.put(Items.AMETHYST_SHARD, (level, mob, _, firedFromWeapon) -> {
+			AmethystShard shard = new AmethystShard(level, mob, firedFromWeapon);
+			shard.setBaseDamage(3);
+			return shard;
+		});
+		PROJECTILE_MAP.put(Items.ICE, (level, mob, _, firedFromWeapon) -> {
+			IceShard shard = new IceShard(level, mob, firedFromWeapon);
+			shard.setBaseDamage(3);
+			return shard;
+		});
 		PROJECTILE_MAP.put(Items.TORCH, (level, mob, projectile, firedFromWeapon) -> {
 			Torch torch = new Torch(level, mob, projectile, firedFromWeapon);
 			torch.setBaseDamage(torch.baseDamage / 2);
