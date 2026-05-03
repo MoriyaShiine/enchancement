@@ -83,7 +83,7 @@ public class HoneyTrailComponent implements AutoSyncedComponent, CommonTickingCo
 	public void addHoneySpot(LivingEntity owner, int maxAge) {
 		Vec3 adjustedPos = getAdjustedPos(owner);
 		for (HoneySpot honeySpot : honeySpots) {
-			if (owner.getUUID().equals(honeySpot.getOwnerId()) && honeySpot.box.deflate(0.7).contains(adjustedPos)) {
+			if (owner.getUUID().equals(honeySpot.getOwnerId()) && honeySpot.box.deflate(0.8).contains(adjustedPos)) {
 				honeySpot.age = 0;
 				return;
 			}
@@ -127,7 +127,7 @@ public class HoneyTrailComponent implements AutoSyncedComponent, CommonTickingCo
 			this.ownerId = ownerId;
 			this.pos = pos;
 			this.blockPos = blockPos;
-			this.box = new AABB(pos.add(-0.5, 0, -0.5), pos.add(0.5, 0.2, 0.5));
+			this.box = new AABB(pos.add(-0.6, 0, -0.6), pos.add(0.6, 0.2, 0.6));
 			this.age = age;
 			this.maxAge = maxAge;
 		}
