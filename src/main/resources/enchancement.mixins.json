@@ -59,6 +59,7 @@
 	"config.rebalanceequipment.HoeItemMixin",
 	"config.rebalanceequipment.ItemsMixin",
 	"config.rebalanceequipment.KineticWeaponMixin",
+	"config.rebalanceequipment.LivingEntityMixin",
 	"config.rebalanceequipment.MaceItemMixin",
 	"config.rebalanceequipment.PlayerMixin",
 	"config.rebalanceequipment.ServerAdvancementManagerMixin",

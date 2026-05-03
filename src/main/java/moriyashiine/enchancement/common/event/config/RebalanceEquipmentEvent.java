@@ -60,9 +60,16 @@ public class RebalanceEquipmentEvent {
 	public static class Interrupt implements ServerLivingEntityEvents.AfterDamage {
 		@Override
 		public void afterDamage(LivingEntity entity, DamageSource source, float baseDamageTaken, float damageTaken, boolean blocked) {
-			if (ModConfig.rebalanceEquipment && source.getEntity() != null && !source.is(ModDamageTypeTags.DOES_NOT_INTERRUPT) && entity instanceof Player player && isMaceOrTrident(player)) {
-				player.getCooldowns().addCooldown(entity.getUseItem(), 20);
-				entity.releaseUsingItem();
+			if (ModConfig.rebalanceEquipment && source.getEntity() != null && !source.is(ModDamageTypeTags.DOES_NOT_INTERRUPT) && entity instanceof Player player) {
+				if (isMaceOrTrident(player)) {
+					player.getCooldowns().addCooldown(entity.getUseItem(), 20);
+					entity.releaseUsingItem();
+				}
+				for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
+					if (stack.has(DataComponents.GLIDER)) {
+						player.getCooldowns().addCooldown(stack, 60);
+					}
+				}
 			}
 		}
 	}
