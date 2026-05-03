@@ -9,7 +9,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import moriyashiine.enchancement.common.ModConfig;
 import net.minecraft.core.Holder;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -18,18 +17,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.function.Predicate;
 
 @Mixin(value = Player.class, priority = 2000)
 public abstract class PlayerMixin extends LivingEntity {
-	@Unique
-	private ItemStack lastStack = ItemStack.EMPTY;
-
 	protected PlayerMixin(EntityType<? extends LivingEntity> type, Level level) {
 		super(type, level);
 	}
@@ -50,17 +43,5 @@ public abstract class PlayerMixin extends LivingEntity {
 			return Math.max(0.5F, value);
 		}
 		return value;
-	}
-
-	@Inject(method = "tick", at = @At("TAIL"))
-	private void enchancement$rebalanceEquipment(CallbackInfo ci) {
-		lastStack = getMainHandItem();
-	}
-
-	@Inject(method = "attack", at = @At("HEAD"), cancellable = true)
-	private void enchancement$rebalanceEquipment(Entity entity, CallbackInfo ci) {
-		if (ModConfig.rebalanceEquipment && !ItemStack.matches(lastStack, getMainHandItem())) {
-			ci.cancel();
-		}
 	}
 }

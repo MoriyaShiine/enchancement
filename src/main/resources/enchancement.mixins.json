@@ -180,6 +180,7 @@
 	"config.overhaulenchanting.client.GrindstoneScreenMixin",
 	"config.rebalanceequipment.client.ItemInHandRendererMixin",
 	"config.rebalanceequipment.client.LocalPlayerMixin",
+	"config.rebalanceequipment.client.MinecraftMixin",
 	"config.rebalanceequipment.client.ThrownTridentRendererMixin",
 	"enchantment.bouncy.client.TranslatableContentsMixin",
 	"enchantment.dash.client.TranslatableContentsMixin",
