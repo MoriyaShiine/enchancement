@@ -144,7 +144,7 @@ public class SlamComponent implements CommonTickingComponent {
 
 	public float getJumpBoostStrength() {
 		if (ticksLeftToJump > 0) {
-			float boost = MultiplyMovementSpeedEvent.getJumpStrength(obj, (1 + strength + (slamStorageTicks / 12F)) / obj.getJumpPower());
+			float boost = MultiplyMovementSpeedEvent.getJumpStrength(obj, (1 + strength + (slamStorageTicks / 20F)) / obj.getJumpPower());
 			ticksLeftToJump = slamStorageTicks = 0;
 			return boost;
 		}
