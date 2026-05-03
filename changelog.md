@@ -1,4 +1,40 @@
 ------------------------------------------------------
+Version 26.1-r7
+------------------------------------------------------
+- horse and wolf armor now get chestplate enchantments instead of boots enchantments, and saddles now get boots enchantments
+- mountable mobs can now use air jump, direction burst, glide, and rotation burst components when mounted
+- mobs with perception no longer need line of sight to find a target
+- mobs with veil no longer render past a certain distance
+- mobs with strafe now use it when attacking
+- mobs with slide now use it to navigate
+- mobs now properly use delay
+- mobs with lunge now use it when attacking
+- drowned now use riptide
+- wardenspine now considers x rotation instead of y rotation if the attacked entity has body armor
+- getting hit now cancels slamming
+- reduce strength of slam storage jumps
+- bouncy should no longer have a delay on servers
+- charge jump progress no longer renders if you're riding a vehicle
+- getting hit now briefly cancels buoy
+- floating with buoy now reduces wet timer
+- add wet timer hud indicator
+- add key for buoy hovering out of water
+- add dedicated sound events for buoy boosting
+- increase sticky's honey trail size
+- amethyst and ice shards now do more damage
+- torch projectiles are now twice as fast and deal more damage
+- riptide is now weaker
+- elytra are now disabled for 3 seconds when attacked
+- armor enchantments now work on body and saddle slots
+- fix modded wolf armors not having durability
+- fix push components resetting when losing durability
+- fix certain enchantments not working in offhand or when a mob uses it
+- fix riptide slowdown with amphibious (and depth strider)
+- fix riptide having weird rotations when swimming
+- fix spear attribute swapping
+- fix players getting kicked for flying
+
+------------------------------------------------------
 Version 26.1-r6
 ------------------------------------------------------
 **If you are playing on an existing world, please delete the enchancement configuration file and set the `minecraft:player_movement_check` gamerule to false**
