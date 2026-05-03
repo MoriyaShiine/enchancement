@@ -89,6 +89,7 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 					}
 					obj.gameEvent(GameEvent.ENTITY_ACTION);
 					EnchancementUtil.resetFallDistance(obj);
+					ModEntityComponents.EXTENDED_WATER_TIME.get(obj).decrement(obj.tickCount % 2 == 0 ? 1 : 2);
 					if ((obj.tickCount + obj.getId()) % 3 == 0) {
 						SoundEvent sound = SoundEvents.POINTED_DRIPSTONE_DRIP_WATER;
 						if (currentSubmersion == SubmersionGate.WATER_ONLY) {
