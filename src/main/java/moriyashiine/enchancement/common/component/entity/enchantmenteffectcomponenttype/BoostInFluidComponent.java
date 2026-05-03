@@ -4,6 +4,7 @@
 
 package moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype;
 
+import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.payload.BoostInFluidC2SPayload;
@@ -68,7 +69,7 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 			if (obj.hurtTime != 0) {
 				damageTicks = 10;
 			}
-			if (!obj.slib$isPlayer() && !obj.hasControllingPassenger()) {
+			if (ModConfig.enhanceMobs && !obj.slib$isPlayer() && !obj.hasControllingPassenger()) {
 				shouldBoost = !obj.level().getBlockState(BlockPos.containing(obj.getEyePosition())).isAir() && SLibUtils.isSubmerged(obj, SubmersionGate.ALL);
 			}
 			if (shouldBoost && damageTicks == 0) {
