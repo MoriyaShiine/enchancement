@@ -6,23 +6,28 @@ package moriyashiine.enchancement.common.event.config;
 
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.world.entity.TridentSpinAttackUser;
 import moriyashiine.strawberrylib.api.event.TickEntityEvent;
+import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.fabricmc.fabric.api.item.v1.EnchantmentEvents;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.advancements.criterion.DamageSourcePredicate;
+import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -33,6 +38,7 @@ import net.minecraft.world.item.enchantment.effects.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -139,6 +145,21 @@ public class RebalanceEnchantmentsEvent {
 				if (target != null && target.slib$exists()) {
 					if (target.isLookingAtMe(mob, 0.1, true, false, mob.getEyeY())) {
 						mob.postPiercingAttack();
+					}
+					if (mob.isInWaterOrRain()) {
+						ItemStack weapon = mob.getWeaponItem();
+						float riptideStrength = EnchantmentHelper.getTridentSpinAttackStrength(weapon, mob);
+						if (riptideStrength > 0) {
+							SLibUtils.playSound(mob, EnchantmentHelper.pickHighestLevel(weapon, EnchantmentEffectComponents.TRIDENT_SOUND).orElse(SoundEvents.TRIDENT_THROW).value());
+							Vec3 push = new Vec3(target.getX() - mob.getX(), target.getY() - mob.getY(), target.getZ() - mob.getZ()).normalize().scale(riptideStrength);
+							((TridentSpinAttackUser) mob).enchancement$startAutoSpinAttack(20, 8, weapon);
+							mob.push(push.x(), push.y(), push.z());
+							mob.lookAt(EntityAnchorArgument.Anchor.EYES, target.position());
+							mob.getNavigation().stop();
+							if (mob.onGround()) {
+								mob.move(MoverType.SELF, new Vec3(0, 1.2, 0));
+							}
+						}
 					}
 				}
 			}

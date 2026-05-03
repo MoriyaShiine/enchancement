@@ -22,6 +22,7 @@ import moriyashiine.enchancement.client.renderer.entity.BrimstoneRenderer;
 import moriyashiine.enchancement.client.renderer.entity.IceShardRenderer;
 import moriyashiine.enchancement.client.renderer.entity.TorchRenderer;
 import moriyashiine.enchancement.client.renderer.entity.model.FrozenPlayerModel;
+import moriyashiine.enchancement.client.renderer.entity.model.MobSpinAttackEffectModel;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
 import moriyashiine.enchancement.common.init.ModMenuTypes;
@@ -84,6 +85,8 @@ public class EnchancementClient implements ClientModInitializer {
 		EntityRenderers.register(ModEntityTypes.BRIMSTONE, BrimstoneRenderer::new);
 		EntityRenderers.register(ModEntityTypes.ICE_SHARD, IceShardRenderer::new);
 		EntityRenderers.register(ModEntityTypes.TORCH, TorchRenderer::new);
+
+		ModelLayerRegistry.registerModelLayer(MobSpinAttackEffectModel.LAYER, MobSpinAttackEffectModel::createLayer);
 	}
 
 	private void initParticles() {
