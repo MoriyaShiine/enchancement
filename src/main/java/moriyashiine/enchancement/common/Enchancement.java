@@ -163,6 +163,7 @@ public class Enchancement implements ModInitializer {
 		LootTableEvents.MODIFY.register(new OverhaulEnchantingEvent());
 		EnchantmentEvents.ALLOW_ENCHANTING.register(new RebalanceEnchantmentsEvent.AllowEnchanting());
 		ServerLifecycleEvents.SERVER_STARTED.register(new RebalanceEnchantmentsEvent.ServerStarted());
+		TickEntityEvent.EVENT.register(new RebalanceEnchantmentsEvent.Tick());
 		UseBlockCallback.EVENT.register(new RebalanceEnchantmentsEvent.UseBlock());
 		DefaultItemComponentEvents.MODIFY.register(new RebalanceEquipmentEvent.AllowComponent());
 		EnchantmentEvents.ALLOW_ENCHANTING.register(new RebalanceEquipmentEvent.AllowEnchanting());

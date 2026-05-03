@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.event.config;
 
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.strawberrylib.api.event.TickEntityEvent;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
@@ -19,6 +20,9 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -124,6 +128,20 @@ public class RebalanceEnchantmentsEvent {
 
 		private static <T> void addEffect(TypedDataComponent<T> component, DataComponentMap.Builder builder) {
 			builder.set(component.type(), component.value());
+		}
+	}
+
+	public static class Tick implements TickEntityEvent {
+		@Override
+		public void tick(Level level, Entity entity) {
+			if (ModConfig.enhanceMobs && !level.isClientSide() && entity instanceof Mob mob && (mob.getId() + mob.tickCount) % 40 == 0 && mob.isUsingItem() && !mob.isPassenger()) {
+				LivingEntity target = mob.getTarget();
+				if (target != null && target.slib$exists()) {
+					if (target.isLookingAtMe(mob, 0.1, true, false, mob.getEyeY())) {
+						mob.postPiercingAttack();
+					}
+				}
+			}
 		}
 	}
 
