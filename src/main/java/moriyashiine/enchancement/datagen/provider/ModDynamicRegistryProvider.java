@@ -2,7 +2,7 @@
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
 
-package moriyashiine.enchancement.data.provider;
+package moriyashiine.enchancement.datagen.provider;
 
 import moriyashiine.enchancement.common.Enchancement;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;

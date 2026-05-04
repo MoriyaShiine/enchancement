@@ -14,7 +14,7 @@ import moriyashiine.enchancement.common.world.level.storage.loot.predicates.Atta
 import moriyashiine.enchancement.common.world.level.storage.loot.predicates.HasExtendedWaterTimeCondition;
 import moriyashiine.enchancement.common.world.level.storage.loot.predicates.InCombatCondition;
 import moriyashiine.enchancement.common.world.level.storage.loot.predicates.WetCondition;
-import moriyashiine.enchancement.data.provider.ModEnchantmentTagsProvider;
+import moriyashiine.enchancement.datagen.provider.ModEnchantmentTagsProvider;
 import moriyashiine.strawberrylib.api.objects.enums.SubmersionGate;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.advancements.criterion.*;

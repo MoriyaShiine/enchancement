@@ -22,7 +22,7 @@
   "environment": "*",
   "entrypoints": {
 	"fabric-datagen": [
-	  "moriyashiine.enchancement.data.ModDataGenerator"
+	  "moriyashiine.enchancement.datagen.ModDataGenerator"
 	],
 	"main": [
 	  "moriyashiine.enchancement.common.Enchancement"
