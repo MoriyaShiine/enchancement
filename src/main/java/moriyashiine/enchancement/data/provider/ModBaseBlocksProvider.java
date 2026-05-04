@@ -4,33 +4,21 @@
 
 package moriyashiine.enchancement.data.provider;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import moriyashiine.enchancement.api.datagen.BaseBlocksProvider;
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.reloadlistener.BaseBlocksReloadListener;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricCodecDataProvider;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.PackOutput;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.function.BiConsumer;
 
-public class ModBaseBlocksProvider extends FabricCodecDataProvider<ModBaseBlocksProvider.DatagenBaseBlock> {
+public class ModBaseBlocksProvider extends BaseBlocksProvider {
 	public ModBaseBlocksProvider(FabricPackOutput packOutput, CompletableFuture<HolderLookup.Provider> registriesFuture) {
-		super(packOutput, registriesFuture, PackOutput.Target.DATA_PACK, BaseBlocksReloadListener.DIRECTORY, DatagenBaseBlock.CODEC);
+		super(packOutput, registriesFuture);
 	}
 
 	@Override
-	protected final void configure(BiConsumer<Identifier, DatagenBaseBlock> provider, HolderLookup.Provider registries) {
-		addHeadDrops(((blockId, baseId) -> provider.accept(blockId, new DatagenBaseBlock(baseId))));
-	}
-
-	protected void addHeadDrops(Output output) {
+	protected void configure(BaseBlocksProvider.Output output) {
 		output.accept(id("ditr:obisidan_diamond_ore"), Blocks.OBSIDIAN);
 
 		output.accept(id("enderscape:mirestone_nebulite_ore"), id("enderscape:mirestone"));
@@ -148,35 +136,8 @@ public class ModBaseBlocksProvider extends FabricCodecDataProvider<ModBaseBlocks
 		output.accept(id("universal_ores:tuff_redstone_ore"), Blocks.TUFF);
 	}
 
-	protected Identifier id(String id) {
-		return Identifier.parse(id);
-	}
-
 	@Override
 	public String getName() {
 		return Enchancement.MOD_ID + "_base_blocks";
-	}
-
-	@FunctionalInterface
-	public interface Output {
-		void accept(Identifier blockId, Identifier baseId);
-
-		default void accept(Block block, Identifier baseId) {
-			accept(BuiltInRegistries.BLOCK.getKey(block), baseId);
-		}
-
-		default void accept(Identifier blockId, Block base) {
-			accept(blockId, BuiltInRegistries.BLOCK.getKey(base));
-		}
-
-		default void accept(Block block, Block base) {
-			accept(block, BuiltInRegistries.BLOCK.getKey(base));
-		}
-	}
-
-	protected record DatagenBaseBlock(Identifier base) {
-		public static final Codec<DatagenBaseBlock> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-				Identifier.CODEC.fieldOf("base").forGetter(DatagenBaseBlock::base)
-		).apply(instance, DatagenBaseBlock::new));
 	}
 }
