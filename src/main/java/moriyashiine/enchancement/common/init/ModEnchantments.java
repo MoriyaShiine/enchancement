@@ -478,8 +478,11 @@ public class ModEnchantments {
 				2,
 				EquipmentSlotGroup.MAINHAND,
 				builder -> builder.withEffect(
-						ModEnchantmentEffectComponentTypes.PHASE_THROUGH_BLOCKS_AND_FLOAT,
-						new AddValue(LevelBasedValue.perLevel(2, 1))
+						ModEnchantmentEffectComponentTypes.PHASE,
+						new PhaseEffect(
+								new AddValue(LevelBasedValue.perLevel(2, 1)),
+								true
+						)
 				)));
 		// crossbow
 		registry.register(BRIMSTONE, create(BRIMSTONE.identifier(),

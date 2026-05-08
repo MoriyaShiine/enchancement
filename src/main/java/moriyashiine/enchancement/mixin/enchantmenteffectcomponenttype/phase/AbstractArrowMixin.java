@@ -2,7 +2,7 @@
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
 
-package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.phasethroughblocksandfloat;
+package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.phase;
 
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
@@ -40,10 +40,10 @@ public abstract class AbstractArrowMixin extends Entity {
 	}
 
 	@Inject(method = "onHitBlock", at = @At("HEAD"), cancellable = true)
-	private void enchancement$phaseThroughBlocksAndFloat(BlockHitResult hitResult, CallbackInfo ci) {
-		ModEntityComponents.PHASE_THROUGH_BLOCKS_AND_FLOAT.maybeGet(this).ifPresent(phaseThroughBlocksAndFloatComponent -> {
-			if (phaseThroughBlocksAndFloatComponent.shouldPhase()) {
-				int maxPhaseBlocks = phaseThroughBlocksAndFloatComponent.getMaxPhaseBlocks();
+	private void enchancement$phase(BlockHitResult hitResult, CallbackInfo ci) {
+		ModEntityComponents.PHASE.maybeGet(this).ifPresent(phaseComponent -> {
+			if (phaseComponent.shouldPhase()) {
+				int maxPhaseBlocks = phaseComponent.getMaxPhaseBlocks();
 				BlockState state = level().getBlockState(hitResult.getBlockPos());
 				state.onProjectileHit(level(), state, hitResult, (AbstractArrow) (Object) this);
 				double distance = 0;
@@ -72,7 +72,7 @@ public abstract class AbstractArrowMixin extends Entity {
 							level().addParticle(ParticleTypes.REVERSE_PORTAL, end.x() + Mth.nextDouble(random, -getBbWidth() / 2, getBbWidth() / 2), end.y() + Mth.nextDouble(random, -getBbHeight() / 2, getBbHeight() / 2), end.z() + Mth.nextDouble(random, -getBbWidth() / 2, getBbWidth() / 2), 0, 0, 0);
 						}
 					}
-					phaseThroughBlocksAndFloatComponent.disable();
+					phaseComponent.disable();
 					ci.cancel();
 				}
 			}

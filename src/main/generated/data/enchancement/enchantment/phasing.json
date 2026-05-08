@@ -4,14 +4,17 @@
 	"translate": "enchantment.enchancement.phasing"
   },
   "effects": {
-	"enchancement:phase_through_blocks_and_float": [
+	"enchancement:phase": [
 	  {
 		"effect": {
-		  "type": "minecraft:add",
-		  "value": {
-			"type": "minecraft:linear",
-			"base": 2.0,
-			"per_level_above_first": 1.0
+		  "bypass_shields": true,
+		  "max_phase_blocks": {
+			"type": "minecraft:add",
+			"value": {
+			  "type": "minecraft:linear",
+			  "base": 2.0,
+			  "per_level_above_first": 1.0
+			}
 		  }
 		}
 	  }
