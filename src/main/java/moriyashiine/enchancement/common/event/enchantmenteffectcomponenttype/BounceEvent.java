@@ -20,7 +20,7 @@ import net.minecraft.world.level.Level;
 public class BounceEvent implements PreventFallDamageEvent {
 	@Override
 	public TriState preventsFallDamage(Level level, LivingEntity entity, double fallDistance, float damageModifier, DamageSource source) {
-		if (!source.is(DamageTypes.STALAGMITE) && fallDistance > entity.getMaxFallDistance() && EnchancementUtil.hasAnyEnchantmentsWith(entity, ModEnchantmentEffectComponentTypes.BOUNCE)) {
+		if (!source.is(DamageTypes.STALAGMITE) && fallDistance > entity.getMaxFallDistance() + 1 && EnchancementUtil.hasAnyEnchantmentsWith(entity, ModEnchantmentEffectComponentTypes.BOUNCE)) {
 			SLibUtils.playSound(entity, SoundEvents.SLIME_BLOCK_FALL);
 			BounceComponent bounceComponent = ModEntityComponents.BOUNCE.get(entity);
 			double bounceStrength = EnchancementUtil.altLog(1.05, fallDistance / 7, 1 / 16F);
