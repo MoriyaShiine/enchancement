@@ -95,7 +95,7 @@ public class ChargeJumpComponent implements AutoSyncedComponent, CommonTickingCo
 		if (charge < maximumCharge) {
 			renderTicks = 20;
 		}
-		charge = Math.min(maximumCharge, charge + added);
+		charge = Math.clamp(charge + added, 0, maximumCharge);
 	}
 
 	public void addChargeDelayed(double added) {
