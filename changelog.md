@@ -1,4 +1,23 @@
 ------------------------------------------------------
+Version 26.1-r8
+------------------------------------------------------
+- dash now takes current horizontal velocity into account
+- bouncy now loses charge when taking damage
+- merge molten and fire aspect
+  - rename fire aspect to molten
+  - swords and mining tools can have molten
+  - items with molten both ignite entities and smelt mined blocks, and place fire when sneaking
+- phasing now bypasses shields
+- meteor now resets fall distance when used
+- meteor now spawns lava particles even when used in the air
+- wind burst is now slightly stronger on hit
+- wind burst now creates a wind gust that pushes you and entities in front of you, instead of launching a wind charge
+- beheading now deals 0.5 extra damage per level
+- fix berserk rendering
+- fix maces not resetting fall distance on client
+- adjust trade rebalance books
+
+------------------------------------------------------
 Version 26.1-r7
 ------------------------------------------------------
 - horse and wolf armor now get chestplate enchantments instead of boots enchantments, and saddles now get boots enchantments
