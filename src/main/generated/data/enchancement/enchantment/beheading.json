@@ -23,6 +23,18 @@
 		  }
 		}
 	  }
+	],
+	"minecraft:damage": [
+	  {
+		"effect": {
+		  "type": "minecraft:add",
+		  "value": {
+			"type": "minecraft:linear",
+			"base": 0.5,
+			"per_level_above_first": 0.5
+		  }
+		}
+	  }
 	]
   },
   "max_cost": {

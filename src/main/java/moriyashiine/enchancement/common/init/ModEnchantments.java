@@ -92,8 +92,6 @@ public class ModEnchantments {
 	// mace
 	public static final ResourceKey<Enchantment> METEOR = createKey("meteor");
 	public static final ResourceKey<Enchantment> THUNDERSTRUCK = createKey("thunderstruck");
-	// mining tool
-	public static final ResourceKey<Enchantment> MOLTEN = createKey("molten");
 	// pickaxe
 	public static final ResourceKey<Enchantment> EXTRACTING = createKey("extracting");
 	// axe
@@ -140,13 +138,13 @@ public class ModEnchantments {
 	public static void bootstrap(BootstrapContext<Enchantment> registry) {
 		registry.register(EMPTY_KEY, EMPTY);
 		// lookup
-		HolderGetter<DamageType> damageTypeLookup = registry.lookup(Registries.DAMAGE_TYPE);
-		HolderGetter<Enchantment> enchantmentLookup = registry.lookup(Registries.ENCHANTMENT);
-		HolderGetter<EntityType<?>> entityTypeLookup = registry.lookup(Registries.ENTITY_TYPE);
-		HolderGetter<Item> itemLookup = registry.lookup(Registries.ITEM);
+		HolderGetter<DamageType> damageTypes = registry.lookup(Registries.DAMAGE_TYPE);
+		HolderGetter<Enchantment> enchantments = registry.lookup(Registries.ENCHANTMENT);
+		HolderGetter<EntityType<?>> entityTypes = registry.lookup(Registries.ENTITY_TYPE);
+		HolderGetter<Item> items = registry.lookup(Registries.ITEM);
 		// helmet
 		registry.register(ASSIMILATION, create(ASSIMILATION.identifier(),
-				itemLookup.getOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),
+				items.getOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.ARMOR,
 				builder -> {
@@ -162,7 +160,7 @@ public class ModEnchantments {
 							));
 				}));
 		registry.register(PERCEPTION, create(PERCEPTION.identifier(),
-				itemLookup.getOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),
+				items.getOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.ARMOR,
 				builder -> {
@@ -174,7 +172,7 @@ public class ModEnchantments {
 							new AddValue(LevelBasedValue.perLevel(0.25F, 0.75F)));
 				}));
 		registry.register(VEIL, create(VEIL.identifier(),
-				itemLookup.getOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),
+				items.getOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.ARMOR,
 				builder -> {
@@ -193,7 +191,7 @@ public class ModEnchantments {
 				}));
 		// chestplate
 		registry.register(ADRENALINE, create(ADRENALINE.identifier(),
-				itemLookup.getOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
+				items.getOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.ARMOR,
 				builder -> builder.withSpecialEffect(
@@ -205,7 +203,7 @@ public class ModEnchantments {
 						)
 				)));
 		registry.register(AMPHIBIOUS, create(AMPHIBIOUS.identifier(),
-				itemLookup.getOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
+				items.getOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.ARMOR,
 				builder -> {
@@ -249,7 +247,7 @@ public class ModEnchantments {
 					builder.withEffect(ModEnchantmentEffectComponentTypes.HIDE_NON_ARMOR_ATTRIBUTE_TOOLTIPS);
 				}));
 		registry.register(STRAFE, create(STRAFE.identifier(),
-				itemLookup.getOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
+				items.getOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.ARMOR,
 				builder -> builder.withSpecialEffect(
@@ -259,11 +257,11 @@ public class ModEnchantments {
 								new AddValue(LevelBasedValue.constant(1.1F)),
 								new AddValue(LevelBasedValue.constant(0.8F))))));
 		registry.register(WARDENSPINE, create(WARDENSPINE.identifier(),
-				itemLookup.getOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
+				items.getOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.ARMOR,
 				builder -> {
-					builder.exclusiveWith(enchantmentLookup.getOrThrow(ModEnchantmentTags.WARDENSPINE_EXCLUSIVE_SET));
+					builder.exclusiveWith(enchantments.getOrThrow(ModEnchantmentTags.WARDENSPINE_EXCLUSIVE_SET));
 					builder.withEffect(
 							EnchantmentEffectComponents.DAMAGE_PROTECTION,
 							new AddValue(LevelBasedValue.perLevel(8)),
@@ -279,7 +277,7 @@ public class ModEnchantments {
 									new DamageEntity(
 											LevelBasedValue.perLevel(2),
 											LevelBasedValue.perLevel(2),
-											damageTypeLookup.getOrThrow(DamageTypes.THORNS)),
+											damageTypes.getOrThrow(DamageTypes.THORNS)),
 									new ApplyMobEffect(
 											HolderSet.direct(MobEffects.DARKNESS),
 											LevelBasedValue.perLevel(4),
@@ -302,7 +300,7 @@ public class ModEnchantments {
 				}));
 		// leggings
 		registry.register(DASH, create(DASH.identifier(),
-				itemLookup.getOrThrow(ItemTags.LEG_ARMOR_ENCHANTABLE),
+				items.getOrThrow(ItemTags.LEG_ARMOR_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.ARMOR,
 				builder -> builder.withSpecialEffect(
@@ -313,7 +311,7 @@ public class ModEnchantments {
 								new AddValue(LevelBasedValue.constant(3)),
 								new AddValue(LevelBasedValue.constant(1.1F))))));
 		registry.register(GALE, create(GALE.identifier(),
-				itemLookup.getOrThrow(ItemTags.LEG_ARMOR_ENCHANTABLE),
+				items.getOrThrow(ItemTags.LEG_ARMOR_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.ARMOR,
 				builder -> {
@@ -332,7 +330,7 @@ public class ModEnchantments {
 							));
 				}));
 		registry.register(SLIDE, create(SLIDE.identifier(),
-				itemLookup.getOrThrow(ItemTags.LEG_ARMOR_ENCHANTABLE),
+				items.getOrThrow(ItemTags.LEG_ARMOR_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.ARMOR,
 				builder -> {
@@ -345,11 +343,11 @@ public class ModEnchantments {
 				}));
 		// boots
 		registry.register(BOUNCY, create(BOUNCY.identifier(),
-				itemLookup.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
+				items.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.ARMOR,
 				builder -> {
-					builder.exclusiveWith(enchantmentLookup.getOrThrow(ModEnchantmentTags.BOUNCY_EXCLUSIVE_SET));
+					builder.exclusiveWith(enchantments.getOrThrow(ModEnchantmentTags.BOUNCY_EXCLUSIVE_SET));
 					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.BOUNCE);
 					builder.withSpecialEffect(
@@ -360,7 +358,7 @@ public class ModEnchantments {
 									new AddValue(LevelBasedValue.perLevel(0.6F, 0.4F))));
 				}));
 		registry.register(BUOY, create(BUOY.identifier(),
-				itemLookup.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
+				items.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.ARMOR,
 				builder -> {
@@ -410,7 +408,7 @@ public class ModEnchantments {
 					);
 				}));
 		registry.register(STICKY, create(STICKY.identifier(),
-				itemLookup.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
+				items.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.ARMOR,
 				builder -> {
@@ -424,7 +422,7 @@ public class ModEnchantments {
 				}));
 		// sword
 		registry.register(BERSERK, create(BERSERK.identifier(),
-				itemLookup.getOrThrow(ItemTags.MELEE_WEAPON_ENCHANTABLE),
+				items.getOrThrow(ItemTags.MELEE_WEAPON_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.MAINHAND,
 				builder -> builder.withSpecialEffect(
@@ -436,11 +434,11 @@ public class ModEnchantments {
 						)
 				)));
 		registry.register(FROSTBITE, create(FROSTBITE.identifier(),
-				itemLookup.getOrThrow(ItemTags.MELEE_WEAPON_ENCHANTABLE),
+				items.getOrThrow(ItemTags.MELEE_WEAPON_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.MAINHAND,
 				builder -> {
-					builder.exclusiveWith(enchantmentLookup.getOrThrow(ModEnchantmentTags.FROSTBITE_EXCLUSIVE_SET));
+					builder.exclusiveWith(enchantments.getOrThrow(ModEnchantmentTags.FROSTBITE_EXCLUSIVE_SET));
 					builder.withEffect(
 							EnchantmentEffectComponents.POST_ATTACK,
 							EnchantmentTarget.ATTACKER,
@@ -450,7 +448,7 @@ public class ModEnchantments {
 				}));
 		// bow
 		registry.register(CHAOS, create(CHAOS.identifier(),
-				itemLookup.getOrThrow(ItemTags.BOW_ENCHANTABLE),
+				items.getOrThrow(ItemTags.BOW_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.MAINHAND,
 				builder -> builder.withEffect(
@@ -461,7 +459,7 @@ public class ModEnchantments {
 						)
 				)));
 		registry.register(DELAY, create(DELAY.identifier(),
-				itemLookup.getOrThrow(ItemTags.BOW_ENCHANTABLE),
+				items.getOrThrow(ItemTags.BOW_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.MAINHAND,
 				builder -> builder.withEffect(
@@ -474,7 +472,7 @@ public class ModEnchantments {
 						)
 				)));
 		registry.register(PHASING, create(PHASING.identifier(),
-				itemLookup.getOrThrow(ItemTags.BOW_ENCHANTABLE),
+				items.getOrThrow(ItemTags.BOW_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.MAINHAND,
 				builder -> builder.withEffect(
@@ -486,11 +484,11 @@ public class ModEnchantments {
 				)));
 		// crossbow
 		registry.register(BRIMSTONE, create(BRIMSTONE.identifier(),
-				itemLookup.getOrThrow(ItemTags.CROSSBOW_ENCHANTABLE),
+				items.getOrThrow(ItemTags.CROSSBOW_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.MAINHAND,
 				builder -> {
-					builder.exclusiveWith(enchantmentLookup.getOrThrow(ModEnchantmentTags.BRIMSTONE_EXCLUSIVE_SET));
+					builder.exclusiveWith(enchantments.getOrThrow(ModEnchantmentTags.BRIMSTONE_EXCLUSIVE_SET));
 					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.ALLOW_CROSSBOW_COOLDOWN_RELOADING);
 					builder.withSpecialEffect(
@@ -500,11 +498,11 @@ public class ModEnchantments {
 							));
 				}));
 		registry.register(SCATTER, create(SCATTER.identifier(),
-				itemLookup.getOrThrow(ItemTags.CROSSBOW_ENCHANTABLE),
+				items.getOrThrow(ItemTags.CROSSBOW_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.MAINHAND,
 				builder -> {
-					builder.exclusiveWith(enchantmentLookup.getOrThrow(ModEnchantmentTags.UNIQUE_CROSSBOW_PROJECTILE_EXCLUSIVE_SET));
+					builder.exclusiveWith(enchantments.getOrThrow(ModEnchantmentTags.UNIQUE_CROSSBOW_PROJECTILE_EXCLUSIVE_SET));
 					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.ALLOW_CROSSBOW_COOLDOWN_RELOADING);
 					builder.withEffect(
@@ -533,11 +531,11 @@ public class ModEnchantments {
 					);
 				}));
 		registry.register(TORCH, create(TORCH.identifier(),
-				itemLookup.getOrThrow(ItemTags.CROSSBOW_ENCHANTABLE),
+				items.getOrThrow(ItemTags.CROSSBOW_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.MAINHAND,
 				builder -> {
-					builder.exclusiveWith(enchantmentLookup.getOrThrow(ModEnchantmentTags.UNIQUE_CROSSBOW_PROJECTILE_EXCLUSIVE_SET));
+					builder.exclusiveWith(enchantments.getOrThrow(ModEnchantmentTags.UNIQUE_CROSSBOW_PROJECTILE_EXCLUSIVE_SET));
 					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.ALLOW_LOADING_PROJECTILE,
 							new AllowLoadingProjectileEffect(
@@ -552,7 +550,7 @@ public class ModEnchantments {
 				}));
 		// trident
 		registry.register(LEECH, create(LEECH.identifier(),
-				itemLookup.getOrThrow(ItemTags.TRIDENT_ENCHANTABLE),
+				items.getOrThrow(ItemTags.TRIDENT_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.MAINHAND,
 				builder -> {
@@ -584,7 +582,7 @@ public class ModEnchantments {
 							DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().isDirect(true)));
 				}));
 		registry.register(WARP, create(WARP.identifier(),
-				itemLookup.getOrThrow(ItemTags.TRIDENT_ENCHANTABLE),
+				items.getOrThrow(ItemTags.TRIDENT_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.MAINHAND,
 				builder -> builder.withEffect(
@@ -595,11 +593,11 @@ public class ModEnchantments {
 				)));
 		// mace
 		registry.register(METEOR, create(METEOR.identifier(), true,
-				itemLookup.getOrThrow(ItemTags.MACE_ENCHANTABLE),
+				items.getOrThrow(ItemTags.MACE_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.MAINHAND,
 				builder -> {
-					builder.exclusiveWith(enchantmentLookup.getOrThrow(ModEnchantmentTags.MACE_EXCLUSIVE_SET));
+					builder.exclusiveWith(enchantments.getOrThrow(ModEnchantmentTags.MACE_EXCLUSIVE_SET));
 					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.ERUPTION,
 							new EruptionEffect(
@@ -635,11 +633,11 @@ public class ModEnchantments {
 							));
 				}));
 		registry.register(THUNDERSTRUCK, create(THUNDERSTRUCK.identifier(), true,
-				itemLookup.getOrThrow(ItemTags.MACE_ENCHANTABLE),
+				items.getOrThrow(ItemTags.MACE_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.MAINHAND,
 				builder -> {
-					builder.exclusiveWith(enchantmentLookup.getOrThrow(ModEnchantmentTags.MACE_EXCLUSIVE_SET));
+					builder.exclusiveWith(enchantments.getOrThrow(ModEnchantmentTags.MACE_EXCLUSIVE_SET));
 					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.CHAIN_LIGHTNING,
 							new AddValue(LevelBasedValue.perLevel(0.35F))
@@ -653,41 +651,36 @@ public class ModEnchantments {
 									new AddValue(LevelBasedValue.perLevel(0.8F, 0.3F))
 							));
 				}));
-		// mining tool
-		registry.register(MOLTEN, create(MOLTEN.identifier(),
-				itemLookup.getOrThrow(ItemTags.MINING_ENCHANTABLE),
-				1,
-				EquipmentSlotGroup.MAINHAND,
-				builder -> {
-					builder.exclusiveWith(enchantmentLookup.getOrThrow(ModEnchantmentTags.SILK_TOUCH_EXCLUSIVE_SET));
-					builder.withEffect(
-							ModEnchantmentEffectComponentTypes.SMELT_MINED_BLOCKS);
-				}));
 		// pickaxe
 		registry.register(EXTRACTING, create(EXTRACTING.identifier(),
-				itemLookup.getOrThrow(ItemTags.PICKAXES),
+				items.getOrThrow(ItemTags.PICKAXES),
 				2,
 				EquipmentSlotGroup.MAINHAND,
 				builder -> {
-					builder.exclusiveWith(enchantmentLookup.getOrThrow(ModEnchantmentTags.SILK_TOUCH_EXCLUSIVE_SET));
+					builder.exclusiveWith(enchantments.getOrThrow(ModEnchantmentTags.SILK_TOUCH_EXCLUSIVE_SET));
 					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.MINE_ORE_VEINS,
 							new AddValue(LevelBasedValue.perLevel(0.5F)));
 				}));
 		// axe
 		registry.register(BEHEADING, create(BEHEADING.identifier(),
-				itemLookup.getOrThrow(ItemTags.AXES),
+				items.getOrThrow(ItemTags.AXES),
 				2,
 				EquipmentSlotGroup.MAINHAND,
-				builder -> builder.withEffect(
-						ModEnchantmentEffectComponentTypes.HEAD_DROPS,
-						EnchantmentTarget.ATTACKER,
-						EnchantmentTarget.VICTIM,
-						new AddValue(LevelBasedValue.perLevel(0.5F)),
-						LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.ATTACKER, EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypeLookup, EntityType.PLAYER)))
-				)));
+				builder -> {
+					builder.withEffect(
+							ModEnchantmentEffectComponentTypes.HEAD_DROPS,
+							EnchantmentTarget.ATTACKER,
+							EnchantmentTarget.VICTIM,
+							new AddValue(LevelBasedValue.perLevel(0.5F)),
+							LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.ATTACKER, EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypes, EntityType.PLAYER)))
+					);
+					builder.withEffect(
+							EnchantmentEffectComponents.DAMAGE,
+							new AddValue(LevelBasedValue.perLevel(0.5F)));
+				}));
 		registry.register(LUMBERJACK, create(LUMBERJACK.identifier(),
-				itemLookup.getOrThrow(ItemTags.AXES),
+				items.getOrThrow(ItemTags.AXES),
 				2,
 				EquipmentSlotGroup.MAINHAND,
 				builder -> builder.withSpecialEffect(
@@ -695,14 +688,14 @@ public class ModEnchantments {
 						new AddValue(LevelBasedValue.perLevel(0.25F)))));
 		// shovel
 		registry.register(BURY, create(BURY.identifier(),
-				itemLookup.getOrThrow(ItemTags.SHOVELS),
+				items.getOrThrow(ItemTags.SHOVELS),
 				2,
 				EquipmentSlotGroup.MAINHAND,
 				builder -> builder.withEffect(
 						ModEnchantmentEffectComponentTypes.BURY_ENTITY,
 						new AddValue(LevelBasedValue.perLevel(16, -8)))));
 		registry.register(SCOOPING, create(SCOOPING.identifier(),
-				itemLookup.getOrThrow(ItemTags.SHOVELS),
+				items.getOrThrow(ItemTags.SHOVELS),
 				4,
 				EquipmentSlotGroup.MAINHAND,
 				builder -> {
@@ -714,11 +707,11 @@ public class ModEnchantments {
 							EnchantmentTarget.ATTACKER,
 							EnchantmentTarget.VICTIM,
 							new AddValue(LevelBasedValue.perLevel(0.01F)),
-							LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.ATTACKER, EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypeLookup, EntityType.PLAYER))));
+							LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.ATTACKER, EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypes, EntityType.PLAYER))));
 				}));
 		// hoe
 		registry.register(APEX, create(APEX.identifier(),
-				itemLookup.getOrThrow(ItemTags.HOES),
+				items.getOrThrow(ItemTags.HOES),
 				2,
 				EquipmentSlotGroup.MAINHAND,
 				builder -> {
@@ -735,7 +728,7 @@ public class ModEnchantments {
 				}));
 		// fishing rod
 		registry.register(DISARM, create(DISARM.identifier(),
-				itemLookup.getOrThrow(ItemTags.FISHING_ENCHANTABLE),
+				items.getOrThrow(ItemTags.FISHING_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.MAINHAND,
 				builder -> builder.withEffect(
@@ -746,7 +739,7 @@ public class ModEnchantments {
 								new AddValue(LevelBasedValue.perLevel(12, -2))
 						))));
 		registry.register(GRAPPLE, create(GRAPPLE.identifier(),
-				itemLookup.getOrThrow(ItemTags.FISHING_ENCHANTABLE),
+				items.getOrThrow(ItemTags.FISHING_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.MAINHAND,
 				builder -> builder.withEffect(

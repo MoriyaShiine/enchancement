@@ -17,12 +17,13 @@ import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.util.Unit;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.MaceItem;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.*;
 import net.minecraft.world.item.enchantment.effects.*;
@@ -38,8 +39,12 @@ public class RebalanceEnchantmentsEvent {
 	public static class AllowEnchanting implements EnchantmentEvents.AllowEnchanting {
 		@Override
 		public TriState allowEnchanting(Holder<Enchantment> enchantment, ItemStack target, EnchantingContext enchantingContext) {
-			if (ModConfig.rebalanceEnchantments && target.getItem() instanceof MaceItem && enchantment.is(Enchantments.FIRE_ASPECT)) {
-				return TriState.FALSE;
+			if (ModConfig.rebalanceEnchantments && enchantment.is(Enchantments.FIRE_ASPECT)) {
+				if (target.is(ItemTags.MACE_ENCHANTABLE)) {
+					return TriState.FALSE;
+				} else if (target.is(ItemTags.MINING_ENCHANTABLE)) {
+					return TriState.TRUE;
+				}
 			}
 			return TriState.DEFAULT;
 		}
@@ -90,6 +95,17 @@ public class RebalanceEnchantmentsEvent {
 								List.of(new ConditionalEffect<>(new AddValue(LevelBasedValue.perLevel(0.35F)), Optional.empty()))
 						);
 						channeling.effects = builder.build();
+					}
+				}
+				{
+					Enchantment fireAspect = server.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getValue(Enchantments.FIRE_ASPECT);
+					if (fireAspect != null) {
+						DataComponentMap.Builder builder = DataComponentMap.builder().addAll(fireAspect.effects());
+						builder.set(
+								ModEnchantmentEffectComponentTypes.SMELT_MINED_BLOCKS,
+								Unit.INSTANCE
+						);
+						fireAspect.effects = builder.build();
 					}
 				}
 				{

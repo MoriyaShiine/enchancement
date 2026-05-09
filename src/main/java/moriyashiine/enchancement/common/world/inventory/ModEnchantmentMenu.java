@@ -7,7 +7,6 @@ package moriyashiine.enchancement.common.world.inventory;
 import moriyashiine.enchancement.client.payload.SyncBookshelvesPayload;
 import moriyashiine.enchancement.client.payload.SyncEnchantingTableCostPayload;
 import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModMenuTypes;
 import moriyashiine.enchancement.common.tag.ModItemTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
@@ -236,7 +235,7 @@ public class ModEnchantmentMenu extends AbstractContainerMenu {
 						validEnchantments.add(enchantment);
 					}
 				}
-				validEnchantments.sort(Comparator.comparing(e -> e.unwrapKey().orElse(ModEnchantments.EMPTY_KEY).identifier().getPath()));
+				validEnchantments.sort(Comparator.comparing(Holder::getRegisteredName));
 				super.slotsChanged(container);
 			}
 		}
