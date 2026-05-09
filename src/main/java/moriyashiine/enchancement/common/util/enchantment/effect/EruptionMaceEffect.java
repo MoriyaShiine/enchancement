@@ -7,6 +7,7 @@ package moriyashiine.enchancement.common.util.enchantment.effect;
 import moriyashiine.enchancement.client.payload.UseEruptionPayload;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.world.item.effects.EruptionEffect;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
@@ -58,6 +59,7 @@ public class EruptionMaceEffect extends MaceEffect {
 
 	public static void useCommon(Player player) {
 		SLibUtils.playSound(player, ModSoundEvents.GENERIC_ERUPT, 1, Mth.nextFloat(player.getRandom(), 0.8F, 1.2F));
+		EnchancementUtil.resetFallDistance(player);
 		player.setDeltaMovement(player.getDeltaMovement().x(), EruptionEffect.getJumpStrength(player.getRandom(), player.getMainHandItem()), player.getDeltaMovement().z());
 		player.gameEvent(GameEvent.ENTITY_ACTION);
 	}
