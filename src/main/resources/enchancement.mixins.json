@@ -1,7 +1,6 @@
 {
   "required": true,
   "package": "moriyashiine.enchancement.mixin",
-  "plugin": "moriyashiine.enchancement.common.ModMixinPlugin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
 	"api.event.LivingEntityMixin",
@@ -204,12 +203,7 @@
 	"enchantmenteffectcomponenttype.lightningdash.client.ItemInHandLayerMixin",
 	"enchantmenteffectcomponenttype.lightningdash.client.ItemInHandRendererMixin",
 	"enchantmenteffectcomponenttype.modifydetectionrange.client.EntityMixin",
-	"enchantmenteffectcomponenttype.rage.client.ItemFeatureRendererMixin",
-	"enchantmenteffectcomponenttype.rage.client.ItemModelResolverMixin",
-	"enchantmenteffectcomponenttype.rage.client.ItemStackRenderStateMixin",
-	"enchantmenteffectcomponenttype.rage.client.ItemSubmitMixin",
-	"enchantmenteffectcomponenttype.rage.client.SubmitNodeCollectionMixin",
-	"enchantmenteffectcomponenttype.rage.client.integration.sodium.EntityVertexMixin",
+	"enchantmenteffectcomponenttype.rage.client.CuboidItemModelWrapperMixin",
 	"enchantmenteffectcomponenttype.rapidcrossbowfire.client.MinecraftMixin",
 	"enchantmenteffectcomponenttype.slam.client.AvatarRendererMixin",
 	"enchantmenteffectcomponenttype.slide.client.GameRendererMixin",

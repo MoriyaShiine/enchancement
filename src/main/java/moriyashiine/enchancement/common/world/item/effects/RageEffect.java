@@ -25,8 +25,6 @@ public record RageEffect(EnchantmentValueEffect damageDealtModifier, Enchantment
 			.apply(instance, RageEffect::new));
 
 	// damage dealt
-	public static int color = -1;
-
 	private static int getFlooredPercentage(LivingEntity living, ItemStack stack) {
 		float percentage = living.getHealth() / living.getMaxHealth();
 		if (stack.is(ConventionalItemTags.WOLF_ARMORS)) {

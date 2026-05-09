@@ -54,7 +54,6 @@ dependencies {
     compileOnly("squeek.appleskin:appleskin-fabric:${appleskin_version}") {
         transitive = false
     }
-    localImplementation "maven.modrinth:sodium:${sodium_version}"
 
     localRuntime "com.terraformersmc:modmenu:${mod_menu_version}"
 }
