@@ -140,15 +140,7 @@ public class DirectionBurstComponent extends PushComponent {
 
 	public Vec3 createDelta(Vec3 inputDelta) {
 		Vec3 delta = inputDelta.yRot((float) Math.toRadians(-(obj.getYHeadRot() + 90))).scale(MultiplyMovementSpeedEvent.getMovementMultiplier(obj));
-		Vec3 current = obj.getDeltaMovement().scale(0.5);
-		double x = delta.x(), z = delta.z();
-		if (Double.compare(x, current.x()) * Math.signum(current.x()) > 0) {
-			x += current.x();
-		}
-		if (Double.compare(z, current.z()) * Math.signum(current.z()) > 0) {
-			z += current.z();
-		}
-		return new Vec3(x, delta.y(), z);
+		return EnchancementUtil.modifyDeltaWithCurrent(obj, delta, 0.5);
 	}
 
 	@Environment(EnvType.CLIENT)

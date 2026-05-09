@@ -51,6 +51,7 @@ public class WindBurstMaceEffect extends MaceEffect {
 			}
 		}
 		delta = delta.scale(-0.6 - enchantmentLevel / 6F);
+		delta = EnchancementUtil.modifyDeltaWithCurrent(player, delta, 0.5);
 		player.setDeltaMovement(delta.x(), delta.y(), delta.z());
 	}
 }

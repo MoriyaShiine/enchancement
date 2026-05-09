@@ -281,6 +281,18 @@ public class EnchancementUtil {
 		return SyncDeltaMovementsEvent.DELTAS.getOrDefault(entity.getUUID(), entity.getDeltaMovement());
 	}
 
+	public static Vec3 modifyDeltaWithCurrent(Entity entity, Vec3 delta, double currentScalar) {
+		Vec3 current = entity.getDeltaMovement().scale(currentScalar);
+		double x = delta.x(), z = delta.z();
+		if (Double.compare(x, current.x()) * Math.signum(current.x()) > 0) {
+			x += current.x();
+		}
+		if (Double.compare(z, current.z()) * Math.signum(current.z()) > 0) {
+			z += current.z();
+		}
+		return new Vec3(x, delta.y(), z);
+	}
+
 	public static boolean isGroundAnimalArmor(ItemStack stack) {
 		return stack.is(ConventionalItemTags.HORSE_ARMORS) || stack.is(ConventionalItemTags.WOLF_ARMORS);
 	}
