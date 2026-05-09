@@ -70,13 +70,17 @@ public class EruptionMaceEffect extends MaceEffect {
 		for (int i = 0; i < 360; i += 15) {
 			for (int j = 1; j < 4; j++) {
 				double x = player.getX() + Mth.sin(i) * j / 2, z = player.getZ() + Mth.cos(i) * j / 2;
+				double lavaOffset = 1.5;
 				BlockState state = player.level().getBlockState(mutable.set(x, y, z));
 				if (!state.canBeReplaced() && player.level().getBlockState(mutable.move(Direction.UP)).canBeReplaced()) {
+					lavaOffset -= 1;
 					BlockParticleOption particle = new BlockParticleOption(ParticleTypes.BLOCK, state);
 					for (int k = 0; k < 2; k++) {
 						player.level().addParticle(particle, x, mutable.getY() + 0.5, z, 0, 0.5, 0);
-						player.level().addParticle(ParticleTypes.LAVA, x, mutable.getY() + 0.5, z, 0, 2, 0);
 					}
+				}
+				for (int k = 0; k < 2; k++) {
+					player.level().addParticle(ParticleTypes.LAVA, x, mutable.getY() + lavaOffset, z, 0, 2, 0);
 				}
 			}
 		}
