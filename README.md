@@ -7,7 +7,7 @@
   <h3>Enchancement is a mod that aims to completely overhaul vanilla Minecraft's enchanting system, along with some other adjacent mechanics.</h3>
 </div>
 
-Enchancement currently adds 34 unique and fun enchantments to the game:
+Enchancement currently adds 33 unique and fun enchantments to the game:
 
 ```
 Helmet Enchantments:
@@ -38,7 +38,7 @@ Sword Enchantments:
 Bow Enchantments:
 * Chaos: Gives arrows a random negative potion effect, or positive if sneaking.
 * Delay: Arrows will pause after shooting, building up damage over time. Can be launched prematurely by punching, and additionally redirected by sneaking.
-* Phasing: Causes arrows to have no gravity and phase through blocks, upon which they regain gravity.
+* Phasing: Causes arrows to have no gravity and phase through blocks and shields, upon which they regain gravity.
 
 Crossbow Enchantments:
 * Brimstone: Fires a piercing laser that ignores armor and increases damage with charge and distance. Costs health to fire.
@@ -53,22 +53,19 @@ Mace Enchantments:
 * Meteor: Causes smash attacks to ignite attacked mobs and pull them down. Allows charging to launch you upwards, damaging and igniting nearby mobs.
 * Thunderstruck: Direct attacks chain to nearby mobs. Allows charging to launch you forward and briefly float. Punching while floating causes you to dash forward and smash into the ground.
 
-Mining Tool Enchantments:
-* Molten: Smelts mined blocks. Disabled while sneaking.
-
 Pickaxe Enchantments:
-* Extracting: Extracts materials from connected ores, leaving the stone behind. Disabled while sneaking.
+* Extracting: Extracts materials from connected ores while not sneaking, leaving the stone behind.
 
 Axe Enchantments:
-* Beheading: Slain mobs and players have a chance to drop their head.
-* Lumberjack: Connected logs will also be destroyed. Disabled while sneaking.
+* Beheading: Increases damage dealt. Slain mobs and players have a chance to drop their head.
+* Lumberjack: Connected logs will also be destroyed while not sneaking.
 
 Shovel Enchantments:
 * Bury: Using on a mob will bury it if the ground below is soft enough.
-* Scooping: Deals extra damage and increases mob loot drops.
+* Scooping: Increases mob loot drops and damage dealt.
 
 Hoe Enchantments:
-* Apex: Deals extra damage. Attacking from a distance always results in a critical hit.
+* Apex: Increases damage dealt. Attacking from a distance always results in a critical hit.
 
 Fishing Rod Enchantments:
 * Disarm: Steals or disables a latched entity's held item.
@@ -119,15 +116,19 @@ Everything Enchancement adds is configurable:
   * Ender Pearls deal no damage upon use.
   * (Enchanted) Golden Apples can only be consumed when hungry.
 * Rebalance Enchantments
-  * Fire Aspect can be used like Flint and Steel while sneaking.
-  * Fire Aspect applies for less time and its fire does not affect movement.
+  * Renames Fire Aspect to Molten.
+  * Molten applies for less time.
+  * Molten's fire does not affect movement.
+  * Blocks mined by items with Molten are smelted.
+  * Items with Molten are usable as Flint and Steel while sneaking.
+  * Mining tools can have Molten.
+  * Maces cannot have Molten.
   * Lunge doesn't require hunger to use.
   * Channeling ignites entities with melee attacks.
   * Channeling can be activated without thunder.
   * Channeling chains lightning to nearby entities.
   * Lightning spawned from Channeling will not destroy items or cause fire.
   * Riptide is weaker.
-  * Maces cannot have Fire Aspect.
   * Mace enchantments can be applied with less fall distance.
   * Wind Burst can launch Wind Charges on use.
   * Luck of the Sea also reduces fishing time.
@@ -157,7 +158,8 @@ Everything Enchancement adds is configurable:
   * Fishing Bobbers are thrown more accurately.
   * Fishing Bobbers pull the root vehicle of the hooked entity.
   * Enchanted Books stack to 16, and display the names of their enchantments in Bundles.
-  * Removes attribute swapping.
+  * Fixes attribute swapping.
+  * Fixes Maces not resetting fall distance on the client.
 * Rebalance Projectiles
   * Projectiles ignore invulnerability frames and deal less damage per hit that would have been blocked.
   * Projectiles negate velocity on hit.
