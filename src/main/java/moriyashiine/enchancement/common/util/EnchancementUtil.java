@@ -164,9 +164,6 @@ public class EnchancementUtil {
 	}
 
 	public static int alterLevel(ItemInstance item, Holder<Enchantment> enchantment) {
-		if (ModConfig.singleLevelMode && enchantment.is(Enchantments.WIND_BURST)) {
-			return 1;
-		}
 		return getModifiedMaxLevel(item, getOriginalMaxLevel(enchantment));
 	}
 

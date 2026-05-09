@@ -53,6 +53,8 @@ public class ModSoundsProvider extends FabricSoundsProvider {
 				.sound(ofFile(id("entity/erupt"))));
 		exporter.add(ModSoundEvents.GENERIC_FREEZE, of().subtitle("subtitles.enchancement.entity.generic.freeze")
 				.sound(ofEvent(SoundEvents.PLAYER_HURT_FREEZE)));
+		exporter.add(ModSoundEvents.GENERIC_GUST, of().subtitle("subtitles.enchancement.entity.generic.gust")
+				.sound(ofEvent(SoundEvents.WIND_CHARGE_BURST)));
 		exporter.add(ModSoundEvents.GENERIC_IMPACT, of().subtitle("subtitles.enchancement.entity.generic.impact")
 				.sound(ofFile(id("entity/impact"))));
 		exporter.add(ModSoundEvents.GENERIC_SPARK, of().subtitle("subtitles.enchancement.entity.generic.spark")

@@ -22,6 +22,7 @@ public class ModSoundEvents {
 	public static final SoundEvent GENERIC_DASH = registerSoundEvent("entity.generic.dash");
 	public static final SoundEvent GENERIC_ERUPT = registerSoundEvent("entity.generic.erupt");
 	public static final SoundEvent GENERIC_FREEZE = registerSoundEvent("entity.generic.freeze");
+	public static final SoundEvent GENERIC_GUST = registerSoundEvent("entity.generic.gust");
 	public static final SoundEvent GENERIC_IMPACT = registerSoundEvent("entity.generic.impact");
 	public static final SoundEvent GENERIC_SPARK = registerSoundEvent("entity.generic.spark");
 	public static final SoundEvent GENERIC_STRAFE = registerSoundEvent("entity.generic.strafe");

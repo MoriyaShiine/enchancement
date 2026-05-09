@@ -115,6 +115,15 @@
 	],
 	"subtitle": "subtitles.enchancement.entity.generic.freeze"
   },
+  "entity.generic.gust": {
+	"sounds": [
+	  {
+		"type": "event",
+		"name": "minecraft:entity.wind_charge.wind_burst"
+	  }
+	],
+	"subtitle": "subtitles.enchancement.entity.generic.gust"
+  },
   "entity.generic.impact": {
 	"sounds": [
 	  "enchancement:entity/impact"
