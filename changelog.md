@@ -1,4 +1,13 @@
 ------------------------------------------------------
+Version 26.1-r9
+------------------------------------------------------
+- update Turkish translation (thanks Hexasan!)
+  - merges https://github.com/MoriyaShiine/enchancement/pull/299
+- fix wind burst description
+- fix some lang inconsistencies
+- fix https://github.com/MoriyaShiine/enchancement/issues/298
+
+------------------------------------------------------
 Version 26.1-r8
 ------------------------------------------------------
 - dash now takes current horizontal velocity into account
