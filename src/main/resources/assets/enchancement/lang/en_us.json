@@ -8,7 +8,7 @@
   "enchantment.minecraft.fire_aspect.redirect": "Molten",
   "enchantment.minecraft.fire_aspect.redirect.desc": "Ignites attacked mobs. Smelts mined blocks while not sneaking. Usable as Flint and Steel while sneaking.",
   "enchantment.minecraft.luck_of_the_sea.desc.redirect": "Increases the quality of fishing loot and decreases the time required for fish to bite.",
-  "enchantment.minecraft.wind_burst.desc.redirect": "Causes smash attacks to launch you upward. Using launches a Wind Charge.",
+  "enchantment.minecraft.wind_burst.desc.redirect": "Causes smash attacks to launch you upward. Allows charging to launch you backward and push mobs away.",
   "advancements.adventure.overoverkill.description.redirect": "Deal 25 hearts of damage in a single hit using the Mace",
   "advancements.adventure.two_birds_one_arrow.description.redirect": "Kill two Phantoms with one crossbow shot",
   "enchantment.minecraft.aqua_affinity.desc": "Increases underwater mining speed.",
