@@ -11,24 +11,24 @@ Enchancement currently adds 33 unique and fun enchantments to the game:
 
 ```
 Helmet Enchantments:
-* Assimilation: Automatically consumes food when you're hungry, prioritizing off hand. Food and drinks are consumed faster.
+* Assimilation: Automatically consumes food when you're hungry while out of combat, prioritizing off hand. Food and drinks are consumed faster.
 * Perception: Increases visibility in the dark and causes mobs to be seen through walls.
 * Veil: Decreases monster detection range and hides your name behind walls.
 
 Chestplate Enchantments:
 * Adrenaline: Increases movement speed and reduces damage taken proportional to missing health.
 * Amphibious: Increases underwater mining and movement speed. Decreases air consumption underwater and time spent on fire. Immediately extinguishes you and allows usage of Riptide for some time after leaving water.
-* Strafe: Pressing Left Shift (configurable) launches you in your movement direction.
+* Strafe: Pressing [Left Shift] launches you in your movement direction.
 * Wardenspine: Harms and blinds attackers and greatly decreases damage taken from behind.
 
 Leggings Enchantments:
-* Dash: Pressing Left Control (configurable) in the air launches you forward.
-* Gale: Allows you to jump more times in the air. Holding Space (configurable) allows you to briefly glide.
-* Slide: Holding Left Control (configurable) while grounded causes you to slide constantly. Pressing Left Control (configurable) in the air causes you to slam towards the ground, knocking back mobs and negating fall damage.
+* Dash: Pressing [Left Control] in the air launches you forward.
+* Gale: Allows you to jump more times in the air. Holding [Space] allows you to briefly glide.
+* Slide: Holding [Left Control] while grounded causes you to slide constantly. Pressing [Left Control] in the air causes you to slam toward the ground, knocking back mobs and negating fall damage.
 
 Boots Enchantments:
-* Buoy: Causes you to walk on fluids, descending via sneaking. Holding jump while submerged or Space (configurable) while wet propels you upwards. Prevents floating. Grants a speed boost for some time after leaving water.
-* Bouncy: Negates fall damage. Launches you upwards upon landing while not sneaking. Sneaking, moving, or bouncing will charge a super jump that can be released by jumping while holding Left Shift (configurable).
+* Buoy: Causes you to walk on fluids, descending via sneaking. Holding jump while submerged or [Space] while wet propels you upward. Prevents floating. Grants a speed boost for some time after leaving water.
+* Bouncy: Negates fall damage. Launches you upward upon landing while not sneaking. Sneaking, moving, or bouncing will charge a super jump that can be released by jumping while holding [Space].
 * Sticky: Allows sliding down and jumping off walls. Leaves a trail of honey where you walk that slows mobs.
 
 Sword Enchantments:
@@ -50,26 +50,26 @@ Trident Enchantments:
 * Warp: Teleports you to the location of the Trident if it didn't hit a mob.
 
 Mace Enchantments:
-* Meteor: Causes smash attacks to ignite attacked mobs and pull them down. Allows charging to launch you upwards, damaging and igniting nearby mobs.
+* Meteor: Causes smash attacks to ignite attacked mobs and pull them down. Allows charging to launch you upward, damaging and igniting nearby mobs.
 * Thunderstruck: Direct attacks chain to nearby mobs. Allows charging to launch you forward and briefly float. Punching while floating causes you to dash forward and smash into the ground.
 
 Pickaxe Enchantments:
 * Extracting: Extracts materials from connected ores while not sneaking, leaving the stone behind.
 
 Axe Enchantments:
-* Beheading: Increases damage dealt. Slain mobs and players have a chance to drop their head.
+* Beheading: Increases damage dealt. Slain mobs have a chance to drop their head.
 * Lumberjack: Connected logs will also be destroyed while not sneaking.
 
 Shovel Enchantments:
 * Bury: Using on a mob will bury it if the ground below is soft enough.
-* Scooping: Increases mob loot drops and damage dealt.
+* Scooping: Increases mob drops and damage dealt.
 
 Hoe Enchantments:
 * Apex: Increases damage dealt. Attacking from a distance always results in a critical hit.
 
 Fishing Rod Enchantments:
-* Disarm: Steals or disables a latched entity's held item.
-* Grapple: Allows the Fishing Bobber to latch onto blocks. Launches you towards that block upon release. Reels in entities with more strength.
+* Disarm: Steals or disables a latched mob's held item.
+* Grapple: Allows the Fishing Bobber to latch onto blocks. Launches you toward that block upon release. Reels in mobs with more strength.
 ```
 
 Everything Enchancement adds is configurable:
@@ -130,7 +130,7 @@ Everything Enchancement adds is configurable:
   * Lightning spawned from Channeling will not destroy items or cause fire.
   * Riptide is weaker.
   * Mace enchantments can be applied with less fall distance.
-  * Wind Burst can launch Wind Charges on use.
+  * Wind Burst allows charging to launch you backward and push mobs away.
   * Luck of the Sea also reduces fishing time.
   * Fixes Riptide being slower with Water Movement Efficiency enchantments (such as Amphibious and Depth Strider).
   * Fixes Riptide rendering with a rotation while swimming.
