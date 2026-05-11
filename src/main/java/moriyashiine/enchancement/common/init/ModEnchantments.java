@@ -701,7 +701,7 @@ public class ModEnchantments {
 				builder -> {
 					builder.withEffect(
 							EnchantmentEffectComponents.DAMAGE,
-							new AddValue(LevelBasedValue.perLevel(0.5F)));
+							new AddValue(LevelBasedValue.perLevel(1)));
 					builder.withEffect(
 							EnchantmentEffectComponents.EQUIPMENT_DROPS,
 							EnchantmentTarget.ATTACKER,
@@ -724,7 +724,7 @@ public class ModEnchantments {
 					);
 					builder.withEffect(
 							EnchantmentEffectComponents.DAMAGE,
-							new AddValue(LevelBasedValue.perLevel(0.25F)));
+							new AddValue(LevelBasedValue.perLevel(0.5F)));
 				}));
 		// fishing rod
 		registry.register(DISARM, create(DISARM.identifier(),
