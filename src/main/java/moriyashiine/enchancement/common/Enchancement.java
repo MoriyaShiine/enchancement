@@ -191,7 +191,7 @@ public class Enchancement implements ModInitializer {
 		PreventFallDamageEvent.EVENT.register(new LightningDashEvent());
 		ModifyDestroySpeedEvent.MULTIPLY_TOTAL.register(new MineOreVeinsEvent.DestroySpeed());
 		PlayerBlockBreakEvents.BEFORE.register(new MineOreVeinsEvent.MineOres());
-		ModifyDamageTakenEvent.ADD.register(new RageEvent.DamageDealtBonus());
+		ModifyStackDamageEvent.ADD.register(new RageEvent.DamageDealtBonus());
 		ModifyDamageTakenEvent.MULTIPLY_TOTAL.register(new RageEvent.DamageTakenReduction());
 		MultiplyMovementSpeedEvent.EVENT.register(new RageEvent.SpeedBonus());
 		ModifyMovementEvents.JUMP_DELTA.register(new RotationBurstEvent());
