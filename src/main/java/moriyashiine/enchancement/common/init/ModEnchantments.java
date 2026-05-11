@@ -98,7 +98,6 @@ public class ModEnchantments {
 	public static final ResourceKey<Enchantment> BEHEADING = createKey("beheading");
 	public static final ResourceKey<Enchantment> LUMBERJACK = createKey("lumberjack");
 	// shovel
-	public static final ResourceKey<Enchantment> BURY = createKey("bury");
 	public static final ResourceKey<Enchantment> SCOOPING = createKey("scooping");
 	// hoe
 	public static final ResourceKey<Enchantment> APEX = createKey("apex");
@@ -687,18 +686,14 @@ public class ModEnchantments {
 						ModEnchantmentEffectComponentTypes.FELL_TREES,
 						new AddValue(LevelBasedValue.perLevel(0.25F)))));
 		// shovel
-		registry.register(BURY, create(BURY.identifier(),
+		registry.register(SCOOPING, create(SCOOPING.identifier(),
 				items.getOrThrow(ItemTags.SHOVELS),
 				2,
 				EquipmentSlotGroup.MAINHAND,
-				builder -> builder.withEffect(
-						ModEnchantmentEffectComponentTypes.BURY_ENTITY,
-						new AddValue(LevelBasedValue.perLevel(16, -8)))));
-		registry.register(SCOOPING, create(SCOOPING.identifier(),
-				items.getOrThrow(ItemTags.SHOVELS),
-				4,
-				EquipmentSlotGroup.MAINHAND,
 				builder -> {
+					builder.withEffect(
+							ModEnchantmentEffectComponentTypes.BURY_ENTITY,
+							new AddValue(LevelBasedValue.perLevel(16, -4)));
 					builder.withEffect(
 							EnchantmentEffectComponents.DAMAGE,
 							new AddValue(LevelBasedValue.perLevel(1)));
@@ -706,7 +701,7 @@ public class ModEnchantments {
 							EnchantmentEffectComponents.EQUIPMENT_DROPS,
 							EnchantmentTarget.ATTACKER,
 							EnchantmentTarget.VICTIM,
-							new AddValue(LevelBasedValue.perLevel(0.01F)),
+							new AddValue(LevelBasedValue.perLevel(0.02F)),
 							LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.ATTACKER, EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypes, EntityType.PLAYER))));
 				}));
 		// hoe

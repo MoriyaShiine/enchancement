@@ -105,7 +105,7 @@ public class ModEnchantmentTagsProvider extends FabricTagsProvider<Enchantment> 
 
 		// librarian trades
 		addLibrarianTrades(EnchantmentTags.TRADES_DESERT_COMMON,
-				ModEnchantments.BURY, Enchantments.FIRE_ASPECT, ModEnchantments.TORCH);
+				ModEnchantments.SCOOPING, Enchantments.FIRE_ASPECT, ModEnchantments.TORCH);
 		addLibrarianTrades(EnchantmentTags.TRADES_JUNGLE_COMMON,
 				ModEnchantments.BOUNCY, ModEnchantments.CHAOS, ModEnchantments.PERCEPTION);
 		addLibrarianTrades(EnchantmentTags.TRADES_PLAINS_COMMON,
