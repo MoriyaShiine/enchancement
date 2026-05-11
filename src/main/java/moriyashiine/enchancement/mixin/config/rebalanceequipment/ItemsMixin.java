@@ -16,7 +16,7 @@ public class ItemsMixin {
 	@ModifyVariable(method = "registerItem(Ljava/lang/String;Lnet/minecraft/world/item/Item$Properties;)Lnet/minecraft/world/item/Item;", at = @At("HEAD"), argsOnly = true)
 	private static Item.Properties enchancement$rebalanceEquipment(Item.Properties properties, String name) {
 		if (ModConfig.rebalanceEquipment && name.equals("enchanted_book")) {
-			return properties.stacksTo(16);
+			properties.stacksTo(16);
 		}
 		return properties;
 	}

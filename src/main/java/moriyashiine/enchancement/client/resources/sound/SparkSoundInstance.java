@@ -20,7 +20,6 @@ public class SparkSoundInstance extends AbstractTickableSoundInstance {
 		y = entity.getY();
 		z = entity.getZ();
 		looping = true;
-		delay = 0;
 	}
 
 	@Override

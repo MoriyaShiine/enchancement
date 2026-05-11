@@ -64,12 +64,12 @@ public abstract class FishingHookMixin extends Projectile implements StrengthHol
 	}
 
 	@Inject(method = "defineSynchedData", at = @At("TAIL"))
-	private void enchancement$grappleFishingBobber(SynchedEntityData.Builder entityData, CallbackInfo ci) {
+	private void enchancement$grapplingFishingBobber(SynchedEntityData.Builder entityData, CallbackInfo ci) {
 		entityData.define(STRENGTH, 0F);
 	}
 
 	@Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/projectile/FishingHook;checkCollision()V"), cancellable = true)
-	private void enchancement$grappleFishingBobber(CallbackInfo ci) {
+	private void enchancement$grapplingFishingBobber(CallbackInfo ci) {
 		if (getStrength() != 0) {
 			if (grappleState != null) {
 				setPos(grapplePos);
@@ -81,8 +81,7 @@ public abstract class FishingHookMixin extends Projectile implements StrengthHol
 				}
 				ci.cancel();
 			} else {
-				double hX = getDeltaMovement().multiply(1, 0, 1).length();
-				if (hX == 0) {
+				if (getDeltaMovement().horizontalDistanceSqr() == 0) {
 					for (Direction direction : Direction.values()) {
 						Vec3 offset = position().relative(direction, 0.2);
 						BlockHitResult result = level().isBlockInLine(new ClipBlockStateContext(position(), offset, state -> !state.canBeReplaced()));
@@ -97,7 +96,7 @@ public abstract class FishingHookMixin extends Projectile implements StrengthHol
 	}
 
 	@Inject(method = "shouldStopFishing", at = @At("HEAD"), cancellable = true)
-	private void enchancement$grappleFishingBobber(Player owner, CallbackInfoReturnable<Boolean> cir) {
+	private void enchancement$grapplingFishingBobber(Player owner, CallbackInfoReturnable<Boolean> cir) {
 		if (getStrength() != 0) {
 			if (owner.isRemoved() || !owner.isAlive() || !owner.getMainHandItem().is(Items.FISHING_ROD) && !owner.getOffhandItem().is(Items.FISHING_ROD) || distanceToSqr(owner) > 4096) {
 				discard();
@@ -108,7 +107,7 @@ public abstract class FishingHookMixin extends Projectile implements StrengthHol
 	}
 
 	@Inject(method = "onHitBlock", at = @At("TAIL"))
-	private void enchancement$grappleFishingBobber(BlockHitResult hitResult, CallbackInfo ci) {
+	private void enchancement$grapplingFishingBobber(BlockHitResult hitResult, CallbackInfo ci) {
 		if (getStrength() != 0 && getPlayerOwner() instanceof Player player) {
 			grapplePos = hitResult.getLocation().relative(hitResult.getDirection(), 0.01);
 			grappleBlockPos = hitResult.getBlockPos();
@@ -122,7 +121,7 @@ public abstract class FishingHookMixin extends Projectile implements StrengthHol
 	}
 
 	@Inject(method = "onHitEntity", at = @At("TAIL"))
-	private void enchancement$grappleFishingBobber(EntityHitResult hitResult, CallbackInfo ci) {
+	private void enchancement$grapplingFishingBobber(EntityHitResult hitResult, CallbackInfo ci) {
 		if (getStrength() != 0 && level().isClientSide()) {
 			Player player = getPlayerOwner();
 			if (player != null) {
@@ -132,7 +131,7 @@ public abstract class FishingHookMixin extends Projectile implements StrengthHol
 	}
 
 	@ModifyArg(method = "pullEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;scale(D)Lnet/minecraft/world/phys/Vec3;"))
-	private double enchancement$grappleFishingBobber(double value) {
+	private double enchancement$grapplingFishingBobber(double value) {
 		if (getStrength() != 0) {
 			return value * getStrength();
 		}
@@ -140,14 +139,14 @@ public abstract class FishingHookMixin extends Projectile implements StrengthHol
 	}
 
 	@ModifyReturnValue(method = "retrieve", at = @At("RETURN"))
-	private int enchancement$grappleFishingBobber(int original) {
+	private int enchancement$grapplingFishingBobber(int original) {
 		if (getStrength() != 0) {
 			if (grappleState != null) {
 				Player player = getPlayerOwner();
 				if (player != null) {
 					if (!level().isClientSide()) {
 						if (getY() > player.getY()) {
-							player.setDeltaMovement(player.getDeltaMovement().x(), 0, player.getDeltaMovement().z());
+							player.setDeltaMovement(player.getDeltaMovement().horizontal());
 						}
 						player.setDeltaMovement(player.getDeltaMovement().add(new Vec3(clamp(getX() - player.getX()), clamp(getY() - player.getY()), clamp(getZ() - player.getZ())).scale(0.2)));
 						player.hurtMarked = true;

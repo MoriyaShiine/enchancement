@@ -19,7 +19,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.EnchantedItemInUse;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.level.Level;
@@ -72,11 +71,6 @@ public class BuryEffect implements EnchantmentEntityEffect {
 	}
 
 	public static boolean cannotBeBuried(Entity entity) {
-		if (entity.is(ModEntityTypeTags.CANNOT_BURY) || entity.isSpectator()) {
-			return true;
-		} else if (entity instanceof LivingEntity living && living.isDeadOrDying()) {
-			return true;
-		}
-		return entity instanceof Player player && player.isCreative();
+		return entity.is(ModEntityTypeTags.CANNOT_BURY) || (entity instanceof LivingEntity living && !living.slib$isSurvival());
 	}
 }

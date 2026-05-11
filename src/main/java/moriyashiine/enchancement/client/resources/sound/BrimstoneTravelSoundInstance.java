@@ -24,7 +24,6 @@ public class BrimstoneTravelSoundInstance extends AbstractTickableSoundInstance 
 		y = entity.getY();
 		z = entity.getZ();
 		looping = true;
-		delay = 0;
 		volume = 8;
 	}
 

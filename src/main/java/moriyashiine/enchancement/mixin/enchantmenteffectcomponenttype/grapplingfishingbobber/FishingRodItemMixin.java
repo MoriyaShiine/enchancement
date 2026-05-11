@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public class FishingRodItemMixin {
 	@SuppressWarnings("WrapWithConditionTargetsNonVoid")
 	@WrapWithCondition(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/projectile/Projectile;spawnProjectile(Lnet/minecraft/world/entity/projectile/Projectile;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/entity/projectile/Projectile;"))
-	private <T extends Projectile> boolean enchancement$grappleFishingBobber(T projectile, ServerLevel serverLevel, ItemStack itemStack) {
+	private <T extends Projectile> boolean enchancement$grapplingFishingBobber(T projectile, ServerLevel serverLevel, ItemStack itemStack) {
 		if (projectile instanceof StrengthHolder strengthHolder) {
 			float grapplingStrength = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.GRAPPLING_FISHING_BOBBER, serverLevel, itemStack, 0);
 			if (grapplingStrength != 0) {

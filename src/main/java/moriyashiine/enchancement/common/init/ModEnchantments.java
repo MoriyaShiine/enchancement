@@ -155,8 +155,7 @@ public class ModEnchantments {
 							new AutomateEatingEnchantmentEffect(MinMaxBounds.Ints.atMost(14)),
 							AllOfCondition.allOf(
 									LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().periodicTick(20)),
-									() -> InvertedLootItemCondition.invert(() -> InCombatCondition.INSTANCE).build()
-							));
+									() -> InvertedLootItemCondition.invert(() -> InCombatCondition.INSTANCE).build()));
 				}));
 		registry.register(PERCEPTION, create(PERCEPTION.identifier(),
 				items.getOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),
@@ -186,7 +185,8 @@ public class ModEnchantments {
 									Attributes.WAYPOINT_TRANSMIT_RANGE,
 									LevelBasedValue.constant(-1),
 									AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-					builder.withEffect(ModEnchantmentEffectComponentTypes.HIDE_NON_ARMOR_ATTRIBUTE_TOOLTIPS);
+					builder.withEffect(
+							ModEnchantmentEffectComponentTypes.HIDE_NON_ARMOR_ATTRIBUTE_TOOLTIPS);
 				}));
 		// chestplate
 		registry.register(ADRENALINE, create(ADRENALINE.identifier(),
@@ -198,8 +198,7 @@ public class ModEnchantments {
 						new RageEffect(
 								new AddValue(LevelBasedValue.constant(0)),
 								new AddValue(LevelBasedValue.perLevel(0.4F / 14)),
-								new AddValue(LevelBasedValue.perLevel(0.6F / 14))
-						)
+								new AddValue(LevelBasedValue.perLevel(0.6F / 14)))
 				)));
 		registry.register(AMPHIBIOUS, create(AMPHIBIOUS.identifier(),
 				items.getOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
@@ -243,7 +242,8 @@ public class ModEnchantments {
 									Attributes.WATER_MOVEMENT_EFFICIENCY,
 									LevelBasedValue.perLevel(0.5F),
 									AttributeModifier.Operation.ADD_VALUE));
-					builder.withEffect(ModEnchantmentEffectComponentTypes.HIDE_NON_ARMOR_ATTRIBUTE_TOOLTIPS);
+					builder.withEffect(
+							ModEnchantmentEffectComponentTypes.HIDE_NON_ARMOR_ATTRIBUTE_TOOLTIPS);
 				}));
 		registry.register(STRAFE, create(STRAFE.identifier(),
 				items.getOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
@@ -266,8 +266,7 @@ public class ModEnchantments {
 							new AddValue(LevelBasedValue.perLevel(8)),
 							AllOfCondition.allOf(
 									DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().tag(TagPredicate.isNot(ModDamageTypeTags.BYPASSES_WARDENSPINE))),
-									() -> AttackerBehindCondition.INSTANCE
-							));
+									() -> AttackerBehindCondition.INSTANCE));
 					builder.withEffect(
 							EnchantmentEffectComponents.POST_ATTACK,
 							EnchantmentTarget.VICTIM,
@@ -282,20 +281,15 @@ public class ModEnchantments {
 											LevelBasedValue.perLevel(4),
 											LevelBasedValue.perLevel(4),
 											LevelBasedValue.constant(0),
-											LevelBasedValue.constant(0)
-									),
+											LevelBasedValue.constant(0)),
 									new PlaySoundEffect(
 											List.of(
-													Holder.direct(ModSoundEvents.GENERIC_WARDENSPINE)
-											),
+													Holder.direct(ModSoundEvents.GENERIC_WARDENSPINE)),
 											ConstantFloat.of(1),
-											ConstantFloat.of(1)
-									)
-							),
+											ConstantFloat.of(1))),
 							AllOfCondition.allOf(
 									DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().tag(TagPredicate.isNot(ModDamageTypeTags.BYPASSES_WARDENSPINE))),
-									() -> AttackerBehindCondition.INSTANCE
-							));
+									() -> AttackerBehindCondition.INSTANCE));
 				}));
 		// leggings
 		registry.register(DASH, create(DASH.identifier(),
@@ -308,7 +302,8 @@ public class ModEnchantments {
 								new AddValue(LevelBasedValue.perLevel(1.2F, -0.2F)),
 								new AddValue(LevelBasedValue.perLevel(0.85F, 0.15F)),
 								new AddValue(LevelBasedValue.constant(3)),
-								new AddValue(LevelBasedValue.constant(1.1F))))));
+								new AddValue(LevelBasedValue.constant(1.1F)))
+				)));
 		registry.register(GALE, create(GALE.identifier(),
 				items.getOrThrow(ItemTags.LEG_ARMOR_ENCHANTABLE),
 				2,
@@ -325,8 +320,7 @@ public class ModEnchantments {
 							ModEnchantmentEffectComponentTypes.GLIDE,
 							new GlideEffect(
 									new AddValue(LevelBasedValue.constant(0.6F)),
-									new AddValue(LevelBasedValue.perLevel(2, 1))
-							));
+									new AddValue(LevelBasedValue.perLevel(2, 1))));
 				}));
 		registry.register(SLIDE, create(SLIDE.identifier(),
 				items.getOrThrow(ItemTags.LEG_ARMOR_ENCHANTABLE),
@@ -402,9 +396,7 @@ public class ModEnchantments {
 							DamageSourceCondition.hasDamageSource(
 									DamageSourcePredicate.Builder.damageType()
 											.tag(TagPredicate.is(DamageTypeTags.BURN_FROM_STEPPING))
-											.tag(TagPredicate.isNot(DamageTypeTags.BYPASSES_INVULNERABILITY))
-							)
-					);
+											.tag(TagPredicate.isNot(DamageTypeTags.BYPASSES_INVULNERABILITY))));
 				}));
 		registry.register(STICKY, create(STICKY.identifier(),
 				items.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
@@ -413,8 +405,7 @@ public class ModEnchantments {
 				builder -> {
 					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.HONEY_TRAIL,
-							new AddValue(LevelBasedValue.perLevel(1.5F))
-					);
+							new AddValue(LevelBasedValue.perLevel(1.5F)));
 					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.WALL_JUMP,
 							new AddValue(LevelBasedValue.perLevel(0.65F, 0.15F)));
@@ -429,8 +420,7 @@ public class ModEnchantments {
 						new RageEffect(
 								new AddValue(LevelBasedValue.perLevel(0.175F)),
 								new AddValue(LevelBasedValue.constant(0)),
-								new AddValue(LevelBasedValue.constant(0))
-						)
+								new AddValue(LevelBasedValue.constant(0)))
 				)));
 		registry.register(FROSTBITE, create(FROSTBITE.identifier(),
 				items.getOrThrow(ItemTags.MELEE_WEAPON_ENCHANTABLE),
@@ -454,8 +444,7 @@ public class ModEnchantments {
 						ModEnchantmentEffectComponentTypes.APPLY_RANDOM_MOB_EFFECT,
 						new ApplyRandomMobEffectEffect(
 								new AddValue(LevelBasedValue.perLevel(4)),
-								ModMobEffectTags.CHAOS_UNCHOOSABLE
-						)
+								ModMobEffectTags.CHAOS_UNCHOOSABLE)
 				)));
 		registry.register(DELAY, create(DELAY.identifier(),
 				items.getOrThrow(ItemTags.BOW_ENCHANTABLE),
@@ -467,8 +456,7 @@ public class ModEnchantments {
 								new AddValue(LevelBasedValue.constant(10)),
 								new AddValue(LevelBasedValue.constant(3)),
 								new AddValue(LevelBasedValue.perLevel(0.5F, 0.25F)),
-								true
-						)
+								true)
 				)));
 		registry.register(PHASING, create(PHASING.identifier(),
 				items.getOrThrow(ItemTags.BOW_ENCHANTABLE),
@@ -478,8 +466,7 @@ public class ModEnchantments {
 						ModEnchantmentEffectComponentTypes.PHASE,
 						new PhaseEffect(
 								new AddValue(LevelBasedValue.perLevel(2, 1)),
-								true
-						)
+								true)
 				)));
 		// crossbow
 		registry.register(BRIMSTONE, create(BRIMSTONE.identifier(),
@@ -493,8 +480,7 @@ public class ModEnchantments {
 					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.BRIMSTONE,
 							new BrimstoneEffect(
-									new AddValue(LevelBasedValue.perLevel(0.5F))
-							));
+									new AddValue(LevelBasedValue.perLevel(0.5F))));
 				}));
 		registry.register(SCATTER, create(SCATTER.identifier(),
 				items.getOrThrow(ItemTags.CROSSBOW_ENCHANTABLE),
@@ -505,29 +491,23 @@ public class ModEnchantments {
 					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.ALLOW_CROSSBOW_COOLDOWN_RELOADING);
 					builder.withEffect(
-							ModEnchantmentEffectComponentTypes.ALLOW_INTERRUPTION
-					);
+							ModEnchantmentEffectComponentTypes.ALLOW_INTERRUPTION);
 					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.ALLOW_LOADING_PROJECTILE,
 							new AllowLoadingProjectileEffect(
 									Enchancement.id("crossbow_amethyst"),
 									ModSoundEvents.CROSSBOW_SCATTER,
 									Items.AMETHYST_SHARD,
-									false
-							)
-					);
+									false));
 					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.RANGED_SHOOT_COOLDOWN,
-							new AddValue(LevelBasedValue.constant(1))
-					);
+							new AddValue(LevelBasedValue.constant(1)));
 					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.SCATTER_SHOT,
 							new ScatterShotEffect(
 									new AddValue(LevelBasedValue.perLevel(6)),
 									new AddValue(LevelBasedValue.perLevel(8)),
-									Items.AMETHYST_SHARD
-							)
-					);
+									Items.AMETHYST_SHARD));
 				}));
 		registry.register(TORCH, create(TORCH.identifier(),
 				items.getOrThrow(ItemTags.CROSSBOW_ENCHANTABLE),
@@ -541,9 +521,7 @@ public class ModEnchantments {
 									Enchancement.id("crossbow_torch"),
 									SoundEvents.CROSSBOW_SHOOT,
 									Items.TORCH,
-									true
-							)
-					);
+									true));
 					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.RAPID_CROSSBOW_FIRE);
 				}));
@@ -558,8 +536,7 @@ public class ModEnchantments {
 							new LeechingTridentEffect(
 									new AddValue(LevelBasedValue.constant(1)),
 									new AddValue(LevelBasedValue.constant(1)),
-									new AddValue(LevelBasedValue.perLevel(2))
-							));
+									new AddValue(LevelBasedValue.perLevel(2))));
 					builder.withEffect(
 							EnchantmentEffectComponents.POST_ATTACK,
 							EnchantmentTarget.ATTACKER,
@@ -576,8 +553,7 @@ public class ModEnchantments {
 									SpawnParticlesEffect.offsetFromEntityPosition(0.5F),
 									SpawnParticlesEffect.movementScaled(0),
 									SpawnParticlesEffect.movementScaled(0),
-									ConstantFloat.of(0)
-							),
+									ConstantFloat.of(0)),
 							DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().isDirect(true)));
 				}));
 		registry.register(WARP, create(WARP.identifier(),
@@ -601,9 +577,7 @@ public class ModEnchantments {
 							ModEnchantmentEffectComponentTypes.ERUPTION,
 							new EruptionEffect(
 									new AddValue(LevelBasedValue.constant(1.35F)),
-									new AddValue(LevelBasedValue.perLevel(4))
-							)
-					);
+									new AddValue(LevelBasedValue.perLevel(4))));
 					builder.withEffect(
 							EnchantmentEffectComponents.POST_ATTACK,
 							EnchantmentTarget.ATTACKER,
@@ -619,17 +593,13 @@ public class ModEnchantments {
 													SpawnParticlesEffect.offsetFromEntityPosition(0.5F),
 													SpawnParticlesEffect.fixedVelocity(UniformFloat.of(-1, 1)),
 													SpawnParticlesEffect.movementScaled(1),
-													ConstantFloat.of(1)
-											),
-											LevelBasedValue.constant(48)
-									)
-							),
+													ConstantFloat.of(1)),
+											LevelBasedValue.constant(48))),
 							LootItemEntityPropertyCondition.hasProperties(
 									LootContext.EntityTarget.DIRECT_ATTACKER,
 									EntityPredicate.Builder.entity()
 											.flags(EntityFlagsPredicate.Builder.flags().setIsFlying(false))
-											.moving(MovementPredicate.fallDistance(MinMaxBounds.Doubles.atLeast(1.5)))
-							));
+											.moving(MovementPredicate.fallDistance(MinMaxBounds.Doubles.atLeast(1.5)))));
 				}));
 		registry.register(THUNDERSTRUCK, create(THUNDERSTRUCK.identifier(), true,
 				items.getOrThrow(ItemTags.MACE_ENCHANTABLE),
@@ -639,16 +609,14 @@ public class ModEnchantments {
 					builder.exclusiveWith(enchantments.getOrThrow(ModEnchantmentTags.MACE_EXCLUSIVE_SET));
 					builder.withEffect(
 							ModEnchantmentEffectComponentTypes.CHAIN_LIGHTNING,
-							new AddValue(LevelBasedValue.perLevel(0.35F))
-					);
+							new AddValue(LevelBasedValue.perLevel(0.35F)));
 					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.LIGHTNING_DASH,
 							new LightningDashEffect(
 									new AddValue(LevelBasedValue.constant(3)),
 									new AddValue(LevelBasedValue.perLevel(0.8F, 0.3F)),
 									new AddValue(LevelBasedValue.perLevel(1)),
-									new AddValue(LevelBasedValue.perLevel(0.8F, 0.3F))
-							));
+									new AddValue(LevelBasedValue.perLevel(0.8F, 0.3F))));
 				}));
 		// pickaxe
 		registry.register(EXTRACTING, create(EXTRACTING.identifier(),
@@ -672,8 +640,7 @@ public class ModEnchantments {
 							EnchantmentTarget.ATTACKER,
 							EnchantmentTarget.VICTIM,
 							new AddValue(LevelBasedValue.perLevel(0.5F)),
-							LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.ATTACKER, EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypes, EntityType.PLAYER)))
-					);
+							LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.ATTACKER, EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypes, EntityType.PLAYER))));
 					builder.withEffect(
 							EnchantmentEffectComponents.DAMAGE,
 							new AddValue(LevelBasedValue.perLevel(0.5F)));
@@ -684,7 +651,8 @@ public class ModEnchantments {
 				EquipmentSlotGroup.MAINHAND,
 				builder -> builder.withSpecialEffect(
 						ModEnchantmentEffectComponentTypes.FELL_TREES,
-						new AddValue(LevelBasedValue.perLevel(0.25F)))));
+						new AddValue(LevelBasedValue.perLevel(0.25F))
+				)));
 		// shovel
 		registry.register(SCOOPING, create(SCOOPING.identifier(),
 				items.getOrThrow(ItemTags.SHOVELS),
@@ -714,9 +682,7 @@ public class ModEnchantments {
 							ModEnchantmentEffectComponentTypes.CRITICAL_TIPPER,
 							new CriticalTipperEffect(
 									new AddValue(LevelBasedValue.constant(0.5F)),
-									ModParticleTypes.CRITICAL_TIPPER
-							)
-					);
+									ModParticleTypes.CRITICAL_TIPPER));
 					builder.withEffect(
 							EnchantmentEffectComponents.DAMAGE,
 							new AddValue(LevelBasedValue.perLevel(0.5F)));
@@ -731,15 +697,16 @@ public class ModEnchantments {
 						new DisarmingFishingBobberEffect(
 								false,
 								new AddValue(LevelBasedValue.perLevel(2.5F)),
-								new AddValue(LevelBasedValue.perLevel(12, -2))
-						))));
+								new AddValue(LevelBasedValue.perLevel(12, -2)))
+				)));
 		registry.register(GRAPPLE, create(GRAPPLE.identifier(),
 				items.getOrThrow(ItemTags.FISHING_ENCHANTABLE),
 				2,
 				EquipmentSlotGroup.MAINHAND,
 				builder -> builder.withEffect(
 						ModEnchantmentEffectComponentTypes.GRAPPLING_FISHING_BOBBER,
-						new AddValue(LevelBasedValue.perLevel(1)))));
+						new AddValue(LevelBasedValue.perLevel(1))
+				)));
 	}
 
 	public interface EffectsAdder {
