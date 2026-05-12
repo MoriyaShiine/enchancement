@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.world.inventory;
 
 import moriyashiine.enchancement.client.payload.SyncBookshelvesPayload;
 import moriyashiine.enchancement.client.payload.SyncEnchantingTableCostPayload;
+import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModMenuTypes;
 import moriyashiine.enchancement.common.tag.ModItemTags;
@@ -37,6 +38,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
@@ -44,7 +46,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EnchantingTableBlock;
 import net.minecraft.world.level.block.entity.ChiseledBookShelfBlockEntity;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class ModEnchantmentMenu extends AbstractContainerMenu {
 	public static final int PAGE_SIZE = 4;
@@ -235,7 +240,7 @@ public class ModEnchantmentMenu extends AbstractContainerMenu {
 						validEnchantments.add(enchantment);
 					}
 				}
-				validEnchantments.sort(Comparator.comparing(Holder::getRegisteredName));
+				validEnchantments.sort(ModEnchantmentMenu::compareEnchantments);
 				super.slotsChanged(container);
 			}
 		}
@@ -361,5 +366,20 @@ public class ModEnchantmentMenu extends AbstractContainerMenu {
 	public static boolean isEnchantable(ItemStack stack) {
 		ItemEnchantments enchantments = stack.get(DataComponents.ENCHANTMENTS);
 		return enchantments != null && enchantments.isEmpty();
+	}
+
+	private static int compareEnchantments(Holder<Enchantment> e1, Holder<Enchantment> e2) {
+		String moltenId = Enchancement.id("molten").getPath();
+		String e1Id = e1.unwrapKey().map(key -> key.identifier().getPath()).orElse("[unregistered]");
+		String e2Id = e2.unwrapKey().map(key -> key.identifier().getPath()).orElse("[unregistered]");
+		if (ModConfig.rebalanceEnchantments) {
+			if (e1Id.equals(Enchantments.FIRE_ASPECT.identifier().getPath())) {
+				e1Id = moltenId;
+			}
+			if (e2Id.equals(Enchantments.FIRE_ASPECT.identifier().getPath())) {
+				e2Id = moltenId;
+			}
+		}
+		return e1Id.compareTo(e2Id);
 	}
 }
