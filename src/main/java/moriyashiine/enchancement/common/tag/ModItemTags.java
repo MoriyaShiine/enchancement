@@ -16,4 +16,6 @@ public class ModItemTags {
 	public static final TagKey<Item> RETAINS_DURABILITY = TagKey.create(Registries.ITEM, Enchancement.id("retains_durability"));
 	public static final TagKey<Item> STRONGLY_ENCHANTED = TagKey.create(Registries.ITEM, Enchancement.id("strongly_enchanted"));
 	public static final TagKey<Item> WEAKLY_ENCHANTED = TagKey.create(Registries.ITEM, Enchancement.id("weakly_enchanted"));
+
+	public static final TagKey<Item> EXCAVATING_ENCHANTABLE = TagKey.create(Registries.ITEM, Enchancement.id("enchantable/excavating"));
 }

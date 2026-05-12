@@ -143,6 +143,7 @@ public class EnchancementClient implements ClientModInitializer {
 		OutlineEntityEvent.EVENT.register(new EntityXrayClientEvent.Outline());
 		AddNightVisionScaleEvent.EVENT.register(new NightVisionClientEvent());
 		ItemTooltipCallback.EVENT.register(new RageClientEvent());
+		ClientTickEvents.END_LEVEL_TICK.register(new WideMiningClientEvent());
 		// hud elements
 		HudElementRegistry.attachElementBefore(VanillaHudElements.HELD_ITEM_TOOLTIP, Enchancement.id("chiseled_bookshelf_peeking"), new ChiseledBookshelfPeekingHudElement());
 		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("air_jump"), new AirJumpHudElement());

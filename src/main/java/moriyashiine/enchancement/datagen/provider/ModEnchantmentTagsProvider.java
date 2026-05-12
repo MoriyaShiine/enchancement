@@ -77,6 +77,7 @@ public class ModEnchantmentTagsProvider extends FabricTagsProvider<Enchantment> 
 		builder(ConventionalEnchantmentTags.WEAPON_DAMAGE_ENHANCEMENTS)
 				.add(ModEnchantments.BERSERK)
 				.add(ModEnchantments.DELAY)
+				.add(ModEnchantments.BURROWING)
 				.add(ModEnchantments.SCOOPING)
 				.add(ModEnchantments.APEX);
 

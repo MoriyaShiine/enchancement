@@ -125,6 +125,7 @@ public class Enchancement implements ModInitializer {
 		PayloadTypeRegistry.serverboundPlay().register(StopSlammingC2SPayload.TYPE, StopSlammingC2SPayload.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(SyncFrozenPlayerSlimStatusC2SPayload.TYPE, SyncFrozenPlayerSlimStatusC2SPayload.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(SyncInvertedBounceStatusPayload.TYPE, SyncInvertedBounceStatusPayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(UpdateWideMiningEntryPayload.TYPE, UpdateWideMiningEntryPayload.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(WallJumpPayload.TYPE, WallJumpPayload.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(WallJumpSlidingPayload.TYPE, WallJumpSlidingPayload.CODEC);
 		// server receivers
@@ -140,6 +141,7 @@ public class Enchancement implements ModInitializer {
 		ServerPlayNetworking.registerGlobalReceiver(StopSlammingC2SPayload.TYPE, new StopSlammingC2SPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(SyncFrozenPlayerSlimStatusC2SPayload.TYPE, new SyncFrozenPlayerSlimStatusC2SPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(SyncInvertedBounceStatusPayload.TYPE, new SyncInvertedBounceStatusPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(UpdateWideMiningEntryPayload.TYPE, new UpdateWideMiningEntryPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(WallJumpPayload.TYPE, new WallJumpPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(WallJumpSlidingPayload.TYPE, new WallJumpSlidingPayload.Receiver());
 	}
@@ -174,6 +176,7 @@ public class Enchancement implements ModInitializer {
 		MultiplyMovementSpeedEvent.EVENT.register(new ModifySubmergedMovementSpeedEvent());
 		// enchantment effect component type
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(new AllowInterruptionEvent());
+		ModifyStackDamageEvent.ADD.register(new ArmorDentingEvent());
 		PreventFallDamageEvent.EVENT.register(new BounceEvent());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new BuryEntityEvent.Unbury());
 		UseEntityCallback.EVENT.register(new BuryEntityEvent.Use());
@@ -198,5 +201,6 @@ public class Enchancement implements ModInitializer {
 		PreventFallDamageEvent.EVENT.register(new SlamEvent.FallImmunity());
 		ModifyMovementEvents.JUMP_DELTA.register(new SlamEvent.JumpBoost());
 		ModifyMovementEvents.JUMP_DELTA.register(new SlideEvent());
+		PlayerBlockBreakEvents.AFTER.register(new WideMiningEvent());
 	}
 }

@@ -23,6 +23,7 @@ public class ModEnchantmentEffectComponentTypes {
 	public static final DataComponentType<Unit> ALLOW_INTERRUPTION = registerEnchantmentEffectComponentType("allow_interruption", builder -> builder.persistent(Unit.CODEC));
 	public static final DataComponentType<List<ConditionalEffect<AllowLoadingProjectileEffect>>> ALLOW_LOADING_PROJECTILE = registerEnchantmentEffectComponentType("allow_loading_projectile", builder -> builder.persistent(validatedListCodec(ConditionalEffect.codec(AllowLoadingProjectileEffect.CODEC), LootContextParamSets.ENCHANTED_ITEM)));
 	public static final DataComponentType<List<ConditionalEffect<ApplyRandomMobEffectEffect>>> APPLY_RANDOM_MOB_EFFECT = registerEnchantmentEffectComponentType("apply_random_mob_effect", builder -> builder.persistent(validatedListCodec(ConditionalEffect.codec(ApplyRandomMobEffectEffect.CODEC), LootContextParamSets.ENCHANTED_ITEM)));
+	public static final DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>> ARMOR_DENTING = registerEnchantmentEffectComponentType("armor_denting", builder -> builder.persistent(validatedListCodec(ConditionalEffect.codec(EnchantmentValueEffect.CODEC), LootContextParamSets.ENCHANTED_ITEM)));
 	public static final DataComponentType<EnchantmentValueEffect> BOOST_IN_FLUID = registerEnchantmentEffectComponentType("boost_in_fluid", builder -> builder.persistent(EnchantmentValueEffect.CODEC));
 	public static final DataComponentType<Unit> BOUNCE = registerEnchantmentEffectComponentType("bounce", builder -> builder.persistent(Unit.CODEC));
 	public static final DataComponentType<BrimstoneEffect> BRIMSTONE = registerEnchantmentEffectComponentType("brimstone", builder -> builder.persistent(BrimstoneEffect.CODEC));
@@ -64,6 +65,7 @@ public class ModEnchantmentEffectComponentTypes {
 	public static final DataComponentType<Unit> SMELT_MINED_BLOCKS = registerEnchantmentEffectComponentType("smelt_mined_blocks", builder -> builder.persistent(Unit.CODEC));
 	public static final DataComponentType<List<ConditionalEffect<TeleportOnHitEffect>>> TELEPORT_ON_HIT = registerEnchantmentEffectComponentType("teleport_on_hit", builder -> builder.persistent(validatedListCodec(ConditionalEffect.codec(TeleportOnHitEffect.CODEC), LootContextParamSets.ENCHANTED_ITEM)));
 	public static final DataComponentType<EnchantmentValueEffect> WALL_JUMP = registerEnchantmentEffectComponentType("wall_jump", builder -> builder.persistent(EnchantmentValueEffect.CODEC));
+	public static final DataComponentType<EnchantmentValueEffect> WIDE_MINING = registerEnchantmentEffectComponentType("wide_mining", builder -> builder.persistent(EnchantmentValueEffect.CODEC));
 
 	public static void init() {
 	}

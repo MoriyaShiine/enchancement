@@ -33,7 +33,7 @@ import java.util.List;
 public class FellTreesEvent {
 	public static final List<Entry> ENTRIES = new ArrayList<>();
 
-	public static List<BlockPos> gatherTree(List<BlockPos> tree, BlockGetter level, BlockPos.MutableBlockPos pos, Block original) {
+	private static List<BlockPos> gatherTree(List<BlockPos> tree, BlockGetter level, BlockPos.MutableBlockPos pos, Block original) {
 		if (tree.size() < ModConfig.maxFellTreesBlocks) {
 			int originalX = pos.getX(), originalY = pos.getY(), originalZ = pos.getZ();
 			for (int x = -1; x <= 1; x++) {
@@ -54,7 +54,7 @@ public class FellTreesEvent {
 		return tree;
 	}
 
-	public static boolean isWithinHorizontalBounds(List<BlockPos> tree) {
+	private static boolean isWithinHorizontalBounds(List<BlockPos> tree) {
 		Integer minX = null, maxX = null, minZ = null, maxZ = null;
 		for (BlockPos pos : tree) {
 			if (minX == null || pos.getX() < minX) {
@@ -76,11 +76,11 @@ public class FellTreesEvent {
 		return Math.abs(maxX - minX) < ModConfig.maxFellTreesHorizontalLength && Math.abs(maxZ - minZ) < ModConfig.maxFellTreesHorizontalLength;
 	}
 
-	public static boolean canActivate(Player player, ItemStack stack, BlockState state) {
+	private static boolean canActivate(Player player, ItemStack stack, BlockState state) {
 		return !player.isShiftKeyDown() && EnchantmentHelper.has(stack, ModEnchantmentEffectComponentTypes.FELL_TREES) && state.is(ModBlockTags.FELLABLE) && player.hasCorrectToolForDrops(state);
 	}
 
-	public static boolean isValid(List<BlockPos> tree, ItemStack stack) {
+	private static boolean isValid(List<BlockPos> tree, ItemStack stack) {
 		if (!stack.isDamageableItem() || stack.getDamageValue() + tree.size() <= stack.getMaxDamage()) {
 			return tree.size() > 1 && tree.size() <= ModConfig.maxFellTreesBlocks && isWithinHorizontalBounds(tree);
 		}
@@ -107,7 +107,7 @@ public class FellTreesEvent {
 
 	public static class FellTree implements PlayerBlockBreakEvents.Before {
 		@Override
-		public boolean beforeBlockBreak(Level level, Player player, BlockPos pos, BlockState state, BlockEntity blockEntity) {
+		public boolean beforeBlockBreak(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity) {
 			ItemStack stack = player.getMainHandItem();
 			if (canActivate(player, stack, state)) {
 				Entry entry = Entry.get(player);

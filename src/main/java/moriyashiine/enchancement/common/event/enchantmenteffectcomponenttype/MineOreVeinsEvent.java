@@ -36,7 +36,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class MineOreVeinsEvent {
-	public static Set<BlockPos> gatherOres(Set<BlockPos> ores, Level level, BlockPos.MutableBlockPos pos, Block original) {
+	private static Set<BlockPos> gatherOres(Set<BlockPos> ores, Level level, BlockPos.MutableBlockPos pos, Block original) {
 		if (ores.size() < ModConfig.maxMineOreVeinsBlocks) {
 			int originalX = pos.getX(), originalY = pos.getY(), originalZ = pos.getZ();
 			for (int x = -1; x <= 1; x++) {
@@ -56,11 +56,11 @@ public class MineOreVeinsEvent {
 		return ores;
 	}
 
-	public static boolean canActivate(Player player, ItemStack stack, BlockState state) {
+	private static boolean canActivate(Player player, ItemStack stack, BlockState state) {
 		return !player.isShiftKeyDown() && EnchantmentHelper.has(stack, ModEnchantmentEffectComponentTypes.MINE_ORE_VEINS) && state.is(ConventionalBlockTags.ORES) && player.hasCorrectToolForDrops(state);
 	}
 
-	public static boolean isValid(Set<BlockPos> ores, ItemStack stack) {
+	private static boolean isValid(Set<BlockPos> ores, ItemStack stack) {
 		if (!stack.isDamageableItem() || stack.getDamageValue() + ores.size() <= stack.getMaxDamage()) {
 			return !ores.isEmpty() && ores.size() <= ModConfig.maxMineOreVeinsBlocks;
 		}
@@ -98,7 +98,7 @@ public class MineOreVeinsEvent {
 
 	public static class MineOres implements PlayerBlockBreakEvents.Before {
 		@Override
-		public boolean beforeBlockBreak(Level level, Player player, BlockPos pos, BlockState state, BlockEntity blockEntity) {
+		public boolean beforeBlockBreak(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity) {
 			ItemStack stack = player.getMainHandItem();
 			if (canActivate(player, stack, state)) {
 				Set<BlockPos> ores = gatherOres(new HashSet<>(), level, new BlockPos.MutableBlockPos().set(pos), state.getBlock());

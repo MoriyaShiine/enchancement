@@ -108,6 +108,8 @@
   "enchantment.enchancement.meteor.desc": "Causes smash attacks to ignite attacked mobs and pull them down. Allows charging to launch you upward, damaging and igniting nearby mobs.",
   "enchantment.enchancement.thunderstruck": "Thunderstruck",
   "enchantment.enchancement.thunderstruck.desc": "Direct attacks chain to nearby mobs. Allows charging to launch you forward and briefly float. Punching while floating causes you to dash forward and smash into the ground.",
+  "enchantment.enchancement.burrowing": "Burrowing",
+  "enchantment.enchancement.burrowing.desc": "Mines blocks in a wide area while not sneaking. Increases damage dealt proportional to the attacked mob's armor.",
   "enchantment.enchancement.extracting": "Extracting",
   "enchantment.enchancement.extracting.desc": "Extracts materials from connected ores while not sneaking, leaving the stone behind.",
   "enchantment.enchancement.beheading": "Beheading",

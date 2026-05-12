@@ -12,6 +12,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -51,6 +52,10 @@ public class ModItemTagsProvider extends FabricTagsProvider.ItemTagsProvider {
 				.add(Items.LEATHER_HORSE_ARMOR)
 				.add(Items.COPPER_HORSE_ARMOR)
 				.add(Items.IRON_HORSE_ARMOR);
+
+		valueLookupBuilder(ModItemTags.EXCAVATING_ENCHANTABLE)
+				.forceAddTag(ItemTags.PICKAXES)
+				.forceAddTag(ItemTags.SHOVELS);
 	}
 
 	private static TagKey<Item> tagKey(String id) {

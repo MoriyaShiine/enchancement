@@ -7,6 +7,7 @@ package moriyashiine.enchancement.common.init;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.tag.ModDamageTypeTags;
 import moriyashiine.enchancement.common.tag.ModEnchantmentTags;
+import moriyashiine.enchancement.common.tag.ModItemTags;
 import moriyashiine.enchancement.common.tag.ModMobEffectTags;
 import moriyashiine.enchancement.common.world.item.effects.*;
 import moriyashiine.enchancement.common.world.item.effects.entity.*;
@@ -92,6 +93,8 @@ public class ModEnchantments {
 	// mace
 	public static final ResourceKey<Enchantment> METEOR = createKey("meteor");
 	public static final ResourceKey<Enchantment> THUNDERSTRUCK = createKey("thunderstruck");
+	// excavating tool
+	public static final ResourceKey<Enchantment> BURROWING = createKey("burrowing");
 	// pickaxe
 	public static final ResourceKey<Enchantment> EXTRACTING = createKey("extracting");
 	// axe
@@ -617,6 +620,19 @@ public class ModEnchantments {
 									new AddValue(LevelBasedValue.perLevel(0.8F, 0.3F)),
 									new AddValue(LevelBasedValue.perLevel(1)),
 									new AddValue(LevelBasedValue.perLevel(0.8F, 0.3F))));
+				}));
+		// excavating tool
+		registry.register(BURROWING, create(BURROWING.identifier(),
+				items.getOrThrow(ModItemTags.EXCAVATING_ENCHANTABLE),
+				2,
+				EquipmentSlotGroup.MAINHAND,
+				builder -> {
+					builder.withEffect(
+							ModEnchantmentEffectComponentTypes.ARMOR_DENTING,
+							new AddValue(LevelBasedValue.perLevel(1 / 8F)));
+					builder.withSpecialEffect(
+							ModEnchantmentEffectComponentTypes.WIDE_MINING,
+							new AddValue(LevelBasedValue.constant(0.5F)));
 				}));
 		// pickaxe
 		registry.register(EXTRACTING, create(EXTRACTING.identifier(),

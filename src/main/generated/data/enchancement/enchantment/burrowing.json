@@ -1,0 +1,38 @@
+{
+  "anvil_cost": 2,
+  "description": {
+	"translate": "enchantment.enchancement.burrowing"
+  },
+  "effects": {
+	"enchancement:armor_denting": [
+	  {
+		"effect": {
+		  "type": "minecraft:add",
+		  "value": {
+			"type": "minecraft:linear",
+			"base": 0.125,
+			"per_level_above_first": 0.125
+		  }
+		}
+	  }
+	],
+	"enchancement:wide_mining": {
+	  "type": "minecraft:add",
+	  "value": 0.5
+	}
+  },
+  "max_cost": {
+	"base": 40,
+	"per_level_above_first": 10
+  },
+  "max_level": 2,
+  "min_cost": {
+	"base": 10,
+	"per_level_above_first": 10
+  },
+  "slots": [
+	"mainhand"
+  ],
+  "supported_items": "#enchancement:enchantable/excavating",
+  "weight": 5
+}
