@@ -37,7 +37,7 @@ public class RebalanceEquipmentEvent {
 		@Override
 		public void modify(DefaultItemComponentEvents.ModifyContext context) {
 			if (ModConfig.rebalanceEquipment) {
-				context.modify(item -> EnchancementUtil.isGroundAnimalArmor(item.getDefaultInstance()) || item == Items.SADDLE, (builder, _) -> builder.set(DataComponents.ENCHANTABLE, new Enchantable(1)));
+				context.modify(item -> EnchancementUtil.isAnimalArmor(item.getDefaultInstance()) || item == Items.SADDLE, (builder, _) -> builder.set(DataComponents.ENCHANTABLE, new Enchantable(1)));
 			}
 		}
 	}
@@ -46,7 +46,7 @@ public class RebalanceEquipmentEvent {
 		@Override
 		public TriState allowEnchanting(Holder<Enchantment> enchantment, ItemStack target, EnchantingContext enchantingContext) {
 			if (ModConfig.rebalanceEquipment) {
-				if (EnchancementUtil.isGroundAnimalArmor(target) && enchantment.is(ModEnchantmentTags.ANIMAL_ARMOR_ENCHANTMENTS)) {
+				if (EnchancementUtil.isAnimalArmor(target) && enchantment.is(ModEnchantmentTags.ANIMAL_ARMOR_ENCHANTMENTS)) {
 					return TriState.TRUE;
 				}
 				if (target.is(Items.SADDLE) && enchantment.is(ModEnchantmentTags.SADDLE_ENCHANTMENTS)) {

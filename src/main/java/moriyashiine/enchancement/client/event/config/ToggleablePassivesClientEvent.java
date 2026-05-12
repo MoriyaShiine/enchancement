@@ -34,7 +34,7 @@ public class ToggleablePassivesClientEvent implements ItemTooltipCallback {
 	public void getTooltip(ItemStack stack, Item.TooltipContext tooltipContext, TooltipFlag tooltipFlag, List<Component> lines) {
 		if (ModConfig.toggleablePassives && stack.isEnchanted() && stack.has(ModComponentTypes.TOGGLEABLE_PASSIVE)) {
 			KEY_MAP.forEach((tag, key) -> {
-				if (stack.is(tag) || (tag.equals(ItemTags.CHEST_ARMOR_ENCHANTABLE) && EnchancementUtil.isGroundAnimalArmor(stack))) {
+				if (stack.is(tag) || (tag.equals(ItemTags.CHEST_ARMOR_ENCHANTABLE) && EnchancementUtil.isAnimalArmor(stack))) {
 					MutableComponent icon = Component.literal("× ");
 					ChatFormatting formatting = ChatFormatting.DARK_RED;
 					if (stack.get(ModComponentTypes.TOGGLEABLE_PASSIVE)) {

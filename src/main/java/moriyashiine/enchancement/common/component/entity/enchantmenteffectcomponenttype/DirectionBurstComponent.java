@@ -23,6 +23,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.ValueInput;
@@ -117,7 +118,7 @@ public class DirectionBurstComponent extends PushComponent {
 	}
 
 	public boolean canUse() {
-		return cooldown == 0 && SLibUtils.isGroundedOrAirborne(obj);
+		return cooldown == 0 && SLibUtils.isGroundedOrAirborne(obj, obj.is(EntityTypeTags.AQUATIC));
 	}
 
 	public boolean preventFalling() {
