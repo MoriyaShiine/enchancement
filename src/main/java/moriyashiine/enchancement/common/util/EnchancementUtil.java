@@ -11,6 +11,7 @@ import moriyashiine.enchancement.common.event.internal.SyncDeltaMovementsEvent;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
 import moriyashiine.enchancement.common.tag.ModItemTags;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
@@ -336,21 +337,21 @@ public class EnchancementUtil {
 
 	public static float getValue(DataComponentType<EnchantmentValueEffect> component, RandomSource random, ItemStack stack, float base) {
 		MutableFloat mutableFloat = new MutableFloat(base);
-		EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> enchantment.value().modifyUnfilteredValue(component, random, level, mutableFloat));
+		EnchantmentHelper.runIterationOnItem(stack, (enchantment, enchantmentLevel) -> enchantment.value().modifyUnfilteredValue(component, random, enchantmentLevel, mutableFloat));
 		return mutableFloat.floatValue();
 	}
 
 	public static float getValue(DataComponentType<EnchantmentValueEffect> component, LivingEntity entity, float base) {
 		MutableFloat mutableFloat = new MutableFloat(base);
 		for (ItemStack stack : getArmorItems(entity)) {
-			EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> enchantment.value().modifyUnfilteredValue(component, entity.getRandom(), level, mutableFloat));
+			EnchantmentHelper.runIterationOnItem(stack, (enchantment, enchantmentLevel) -> enchantment.value().modifyUnfilteredValue(component, entity.getRandom(), enchantmentLevel, mutableFloat));
 		}
 		return mutableFloat.floatValue();
 	}
 
-	public static float getValue(DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>> component, ServerLevel world, ItemStack stack, float base) {
+	public static float getValue(DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>> component, ServerLevel level, ItemStack stack, float base) {
 		MutableFloat mutableFloat = new MutableFloat(base);
-		EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> enchantment.value().modifyItemFilteredCount(component, world, level, stack, mutableFloat));
+		EnchantmentHelper.runIterationOnItem(stack, (enchantment, enchantmentLevel) -> enchantment.value().modifyItemFilteredCount(component, level, enchantmentLevel, stack, mutableFloat));
 		return mutableFloat.floatValue();
 	}
 
@@ -359,6 +360,6 @@ public class EnchancementUtil {
 	public static final VoxelShape FLUID_WALKING_SHAPE = Block.column(16, 0, 8);
 
 	public static boolean shouldFluidWalk(Entity entity) {
-		return !SLibUtils.isCrouching(entity, true) && hasAnyEnchantmentsWith(entity, ModEnchantmentEffectComponentTypes.FLUID_WALKING);
+		return !entity.is(ModEntityTypeTags.CANNOT_FLUID_WALK) && !SLibUtils.isCrouching(entity, true) && hasAnyEnchantmentsWith(entity, ModEnchantmentEffectComponentTypes.FLUID_WALKING);
 	}
 }

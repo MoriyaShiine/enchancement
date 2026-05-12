@@ -38,6 +38,8 @@ public class ModEntityTypeTagsProvider extends FabricTagsProvider.EntityTypeTags
 				.add(EntityType.VEX);
 		valueLookupBuilder(ModEntityTypeTags.CANNOT_DISARM)
 				.forceAddTag(ConventionalEntityTypeTags.BOSSES);
+		valueLookupBuilder(ModEntityTypeTags.CANNOT_FLUID_WALK)
+				.forceAddTag(EntityTypeTags.CAN_WEAR_NAUTILUS_ARMOR);
 		valueLookupBuilder(ModEntityTypeTags.CANNOT_FREEZE)
 				.forceAddTag(ConventionalEntityTypeTags.BOSSES)
 				.forceAddTag(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES);

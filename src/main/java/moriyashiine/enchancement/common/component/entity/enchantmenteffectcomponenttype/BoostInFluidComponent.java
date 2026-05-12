@@ -18,8 +18,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.nautilus.AbstractNautilus;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.ValueInput;
@@ -70,10 +72,11 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 			if (obj.hurtTime != 0) {
 				damageTicks = 10;
 			}
-			if (ModConfig.enhanceMobs && !obj.slib$isPlayer() && !obj.hasControllingPassenger()) {
+			if (ModConfig.enhanceMobs && !obj.is(EntityTypeTags.AQUATIC) && !obj.slib$isPlayer() && !obj.hasControllingPassenger()) {
 				shouldBoost = !obj.level().getBlockState(BlockPos.containing(obj.getEyePosition())).isAir() && SLibUtils.isSubmerged(obj, SubmersionGate.ALL);
 			}
-			if (shouldBoost && damageTicks == 0) {
+			boolean cannotUse = obj instanceof AbstractNautilus nautilus && nautilus.getJumpCooldown() > 0;
+			if (shouldBoost && damageTicks == 0 && !cannotUse) {
 				currentSubmersion = getSubmersion();
 				if (canUse(true)) {
 					boolean submerged = SLibUtils.isSubmerged(obj, SubmersionGate.ALL);
@@ -89,7 +92,11 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 					}
 					if (obj.canSimulateMovement()) {
 						double multiplier = submerged ? 1 : 0.95;
-						obj.setDeltaMovement(obj.getDeltaMovement().x() * multiplier, Math.max(boost, obj.getDeltaMovement().y()), obj.getDeltaMovement().z() * multiplier);
+						if (obj instanceof AbstractNautilus) {
+							obj.setDeltaMovement(obj.getHeadLookAngle().scale(Math.max(obj.getDeltaMovement().length(), boost * multiplier)));
+						} else {
+							obj.setDeltaMovement(obj.getDeltaMovement().x() * multiplier, Math.max(boost, obj.getDeltaMovement().y()), obj.getDeltaMovement().z() * multiplier);
+						}
 					}
 					obj.gameEvent(GameEvent.ENTITY_ACTION);
 					EnchancementUtil.resetFallDistance(obj);
