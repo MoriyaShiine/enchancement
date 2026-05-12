@@ -2,7 +2,7 @@
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
 
-package moriyashiine.enchancement.mixin.config.rebalancestatuseffects;
+package moriyashiine.enchancement.mixin.config.rebalanceeffects;
 
 import moriyashiine.enchancement.common.ModConfig;
 import net.minecraft.world.Difficulty;
@@ -21,8 +21,8 @@ public class WitherSkullMixin extends AbstractHurtingProjectile {
 	}
 
 	@ModifyArg(method = "onHitEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/effect/MobEffectInstance;<init>(Lnet/minecraft/core/Holder;II)V"), index = 1)
-	private int enchancement$rebalanceStatusEffects(int duration) {
-		if (ModConfig.rebalanceStatusEffects) {
+	private int enchancement$rebalanceEffects(int duration) {
+		if (ModConfig.rebalanceEffects) {
 			return duration / (level().getDifficulty() == Difficulty.HARD ? 4 : 2);
 		}
 		return duration;

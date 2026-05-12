@@ -2,7 +2,7 @@
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
 
-package moriyashiine.enchancement.mixin.config.rebalancestatuseffects;
+package moriyashiine.enchancement.mixin.config.rebalanceeffects;
 
 import moriyashiine.enchancement.common.ModConfig;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -19,8 +19,8 @@ import java.util.List;
 @Mixin(Potions.class)
 public class PotionsMixin {
 	@ModifyVariable(method = "register", at = @At("HEAD"), argsOnly = true)
-	private static Potion enchancement$rebalanceStatusEffects(Potion potion) {
-		if (ModConfig.rebalanceStatusEffects && potion.name().contains("turtle_master")) {
+	private static Potion enchancement$rebalanceEffects(Potion potion) {
+		if (ModConfig.rebalanceEffects && potion.name().contains("turtle_master")) {
 			List<MobEffectInstance> effects = new ArrayList<>();
 			for (MobEffectInstance effect : potion.getEffects()) {
 				if (effect.getEffect() == MobEffects.RESISTANCE) {

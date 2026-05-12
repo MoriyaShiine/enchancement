@@ -68,13 +68,13 @@ public class ModConfig extends MidnightConfig {
 	@Entry
 	public static boolean rebalanceConsumables = true;
 	@Entry
+	public static boolean rebalanceEffects = true;
+	@Entry
 	public static boolean rebalanceEnchantments = true;
 	@Entry
 	public static boolean rebalanceEquipment = true;
 	@Entry
 	public static boolean rebalanceProjectiles = true;
-	@Entry
-	public static boolean rebalanceStatusEffects = true;
 	@Entry
 	public static boolean toggleablePassives = true;
 
@@ -114,7 +114,7 @@ public class ModConfig extends MidnightConfig {
 				singleLevelMode + enchantmentLimit +
 				disableDurability +
 				enhanceMobs +
-				rebalanceConsumables + rebalanceEnchantments + rebalanceEquipment + rebalanceProjectiles + rebalanceStatusEffects +
+				rebalanceConsumables + rebalanceEffects + rebalanceEnchantments + rebalanceEquipment + rebalanceProjectiles +
 				toggleablePassives +
 				weaponEnchantmentCooldownRequirement +
 				maxFellTreesBlocks + maxFellTreesHorizontalLength + maxMineOreVeinsBlocks +

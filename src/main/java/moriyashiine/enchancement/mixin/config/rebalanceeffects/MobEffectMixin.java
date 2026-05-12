@@ -2,7 +2,7 @@
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
 
-package moriyashiine.enchancement.mixin.config.rebalancestatuseffects;
+package moriyashiine.enchancement.mixin.config.rebalanceeffects;
 
 import moriyashiine.enchancement.common.ModConfig;
 import net.minecraft.core.Holder;
@@ -23,8 +23,8 @@ public class MobEffectMixin {
 	private static final Identifier WEAKNESS_ID = Identifier.withDefaultNamespace("effect.weakness");
 
 	@ModifyVariable(method = "addAttributeModifier", at = @At("HEAD"), argsOnly = true)
-	private double enchancement$rebalanceStatusEffects(double amount, Holder<Attribute> attribute, Identifier id) {
-		if (ModConfig.rebalanceStatusEffects && attribute == Attributes.ATTACK_DAMAGE) {
+	private double enchancement$rebalanceEffects(double amount, Holder<Attribute> attribute, Identifier id) {
+		if (ModConfig.rebalanceEffects && attribute == Attributes.ATTACK_DAMAGE) {
 			if (id.equals(STRENGTH_ID)) {
 				return 1;
 			} else if (id.equals(WEAKNESS_ID)) {
