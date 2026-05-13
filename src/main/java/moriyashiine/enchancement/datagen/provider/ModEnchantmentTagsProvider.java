@@ -62,24 +62,27 @@ public class ModEnchantmentTagsProvider extends FabricTagsProvider<Enchantment> 
 				.add(ModEnchantments.DASH)
 				.add(ModEnchantments.GALE)
 				.add(ModEnchantments.SLIDE)
+				.add(ModEnchantments.BOUNCY)
 				.add(ModEnchantments.BUOY)
 				.add(ModEnchantments.STICKY);
 		builder(ConventionalEnchantmentTags.ENTITY_DEFENSE_ENHANCEMENTS)
-				.add(ModEnchantments.VEIL)
 				.add(ModEnchantments.AMPHIBIOUS)
 				.add(ModEnchantments.WARDENSPINE)
 				.add(ModEnchantments.BOUNCY);
 		builder(ConventionalEnchantmentTags.ENTITY_SPEED_ENHANCEMENTS)
 				.add(ModEnchantments.ADRENALINE)
+				.add(ModEnchantments.AMPHIBIOUS)
 				.add(ModEnchantments.BUOY);
 		builder(ConventionalEnchantmentTags.INCREASE_ENTITY_DROPS)
 				.add(ModEnchantments.SCOOPING);
 		builder(ConventionalEnchantmentTags.WEAPON_DAMAGE_ENHANCEMENTS)
 				.add(ModEnchantments.BERSERK)
-				.add(ModEnchantments.DELAY)
 				.add(ModEnchantments.BURROWING)
+				.add(ModEnchantments.BEHEADING)
 				.add(ModEnchantments.SCOOPING)
 				.add(ModEnchantments.APEX);
+		builder(ConventionalEnchantmentTags.HIDDEN_FROM_RECIPE_VIEWERS)
+				.add(ModEnchantments.EMPTY_KEY);
 
 		builder(ModEnchantmentTags.BOUNCY_EXCLUSIVE_SET)
 				.add(Enchantments.FEATHER_FALLING);
