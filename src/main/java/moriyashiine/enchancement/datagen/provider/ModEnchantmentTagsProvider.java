@@ -64,6 +64,7 @@ public class ModEnchantmentTagsProvider extends FabricTagsProvider<Enchantment> 
 				.add(ModEnchantments.SLIDE)
 				.add(ModEnchantments.BOUNCY)
 				.add(ModEnchantments.BUOY)
+				.add(ModEnchantments.E_SPEED)
 				.add(ModEnchantments.STICKY);
 		builder(ConventionalEnchantmentTags.ENTITY_DEFENSE_ENHANCEMENTS)
 				.add(ModEnchantments.AMPHIBIOUS)
@@ -72,7 +73,8 @@ public class ModEnchantmentTagsProvider extends FabricTagsProvider<Enchantment> 
 		builder(ConventionalEnchantmentTags.ENTITY_SPEED_ENHANCEMENTS)
 				.add(ModEnchantments.ADRENALINE)
 				.add(ModEnchantments.AMPHIBIOUS)
-				.add(ModEnchantments.BUOY);
+				.add(ModEnchantments.BUOY)
+				.add(ModEnchantments.E_SPEED);
 		builder(ConventionalEnchantmentTags.INCREASE_ENTITY_DROPS)
 				.add(ModEnchantments.SCOOPING);
 		builder(ConventionalEnchantmentTags.WEAPON_DAMAGE_ENHANCEMENTS)

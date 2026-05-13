@@ -103,9 +103,11 @@ public class Enchancement implements ModInitializer {
 		PayloadTypeRegistry.clientboundPlay().register(AddLightningDashParticlesPayload.TYPE, AddLightningDashParticlesPayload.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(AddMoltenParticlesPayload.TYPE, AddMoltenParticlesPayload.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(BoostInFluidS2CPayload.TYPE, BoostInFluidS2CPayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(EMeterS2CPayload.TYPE, EMeterS2CPayload.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(GlideS2CPayload.TYPE, GlideS2CPayload.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(PlayBrimstoneFireSoundPayload.TYPE, PlayBrimstoneFireSoundPayload.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(PlayBrimstoneTravelSoundPayload.TYPE, PlayBrimstoneTravelSoundPayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(PlayEMeterFloatSoundPayload.TYPE, PlayEMeterFloatSoundPayload.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(StartSlammingS2CPayload.TYPE, StartSlammingS2CPayload.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(SlideS2CPayload.TYPE, SlideS2CPayload.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(StopSlammingS2CPayload.TYPE, StopSlammingS2CPayload.CODEC);
@@ -118,6 +120,7 @@ public class Enchancement implements ModInitializer {
 		PayloadTypeRegistry.serverboundPlay().register(BoostInFluidC2SPayload.TYPE, BoostInFluidC2SPayload.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(ChargeJumpPayload.TYPE, ChargeJumpPayload.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(DirectionBurstPayload.TYPE, DirectionBurstPayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(EMeterC2SPayload.TYPE, EMeterC2SPayload.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(GlideC2SPayload.TYPE, GlideC2SPayload.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(RotationBurstPayload.TYPE, RotationBurstPayload.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(StartSlammingC2SPayload.TYPE, StartSlammingC2SPayload.CODEC);
@@ -134,6 +137,7 @@ public class Enchancement implements ModInitializer {
 		ServerPlayNetworking.registerGlobalReceiver(BoostInFluidC2SPayload.TYPE, new BoostInFluidC2SPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(ChargeJumpPayload.TYPE, new ChargeJumpPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(DirectionBurstPayload.TYPE, new DirectionBurstPayload.Receiver());
+		ServerPlayNetworking.registerGlobalReceiver(EMeterC2SPayload.TYPE, new EMeterC2SPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(GlideC2SPayload.TYPE, new GlideC2SPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(RotationBurstPayload.TYPE, new RotationBurstPayload.Receiver());
 		ServerPlayNetworking.registerGlobalReceiver(StartSlammingC2SPayload.TYPE, new StartSlammingC2SPayload.Receiver());
@@ -184,6 +188,7 @@ public class Enchancement implements ModInitializer {
 		AfterDamageIncludingDeathEvent.EVENT.register(new ChargeJumpEvent.Damage());
 		ModifyMovementEvents.JUMP_DELTA.register(new ChargeJumpEvent.Jump());
 		ModifyCriticalStatusEvent.EVENT.register(new CriticalTipperEvent());
+		MultiplyMovementSpeedEvent.EVENT.register(new EMeterEvent());
 		ServerEntityEvents.EQUIPMENT_CHANGE.register(new EquipmentResetEvent());
 		ModifyDestroySpeedEvent.MULTIPLY_TOTAL.register(new FellTreesEvent.DestroySpeed());
 		PlayerBlockBreakEvents.BEFORE.register(new FellTreesEvent.FellTree());

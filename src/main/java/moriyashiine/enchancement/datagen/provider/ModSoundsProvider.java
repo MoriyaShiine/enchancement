@@ -49,6 +49,8 @@ public class ModSoundsProvider extends FabricSoundsProvider {
 				.sound(ofEvent(SoundEvents.SHOVEL_FLATTEN)));
 		exporter.add(ModSoundEvents.GENERIC_DASH, of().subtitle("subtitles.enchancement.entity.generic.dash")
 				.sound(ofEvent(SoundEvents.SAND_BREAK)));
+		exporter.add(ModSoundEvents.GENERIC_E_METER_FLOAT, of().subtitle("subtitles.enchancement.entity.generic.e_meter.float")
+				.sound(ofFile(id("entity/e_meter_float"))));
 		exporter.add(ModSoundEvents.GENERIC_ERUPT, of().subtitle("subtitles.enchancement.entity.generic.erupt")
 				.sound(ofFile(id("entity/erupt"))));
 		exporter.add(ModSoundEvents.GENERIC_FREEZE, of().subtitle("subtitles.enchancement.entity.generic.freeze")

@@ -58,6 +58,7 @@ public class EnchancementClient implements ClientModInitializer {
 	public static final KeyMapping BOOST_IN_FLUID_HOVER_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".boostInFluidHover", GLFW.GLFW_KEY_SPACE, KEYMAPPING_CATEGORY));
 	public static final KeyMapping CHARGE_JUMP_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".chargeJump", GLFW.GLFW_KEY_LEFT_SHIFT, KEYMAPPING_CATEGORY));
 	public static final KeyMapping DIRECTION_BURST_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".directionBurst", GLFW.GLFW_KEY_LEFT_SHIFT, KEYMAPPING_CATEGORY));
+	public static final KeyMapping E_METER_HOVER_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".eMeterHover", GLFW.GLFW_KEY_SPACE, KEYMAPPING_CATEGORY));
 	public static final KeyMapping ROTATION_BURST_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".rotationBurst", GLFW.GLFW_KEY_LEFT_CONTROL, KEYMAPPING_CATEGORY));
 	public static final KeyMapping SLAM_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".slam", GLFW.GLFW_KEY_LEFT_CONTROL, KEYMAPPING_CATEGORY));
 	public static final KeyMapping SLIDE_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".slide", GLFW.GLFW_KEY_LEFT_CONTROL, KEYMAPPING_CATEGORY));
@@ -112,9 +113,11 @@ public class EnchancementClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(AddLightningDashParticlesPayload.TYPE, new AddLightningDashParticlesPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(AddMoltenParticlesPayload.TYPE, new AddMoltenParticlesPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(BoostInFluidS2CPayload.TYPE, new BoostInFluidS2CPayload.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(EMeterS2CPayload.TYPE, new EMeterS2CPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(GlideS2CPayload.TYPE, new GlideS2CPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(PlayBrimstoneFireSoundPayload.TYPE, new PlayBrimstoneFireSoundPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(PlayBrimstoneTravelSoundPayload.TYPE, new PlayBrimstoneTravelSoundPayload.Receiver());
+		ClientPlayNetworking.registerGlobalReceiver(PlayEMeterFloatSoundPayload.TYPE, new PlayEMeterFloatSoundPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(StartSlammingS2CPayload.TYPE, new StartSlammingS2CPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(SlideS2CPayload.TYPE, new SlideS2CPayload.Receiver());
 		ClientPlayNetworking.registerGlobalReceiver(StopSlammingS2CPayload.TYPE, new StopSlammingS2CPayload.Receiver());
@@ -150,6 +153,7 @@ public class EnchancementClient implements ClientModInitializer {
 		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("brimstone"), new BrimstoneHudElement());
 		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("charge_jump"), new ChargeJumpHudElement());
 		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("direction_burst"), new DirectionBurstHudElement());
+		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("e_meter"), new EMeterHudElement());
 		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("extended_water_time"), new ExtendedWaterTimeHudElement());
 		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("rotation_burst"), new RotationBurstHudElement());
 	}

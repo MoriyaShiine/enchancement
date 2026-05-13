@@ -20,6 +20,7 @@ public class ModSoundEvents {
 	public static final SoundEvent GENERIC_BOOST_POWDER_SNOW = registerSoundEvent("entity.generic.boost.powder_snow");
 	public static final SoundEvent GENERIC_BURY = registerSoundEvent("entity.generic.bury");
 	public static final SoundEvent GENERIC_DASH = registerSoundEvent("entity.generic.dash");
+	public static final SoundEvent GENERIC_E_METER_FLOAT = registerSoundEvent("entity.generic.e_meter.float");
 	public static final SoundEvent GENERIC_ERUPT = registerSoundEvent("entity.generic.erupt");
 	public static final SoundEvent GENERIC_FREEZE = registerSoundEvent("entity.generic.freeze");
 	public static final SoundEvent GENERIC_GUST = registerSoundEvent("entity.generic.gust");

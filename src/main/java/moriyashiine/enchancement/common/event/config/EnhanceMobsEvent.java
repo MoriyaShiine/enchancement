@@ -6,8 +6,10 @@ package moriyashiine.enchancement.common.event.config;
 
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.DirectionBurstComponent;
+import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.payload.DirectionBurstPayload;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.world.entity.TridentSpinAttackUser;
 import moriyashiine.enchancement.common.world.item.effects.DirectionBurstEffect;
 import moriyashiine.strawberrylib.api.event.TickEntityEvent;
@@ -41,6 +43,9 @@ public class EnhanceMobsEvent implements TickEntityEvent {
 					Vec3 delta = directionBurstComponent.createDelta(inputDelta);
 					DirectionBurstPayload.use(mob, delta, directionBurstComponent);
 				}
+			}
+			if (EnchancementUtil.hasAnyEnchantmentsWith(mob, ModEnchantmentEffectComponentTypes.E_METER)) {
+				mob.setSprinting(mob.getTarget() != null && mob.hasMovedHorizontallyRecently());
 			}
 			if ((mob.getId() + mob.tickCount) % 40 == 0 && mob.isUsingItem()) {
 				LivingEntity target = mob.getTarget();

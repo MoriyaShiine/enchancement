@@ -51,6 +51,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<DisarmedPlayerComponent> DISARMED_PLAYER = ComponentRegistry.getOrCreate(Enchancement.id("disarmed_player"), DisarmedPlayerComponent.class);
 	public static final ComponentKey<DisarmedWanderingTraderComponent> DISARMED_WANDERING_TRADER = ComponentRegistry.getOrCreate(Enchancement.id("disarmed_wandering_trader"), DisarmedWanderingTraderComponent.class);
 	public static final ComponentKey<DisarmedWitchComponent> DISARMED_WITCH = ComponentRegistry.getOrCreate(Enchancement.id("disarmed_witch"), DisarmedWitchComponent.class);
+	public static final ComponentKey<EMeterComponent> E_METER = ComponentRegistry.getOrCreate(Enchancement.id("e_meter"), EMeterComponent.class);
 	public static final ComponentKey<ExtendedWaterTimeComponent> EXTENDED_WATER_TIME = ComponentRegistry.getOrCreate(Enchancement.id("extended_water_time"), ExtendedWaterTimeComponent.class);
 	public static final ComponentKey<GlideComponent> GLIDE = ComponentRegistry.getOrCreate(Enchancement.id("glide"), GlideComponent.class);
 	public static final ComponentKey<LeechingTridentComponent> LEECHING_TRIDENT = ComponentRegistry.getOrCreate(Enchancement.id("leeching_trident"), LeechingTridentComponent.class);
@@ -94,6 +95,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerForPlayers(DISARMED_PLAYER, DisarmedPlayerComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(WanderingTrader.class, DISARMED_WANDERING_TRADER, _ -> new DisarmedWanderingTraderComponent());
 		registry.registerFor(Witch.class, DISARMED_WITCH, _ -> new DisarmedWitchComponent());
+		registry.registerFor(LivingEntity.class, E_METER, EMeterComponent::new);
 		registry.registerFor(LivingEntity.class, EXTENDED_WATER_TIME, ExtendedWaterTimeComponent::new);
 		registry.registerFor(LivingEntity.class, GLIDE, GlideComponent::new);
 		registry.registerFor(ThrownTrident.class, LEECHING_TRIDENT, LeechingTridentComponent::new);

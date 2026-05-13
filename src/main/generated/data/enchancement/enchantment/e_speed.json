@@ -1,0 +1,32 @@
+{
+  "anvil_cost": 2,
+  "description": {
+	"translate": "enchantment.enchancement.e_speed"
+  },
+  "effects": {
+	"enchancement:e_meter": {
+	  "type": "minecraft:add",
+	  "value": {
+		"type": "minecraft:linear",
+		"base": 0.7,
+		"per_level_above_first": 0.5
+	  }
+	}
+  },
+  "max_cost": {
+	"base": 40,
+	"per_level_above_first": 10
+  },
+  "max_level": 2,
+  "min_cost": {
+	"base": 10,
+	"per_level_above_first": 10
+  },
+  "slots": [
+	"armor",
+	"body",
+	"saddle"
+  ],
+  "supported_items": "#minecraft:enchantable/foot_armor",
+  "weight": 5
+}

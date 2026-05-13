@@ -75,6 +75,7 @@ public class ModEnchantments {
 	// boots
 	public static final ResourceKey<Enchantment> BOUNCY = createKey("bouncy");
 	public static final ResourceKey<Enchantment> BUOY = createKey("buoy");
+	public static final ResourceKey<Enchantment> E_SPEED = createKey("e_speed");
 	public static final ResourceKey<Enchantment> STICKY = createKey("sticky");
 	// sword
 	public static final ResourceKey<Enchantment> BERSERK = createKey("berserk");
@@ -401,6 +402,14 @@ public class ModEnchantments {
 											.tag(TagPredicate.is(DamageTypeTags.BURN_FROM_STEPPING))
 											.tag(TagPredicate.isNot(DamageTypeTags.BYPASSES_INVULNERABILITY))));
 				}));
+		registry.register(E_SPEED, create(E_SPEED.identifier(),
+				items.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
+				2,
+				EquipmentSlotGroup.ARMOR,
+				builder -> builder.withSpecialEffect(
+						ModEnchantmentEffectComponentTypes.E_METER,
+						new AddValue(LevelBasedValue.perLevel(0.7F, 0.5F))
+				)));
 		registry.register(STICKY, create(STICKY.identifier(),
 				items.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
 				2,
