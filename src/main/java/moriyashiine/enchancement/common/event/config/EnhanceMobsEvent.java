@@ -29,7 +29,7 @@ import net.minecraft.world.phys.Vec3;
 public class EnhanceMobsEvent implements TickEntityEvent {
 	@Override
 	public void tick(Level level, Entity entity) {
-		if (ModConfig.enhanceMobs && !level.isClientSide() && entity instanceof Mob mob && !mob.isPassenger()) {
+		if (ModConfig.enhanceMobs && !level.isClientSide() && entity instanceof Mob mob && !mob.isPassenger() && !mob.hasControllingPassenger()) {
 			if (!mob.onGround()) {
 				DirectionBurstComponent directionBurstComponent = ModEntityComponents.DIRECTION_BURST.get(mob);
 				if (directionBurstComponent.hasEffect() && directionBurstComponent.canUse() && SLibUtils.isSufficientlyHigh(mob, 2.5)) {
