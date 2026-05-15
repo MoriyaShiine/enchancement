@@ -71,13 +71,10 @@ public class MineOreVeinsEvent {
 		BaseBlock baseBlock = BaseBlock.BLOCK_MAP.get(state.getBlock());
 		if (baseBlock != null) {
 			return baseBlock.base();
-		}
-		if (state.is(ModBlockTags.NETHER_ORES)) {
-			return Blocks.NETHERRACK;
-		} else if (state.is(ModBlockTags.END_ORES)) {
-			return Blocks.END_STONE;
-		} else if (state.is(ConventionalBlockTags.ORES_IN_GROUND_DEEPSLATE)) {
+		} else if (state.is(ModBlockTags.DEEPSLATE_BASE_BLOCKS)) {
 			return Blocks.DEEPSLATE;
+		} else if (state.is(ModBlockTags.NETHERRACK_BASE_BLOCKS)) {
+			return Blocks.NETHERRACK;
 		}
 		return Blocks.STONE;
 	}

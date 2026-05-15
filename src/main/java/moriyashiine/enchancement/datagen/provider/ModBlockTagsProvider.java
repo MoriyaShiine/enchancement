@@ -35,9 +35,6 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
 		valueLookupBuilder(ModBlockTags.FELLABLE)
 				.forceAddTag(BlockTags.LOGS)
 				.add(Blocks.MANGROVE_ROOTS);
-		valueLookupBuilder(ModBlockTags.NETHER_ORES)
-				.forceAddTag(ConventionalBlockTags.ORES_IN_GROUND_NETHERRACK)
-				.forceAddTag(ConventionalBlockTags.NETHERITE_SCRAP_ORES);
 		valueLookupBuilder(ModBlockTags.SMELTS_SELF)
 				.forceAddTag(BlockTags.LEAVES)
 				.add(Blocks.NETHER_GOLD_ORE);
@@ -48,6 +45,12 @@ public class ModBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
 				.addOptional(key("universal_ores:blackstone_gold_ore"));
 		valueLookupBuilder(ModBlockTags.UNSTICKABLE)
 				.forceAddTag(BlockTags.ICE);
+
+		valueLookupBuilder(ModBlockTags.DEEPSLATE_BASE_BLOCKS)
+				.forceAddTag(ConventionalBlockTags.ORES_IN_GROUND_DEEPSLATE);
+		valueLookupBuilder(ModBlockTags.NETHERRACK_BASE_BLOCKS)
+				.forceAddTag(ConventionalBlockTags.ORES_IN_GROUND_NETHERRACK)
+				.add(Blocks.ANCIENT_DEBRIS);
 	}
 
 	private static ResourceKey<Block> key(String id) {
