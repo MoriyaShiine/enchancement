@@ -78,11 +78,12 @@ public class RebalanceEquipmentEvent {
 		@Override
 		public void tick(Level level, Entity entity) {
 			if (ModConfig.rebalanceEquipment && entity instanceof Player player) {
-				if (player.getTicksUsingItem() == BowItem.MAX_DRAW_DURATION && player.getUseItem().is(ItemTags.BOW_ENCHANTABLE)) {
+				ItemStack useItem = player.getUseItem();
+				if (player.getTicksUsingItem() == BowItem.MAX_DRAW_DURATION && useItem.is(ItemTags.BOW_ENCHANTABLE)) {
 					SLibUtils.playSound(entity, ModSoundEvents.BOW_READY);
 				}
-				if (player.getTicksUsingItem() == EnchancementUtil.getMaceOrTridentChargeTime(player.getUseItem()) && isMaceOrTrident(player)) {
-					SLibUtils.playSound(entity, player.getUseItem().is(ItemTags.MACE_ENCHANTABLE) ? ModSoundEvents.MACE_READY : ModSoundEvents.TRIDENT_READY);
+				if (player.getTicksUsingItem() == EnchancementUtil.getMaceOrTridentChargeTime(useItem) && isMaceOrTrident(player)) {
+					SLibUtils.playSound(entity, useItem.is(ItemTags.MACE_ENCHANTABLE) ? ModSoundEvents.MACE_READY : ModSoundEvents.TRIDENT_READY);
 				}
 			}
 		}

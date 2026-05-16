@@ -184,6 +184,7 @@
 	"config.enhancemobs.tridentspinattack.client.LivingEntityRendererMixin",
 	"config.overhaulenchanting.client.GrindstoneScreenMixin",
 	"config.rebalanceequipment.client.ItemInHandRendererMixin",
+	"config.rebalanceequipment.client.ItemStackMixin",
 	"config.rebalanceequipment.client.LocalPlayerMixin",
 	"config.rebalanceequipment.client.MinecraftMixin",
 	"config.rebalanceequipment.client.ThrownTridentRendererMixin",

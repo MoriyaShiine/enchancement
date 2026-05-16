@@ -34,6 +34,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	// config
 	public static final ComponentKey<AirMobilityComponent> AIR_MOBILITY = ComponentRegistry.getOrCreate(Enchancement.id("air_mobility"), AirMobilityComponent.class);
 	public static final ComponentKey<IgniteKnockbackComponent> IGNITE_KNOCKBACK = ComponentRegistry.getOrCreate(Enchancement.id("ignite_knockback"), IgniteKnockbackComponent.class);
+	public static final ComponentKey<LimitBlocksAttacksComponent> LIMIT_BLOCKS_ATTACKS = ComponentRegistry.getOrCreate(Enchancement.id("limit_blocks_attacks"), LimitBlocksAttacksComponent.class);
 	public static final ComponentKey<OwnedTridentComponent> OWNED_TRIDENT = ComponentRegistry.getOrCreate(Enchancement.id("owned_trident"), OwnedTridentComponent.class);
 	public static final ComponentKey<ProjectileTimerComponent> PROJECTILE_TIMER = ComponentRegistry.getOrCreate(Enchancement.id("projectile_timer"), ProjectileTimerComponent.class);
 	public static final ComponentKey<SafeLightningComponent> SAFE_LIGHTNING = ComponentRegistry.getOrCreate(Enchancement.id("safe_lightning"), SafeLightningComponent.class);
@@ -78,6 +79,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		// config
 		registry.registerFor(LivingEntity.class, AIR_MOBILITY, AirMobilityComponent::new);
 		registry.registerFor(LivingEntity.class, IGNITE_KNOCKBACK, IgniteKnockbackComponent::new);
+		registry.registerForPlayers(LIMIT_BLOCKS_ATTACKS, LimitBlocksAttacksComponent::new, RespawnCopyStrategy.NEVER_COPY);
 		registry.registerFor(ThrownTrident.class, OWNED_TRIDENT, OwnedTridentComponent::new);
 		registry.registerFor(LivingEntity.class, PROJECTILE_TIMER, _ -> new ProjectileTimerComponent());
 		registry.registerFor(LightningBolt.class, SAFE_LIGHTNING, _ -> new SafeLightningComponent());
