@@ -122,8 +122,8 @@ public class EnchancementUtil {
 		return null;
 	}
 
-	public static boolean isEnchantmentAllowed(Holder<Enchantment> enchantment) {
-		if (enchantment.unwrapKey().isPresent()) {
+	public static boolean isEnchantmentAllowed(@Nullable Holder<Enchantment> enchantment) {
+		if (enchantment != null && enchantment.unwrapKey().isPresent()) {
 			return isEnchantmentAllowed(enchantment.unwrapKey().get().identifier());
 		}
 		return false;
