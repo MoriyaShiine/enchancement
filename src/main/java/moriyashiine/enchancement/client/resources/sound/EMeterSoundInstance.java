@@ -4,16 +4,21 @@
 
 package moriyashiine.enchancement.client.resources.sound;
 
+import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.EMeterComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.init.ModSoundEvents;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 
 import java.util.UUID;
 
 public class EMeterSoundInstance extends AbstractTickableSoundInstance {
+	public static final Identifier ALTERNATE_ID = Enchancement.id("alternate_e_meter");
+
 	private final Entity entity;
 	private final UUID floatingUuid;
 
@@ -24,9 +29,11 @@ public class EMeterSoundInstance extends AbstractTickableSoundInstance {
 		x = entity.getX();
 		y = entity.getY();
 		z = entity.getZ();
-		volume = 0.001F;
-		pitch = Mth.nextFloat(entity.getRandom(), 0.85F, 1.15F);
 		looping = true;
+		volume = 0.001F;
+		if (Minecraft.getInstance().getResourcePackRepository().getSelectedPacks().stream().noneMatch(pack -> pack.getId().equals(ALTERNATE_ID.toString()))) {
+			pitch = Mth.nextFloat(entity.getRandom(), 0.85F, 1.15F);
+		}
 	}
 
 	@Override

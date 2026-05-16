@@ -23,6 +23,7 @@ import moriyashiine.enchancement.client.renderer.entity.IceShardRenderer;
 import moriyashiine.enchancement.client.renderer.entity.TorchRenderer;
 import moriyashiine.enchancement.client.renderer.entity.model.FrozenPlayerModel;
 import moriyashiine.enchancement.client.renderer.entity.model.MobSpinAttackEffectModel;
+import moriyashiine.enchancement.client.resources.sound.EMeterSoundInstance;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
 import moriyashiine.enchancement.common.init.ModMenuTypes;
@@ -76,6 +77,7 @@ public class EnchancementClient implements ClientModInitializer {
 		ResourceLoader.get(PackType.CLIENT_RESOURCES).addListenerOrdering(ResourceReloaderKeys.Client.TEXTURES, FrozenReloadListener.ID);
 		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceLoader.registerBuiltinPack(Enchancement.id("alternate_air_jump"), modContainer, PackActivationType.NORMAL));
 		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceLoader.registerBuiltinPack(Enchancement.id("alternate_burst"), modContainer, PackActivationType.NORMAL));
+		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceLoader.registerBuiltinPack(EMeterSoundInstance.ALTERNATE_ID, modContainer, PackActivationType.NORMAL));
 		betterCombatLoaded = FabricLoader.getInstance().isModLoaded("bettercombat");
 	}
 
