@@ -192,7 +192,7 @@
   "enchancement.midnightconfig.rebalanceEnchantments": "Büyüleri Yeniden Dengele",
   "enchancement.midnightconfig.rebalanceEquipment": "Ekipmanları Yeniden Dengele",
   "enchancement.midnightconfig.rebalanceProjectiles": "Atılabilirleri Yeniden Dengele",
-  "enchancement.midnightconfig.rebalanceStatusEffects": "Etkileri Yeniden Dengele",
+  "enchancement.midnightconfig.rebalanceEffects": "Etkileri Yeniden Dengele",
   "enchancement.midnightconfig.toggleablePassives": "Açıp Kapatılabilir Pasifler",
   "enchancement.midnightconfig.weaponEnchantmentCooldownRequirement": "Alet Büyü Bekleme Süresi Gereksinimi",
   "enchancement.midnightconfig.maxFellTreesBlocks": "En Fazla Ağaç Kesme Blok Sayısı",
