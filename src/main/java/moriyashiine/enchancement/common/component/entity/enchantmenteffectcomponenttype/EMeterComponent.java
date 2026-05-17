@@ -177,8 +177,12 @@ public class EMeterComponent implements AutoSyncedComponent, CommonTickingCompon
 		return reachedMax() && obj.isSprinting() && SLibUtils.isGroundedOrAirborne(obj) && !ModEntityComponents.BOOST_IN_FLUID.get(obj).blocksAirEffects();
 	}
 
+	public boolean isFloating() {
+		return floating;
+	}
+
 	public boolean isFloatingUuid(UUID floatingUuid) {
-		return floating && floatingUuid.equals(this.floatingUuid);
+		return isFloating() && floatingUuid.equals(this.floatingUuid);
 	}
 
 	public void setFloatingUuid(UUID floatingUuid) {

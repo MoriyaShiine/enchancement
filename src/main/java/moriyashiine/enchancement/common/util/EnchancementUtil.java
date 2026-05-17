@@ -361,4 +361,8 @@ public class EnchancementUtil {
 	public static boolean shouldFluidWalk(Entity entity) {
 		return !entity.is(ModEntityTypeTags.CANNOT_FLUID_WALK) && !SLibUtils.isCrouching(entity, true) && hasAnyEnchantmentsWith(entity, ModEnchantmentEffectComponentTypes.FLUID_WALKING);
 	}
+
+	public static boolean isHovering(LivingEntity entity) {
+		return ModEntityComponents.BOOST_IN_FLUID.get(entity).blocksAirEffects() || ModEntityComponents.E_METER.get(entity).isFloating();
+	}
 }
