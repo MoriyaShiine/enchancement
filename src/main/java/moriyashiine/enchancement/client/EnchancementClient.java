@@ -29,8 +29,8 @@ import moriyashiine.enchancement.common.init.ModEntityTypes;
 import moriyashiine.enchancement.common.init.ModMenuTypes;
 import moriyashiine.enchancement.common.init.ModParticleTypes;
 import moriyashiine.strawberrylib.api.event.client.AddNightVisionScaleEvent;
-import moriyashiine.strawberrylib.api.event.client.DisableContextualInfoEvent;
 import moriyashiine.strawberrylib.api.event.client.OutlineEntityEvent;
+import moriyashiine.strawberrylib.api.event.client.ReplaceContextualInfoEvent;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
@@ -143,7 +143,7 @@ public class EnchancementClient implements ClientModInitializer {
 		ItemTooltipCallback.EVENT.register(new AutomaticallyFeedsTooltipClientEvent());
 		// enchantment effect component type
 		ClientTickEvents.END_LEVEL_TICK.register(new BounceClientEvent());
-		DisableContextualInfoEvent.EVENT.register(new ChargeJumpClientEvent());
+		ReplaceContextualInfoEvent.EVENT.register(new ChargeJumpClientEvent());
 		ClientTickEvents.END_LEVEL_TICK.register(new EntityXrayClientEvent.Tick());
 		OutlineEntityEvent.EVENT.register(new EntityXrayClientEvent.Outline());
 		AddNightVisionScaleEvent.EVENT.register(new NightVisionClientEvent());
@@ -153,7 +153,6 @@ public class EnchancementClient implements ClientModInitializer {
 		HudElementRegistry.attachElementBefore(VanillaHudElements.HELD_ITEM_TOOLTIP, Enchancement.id("chiseled_bookshelf_peeking"), new ChiseledBookshelfPeekingHudElement());
 		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("air_jump"), new AirJumpHudElement());
 		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("brimstone"), new BrimstoneHudElement());
-		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("charge_jump"), new ChargeJumpHudElement());
 		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("direction_burst"), new DirectionBurstHudElement());
 		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("e_meter"), new EMeterHudElement());
 		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("extended_water_time"), new ExtendedWaterTimeHudElement());
