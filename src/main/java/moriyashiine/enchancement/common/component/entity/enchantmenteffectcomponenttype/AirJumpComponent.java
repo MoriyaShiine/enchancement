@@ -124,7 +124,7 @@ public class AirJumpComponent extends PushComponent {
 	}
 
 	public boolean canUse() {
-		return jumpCooldown == 0 && jumpsLeft > 0 && ticksInAir >= 5 && !obj.onGround() && SLibUtils.isGroundedOrAirborne(obj) && !EnchancementUtil.isHovering(obj);
+		return jumpCooldown == 0 && jumpsLeft > 0 && ticksInAir >= 5 && !obj.onGround() && SLibUtils.isGroundedOrAirborne(obj);
 	}
 
 	public void use() {
