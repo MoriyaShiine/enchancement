@@ -79,7 +79,7 @@ public class EMeterComponent implements AutoSyncedComponent, CommonTickingCompon
 					shouldFloat = false;
 				}
 			}
-			if (obj.onGround() && (obj.isSprinting() || ModEntityComponents.SLIDE.get(obj).isSliding())) {
+			if (obj.onGround() && shouldMeterIncrease()) {
 				if (meterTicks < MAX_METER_TICKS) {
 					meterTicks = Math.min(MAX_METER_TICKS, meterTicks + 2);
 				}
@@ -130,7 +130,7 @@ public class EMeterComponent implements AutoSyncedComponent, CommonTickingCompon
 		if (hasEMeter()) {
 			LivingEntity controllingObj = obj.getControllingPassenger() instanceof Player player ? player : obj;
 			if (!controllingObj.isSpectator() && SLibClientUtils.isHost(controllingObj)) {
-				boolean lastShouldFlot = shouldFloat;
+				boolean lastShouldFloat = shouldFloat;
 				if (EnchancementClient.E_METER_HOVER_KEYMAPPING.isDown()) {
 					if (canFloat()) {
 						shouldFloat = true;
@@ -138,7 +138,7 @@ public class EMeterComponent implements AutoSyncedComponent, CommonTickingCompon
 				} else if (shouldFloat) {
 					shouldFloat = false;
 				}
-				if (shouldFloat != lastShouldFlot) {
+				if (shouldFloat != lastShouldFloat) {
 					EMeterC2SPayload.send(obj, shouldFloat);
 				}
 			}
@@ -174,7 +174,7 @@ public class EMeterComponent implements AutoSyncedComponent, CommonTickingCompon
 	}
 
 	public boolean canFloat() {
-		return reachedMax() && obj.isSprinting() && SLibUtils.isGroundedOrAirborne(obj) && !ModEntityComponents.BOOST_IN_FLUID.get(obj).blocksAirEffects();
+		return reachedMax() && shouldMeterIncrease() && SLibUtils.isGroundedOrAirborne(obj) && !ModEntityComponents.BOOST_IN_FLUID.get(obj).blocksAirEffects();
 	}
 
 	public boolean isFloating() {
@@ -187,6 +187,13 @@ public class EMeterComponent implements AutoSyncedComponent, CommonTickingCompon
 
 	public void setFloatingUuid(UUID floatingUuid) {
 		this.floatingUuid = floatingUuid;
+	}
+
+	private boolean shouldMeterIncrease() {
+		if (!obj.slib$isPlayer() && obj.getKnownMovement().horizontalDistanceSqr() > 0) {
+			return true;
+		}
+		return obj.isSprinting() || ModEntityComponents.SLIDE.get(obj).isSliding();
 	}
 
 	private float getMeterProgress() {

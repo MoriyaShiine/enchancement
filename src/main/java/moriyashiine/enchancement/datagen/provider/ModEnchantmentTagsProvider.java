@@ -55,6 +55,7 @@ public class ModEnchantmentTagsProvider extends FabricTagsProvider<Enchantment> 
 		builder(ModEnchantmentTags.SADDLE_ENCHANTMENTS)
 				.add(ModEnchantments.BOUNCY)
 				.add(ModEnchantments.BUOY)
+				.add(ModEnchantments.E_SPEED)
 				.add(ModEnchantments.STICKY);
 
 		builder(ConventionalEnchantmentTags.ENTITY_AUXILIARY_MOVEMENT_ENHANCEMENTS)
