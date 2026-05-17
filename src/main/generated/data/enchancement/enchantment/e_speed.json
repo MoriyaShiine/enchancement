@@ -5,11 +5,21 @@
   },
   "effects": {
 	"enchancement:e_meter": {
-	  "type": "minecraft:add",
-	  "value": {
-		"type": "minecraft:linear",
-		"base": 0.7,
-		"per_level_above_first": 0.3
+	  "float_strength": {
+		"type": "minecraft:add",
+		"value": {
+		  "type": "minecraft:linear",
+		  "base": 0.275,
+		  "per_level_above_first": 0.125
+		}
+	  },
+	  "speed_multiplier": {
+		"type": "minecraft:add",
+		"value": {
+		  "type": "minecraft:linear",
+		  "base": 0.7,
+		  "per_level_above_first": 0.3
+		}
 	  }
 	}
   },

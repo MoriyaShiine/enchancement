@@ -408,7 +408,9 @@ public class ModEnchantments {
 				EquipmentSlotGroup.ARMOR,
 				builder -> builder.withSpecialEffect(
 						ModEnchantmentEffectComponentTypes.E_METER,
-						new AddValue(LevelBasedValue.perLevel(0.7F, 0.3F))
+						new EMeterEffect(
+								new AddValue(LevelBasedValue.perLevel(0.7F, 0.3F)),
+								new AddValue(LevelBasedValue.perLevel(0.275F, 0.125F)))
 				)));
 		registry.register(STICKY, create(STICKY.identifier(),
 				items.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),

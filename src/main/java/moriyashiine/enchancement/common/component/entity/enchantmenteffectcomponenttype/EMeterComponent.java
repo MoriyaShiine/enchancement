@@ -7,10 +7,10 @@ package moriyashiine.enchancement.common.component.entity.enchantmenteffectcompo
 import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.client.payload.PlayEMeterFloatSoundPayload;
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.payload.EMeterC2SPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.enchancement.common.world.item.effects.EMeterEffect;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
@@ -63,14 +63,14 @@ public class EMeterComponent implements AutoSyncedComponent, CommonTickingCompon
 
 	@Override
 	public void tick() {
-		speedMultiplier = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.E_METER, obj, 0);
+		speedMultiplier = EMeterEffect.getSpeedMultiplier(obj);
 		floating = false;
 		if (hasEMeter()) {
 			if (shouldFloat) {
 				if (canFloat()) {
 					if (obj.canSimulateMovement()) {
-						float multiplier = getSpeedBonus() / 2.5F;
-						obj.setDeltaMovement(obj.getDeltaMovement().x() * 0.98, Math.max(multiplier, obj.getDeltaMovement().y()), obj.getDeltaMovement().z() * 0.98);
+						float strength = getMeterProgress() * EMeterEffect.getFloatStrength(obj);
+						obj.setDeltaMovement(obj.getDeltaMovement().x() * 0.98, Math.max(strength, obj.getDeltaMovement().y()), obj.getDeltaMovement().z() * 0.98);
 					}
 					floating = true;
 					obj.gameEvent(GameEvent.ENTITY_ACTION);
@@ -166,7 +166,7 @@ public class EMeterComponent implements AutoSyncedComponent, CommonTickingCompon
 	}
 
 	public float getSpeedBonus() {
-		return meterTicks / (float) MAX_METER_TICKS * speedMultiplier;
+		return getMeterProgress() * speedMultiplier;
 	}
 
 	public int filledMeters() {
@@ -187,5 +187,9 @@ public class EMeterComponent implements AutoSyncedComponent, CommonTickingCompon
 
 	public void setFloatingUuid(UUID floatingUuid) {
 		this.floatingUuid = floatingUuid;
+	}
+
+	private float getMeterProgress() {
+		return meterTicks / (float) MAX_METER_TICKS;
 	}
 }
