@@ -1,4 +1,27 @@
 ------------------------------------------------------
+Version 26.1-r10
+------------------------------------------------------
+- add e-speed boots enchantment
+  - `Sprinting while grounded builds up an E-Meter, increasing your movement speed. Holding [Space] while at full power allows you float.`
+- add burrowing pickaxe/shovel enchantment
+  - `Mines blocks in a wide area while not sneaking. Increases damage dealt proportional to the attacked mob's armor.`
+- merge scooping and bury
+  - scooping now does slightly more damage
+  - the effects of bury have been added to scooping
+  - remove the bury enchantment
+- nautilus armor can now be enchanted with chestplate enchantments
+- nautilus now use buoy by propelling forward
+- gale can now be used with buoy
+- apex now does slightly more damage
+- shields can now only be held up for 3 seconds before being disabled
+- rework how movement multipliers function
+- enchanting table list is now sorted alphabetically ignoring namespace
+- rename rebalanceStatusEffects to rebalanceEffects
+- update conventional enchantment tags
+- base block tag cleanup
+- fix horses using strafe when they shouldn't be
+
+------------------------------------------------------
 Version 26.1-r9
 ------------------------------------------------------
 - update Turkish translation (thanks Hexasan!)
