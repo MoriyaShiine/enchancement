@@ -111,7 +111,7 @@ public class RotationBurstComponent extends PushComponent {
 		reset();
 		wavedashTicks = RotationBurstEffect.getWavedashTicks(obj);
 		if (obj.canSimulateMovement()) {
-			Vec3 delta = obj.getLookAngle().normalize().scale(RotationBurstEffect.getStrength(obj)).scale(CappedMultiplyDeltaMovementEvent.getMovementMultiplier(obj, 0.5F));
+			Vec3 delta = obj.getLookAngle().normalize().scale(RotationBurstEffect.getStrength(obj)).scale(CappedMultiplyDeltaMovementEvent.getMovementMultiplier(obj, 0.125F));
 			delta = EnchancementUtil.modifyDeltaWithCurrent(obj, delta, 0.5);
 			obj.setDeltaMovement(delta.x(), delta.y(), delta.z());
 		}
