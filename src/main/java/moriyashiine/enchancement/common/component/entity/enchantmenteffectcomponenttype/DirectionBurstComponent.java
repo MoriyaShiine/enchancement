@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype;
 
-import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
+import moriyashiine.enchancement.api.event.CappedMultiplyDeltaMovementEvent;
 import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.util.PushComponent;
@@ -140,7 +140,7 @@ public class DirectionBurstComponent extends PushComponent {
 	}
 
 	public Vec3 createDelta(Vec3 inputDelta) {
-		Vec3 delta = inputDelta.yRot((float) Math.toRadians(-(obj.getYHeadRot() + 90))).scale(MultiplyMovementSpeedEvent.getMovementMultiplier(obj));
+		Vec3 delta = inputDelta.yRot((float) Math.toRadians(-(obj.getYHeadRot() + 90))).scale(CappedMultiplyDeltaMovementEvent.getMovementMultiplier(obj, 0.5F));
 		return EnchancementUtil.modifyDeltaWithCurrent(obj, delta, 0.5);
 	}
 

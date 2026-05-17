@@ -6,7 +6,7 @@ package moriyashiine.enchancement.common.component.entity.enchantmenteffectcompo
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
+import moriyashiine.enchancement.api.event.CappedMultiplyDeltaMovementEvent;
 import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.client.payload.SlideS2CPayload;
 import moriyashiine.enchancement.common.Enchancement;
@@ -93,7 +93,7 @@ public class SlideComponent implements CommonTickingComponent {
 					dX *= 0.2;
 					dZ *= 0.2;
 				}
-				float multiplier = MultiplyMovementSpeedEvent.getMovementMultiplier(obj);
+				float multiplier = CappedMultiplyDeltaMovementEvent.getMovementMultiplier(obj, 0.5F);
 				multiplier *= 1 - (waterSkipTicks / (MAX_WATER_SKIP_TICKS * 2F));
 				obj.push(dX * multiplier, 0, dZ * multiplier);
 				if (obj.isInWater() && hasFluidWalking) {

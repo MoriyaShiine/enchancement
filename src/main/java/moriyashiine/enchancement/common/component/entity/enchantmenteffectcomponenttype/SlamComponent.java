@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype;
 
-import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
+import moriyashiine.enchancement.api.event.CappedMultiplyDeltaMovementEvent;
 import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
@@ -144,7 +144,7 @@ public class SlamComponent implements CommonTickingComponent {
 
 	public float getJumpBoostStrength() {
 		if (ticksLeftToJump > 0) {
-			float boost = MultiplyMovementSpeedEvent.getJumpStrength(obj, (1 + strength + (slamStorageTicks / 20F)) / obj.getJumpPower());
+			float boost = CappedMultiplyDeltaMovementEvent.getJumpStrength(obj, (1 + strength + (slamStorageTicks / 20F)) / obj.getJumpPower());
 			ticksLeftToJump = slamStorageTicks = 0;
 			return boost;
 		}

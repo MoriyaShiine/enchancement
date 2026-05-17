@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.api.event;
 
-import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
+import moriyashiine.enchancement.api.event.CappedMultiplyDeltaMovementEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,7 +20,7 @@ public abstract class LivingEntityMixin extends Entity {
 	}
 
 	@ModifyArg(method = "handleRelativeFrictionAndCalculateMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;moveRelative(FLnet/minecraft/world/phys/Vec3;)V"))
-	private float enchancement$multiplyMovementSpeed(float speed) {
-		return speed * MultiplyMovementSpeedEvent.EVENT.invoker().multiply(1, level(), (LivingEntity) (Object) this);
+	private float enchancement$cappedMultiplyDeltaMovement(float speed) {
+		return speed * CappedMultiplyDeltaMovementEvent.getMovementMultiplier((LivingEntity) (Object) this, 1);
 	}
 }

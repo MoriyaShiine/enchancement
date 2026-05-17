@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.event.config;
 
-import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
+import moriyashiine.enchancement.api.event.CappedMultiplyDeltaMovementEvent;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.component.entity.config.AirMobilityComponent;
 import moriyashiine.enchancement.common.init.ModComponentTypes;
@@ -21,21 +21,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 public class ToggleablePassivesEvent {
-	public static class AirMobility implements MultiplyMovementSpeedEvent {
+	public static class AirMobility implements CappedMultiplyDeltaMovementEvent {
 		@Override
-		public float multiply(float currentMultiplier, Level level, LivingEntity living) {
+		public float multiply(Level level, LivingEntity living) {
 			if (ModConfig.toggleablePassives && !living.onGround()) {
 				AirMobilityComponent airMobilityComponent = ModEntityComponents.AIR_MOBILITY.getNullable(living);
-				if (airMobilityComponent != null && airMobilityComponent.getAirTicks() > 10) {
-					return currentMultiplier * 1.5F;
+				if (airMobilityComponent != null) {
+					return airMobilityComponent.getModifier();
 				}
 			}
-			return currentMultiplier;
-		}
-
-		@Override
-		public int getPriority() {
-			return 1001;
+			return 1;
 		}
 	}
 

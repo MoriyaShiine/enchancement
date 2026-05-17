@@ -69,7 +69,7 @@ public class EMeterComponent implements AutoSyncedComponent, CommonTickingCompon
 			if (shouldFloat) {
 				if (canFloat()) {
 					if (obj.canSimulateMovement()) {
-						float multiplier = getSpeedBonus() / 4;
+						float multiplier = getSpeedBonus() / 2.5F;
 						obj.setDeltaMovement(obj.getDeltaMovement().x() * 0.98, Math.max(multiplier, obj.getDeltaMovement().y()), obj.getDeltaMovement().z() * 0.98);
 					}
 					floating = true;

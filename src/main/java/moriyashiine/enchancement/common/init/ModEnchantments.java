@@ -257,7 +257,7 @@ public class ModEnchantments {
 						ModEnchantmentEffectComponentTypes.DIRECTION_BURST,
 						new DirectionBurstEffect(
 								new AddValue(LevelBasedValue.perLevel(1.5F, -0.5F)),
-								new AddValue(LevelBasedValue.constant(1.1F)),
+								new AddValue(LevelBasedValue.constant(1.2F)),
 								new AddValue(LevelBasedValue.constant(0.8F))))));
 		registry.register(WARDENSPINE, create(WARDENSPINE.identifier(),
 				items.getOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
@@ -304,7 +304,7 @@ public class ModEnchantments {
 						ModEnchantmentEffectComponentTypes.ROTATION_BURST,
 						new RotationBurstEffect(
 								new AddValue(LevelBasedValue.perLevel(1.2F, -0.2F)),
-								new AddValue(LevelBasedValue.perLevel(0.85F, 0.15F)),
+								new AddValue(LevelBasedValue.perLevel(0.75F, 0.2F)),
 								new AddValue(LevelBasedValue.constant(3)),
 								new AddValue(LevelBasedValue.constant(1.1F)))
 				)));
@@ -371,7 +371,7 @@ public class ModEnchantments {
 					builder.withSpecialEffect(
 							ModEnchantmentEffectComponentTypes.MODIFY_SUBMERGED_MOVEMENT_SPEED,
 							new ModifySubmergedMovementSpeedEffect(
-									new AddValue(LevelBasedValue.perLevel(0.175F)),
+									new AddValue(LevelBasedValue.perLevel(0.2F)),
 									SubmersionGate.WATER_ONLY));
 					builder.withEffect(
 							EnchantmentEffectComponents.TICK,
@@ -408,7 +408,7 @@ public class ModEnchantments {
 				EquipmentSlotGroup.ARMOR,
 				builder -> builder.withSpecialEffect(
 						ModEnchantmentEffectComponentTypes.E_METER,
-						new AddValue(LevelBasedValue.perLevel(0.7F, 0.5F))
+						new AddValue(LevelBasedValue.perLevel(0.7F, 0.3F))
 				)));
 		registry.register(STICKY, create(STICKY.identifier(),
 				items.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),

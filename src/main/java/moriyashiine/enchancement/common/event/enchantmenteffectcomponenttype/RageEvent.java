@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
-import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
+import moriyashiine.enchancement.api.event.CappedMultiplyDeltaMovementEvent;
 import moriyashiine.enchancement.common.world.item.effects.RageEffect;
 import moriyashiine.strawberrylib.api.event.ModifyDamageTakenEvent;
 import moriyashiine.strawberrylib.api.event.ModifyStackDamageEvent;
@@ -37,10 +37,10 @@ public class RageEvent {
 		}
 	}
 
-	public static class SpeedBonus implements MultiplyMovementSpeedEvent {
+	public static class SpeedBonus implements CappedMultiplyDeltaMovementEvent {
 		@Override
-		public float multiply(float currentMultiplier, Level level, LivingEntity living) {
-			return MultiplyMovementSpeedEvent.capMovementMultiplier(currentMultiplier * RageEffect.getMovementSpeedModifier(living));
+		public float multiply(Level level, LivingEntity living) {
+			return RageEffect.getMovementSpeedModifier(living);
 		}
 	}
 }

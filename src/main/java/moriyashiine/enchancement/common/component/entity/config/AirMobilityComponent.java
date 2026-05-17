@@ -7,6 +7,7 @@ package moriyashiine.enchancement.common.component.entity.config;
 import moriyashiine.enchancement.common.ModConfig;
 import moriyashiine.enchancement.common.init.ModComponentTypes;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
+import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -62,8 +63,8 @@ public class AirMobilityComponent implements CommonTickingComponent {
 		}
 	}
 
-	public int getAirTicks() {
-		return airTicks;
+	public float getModifier() {
+		return Mth.lerp(Mth.clamp((airTicks - 10) / 10F, 0, 1), 1, 1.5F);
 	}
 
 	public void resetTicksInAir() {

@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype;
 
-import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
+import moriyashiine.enchancement.api.event.CappedMultiplyDeltaMovementEvent;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.util.PushComponent;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
@@ -135,7 +135,7 @@ public class AirJumpComponent extends PushComponent {
 		jumpCooldown = AirJumpEffect.getJumpCooldown(obj);
 		jumpsLeft--;
 		if (obj.canSimulateMovement()) {
-			obj.setDeltaMovement(obj.getDeltaMovement().x(), MultiplyMovementSpeedEvent.getJumpStrength(obj, AirJumpEffect.getAirJumpStrength(obj)), obj.getDeltaMovement().z());
+			obj.setDeltaMovement(obj.getDeltaMovement().x(), CappedMultiplyDeltaMovementEvent.getJumpStrength(obj, AirJumpEffect.getAirJumpStrength(obj)), obj.getDeltaMovement().z());
 			if (obj.isSprinting()) {
 				float rad = (float) Math.toRadians(obj.getYRot());
 				obj.addDeltaMovement(new Vec3(-Mth.sin(rad) * 0.2, 0, Mth.cos(rad) * 0.2));

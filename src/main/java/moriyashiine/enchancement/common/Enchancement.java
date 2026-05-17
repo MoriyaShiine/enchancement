@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common;
 
-import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
+import moriyashiine.enchancement.api.event.CappedMultiplyDeltaMovementEvent;
 import moriyashiine.enchancement.client.payload.*;
 import moriyashiine.enchancement.common.event.config.*;
 import moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype.*;
@@ -172,12 +172,12 @@ public class Enchancement implements ModInitializer {
 		EnchantmentEvents.ALLOW_ENCHANTING.register(new RebalanceEquipmentEvent.AllowEnchanting());
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(new RebalanceEquipmentEvent.Interrupt());
 		TickEntityEvent.EVENT.register(new RebalanceEquipmentEvent.Tick());
-		MultiplyMovementSpeedEvent.EVENT.register(new ToggleablePassivesEvent.AirMobility());
+		CappedMultiplyDeltaMovementEvent.EVENT.register(new ToggleablePassivesEvent.AirMobility());
 		ModifyDestroySpeedEvent.ADD_EFFICIENCY.register(new ToggleablePassivesEvent.Efficiency());
 		// enchantment effect type
 		ServerLivingEntityEvents.AFTER_DEATH.register(new FreezeEvent.HandleDeath());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new FreezeEvent.HandleDamage());
-		MultiplyMovementSpeedEvent.EVENT.register(new ModifySubmergedMovementSpeedEvent());
+		CappedMultiplyDeltaMovementEvent.EVENT.register(new ModifySubmergedMovementSpeedEvent());
 		// enchantment effect component type
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(new AllowInterruptionEvent());
 		ModifyStackDamageEvent.ADD.register(new ArmorDentingEvent());
@@ -188,7 +188,7 @@ public class Enchancement implements ModInitializer {
 		AfterDamageIncludingDeathEvent.EVENT.register(new ChargeJumpEvent.Damage());
 		ModifyMovementEvents.JUMP_DELTA.register(new ChargeJumpEvent.Jump());
 		ModifyCriticalStatusEvent.EVENT.register(new CriticalTipperEvent());
-		MultiplyMovementSpeedEvent.EVENT.register(new EMeterEvent());
+		CappedMultiplyDeltaMovementEvent.EVENT.register(new EMeterEvent());
 		ServerEntityEvents.EQUIPMENT_CHANGE.register(new EquipmentResetEvent());
 		ModifyDestroySpeedEvent.MULTIPLY_TOTAL.register(new FellTreesEvent.DestroySpeed());
 		PlayerBlockBreakEvents.BEFORE.register(new FellTreesEvent.FellTree());
@@ -201,7 +201,7 @@ public class Enchancement implements ModInitializer {
 		PlayerBlockBreakEvents.BEFORE.register(new MineOreVeinsEvent.MineOres());
 		ModifyStackDamageEvent.ADD.register(new RageEvent.DamageDealtBonus());
 		ModifyDamageTakenEvent.MULTIPLY_TOTAL.register(new RageEvent.DamageTakenReduction());
-		MultiplyMovementSpeedEvent.EVENT.register(new RageEvent.SpeedBonus());
+		CappedMultiplyDeltaMovementEvent.EVENT.register(new RageEvent.SpeedBonus());
 		ModifyMovementEvents.JUMP_DELTA.register(new RotationBurstEvent());
 		PreventFallDamageEvent.EVENT.register(new SlamEvent.FallImmunity());
 		ModifyMovementEvents.JUMP_DELTA.register(new SlamEvent.JumpBoost());

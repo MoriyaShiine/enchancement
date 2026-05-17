@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype;
 
-import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
+import moriyashiine.enchancement.api.event.CappedMultiplyDeltaMovementEvent;
 import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.util.PushComponent;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
@@ -111,7 +111,7 @@ public class RotationBurstComponent extends PushComponent {
 		reset();
 		wavedashTicks = RotationBurstEffect.getWavedashTicks(obj);
 		if (obj.canSimulateMovement()) {
-			Vec3 delta = obj.getLookAngle().normalize().scale(RotationBurstEffect.getStrength(obj)).scale(MultiplyMovementSpeedEvent.getMovementMultiplier(obj));
+			Vec3 delta = obj.getLookAngle().normalize().scale(RotationBurstEffect.getStrength(obj)).scale(CappedMultiplyDeltaMovementEvent.getMovementMultiplier(obj, 0.5F));
 			delta = EnchancementUtil.modifyDeltaWithCurrent(obj, delta, 0.5);
 			obj.setDeltaMovement(delta.x(), delta.y(), delta.z());
 		}

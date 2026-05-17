@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype;
 
-import moriyashiine.enchancement.api.event.MultiplyMovementSpeedEvent;
+import moriyashiine.enchancement.api.event.CappedMultiplyDeltaMovementEvent;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
@@ -92,7 +92,7 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 		AttributeInstance safeFallDistance = obj.getAttribute(Attributes.SAFE_FALL_DISTANCE);
 		if (hasJumped) {
 			if (!safeFallDistance.hasModifier(SAFE_FALL_DISTANCE_ID)) {
-				int reduction = Mth.floor(MultiplyMovementSpeedEvent.getJumpStrength(obj, jumpStrength * 3) * 10);
+				int reduction = Mth.floor(CappedMultiplyDeltaMovementEvent.getJumpStrength(obj, jumpStrength * 3) * 10);
 				safeFallDistance.addPermanentModifier(new AttributeModifier(SAFE_FALL_DISTANCE_ID, reduction, AttributeModifier.Operation.ADD_VALUE));
 			}
 		} else if (safeFallDistance.hasModifier(SAFE_FALL_DISTANCE_ID)) {
@@ -144,7 +144,7 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 				}
 				Vec3 delta = difference
 						.normalize().scale(jumpStrength)
-						.add(0, MultiplyMovementSpeedEvent.getJumpStrength(obj, jumpStrength * (obj.slib$isPlayer() ? 3 : 2)), 0);
+						.add(0, CappedMultiplyDeltaMovementEvent.getJumpStrength(obj, jumpStrength * (obj.slib$isPlayer() ? 3 : 2)), 0);
 				use(delta);
 				WallJumpPayload.send(obj, delta);
 			}
