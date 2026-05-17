@@ -27,7 +27,7 @@ import net.minecraft.world.phys.Vec3;
 public class AirJumpComponent extends PushComponent {
 	private static final int DEFAULT_JUMP_COOLDOWN = 10;
 
-	private int jumpCooldown = DEFAULT_JUMP_COOLDOWN, jumpsLeft = 0, ticksInAir = 0;
+	private int airTicks = 0, jumpCooldown = DEFAULT_JUMP_COOLDOWN, jumpsLeft = 0;
 
 	private int lastTickedCooldown = 0;
 
@@ -40,17 +40,17 @@ public class AirJumpComponent extends PushComponent {
 	@Override
 	public void readData(ValueInput input) {
 		super.readData(input);
+		airTicks = input.getIntOr("AirTicks", 0);
 		jumpCooldown = input.getIntOr("JumpCooldown", DEFAULT_JUMP_COOLDOWN);
 		jumpsLeft = input.getIntOr("JumpsLeft", 0);
-		ticksInAir = input.getIntOr("TicksInAir", 0);
 	}
 
 	@Override
 	public void writeData(ValueOutput output) {
 		super.writeData(output);
+		output.putInt("AirTicks", airTicks);
 		output.putInt("JumpCooldown", jumpCooldown);
 		output.putInt("JumpsLeft", jumpsLeft);
-		output.putInt("TicksInAir", ticksInAir);
 	}
 
 	@Override
@@ -65,9 +65,9 @@ public class AirJumpComponent extends PushComponent {
 				jumpCooldown--;
 			}
 			if (obj.onGround()) {
-				ticksInAir = 0;
+				airTicks = 0;
 			} else {
-				ticksInAir++;
+				airTicks++;
 			}
 			if (ModEntityComponents.WALL_JUMP.get(obj).isSliding()) {
 				jumpCooldown = AirJumpEffect.getJumpCooldown(obj);
@@ -110,8 +110,8 @@ public class AirJumpComponent extends PushComponent {
 	@Override
 	public void reset() {
 		super.reset();
+		airTicks = jumpsLeft = 0;
 		jumpCooldown = DEFAULT_JUMP_COOLDOWN;
-		jumpsLeft = ticksInAir = 0;
 		wasJumping = false;
 	}
 
@@ -124,7 +124,7 @@ public class AirJumpComponent extends PushComponent {
 	}
 
 	public boolean canUse() {
-		return jumpCooldown == 0 && jumpsLeft > 0 && ticksInAir >= 5 && !obj.onGround() && SLibUtils.isGroundedOrAirborne(obj);
+		return jumpCooldown == 0 && jumpsLeft > 0 && airTicks >= 5 && !obj.onGround() && SLibUtils.isGroundedOrAirborne(obj);
 	}
 
 	public void use() {

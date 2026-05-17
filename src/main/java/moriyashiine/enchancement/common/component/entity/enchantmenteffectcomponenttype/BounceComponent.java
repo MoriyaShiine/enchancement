@@ -4,6 +4,7 @@
 
 package moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype;
 
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -51,5 +52,6 @@ public class BounceComponent implements AutoSyncedComponent, CommonTickingCompon
 
 	public void bounce(double bounceStrength) {
 		nextBounceStrength = bounceStrength;
+		ModEntityComponents.AIR_MOBILITY.get(obj).enableResetBypass();
 	}
 }

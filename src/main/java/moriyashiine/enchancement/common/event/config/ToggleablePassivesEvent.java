@@ -26,7 +26,7 @@ public class ToggleablePassivesEvent {
 		public float multiply(float currentMultiplier, Level level, LivingEntity living) {
 			if (ModConfig.toggleablePassives && !living.onGround()) {
 				AirMobilityComponent airMobilityComponent = ModEntityComponents.AIR_MOBILITY.getNullable(living);
-				if (airMobilityComponent != null && airMobilityComponent.getTicksInAir() > 10) {
+				if (airMobilityComponent != null && airMobilityComponent.getAirTicks() > 10) {
 					return currentMultiplier * 1.5F;
 				}
 			}

@@ -18,7 +18,7 @@ import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class AirMobilityComponent implements CommonTickingComponent {
 	private final LivingEntity obj;
-	private int resetBypassTicks = 0, ticksInAir = 0;
+	private int airTicks = 0, resetBypassTicks = 0;
 
 	public AirMobilityComponent(LivingEntity obj) {
 		this.obj = obj;
@@ -26,14 +26,14 @@ public class AirMobilityComponent implements CommonTickingComponent {
 
 	@Override
 	public void readData(ValueInput input) {
+		airTicks = input.getIntOr("AirTicks", 0);
 		resetBypassTicks = input.getIntOr("ResetBypassTicks", 0);
-		ticksInAir = input.getIntOr("TicksInAir", 0);
 	}
 
 	@Override
 	public void writeData(ValueOutput output) {
+		output.putInt("AirTicks", airTicks);
 		output.putInt("ResetBypassTicks", resetBypassTicks);
-		output.putInt("TicksInAir", ticksInAir);
 	}
 
 	@Override
@@ -52,22 +52,22 @@ public class AirMobilityComponent implements CommonTickingComponent {
 			}
 			if (obj.onGround() || obj.hasEffect(MobEffects.SLOWNESS) || (obj instanceof Player player && player.getAbilities().flying)) {
 				if (resetBypassTicks == 0) {
-					ticksInAir = 0;
+					airTicks = 0;
 				}
 			} else if (SLibUtils.isGroundedOrAirborne(obj) && SLibUtils.isSufficientlyHigh(obj, 1)) {
-				ticksInAir++;
+				airTicks++;
 			}
 		} else {
-			resetBypassTicks = ticksInAir = 0;
+			airTicks = resetBypassTicks = 0;
 		}
 	}
 
-	public int getTicksInAir() {
-		return ticksInAir;
+	public int getAirTicks() {
+		return airTicks;
 	}
 
 	public void resetTicksInAir() {
-		ticksInAir = 0;
+		airTicks = 0;
 	}
 
 	public void enableResetBypass() {
