@@ -7,7 +7,7 @@
   <h3>Enchancement is a mod that aims to completely overhaul vanilla Minecraft's enchanting system, along with some other adjacent mechanics.</h3>
 </div>
 
-Enchancement currently adds 33 unique and fun enchantments to the game:
+Enchancement currently adds 34 unique and fun enchantments to the game:
 
 ```
 Helmet Enchantments:
@@ -29,6 +29,7 @@ Leggings Enchantments:
 Boots Enchantments:
 * Buoy: Causes you to walk on fluids, descending via sneaking. Holding jump while submerged or [Space] while wet propels you upward. Prevents floating. Grants a speed boost for some time after leaving water.
 * Bouncy: Negates fall damage. Launches you upward upon landing while not sneaking. Sneaking, moving, or bouncing will charge a super jump that can be released by jumping while holding [Space].
+* E-Speed: Sprinting while grounded builds up an E-Meter, increasing your movement speed. Holding [Space] while at full power allows you float.
 * Sticky: Allows sliding down and jumping off walls. Leaves a trail of honey where you walk that slows mobs.
 
 Sword Enchantments:
@@ -54,6 +55,7 @@ Mace Enchantments:
 * Thunderstruck: Direct attacks chain to nearby mobs. Allows charging to launch you forward and briefly float. Punching while floating causes you to dash forward and smash into the ground.
 
 Pickaxe Enchantments:
+* Burrowing: Mines blocks in a wide area while not sneaking. Increases damage dealt proportional to the attacked mob's armor.
 * Extracting: Extracts materials from connected ores while not sneaking, leaving the stone behind.
 
 Axe Enchantments:
@@ -61,8 +63,8 @@ Axe Enchantments:
 * Lumberjack: Connected logs will also be destroyed while not sneaking.
 
 Shovel Enchantments:
-* Bury: Using on a mob will bury it if the ground below is soft enough.
-* Scooping: Increases mob drops and damage dealt.
+* Burrowing: Mines blocks in a wide area while not sneaking. Increases damage dealt proportional to the attacked mob's armor.
+* Scooping: Increases mob drops and damage dealt. Using on a mob will bury it if the ground below is soft enough.
 
 Hoe Enchantments:
 * Apex: Increases damage dealt. Attacking from a distance always results in a critical hit.
@@ -115,6 +117,10 @@ Everything Enchancement adds is configurable:
   * Arrows shot by players will drop on the ground after hitting an entity.
   * Ender Pearls deal no damage upon use.
   * (Enchanted) Golden Apples can only be consumed when hungry.
+* Rebalance Effects
+    * Instant Health, Instant Damage, Strength, and Weakness are less potent.
+    * Turtle master gives 1 less level of Resistance.
+    * Wither Skulls apply Wither for less time.
 * Rebalance Enchantments
   * Renames Fire Aspect to Molten.
   * Molten applies for less time.
@@ -139,8 +145,9 @@ Everything Enchancement adds is configurable:
   * Iron armor has slightly more armor, and gains armor toughness.
   * Golden armor has slightly less armor.
   * Elytra are temporarily disabled when attacked.
-  * Horse and Wolf armor can be enchanted with chestplate enchantments.
+  * Animal armor can be enchanted with chestplate enchantments.
   * Saddles can be enchanted with boots enchantments.
+  * Shields can only be held up for 3 seconds before being disabled.
   * Sword sweeping damage is increased to be proportional to the primary damage dealt.
   * Spears have damage falloff with higher velocities.
   * Bows, Tridents, and Maces play a ready sound when they are fully charged.
@@ -165,10 +172,6 @@ Everything Enchancement adds is configurable:
   * Projectiles negate velocity on hit.
   * Projectiles take target velocity into account to artificially increase their hitbox, making fast moving entities easier to hit.
   * Projectiles shot by players have higher velocity (damage is scaled properly to be normal).
-* Rebalance Status Effects
-  * Instant Health, Instant Damage, Strength, and Weakness are less potent.
-  * Turtle master gives 1 less level of Resistance.
-  * Wither Skulls apply Wither for less time.
 * Toggleable Passives
   * Enchanted chestplates increase air mobility.
   * Enchanted Tridents have Loyalty built in.
