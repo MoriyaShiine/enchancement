@@ -29,7 +29,7 @@ public interface CappedMultiplyDeltaMovementEvent {
 	static float getJumpStrength(LivingEntity entity, float multiplier) {
 		double jumpRatio = entity.getAttributeValue(Attributes.JUMP_STRENGTH) / entity.getAttributeBaseValue(Attributes.JUMP_STRENGTH);
 		double speedRatio = entity.getAttributeValue(Attributes.MOVEMENT_SPEED) / entity.getAttributeBaseValue(Attributes.MOVEMENT_SPEED);
-		return multiplier * (float) (Mth.clamp(jumpRatio * Math.min(1, speedRatio), 2 / 3F, 1.2F) * Math.min(2 / 3F, entity.getJumpPower()));
+		return multiplier * (float) (Mth.clamp(jumpRatio * Math.min(1, speedRatio), 2 / 3F, 1.2F) * Math.min(0.5F, entity.getJumpPower()));
 	}
 
 	static float getMovementMultiplier(LivingEntity entity, float eventMultiplier) {
