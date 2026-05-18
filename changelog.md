@@ -1,4 +1,11 @@
 ------------------------------------------------------
+Version 26.1-r11
+------------------------------------------------------
+- update Turkish translation (thanks Hexasan!)
+  - merges https://github.com/MoriyaShiine/enchancement/pull/301
+- reduce the maximum effective jump boost when using movement enchantments
+
+------------------------------------------------------
 Version 26.1-r10
 ------------------------------------------------------
 - add e-speed boots enchantment
