@@ -19,13 +19,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DripstoneThickness;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -75,7 +72,6 @@ public class SlamComponent implements CommonTickingComponent {
 				if (slamStorageTicks == 0) {
 					obj.setDeltaMovement(obj.getDeltaMovement().x() * 0.98, Math.min(-3, obj.getDeltaMovement().y()), obj.getDeltaMovement().z() * 0.98);
 				}
-				EnchancementUtil.resetFallDistance(obj);
 			}
 			if (slamCooldown > 0) {
 				slamCooldown--;
@@ -177,10 +173,6 @@ public class SlamComponent implements CommonTickingComponent {
 			}
 		});
 		obj.level().gameEvent(GameEvent.STEP, obj.position(), GameEvent.Context.of(obj.getBlockStateOn()));
-		@SuppressWarnings("deprecation") BlockState state = obj.level().getBlockState(obj.getOnPosLegacy());
-		if (state.hasProperty(BlockStateProperties.DRIPSTONE_THICKNESS) && state.hasProperty(BlockStateProperties.VERTICAL_DIRECTION) && state.getValue(BlockStateProperties.DRIPSTONE_THICKNESS) == DripstoneThickness.TIP && state.getValue(BlockStateProperties.VERTICAL_DIRECTION) == Direction.UP) {
-			obj.hurtServer((ServerLevel) obj.level(), obj.damageSources().stalagmite(), Integer.MAX_VALUE);
-		}
 	}
 
 	public void stopSlammingClient(double posY) {

@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.SlamComponent;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.tag.ModDamageTypeTags;
 import moriyashiine.strawberrylib.api.event.ModifyMovementEvents;
 import moriyashiine.strawberrylib.api.event.PreventFallDamageEvent;
 import net.fabricmc.fabric.api.util.TriState;
@@ -18,9 +19,11 @@ public class SlamEvent {
 	public static class FallImmunity implements PreventFallDamageEvent {
 		@Override
 		public TriState preventsFallDamage(Level level, LivingEntity entity, double fallDistance, float damageModifier, DamageSource source) {
-			SlamComponent slamComponent = ModEntityComponents.SLAM.getNullable(entity);
-			if (slamComponent != null && slamComponent.isSlamming()) {
-				return TriState.TRUE;
+			if (source.is(ModDamageTypeTags.IS_SAFE_FALL)) {
+				SlamComponent slamComponent = ModEntityComponents.SLAM.getNullable(entity);
+				if (slamComponent != null && slamComponent.isSlamming()) {
+					return TriState.TRUE;
+				}
 			}
 			return TriState.DEFAULT;
 		}

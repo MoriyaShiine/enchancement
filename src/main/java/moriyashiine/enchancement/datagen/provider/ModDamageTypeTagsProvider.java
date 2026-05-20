@@ -12,6 +12,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -28,6 +29,9 @@ public class ModDamageTypeTagsProvider extends FabricTagsProvider<DamageType> {
 		builder(ModDamageTypeTags.DOES_NOT_INTERRUPT)
 				.forceAddTag(DamageTypeTags.BYPASSES_INVULNERABILITY)
 				.add(ModDamageTypes.LIFE_DRAIN);
+		builder(ModDamageTypeTags.IS_SAFE_FALL)
+				.add(DamageTypes.ENDER_PEARL)
+				.add(DamageTypes.FALL);
 
 		builder(DamageTypeTags.BYPASSES_ARMOR)
 				.add(ModDamageTypes.BRIMSTONE)
