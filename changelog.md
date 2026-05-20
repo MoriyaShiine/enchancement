@@ -1,4 +1,9 @@
 ------------------------------------------------------
+Version 26.1-r12
+------------------------------------------------------
+- slide's slam now synergizes with bouncy, and both now work with modded fall damage sources (such a custom dripstone-like blocks)
+
+------------------------------------------------------
 Version 26.1-r11
 ------------------------------------------------------
 - update Turkish translation (thanks Hexasan!)
