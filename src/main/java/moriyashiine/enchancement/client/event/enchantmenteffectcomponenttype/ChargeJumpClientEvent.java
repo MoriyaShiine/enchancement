@@ -11,6 +11,10 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 
 public class ChargeJumpClientEvent implements ReplaceContextualInfoEvent {
+	public static void init() {
+		ReplaceContextualInfoEvent.EVENT.register(new ChargeJumpClientEvent());
+	}
+
 	private static final Identifier BACKGROUND_TEXTURE = Identifier.parse("hud/jump_bar_background");
 	private static final Identifier PROGRESS_TEXTURE = Identifier.parse("hud/jump_bar_progress");
 

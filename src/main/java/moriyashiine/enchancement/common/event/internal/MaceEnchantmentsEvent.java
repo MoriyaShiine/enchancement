@@ -20,6 +20,10 @@ import net.minecraft.world.level.storage.loot.functions.SetEnchantmentsFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
 public class MaceEnchantmentsEvent implements LootTableEvents.Modify {
+	public static void init() {
+		LootTableEvents.MODIFY.register(new MaceEnchantmentsEvent());
+	}
+
 	@Override
 	public void modifyLootTable(ResourceKey<LootTable> key, LootTable.Builder tableBuilder, LootTableSource source, HolderLookup.Provider holder) {
 		if (key == BuiltInLootTables.TRIAL_CHAMBERS_REWARD_OMINOUS_RARE) {

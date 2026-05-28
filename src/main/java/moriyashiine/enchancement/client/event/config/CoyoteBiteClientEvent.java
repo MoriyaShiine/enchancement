@@ -14,6 +14,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.component.AttackRange;
 
 public class CoyoteBiteClientEvent implements ClientTickEvents.EndLevelTick {
+	public static void init() {
+		ClientTickEvents.END_LEVEL_TICK.register(new CoyoteBiteClientEvent());
+	}
+
 	private static final Minecraft client = Minecraft.getInstance();
 
 	public static Entity target = null;

@@ -14,6 +14,10 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.player.Player;
 
 public class BounceClientEvent implements ClientTickEvents.EndLevelTick {
+	public static void init() {
+		ClientTickEvents.END_LEVEL_TICK.register(new BounceClientEvent());
+	}
+
 	@Override
 	public void onEndTick(ClientLevel level) {
 		Player player = Minecraft.getInstance().player;

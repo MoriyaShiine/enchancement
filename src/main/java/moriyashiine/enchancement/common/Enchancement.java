@@ -4,7 +4,6 @@
 
 package moriyashiine.enchancement.common;
 
-import moriyashiine.enchancement.api.event.CappedMultiplyDeltaMovementEvent;
 import moriyashiine.enchancement.client.payload.*;
 import moriyashiine.enchancement.common.event.config.*;
 import moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype.*;
@@ -21,21 +20,8 @@ import moriyashiine.enchancement.common.util.enchantment.effect.LightningDashMac
 import moriyashiine.enchancement.common.util.enchantment.effect.MaceEffect;
 import moriyashiine.enchancement.common.util.enchantment.effect.WindBurstMaceEffect;
 import moriyashiine.strawberrylib.api.SLib;
-import moriyashiine.strawberrylib.api.event.*;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
-import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
-import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.fabricmc.fabric.api.event.player.UseEntityCallback;
-import net.fabricmc.fabric.api.item.v1.DefaultItemComponentEvents;
-import net.fabricmc.fabric.api.item.v1.EnchantmentEvents;
-import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.loader.api.FabricLoader;
@@ -152,60 +138,42 @@ public class Enchancement implements ModInitializer {
 
 	private void initEvents() {
 		// internal
-		ServerLifecycleEvents.SERVER_STARTED.register(new CacheEnchantmentRegistryEvent());
-		ServerPlayConnectionEvents.JOIN.register(new EnforceConfigMatchEvent.Join());
-		ServerTickEvents.END_SERVER_TICK.register(new EnforceConfigMatchEvent.Tick());
-		ServerLivingEntityEvents.AFTER_DAMAGE.register(new InCombatEvent());
-		LootTableEvents.MODIFY.register(new MaceEnchantmentsEvent());
-		ServerTickEvents.END_SERVER_TICK.register(new SyncDeltaMovementsEvent());
-		ServerPlayConnectionEvents.JOIN.register(new SyncEnchantingMaterialMapEvent.Join());
-		ServerTickEvents.END_SERVER_TICK.register(new SyncEnchantingMaterialMapEvent.Tick());
-		ServerPlayConnectionEvents.JOIN.register(new SyncOriginalMaxLevelsEvent.Join());
-		ServerLifecycleEvents.SERVER_STARTED.register(new SyncOriginalMaxLevelsEvent.ServerStarted());
+		CacheEnchantmentRegistryEvent.init();
+		EnforceConfigMatchEvent.init();
+		InCombatEvent.init();
+		MaceEnchantmentsEvent.init();
+		SyncDeltaMovementsEvent.init();
+		SyncEnchantingMaterialMapEvent.init();
+		SyncOriginalMaxLevelsEvent.init();
 		// config
-		TickEntityEvent.EVENT.register(new EnhanceMobsEvent());
-		LootTableEvents.MODIFY.register(new OverhaulEnchantingEvent());
-		EnchantmentEvents.ALLOW_ENCHANTING.register(new RebalanceEnchantmentsEvent.AllowEnchanting());
-		ServerLifecycleEvents.SERVER_STARTED.register(new RebalanceEnchantmentsEvent.ServerStarted());
-		UseBlockCallback.EVENT.register(new RebalanceEnchantmentsEvent.UseBlock());
-		DefaultItemComponentEvents.MODIFY.register(new RebalanceEquipmentEvent.AllowComponent());
-		EnchantmentEvents.ALLOW_ENCHANTING.register(new RebalanceEquipmentEvent.AllowEnchanting());
-		ServerLivingEntityEvents.AFTER_DAMAGE.register(new RebalanceEquipmentEvent.Interrupt());
-		TickEntityEvent.EVENT.register(new RebalanceEquipmentEvent.Tick());
-		CappedMultiplyDeltaMovementEvent.EVENT.register(new ToggleablePassivesEvent.AirMobility());
-		ModifyDestroySpeedEvent.ADD_EFFICIENCY.register(new ToggleablePassivesEvent.Efficiency());
+		EnhanceMobsEvent.init();
+		OverhaulEnchantingEvent.init();
+		RebalanceEnchantmentsEvent.init();
+		RebalanceEquipmentEvent.init();
+		ToggleablePassivesEvent.init();
 		// enchantment effect type
-		ServerLivingEntityEvents.AFTER_DEATH.register(new FreezeEvent.HandleDeath());
-		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new FreezeEvent.HandleDamage());
-		CappedMultiplyDeltaMovementEvent.EVENT.register(new ModifySubmergedMovementSpeedEvent());
+		FreezeEvent.init();
+		ModifySubmergedMovementSpeedEvent.init();
 		// enchantment effect component type
-		ServerLivingEntityEvents.AFTER_DAMAGE.register(new AllowInterruptionEvent());
-		ModifyStackDamageEvent.ADD.register(new ArmorDentingEvent());
-		PreventFallDamageEvent.EVENT.register(new BounceEvent());
-		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new BuryEntityEvent.Unbury());
-		UseEntityCallback.EVENT.register(new BuryEntityEvent.Use());
-		AfterDamageIncludingDeathEvent.EVENT.register(new ChainLightningEvent());
-		AfterDamageIncludingDeathEvent.EVENT.register(new ChargeJumpEvent.Damage());
-		ModifyMovementEvents.JUMP_DELTA.register(new ChargeJumpEvent.Jump());
-		ModifyCriticalStatusEvent.EVENT.register(new CriticalTipperEvent());
-		CappedMultiplyDeltaMovementEvent.EVENT.register(new EMeterEvent());
-		ServerEntityEvents.EQUIPMENT_CHANGE.register(new EquipmentResetEvent());
-		ModifyDestroySpeedEvent.MULTIPLY_TOTAL.register(new FellTreesEvent.DestroySpeed());
-		PlayerBlockBreakEvents.BEFORE.register(new FellTreesEvent.FellTree());
-		ModifyMovementEvents.MOVEMENT_DELTA.register(new FluidWalkingEvent.DolphinsGrace());
-		PreventFallDamageEvent.EVENT.register(new FluidWalkingEvent.FallImmunity());
-		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register(new HeadDropsEvent());
-		ServerLivingEntityEvents.AFTER_DAMAGE.register(new LeechingTridentEvent());
-		PreventFallDamageEvent.EVENT.register(new LightningDashEvent());
-		ModifyDestroySpeedEvent.MULTIPLY_TOTAL.register(new MineOreVeinsEvent.DestroySpeed());
-		PlayerBlockBreakEvents.BEFORE.register(new MineOreVeinsEvent.MineOres());
-		ModifyStackDamageEvent.ADD.register(new RageEvent.DamageDealtBonus());
-		ModifyDamageTakenEvent.MULTIPLY_TOTAL.register(new RageEvent.DamageTakenReduction());
-		CappedMultiplyDeltaMovementEvent.EVENT.register(new RageEvent.SpeedBonus());
-		ModifyMovementEvents.JUMP_DELTA.register(new RotationBurstEvent());
-		PreventFallDamageEvent.EVENT.register(new SlamEvent.FallImmunity());
-		ModifyMovementEvents.JUMP_DELTA.register(new SlamEvent.JumpBoost());
-		ModifyMovementEvents.JUMP_DELTA.register(new SlideEvent());
-		PlayerBlockBreakEvents.AFTER.register(new WideMiningEvent());
+		AllowInterruptionEvent.init();
+		ArmorDentingEvent.init();
+		BounceEvent.init();
+		BuryEntityEvent.init();
+		ChainLightningEvent.init();
+		ChargeJumpEvent.init();
+		CriticalTipperEvent.init();
+		EMeterEvent.init();
+		EquipmentResetEvent.init();
+		FellTreesEvent.init();
+		FluidWalkingEvent.init();
+		HeadDropsEvent.init();
+		LeechingTridentEvent.init();
+		LightningDashEvent.init();
+		MineOreVeinsEvent.init();
+		RageEvent.init();
+		RotationBurstEvent.init();
+		SlamEvent.init();
+		SlideEvent.init();
+		WideMiningEvent.init();
 	}
 }

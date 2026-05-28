@@ -26,15 +26,19 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 public class HeadDropsEvent implements ServerEntityCombatEvents.AfterKilledOtherEntity {
+	public static void init() {
+		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register(new HeadDropsEvent());
+	}
+
 	@Override
 	public void afterKilledOtherEntity(ServerLevel level, Entity entity, LivingEntity killedEntity, DamageSource damageSource) {
 		if (entity instanceof LivingEntity attacker) {
-			float dropModifier = getDropChance(level, attacker, new DamageSource(attacker.damageSources().generic().typeHolder(), attacker, attacker));
-			if (dropModifier > 0) {
+			float dropChance = getDropChance(level, attacker, new DamageSource(attacker.damageSources().generic().typeHolder(), attacker, attacker));
+			if (dropChance > 0) {
 				for (EntityType<?> entityType : HeadDrop.DROP_MAP.keySet()) {
 					if (killedEntity.getType() == entityType) {
 						HeadDrop entry = HeadDrop.DROP_MAP.get(entityType);
-						if (killedEntity.getRandom().nextFloat() * dropModifier < entry.chance()) {
+						if (killedEntity.getRandom().nextFloat() * dropChance < entry.chance()) {
 							ItemStack stack = new ItemStack(entry.drop());
 							if (stack.getItem() == Items.PLAYER_HEAD && killedEntity instanceof Player player) {
 								stack.set(DataComponents.PROFILE, ResolvableProfile.createResolved(player.getGameProfile()));

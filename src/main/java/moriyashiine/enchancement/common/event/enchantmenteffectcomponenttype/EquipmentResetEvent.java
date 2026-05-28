@@ -14,6 +14,10 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
 
 public class EquipmentResetEvent implements ServerEntityEvents.EquipmentChange {
+	public static void init() {
+		ServerEntityEvents.EQUIPMENT_CHANGE.register(new EquipmentResetEvent());
+	}
+
 	@Override
 	public void onChange(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack previousStack, ItemStack currentStack) {
 		if (!ItemStack.matchesIgnoringComponents(previousStack, currentStack, DataComponentType::ignoreSwapAnimation)) {

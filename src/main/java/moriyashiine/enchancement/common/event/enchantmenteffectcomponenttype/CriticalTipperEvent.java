@@ -15,6 +15,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 public class CriticalTipperEvent implements ModifyCriticalStatusEvent {
+	public static void init() {
+		ModifyCriticalStatusEvent.EVENT.register(new CriticalTipperEvent());
+	}
+
 	public static ParticleType<?> particleType = null;
 
 	@Override

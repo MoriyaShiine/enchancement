@@ -17,7 +17,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class RageEvent {
-	public static class DamageDealtBonus implements ModifyStackDamageEvent {
+	public static void init() {
+		ModifyStackDamageEvent.ADD.register(new DamageDealtBonus());
+		ModifyDamageTakenEvent.MULTIPLY_TOTAL.register(new DamageTakenReduction());
+		CappedMultiplyDeltaMovementEvent.EVENT.register(new SpeedBonus());
+	}
+
+	private static class DamageDealtBonus implements ModifyStackDamageEvent {
 		@Override
 		public float modify(ServerLevel level, ItemStack stack, Entity victim, DamageSource source, float damage) {
 			if (source.getDirectEntity() instanceof LivingEntity living) {
@@ -27,7 +33,7 @@ public class RageEvent {
 		}
 	}
 
-	public static class DamageTakenReduction implements ModifyDamageTakenEvent {
+	private static class DamageTakenReduction implements ModifyDamageTakenEvent {
 		@Override
 		public float modify(Phase phase, LivingEntity victim, ServerLevel level, DamageSource source) {
 			if (phase == Phase.FINAL && !source.is(DamageTypeTags.BYPASSES_ENCHANTMENTS)) {
@@ -37,7 +43,7 @@ public class RageEvent {
 		}
 	}
 
-	public static class SpeedBonus implements CappedMultiplyDeltaMovementEvent {
+	private static class SpeedBonus implements CappedMultiplyDeltaMovementEvent {
 		@Override
 		public float multiply(Level level, LivingEntity living) {
 			return RageEffect.getMovementSpeedModifier(living);

@@ -18,18 +18,23 @@ import net.minecraft.world.entity.player.Player;
 import java.util.OptionalInt;
 
 public class EntityXrayClientEvent {
+	public static void init() {
+		ClientTickEvents.END_LEVEL_TICK.register(new Tick());
+		OutlineEntityEvent.EVENT.register(new Outline());
+	}
+
 	private static final Minecraft client = Minecraft.getInstance();
 
 	public static float xrayDistance = 0;
 
-	public static class Tick implements ClientTickEvents.EndLevelTick {
+	private static class Tick implements ClientTickEvents.EndLevelTick {
 		@Override
 		public void onEndTick(ClientLevel level) {
 			xrayDistance = client.player != null && !client.player.isSpectator() ? EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.ENTITY_XRAY, client.player, 0) : 0;
 		}
 	}
 
-	public static class Outline implements OutlineEntityEvent {
+	private static class Outline implements OutlineEntityEvent {
 		private static final OutlineData DATA = new OutlineData(TriState.TRUE, OptionalInt.empty());
 
 		@Override

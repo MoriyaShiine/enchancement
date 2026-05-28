@@ -36,6 +36,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class MineOreVeinsEvent {
+	public static void init() {
+		ModifyDestroySpeedEvent.MULTIPLY_TOTAL.register(new DestroySpeed());
+		PlayerBlockBreakEvents.BEFORE.register(new MineOres());
+	}
+
 	private static Set<BlockPos> gatherOres(Set<BlockPos> ores, Level level, BlockPos.MutableBlockPos pos, Block original) {
 		if (ores.size() < ModConfig.maxMineOreVeinsBlocks) {
 			int originalX = pos.getX(), originalY = pos.getY(), originalZ = pos.getZ();
@@ -79,7 +84,7 @@ public class MineOreVeinsEvent {
 		return Blocks.STONE;
 	}
 
-	public static class DestroySpeed implements ModifyDestroySpeedEvent {
+	private static class DestroySpeed implements ModifyDestroySpeedEvent {
 		@Override
 		public float modify(Player player, ItemStack stack, Level level, BlockState state, @Nullable BlockPos pos) {
 			if (pos != null && canActivate(player, stack, state)) {
@@ -93,7 +98,7 @@ public class MineOreVeinsEvent {
 		}
 	}
 
-	public static class MineOres implements PlayerBlockBreakEvents.Before {
+	private static class MineOres implements PlayerBlockBreakEvents.Before {
 		@Override
 		public boolean beforeBlockBreak(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity) {
 			ItemStack stack = player.getMainHandItem();

@@ -10,6 +10,10 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 
 public class InCombatEvent implements ServerLivingEntityEvents.AfterDamage {
+	public static void init() {
+		ServerLivingEntityEvents.AFTER_DAMAGE.register(new InCombatEvent());
+	}
+
 	@Override
 	public void afterDamage(LivingEntity entity, DamageSource source, float baseDamageTaken, float damageTaken, boolean blocked) {
 		if (source.getEntity() instanceof LivingEntity) {

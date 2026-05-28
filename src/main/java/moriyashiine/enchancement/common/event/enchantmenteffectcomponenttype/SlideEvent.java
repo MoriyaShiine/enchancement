@@ -13,6 +13,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 public class SlideEvent implements ModifyMovementEvents.JumpDelta {
+	public static void init() {
+		ModifyMovementEvents.JUMP_DELTA.register(new SlideEvent());
+	}
+
 	@Override
 	public Vec3 modify(Vec3 delta, LivingEntity entity) {
 		SlideComponent slideComponent = ModEntityComponents.SLIDE.getNullable(entity);

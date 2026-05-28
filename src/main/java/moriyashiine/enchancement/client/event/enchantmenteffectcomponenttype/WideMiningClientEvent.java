@@ -22,6 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WideMiningClientEvent implements ClientTickEvents.EndLevelTick {
+	public static void init() {
+		ClientTickEvents.END_LEVEL_TICK.register(new WideMiningClientEvent());
+	}
+
 	private static final Minecraft minecraft = Minecraft.getInstance();
 
 	public static WideMiningComponent.Entry entry = null;

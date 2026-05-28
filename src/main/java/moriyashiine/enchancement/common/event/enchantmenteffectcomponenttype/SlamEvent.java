@@ -16,7 +16,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class SlamEvent {
-	public static class FallImmunity implements PreventFallDamageEvent {
+	public static void init() {
+		PreventFallDamageEvent.EVENT.register(new FallImmunity());
+		ModifyMovementEvents.JUMP_DELTA.register(new JumpBoost());
+	}
+
+	private static class FallImmunity implements PreventFallDamageEvent {
 		@Override
 		public TriState preventsFallDamage(Level level, LivingEntity entity, double fallDistance, float damageModifier, DamageSource source) {
 			if (source.is(ModDamageTypeTags.IS_SAFE_FALL)) {
@@ -29,7 +34,7 @@ public class SlamEvent {
 		}
 	}
 
-	public static class JumpBoost implements ModifyMovementEvents.JumpDelta {
+	private static class JumpBoost implements ModifyMovementEvents.JumpDelta {
 		@Override
 		public Vec3 modify(Vec3 delta, LivingEntity entity) {
 			SlamComponent slamComponent = ModEntityComponents.SLAM.getNullable(entity);

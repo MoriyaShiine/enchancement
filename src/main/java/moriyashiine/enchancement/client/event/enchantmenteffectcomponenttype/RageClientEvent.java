@@ -21,6 +21,10 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import java.util.List;
 
 public class RageClientEvent implements ItemTooltipCallback {
+	public static void init() {
+		ItemTooltipCallback.EVENT.register(new RageClientEvent());
+	}
+
 	@Override
 	public void getTooltip(ItemStack stack, Item.TooltipContext tooltipContext, TooltipFlag tooltipFlag, List<Component> lines) {
 		Player player = Minecraft.getInstance().player;

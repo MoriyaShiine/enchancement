@@ -27,7 +27,48 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class FreezeEvent {
-	public static class HandleDeath implements ServerLivingEntityEvents.AfterDeath {
+	public static void init() {
+		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new Damage());
+		ServerLivingEntityEvents.AFTER_DEATH.register(new Death());
+	}
+
+	public static class Damage implements ServerLivingEntityEvents.AllowDamage {
+		@Override
+		public boolean allowDamage(LivingEntity entity, DamageSource source, float amount) {
+			FrozenComponent frozenComponent = ModEntityComponents.FROZEN.get(entity);
+			if (FrozenComponent.isSourceFrostbiteWeapon(source)) {
+				frozenComponent.setLastFreezingAttacker(source.getEntity());
+			}
+			if (frozenComponent.isFrozen()) {
+				if (source.is(DamageTypes.FREEZE)) {
+					return false;
+				} else {
+					Entity entitySource = source.getDirectEntity();
+					if (entitySource != null && amount <= 1) {
+						entity.setDeltaMovement(entity.getDeltaMovement().add(-(entitySource.getX() - entity.getX()), 0, -(entitySource.getZ() - entity.getZ())).normalize().scale(0.5));
+						return false;
+					} else {
+						for (int i = 0; i < 4; i++) {
+							if (entity.level().getEntities(ModEntityTypes.ICE_SHARD, new AABB(entity.blockPosition()).inflate(2), foundEntity -> true).size() < 64) {
+								for (int j = 0; j < Mth.nextInt(entity.getRandom(), 6, 8); j++) {
+									IceShard iceShard = new IceShard(entity.level(), entity, frozenComponent.getLastFreezingAttacker());
+									iceShard.setBaseDamage(3);
+									Vec3 random = new Vec3(entity.getRandom().nextGaussian(), entity.getRandom().nextGaussian() / 2, entity.getRandom().nextGaussian());
+									iceShard.shoot(random.x(), random.y(), random.z(), 0.75F, 0);
+									entity.level().addFreshEntity(iceShard);
+								}
+							}
+						}
+						entity.level().gameEvent(GameEvent.ENTITY_DIE, entity.position(), GameEvent.Context.of(entity, entity.getBlockStateOn()));
+						entity.discard();
+					}
+				}
+			}
+			return true;
+		}
+	}
+
+	public static class Death implements ServerLivingEntityEvents.AfterDeath {
 		@Override
 		public void afterDeath(LivingEntity entity, DamageSource damageSource) {
 			FrozenComponent frozenComponent = ModEntityComponents.FROZEN.get(entity);
@@ -63,42 +104,6 @@ public class FreezeEvent {
 					frozenComponent.freeze();
 				}
 			}
-		}
-	}
-
-	public static class HandleDamage implements ServerLivingEntityEvents.AllowDamage {
-		@Override
-		public boolean allowDamage(LivingEntity entity, DamageSource source, float amount) {
-			FrozenComponent frozenComponent = ModEntityComponents.FROZEN.get(entity);
-			if (FrozenComponent.isSourceFrostbiteWeapon(source)) {
-				frozenComponent.setLastFreezingAttacker(source.getEntity());
-			}
-			if (frozenComponent.isFrozen()) {
-				if (source.is(DamageTypes.FREEZE)) {
-					return false;
-				} else {
-					Entity entitySource = source.getDirectEntity();
-					if (entitySource != null && amount <= 1) {
-						entity.setDeltaMovement(entity.getDeltaMovement().add(-(entitySource.getX() - entity.getX()), 0, -(entitySource.getZ() - entity.getZ())).normalize().scale(0.5));
-						return false;
-					} else {
-						for (int i = 0; i < 4; i++) {
-							if (entity.level().getEntities(ModEntityTypes.ICE_SHARD, new AABB(entity.blockPosition()).inflate(2), foundEntity -> true).size() < 64) {
-								for (int j = 0; j < Mth.nextInt(entity.getRandom(), 6, 8); j++) {
-									IceShard iceShard = new IceShard(entity.level(), entity, frozenComponent.getLastFreezingAttacker());
-									iceShard.setBaseDamage(3);
-									Vec3 random = new Vec3(entity.getRandom().nextGaussian(), entity.getRandom().nextGaussian() / 2, entity.getRandom().nextGaussian());
-									iceShard.shoot(random.x(), random.y(), random.z(), 0.75F, 0);
-									entity.level().addFreshEntity(iceShard);
-								}
-							}
-						}
-						entity.level().gameEvent(GameEvent.ENTITY_DIE, entity.position(), GameEvent.Context.of(entity, entity.getBlockStateOn()));
-						entity.discard();
-					}
-				}
-			}
-			return true;
 		}
 	}
 }

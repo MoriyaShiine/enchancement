@@ -27,7 +27,12 @@ import net.minecraft.world.phys.EntityHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class BuryEntityEvent {
-	public static class Unbury implements ServerLivingEntityEvents.AllowDamage {
+	public static void init() {
+		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new Unbury());
+		UseEntityCallback.EVENT.register(new Use());
+	}
+
+	private static class Unbury implements ServerLivingEntityEvents.AllowDamage {
 		@Override
 		public boolean allowDamage(LivingEntity entity, DamageSource source, float amount) {
 			BuryEntityComponent buryEntityComponent = ModEntityComponents.BURY_ENTITY.get(entity);
@@ -40,7 +45,7 @@ public class BuryEntityEvent {
 		}
 	}
 
-	public static class Use implements UseEntityCallback {
+	private static class Use implements UseEntityCallback {
 		@Override
 		public InteractionResult interact(Player player, Level level, InteractionHand hand, Entity entity, @Nullable EntityHitResult hitResult) {
 			if (!player.isSpectator()) {

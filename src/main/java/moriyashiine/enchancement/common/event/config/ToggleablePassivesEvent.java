@@ -21,7 +21,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 public class ToggleablePassivesEvent {
-	public static class AirMobility implements CappedMultiplyDeltaMovementEvent {
+	public static void init() {
+		CappedMultiplyDeltaMovementEvent.EVENT.register(new AirMobility());
+		ModifyDestroySpeedEvent.ADD_EFFICIENCY.register(new Efficiency());
+	}
+
+	private static class AirMobility implements CappedMultiplyDeltaMovementEvent {
 		@Override
 		public float multiply(Level level, LivingEntity living) {
 			if (ModConfig.toggleablePassives && !living.onGround()) {
@@ -34,7 +39,7 @@ public class ToggleablePassivesEvent {
 		}
 	}
 
-	public static class Efficiency implements ModifyDestroySpeedEvent {
+	private static class Efficiency implements ModifyDestroySpeedEvent {
 		@Override
 		public float modify(Player player, ItemStack stack, Level level, BlockState state, @Nullable BlockPos pos) {
 			if (hasEfficiency(stack)) {

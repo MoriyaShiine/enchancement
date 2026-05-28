@@ -15,7 +15,11 @@ import net.minecraft.world.item.enchantment.Enchantment;
 
 import java.util.Set;
 
-public class SyncBookshelvesEvent implements ClientTickEvents.EndLevelTick {
+public class SyncBookshelvesClientEvent implements ClientTickEvents.EndLevelTick {
+	public static void init() {
+		ClientTickEvents.END_LEVEL_TICK.register(new SyncBookshelvesClientEvent());
+	}
+
 	public static Set<Holder<Enchantment>> CHISELED_ENCHANTMENTS = null;
 
 	@Override

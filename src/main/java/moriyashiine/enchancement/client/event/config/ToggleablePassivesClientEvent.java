@@ -22,6 +22,10 @@ import java.util.List;
 import java.util.Map;
 
 public class ToggleablePassivesClientEvent implements ItemTooltipCallback {
+	public static void init() {
+		ItemTooltipCallback.EVENT.register(new ToggleablePassivesClientEvent());
+	}
+
 	private static final Map<TagKey<Item>, String> KEY_MAP = new HashMap<>();
 
 	static {

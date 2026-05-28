@@ -15,6 +15,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 public class AllowInterruptionEvent implements ServerLivingEntityEvents.AfterDamage {
+	public static void init() {
+		ServerLivingEntityEvents.AFTER_DAMAGE.register(new AllowInterruptionEvent());
+	}
+
 	@Override
 	public void afterDamage(LivingEntity entity, DamageSource source, float baseDamageTaken, float damageTaken, boolean blocked) {
 		if (source.getEntity() != null && !source.is(ModDamageTypeTags.DOES_NOT_INTERRUPT)) {

@@ -235,7 +235,7 @@ public class SlideComponent implements CommonTickingComponent {
 	}
 
 	private boolean canSlideAsMob(Mob mob) {
-		if (ModConfig.enhanceMobs) {
+		if (ModConfig.enhanceMobs && mob.slib$exists()) {
 			if (mob.getNavigation().getPath() != null && mob.getNavigation().getPath().getEndNode() != null && mob.getNavigation().getPath().getEndNode().asVec3().distanceTo(obj.position()) > 1) {
 				return true;
 			}

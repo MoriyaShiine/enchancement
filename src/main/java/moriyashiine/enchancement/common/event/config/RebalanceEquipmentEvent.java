@@ -33,7 +33,14 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 
 public class RebalanceEquipmentEvent {
-	public static class AllowComponent implements DefaultItemComponentEvents.ModifyCallback {
+	public static void init() {
+		DefaultItemComponentEvents.MODIFY.register(new AllowComponent());
+		EnchantmentEvents.ALLOW_ENCHANTING.register(new AllowEnchanting());
+		ServerLivingEntityEvents.AFTER_DAMAGE.register(new Interrupt());
+		TickEntityEvent.EVENT.register(new Tick());
+	}
+
+	private static class AllowComponent implements DefaultItemComponentEvents.ModifyCallback {
 		@Override
 		public void modify(DefaultItemComponentEvents.ModifyContext context) {
 			if (ModConfig.rebalanceEquipment) {
@@ -42,7 +49,7 @@ public class RebalanceEquipmentEvent {
 		}
 	}
 
-	public static class AllowEnchanting implements EnchantmentEvents.AllowEnchanting {
+	private static class AllowEnchanting implements EnchantmentEvents.AllowEnchanting {
 		@Override
 		public TriState allowEnchanting(Holder<Enchantment> enchantment, ItemStack target, EnchantingContext enchantingContext) {
 			if (ModConfig.rebalanceEquipment) {
@@ -57,7 +64,7 @@ public class RebalanceEquipmentEvent {
 		}
 	}
 
-	public static class Interrupt implements ServerLivingEntityEvents.AfterDamage {
+	private static class Interrupt implements ServerLivingEntityEvents.AfterDamage {
 		@Override
 		public void afterDamage(LivingEntity entity, DamageSource source, float baseDamageTaken, float damageTaken, boolean blocked) {
 			if (ModConfig.rebalanceEquipment && source.getEntity() != null && !source.is(ModDamageTypeTags.DOES_NOT_INTERRUPT) && entity instanceof Player player) {
@@ -74,7 +81,7 @@ public class RebalanceEquipmentEvent {
 		}
 	}
 
-	public static class Tick implements TickEntityEvent {
+	private static class Tick implements TickEntityEvent {
 		@Override
 		public void tick(Level level, Entity entity) {
 			if (ModConfig.rebalanceEquipment && entity instanceof Player player) {

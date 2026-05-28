@@ -9,8 +9,8 @@ import moriyashiine.enchancement.client.event.config.RebalanceEquipmentClientEve
 import moriyashiine.enchancement.client.event.config.ToggleablePassivesClientEvent;
 import moriyashiine.enchancement.client.event.enchantmenteffectcomponenttype.*;
 import moriyashiine.enchancement.client.event.enchantmenteffecttype.AutomaticallyFeedsTooltipClientEvent;
-import moriyashiine.enchancement.client.event.internal.SyncBookshelvesEvent;
-import moriyashiine.enchancement.client.event.internal.SyncDeltaMovementsEvent;
+import moriyashiine.enchancement.client.event.internal.SyncBookshelvesClientEvent;
+import moriyashiine.enchancement.client.event.internal.SyncDeltaMovementsClientEvent;
 import moriyashiine.enchancement.client.gui.hud.*;
 import moriyashiine.enchancement.client.gui.screens.inventory.ModEnchantmentScreen;
 import moriyashiine.enchancement.client.particle.*;
@@ -28,21 +28,14 @@ import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
 import moriyashiine.enchancement.common.init.ModMenuTypes;
 import moriyashiine.enchancement.common.init.ModParticleTypes;
-import moriyashiine.strawberrylib.api.event.client.AddNightVisionScaleEvent;
-import moriyashiine.strawberrylib.api.event.client.OutlineEntityEvent;
-import moriyashiine.strawberrylib.api.event.client.ReplaceContextualInfoEvent;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleGroupRegistry;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.ClientTooltipComponentCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.ModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
-import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.fabric.api.resource.v1.pack.PackActivationType;
 import net.fabricmc.fabric.api.resource.v1.reloader.ResourceReloaderKeys;
@@ -130,25 +123,22 @@ public class EnchancementClient implements ClientModInitializer {
 
 	private void initEvents() {
 		// internal
-		ClientTickEvents.END_LEVEL_TICK.register(new SyncBookshelvesEvent());
-		ClientTickEvents.START_LEVEL_TICK.register(new SyncDeltaMovementsEvent());
+		SyncBookshelvesClientEvent.init();
+		SyncDeltaMovementsClientEvent.init();
 		// config
-		ClientTickEvents.END_LEVEL_TICK.register(new CoyoteBiteClientEvent());
-		ItemTooltipCallback.EVENT.register(new EnchantmentDescriptionsClientEvent.DescriptionText());
-		ClientTooltipComponentCallback.EVENT.register(new EnchantmentDescriptionsClientEvent.Icons());
-		CommonLifecycleEvents.TAGS_LOADED.register(new EnchantmentDescriptionsClientEvent.ClearIconCache());
-		ClientTickEvents.END_LEVEL_TICK.register(new RebalanceEquipmentClientEvent());
-		ItemTooltipCallback.EVENT.register(new ToggleablePassivesClientEvent());
+		CoyoteBiteClientEvent.init();
+		EnchantmentDescriptionsClientEvent.init();
+		RebalanceEquipmentClientEvent.init();
+		ToggleablePassivesClientEvent.init();
 		// enchantment effect type
-		ItemTooltipCallback.EVENT.register(new AutomaticallyFeedsTooltipClientEvent());
+		AutomaticallyFeedsTooltipClientEvent.init();
 		// enchantment effect component type
-		ClientTickEvents.END_LEVEL_TICK.register(new BounceClientEvent());
-		ReplaceContextualInfoEvent.EVENT.register(new ChargeJumpClientEvent());
-		ClientTickEvents.END_LEVEL_TICK.register(new EntityXrayClientEvent.Tick());
-		OutlineEntityEvent.EVENT.register(new EntityXrayClientEvent.Outline());
-		AddNightVisionScaleEvent.EVENT.register(new NightVisionClientEvent());
-		ItemTooltipCallback.EVENT.register(new RageClientEvent());
-		ClientTickEvents.END_LEVEL_TICK.register(new WideMiningClientEvent());
+		BounceClientEvent.init();
+		ChargeJumpClientEvent.init();
+		EntityXrayClientEvent.init();
+		NightVisionClientEvent.init();
+		RageClientEvent.init();
+		WideMiningClientEvent.init();
 		// hud elements
 		HudElementRegistry.attachElementBefore(VanillaHudElements.HELD_ITEM_TOOLTIP, Enchancement.id("chiseled_bookshelf_peeking"), new ChiseledBookshelfPeekingHudElement());
 		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Enchancement.id("air_jump"), new AirJumpHudElement());

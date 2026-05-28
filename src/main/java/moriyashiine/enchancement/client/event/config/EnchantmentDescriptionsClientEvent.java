@@ -30,7 +30,13 @@ import org.jspecify.annotations.Nullable;
 import java.util.List;
 
 public class EnchantmentDescriptionsClientEvent {
-	public static class DescriptionText implements ItemTooltipCallback {
+	public static void init() {
+		ItemTooltipCallback.EVENT.register(new DescriptionText());
+		ClientTooltipComponentCallback.EVENT.register(new Icons());
+		CommonLifecycleEvents.TAGS_LOADED.register(new ClearIconCache());
+	}
+
+	private static class DescriptionText implements ItemTooltipCallback {
 		@Override
 		public void getTooltip(ItemStack stack, Item.TooltipContext tooltipContext, TooltipFlag tooltipFlag, List<Component> lines) {
 			if (enableDescriptions()) {
@@ -47,7 +53,7 @@ public class EnchantmentDescriptionsClientEvent {
 		}
 	}
 
-	public static class Icons implements ClientTooltipComponentCallback {
+	private static class Icons implements ClientTooltipComponentCallback {
 		@Override
 		public @Nullable ClientTooltipComponent getClientComponent(TooltipComponent component) {
 			if (component instanceof StoredEnchantmentsTooltipComponent enchantmentsComponent) {
@@ -57,7 +63,7 @@ public class EnchantmentDescriptionsClientEvent {
 		}
 	}
 
-	public static class ClearIconCache implements CommonLifecycleEvents.TagsLoaded {
+	private static class ClearIconCache implements CommonLifecycleEvents.TagsLoaded {
 		@Override
 		public void onTagsLoaded(RegistryAccess registries, boolean client) {
 			if (client) {

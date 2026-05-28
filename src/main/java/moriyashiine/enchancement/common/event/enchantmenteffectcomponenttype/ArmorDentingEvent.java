@@ -14,6 +14,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
 public class ArmorDentingEvent implements ModifyStackDamageEvent {
+	public static void init() {
+		ModifyStackDamageEvent.ADD.register(new ArmorDentingEvent());
+	}
+
 	@Override
 	public float modify(ServerLevel level, ItemStack stack, Entity victim, DamageSource source, float damage) {
 		if (victim instanceof LivingEntity living) {

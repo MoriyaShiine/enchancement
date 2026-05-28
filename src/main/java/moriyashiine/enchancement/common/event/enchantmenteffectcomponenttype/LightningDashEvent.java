@@ -13,6 +13,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
 public class LightningDashEvent implements PreventFallDamageEvent {
+	public static void init() {
+		PreventFallDamageEvent.EVENT.register(new LightningDashEvent());
+	}
+
 	@Override
 	public TriState preventsFallDamage(Level level, LivingEntity entity, double fallDistance, float damageModifier, DamageSource source) {
 		LightningDashComponent lightningDashComponent = ModEntityComponents.LIGHTNING_DASH.getNullable(entity);

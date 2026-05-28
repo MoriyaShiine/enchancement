@@ -12,6 +12,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.arrow.ThrownTrident;
 
 public class LeechingTridentEvent implements ServerLivingEntityEvents.AfterDamage {
+	public static void init() {
+		ServerLivingEntityEvents.AFTER_DAMAGE.register(new LeechingTridentEvent());
+	}
+
 	@Override
 	public void afterDamage(LivingEntity entity, DamageSource source, float baseDamageTaken, float damageTaken, boolean blocked) {
 		if (!blocked && source.getDirectEntity() instanceof ThrownTrident trident) {

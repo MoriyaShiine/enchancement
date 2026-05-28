@@ -9,21 +9,22 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class SyncDeltaMovementsEvent implements ServerTickEvents.EndTick {
+	public static void init() {
+		ServerTickEvents.END_SERVER_TICK.register(new SyncDeltaMovementsEvent());
+	}
+
 	public static final Map<UUID, Vec3> DELTAS = new HashMap<>();
-	private static final Set<UUID> TO_REMOVE = new HashSet<>();
 
 	@Override
 	public void onEndTick(MinecraftServer server) {
-		DELTAS.forEach((uuid, _) -> {
+		DELTAS.keySet().removeIf(uuid -> {
 			Player player = server.getPlayerList().getPlayer(uuid);
-			if (player == null || !player.isAlive()) {
-				TO_REMOVE.add(uuid);
-			}
+			return player == null || !player.slib$exists();
 		});
-		TO_REMOVE.forEach(DELTAS::remove);
-		TO_REMOVE.clear();
 	}
 }

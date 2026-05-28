@@ -10,6 +10,10 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.item.ItemStack;
 
 public class RebalanceEquipmentClientEvent implements ClientTickEvents.EndLevelTick {
+	public static void init() {
+		ClientTickEvents.END_LEVEL_TICK.register(new RebalanceEquipmentClientEvent());
+	}
+
 	public static ItemStack lastStack = ItemStack.EMPTY;
 
 	@Override

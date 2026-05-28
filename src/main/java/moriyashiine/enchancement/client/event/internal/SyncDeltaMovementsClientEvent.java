@@ -10,7 +10,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.player.Player;
 
-public class SyncDeltaMovementsEvent implements ClientTickEvents.StartLevelTick {
+public class SyncDeltaMovementsClientEvent implements ClientTickEvents.StartLevelTick {
+	public static void init() {
+		ClientTickEvents.START_LEVEL_TICK.register(new SyncDeltaMovementsClientEvent());
+	}
+
 	@Override
 	public void onStartTick(ClientLevel level) {
 		Player player = Minecraft.getInstance().player;

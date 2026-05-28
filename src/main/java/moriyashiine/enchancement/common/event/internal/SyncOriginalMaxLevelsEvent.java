@@ -14,16 +14,21 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 
 public class SyncOriginalMaxLevelsEvent {
+	public static void init() {
+		ServerPlayConnectionEvents.JOIN.register(new Join());
+		ServerLifecycleEvents.SERVER_STARTED.register(new ServerStarted());
+	}
+
 	public static boolean updatingMap = false;
 
-	public static class Join implements ServerPlayConnectionEvents.Join {
+	private static class Join implements ServerPlayConnectionEvents.Join {
 		@Override
 		public void onPlayReady(ServerGamePacketListenerImpl listener, PacketSender sender, MinecraftServer server) {
 			SyncOriginalMaxLevelsPayload.send(listener.getPlayer());
 		}
 	}
 
-	public static class ServerStarted implements ServerLifecycleEvents.ServerStarted {
+	private static class ServerStarted implements ServerLifecycleEvents.ServerStarted {
 		@Override
 		public void onServerStarted(MinecraftServer server) {
 			updatingMap = true;

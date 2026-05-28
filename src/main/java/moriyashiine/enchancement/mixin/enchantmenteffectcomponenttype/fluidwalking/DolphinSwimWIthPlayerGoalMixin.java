@@ -20,6 +20,6 @@ public class DolphinSwimWIthPlayerGoalMixin {
 
 	@ModifyExpressionValue(method = "canUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isSwimming()Z"))
 	private boolean enchancement$fluidWalking(boolean original) {
-		return original || FluidWalkingEvent.DolphinsGrace.shouldApply(player);
+		return original || FluidWalkingEvent.shouldApplyDolphinsGrace(player);
 	}
 }

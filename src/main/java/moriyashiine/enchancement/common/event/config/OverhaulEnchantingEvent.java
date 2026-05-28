@@ -32,6 +32,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OverhaulEnchantingEvent implements LootTableEvents.Modify {
+	public static void init() {
+		LootTableEvents.MODIFY.register(new OverhaulEnchantingEvent());
+	}
+
 	@Override
 	public void modifyLootTable(ResourceKey<LootTable> key, LootTable.Builder tableBuilder, LootTableSource source, HolderLookup.Provider holder) {
 		if (ModConfig.overhaulEnchanting != OverhaulMode.DISABLED) {

@@ -36,7 +36,13 @@ import java.util.List;
 import java.util.Optional;
 
 public class RebalanceEnchantmentsEvent {
-	public static class AllowEnchanting implements EnchantmentEvents.AllowEnchanting {
+	public static void init() {
+		EnchantmentEvents.ALLOW_ENCHANTING.register(new AllowEnchanting());
+		ServerLifecycleEvents.SERVER_STARTED.register(new ServerStarted());
+		UseBlockCallback.EVENT.register(new UseBlock());
+	}
+
+	private static class AllowEnchanting implements EnchantmentEvents.AllowEnchanting {
 		@Override
 		public TriState allowEnchanting(Holder<Enchantment> enchantment, ItemStack target, EnchantingContext enchantingContext) {
 			if (ModConfig.rebalanceEnchantments && enchantment.is(Enchantments.FIRE_ASPECT)) {
@@ -50,7 +56,7 @@ public class RebalanceEnchantmentsEvent {
 		}
 	}
 
-	public static class ServerStarted implements ServerLifecycleEvents.ServerStarted {
+	private static class ServerStarted implements ServerLifecycleEvents.ServerStarted {
 		@SuppressWarnings("unchecked")
 		@Override
 		public void onServerStarted(MinecraftServer server) {
@@ -143,7 +149,7 @@ public class RebalanceEnchantmentsEvent {
 		}
 	}
 
-	public static class UseBlock implements UseBlockCallback {
+	private static class UseBlock implements UseBlockCallback {
 		@Override
 		public InteractionResult interact(Player player, Level level, InteractionHand hand, BlockHitResult hitResult) {
 			if (ModConfig.rebalanceEnchantments && player.isShiftKeyDown() && hasIgnite(player.getItemInHand(hand))) {

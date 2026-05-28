@@ -12,6 +12,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
 public class RotationBurstEvent implements ModifyMovementEvents.JumpDelta {
+	public static void init() {
+		ModifyMovementEvents.JUMP_DELTA.register(new RotationBurstEvent());
+	}
+
 	@Override
 	public Vec3 modify(Vec3 delta, LivingEntity entity) {
 		RotationBurstComponent rotationBurstComponent = ModEntityComponents.ROTATION_BURST.getNullable(entity);

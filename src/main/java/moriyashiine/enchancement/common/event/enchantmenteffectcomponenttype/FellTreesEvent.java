@@ -31,6 +31,11 @@ import java.util.Comparator;
 import java.util.List;
 
 public class FellTreesEvent {
+	public static void init() {
+		ModifyDestroySpeedEvent.MULTIPLY_TOTAL.register(new DestroySpeed());
+		PlayerBlockBreakEvents.BEFORE.register(new FellTree());
+	}
+
 	public static final List<Entry> ENTRIES = new ArrayList<>();
 
 	private static List<BlockPos> gatherTree(List<BlockPos> tree, BlockGetter level, BlockPos.MutableBlockPos pos, Block original) {
@@ -87,7 +92,7 @@ public class FellTreesEvent {
 		return false;
 	}
 
-	public static class DestroySpeed implements ModifyDestroySpeedEvent {
+	private static class DestroySpeed implements ModifyDestroySpeedEvent {
 		@Override
 		public float modify(Player player, ItemStack stack, Level level, BlockState state, @Nullable BlockPos pos) {
 			if (pos != null && canActivate(player, stack, state)) {
@@ -105,7 +110,7 @@ public class FellTreesEvent {
 		}
 	}
 
-	public static class FellTree implements PlayerBlockBreakEvents.Before {
+	private static class FellTree implements PlayerBlockBreakEvents.Before {
 		@Override
 		public boolean beforeBlockBreak(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity) {
 			ItemStack stack = player.getMainHandItem();

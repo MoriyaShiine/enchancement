@@ -22,6 +22,10 @@ import org.jspecify.annotations.Nullable;
 import java.util.List;
 
 public class WideMiningEvent implements PlayerBlockBreakEvents.After {
+	public static void init() {
+		PlayerBlockBreakEvents.AFTER.register(new WideMiningEvent());
+	}
+
 	public static boolean canActivate(Player player, ItemStack stack, BlockState state) {
 		return !player.isShiftKeyDown() && EnchantmentHelper.has(stack, ModEnchantmentEffectComponentTypes.WIDE_MINING) && stack.isCorrectToolForDrops(state);
 	}

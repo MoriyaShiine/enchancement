@@ -23,6 +23,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class ChainLightningEvent implements AfterDamageIncludingDeathEvent {
+	public static void init() {
+		AfterDamageIncludingDeathEvent.EVENT.register(new ChainLightningEvent());
+	}
+
 	private boolean first = true;
 
 	@Override

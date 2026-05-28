@@ -20,7 +20,12 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 
 public class ChargeJumpEvent {
-	public static class Damage implements AfterDamageIncludingDeathEvent {
+	public static void init() {
+		AfterDamageIncludingDeathEvent.EVENT.register(new Damage());
+		ModifyMovementEvents.JUMP_DELTA.register(new Jump());
+	}
+
+	private static class Damage implements AfterDamageIncludingDeathEvent {
 		@Override
 		public void afterDamage(LivingEntity victim, DamageSource source, float originalDamage, float modifiedDamage, boolean blocked) {
 			ChargeJumpComponent chargeJumpComponent = ModEntityComponents.CHARGE_JUMP.getNullable(victim);
@@ -31,7 +36,7 @@ public class ChargeJumpEvent {
 		}
 	}
 
-	public static class Jump implements ModifyMovementEvents.JumpDelta {
+	private static class Jump implements ModifyMovementEvents.JumpDelta {
 		private static final BlockParticleOption SLIME_PARTICLE = new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.defaultBlockState());
 
 		@Override

@@ -20,6 +20,10 @@ import net.minecraft.world.item.TooltipFlag;
 import java.util.List;
 
 public class AutomaticallyFeedsTooltipClientEvent implements ItemTooltipCallback {
+	public static void init() {
+		ItemTooltipCallback.EVENT.register(new AutomaticallyFeedsTooltipClientEvent());
+	}
+
 	@Override
 	public void getTooltip(ItemStack stack, Item.TooltipContext tooltipContext, TooltipFlag tooltipFlag, List<Component> lines) {
 		if (stack.is(ModItemTags.CANNOT_AUTOMATICALLY_CONSUME)) {

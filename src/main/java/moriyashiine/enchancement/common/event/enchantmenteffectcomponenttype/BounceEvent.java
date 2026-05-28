@@ -18,6 +18,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
 public class BounceEvent implements PreventFallDamageEvent {
+	public static void init() {
+		PreventFallDamageEvent.EVENT.register(new BounceEvent());
+	}
+
 	@Override
 	public TriState preventsFallDamage(Level level, LivingEntity entity, double fallDistance, float damageModifier, DamageSource source) {
 		if (source.is(ModDamageTypeTags.IS_SAFE_FALL) && fallDistance > entity.getMaxFallDistance() && EnchancementUtil.hasAnyEnchantmentsWith(entity, ModEnchantmentEffectComponentTypes.BOUNCE)) {

@@ -16,21 +16,26 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class FluidWalkingEvent {
-	public static class DolphinsGrace implements ModifyMovementEvents.MovementDelta {
+	public static void init() {
+		ModifyMovementEvents.MOVEMENT_DELTA.register(new DolphinsGrace());
+		PreventFallDamageEvent.EVENT.register(new FallImmunity());
+	}
+
+	public static boolean shouldApplyDolphinsGrace(LivingEntity entity) {
+		return entity != null && entity.isInWater() && EnchancementUtil.hasAnyEnchantmentsWith(entity, ModEnchantmentEffectComponentTypes.FLUID_WALKING);
+	}
+
+	private static class DolphinsGrace implements ModifyMovementEvents.MovementDelta {
 		@Override
 		public Vec3 modify(Vec3 delta, LivingEntity entity) {
-			if (entity.hasEffect(MobEffects.DOLPHINS_GRACE) && shouldApply(entity)) {
+			if (entity.hasEffect(MobEffects.DOLPHINS_GRACE) && shouldApplyDolphinsGrace(entity)) {
 				return delta.scale(1.75);
 			}
 			return delta;
 		}
-
-		public static boolean shouldApply(LivingEntity entity) {
-			return entity.isInWater() && EnchancementUtil.hasAnyEnchantmentsWith(entity, ModEnchantmentEffectComponentTypes.FLUID_WALKING);
-		}
 	}
 
-	public static class FallImmunity implements PreventFallDamageEvent {
+	private static class FallImmunity implements PreventFallDamageEvent {
 		@Override
 		public TriState preventsFallDamage(Level level, LivingEntity entity, double fallDistance, float damageModifier, DamageSource source) {
 			if (fallDistance > entity.getMaxFallDistance() && !level.getFluidState(entity.getOnPos()).isEmpty() && EnchancementUtil.hasAnyEnchantmentsWith(entity, ModEnchantmentEffectComponentTypes.FLUID_WALKING)) {
