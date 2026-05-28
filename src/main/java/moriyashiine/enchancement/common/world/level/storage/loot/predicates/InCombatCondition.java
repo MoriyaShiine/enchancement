@@ -5,8 +5,7 @@
 package moriyashiine.enchancement.common.world.level.storage.loot.predicates;
 
 import com.mojang.serialization.MapCodec;
-import moriyashiine.enchancement.common.component.entity.internal.InCombatComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.event.internal.InCombatEvent;
 import moriyashiine.enchancement.common.init.ModLootConditionTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -31,7 +30,6 @@ public class InCombatCondition implements LootItemCondition {
 		if (entity == null) {
 			return false;
 		}
-		InCombatComponent inCombatComponent = ModEntityComponents.IN_COMBAT.getNullable(entity);
-		return inCombatComponent != null && inCombatComponent.inCombat();
+		return InCombatEvent.COMBAT_TICKS.getOrDefault(entity.getUUID(), 0) > 0;
 	}
 }

@@ -12,7 +12,6 @@ import moriyashiine.enchancement.common.component.entity.enchantmenteffecttype.F
 import moriyashiine.enchancement.common.component.entity.enchantmenteffecttype.FrozenGuardianComponent;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffecttype.FrozenSquidComponent;
 import moriyashiine.enchancement.common.component.entity.internal.GroundedCooldownComponent;
-import moriyashiine.enchancement.common.component.entity.internal.InCombatComponent;
 import moriyashiine.enchancement.common.component.entity.internal.UsingMaceComponent;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
@@ -72,7 +71,6 @@ public class ModEntityComponents implements EntityComponentInitializer {
 	public static final ComponentKey<UsingMaceComponent> ERUPTION = ComponentRegistry.getOrCreate(Enchancement.id("eruption"), UsingMaceComponent.class);
 	public static final ComponentKey<GroundedCooldownComponent> GROUNDED_COOLDOWN = ComponentRegistry.getOrCreate(Enchancement.id("grounded_cooldown"), GroundedCooldownComponent.class);
 	public static final ComponentKey<UsingMaceComponent> LAUNCH_WIND_CHARGE = ComponentRegistry.getOrCreate(Enchancement.id("launch_wind_charge"), UsingMaceComponent.class);
-	public static final ComponentKey<InCombatComponent> IN_COMBAT = ComponentRegistry.getOrCreate(Enchancement.id("in_combat"), InCombatComponent.class);
 
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
@@ -117,6 +115,5 @@ public class ModEntityComponents implements EntityComponentInitializer {
 		registry.registerForPlayers(ERUPTION, _ -> new UsingMaceComponent(), RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(GROUNDED_COOLDOWN, GroundedCooldownComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerForPlayers(LAUNCH_WIND_CHARGE, _ -> new UsingMaceComponent(), RespawnCopyStrategy.LOSSLESS_ONLY);
-		registry.registerFor(LivingEntity.class, IN_COMBAT, _ -> new InCombatComponent());
 	}
 }
