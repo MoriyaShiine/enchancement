@@ -1,4 +1,9 @@
 ------------------------------------------------------
+Version 26.1-r13
+------------------------------------------------------
+- fix certain enchantments resetting with a delay when ping is high
+
+------------------------------------------------------
 Version 26.1-r12
 ------------------------------------------------------
 - slide's slam now synergizes with bouncy, and both now work with modded fall damage sources (such a custom dripstone-like blocks)
