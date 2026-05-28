@@ -86,6 +86,7 @@
 	"config.toggleablepassives.ItemStackMixin",
 	"config.toggleablepassives.ThrownTridentMixin",
 	"config.weaponenchantmentcooldownrequirement.PlayerMixin",
+	"enchantmenteffectcomponenttype.LivingEntityMixin",
 	"enchantmenteffectcomponenttype.airjump.LivingEntityMixin",
 	"enchantmenteffectcomponenttype.allowcrossbowcooldownreloading.ServerPlayerGameModeMixin",
 	"enchantmenteffectcomponenttype.allowloadingprojectile.BowItemMixin",

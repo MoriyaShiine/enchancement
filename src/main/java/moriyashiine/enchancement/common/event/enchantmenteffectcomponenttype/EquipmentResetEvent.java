@@ -18,16 +18,20 @@ public class EquipmentResetEvent implements ServerEntityEvents.EquipmentChange {
 		ServerEntityEvents.EQUIPMENT_CHANGE.register(new EquipmentResetEvent());
 	}
 
-	@Override
-	public void onChange(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack previousStack, ItemStack currentStack) {
-		if (!ItemStack.matchesIgnoringComponents(previousStack, currentStack, DataComponentType::ignoreSwapAnimation)) {
-			if (equipmentSlot.getType() != EquipmentSlot.Type.HAND) {
-				for (ComponentKey<?> key : livingEntity.asComponentProvider().getComponentContainer().keys()) {
-					if (livingEntity.getComponent(key) instanceof PushComponent pushComponent && EnchantmentHelper.has(currentStack, pushComponent.getEffectType())) {
-						pushComponent.resetNextTick();
-					}
+	public static void maybeReset(LivingEntity entity, ItemStack previous, ItemStack current) {
+		if (!ItemStack.matchesIgnoringComponents(previous, current, DataComponentType::ignoreSwapAnimation)) {
+			for (ComponentKey<?> key : entity.asComponentProvider().getComponentContainer().keys()) {
+				if (entity.getComponent(key) instanceof PushComponent pushComponent && EnchantmentHelper.has(current, pushComponent.getEffectType())) {
+					pushComponent.resetNextTick();
 				}
 			}
+		}
+	}
+
+	@Override
+	public void onChange(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack previousStack, ItemStack currentStack) {
+		if (equipmentSlot.getType() != EquipmentSlot.Type.HAND) {
+			maybeReset(livingEntity, previousStack, currentStack);
 		}
 	}
 }

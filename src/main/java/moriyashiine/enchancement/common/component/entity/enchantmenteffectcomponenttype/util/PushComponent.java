@@ -53,14 +53,8 @@ public abstract class PushComponent implements AutoSyncedComponent, CommonTickin
 		} else {
 			reset();
 		}
-	}
-
-	@Override
-	public void serverTick() {
-		tick();
 		if (resetNextTick) {
 			reset();
-			sync();
 			resetNextTick = false;
 		}
 	}
