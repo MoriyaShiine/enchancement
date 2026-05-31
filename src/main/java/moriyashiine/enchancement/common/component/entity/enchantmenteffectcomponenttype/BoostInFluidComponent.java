@@ -20,6 +20,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.nautilus.AbstractNautilus;
 import net.minecraft.world.entity.player.Player;
@@ -69,7 +70,7 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 			if (damageTicks > 0) {
 				damageTicks--;
 			}
-			if (obj.hurtTime != 0) {
+			if (obj.hurtTime != 0 && (obj.getLastDamageSource() == null || !obj.getLastDamageSource().is(DamageTypes.DROWN))) {
 				damageTicks = 10;
 			}
 			if (ModConfig.enhanceMobs && !obj.is(EntityTypeTags.AQUATIC) && !obj.slib$isPlayer() && !obj.hasControllingPassenger()) {
