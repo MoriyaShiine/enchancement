@@ -1,4 +1,9 @@
 ------------------------------------------------------
+Version 26.1-r14
+------------------------------------------------------
+- buoy is no longer canceled if the damage taken was drowning
+
+------------------------------------------------------
 Version 26.1-r13
 ------------------------------------------------------
 - fix certain enchantments resetting with a delay when ping is high
