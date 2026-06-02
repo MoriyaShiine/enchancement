@@ -28,11 +28,13 @@ public class BounceEvent implements PreventFallDamageEvent {
 			if (fallDistance > entity.getMaxFallDistance() + 1) {
 				SLibUtils.playSound(entity, SoundEvents.SLIME_BLOCK_FALL);
 				BounceComponent bounceComponent = ModEntityComponents.BOUNCE.get(entity);
-				double bounceStrength = EnchancementUtil.altLog(1.05, fallDistance / 7, 1 / 16F);
-				if (shouldBounce(entity, bounceComponent)) {
-					bounceComponent.bounce(bounceStrength);
+				if (!bounceComponent.wasHurtRecently()) {
+					double bounceStrength = EnchancementUtil.altLog(1.05, fallDistance / 7, 1 / 16F);
+					if (shouldBounce(entity, bounceComponent)) {
+						bounceComponent.bounce(bounceStrength);
+					}
+					ModEntityComponents.CHARGE_JUMP.maybeGet(entity).ifPresent(chargeJumpComponent -> chargeJumpComponent.addChargeDelayed(bounceStrength * 4));
 				}
-				ModEntityComponents.CHARGE_JUMP.maybeGet(entity).ifPresent(chargeJumpComponent -> chargeJumpComponent.addChargeDelayed(bounceStrength * 4));
 			}
 			return TriState.TRUE;
 		}
