@@ -72,8 +72,13 @@ public class Torch extends AbstractArrow {
 	public void tick() {
 		super.tick();
 		if (level().isClientSide()) {
-			level().addParticle(ParticleTypes.FLAME, getX(), getY(), getZ(), 0, 0, 0);
-			level().addParticle(ParticleTypes.SMOKE, getX(), getY(), getZ(), 0, 0, 0);
+			for (float i = 0.2F; i <= 1; i += 0.2F) {
+				double dX = xOld - (xOld - getX()) * i;
+				double dY = yOld - (yOld - getY()) * i;
+				double dZ = zOld - (zOld - getZ()) * i;
+				level().addParticle(ParticleTypes.FLAME, dX, dY, dZ, 0, 0, 0);
+				level().addParticle(ParticleTypes.SMOKE, dX, dY, dZ, 0, 0, 0);
+			}
 		}
 	}
 

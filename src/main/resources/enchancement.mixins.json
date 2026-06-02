@@ -211,7 +211,6 @@
 	"enchantmenteffectcomponenttype.lightningdash.client.ItemInHandRendererMixin",
 	"enchantmenteffectcomponenttype.modifydetectionrange.client.EntityMixin",
 	"enchantmenteffectcomponenttype.rage.client.CuboidItemModelWrapperMixin",
-	"enchantmenteffectcomponenttype.rapidcrossbowfire.client.MinecraftMixin",
 	"enchantmenteffectcomponenttype.slam.client.AvatarRendererMixin",
 	"enchantmenteffectcomponenttype.slide.client.GameRendererMixin",
 	"enchantmenteffectcomponenttype.slide.client.KeyboardInputMixin",

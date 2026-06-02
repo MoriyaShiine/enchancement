@@ -4,17 +4,22 @@
 
 package moriyashiine.enchancement.mixin.item.client;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.init.ModComponentTypes;
+import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.world.item.effects.AllowLoadingProjectileEffect;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.ItemOwner;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.component.ChargedProjectiles;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -24,8 +29,8 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Mixin(ItemModelResolver.class)
 public class ItemModelResolverMixin {
 	@ModifyVariable(method = "appendItemLayers", at = @At("STORE"), name = "modelId")
-	private Identifier enchancement$chargedModel(Identifier modelId, ItemStackRenderState output, ItemStack item) {
-		Identifier chargedModel = getChargedModel(item);
+	private Identifier enchancement$chargedModel(Identifier modelId, ItemStackRenderState output, ItemStack item, @Nullable @Local(argsOnly = true) ItemOwner owner) {
+		Identifier chargedModel = getChargedModel(item, owner);
 		if (chargedModel != null) {
 			return chargedModel;
 		}
@@ -33,7 +38,13 @@ public class ItemModelResolverMixin {
 	}
 
 	@Unique
-	private static @Nullable Identifier getChargedModel(ItemStack stack) {
+	private static @Nullable Identifier getChargedModel(ItemStack stack, @Nullable ItemOwner owner) {
+		if (owner != null && owner.asLivingEntity() instanceof LivingEntity user && user.isUsingItem() && user.getActiveItem() == stack && EnchantmentHelper.has(stack, ModEnchantmentEffectComponentTypes.RAPID_CROSSBOW_FIRE)) {
+			Identifier chargedModel = getChargedModel(stack, user.getProjectile(stack).getItem());
+			if (chargedModel != null) {
+				return chargedModel;
+			}
+		}
 		for (ItemStackTemplate projectile : stack.getOrDefault(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.EMPTY).items()) {
 			Identifier chargedModel = getChargedModel(stack, projectile.item().value());
 			if (chargedModel != null) {
