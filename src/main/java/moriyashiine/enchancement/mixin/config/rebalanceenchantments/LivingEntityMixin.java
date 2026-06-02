@@ -29,9 +29,20 @@ public abstract class LivingEntityMixin {
 	@Shadow
 	public abstract ItemStack getActiveItem();
 
+	@ModifyExpressionValue(method = "hurtServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;hasEffect(Lnet/minecraft/core/Holder;)Z"))
+	private boolean enchancement$rebalanceEnchantmentsBypass(boolean original, @Local(argsOnly = true) DamageSource source) {
+		if (original && source.is(DamageTypes.ON_FIRE) && ModEntityComponents.IGNITED.get(this).ignoreFireResistance()) {
+			return false;
+		}
+		return original;
+	}
+
 	@ModifyExpressionValue(method = "hurtServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/damagesource/DamageSource;is(Lnet/minecraft/tags/TagKey;)Z", ordinal = 4))
-	private boolean enchancement$rebalanceEnchantments(boolean original, @Local(argsOnly = true) DamageSource source) {
-		return original || (source.is(DamageTypes.ON_FIRE) && ModEntityComponents.IGNITE_KNOCKBACK.get(this).isIgnited());
+	private boolean enchancement$rebalanceEnchantmentsKnockback(boolean original, @Local(argsOnly = true) DamageSource source) {
+		if (!original && source.is(DamageTypes.ON_FIRE) && ModEntityComponents.IGNITED.get(this).isIgnited()) {
+			return true;
+		}
+		return original;
 	}
 
 	@SuppressWarnings("ConstantValue")

@@ -223,6 +223,15 @@ public class EnchancementUtil {
 		return ModConfig.disableDurability && !stack.isEmpty() && stack.has(DataComponents.MAX_DAMAGE) && !stack.is(ModItemTags.RETAINS_DURABILITY);
 	}
 
+	// rebalance enchantments
+
+	public static void rebalanceIgniteForSeconds(LivingEntity entity, float numberOfSeconds) {
+		if (ModConfig.rebalanceEnchantments) {
+			ModEntityComponents.IGNITED.get(entity).markIgnited();
+		}
+		entity.igniteForSeconds(numberOfSeconds);
+	}
+
 	// rebalance equipment
 
 	public static float getItemUseSpeedMultiplier(ItemStack stack, float original) {

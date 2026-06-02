@@ -9,28 +9,30 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
-public class IgniteKnockbackComponent implements ServerTickingComponent {
+public class IgnitedComponent implements ServerTickingComponent {
 	private final LivingEntity obj;
-	private boolean ignited = false;
+	private boolean ignited = false, ignoreFireResistance = false;
 
-	public IgniteKnockbackComponent(LivingEntity obj) {
+	public IgnitedComponent(LivingEntity obj) {
 		this.obj = obj;
 	}
 
 	@Override
 	public void readData(ValueInput input) {
 		ignited = input.getBooleanOr("Ignited", false);
+		ignoreFireResistance = input.getBooleanOr("IgnoreFireResistance", false);
 	}
 
 	@Override
 	public void writeData(ValueOutput output) {
 		output.putBoolean("Ignited", ignited);
+		output.putBoolean("IgnoreFireResistance", ignoreFireResistance);
 	}
 
 	@Override
 	public void serverTick() {
 		if (ignited && !obj.isOnFire()) {
-			ignited = false;
+			ignited = ignoreFireResistance = false;
 		}
 	}
 
@@ -40,5 +42,13 @@ public class IgniteKnockbackComponent implements ServerTickingComponent {
 
 	public void markIgnited() {
 		ignited = true;
+	}
+
+	public boolean ignoreFireResistance() {
+		return ignoreFireResistance;
+	}
+
+	public void alternateIgnoreFireResistance() {
+		ignoreFireResistance = !ignoreFireResistance;
 	}
 }

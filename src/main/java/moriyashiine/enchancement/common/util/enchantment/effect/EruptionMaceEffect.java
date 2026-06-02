@@ -94,7 +94,7 @@ public class EruptionMaceEffect extends MaceEffect {
 		getNearby(player).forEach(entity -> {
 			DamageSource source = entity.damageSources().playerAttack(player);
 			float damage = EnchantmentHelper.modifyDamage(level, player.getMainHandItem(), entity, source, base) + player.getMainHandItem().getItem().getAttackDamageBonus(entity, base, source);
-			entity.igniteForSeconds(fireDuration);
+			EnchancementUtil.rebalanceIgniteForSeconds(entity, fireDuration);
 			if (entity.hurtServer(level, source, damage)) {
 				entity.knockback(1, player.getX() - entity.getX(), player.getZ() - entity.getZ());
 			}

@@ -5,6 +5,7 @@
 package moriyashiine.enchancement.common.world.entity.projectile.arrow;
 
 import moriyashiine.enchancement.common.init.ModEntityTypes;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -90,7 +91,7 @@ public class Torch extends AbstractArrow {
 		if (entity instanceof LivingEntity living && entity.getType() != EntityType.ENDERMAN) {
 			playSound(SoundEvents.FIRE_EXTINGUISH, 1, 1);
 			if (!level().isClientSide()) {
-				living.igniteForSeconds(Math.min(16, Mth.ceil(living.getRemainingFireTicks() / 20F) + ignitionTime));
+				EnchancementUtil.rebalanceIgniteForSeconds(living, Math.min(16, Mth.ceil(living.getRemainingFireTicks() / 20F) + ignitionTime));
 			}
 		}
 		super.onHitEntity(hitResult);

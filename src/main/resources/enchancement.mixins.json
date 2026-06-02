@@ -50,6 +50,7 @@
 	"config.rebalanceeffects.WitherSkullMixin",
 	"config.rebalanceenchantments.AbstractNautilusMixin",
 	"config.rebalanceenchantments.EnchantmentHelperMixin",
+	"config.rebalanceenchantments.EntityMixin",
 	"config.rebalanceenchantments.ExplodeEffectMixin",
 	"config.rebalanceenchantments.IgniteMixin",
 	"config.rebalanceenchantments.LightningBoltMixin",

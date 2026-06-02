@@ -58,7 +58,7 @@
 	"cardinal-components": [
 	  "enchancement:chiseled_bookshelf",
 	  "enchancement:air_mobility",
-	  "enchancement:ignite_knockback",
+	  "enchancement:ignited",
 	  "enchancement:limit_blocks_attacks",
 	  "enchancement:owned_trident",
 	  "enchancement:projectile_timer",
