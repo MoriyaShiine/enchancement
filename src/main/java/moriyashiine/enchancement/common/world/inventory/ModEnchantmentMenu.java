@@ -85,10 +85,10 @@ public class ModEnchantmentMenu extends AbstractContainerMenu {
 		}
 		addSlot(new Slot(enchantSlots, 0, 15, 31) {
 			@Override
-			public boolean mayPlace(ItemStack stack) {
-				if (isEnchantable(stack)) {
+			public boolean mayPlace(ItemStack itemStack) {
+				if (isEnchantable(itemStack)) {
 					for (Holder<Enchantment> enchantment : getAllEnchantments()) {
-						if (isEnchantmentAllowed(enchantment, stack)) {
+						if (isEnchantmentAllowed(enchantment, itemStack)) {
 							return true;
 						}
 					}
@@ -115,14 +115,14 @@ public class ModEnchantmentMenu extends AbstractContainerMenu {
 		});
 		addSlot(new Slot(enchantSlots, 1, 35, 31) {
 			@Override
-			public boolean mayPlace(ItemStack stack) {
-				return stack.is(Items.LAPIS_LAZULI);
+			public boolean mayPlace(ItemStack itemStack) {
+				return itemStack.is(Items.LAPIS_LAZULI);
 			}
 		});
 		addSlot(new Slot(enchantSlots, 2, 25, 51) {
 			@Override
-			public boolean mayPlace(ItemStack stack) {
-				return getEnchantingMaterial(slots.getFirst().getItem()).test(stack);
+			public boolean mayPlace(ItemStack itemStack) {
+				return getEnchantingMaterial(slots.getFirst().getItem()).test(itemStack);
 			}
 		});
 		addStandardInventorySlots(inventory, 8, 84);
@@ -136,7 +136,7 @@ public class ModEnchantmentMenu extends AbstractContainerMenu {
 	@Override
 	public ItemStack quickMoveStack(Player player, int slotIndex) {
 		ItemStack clicked = ItemStack.EMPTY;
-		Slot slot = slots.get(slotIndex);
+		Slot slot = getSlot(slotIndex);
 		if (slot.hasItem()) {
 			ItemStack slotStack = slot.getItem();
 			clicked = slotStack.copy();
@@ -179,22 +179,22 @@ public class ModEnchantmentMenu extends AbstractContainerMenu {
 	@Override
 	public boolean clickMenuButton(Player player, int buttonId) {
 		if (buttonId == 0) {
-			if (canEnchant(player, player.isCreative())) {
+			if (canEnchant(player, player.hasInfiniteMaterials())) {
 				access.execute((level, pos) -> {
 					ItemStack stack = slots.getFirst().getItem();
 					for (Holder<Enchantment> enchantment : selectedEnchantments) {
 						stack.enchant(enchantment, EnchancementUtil.alterLevel(stack, enchantment));
 					}
-					if (!player.isCreative() && cost > 0) {
+					if (!player.hasInfiniteMaterials() && cost > 0) {
 						player.onEnchantmentPerformed(stack, cost);
 					}
 					player.awardStat(Stats.ENCHANT_ITEM);
 					CriteriaTriggers.ENCHANTED_ITEM.trigger((ServerPlayer) player, stack, cost);
 					level.playSound(null, pos, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1, level.getRandom().nextFloat() * 0.1F + 0.9F);
-					if (!player.isCreative() && cost > 0) {
-						slots.get(1).getItem().shrink(cost);
-						if (!getEnchantingMaterial(slots.get(0).getItem()).isEmpty()) {
-							slots.get(2).getItem().shrink(cost);
+					if (!player.hasInfiniteMaterials() && cost > 0) {
+						getSlot(1).getItem().shrink(cost);
+						if (!getEnchantingMaterial(slots.getFirst().getItem()).isEmpty()) {
+							getSlot(2).getItem().shrink(cost);
 						}
 					}
 					enchantSlots.setChanged();
@@ -228,7 +228,7 @@ public class ModEnchantmentMenu extends AbstractContainerMenu {
 	public void slotsChanged(Container container) {
 		if (container == enchantSlots) {
 			ItemStack stack = slots.getFirst().getItem();
-			if (enchantingStack != stack) {
+			if (stack != enchantingStack) {
 				validEnchantments.clear();
 				selectedEnchantments.clear();
 				viewIndex = 0;
@@ -254,16 +254,16 @@ public class ModEnchantmentMenu extends AbstractContainerMenu {
 	}
 
 	public boolean canEnchant(Player player, boolean simulate) {
-		if (slots.get(0).hasItem()) {
-			if (!isEnchantable(slots.get(0).getItem())) {
+		if (slots.getFirst().hasItem()) {
+			if (!isEnchantable(slots.getFirst().getItem())) {
 				return false;
 			}
 			if (simulate) {
 				return true;
 			}
-			if (player.experienceLevel >= cost && slots.get(1).getItem().getCount() >= cost) {
-				if (!getEnchantingMaterial(slots.get(0).getItem()).isEmpty()) {
-					return slots.get(2).getItem().getCount() >= cost;
+			if (player.experienceLevel >= cost && getSlot(1).getItem().getCount() >= cost) {
+				if (!getEnchantingMaterial(slots.getFirst().getItem()).isEmpty()) {
+					return getSlot(2).getItem().getCount() >= cost;
 				}
 				return true;
 			}
@@ -276,6 +276,9 @@ public class ModEnchantmentMenu extends AbstractContainerMenu {
 	}
 
 	private EnchantingMaterial getEnchantingMaterial(ItemStack stack) {
+		if (stack.isEmpty()) {
+			return EnchantingMaterial.EMPTY;
+		}
 		EnchantingMaterial material = EnchantingMaterial.MATERIAL_MAP.getOrDefault(stack.getItem(), EnchantingMaterial.EMPTY);
 		if (material.isEmpty()) {
 			Set<ItemLike> items = new HashSet<>();
@@ -299,7 +302,7 @@ public class ModEnchantmentMenu extends AbstractContainerMenu {
 				if (EnchantingTableBlock.isValidBookShelf(level, pos, offset)) {
 					if (level.getBlockEntity(pos.offset(offset)) instanceof ChiseledBookShelfBlockEntity chiseledBookshelfBlockEntity) {
 						bookshelfCount += chiseledBookshelfBlockEntity.count() / 3;
-						if (ModConfig.overhaulEnchanting == OverhaulMode.CHISELED && !player.isCreative()) {
+						if (ModConfig.overhaulEnchanting == OverhaulMode.CHISELED && !player.hasInfiniteMaterials()) {
 							for (ItemStack stack : chiseledBookshelfBlockEntity) {
 								chiseledEnchantments.addAll(EnchantmentHelper.getEnchantmentsForCrafting(stack).keySet());
 							}
@@ -310,9 +313,9 @@ public class ModEnchantmentMenu extends AbstractContainerMenu {
 				}
 			}
 			bookshelfCount = Math.min(15, bookshelfCount);
-			if (ModConfig.overhaulEnchanting == OverhaulMode.CHISELED && player.isCreative()) {
-				Registry<Enchantment> enchantmentRegistry = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
-				enchantmentRegistry.forEach(enchantment -> chiseledEnchantments.add(enchantmentRegistry.wrapAsHolder(enchantment)));
+			if (ModConfig.overhaulEnchanting == OverhaulMode.CHISELED && player.hasInfiniteMaterials()) {
+				Registry<Enchantment> enchantments = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+				enchantments.forEach(enchantment -> chiseledEnchantments.add(enchantments.wrapAsHolder(enchantment)));
 			}
 			SyncBookshelvesPayload.send(player, chiseledEnchantments, bookshelfCount);
 		});

@@ -15,11 +15,11 @@ import net.minecraft.world.entity.MobCategory;
 import static moriyashiine.strawberrylib.api.module.SLibRegistries.registerEntityType;
 
 public class ModEntityTypes {
-	public static final EntityType<FrozenPlayer> FROZEN_PLAYER = registerEntityType("frozen_player", EntityType.Builder.of(FrozenPlayer::new, MobCategory.MISC).sized(EntityType.PLAYER.getWidth(), EntityType.PLAYER.getHeight()).noLootTable(), FrozenPlayer.createMobAttributes());
-	public static final EntityType<AmethystShard> AMETHYST_SHARD = registerEntityType("amethyst_shard", EntityType.Builder.<AmethystShard>of(AmethystShard::new, MobCategory.MISC).sized(EntityType.ARROW.getWidth(), EntityType.ARROW.getHeight()));
-	public static final EntityType<Brimstone> BRIMSTONE = registerEntityType("brimstone", EntityType.Builder.<Brimstone>of(Brimstone::new, MobCategory.MISC).sized(EntityType.ARROW.getWidth(), EntityType.ARROW.getHeight()).clientTrackingRange(64));
-	public static final EntityType<IceShard> ICE_SHARD = registerEntityType("ice_shard", EntityType.Builder.<IceShard>of(IceShard::new, MobCategory.MISC).sized(EntityType.ARROW.getWidth(), EntityType.ARROW.getHeight()));
-	public static final EntityType<Torch> TORCH = registerEntityType("torch", EntityType.Builder.<Torch>of(Torch::new, MobCategory.MISC).sized(EntityType.ARROW.getWidth(), EntityType.ARROW.getHeight()));
+	public static final EntityType<FrozenPlayer> FROZEN_PLAYER = registerEntityType("frozen_player", EntityType.Builder.of(FrozenPlayer::new, MobCategory.MISC).noLootTable().sized(0.6F, 1.8F), FrozenPlayer.createMobAttributes());
+	public static final EntityType<AmethystShard> AMETHYST_SHARD = registerEntityType("amethyst_shard", EntityType.Builder.<AmethystShard>of(AmethystShard::new, MobCategory.MISC).noLootTable().sized(0.5F, 0.5F).eyeHeight(0.13F).clientTrackingRange(4).updateInterval(20));
+	public static final EntityType<Brimstone> BRIMSTONE = registerEntityType("brimstone", EntityType.Builder.<Brimstone>of(Brimstone::new, MobCategory.MISC).noLootTable().sized(0.5F, 0.5F).eyeHeight(0.13F).clientTrackingRange(64).updateInterval(20));
+	public static final EntityType<IceShard> ICE_SHARD = registerEntityType("ice_shard", EntityType.Builder.<IceShard>of(IceShard::new, MobCategory.MISC).noLootTable().sized(0.5F, 0.5F).eyeHeight(0.13F).clientTrackingRange(4).updateInterval(20));
+	public static final EntityType<Torch> TORCH = registerEntityType("torch", EntityType.Builder.<Torch>of(Torch::new, MobCategory.MISC).noLootTable().sized(0.5F, 0.5F).eyeHeight(0.13F).clientTrackingRange(4).updateInterval(20));
 
 	public static void init() {
 	}

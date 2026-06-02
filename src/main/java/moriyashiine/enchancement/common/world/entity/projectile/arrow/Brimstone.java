@@ -62,7 +62,7 @@ public class Brimstone extends AbstractArrow {
 
 	private final Set<Entity> hitEntities = new HashSet<>(), killedEntities = new HashSet<>();
 
-	public Brimstone(EntityType<? extends AbstractArrow> type, Level level) {
+	public Brimstone(EntityType<Brimstone> type, Level level) {
 		super(type, level);
 	}
 

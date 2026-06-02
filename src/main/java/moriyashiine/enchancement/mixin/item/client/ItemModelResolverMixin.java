@@ -25,7 +25,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class ItemModelResolverMixin {
 	@ModifyVariable(method = "appendItemLayers", at = @At("STORE"), name = "modelId")
 	private Identifier enchancement$chargedModel(Identifier modelId, ItemStackRenderState output, ItemStack item) {
-		@Nullable Identifier chargedModel = getChargedModel(item);
+		Identifier chargedModel = getChargedModel(item);
 		if (chargedModel != null) {
 			return chargedModel;
 		}
@@ -35,7 +35,7 @@ public class ItemModelResolverMixin {
 	@Unique
 	private static @Nullable Identifier getChargedModel(ItemStack stack) {
 		for (ItemStackTemplate projectile : stack.getOrDefault(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.EMPTY).items()) {
-			@Nullable Identifier chargedModel = getChargedModel(stack, projectile.item().value());
+			Identifier chargedModel = getChargedModel(stack, projectile.item().value());
 			if (chargedModel != null) {
 				return chargedModel;
 			}

@@ -35,7 +35,7 @@ public class Torch extends AbstractArrow {
 	private boolean canFunction = true, shouldPlaceTorch = true;
 	private int ignitionTime = 0;
 
-	public Torch(EntityType<? extends AbstractArrow> type, Level level) {
+	public Torch(EntityType<Torch> type, Level level) {
 		super(type, level);
 	}
 

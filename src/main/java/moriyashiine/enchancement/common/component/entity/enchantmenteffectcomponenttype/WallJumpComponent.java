@@ -34,6 +34,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import org.jspecify.annotations.Nullable;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
@@ -89,14 +90,16 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 	@Override
 	public void serverTick() {
 		tick();
-		AttributeInstance safeFallDistance = obj.getAttribute(Attributes.SAFE_FALL_DISTANCE);
-		if (hasJumped) {
-			if (!safeFallDistance.hasModifier(SAFE_FALL_DISTANCE_ID)) {
-				int reduction = Mth.floor(CappedMultiplyDeltaMovementEvent.getJumpStrength(obj, jumpStrength * 3) * 10);
-				safeFallDistance.addPermanentModifier(new AttributeModifier(SAFE_FALL_DISTANCE_ID, reduction, AttributeModifier.Operation.ADD_VALUE));
+		@Nullable AttributeInstance safeFallDistance = obj.getAttribute(Attributes.SAFE_FALL_DISTANCE);
+		if (safeFallDistance != null) {
+			if (hasJumped) {
+				if (!safeFallDistance.hasModifier(SAFE_FALL_DISTANCE_ID)) {
+					int reduction = Mth.floor(CappedMultiplyDeltaMovementEvent.getJumpStrength(obj, jumpStrength * 3) * 10);
+					safeFallDistance.addPermanentModifier(new AttributeModifier(SAFE_FALL_DISTANCE_ID, reduction, AttributeModifier.Operation.ADD_VALUE));
+				}
+			} else if (safeFallDistance.hasModifier(SAFE_FALL_DISTANCE_ID)) {
+				safeFallDistance.removeModifier(SAFE_FALL_DISTANCE_ID);
 			}
-		} else if (safeFallDistance.hasModifier(SAFE_FALL_DISTANCE_ID)) {
-			safeFallDistance.removeModifier(SAFE_FALL_DISTANCE_ID);
 		}
 	}
 

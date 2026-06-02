@@ -12,10 +12,12 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import org.jspecify.annotations.Nullable;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
 import java.util.ArrayList;
@@ -50,7 +52,10 @@ public class ConditionalAttributesComponent implements ServerTickingComponent {
 			if (!removeAll && attribute.condition().test(context)) {
 				return false;
 			}
-			obj.getAttribute(attribute.attribute()).removeModifier(attribute.id());
+			@Nullable AttributeInstance attributeInstance = obj.getAttribute(attribute.attribute());
+			if (attributeInstance != null) {
+				attributeInstance.removeModifier(attribute.id());
+			}
 			return true;
 		});
 		removeAll = false;

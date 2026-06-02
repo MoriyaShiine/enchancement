@@ -11,6 +11,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.item.enchantment.EnchantedItemInUse;
 import net.minecraft.world.item.enchantment.effects.EnchantmentAttributeEffect;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.phys.Vec3;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -40,7 +42,8 @@ public record ConditionalAttributeEnchantmentEffect(EnchantmentAttributeEffect e
 			LootContext context = createContext(serverLevel, living);
 			if (condition().test(context)) {
 				Identifier id = effect().id().withSuffix("/" + item.inSlot().getName());
-				if (!living.getAttribute(effect().attribute()).hasModifier(id)) {
+				@Nullable AttributeInstance attributeInstance = living.getAttribute(effect().attribute());
+				if (attributeInstance != null && !attributeInstance.hasModifier(id)) {
 					effect().onChangedBlock(serverLevel, enchantmentLevel, item, entity, position, true);
 					ModEntityComponents.CONDITIONAL_ATTRIBUTES.get(living).addAttribute(effect().attribute(), id, condition());
 				}

@@ -24,11 +24,11 @@ import net.minecraft.world.phys.EntityHitResult;
 import org.jspecify.annotations.Nullable;
 
 public abstract class ShardEntity extends AbstractArrow {
-	protected ShardEntity(EntityType<? extends AbstractArrow> type, Level level) {
+	protected ShardEntity(EntityType<? extends ShardEntity> type, Level level) {
 		super(type, level);
 	}
 
-	protected ShardEntity(EntityType<? extends AbstractArrow> type, LivingEntity mob, Level level, @Nullable ItemStack firedFromWeapon) {
+	protected ShardEntity(EntityType<? extends ShardEntity> type, LivingEntity mob, Level level, @Nullable ItemStack firedFromWeapon) {
 		super(type, mob, level, ItemStack.EMPTY, firedFromWeapon);
 	}
 
@@ -61,13 +61,13 @@ public abstract class ShardEntity extends AbstractArrow {
 
 	@Override
 	protected void onHitEntity(EntityHitResult entityHitResult) {
-		if (level() instanceof ServerLevel world) {
+		if (level() instanceof ServerLevel level) {
 			Entity entity = entityHitResult.getEntity();
 			if (entity instanceof EnderDragonPart part) {
 				entity = part.parentMob;
 			}
 			Entity owner = getOwner();
-			if (SLibUtils.shouldHurt(owner, entity) && entity.hurtServer(world, world.damageSources().source(getDamageType(), this, owner), (float) baseDamage)) {
+			if (SLibUtils.shouldHurt(owner, entity) && entity.hurtServer(level, level.damageSources().source(getDamageType(), this, owner), (float) baseDamage)) {
 				onTargetHit(entity);
 				playSound(getDefaultHitGroundSoundEvent(), 1, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
 				addParticles();
@@ -87,7 +87,7 @@ public abstract class ShardEntity extends AbstractArrow {
 		}
 	}
 
-	public void addParticles() {
+	private void addParticles() {
 		((ServerLevel) level()).sendParticles(getParticleEffect(), getX(), getY(), getZ(), 8, getBbWidth() / 2, getBbHeight() / 2, getBbWidth() / 2, 0);
 	}
 }

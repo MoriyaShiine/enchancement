@@ -130,7 +130,7 @@ public class ModEnchantmentScreen extends AbstractContainerScreen<ModEnchantment
 	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
 		int left = (width - imageWidth) / 2;
 		int top = (height - imageHeight) / 2 - 16;
-		if (menu.canEnchant(minecraft.player, minecraft.player.isCreative()) && isInEnchantButtonBounds(left, top, (int) event.x(), (int) event.y()) && !menu.selectedEnchantments.isEmpty() && menu.clickMenuButton(minecraft.player, 0)) {
+		if (menu.canEnchant(minecraft.player, minecraft.player.hasInfiniteMaterials()) && isInEnchantButtonBounds(left, top, (int) event.x(), (int) event.y()) && !menu.selectedEnchantments.isEmpty() && menu.clickMenuButton(minecraft.player, 0)) {
 			minecraft.gameMode.handleInventoryButtonClick(menu.containerId, 0);
 			return true;
 		}
@@ -223,7 +223,7 @@ public class ModEnchantmentScreen extends AbstractContainerScreen<ModEnchantment
 					MutableComponent itemName = Component.translatable(menu.getEnchantingMaterial().get(materialIndex).value().getDescriptionId());
 					repairCost = Component.translatable("tooltip." + Enchancement.MOD_ID + ".material_cost", menu.getCost(), itemName).withStyle(ChatFormatting.GREEN);
 				}
-				if (!minecraft.player.isCreative()) {
+				if (!minecraft.player.hasInfiniteMaterials()) {
 					if (minecraft.player.experienceLevel < menu.getCost()) {
 						expCost.withStyle(ChatFormatting.RED);
 					}

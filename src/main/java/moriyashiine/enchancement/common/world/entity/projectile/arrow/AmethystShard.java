@@ -14,7 +14,6 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -23,7 +22,7 @@ import org.jspecify.annotations.Nullable;
 public class AmethystShard extends ShardEntity {
 	private static final ParticleOptions PARTICLE = new ItemParticleOption(ParticleTypes.ITEM, Items.AMETHYST_SHARD);
 
-	public AmethystShard(EntityType<? extends AbstractArrow> type, Level level) {
+	public AmethystShard(EntityType<AmethystShard> type, Level level) {
 		super(type, level);
 	}
 

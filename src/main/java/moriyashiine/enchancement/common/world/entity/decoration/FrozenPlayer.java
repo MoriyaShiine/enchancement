@@ -22,7 +22,7 @@ public class FrozenPlayer extends Mob {
 
 	public static final EntityDataAccessor<Boolean> SLIM = SynchedEntityData.defineId(FrozenPlayer.class, EntityDataSerializers.BOOLEAN);
 
-	public FrozenPlayer(EntityType<? extends Mob> type, Level level) {
+	public FrozenPlayer(EntityType<FrozenPlayer> type, Level level) {
 		super(type, level);
 	}
 
