@@ -102,15 +102,9 @@ public class ModEnchantmentMenu extends AbstractContainerMenu {
 			}
 
 			@Override
-			public void onTake(Player player, ItemStack stack) {
-				validEnchantments.clear();
-				selectedEnchantments.clear();
-				viewIndex = 0;
-				enchantingStack = ItemStack.EMPTY;
-				enchantingMaterial = EnchantingMaterial.EMPTY;
-				cost = 0;
-				player.getInventory().placeItemBackInInventory(slots.get(2).getItem().copyAndClear());
-				super.onTake(player, stack);
+			public void setByPlayer(ItemStack itemStack, ItemStack previous) {
+				super.setByPlayer(itemStack, previous);
+				inventory.placeItemBackInInventory(getSlot(2).getItem().copyAndClear());
 			}
 		});
 		addSlot(new Slot(enchantSlots, 1, 35, 31) {
