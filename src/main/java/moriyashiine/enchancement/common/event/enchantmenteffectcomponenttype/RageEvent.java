@@ -5,6 +5,7 @@
 package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
 import moriyashiine.enchancement.api.event.CappedMultiplyDeltaMovementEvent;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.world.item.effects.RageEffect;
 import moriyashiine.strawberrylib.api.event.ModifyDamageTakenEvent;
 import moriyashiine.strawberrylib.api.event.ModifyStackDamageEvent;
@@ -26,7 +27,7 @@ public class RageEvent {
 	private static class DamageDealtBonus implements ModifyStackDamageEvent {
 		@Override
 		public float modify(ServerLevel level, ItemStack stack, Entity victim, DamageSource source, float damage) {
-			if (source.getDirectEntity() instanceof LivingEntity living) {
+			if (EnchancementUtil.shouldApplyWeaponCooldown() && source.getDirectEntity() instanceof LivingEntity living) {
 				return RageEffect.getDamageDealtModifier(living, stack);
 			}
 			return 0;

@@ -115,7 +115,7 @@
   "enchantment.enchancement.extracting": "Extracting",
   "enchantment.enchancement.extracting.desc": "Extracts materials from connected ores while not sneaking, leaving the stone behind.",
   "enchantment.enchancement.beheading": "Beheading",
-  "enchantment.enchancement.beheading.desc": "Increases damage dealt. Slain mobs have a chance to drop their head.",
+  "enchantment.enchancement.beheading.desc": "Increases damage dealt with headshots. Slain mobs have a chance to drop their head.",
   "enchantment.enchancement.lumberjack": "Lumberjack",
   "enchantment.enchancement.lumberjack.desc": "Connected logs will also be destroyed while not sneaking.",
   "enchantment.enchancement.scooping": "Scooping",

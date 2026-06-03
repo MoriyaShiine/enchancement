@@ -33,12 +33,12 @@ public class HeadDropsEvent implements ServerEntityCombatEvents.AfterKilledOther
 	@Override
 	public void afterKilledOtherEntity(ServerLevel level, Entity entity, LivingEntity killedEntity, DamageSource damageSource) {
 		if (entity instanceof LivingEntity attacker) {
-			float dropChance = getDropChance(level, attacker, new DamageSource(attacker.damageSources().generic().typeHolder(), attacker, attacker));
-			if (dropChance > 0) {
+			float dropChanceMultiplier = getDropChanceMultiplier(level, attacker, new DamageSource(attacker.damageSources().generic().typeHolder(), attacker, attacker));
+			if (dropChanceMultiplier > 0) {
 				for (EntityType<?> entityType : HeadDrop.DROP_MAP.keySet()) {
 					if (killedEntity.getType() == entityType) {
 						HeadDrop entry = HeadDrop.DROP_MAP.get(entityType);
-						if (killedEntity.getRandom().nextFloat() * dropChance < entry.chance()) {
+						if (killedEntity.getRandom().nextFloat() * dropChanceMultiplier < entry.chance()) {
 							ItemStack stack = new ItemStack(entry.drop());
 							if (stack.getItem() == Items.PLAYER_HEAD && killedEntity instanceof Player player) {
 								stack.set(DataComponents.PROFILE, ResolvableProfile.createResolved(player.getGameProfile()));
@@ -51,7 +51,7 @@ public class HeadDropsEvent implements ServerEntityCombatEvents.AfterKilledOther
 		}
 	}
 
-	private static float getDropChance(ServerLevel level, LivingEntity attacker, DamageSource damageSource) {
+	private static float getDropChanceMultiplier(ServerLevel level, LivingEntity attacker, DamageSource damageSource) {
 		MutableFloat mutableFloat = new MutableFloat(0);
 		RandomSource random = attacker.getRandom();
 		EnchantmentHelper.runIterationOnEquipment(attacker, (enchantment, enchantmentLevel, _) -> {

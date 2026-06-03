@@ -669,8 +669,8 @@ public class ModEnchantments {
 							new AddValue(LevelBasedValue.perLevel(0.5F)),
 							LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.ATTACKER, EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypes, EntityType.PLAYER))));
 					builder.withEffect(
-							EnchantmentEffectComponents.DAMAGE,
-							new AddValue(LevelBasedValue.perLevel(0.5F)));
+							ModEnchantmentEffectComponentTypes.HEADSHOT,
+							new AddValue(LevelBasedValue.perLevel(1.5F)));
 				}));
 		registry.register(LUMBERJACK, create(LUMBERJACK.identifier(),
 				items.getOrThrow(ItemTags.AXES),
