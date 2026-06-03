@@ -39,8 +39,13 @@ public abstract class LivingEntityMixin {
 
 	@ModifyExpressionValue(method = "hurtServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/damagesource/DamageSource;is(Lnet/minecraft/tags/TagKey;)Z", ordinal = 4))
 	private boolean enchancement$rebalanceEnchantmentsKnockback(boolean original, @Local(argsOnly = true) DamageSource source) {
-		if (!original && source.is(DamageTypes.ON_FIRE) && ModEntityComponents.IGNITED.get(this).isIgnited()) {
-			return true;
+		if (ModConfig.rebalanceEnchantments && !original) {
+			if (source.is(DamageTypes.ON_FIRE) && ModEntityComponents.IGNITED.get(this).isIgnited()) {
+				return true;
+			}
+			if (source.is(DamageTypes.FREEZE) && ModEntityComponents.FROZEN.get(this).getFreezeTicks() > 0) {
+				return true;
+			}
 		}
 		return original;
 	}

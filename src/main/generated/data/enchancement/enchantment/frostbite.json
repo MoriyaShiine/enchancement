@@ -11,8 +11,8 @@
 		  "type": "enchancement:freeze",
 		  "duration": {
 			"type": "minecraft:linear",
-			"base": 6.0,
-			"per_level_above_first": 6.0
+			"base": 3.0,
+			"per_level_above_first": 3.0
 		  }
 		},
 		"enchanted": "attacker",

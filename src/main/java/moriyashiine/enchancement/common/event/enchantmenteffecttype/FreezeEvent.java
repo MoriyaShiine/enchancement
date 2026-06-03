@@ -36,8 +36,8 @@ public class FreezeEvent {
 		@Override
 		public boolean allowDamage(LivingEntity entity, DamageSource source, float amount) {
 			FrozenComponent frozenComponent = ModEntityComponents.FROZEN.get(entity);
-			if (FrozenComponent.isSourceFrostbiteWeapon(source)) {
-				frozenComponent.setLastFreezingAttacker(source.getEntity());
+			if (FrozenComponent.isSourceFreezeWeapon(source) && source.getEntity() instanceof LivingEntity attacker) {
+				frozenComponent.setLastFreezingAttacker(attacker);
 			}
 			if (frozenComponent.isFrozen()) {
 				if (source.is(DamageTypes.FREEZE)) {
@@ -83,7 +83,9 @@ public class FreezeEvent {
 						frozenPlayer.setXRot(entity.getXRot());
 						frozenPlayer.tickCount = entity.tickCount;
 						frozenPlayer.teleportTo(entity.getX(), entity.getY(), entity.getZ());
-						ModEntityComponents.FROZEN.get(frozenPlayer).freeze();
+						FrozenComponent frozenPlayerFrozenComponent = ModEntityComponents.FROZEN.get(frozenPlayer);
+						frozenPlayerFrozenComponent.setLastFreezingAttacker(frozenComponent.getLastFreezingAttacker());
+						frozenPlayerFrozenComponent.freeze();
 						SyncFrozenPlayerSlimStatusS2CPayload.send(player, frozenPlayer.getUUID());
 						entity.level().addFreshEntity(frozenPlayer);
 					}

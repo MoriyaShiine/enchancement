@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common.world.entity.projectile.arrow;
 
 import moriyashiine.enchancement.common.init.ModDamageTypes;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
+import moriyashiine.enchancement.common.world.item.effects.entity.FreezeEnchantmentEffect;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -47,8 +48,6 @@ public class IceShard extends ShardEntity {
 
 	@Override
 	protected void onTargetHit(Entity entity) {
-		if (entity.canFreeze()) {
-			entity.setTicksFrozen(400);
-		}
+		FreezeEnchantmentEffect.setFreezeTicks(entity, 200);
 	}
 }

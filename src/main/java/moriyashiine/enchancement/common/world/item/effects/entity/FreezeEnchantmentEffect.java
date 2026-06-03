@@ -6,7 +6,9 @@ package moriyashiine.enchancement.common.world.item.effects.entity;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import moriyashiine.enchancement.common.init.ModEntityComponents;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.enchantment.EnchantedItemInUse;
@@ -26,11 +28,17 @@ public record FreezeEnchantmentEffect(LevelBasedValue duration) implements Encha
 
 	@Override
 	public void apply(ServerLevel serverLevel, int enchantmentLevel, EnchantedItemInUse item, Entity entity, Vec3 position) {
-		if (entity.canFreeze()) {
-			int freezeTicks = Mth.floor(duration().calculate(enchantmentLevel) * 20);
-			if (entity.getTicksFrozen() < freezeTicks) {
-				entity.setTicksFrozen(freezeTicks);
-			}
+		setFreezeTicks(entity, Mth.floor(duration().calculate(enchantmentLevel) * 20));
+	}
+
+	public static void setFreezeTicks(Entity entity, int freezeTicks) {
+		if (entity.isAlive() && !entity.is(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES)) {
+			ModEntityComponents.FROZEN.maybeGet(entity).ifPresent(frozenComponent -> {
+				if (frozenComponent.getFreezeTicks() < freezeTicks) {
+					frozenComponent.setFreezeTicks(freezeTicks);
+					frozenComponent.sync();
+				}
+			});
 		}
 	}
 }

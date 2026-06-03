@@ -50,6 +50,8 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, S extend
 			state.walkAnimationPos = frozenComponent.getForcedWalkAnimationPos();
 			state.walkAnimationSpeed = frozenComponent.getForcedWalkAnimationSpeed();
 			state.ageInTicks = frozenComponent.getForcedClientTickCount();
+		} else if (frozenComponent.isFreezing()) {
+			state.isFullyFrozen = true;
 		}
 		state.setData(FrozenRenderState.KEY, frozenRenderState);
 	}

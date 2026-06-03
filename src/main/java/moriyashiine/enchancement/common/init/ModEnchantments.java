@@ -446,7 +446,7 @@ public class ModEnchantments {
 							EnchantmentEffectComponents.POST_ATTACK,
 							EnchantmentTarget.ATTACKER,
 							EnchantmentTarget.VICTIM,
-							new FreezeEnchantmentEffect(LevelBasedValue.perLevel(6)),
+							new FreezeEnchantmentEffect(LevelBasedValue.perLevel(3)),
 							DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().isDirect(true)));
 				}));
 		// bow
