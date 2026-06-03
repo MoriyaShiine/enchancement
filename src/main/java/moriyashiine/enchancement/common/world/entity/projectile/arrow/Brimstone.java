@@ -5,7 +5,6 @@
 package moriyashiine.enchancement.common.world.entity.projectile.arrow;
 
 import moriyashiine.enchancement.client.payload.PlayBrimstoneTravelSoundPayload;
-import moriyashiine.enchancement.common.init.ModComponentTypes;
 import moriyashiine.enchancement.common.init.ModDamageTypes;
 import moriyashiine.enchancement.common.init.ModEntityTypes;
 import moriyashiine.enchancement.common.init.ModParticleTypes;
@@ -27,7 +26,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -40,17 +38,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Brimstone extends AbstractArrow {
-	public static final ItemStack BRIMSTONE_STACK;
 	public static final int DISTANCE_PER_TICK = 10;
-
-	static {
-		BRIMSTONE_STACK = new ItemStack(Items.LAVA_BUCKET);
-		BRIMSTONE_STACK.set(ModComponentTypes.BRIMSTONE_DAMAGE, Integer.MAX_VALUE);
-	}
-
-	public static int getMaxTicks() {
-		return Mth.floor(256F / DISTANCE_PER_TICK);
-	}
 
 	public static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(Brimstone.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> FORCED_X_ROT = SynchedEntityData.defineId(Brimstone.class, EntityDataSerializers.FLOAT);
@@ -221,5 +209,9 @@ public class Brimstone extends AbstractArrow {
 			return !hitEntities.contains(entity) && entity.isAlive() && SLibUtils.shouldHurt(owner, entity);
 		}
 		return false;
+	}
+
+	public static int getMaxTicks() {
+		return Mth.floor(256F / DISTANCE_PER_TICK);
 	}
 }

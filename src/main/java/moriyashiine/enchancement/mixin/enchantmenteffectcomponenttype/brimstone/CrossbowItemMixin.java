@@ -68,7 +68,7 @@ public abstract class CrossbowItemMixin {
 				itemStack.set(ModComponentTypes.BRIMSTONE_UUID, uuid[0]);
 			}
 			if (ticksRemaining == getUseDuration(itemStack, entity)) {
-				PlayerLookup.tracking(entity).forEach(foundPlayer -> PlayBrimstoneFireSoundPayload.send(foundPlayer, entity, uuid[0]));
+				PlayerLookup.tracking(entity).forEach(receiver -> PlayBrimstoneFireSoundPayload.send(receiver, entity, uuid[0]));
 				if (entity instanceof ServerPlayer player) {
 					PlayBrimstoneFireSoundPayload.send(player, entity, uuid[0]);
 				}
