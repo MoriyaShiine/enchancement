@@ -83,7 +83,7 @@
   "enchantment.enchancement.bouncy.desc": "Negates fall damage. Launches you upward upon landing while not sneaking. Sneaking, moving, or bouncing will charge a super jump that can be released by jumping while holding [%s].",
   "enchantment.enchancement.bouncy.desc.inverted": "Negates fall damage. Launches you upward upon landing while sneaking. Sneaking, moving, or bouncing will charge a super jump that can be released by jumping while holding [%s].",
   "enchantment.enchancement.e_speed": "E-Speed",
-  "enchantment.enchancement.e_speed.desc": "Sprinting while grounded builds up an E-Meter, increasing your movement speed. Holding [%s] while at full power allows you float.",
+  "enchantment.enchancement.e_speed.desc": "Sprinting while grounded builds up an E-Meter, increasing your movement speed. Holding [%s] while at full power allows you to float.",
   "enchantment.enchancement.sticky": "Sticky",
   "enchantment.enchancement.sticky.desc": "Allows sliding down and jumping off walls. Leaves a trail of honey where you walk that slows mobs.",
   "enchantment.enchancement.berserk": "Berserk",
