@@ -99,6 +99,7 @@
 	"enchantmenteffectcomponenttype.applyrandommobeffect.ProjectileMixin",
 	"enchantmenteffectcomponenttype.applyrandommobeffect.ThrownTridentMixin",
 	"enchantmenteffectcomponenttype.bounce.LivingEntityMixin",
+	"enchantmenteffectcomponenttype.brimstone.BrimstoneCrossbowMixin",
 	"enchantmenteffectcomponenttype.brimstone.CrossbowItemMixin",
 	"enchantmenteffectcomponenttype.brimstone.ItemStackMixin",
 	"enchantmenteffectcomponenttype.brimstone.ProjectileWeaponItemMixin",
