@@ -44,7 +44,7 @@ Bow Enchantments:
 Crossbow Enchantments:
 * Brimstone: Fires a piercing laser that ignores armor and increases damage with charge and distance. Costs health to fire.
 * Scatter: Allows Amethyst Shards to be loaded which explode into a burst of projectiles.
-* Torch: Allows rapid loading of Torches that ignite shot mobs. Torches that land on a block will be placed if fired while sneaking. The Crossbow can only load Torches.
+* Torch: Allows rapid firing of Torches that ignite shot mobs. Torches that land on a block will be placed if fired while sneaking. The Crossbow can only load Torches.
 
 Trident Enchantments:
 * Leech: Regenerates health when dealing damage. Thrown Tridents will temporarily stick to mobs and deal damage.
@@ -59,7 +59,7 @@ Pickaxe Enchantments:
 * Extracting: Extracts materials from connected ores while not sneaking, leaving the stone behind.
 
 Axe Enchantments:
-* Beheading: Increases damage dealt. Slain mobs have a chance to drop their head.
+* Beheading: Increases damage dealt with headshots. Slain mobs have a chance to drop their head.
 * Lumberjack: Connected logs will also be destroyed while not sneaking.
 
 Shovel Enchantments:
@@ -122,9 +122,11 @@ Everything Enchancement adds is configurable:
     * Turtle master gives 1 less level of Resistance.
     * Wither Skulls apply Wither for less time.
 * Rebalance Enchantments
+  * Fire caused by enchantments does not affect movement.
+  * Fire caused by enchantments hits through Fire Resistance at a slower rate.
+  * Fire caused by enchantments is slightly redder to indicate the above effects.
   * Renames Fire Aspect to Molten.
   * Molten applies for less time.
-  * Molten's fire does not affect movement.
   * Blocks mined by items with Molten are smelted.
   * Items with Molten are usable as Flint and Steel while sneaking.
   * Mining tools can have Molten.
