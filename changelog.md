@@ -1,4 +1,10 @@
 ------------------------------------------------------
+Version 26.1-r16
+------------------------------------------------------
+- merge https://github.com/MoriyaShiine/enchancement/pull/309
+- fix brimstone needing and consuming arrows
+
+------------------------------------------------------
 Version 26.1-r15
 ------------------------------------------------------
 - bouncy no longer bounces if you were hurt in the last second (fall damage is still negated)
