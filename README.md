@@ -29,7 +29,7 @@ Leggings Enchantments:
 Boots Enchantments:
 * Buoy: Causes you to walk on fluids, descending via sneaking. Holding jump while submerged or [Space] while wet propels you upward. Prevents floating. Grants a speed boost for some time after leaving water.
 * Bouncy: Negates fall damage. Launches you upward upon landing while not sneaking. Sneaking, moving, or bouncing will charge a super jump that can be released by jumping while holding [Space].
-* E-Speed: Sprinting while grounded builds up an E-Meter, increasing your movement speed. Holding [Space] while at full power allows you float.
+* E-Speed: Sprinting while grounded builds up an E-Meter, increasing your movement speed. Holding [Space] while at full power allows you to float.
 * Sticky: Allows sliding down and jumping off walls. Leaves a trail of honey where you walk that slows mobs.
 
 Sword Enchantments:
