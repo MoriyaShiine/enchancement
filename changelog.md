@@ -1,4 +1,17 @@
 ------------------------------------------------------
+Version 26.1-r15
+------------------------------------------------------
+- bouncy no longer bounces if you were hurt in the last second (fall damage is still negated)
+- fire caused by enchantments now hits through fire resistance at a slower rate
+- frostbite now has less of a slowdown
+- torch now deals less damage but is fired much faster
+- beheading now deals more damage with headshots
+- fix https://github.com/MoriyaShiine/enchancement/issues/305
+- fix https://github.com/MoriyaShiine/enchancement/issues/307
+- fix a lot of things with frostbite
+- fix scatter and torch not rendering or playing sounds properly on non-player mobs
+
+------------------------------------------------------
 Version 26.1-r14
 ------------------------------------------------------
 - buoy is no longer canceled if the damage taken was drowning
