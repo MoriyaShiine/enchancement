@@ -5,6 +5,7 @@ accessible class net/minecraft/world/entity/monster/Shulker$ShulkerAttackGoal
 accessible class net/minecraft/world/entity/monster/Shulker$ShulkerPeekGoal
 
 accessible method net/minecraft/world/entity/Entity spawnSprintParticle ()V
+accessible method net/minecraft/world/entity/LivingEntity detectEquipmentUpdates ()V
 accessible method net/minecraft/world/entity/LivingEntity getJumpPower ()F
 accessible method net/minecraft/world/entity/item/ItemEntity tryToMerge (Lnet/minecraft/world/entity/item/ItemEntity;)V
 accessible method net/minecraft/world/entity/monster/Guardian setActiveAttackTarget (I)V

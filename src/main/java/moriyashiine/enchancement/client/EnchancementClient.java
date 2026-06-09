@@ -5,7 +5,6 @@ package moriyashiine.enchancement.client;
 
 import moriyashiine.enchancement.client.event.config.CoyoteBiteClientEvent;
 import moriyashiine.enchancement.client.event.config.EnchantmentDescriptionsClientEvent;
-import moriyashiine.enchancement.client.event.config.RebalanceEquipmentClientEvent;
 import moriyashiine.enchancement.client.event.config.ToggleablePassivesClientEvent;
 import moriyashiine.enchancement.client.event.enchantmenteffectcomponenttype.*;
 import moriyashiine.enchancement.client.event.enchantmenteffecttype.AutomaticallyFeedsTooltipClientEvent;
@@ -128,7 +127,6 @@ public class EnchancementClient implements ClientModInitializer {
 		// config
 		CoyoteBiteClientEvent.init();
 		EnchantmentDescriptionsClientEvent.init();
-		RebalanceEquipmentClientEvent.init();
 		ToggleablePassivesClientEvent.init();
 		// enchantment effect type
 		AutomaticallyFeedsTooltipClientEvent.init();
