@@ -17,6 +17,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityReference;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.arrow.ThrownTrident;
@@ -33,12 +34,10 @@ import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 import java.util.Collections;
 
 public class LeechingTridentComponent implements AutoSyncedComponent, CommonTickingComponent {
-	private static final int NO_ENTITY = -1;
-
 	private final ThrownTrident obj;
 	private LeechData leechData = null;
-	private LivingEntity stuckEntity = null;
-	private int stuckEntityId = NO_ENTITY;
+	private EntityReference<LivingEntity> stuckEntity = null;
+	private boolean hasStuck = false;
 	private int leechingTicks = 0, stabTicks = 0;
 
 	public LeechingTridentComponent(ThrownTrident obj) {
@@ -48,7 +47,8 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 	@Override
 	public void readData(ValueInput input) {
 		leechData = input.read("LeechData", LeechData.CODEC).orElse(null);
-		stuckEntityId = input.getIntOr("StuckEntityId", NO_ENTITY);
+		stuckEntity = EntityReference.read(input, "StuckEntity");
+		hasStuck = input.getBooleanOr("HasStuck", false);
 		leechingTicks = input.getIntOr("LeechingTicks", 0);
 		stabTicks = input.getIntOr("StabTicks", 0);
 	}
@@ -56,26 +56,23 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 	@Override
 	public void writeData(ValueOutput output) {
 		output.storeNullable("LeechData", LeechData.CODEC, leechData);
-		output.putInt("StuckEntityId", stuckEntityId);
+		EntityReference.store(stuckEntity, output, "StuckEntity");
+		output.putBoolean("HasStuck", hasStuck);
 		output.putInt("LeechingTicks", leechingTicks);
 		output.putInt("StabTicks", stabTicks);
 	}
 
 	@Override
 	public void tick() {
-		if (stuckEntityId == NO_ENTITY) {
-			if (stuckEntity != null) {
-				setStuckEntity(null);
-			}
-		} else if (stuckEntity == null && obj.level().getEntity(stuckEntityId) instanceof LivingEntity living) {
-			setStuckEntity(living);
-		}
-		if (stuckEntity != null && stuckEntity.slib$exists()) {
-			obj.snapTo(stuckEntity.getX(), stuckEntity.getEyeY(), stuckEntity.getZ());
-			obj.setDeltaMovement(Vec3.ZERO);
-			leechingTicks++;
-			if (stabTicks > 0) {
-				stabTicks--;
+		if (hasStuck) {
+			LivingEntity stuckEntity = getStuckEntity();
+			if (stuckEntity != null && stuckEntity.slib$exists()) {
+				obj.snapTo(stuckEntity.getX(), stuckEntity.getEyeY(), stuckEntity.getZ());
+				obj.setDeltaMovement(Vec3.ZERO);
+				leechingTicks++;
+				if (stabTicks > 0) {
+					stabTicks--;
+				}
 			}
 		}
 	}
@@ -83,28 +80,32 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 	@Override
 	public void serverTick() {
 		tick();
-		if (stuckEntity != null && stuckEntity.slib$exists()) {
-			if (leechingTicks % 20 == 0) {
-				int timeUntilRegen = stuckEntity.invulnerableTime;
-				stuckEntity.invulnerableTime = 0;
-				if (stuckEntity.hurtServer((ServerLevel) obj.level(), obj.level().damageSources().source(ModDamageTypes.LIFE_DRAIN, obj, obj.getOwner()), leechData.damage()) && obj.getOwner() instanceof LivingEntity living && living.slib$exists()) {
-					living.heal(leechData.healAmount());
+		if (hasStuck) {
+			LivingEntity stuckEntity = getStuckEntity();
+			if (stuckEntity != null && stuckEntity.slib$exists()) {
+				if (leechingTicks % 20 == 0) {
+					int timeUntilRegen = stuckEntity.invulnerableTime;
+					stuckEntity.invulnerableTime = 0;
+					if (stuckEntity.hurtServer((ServerLevel) obj.level(), obj.level().damageSources().source(ModDamageTypes.LIFE_DRAIN, obj, obj.getOwner()), leechData.damage()) && obj.getOwner() instanceof LivingEntity living && living.slib$exists()) {
+						living.heal(leechData.healAmount());
+					}
+					stuckEntity.invulnerableTime = timeUntilRegen;
+					stabTicks = 20;
+					sync();
 				}
-				stuckEntity.invulnerableTime = timeUntilRegen;
-				stabTicks = 20;
-				sync();
-			}
-			if (leechingTicks >= leechData.maxTicks()) {
+				if (leechingTicks >= leechData.maxTicks()) {
+					unleech();
+				}
+			} else {
 				unleech();
 			}
-		} else if (stuckEntityId != NO_ENTITY) {
-			unleech();
 		}
 	}
 
 	@Override
 	public void clientTick() {
 		tick();
+		LivingEntity stuckEntity = getStuckEntity();
 		if (stuckEntity != null && stuckEntity.slib$exists() && stabTicks == 19) {
 			SLibClientUtils.addParticles(stuckEntity, ParticleTypes.DAMAGE_INDICATOR, 5, ParticleAnchor.BODY);
 		}
@@ -118,13 +119,13 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 		return leechData != null;
 	}
 
-	public LivingEntity getStuckEntity() {
-		return stuckEntity;
+	public @Nullable LivingEntity getStuckEntity() {
+		return EntityReference.getLivingEntity(stuckEntity, obj.level());
 	}
 
 	public void setStuckEntity(@Nullable LivingEntity stuckEntity) {
-		this.stuckEntity = stuckEntity;
-		stuckEntityId = stuckEntity == null ? NO_ENTITY : stuckEntity.getId();
+		this.stuckEntity = EntityReference.of(stuckEntity);
+		hasStuck = stuckEntity != null;
 	}
 
 	public int getLeechingTicks() {
@@ -136,8 +137,8 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 	}
 
 	public void unleech() {
+		setStuckEntity(null);
 		leechData = null;
-		stuckEntityId = NO_ENTITY;
 		leechingTicks = 0;
 		stabTicks = 0;
 		sync();

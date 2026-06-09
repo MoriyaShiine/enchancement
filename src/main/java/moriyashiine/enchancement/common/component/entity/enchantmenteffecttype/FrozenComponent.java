@@ -102,7 +102,7 @@ public class FrozenComponent implements AutoSyncedComponent, CommonTickingCompon
 				obj.hurtServer((ServerLevel) obj.level(), obj.damageSources().freeze(), 1);
 			}
 		}
-		@Nullable AttributeInstance movementSpeed = obj.getAttribute(Attributes.MOVEMENT_SPEED);
+		AttributeInstance movementSpeed = obj.getAttribute(Attributes.MOVEMENT_SPEED);
 		if (movementSpeed != null) {
 			if (movementSpeed.hasModifier(MOVEMENT_SPEED_ID)) {
 				movementSpeed.removeModifier(MOVEMENT_SPEED_ID);

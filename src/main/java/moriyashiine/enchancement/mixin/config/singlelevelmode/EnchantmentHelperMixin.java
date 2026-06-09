@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-@Mixin(value = EnchantmentHelper.class, priority = 1001)
+@Mixin(value = EnchantmentHelper.class, priority = 2000)
 public class EnchantmentHelperMixin {
 	@WrapOperation(method = "updateEnchantments", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/ItemEnchantments$Mutable;toImmutable()Lnet/minecraft/world/item/enchantment/ItemEnchantments;"))
 	private static ItemEnchantments enchancement$singleLevelMode(ItemEnchantments.Mutable instance, Operation<ItemEnchantments> original) {
