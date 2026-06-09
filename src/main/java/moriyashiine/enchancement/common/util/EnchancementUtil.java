@@ -13,6 +13,7 @@ import moriyashiine.enchancement.common.init.ModEnchantments;
 import moriyashiine.enchancement.common.init.ModEntityComponents;
 import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
 import moriyashiine.enchancement.common.tag.ModItemTags;
+import moriyashiine.enchancement.common.util.config.DisableDurabilityMode;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.minecraft.core.Holder;
@@ -220,7 +221,20 @@ public class EnchancementUtil {
 	// disable durability
 
 	public static boolean isUnbreakable(ItemStack stack) {
-		return ModConfig.disableDurability && !stack.isEmpty() && stack.has(DataComponents.MAX_DAMAGE) && !stack.is(ModItemTags.RETAINS_DURABILITY);
+		if (!stack.isEmpty()) {
+			if (stack.is(ModItemTags.BREAKABLE)) {
+				return false;
+			}
+			if (stack.is(ModItemTags.UNBREAKABLE)) {
+				return true;
+			}
+			if (ModConfig.disableDurability != DisableDurabilityMode.NONE) {
+				if (stack.is(Items.ANVIL) || stack.has(DataComponents.MAX_DAMAGE)) {
+					return ModConfig.disableDurability != DisableDurabilityMode.ENCHANTED || stack.isEnchanted();
+				}
+			}
+		}
+		return false;
 	}
 
 	// rebalance enchantments

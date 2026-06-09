@@ -26,6 +26,17 @@ public class ModItemTagsProvider extends FabricTagsProvider.ItemTagsProvider {
 
 	@Override
 	protected void addTags(HolderLookup.Provider registries) {
+		valueLookupBuilder(ModItemTags.BREAKABLE)
+				.forceAddTag(ConventionalItemTags.WOLF_ARMORS);
+		builder(ModItemTags.BREAKABLE)
+				.addOptionalTag(tagKey("create:sandpaper"))
+				.addOptional(key("create:super_glue"));
+
+		valueLookupBuilder(ModItemTags.WEAKLY_ENCHANTED)
+				.add(Items.LEATHER_HORSE_ARMOR)
+				.add(Items.COPPER_HORSE_ARMOR)
+				.add(Items.IRON_HORSE_ARMOR);
+
 		valueLookupBuilder(ModItemTags.CANNOT_AUTOMATICALLY_CONSUME)
 				.forceAddTag(ConventionalItemTags.RAW_FISH_FOODS)
 				.forceAddTag(ConventionalItemTags.RAW_MEAT_FOODS)
@@ -43,15 +54,6 @@ public class ModItemTagsProvider extends FabricTagsProvider.ItemTagsProvider {
 				.addOptional(key("spelunkery:portal_fluid_bottle"));
 		valueLookupBuilder(ModItemTags.DEFAULT_ENCHANTING_MATERIAL)
 				.add(Items.AMETHYST_SHARD);
-		valueLookupBuilder(ModItemTags.RETAINS_DURABILITY)
-				.forceAddTag(ConventionalItemTags.WOLF_ARMORS);
-		builder(ModItemTags.RETAINS_DURABILITY)
-				.addOptionalTag(tagKey("create:sandpaper"))
-				.addOptional(key("create:super_glue"));
-		valueLookupBuilder(ModItemTags.WEAKLY_ENCHANTED)
-				.add(Items.LEATHER_HORSE_ARMOR)
-				.add(Items.COPPER_HORSE_ARMOR)
-				.add(Items.IRON_HORSE_ARMOR);
 
 		valueLookupBuilder(ModItemTags.EXCAVATING_ENCHANTABLE)
 				.forceAddTag(ItemTags.PICKAXES)

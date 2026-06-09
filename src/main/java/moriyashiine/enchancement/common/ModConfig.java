@@ -6,6 +6,7 @@ package moriyashiine.enchancement.common;
 
 import eu.midnightdust.lib.config.MidnightConfig;
 import moriyashiine.enchancement.client.gui.screens.inventory.tooltip.StoredEnchantmentsTooltipComponent;
+import moriyashiine.enchancement.common.util.config.DisableDurabilityMode;
 import moriyashiine.enchancement.common.util.config.OverhaulMode;
 
 import java.util.Arrays;
@@ -62,7 +63,7 @@ public class ModConfig extends MidnightConfig {
 	public static int enchantmentLimit = 1;
 
 	@Entry
-	public static boolean disableDurability = true;
+	public static DisableDurabilityMode disableDurability = DisableDurabilityMode.ALL;
 	@Entry
 	public static boolean enhanceMobs = true;
 	@Entry
