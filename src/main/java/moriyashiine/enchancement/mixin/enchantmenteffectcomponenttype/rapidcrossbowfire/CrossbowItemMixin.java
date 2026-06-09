@@ -44,22 +44,24 @@ public abstract class CrossbowItemMixin extends ProjectileWeaponItem {
 	@Inject(method = "onUseTick", at = @At("HEAD"), cancellable = true)
 	private void enchancement$rapidCrossbowFire(Level level, LivingEntity entity, ItemStack itemStack, int ticksRemaining, CallbackInfo ci) {
 		if (EnchantmentHelper.has(itemStack, ModEnchantmentEffectComponentTypes.RAPID_CROSSBOW_FIRE)) {
-			ItemStack projectile = entity.getProjectile(itemStack);
-			if (projectile.isEmpty()) {
-				releaseUsing(itemStack, level, entity, ticksRemaining);
-			} else {
-				itemStack.set(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.of(new ItemStackTemplate(projectile.getItem(), projectile.getComponentsPatch())));
-				if (ticksRemaining % 4 == 0) {
-					List<ItemStack> firedProjectiles = draw(itemStack, projectile, entity);
-					if (level instanceof ServerLevel serverLevel && !firedProjectiles.isEmpty()) {
-						if (entity instanceof ServerPlayer player) {
-							CriteriaTriggers.SHOT_CROSSBOW.trigger(player, itemStack);
-							player.awardStat(Stats.ITEM_USED.get(this));
+			if (entity.isAlive()) {
+				ItemStack projectile = entity.getProjectile(itemStack);
+				if (projectile.isEmpty()) {
+					releaseUsing(itemStack, level, entity, ticksRemaining);
+				} else {
+					itemStack.set(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.of(new ItemStackTemplate(projectile.getItem(), projectile.getComponentsPatch())));
+					if (ticksRemaining % 4 == 0) {
+						List<ItemStack> firedProjectiles = draw(itemStack, projectile, entity);
+						if (level instanceof ServerLevel serverLevel && !firedProjectiles.isEmpty()) {
+							if (entity instanceof ServerPlayer player) {
+								CriteriaTriggers.SHOT_CROSSBOW.trigger(player, itemStack);
+								player.awardStat(Stats.ITEM_USED.get(this));
+							}
+							CrossbowItem.ChargingSounds sounds = getChargingSounds(itemStack);
+							sounds.start().ifPresent(sound -> level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), sound.value(), entity.getSoundSource(), 0.5F, 1));
+							sounds.end().ifPresent(sound -> level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), sound.value(), entity.getSoundSource(), 1, 1 / (level.getRandom().nextFloat() * 0.5F + 1) + 0.2F));
+							shoot(serverLevel, entity, entity.getUsedItemHand(), itemStack, firedProjectiles, getShootingPower(ChargedProjectiles.EMPTY), 1, entity.slib$isPlayer(), null);
 						}
-						CrossbowItem.ChargingSounds sounds = getChargingSounds(itemStack);
-						sounds.start().ifPresent(sound -> level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), sound.value(), entity.getSoundSource(), 0.5F, 1));
-						sounds.end().ifPresent(sound -> level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), sound.value(), entity.getSoundSource(), 1, 1 / (level.getRandom().nextFloat() * 0.5F + 1) + 0.2F));
-						shoot(serverLevel, entity, entity.getUsedItemHand(), itemStack, firedProjectiles, getShootingPower(ChargedProjectiles.EMPTY), 1, entity.slib$isPlayer(), null);
 					}
 				}
 			}
