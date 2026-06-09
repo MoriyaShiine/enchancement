@@ -20,7 +20,7 @@ public class ArmorDentingEvent implements ModifyStackDamageEvent {
 
 	@Override
 	public float modify(ServerLevel level, ItemStack stack, Entity victim, DamageSource source, float damage) {
-		if (EnchancementUtil.shouldApplyWeaponCooldown() && victim instanceof LivingEntity living) {
+		if (EnchancementUtil.shouldApplyWeaponEffect() && victim instanceof LivingEntity living) {
 			float modifier = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.ARMOR_DENTING, level, stack, 0);
 			if (modifier != 0) {
 				return living.getArmorValue() * modifier;

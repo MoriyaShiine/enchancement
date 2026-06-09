@@ -21,7 +21,7 @@ public class HeadshotEvent implements ModifyStackDamageEvent {
 
 	@Override
 	public float modify(ServerLevel level, ItemStack stack, Entity victim, DamageSource source, float damage) {
-		if (EnchancementUtil.shouldApplyWeaponCooldown() && source.getDirectEntity() instanceof LivingEntity attacker && isHeadshot(attacker, victim)) {
+		if (EnchancementUtil.shouldApplyWeaponEffect() && source.getDirectEntity() instanceof LivingEntity attacker && isHeadshot(attacker, victim)) {
 			return EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.HEADSHOT, level, stack, 0);
 		}
 		return 0;

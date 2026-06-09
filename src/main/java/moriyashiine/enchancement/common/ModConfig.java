@@ -79,7 +79,7 @@ public class ModConfig extends MidnightConfig {
 	public static boolean toggleablePassives = true;
 
 	@Entry(min = 0, max = 1)
-	public static float weaponEnchantmentCooldownRequirement = 0.7F;
+	public static float weaponEffectCooldownRequirement = 0.7F;
 
 	@Entry(min = 1)
 	public static int maxFellTreesBlocks = 1024;
@@ -116,7 +116,7 @@ public class ModConfig extends MidnightConfig {
 				enhanceMobs +
 				rebalanceConsumables + rebalanceEffects + rebalanceEnchantments + rebalanceEquipment + rebalanceProjectiles +
 				toggleablePassives +
-				weaponEnchantmentCooldownRequirement +
+				weaponEffectCooldownRequirement +
 				maxFellTreesBlocks + maxFellTreesHorizontalLength + maxMineOreVeinsBlocks +
 				coyoteBiteTicks;
 		return encoding.hashCode();

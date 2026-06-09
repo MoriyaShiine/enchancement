@@ -264,10 +264,10 @@ public class EnchancementUtil {
 		return TridentItem.THROW_THRESHOLD_TIME * (ModConfig.rebalanceEquipment && stack.getEnchantments().keySet().stream().noneMatch(enchantment -> enchantment.is(Enchantments.RIPTIDE)) ? 2 : 1);
 	}
 
-	// weapon enchantment cooldown requirement
+	// weapon effect cooldown requirement
 
-	public static boolean shouldApplyWeaponCooldown() {
-		return SLibUtils.isAttackingPlayerCooldownWithinThreshold(ModConfig.weaponEnchantmentCooldownRequirement);
+	public static boolean shouldApplyWeaponEffect() {
+		return SLibUtils.isAttackingPlayerCooldownWithinThreshold(ModConfig.weaponEffectCooldownRequirement);
 	}
 
 	// misc

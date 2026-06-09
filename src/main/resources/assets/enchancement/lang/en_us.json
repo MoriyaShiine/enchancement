@@ -194,7 +194,7 @@
   "enchancement.midnightconfig.rebalanceEquipment": "Rebalance Equipment",
   "enchancement.midnightconfig.rebalanceProjectiles": "Rebalance Projectiles",
   "enchancement.midnightconfig.toggleablePassives": "Toggleable Passives",
-  "enchancement.midnightconfig.weaponEnchantmentCooldownRequirement": "Weapon Enchantment Cooldown Requirement",
+  "enchancement.midnightconfig.weaponEffectCooldownRequirement": "Weapon Effect Cooldown Requirement",
   "enchancement.midnightconfig.maxFellTreesBlocks": "Max Fell Trees Blocks",
   "enchancement.midnightconfig.maxFellTreesHorizontalLength": "Max Fell Trees Horizontal Length",
   "enchancement.midnightconfig.maxMineOreVeinsBlocks": "Max Mine Ore Veins Blocks",

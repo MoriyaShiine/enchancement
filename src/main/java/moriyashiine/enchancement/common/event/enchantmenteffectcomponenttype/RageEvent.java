@@ -27,7 +27,7 @@ public class RageEvent {
 	private static class DamageDealtBonus implements ModifyStackDamageEvent {
 		@Override
 		public float modify(ServerLevel level, ItemStack stack, Entity victim, DamageSource source, float damage) {
-			if (EnchancementUtil.shouldApplyWeaponCooldown() && source.getDirectEntity() instanceof LivingEntity living) {
+			if (EnchancementUtil.shouldApplyWeaponEffect() && source.getDirectEntity() instanceof LivingEntity living) {
 				return RageEffect.getDamageDealtModifier(living, stack);
 			}
 			return 0;
