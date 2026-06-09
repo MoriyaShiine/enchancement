@@ -150,6 +150,7 @@
 	"enchantmenteffectcomponenttype.rangedshootcooldown.ProjectileWeaponItemMixin",
 	"enchantmenteffectcomponenttype.rapidcrossbowfire.CrossbowAttackMixin",
 	"enchantmenteffectcomponenttype.rapidcrossbowfire.CrossbowItemMixin",
+	"enchantmenteffectcomponenttype.rapidcrossbowfire.ItemStackMixin",
 	"enchantmenteffectcomponenttype.rapidcrossbowfire.RangedCrossbowAttackGoalMixin",
 	"enchantmenteffectcomponenttype.rotationburst.PlayerMixin",
 	"enchantmenteffectcomponenttype.scattershot.CrossbowItemMixin",
