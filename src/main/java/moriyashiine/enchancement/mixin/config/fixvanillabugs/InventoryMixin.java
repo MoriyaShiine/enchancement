@@ -2,7 +2,7 @@
  * Copyright (c) MoriyaShiine. All Rights Reserved.
  */
 
-package moriyashiine.enchancement.mixin.config.rebalanceequipment;
+package moriyashiine.enchancement.mixin.config.fixvanillabugs;
 
 import moriyashiine.enchancement.common.ModConfig;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,8 +21,8 @@ public class InventoryMixin {
 	public Player player;
 
 	@Inject(method = "setSelectedSlot", at = @At("TAIL"))
-	private void enchancement$rebalanceEquipment(int selected, CallbackInfo ci) {
-		if (ModConfig.rebalanceEquipment) {
+	private void enchancement$fixVanillaBugs(int selected, CallbackInfo ci) {
+		if (ModConfig.fixVanillaBugs) {
 			if (!player.level().isClientSide()) {
 				player.detectEquipmentUpdates();
 			}

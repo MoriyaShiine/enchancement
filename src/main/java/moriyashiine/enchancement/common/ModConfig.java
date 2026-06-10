@@ -91,6 +91,9 @@ public class ModConfig extends MidnightConfig {
 	@Entry(min = 1)
 	public static int maxMineOreVeinsBlocks = 64;
 
+	@Entry
+	public static boolean fixVanillaBugs = true;
+
 	@Entry(category = "client")
 	public static boolean enchantmentDescriptions = true;
 	@Entry(category = "client")
@@ -118,7 +121,8 @@ public class ModConfig extends MidnightConfig {
 				rebalanceConsumables + rebalanceEffects + rebalanceEnchantments + rebalanceEquipment + rebalanceProjectiles +
 				toggleablePassives +
 				coyoteBiteTicks + weaponEffectCooldownRequirement +
-				maxFellTreesBlocks + maxFellTreesHorizontalLength + maxMineOreVeinsBlocks;
+				maxFellTreesBlocks + maxFellTreesHorizontalLength + maxMineOreVeinsBlocks +
+				fixVanillaBugs;
 		return encoding.hashCode();
 	}
 

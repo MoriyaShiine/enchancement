@@ -4,25 +4,20 @@
 
 package moriyashiine.enchancement.mixin.config.rebalanceequipment;
 
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import moriyashiine.enchancement.common.ModConfig;
 import net.minecraft.core.Holder;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.MaceItem;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.function.Predicate;
 
@@ -30,11 +25,6 @@ import java.util.function.Predicate;
 public abstract class PlayerMixin extends LivingEntity {
 	protected PlayerMixin(EntityType<? extends LivingEntity> type, Level level) {
 		super(type, level);
-	}
-
-	@WrapWithCondition(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;resetAttackStrengthTicker()V"))
-	private boolean enchancement$rebalanceEquipment(Player instance) {
-		return !ModConfig.rebalanceEquipment;
 	}
 
 	@WrapOperation(method = "getProjectile", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ProjectileWeaponItem;getAllSupportedProjectiles()Ljava/util/function/Predicate;"))
@@ -53,12 +43,5 @@ public abstract class PlayerMixin extends LivingEntity {
 			return Math.max(0.5F, value);
 		}
 		return value;
-	}
-
-	@Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;postPiercingAttack()V"))
-	private void enchancement$rebalanceEquipment(Entity entity, CallbackInfo ci) {
-		if (ModConfig.rebalanceEquipment && level().isClientSide() && getWeaponItem().getItem() instanceof MaceItem mace && entity instanceof LivingEntity victim) {
-			mace.postHurtEnemy(getWeaponItem(), victim, this);
-		}
 	}
 }
