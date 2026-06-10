@@ -676,10 +676,15 @@ public class ModEnchantments {
 				items.getOrThrow(ItemTags.AXES),
 				2,
 				EquipmentSlotGroup.MAINHAND,
-				builder -> builder.withSpecialEffect(
-						ModEnchantmentEffectComponentTypes.FELL_TREES,
-						new AddValue(LevelBasedValue.perLevel(0.25F))
-				)));
+				builder -> {
+					builder.withEffect(
+							ModEnchantmentEffectComponentTypes.DISABLE_BLOCKING,
+							new AddValue(LevelBasedValue.perLevel(2.5F)));
+					builder.withSpecialEffect(
+							ModEnchantmentEffectComponentTypes.FELL_TREES,
+							new AddValue(LevelBasedValue.perLevel(0.25F))
+					);
+				}));
 		// shovel
 		registry.register(SCOOPING, create(SCOOPING.identifier(),
 				items.getOrThrow(ItemTags.SHOVELS),

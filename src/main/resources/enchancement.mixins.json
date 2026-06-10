@@ -118,6 +118,7 @@
 	"enchantmenteffectcomponenttype.delayedlaunch.ProjectileWeaponItemMixin",
 	"enchantmenteffectcomponenttype.directionburst.EntityMixin",
 	"enchantmenteffectcomponenttype.directionburst.PlayerMixin",
+	"enchantmenteffectcomponenttype.disableblocking.LivingEntityMixin",
 	"enchantmenteffectcomponenttype.disarmingfishingbobber.FishingHookMixin",
 	"enchantmenteffectcomponenttype.disarmingfishingbobber.FishingRodItemMixin",
 	"enchantmenteffectcomponenttype.disarmingfishingbobber.WanderingTraderMixin",

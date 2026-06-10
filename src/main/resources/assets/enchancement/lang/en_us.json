@@ -117,7 +117,7 @@
   "enchantment.enchancement.beheading": "Beheading",
   "enchantment.enchancement.beheading.desc": "Increases damage dealt with headshots. Slain mobs have a chance to drop their head.",
   "enchantment.enchancement.lumberjack": "Lumberjack",
-  "enchantment.enchancement.lumberjack.desc": "Connected logs will also be destroyed while not sneaking.",
+  "enchantment.enchancement.lumberjack.desc": "Connected logs will also be destroyed while not sneaking. Increases effectiveness against Shields.",
   "enchantment.enchancement.scooping": "Scooping",
   "enchantment.enchancement.scooping.desc": "Increases mob drops and damage dealt. Using on a mob will bury it if the ground below is soft enough.",
   "enchantment.enchancement.apex": "Apex",
