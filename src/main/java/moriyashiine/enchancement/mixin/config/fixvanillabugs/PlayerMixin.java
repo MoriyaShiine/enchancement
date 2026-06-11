@@ -4,7 +4,6 @@
 
 package moriyashiine.enchancement.mixin.config.fixvanillabugs;
 
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import moriyashiine.enchancement.common.ModConfig;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -21,11 +20,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class PlayerMixin extends LivingEntity {
 	protected PlayerMixin(EntityType<? extends LivingEntity> type, Level level) {
 		super(type, level);
-	}
-
-	@WrapWithCondition(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;resetAttackStrengthTicker()V"))
-	private boolean enchancement$fixVanillaBugs(Player instance) {
-		return !ModConfig.fixVanillaBugs;
 	}
 
 	@Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;postPiercingAttack()V"))

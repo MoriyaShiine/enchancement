@@ -34,6 +34,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.entity.projectile.arrow.ThrownTrident;
 import net.minecraft.world.item.*;
@@ -282,6 +283,17 @@ public class EnchancementUtil {
 
 	public static boolean shouldApplyWeaponEffect() {
 		return SLibUtils.isAttackingPlayerCooldownWithinThreshold(ModConfig.weaponEffectCooldownRequirement);
+	}
+
+	// fix vanilla bugs
+
+	public static void refreshAttributesAndCooldown(LivingEntity entity) {
+		if (!entity.level().isClientSide()) {
+			entity.detectEquipmentUpdates();
+		}
+		if (entity instanceof Player player) {
+			player.resetAttackStrengthTicker();
+		}
 	}
 
 	// misc
