@@ -1,4 +1,21 @@
 ------------------------------------------------------
+Version 26.1-r17
+------------------------------------------------------
+- disableDurability config is now an enum that can be ALL, ENCHANTED, or NONE
+  - ALL is the default, and means everything is unbreakable (existing functionality)
+  - ENCHANTED means only enchanted items are unbreakable
+  - NONE means nothing is unbreakable
+- scatter is now more concentrated
+- shields no longer lose charge when being held and instead lose it when blocking hits
+- axes no longer directly break shields, but instead deal extra damage
+- lumberjack is now more effective against shields
+- axes now must be charged to damage shields
+- move vanilla fixes to their own config option
+- fix torch still firing while dead
+- fix dupe bug with torch
+- attribute swapping fix no longer cancels left click and instead properly resets attributes and attack cooldown immediately upon switching items
+
+------------------------------------------------------
 Version 26.1-r16
 ------------------------------------------------------
 - merge https://github.com/MoriyaShiine/enchancement/pull/309
