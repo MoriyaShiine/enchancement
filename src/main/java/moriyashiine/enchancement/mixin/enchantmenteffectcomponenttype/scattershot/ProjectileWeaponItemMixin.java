@@ -46,7 +46,7 @@ public abstract class ProjectileWeaponItemMixin {
 	@ModifyVariable(method = "shoot", at = @At("HEAD"), argsOnly = true, ordinal = 1)
 	private float enchancement$scatterShot(float uncertainty, ServerLevel level, LivingEntity shooter, InteractionHand hand, ItemStack weapon, List<ItemStack> projectiles) {
 		if (ScatterShotEffect.hasScatterShot) {
-			return 16;
+			return 8;
 		}
 		return uncertainty;
 	}
