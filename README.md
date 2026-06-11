@@ -60,7 +60,7 @@ Pickaxe Enchantments:
 
 Axe Enchantments:
 * Beheading: Increases damage dealt with headshots. Slain mobs have a chance to drop their head.
-* Lumberjack: Connected logs will also be destroyed while not sneaking.
+* Lumberjack: Connected logs will also be destroyed while not sneaking. Increases effectiveness against Shields.
 
 Shovel Enchantments:
 * Burrowing: Mines blocks in a wide area while not sneaking. Increases damage dealt proportional to the attacked mob's armor.
@@ -103,13 +103,17 @@ Everything Enchancement adds is configurable:
     * Hoe Enchantments - Village Houses
     * Fishing Rod Enchantments - Shipwrecks
 * Single Level Mode
-  * Removes leveling from enchantments, meaning that the maximum level for all enchantments will be 1. Enchantments that are brought down to this level will act as their original maximum level counterpart (for example, Luck of the Sea I will function the same as Luck of the Sea III). Enchantments on gear made from materials easier to obtain are weaker.
+  * Removes leveling from enchantments; the maximum level for all enchantments is 1.
+    * Enchantments act as if they were their original maximum level.
+    * Enchantments on gear made from materials easier to obtain (such as Stone and Iron) are weaker.
 * Enchantment Limit
-  * Forces items to only allow one enchantment by default.
+  * Forces items to only allow one enchantment.
   * All enchantments are equally weighted and selectable during generation.
 * Disable Durability
-  * Removes durability from most aspects of the game. Items in the `enchancement:retains_durability` tag will continue to have durability.
-  * Anvils will not break when used, unless they are part of the tag.
+  * Items no longer have durability.
+    * Items in the `enchancement:breakable` tag will always have durability regardless of config setting.
+    * Items in the `enchancement:unbreakable` tag will never have durability regardless of config setting.
+  * Anvils will not break when used, and will respect the above tags.
 * Enhance Mobs
   * Mobs will spawn with random enchantments.
   * Mobs will use active enchantment abilities.
@@ -118,9 +122,9 @@ Everything Enchancement adds is configurable:
   * Ender Pearls deal no damage upon use.
   * (Enchanted) Golden Apples can only be consumed when hungry.
 * Rebalance Effects
-    * Instant Health, Instant Damage, Strength, and Weakness are less potent.
-    * Turtle master gives 1 less level of Resistance.
-    * Wither Skulls apply Wither for less time.
+  * Instant Health, Instant Damage, Strength, and Weakness are less potent.
+  * Turtle master gives 1 less level of Resistance.
+  * Wither Skulls apply Wither for less time.
 * Rebalance Enchantments
   * Fire caused by enchantments does not affect movement.
   * Fire caused by enchantments hits through Fire Resistance at a slower rate.
@@ -140,8 +144,6 @@ Everything Enchancement adds is configurable:
   * Mace enchantments can be applied with less fall distance.
   * Wind Burst allows charging to launch you backward and push mobs away.
   * Luck of the Sea also reduces fishing time.
-  * Fixes Riptide being slower with Water Movement Efficiency enchantments (such as Amphibious and Depth Strider).
-  * Fixes Riptide rendering with a rotation while swimming.
 * Rebalance Equipment
   * Enchanted armor has additional damage reduction.
   * Iron armor has slightly more armor, and gains armor toughness.
@@ -149,7 +151,8 @@ Everything Enchancement adds is configurable:
   * Elytra are temporarily disabled when attacked.
   * Animal armor can be enchanted with chestplate enchantments.
   * Saddles can be enchanted with boots enchantments.
-  * Shields can only be held up for 3 seconds before being disabled.
+  * Shields can only take a limited amount of damage before being disabled, and recharges when not in use.
+  * Axes do not directly break Shields and instead do more damage to them.
   * Sword sweeping damage is increased to be proportional to the primary damage dealt.
   * Spears have damage falloff with higher velocities.
   * Bows, Tridents, and Maces play a ready sound when they are fully charged.
@@ -167,8 +170,6 @@ Everything Enchancement adds is configurable:
   * Fishing Bobbers are thrown more accurately.
   * Fishing Bobbers pull the root vehicle of the hooked entity.
   * Enchanted Books stack to 16, and display the names of their enchantments in Bundles.
-  * Fixes attribute swapping.
-  * Fixes Maces not resetting fall distance on the client.
 * Rebalance Projectiles
   * Projectiles ignore invulnerability frames and deal less damage per hit that would have been blocked.
   * Projectiles negate velocity on hit.
@@ -178,10 +179,16 @@ Everything Enchancement adds is configurable:
   * Enchanted chestplates increase air mobility.
   * Enchanted Tridents have Loyalty built in.
   * Enchanted mining tools have Efficiency built in.
-* Weapon Enchantment Cooldown Requirement
-  * Enchantments such as Fire Aspect or Frostbite require your weapon cooldown to be near full to activate.
 * Coyote Bite
   * Entities can be attacked for a few ticks after they leave your crosshair.
+* Weapon Effect Cooldown Requirement
+  * Axes require your weapon cooldown to be near full to disable Shields.
+  * Enchantments such as Molten or Frostbite require your weapon cooldown to be near full to activate.
+* Fix Vanilla Bugs
+  * Fixes attribute swapping.
+  * Fixes Riptide being slower with Water Movement Efficiency enchantments (such as Amphibious and Depth Strider).
+  * Fixes Riptide rendering with a rotation while swimming.
+  * Fixes Maces not resetting fall distance on the client.
 * Enchantment Descriptions
   * Enchantments display what they do under their name.
   * Enchanted Books display what items they can be applied to.
