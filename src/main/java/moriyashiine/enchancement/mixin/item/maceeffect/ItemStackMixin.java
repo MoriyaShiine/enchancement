@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.item.maceeffect;
 
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.util.enchantment.effect.MaceEffect;
 import net.minecraft.stats.Stats;
@@ -75,7 +75,7 @@ public abstract class ItemStackMixin {
 					if (useTime >= EnchancementUtil.getMaceOrTridentChargeTime(stack)) {
 						player.awardStat(Stats.ITEM_USED.get(getItem()));
 						effect.use(level, player, stack);
-						ModEntityComponents.GROUNDED_COOLDOWN.get(player).putOnCooldown(stack, 60);
+						EnchancementEntityComponents.GROUNDED_COOLDOWN.get(player).putOnCooldown(stack, 60);
 					}
 					ci.cancel();
 					return;

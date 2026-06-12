@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.event.internal;
 
-import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.EnchancementEnchantments;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.fabricmc.fabric.api.loot.v3.LootTableSource;
 import net.minecraft.core.HolderLookup;
@@ -29,15 +29,15 @@ public class MaceEnchantmentsEvent implements LootTableEvents.Modify {
 		if (key == BuiltInLootTables.TRIAL_CHAMBERS_REWARD_OMINOUS_RARE) {
 			HolderLookup.RegistryLookup<Enchantment> enchantments = holder.lookupOrThrow(Registries.ENCHANTMENT);
 			tableBuilder.modifyPools(builder -> {
-				addEnchantedBook(builder, enchantments, ModEnchantments.METEOR);
-				addEnchantedBook(builder, enchantments, ModEnchantments.THUNDERSTRUCK);
+				addEnchantedBook(builder, enchantments, EnchancementEnchantments.METEOR);
+				addEnchantedBook(builder, enchantments, EnchancementEnchantments.THUNDERSTRUCK);
 			});
 		}
 	}
 
 	private static void addEnchantedBook(LootPool.Builder builder, HolderLookup.RegistryLookup<Enchantment> enchantments, ResourceKey<Enchantment> key) {
 		enchantments.get(key).ifPresent(enchantment -> {
-			if (!enchantment.is(ModEnchantments.EMPTY_KEY)) {
+			if (!enchantment.is(EnchancementEnchantments.EMPTY_KEY)) {
 				builder.add(LootItem.lootTableItem(Items.BOOK)
 						.setWeight(2)
 						.apply(new SetEnchantmentsFunction.Builder().withEnchantment(enchantment, ConstantValue.exactly(1))));

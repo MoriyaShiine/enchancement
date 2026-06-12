@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.config.rebalanceequipment;
 
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class CombatRulesMixin {
 	@ModifyVariable(method = "getDamageAfterAbsorb", at = @At(value = "HEAD"), argsOnly = true, ordinal = 0)
 	private static float enchancement$rebalanceEquipment(float damage, LivingEntity victim) {
-		if (ModConfig.rebalanceEquipment && damage > 1) {
+		if (EnchancementConfig.rebalanceEquipment && damage > 1) {
 			double[] enchantedArmor = {0};
 			for (EquipmentSlot slot : EquipmentSlot.values()) {
 				if (slot.getType() != EquipmentSlot.Type.HAND) {

@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.enchantmententityeffecttype.freeze;
 
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,6 +15,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class EntityMixin {
 	@Inject(method = "clearFreeze", at = @At("TAIL"))
 	private void enchancement$freeze(CallbackInfo ci) {
-		ModEntityComponents.FROZEN.maybeGet(this).ifPresent(frozenComponent -> frozenComponent.setFreezeTicks(0));
+		EnchancementEntityComponents.FROZEN.maybeGet(this).ifPresent(frozen -> frozen.setFreezeTicks(0));
 	}
 }

@@ -4,8 +4,8 @@
 
 package moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype;
 
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.world.item.effects.TeleportOnHitEffect;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
@@ -53,7 +53,7 @@ public class TeleportOnHitComponent implements AutoSyncedComponent, ClientTickin
 	}
 
 	public void sync() {
-		ModEntityComponents.TELEPORT_ON_HIT.sync(obj);
+		EnchancementEntityComponents.TELEPORT_ON_HIT.sync(obj);
 	}
 
 	public void disable() {
@@ -76,16 +76,16 @@ public class TeleportOnHitComponent implements AutoSyncedComponent, ClientTickin
 	public static void maybeSet(LivingEntity user, ItemStack stack, Entity entity) {
 		if (entity instanceof AbstractArrow) {
 			MutableBoolean teleportsOnBlockHit = new MutableBoolean(), teleportsOnEntityHit = new MutableBoolean();
-			if (EnchantmentHelper.has(stack, ModEnchantmentEffectComponentTypes.TELEPORT_ON_HIT)) {
+			if (EnchantmentHelper.has(stack, EnchancementEnchantmentEffectComponentTypes.TELEPORT_ON_HIT)) {
 				TeleportOnHitEffect.setValues(teleportsOnBlockHit, teleportsOnEntityHit, Collections.singleton(stack));
-			} else if (!(user instanceof Player) && EnchancementUtil.hasAnyEnchantmentsWith(user, ModEnchantmentEffectComponentTypes.TELEPORT_ON_HIT)) {
+			} else if (!(user instanceof Player) && EnchancementUtil.hasAnyEnchantmentsWith(user, EnchancementEnchantmentEffectComponentTypes.TELEPORT_ON_HIT)) {
 				TeleportOnHitEffect.setValues(teleportsOnBlockHit, teleportsOnEntityHit, EnchancementUtil.getHeldItems(user));
 			}
 			if (teleportsOnBlockHit.booleanValue() || teleportsOnEntityHit.booleanValue()) {
-				TeleportOnHitComponent teleportOnHitComponent = ModEntityComponents.TELEPORT_ON_HIT.get(entity);
-				teleportOnHitComponent.teleportsOnBlockHit = teleportsOnBlockHit.booleanValue();
-				teleportOnHitComponent.teleportsOnEntityHit = teleportsOnEntityHit.booleanValue();
-				teleportOnHitComponent.sync();
+				TeleportOnHitComponent teleportOnHit = EnchancementEntityComponents.TELEPORT_ON_HIT.get(entity);
+				teleportOnHit.teleportsOnBlockHit = teleportsOnBlockHit.booleanValue();
+				teleportOnHit.teleportsOnEntityHit = teleportsOnEntityHit.booleanValue();
+				teleportOnHit.sync();
 			}
 		}
 	}

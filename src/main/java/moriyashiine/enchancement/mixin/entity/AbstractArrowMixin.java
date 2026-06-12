@@ -6,7 +6,7 @@ package moriyashiine.enchancement.mixin.entity;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.mojang.serialization.Codec;
-import moriyashiine.enchancement.common.init.ModEntityTypes;
+import moriyashiine.enchancement.common.init.EnchancementEntityTypes;
 import moriyashiine.enchancement.common.world.entity.projectile.arrow.ShardEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -37,6 +37,6 @@ public abstract class AbstractArrowMixin extends Projectile {
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	@Unique
 	private boolean isDisallowed() {
-		return getType() == ModEntityTypes.BRIMSTONE || (Object) this instanceof ShardEntity;
+		return getType() == EnchancementEntityTypes.BRIMSTONE || (Object) this instanceof ShardEntity;
 	}
 }

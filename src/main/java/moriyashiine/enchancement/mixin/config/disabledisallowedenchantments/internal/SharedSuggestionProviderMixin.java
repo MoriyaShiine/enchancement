@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.config.disabledisallowedenchantments.internal;
 
-import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.EnchancementEnchantments;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,6 +17,6 @@ import java.util.stream.Stream;
 public interface SharedSuggestionProviderMixin {
 	@ModifyVariable(method = "suggestResource(Ljava/util/stream/Stream;Lcom/mojang/brigadier/suggestion/SuggestionsBuilder;)Ljava/util/concurrent/CompletableFuture;", at = @At("HEAD"), argsOnly = true)
 	private static Stream<Identifier> enchancement$disableDisallowedEnchantments(Stream<Identifier> values) {
-		return values.filter(key -> !key.equals(ModEnchantments.EMPTY_KEY.identifier()));
+		return values.filter(key -> !key.equals(EnchancementEnchantments.EMPTY_KEY.identifier()));
 	}
 }

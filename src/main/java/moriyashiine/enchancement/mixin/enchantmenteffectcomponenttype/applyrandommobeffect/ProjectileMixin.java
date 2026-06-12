@@ -8,7 +8,7 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.ApplyRandomMobEffectComponent;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.ApplyRandomMobEffectGenericComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
@@ -27,12 +27,12 @@ public class ProjectileMixin {
 		if (original.getOwner() instanceof LivingEntity owner) {
 			ApplyRandomMobEffectComponent.maybeSet(owner, itemStack, ApplyRandomMobEffectComponent.getDurationMultiplier(owner, original.getDeltaMovement().length()), owner.getActiveItem(), effects -> {
 				if (original instanceof Arrow arrow) {
-					ModEntityComponents.APPLY_RANDOM_MOB_EFFECT.get(arrow).setOriginalStack(arrow.getPickupItem());
+					EnchancementEntityComponents.APPLY_RANDOM_MOB_EFFECT.get(arrow).setOriginalStack(arrow.getPickupItem());
 					arrow.setPotionContents(new PotionContents(Optional.empty(), Optional.empty(), effects, Optional.empty()));
 				} else if (original instanceof AbstractArrow arrow) {
-					ApplyRandomMobEffectGenericComponent applyRandomMobEffectGenericComponent = ModEntityComponents.APPLY_RANDOM_MOB_EFFECT_GENERIC.get(arrow);
-					applyRandomMobEffectGenericComponent.setEffects(effects);
-					applyRandomMobEffectGenericComponent.sync();
+					ApplyRandomMobEffectGenericComponent applyRandomMobEffectGeneric = EnchancementEntityComponents.APPLY_RANDOM_MOB_EFFECT_GENERIC.get(arrow);
+					applyRandomMobEffectGeneric.setEffects(effects);
+					applyRandomMobEffectGeneric.sync();
 				}
 			});
 		}

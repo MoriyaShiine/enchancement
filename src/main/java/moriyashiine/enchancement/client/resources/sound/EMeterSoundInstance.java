@@ -6,8 +6,8 @@ package moriyashiine.enchancement.client.resources.sound;
 
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.EMeterComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementSoundEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.resources.Identifier;
@@ -23,7 +23,7 @@ public class EMeterSoundInstance extends AbstractTickableSoundInstance {
 	private final UUID floatingUuid;
 
 	public EMeterSoundInstance(Entity entity, UUID floatingUuid) {
-		super(ModSoundEvents.GENERIC_E_METER_FLOAT, entity.getSoundSource(), entity.getRandom());
+		super(EnchancementSoundEvents.GENERIC_E_METER_FLOAT, entity.getSoundSource(), entity.getRandom());
 		this.entity = entity;
 		this.floatingUuid = floatingUuid;
 		x = entity.getX();
@@ -40,8 +40,8 @@ public class EMeterSoundInstance extends AbstractTickableSoundInstance {
 	public void tick() {
 		boolean done = entity == null || !entity.isAlive();
 		if (!done) {
-			EMeterComponent eMeterComponent = ModEntityComponents.E_METER.getNullable(entity);
-			if (eMeterComponent == null || !eMeterComponent.isFloatingUuid(floatingUuid)) {
+			EMeterComponent eMeter = EnchancementEntityComponents.E_METER.getNullable(entity);
+			if (eMeter == null || !eMeter.isFloatingUuid(floatingUuid)) {
 				done = true;
 			}
 		}

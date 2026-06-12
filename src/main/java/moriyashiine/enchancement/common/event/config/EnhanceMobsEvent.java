@@ -4,10 +4,10 @@
 
 package moriyashiine.enchancement.common.event.config;
 
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.DirectionBurstComponent;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.enchancement.common.payload.DirectionBurstPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.world.entity.TridentSpinAttackUser;
@@ -33,10 +33,10 @@ public class EnhanceMobsEvent implements TickEntityEvent {
 
 	@Override
 	public void tick(Level level, Entity entity) {
-		if (ModConfig.enhanceMobs && !level.isClientSide() && entity instanceof Mob mob && mob.slib$exists() && !mob.isPassenger() && !mob.hasControllingPassenger()) {
+		if (EnchancementConfig.enhanceMobs && !level.isClientSide() && entity instanceof Mob mob && mob.slib$exists() && !mob.isPassenger() && !mob.hasControllingPassenger()) {
 			if (!mob.onGround()) {
-				DirectionBurstComponent directionBurstComponent = ModEntityComponents.DIRECTION_BURST.get(mob);
-				if (directionBurstComponent.hasEffect() && directionBurstComponent.canUse() && SLibUtils.isSufficientlyHigh(mob, 2.5)) {
+				DirectionBurstComponent directionBurst = EnchancementEntityComponents.DIRECTION_BURST.get(mob);
+				if (directionBurst.hasEffect() && directionBurst.canUse() && SLibUtils.isSufficientlyHigh(mob, 2.5)) {
 					float strength = mob.onGround() ? DirectionBurstEffect.getGroundStrength(mob) : DirectionBurstEffect.getAirStrength(mob);
 					Vec3 inputDelta = switch (mob.getRandom().nextInt(4)) {
 						case 3 -> new Vec3(strength, 0, 0);
@@ -44,11 +44,11 @@ public class EnhanceMobsEvent implements TickEntityEvent {
 						case 1 -> new Vec3(0, 0, strength);
 						default -> new Vec3(0, 0, -strength);
 					};
-					Vec3 delta = directionBurstComponent.createDelta(inputDelta);
-					DirectionBurstPayload.use(mob, delta, directionBurstComponent);
+					Vec3 delta = directionBurst.createDelta(inputDelta);
+					DirectionBurstPayload.use(mob, delta, directionBurst);
 				}
 			}
-			if (EnchancementUtil.hasAnyEnchantmentsWith(mob, ModEnchantmentEffectComponentTypes.E_METER)) {
+			if (EnchancementUtil.hasAnyEnchantmentsWith(mob, EnchancementEnchantmentEffectComponentTypes.E_METER)) {
 				mob.setSprinting(mob.getTarget() != null && mob.hasMovedHorizontallyRecently());
 			}
 			if ((mob.getId() + mob.tickCount) % 40 == 0 && mob.isUsingItem()) {

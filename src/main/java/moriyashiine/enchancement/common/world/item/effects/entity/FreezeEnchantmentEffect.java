@@ -6,7 +6,7 @@ package moriyashiine.enchancement.common.world.item.effects.entity;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
@@ -18,8 +18,8 @@ import net.minecraft.world.phys.Vec3;
 
 public record FreezeEnchantmentEffect(LevelBasedValue duration) implements EnchantmentEntityEffect {
 	public static final MapCodec<FreezeEnchantmentEffect> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-					LevelBasedValue.CODEC.fieldOf("duration").forGetter(FreezeEnchantmentEffect::duration))
-			.apply(instance, FreezeEnchantmentEffect::new));
+			LevelBasedValue.CODEC.fieldOf("duration").forGetter(FreezeEnchantmentEffect::duration)
+	).apply(instance, FreezeEnchantmentEffect::new));
 
 	@Override
 	public MapCodec<FreezeEnchantmentEffect> codec() {
@@ -33,10 +33,10 @@ public record FreezeEnchantmentEffect(LevelBasedValue duration) implements Encha
 
 	public static void setFreezeTicks(Entity entity, int freezeTicks) {
 		if (entity.isAlive() && !entity.is(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES)) {
-			ModEntityComponents.FROZEN.maybeGet(entity).ifPresent(frozenComponent -> {
-				if (frozenComponent.getFreezeTicks() < freezeTicks) {
-					frozenComponent.setFreezeTicks(freezeTicks);
-					frozenComponent.sync();
+			EnchancementEntityComponents.FROZEN.maybeGet(entity).ifPresent(frozen -> {
+				if (frozen.getFreezeTicks() < freezeTicks) {
+					frozen.setFreezeTicks(freezeTicks);
+					frozen.sync();
 				}
 			});
 		}

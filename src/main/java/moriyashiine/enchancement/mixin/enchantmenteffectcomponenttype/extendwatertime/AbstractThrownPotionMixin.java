@@ -5,8 +5,8 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.extendwatertime;
 
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.ExtendedWaterTimeComponent;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,10 +28,10 @@ public abstract class AbstractThrownPotionMixin extends ThrowableItemProjectile 
 	@Inject(method = "onHit", at = @At("TAIL"))
 	private void enchancement$extendWaterTime(HitResult hitResult, CallbackInfo ci) {
 		level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(4, 2, 4)).forEach(living -> {
-			if (EnchancementUtil.hasAnyEnchantmentsWith(living, ModEnchantmentEffectComponentTypes.EXTEND_WATER_TIME)) {
-				ExtendedWaterTimeComponent extendedWaterTimeComponent = ModEntityComponents.EXTENDED_WATER_TIME.get(living);
-				extendedWaterTimeComponent.markWet(300);
-				extendedWaterTimeComponent.sync();
+			if (EnchancementUtil.hasAnyEnchantmentsWith(living, EnchancementEnchantmentEffectComponentTypes.EXTEND_WATER_TIME)) {
+				ExtendedWaterTimeComponent extendedWaterTime = EnchancementEntityComponents.EXTENDED_WATER_TIME.get(living);
+				extendedWaterTime.markWet(300);
+				extendedWaterTime.sync();
 			}
 		});
 	}

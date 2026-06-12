@@ -10,9 +10,9 @@ import moriyashiine.enchancement.api.event.CappedMultiplyDeltaMovementEvent;
 import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.client.payload.SlideS2CPayload;
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.init.ModParticleTypes;
+import moriyashiine.enchancement.common.EnchancementConfig;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementParticleTypes;
 import moriyashiine.enchancement.common.payload.SlideC2SPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
@@ -74,8 +74,8 @@ public class SlideComponent implements CommonTickingComponent {
 
 	@Override
 	public void tick() {
-		boolean hasFluidWalking = EnchancementUtil.hasAnyEnchantmentsWith(obj, ModEnchantmentEffectComponentTypes.FLUID_WALKING);
-		strength = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.SLIDE, obj, 0);
+		boolean hasFluidWalking = EnchancementUtil.hasAnyEnchantmentsWith(obj, EnchancementEnchantmentEffectComponentTypes.FLUID_WALKING);
+		strength = EnchancementUtil.getValue(EnchancementEnchantmentEffectComponentTypes.SLIDE, obj, 0);
 		if (hasSlide()) {
 			if (crawlTimer > 0) {
 				crawlTimer--;
@@ -121,8 +121,8 @@ public class SlideComponent implements CommonTickingComponent {
 		tick();
 		tickMob();
 		boolean sliding = hasSlide() && isSliding();
-		SLibUtils.conditionallyApplyAttributeModifier(obj, Attributes.SAFE_FALL_DISTANCE, SAFE_FALL_DISTANCE_MODIFIER, sliding);
-		SLibUtils.conditionallyApplyAttributeModifier(obj, Attributes.STEP_HEIGHT, STEP_HEIGHT_MODIFIER, sliding);
+		SLibUtils.applyAttributeModifier(obj, Attributes.SAFE_FALL_DISTANCE, SAFE_FALL_DISTANCE_MODIFIER, sliding);
+		SLibUtils.applyAttributeModifier(obj, Attributes.STEP_HEIGHT, STEP_HEIGHT_MODIFIER, sliding);
 	}
 
 	@Override
@@ -146,8 +146,8 @@ public class SlideComponent implements CommonTickingComponent {
 				Vector2d vec = new Vector2d(adjustedDelta.x(), adjustedDelta.z());
 				vec.normalize();
 				vec.mul(obj.getBbWidth() / 2);
-				obj.level().addParticle(ModParticleTypes.VELOCITY_LINE, obj.getX() - vec.y(), obj.getY() + obj.getBbHeight() / 2 + Mth.nextFloat(obj.getRandom(), -obj.getBbHeight() / 3, obj.getBbHeight() / 3), obj.getZ() + vec.x(), adjustedDelta.x(), 0, adjustedDelta.z());
-				obj.level().addParticle(ModParticleTypes.VELOCITY_LINE, obj.getX() + vec.y(), obj.getY() + obj.getBbHeight() / 2 + Mth.nextFloat(obj.getRandom(), -obj.getBbHeight() / 3, obj.getBbHeight() / 3), obj.getZ() - vec.x(), adjustedDelta.x(), 0, adjustedDelta.z());
+				obj.level().addParticle(EnchancementParticleTypes.VELOCITY_LINE, obj.getX() - vec.y(), obj.getY() + obj.getBbHeight() / 2 + Mth.nextFloat(obj.getRandom(), -obj.getBbHeight() / 3, obj.getBbHeight() / 3), obj.getZ() + vec.x(), adjustedDelta.x(), 0, adjustedDelta.z());
+				obj.level().addParticle(EnchancementParticleTypes.VELOCITY_LINE, obj.getX() + vec.y(), obj.getY() + obj.getBbHeight() / 2 + Mth.nextFloat(obj.getRandom(), -obj.getBbHeight() / 3, obj.getBbHeight() / 3), obj.getZ() - vec.x(), adjustedDelta.x(), 0, adjustedDelta.z());
 			}
 		}
 	}
@@ -187,7 +187,7 @@ public class SlideComponent implements CommonTickingComponent {
 	}
 
 	public boolean canSlide() {
-		return !isSliding() && obj.onGround() && SLibUtils.isGroundedOrAirborne(obj);
+		return !isSliding() && obj.onGround() && SLibUtils.hasNormalMovement(obj);
 	}
 
 	public SlideDeltaMovement createAdjustedDelta(SlideDeltaMovement delta) {
@@ -235,7 +235,7 @@ public class SlideComponent implements CommonTickingComponent {
 	}
 
 	private boolean canSlideAsMob(Mob mob) {
-		if (ModConfig.enhanceMobs && mob.slib$exists()) {
+		if (EnchancementConfig.enhanceMobs && mob.slib$exists()) {
 			if (mob.getNavigation().getPath() != null && mob.getNavigation().getPath().getEndNode() != null && mob.getNavigation().getPath().getEndNode().asVec3().distanceTo(obj.position()) > 1) {
 				return true;
 			}
@@ -274,9 +274,9 @@ public class SlideComponent implements CommonTickingComponent {
 
 	public record SlideDeltaMovement(float x, float z) {
 		public static final Codec<SlideDeltaMovement> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-						Codec.FLOAT.fieldOf("x").forGetter(SlideDeltaMovement::x),
-						Codec.FLOAT.fieldOf("z").forGetter(SlideDeltaMovement::z))
-				.apply(instance, SlideDeltaMovement::new));
+				Codec.FLOAT.fieldOf("x").forGetter(SlideDeltaMovement::x),
+				Codec.FLOAT.fieldOf("z").forGetter(SlideDeltaMovement::z)
+		).apply(instance, SlideDeltaMovement::new));
 		public static final StreamCodec<FriendlyByteBuf, SlideDeltaMovement> STREAM_CODEC = StreamCodec.composite(
 				ByteBufCodecs.FLOAT, SlideDeltaMovement::x,
 				ByteBufCodecs.FLOAT, SlideDeltaMovement::z,

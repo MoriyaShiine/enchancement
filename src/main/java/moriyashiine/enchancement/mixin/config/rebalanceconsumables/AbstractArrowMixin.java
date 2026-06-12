@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.config.rebalanceconsumables;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.Entity;
@@ -71,6 +71,6 @@ public abstract class AbstractArrowMixin extends Projectile {
 
 	@Unique
 	private boolean shouldApply() {
-		return ModConfig.rebalanceConsumables && pickup == AbstractArrow.Pickup.ALLOWED && getPierceLevel() == 0 && getOwner() instanceof Player;
+		return EnchancementConfig.rebalanceConsumables && pickup == AbstractArrow.Pickup.ALLOWED && getPierceLevel() == 0 && getOwner() instanceof Player;
 	}
 }

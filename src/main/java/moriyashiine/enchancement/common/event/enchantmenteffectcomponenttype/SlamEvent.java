@@ -5,8 +5,8 @@
 package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.SlamComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.tag.ModDamageTypeTags;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
+import moriyashiine.enchancement.common.tag.EnchancementDamageTypeTags;
 import moriyashiine.strawberrylib.api.event.ModifyMovementEvents;
 import moriyashiine.strawberrylib.api.event.PreventFallDamageEvent;
 import net.fabricmc.fabric.api.util.TriState;
@@ -24,9 +24,9 @@ public class SlamEvent {
 	private static class FallImmunity implements PreventFallDamageEvent {
 		@Override
 		public TriState preventsFallDamage(Level level, LivingEntity entity, double fallDistance, float damageModifier, DamageSource source) {
-			if (source.is(ModDamageTypeTags.IS_SAFE_FALL)) {
-				SlamComponent slamComponent = ModEntityComponents.SLAM.getNullable(entity);
-				if (slamComponent != null && slamComponent.isSlamming()) {
+			if (source.is(EnchancementDamageTypeTags.IS_SAFE_FALL)) {
+				SlamComponent slam = EnchancementEntityComponents.SLAM.getNullable(entity);
+				if (slam != null && slam.isSlamming()) {
 					return TriState.TRUE;
 				}
 			}
@@ -37,9 +37,9 @@ public class SlamEvent {
 	private static class JumpBoost implements ModifyMovementEvents.JumpDelta {
 		@Override
 		public Vec3 modify(Vec3 delta, LivingEntity entity) {
-			SlamComponent slamComponent = ModEntityComponents.SLAM.getNullable(entity);
-			if (slamComponent != null) {
-				return delta.multiply(1, slamComponent.getJumpBoostStrength(), 1);
+			SlamComponent slam = EnchancementEntityComponents.SLAM.getNullable(entity);
+			if (slam != null) {
+				return delta.multiply(1, slam.getJumpBoostStrength(), 1);
 			}
 			return delta;
 		}

@@ -84,6 +84,6 @@ public class GlideComponent implements AutoSyncedComponent, CommonTickingCompone
 	}
 
 	public boolean canGlide() {
-		return minDuration > 0 && SLibUtils.isGroundedOrAirborne(obj) && !EnchancementUtil.isHovering(obj);
+		return minDuration > 0 && SLibUtils.hasNormalMovement(obj) && !EnchancementUtil.isHovering(obj);
 	}
 }

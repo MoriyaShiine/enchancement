@@ -6,10 +6,10 @@ package moriyashiine.enchancement.mixin.config.toggleablepassives;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.init.ModComponentTypes;
-import moriyashiine.enchancement.common.tag.ModEnchantmentTags;
-import moriyashiine.enchancement.common.tag.ModItemTags;
+import moriyashiine.enchancement.common.EnchancementConfig;
+import moriyashiine.enchancement.common.init.EnchancementDataComponents;
+import moriyashiine.enchancement.common.tag.EnchancementEnchantmentTags;
+import moriyashiine.enchancement.common.tag.EnchancementItemTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
@@ -31,18 +31,18 @@ import java.util.function.Consumer;
 public class EnchantmentHelperMixin {
 	@Unique
 	private static void checkPassive(ItemStack stack, ItemEnchantments enchantments) {
-		if (ModConfig.toggleablePassives && isApplicable(stack)) {
+		if (EnchancementConfig.toggleablePassives && isApplicable(stack)) {
 			if (stack.isEnchanted()) {
-				if (!stack.has(ModComponentTypes.TOGGLEABLE_PASSIVE)) {
+				if (!stack.has(EnchancementDataComponents.TOGGLEABLE_PASSIVE)) {
 					for (Holder<Enchantment> enchantment : enchantments.keySet()) {
-						if (enchantment.is(ModEnchantmentTags.DISALLOWS_TOGGLEABLE_PASSIVE)) {
+						if (enchantment.is(EnchancementEnchantmentTags.DISALLOWS_TOGGLEABLE_PASSIVE)) {
 							return;
 						}
 					}
-					stack.set(ModComponentTypes.TOGGLEABLE_PASSIVE, true);
+					stack.set(EnchancementDataComponents.TOGGLEABLE_PASSIVE, true);
 				}
 			} else {
-				stack.remove(ModComponentTypes.TOGGLEABLE_PASSIVE);
+				stack.remove(EnchancementDataComponents.TOGGLEABLE_PASSIVE);
 			}
 		}
 	}
@@ -64,9 +64,9 @@ public class EnchantmentHelperMixin {
 
 	@ModifyReturnValue(method = "getTridentReturnToOwnerAcceleration", at = @At("RETURN"))
 	private static int enchancement$toggleablePassives(int original, ServerLevel serverLevel, ItemStack weapon) {
-		if (ModConfig.toggleablePassives && weapon.is(ItemTags.TRIDENT_ENCHANTABLE) && !weapon.is(ModItemTags.NO_LOYALTY) && weapon.getOrDefault(ModComponentTypes.TOGGLEABLE_PASSIVE, false)) {
+		if (EnchancementConfig.toggleablePassives && weapon.is(ItemTags.TRIDENT_ENCHANTABLE) && !weapon.is(EnchancementItemTags.NO_LOYALTY) && weapon.getOrDefault(EnchancementDataComponents.TOGGLEABLE_PASSIVE, false)) {
 			if (!weapon.isEnchanted()) {
-				weapon.remove(ModComponentTypes.TOGGLEABLE_PASSIVE);
+				weapon.remove(EnchancementDataComponents.TOGGLEABLE_PASSIVE);
 				return original;
 			}
 			return EnchancementUtil.hasWeakEnchantments(weapon) ? 1 : 3;

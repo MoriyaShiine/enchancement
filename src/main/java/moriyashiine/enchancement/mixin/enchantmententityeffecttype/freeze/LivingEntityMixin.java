@@ -5,8 +5,8 @@
 package moriyashiine.enchancement.mixin.enchantmententityeffecttype.freeze;
 
 import moriyashiine.enchancement.common.component.entity.enchantmenteffecttype.FrozenComponent;
-import moriyashiine.enchancement.common.init.ModDamageTypes;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementDamageTypes;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.enchancement.common.world.item.effects.entity.FreezeEnchantmentEffect;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.minecraft.server.level.ServerLevel;
@@ -30,21 +30,21 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@Inject(method = "isAlive", at = @At("HEAD"), cancellable = true)
 	private void enchancement$freezeAlive(CallbackInfoReturnable<Boolean> cir) {
-		if (ModEntityComponents.FROZEN.get(this).isFrozen()) {
+		if (EnchancementEntityComponents.FROZEN.get(this).isFrozen()) {
 			cir.setReturnValue(false);
 		}
 	}
 
 	@Inject(method = "isPushable", at = @At("HEAD"), cancellable = true)
 	private void enchancement$freezePushable(CallbackInfoReturnable<Boolean> cir) {
-		if (ModEntityComponents.FROZEN.get(this).isFrozen()) {
+		if (EnchancementEntityComponents.FROZEN.get(this).isFrozen()) {
 			cir.setReturnValue(true);
 		}
 	}
 
 	@Inject(method = "die", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;broadcastEntityEvent(Lnet/minecraft/world/entity/Entity;B)V"), cancellable = true)
 	private void enchancement$freeze(DamageSource source, CallbackInfo ci) {
-		if (ModEntityComponents.FROZEN.get(this).shouldFreezeOnDeath(source)) {
+		if (EnchancementEntityComponents.FROZEN.get(this).shouldFreezeOnDeath(source)) {
 			ci.cancel();
 		}
 	}
@@ -52,10 +52,10 @@ public abstract class LivingEntityMixin extends Entity {
 	@Inject(method = "push", at = @At("HEAD"))
 	private void enchancement$freeze(Entity entity, CallbackInfo ci) {
 		if (level() instanceof ServerLevel level && shouldExplodeWhenPushed(entity)) {
-			FrozenComponent frozenComponent = ModEntityComponents.FROZEN.get(this);
-			if (frozenComponent.isFrozen()) {
-				LivingEntity lastFreezingAttacker = frozenComponent.getLastFreezingAttacker();
-				if (SLibUtils.shouldHurt(entity, lastFreezingAttacker) && entity.hurtServer(level, level.damageSources().source(ModDamageTypes.ICE_SHARD, lastFreezingAttacker == null ? this : lastFreezingAttacker), (float) getBoundingBox().getSize() * 6)) {
+			FrozenComponent frozen = EnchancementEntityComponents.FROZEN.get(this);
+			if (frozen.isFrozen()) {
+				LivingEntity lastFreezingAttacker = frozen.getLastFreezingAttacker();
+				if (SLibUtils.shouldHurt(entity, lastFreezingAttacker) && entity.hurtServer(level, level.damageSources().source(EnchancementDamageTypes.ICE_SHARD, lastFreezingAttacker == null ? this : lastFreezingAttacker), (float) getBoundingBox().getSize() * 6)) {
 					hurtServer(level, damageSources().generic(), 2);
 					FreezeEnchantmentEffect.setFreezeTicks(entity, 400);
 				}
@@ -65,8 +65,8 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@Unique
 	private static boolean shouldExplodeWhenPushed(Entity entity) {
-		FrozenComponent frozenComponent = ModEntityComponents.FROZEN.getNullable(entity);
-		if (frozenComponent != null && frozenComponent.isFrozen()) {
+		FrozenComponent frozen = EnchancementEntityComponents.FROZEN.getNullable(entity);
+		if (frozen != null && frozen.isFrozen()) {
 			return true;
 		}
 		return entity.isAlive();

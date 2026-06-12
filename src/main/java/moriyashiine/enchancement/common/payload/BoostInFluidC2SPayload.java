@@ -7,7 +7,7 @@ package moriyashiine.enchancement.common.payload;
 import moriyashiine.enchancement.client.payload.BoostInFluidS2CPayload;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.BoostInFluidComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -23,7 +23,8 @@ public record BoostInFluidC2SPayload(int entityId, boolean shouldBoost) implemen
 	public static final StreamCodec<FriendlyByteBuf, BoostInFluidC2SPayload> CODEC = StreamCodec.composite(
 			ByteBufCodecs.VAR_INT, BoostInFluidC2SPayload::entityId,
 			ByteBufCodecs.BOOL, BoostInFluidC2SPayload::shouldBoost,
-			BoostInFluidC2SPayload::new);
+			BoostInFluidC2SPayload::new
+	);
 
 	@Override
 	public Type<BoostInFluidC2SPayload> type() {
@@ -39,9 +40,9 @@ public record BoostInFluidC2SPayload(int entityId, boolean shouldBoost) implemen
 		public void receive(BoostInFluidC2SPayload payload, ServerPlayNetworking.Context context) {
 			Entity entity = context.player().level().getEntity(payload.entityId());
 			if (entity instanceof LivingEntity) {
-				BoostInFluidComponent boostInFluidComponent = ModEntityComponents.BOOST_IN_FLUID.get(entity);
-				if (boostInFluidComponent.hasBoost() && boostInFluidComponent.canUse(true)) {
-					boostInFluidComponent.setShouldBoost(payload.shouldBoost());
+				BoostInFluidComponent boostInFluid = EnchancementEntityComponents.BOOST_IN_FLUID.get(entity);
+				if (boostInFluid.hasBoost() && boostInFluid.canUse(true)) {
+					boostInFluid.setShouldBoost(payload.shouldBoost());
 					PlayerLookup.tracking(entity).forEach(receiver -> BoostInFluidS2CPayload.send(receiver, entity, payload.shouldBoost()));
 				}
 			}

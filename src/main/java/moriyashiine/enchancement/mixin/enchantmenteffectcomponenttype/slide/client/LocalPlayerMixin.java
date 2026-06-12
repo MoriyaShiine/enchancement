@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.slide.client;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.client.player.LocalPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -14,6 +14,6 @@ import org.spongepowered.asm.mixin.injection.At;
 public class LocalPlayerMixin {
 	@ModifyReturnValue(method = "isSprintingPossible", at = @At("RETURN"))
 	private boolean enchancement$slide(boolean original) {
-		return original && !ModEntityComponents.SLIDE.get(this).isSliding();
+		return original && !EnchancementEntityComponents.SLIDE.get(this).isSliding();
 	}
 }

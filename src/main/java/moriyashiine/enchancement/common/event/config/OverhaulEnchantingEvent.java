@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.event.config;
 
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import moriyashiine.enchancement.common.util.config.OverhaulMode;
 import moriyashiine.enchancement.common.world.level.storage.loot.functions.StoreItemEnchantmentsLootFunction;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
@@ -38,7 +38,7 @@ public class OverhaulEnchantingEvent implements LootTableEvents.Modify {
 
 	@Override
 	public void modifyLootTable(ResourceKey<LootTable> key, LootTable.Builder tableBuilder, LootTableSource source, HolderLookup.Provider holder) {
-		if (ModConfig.overhaulEnchanting != OverhaulMode.DISABLED) {
+		if (EnchancementConfig.overhaulEnchanting != OverhaulMode.DISABLED) {
 			if (key == BuiltInLootTables.NETHER_BRIDGE) {
 				addChanceBook(tableBuilder, Items.IRON_HELMET);
 			}

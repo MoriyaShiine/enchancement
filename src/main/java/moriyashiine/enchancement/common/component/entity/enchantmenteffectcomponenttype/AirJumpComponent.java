@@ -6,9 +6,9 @@ package moriyashiine.enchancement.common.component.entity.enchantmenteffectcompo
 
 import moriyashiine.enchancement.api.event.CappedMultiplyDeltaMovementEvent;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.util.PushComponent;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementSoundEvents;
 import moriyashiine.enchancement.common.payload.AirJumpPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.world.item.effects.AirJumpEffect;
@@ -69,7 +69,7 @@ public class AirJumpComponent extends PushComponent {
 			} else {
 				airTicks++;
 			}
-			if (ModEntityComponents.WALL_JUMP.get(obj).isSliding()) {
+			if (EnchancementEntityComponents.WALL_JUMP.get(obj).isSliding()) {
 				jumpCooldown = AirJumpEffect.getJumpCooldown(obj);
 			}
 		}
@@ -94,12 +94,12 @@ public class AirJumpComponent extends PushComponent {
 
 	@Override
 	public void sync() {
-		ModEntityComponents.AIR_JUMP.sync(obj);
+		EnchancementEntityComponents.AIR_JUMP.sync(obj);
 	}
 
 	@Override
 	public DataComponentType<?> getEffectType() {
-		return ModEnchantmentEffectComponentTypes.AIR_JUMP;
+		return EnchancementEnchantmentEffectComponentTypes.AIR_JUMP;
 	}
 
 	@Override
@@ -124,7 +124,7 @@ public class AirJumpComponent extends PushComponent {
 	}
 
 	public boolean canUse() {
-		return jumpCooldown == 0 && jumpsLeft > 0 && airTicks >= 5 && !obj.onGround() && SLibUtils.isGroundedOrAirborne(obj);
+		return jumpCooldown == 0 && jumpsLeft > 0 && airTicks >= 5 && !obj.onGround() && SLibUtils.hasNormalMovement(obj);
 	}
 
 	public void use() {
@@ -141,7 +141,7 @@ public class AirJumpComponent extends PushComponent {
 				obj.addDeltaMovement(new Vec3(-Mth.sin(rad) * 0.2, 0, Mth.cos(rad) * 0.2));
 			}
 		}
-		obj.playSound(ModSoundEvents.GENERIC_AIR_JUMP, 1, 1);
+		obj.playSound(EnchancementSoundEvents.GENERIC_AIR_JUMP, 1, 1);
 		obj.gameEvent(GameEvent.ENTITY_ACTION);
 		EnchancementUtil.resetFallDistance(obj);
 	}

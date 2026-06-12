@@ -20,7 +20,8 @@ public record PlayBrimstoneTravelSoundPayload(int entityId) implements CustomPac
 	public static final Type<PlayBrimstoneTravelSoundPayload> TYPE = new Type<>(Enchancement.id("play_brimstone_travel_sound"));
 	public static final StreamCodec<FriendlyByteBuf, PlayBrimstoneTravelSoundPayload> CODEC = StreamCodec.composite(
 			ByteBufCodecs.VAR_INT, PlayBrimstoneTravelSoundPayload::entityId,
-			PlayBrimstoneTravelSoundPayload::new);
+			PlayBrimstoneTravelSoundPayload::new
+	);
 
 	@Override
 	public Type<PlayBrimstoneTravelSoundPayload> type() {

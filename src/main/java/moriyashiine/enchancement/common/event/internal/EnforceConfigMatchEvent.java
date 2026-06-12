@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.common.event.internal;
 
 import moriyashiine.enchancement.client.payload.EnforceConfigMatchPayload;
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
@@ -22,7 +22,7 @@ public class EnforceConfigMatchEvent {
 	private static class Join implements ServerPlayConnectionEvents.Join {
 		@Override
 		public void onPlayReady(ServerGamePacketListenerImpl listener, PacketSender sender, MinecraftServer server) {
-			EnforceConfigMatchPayload.send(listener.getPlayer(), ModConfig.encode());
+			EnforceConfigMatchPayload.send(listener.getPlayer(), EnchancementConfig.encode());
 		}
 	}
 
@@ -31,7 +31,7 @@ public class EnforceConfigMatchEvent {
 		public void onEndTick(MinecraftServer server) {
 			if (server.overworld().getGameTime() % 100 == 0) {
 				for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-					EnforceConfigMatchPayload.send(player, ModConfig.encode());
+					EnforceConfigMatchPayload.send(player, EnchancementConfig.encode());
 				}
 			}
 		}

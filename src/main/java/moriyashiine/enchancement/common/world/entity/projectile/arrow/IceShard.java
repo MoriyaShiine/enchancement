@@ -4,8 +4,8 @@
 
 package moriyashiine.enchancement.common.world.entity.projectile.arrow;
 
-import moriyashiine.enchancement.common.init.ModDamageTypes;
-import moriyashiine.enchancement.common.init.ModEntityTypes;
+import moriyashiine.enchancement.common.init.EnchancementDamageTypes;
+import moriyashiine.enchancement.common.init.EnchancementEntityTypes;
 import moriyashiine.enchancement.common.world.item.effects.entity.FreezeEnchantmentEffect;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -28,7 +28,7 @@ public class IceShard extends ShardEntity {
 	}
 
 	public IceShard(Level level, LivingEntity mob, @Nullable ItemStack firedFromWeapon) {
-		super(ModEntityTypes.ICE_SHARD, mob, level, firedFromWeapon);
+		super(EnchancementEntityTypes.ICE_SHARD, mob, level, firedFromWeapon);
 	}
 
 	public IceShard(Level level, LivingEntity source, @Nullable Entity owner) {
@@ -43,7 +43,7 @@ public class IceShard extends ShardEntity {
 
 	@Override
 	protected ResourceKey<DamageType> getDamageType() {
-		return ModDamageTypes.ICE_SHARD;
+		return EnchancementDamageTypes.ICE_SHARD;
 	}
 
 	@Override

@@ -6,7 +6,7 @@ package moriyashiine.enchancement.mixin.config.disabledisallowedenchantments.int
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.EnchancementEnchantments;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -28,7 +28,7 @@ public interface RegistryMixin<T> {
 	private @Nullable T enchancement$disableDisallowedEnchantments(Registry<?> instance, @Nullable ResourceKey<T> key, Operation<T> original) {
 		T value = original.call(instance, key);
 		if (value == null && key().equals(Registries.ENCHANTMENT)) {
-			value = getValue((ResourceKey<T>) ModEnchantments.EMPTY_KEY);
+			value = getValue((ResourceKey<T>) EnchancementEnchantments.EMPTY_KEY);
 		}
 		return value;
 	}

@@ -23,7 +23,8 @@ public record UseLightningDashPayload(int entityId, Vec3 lungeDelta, int floatTi
 			ByteBufCodecs.VAR_INT, UseLightningDashPayload::entityId,
 			Vec3.STREAM_CODEC, UseLightningDashPayload::lungeDelta,
 			ByteBufCodecs.VAR_INT, UseLightningDashPayload::floatTicks,
-			UseLightningDashPayload::new);
+			UseLightningDashPayload::new
+	);
 
 	@Override
 	public Type<UseLightningDashPayload> type() {

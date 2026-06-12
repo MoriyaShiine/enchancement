@@ -6,7 +6,7 @@ package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.fluidwalk
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mojang.authlib.GameProfile;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -23,11 +23,11 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
 
 	@ModifyVariable(method = "isSprintingPossible", at = @At("HEAD"), argsOnly = true)
 	private boolean enchancement$fluidWalkingStart(boolean allowedInShallowWater) {
-		return allowedInShallowWater || EnchancementUtil.hasAnyEnchantmentsWith(this, ModEnchantmentEffectComponentTypes.FLUID_WALKING);
+		return allowedInShallowWater || EnchancementUtil.hasAnyEnchantmentsWith(this, EnchancementEnchantmentEffectComponentTypes.FLUID_WALKING);
 	}
 
 	@ModifyExpressionValue(method = "shouldStopSwimSprinting", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isInWater()Z"))
 	private boolean enchancement$fluidWalkingStop(boolean original) {
-		return original && !EnchancementUtil.hasAnyEnchantmentsWith(this, ModEnchantmentEffectComponentTypes.FLUID_WALKING);
+		return original && !EnchancementUtil.hasAnyEnchantmentsWith(this, EnchancementEnchantmentEffectComponentTypes.FLUID_WALKING);
 	}
 }

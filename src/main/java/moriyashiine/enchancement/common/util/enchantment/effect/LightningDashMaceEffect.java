@@ -6,7 +6,7 @@ package moriyashiine.enchancement.common.util.enchantment.effect;
 
 import moriyashiine.enchancement.client.payload.UseLightningDashPayload;
 import moriyashiine.enchancement.client.resources.sound.SparkSoundInstance;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.enchancement.common.world.item.effects.LightningDashEffect;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -27,12 +27,12 @@ public class LightningDashMaceEffect extends MaceEffect {
 
 	@Override
 	public boolean isUsing(Player player) {
-		return ModEntityComponents.LIGHTNING_DASH.get(player).isUsing();
+		return EnchancementEntityComponents.LIGHTNING_DASH.get(player).isUsing();
 	}
 
 	@Override
 	public void setUsing(Player player, boolean using) {
-		ModEntityComponents.LIGHTNING_DASH.get(player).setUsing(using);
+		EnchancementEntityComponents.LIGHTNING_DASH.get(player).setUsing(using);
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class LightningDashMaceEffect extends MaceEffect {
 	public static void useCommon(Player player, Vec3 lungeVelocity, int floatTicks) {
 		player.setDeltaMovement(lungeVelocity);
 		player.gameEvent(GameEvent.ENTITY_ACTION);
-		ModEntityComponents.LIGHTNING_DASH.get(player).setFloatTicks(floatTicks);
+		EnchancementEntityComponents.LIGHTNING_DASH.get(player).setFloatTicks(floatTicks);
 	}
 
 	@Environment(EnvType.CLIENT)

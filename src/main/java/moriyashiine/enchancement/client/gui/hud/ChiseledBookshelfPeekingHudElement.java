@@ -4,12 +4,12 @@
 
 package moriyashiine.enchancement.client.gui.hud;
 
-import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.init.ModBlockComponents;
+import moriyashiine.enchancement.common.EnchancementConfig;
+import moriyashiine.enchancement.common.init.EnchancementBlockComponents;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudStatusBarHeightRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
-import net.fabricmc.fabric.mixin.client.rendering.GuiAccessor;
+import net.fabricmc.fabric.mixin.client.rendering.HudAccessor;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -27,16 +27,16 @@ public class ChiseledBookshelfPeekingHudElement implements HudElement {
 	@SuppressWarnings("ConstantValue")
 	@Override
 	public void extractRenderState(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
-		if (ModConfig.chiseledBookshelfPeeking) {
+		if (EnchancementConfig.chiseledBookshelfPeeking) {
 			Minecraft client = Minecraft.getInstance();
-			if (((GuiAccessor) client.gui).fabric$callGetCameraPlayer() != null) {
+			if (((HudAccessor) client.gui.hud).fabric$callGetCameraPlayer() != null) {
 				windowHeightOffset = HudStatusBarHeightRegistry.getHeight(VanillaHudElements.AIR_BAR);
 			}
 			int width = graphics.guiWidth() / 2;
 			int height = graphics.guiHeight() / 2;
-			if (!client.gameRenderer.getMainCamera().isDetached() && client.hitResult instanceof BlockHitResult result && client.level.getBlockEntity(result.getBlockPos()) instanceof ChiseledBookShelfBlockEntity chiseledBookShelfBlockEntity) {
+			if (!client.gameRenderer.mainCamera().isDetached() && client.hitResult instanceof BlockHitResult result && client.level.getBlockEntity(result.getBlockPos()) instanceof ChiseledBookShelfBlockEntity chiseledBookShelfBlockEntity) {
 				((ChiseledBookShelfBlock) Blocks.CHISELED_BOOKSHELF).getHitSlot(result, chiseledBookShelfBlockEntity.getBlockState().getValue(ChiseledBookShelfBlock.FACING)).ifPresent(slot -> {
-					List<ItemStack> stacks = ModBlockComponents.CHISELED_BOOKSHELF.get(chiseledBookShelfBlockEntity).getStacks();
+					List<ItemStack> stacks = EnchancementBlockComponents.CHISELED_BOOKSHELF.get(chiseledBookShelfBlockEntity).getStacks();
 					if (!stacks.isEmpty()) {
 						ItemStack stack = stacks.get(slot);
 						if (!stack.isEmpty()) {

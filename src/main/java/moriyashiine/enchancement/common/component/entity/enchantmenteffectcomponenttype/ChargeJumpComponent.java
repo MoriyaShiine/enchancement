@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype;
 
 import moriyashiine.enchancement.client.EnchancementClient;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.enchancement.common.payload.ChargeJumpPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.world.item.effects.ChargeJumpEffect;
@@ -88,7 +88,7 @@ public class ChargeJumpComponent implements AutoSyncedComponent, CommonTickingCo
 	}
 
 	public void sync() {
-		ModEntityComponents.CHARGE_JUMP.sync(obj);
+		EnchancementEntityComponents.CHARGE_JUMP.sync(obj);
 	}
 
 	public void addCharge(double added) {

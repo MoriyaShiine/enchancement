@@ -7,7 +7,7 @@ package moriyashiine.enchancement.mixin.config.rebalanceequipment.client;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.authlib.GameProfile;
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -23,7 +23,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
 
 	@ModifyReturnValue(method = "itemUseSpeedMultiplier", at = @At("RETURN"))
 	private float enchancement$rebalanceEquipment(float original) {
-		if (ModConfig.rebalanceEquipment) {
+		if (EnchancementConfig.rebalanceEquipment) {
 			return EnchancementUtil.getItemUseSpeedMultiplier(getUseItem(), original);
 		}
 		return original;

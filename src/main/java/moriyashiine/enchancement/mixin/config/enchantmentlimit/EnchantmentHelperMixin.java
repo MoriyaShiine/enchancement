@@ -8,7 +8,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
@@ -58,7 +58,7 @@ public class EnchantmentHelperMixin {
 
 	@ModifyExpressionValue(method = "lambda$getAvailableEnchantmentResults$1", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/Enchantment;getMinCost(I)I"))
 	private static int enchancement$enchantmentLimitMin(int original) {
-		if (ModConfig.enchantmentLimit > 0) {
+		if (EnchancementConfig.enchantmentLimit > 0) {
 			return 0;
 		}
 		return original;
@@ -66,7 +66,7 @@ public class EnchantmentHelperMixin {
 
 	@ModifyExpressionValue(method = "lambda$getAvailableEnchantmentResults$1", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/Enchantment;getMaxCost(I)I"))
 	private static int enchancement$enchantmentLimitMax(int original) {
-		if (ModConfig.enchantmentLimit > 0) {
+		if (EnchancementConfig.enchantmentLimit > 0) {
 			return Integer.MAX_VALUE;
 		}
 		return original;

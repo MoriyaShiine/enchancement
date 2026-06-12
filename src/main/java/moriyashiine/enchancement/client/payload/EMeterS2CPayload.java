@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.client.payload;
 
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
@@ -21,7 +21,8 @@ public record EMeterS2CPayload(int entityId, boolean shouldFloat) implements Cus
 	public static final StreamCodec<FriendlyByteBuf, EMeterS2CPayload> CODEC = StreamCodec.composite(
 			ByteBufCodecs.VAR_INT, EMeterS2CPayload::entityId,
 			ByteBufCodecs.BOOL, EMeterS2CPayload::shouldFloat,
-			EMeterS2CPayload::new);
+			EMeterS2CPayload::new
+	);
 
 	@Override
 	public Type<EMeterS2CPayload> type() {
@@ -37,7 +38,7 @@ public record EMeterS2CPayload(int entityId, boolean shouldFloat) implements Cus
 		public void receive(EMeterS2CPayload payload, ClientPlayNetworking.Context context) {
 			Entity entity = context.player().level().getEntity(payload.entityId());
 			if (entity instanceof LivingEntity) {
-				ModEntityComponents.E_METER.get(entity).setShouldFloat(payload.shouldFloat());
+				EnchancementEntityComponents.E_METER.get(entity).setShouldFloat(payload.shouldFloat());
 			}
 		}
 	}

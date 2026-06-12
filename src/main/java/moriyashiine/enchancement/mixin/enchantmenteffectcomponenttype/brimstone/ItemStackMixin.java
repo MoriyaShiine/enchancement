@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.brimstone;
 
-import moriyashiine.enchancement.common.init.ModComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.core.component.DataComponentType;
@@ -28,8 +28,8 @@ import java.util.function.Consumer;
 public abstract class ItemStackMixin implements DataComponentHolder {
 	@Inject(method = "addToTooltip", at = @At("HEAD"), cancellable = true)
 	private <T extends TooltipProvider> void enchancement$brimstone(DataComponentType<T> type, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> consumer, TooltipFlag flag, CallbackInfo ci) {
-		if (type == DataComponents.CHARGED_PROJECTILES && has(ModComponentTypes.BRIMSTONE_DAMAGE)) {
-			MutableComponent hearts = ComponentUtils.wrapInSquareBrackets(Component.literal("❤").append(" x" + get(ModComponentTypes.BRIMSTONE_DAMAGE) / 2).withStyle(ChatFormatting.RED)).withStyle(ChatFormatting.DARK_RED);
+		if (type == DataComponents.CHARGED_PROJECTILES && has(EnchancementDataComponents.BRIMSTONE_DAMAGE)) {
+			MutableComponent hearts = ComponentUtils.wrapInSquareBrackets(Component.literal("❤").append(" x" + get(EnchancementDataComponents.BRIMSTONE_DAMAGE) / 2).withStyle(ChatFormatting.RED)).withStyle(ChatFormatting.DARK_RED);
 			consumer.accept(Component.translatable("item.minecraft.crossbow.projectile.single", Component.translatable("enchantment.enchancement.brimstone").append(" ").append(hearts)));
 			ci.cancel();
 		}

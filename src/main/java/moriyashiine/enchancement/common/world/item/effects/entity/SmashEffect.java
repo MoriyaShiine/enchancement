@@ -15,8 +15,8 @@ import net.minecraft.world.phys.Vec3;
 
 public record SmashEffect(LevelBasedValue strength) implements EnchantmentEntityEffect {
 	public static final MapCodec<SmashEffect> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-					LevelBasedValue.CODEC.fieldOf("strength").forGetter(SmashEffect::strength))
-			.apply(instance, SmashEffect::new));
+			LevelBasedValue.CODEC.fieldOf("strength").forGetter(SmashEffect::strength)
+	).apply(instance, SmashEffect::new));
 
 	@Override
 	public MapCodec<SmashEffect> codec() {

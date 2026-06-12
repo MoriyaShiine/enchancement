@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.grapplingfishingbobber;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.enchancement.common.init.EnchancementSoundEvents;
 import moriyashiine.enchancement.common.world.entity.projectile.arrow.StrengthHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -115,7 +115,7 @@ public abstract class FishingHookMixin extends Projectile implements StrengthHol
 			setPos(grapplePos);
 			setDeltaMovement(Vec3.ZERO);
 			if (level().isClientSide()) {
-				player.playSound(ModSoundEvents.FISHING_BOBBER_GRAPPLE, 1, 1);
+				player.playSound(EnchancementSoundEvents.FISHING_BOBBER_GRAPPLE, 1, 1);
 			}
 		}
 	}
@@ -125,7 +125,7 @@ public abstract class FishingHookMixin extends Projectile implements StrengthHol
 		if (getStrength() != 0 && level().isClientSide()) {
 			Player player = getPlayerOwner();
 			if (player != null) {
-				player.playSound(ModSoundEvents.FISHING_BOBBER_GRAPPLE, 1, 1);
+				player.playSound(EnchancementSoundEvents.FISHING_BOBBER_GRAPPLE, 1, 1);
 			}
 		}
 	}

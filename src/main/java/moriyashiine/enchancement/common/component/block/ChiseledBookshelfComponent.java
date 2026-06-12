@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.component.block;
 
-import moriyashiine.enchancement.common.init.ModBlockComponents;
+import moriyashiine.enchancement.common.init.EnchancementBlockComponents;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -46,7 +46,7 @@ public class ChiseledBookshelfComponent implements AutoSyncedComponent {
 	}
 
 	public void sync() {
-		ModBlockComponents.CHISELED_BOOKSHELF.sync(obj);
+		EnchancementBlockComponents.CHISELED_BOOKSHELF.sync(obj);
 	}
 
 	public List<ItemStack> getStacks() {

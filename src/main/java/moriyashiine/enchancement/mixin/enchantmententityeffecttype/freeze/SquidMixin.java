@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.enchantmententityeffecttype.freeze;
 
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.AgeableWaterCreature;
 import net.minecraft.world.entity.animal.squid.Squid;
@@ -28,14 +28,14 @@ public abstract class SquidMixin extends AgeableWaterCreature {
 
 	@Inject(method = "aiStep", at = @At("HEAD"))
 	private void enchancement$freeze(CallbackInfo ci) {
-		if (ModEntityComponents.FROZEN.get(this).isFrozen()) {
+		if (EnchancementEntityComponents.FROZEN.get(this).isFrozen()) {
 			tentacleSpeed = 0;
 		}
 	}
 
 	@ModifyArg(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/squid/Squid;setDeltaMovement(Lnet/minecraft/world/phys/Vec3;)V", ordinal = 0))
 	private Vec3 enchancement$freeze(Vec3 delta) {
-		if (ModEntityComponents.FROZEN.get(this).isFrozen()) {
+		if (EnchancementEntityComponents.FROZEN.get(this).isFrozen()) {
 			return getDeltaMovement();
 		}
 		return delta;

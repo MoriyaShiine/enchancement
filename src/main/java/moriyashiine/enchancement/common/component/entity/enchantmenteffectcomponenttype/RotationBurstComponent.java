@@ -7,9 +7,9 @@ package moriyashiine.enchancement.common.component.entity.enchantmenteffectcompo
 import moriyashiine.enchancement.api.event.CappedMultiplyDeltaMovementEvent;
 import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.util.PushComponent;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementSoundEvents;
 import moriyashiine.enchancement.common.payload.RotationBurstPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.world.item.effects.RotationBurstEffect;
@@ -78,12 +78,12 @@ public class RotationBurstComponent extends PushComponent {
 
 	@Override
 	public void sync() {
-		ModEntityComponents.ROTATION_BURST.sync(obj);
+		EnchancementEntityComponents.ROTATION_BURST.sync(obj);
 	}
 
 	@Override
 	public DataComponentType<?> getEffectType() {
-		return ModEnchantmentEffectComponentTypes.ROTATION_BURST;
+		return EnchancementEnchantmentEffectComponentTypes.ROTATION_BURST;
 	}
 
 	@Override
@@ -104,7 +104,7 @@ public class RotationBurstComponent extends PushComponent {
 	}
 
 	public boolean canUse() {
-		return cooldown == 0 && !obj.onGround() && SLibUtils.isGroundedOrAirborne(obj);
+		return cooldown == 0 && !obj.onGround() && SLibUtils.hasNormalMovement(obj);
 	}
 
 	public void use() {
@@ -115,7 +115,7 @@ public class RotationBurstComponent extends PushComponent {
 			delta = EnchancementUtil.modifyDeltaWithCurrent(obj, delta, 0.5);
 			obj.setDeltaMovement(delta.x(), delta.y(), delta.z());
 		}
-		obj.playSound(ModSoundEvents.GENERIC_DASH, 1, 1);
+		obj.playSound(EnchancementSoundEvents.GENERIC_DASH, 1, 1);
 		obj.gameEvent(GameEvent.ENTITY_ACTION);
 		EnchancementUtil.resetFallDistance(obj);
 	}

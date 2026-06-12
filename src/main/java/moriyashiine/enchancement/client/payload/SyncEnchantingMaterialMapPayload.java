@@ -27,7 +27,8 @@ public record SyncEnchantingMaterialMapPayload(
 	public static final Type<SyncEnchantingMaterialMapPayload> TYPE = new Type<>(Enchancement.id("sync_enchanting_material_map"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, SyncEnchantingMaterialMapPayload> CODEC = StreamCodec.composite(
 			ByteBufCodecs.map(Object2ObjectOpenHashMap::new, ByteBufCodecs.holderRegistry(Registries.ITEM), EnchantingMaterial.STREAM_CODEC), SyncEnchantingMaterialMapPayload::map,
-			SyncEnchantingMaterialMapPayload::new);
+			SyncEnchantingMaterialMapPayload::new
+	);
 
 	@Override
 	public Type<SyncEnchantingMaterialMapPayload> type() {

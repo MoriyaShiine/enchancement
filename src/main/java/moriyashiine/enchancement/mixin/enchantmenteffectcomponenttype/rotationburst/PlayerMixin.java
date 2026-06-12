@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.rotationburst;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -21,7 +21,7 @@ public abstract class PlayerMixin extends LivingEntity {
 
 	@ModifyReturnValue(method = "wantsToStopRiding", at = @At("RETURN"))
 	private boolean enchancement$rotationBurst(boolean original) {
-		if (original && getVehicle() instanceof LivingEntity living && living.getKnownMovement().length() > 0 && ModEntityComponents.ROTATION_BURST.get(living).hasEffect()) {
+		if (original && getVehicle() instanceof LivingEntity living && living.getKnownMovement().length() > 0 && EnchancementEntityComponents.ROTATION_BURST.get(living).hasEffect()) {
 			return false;
 		}
 		return original;

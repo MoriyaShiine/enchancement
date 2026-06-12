@@ -18,7 +18,8 @@ public record SyncEnchantingTableCostPayload(int cost) implements CustomPacketPa
 	public static final Type<SyncEnchantingTableCostPayload> TYPE = new Type<>(Enchancement.id("sync_enchanting_table_cost"));
 	public static final StreamCodec<FriendlyByteBuf, SyncEnchantingTableCostPayload> CODEC = StreamCodec.composite(
 			ByteBufCodecs.VAR_INT, SyncEnchantingTableCostPayload::cost,
-			SyncEnchantingTableCostPayload::new);
+			SyncEnchantingTableCostPayload::new
+	);
 
 	@Override
 	public Type<SyncEnchantingTableCostPayload> type() {
@@ -32,7 +33,7 @@ public record SyncEnchantingTableCostPayload(int cost) implements CustomPacketPa
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<SyncEnchantingTableCostPayload> {
 		@Override
 		public void receive(SyncEnchantingTableCostPayload payload, ClientPlayNetworking.Context context) {
-			if (context.client().screen instanceof ModEnchantmentScreen modEnchantmentScreen) {
+			if (context.client().gui.screen() instanceof ModEnchantmentScreen modEnchantmentScreen) {
 				modEnchantmentScreen.getMenu().setCost(payload.cost());
 			}
 		}

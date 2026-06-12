@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.leechingtrident;
 
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.LeechingTridentComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
@@ -31,7 +31,7 @@ public abstract class ThrownTridentMixin extends AbstractArrow {
 
 	@ModifyVariable(method = "tick", at = @At("STORE"), name = "loyalty")
 	private int enchancement$leechingTrident(int loyalty) {
-		if (ModEntityComponents.LEECHING_TRIDENT.get(this).getStuckEntity() != null) {
+		if (EnchancementEntityComponents.LEECHING_TRIDENT.get(this).getStuckEntity() != null) {
 			return 0;
 		}
 		return loyalty;

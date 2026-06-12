@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.config.rebalanceequipment.client;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -40,6 +40,6 @@ public class ItemStackMixin {
 	@Unique
 	private int getChargeBarWidth() {
 		Player player = Minecraft.getInstance().player;
-		return player == null ? 0 : ModEntityComponents.LIMIT_BLOCKS_ATTACKS.get(player).getBarWidth((ItemStack) (Object) this);
+		return player == null ? 0 : EnchancementEntityComponents.LIMIT_BLOCKS_ATTACKS.get(player).getBarWidth((ItemStack) (Object) this);
 	}
 }

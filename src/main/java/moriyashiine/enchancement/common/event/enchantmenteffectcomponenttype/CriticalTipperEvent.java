@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.world.item.effects.CriticalTipperEffect;
 import moriyashiine.strawberrylib.api.event.ModifyCriticalStatusEvent;
 import net.fabricmc.fabric.api.util.TriState;
@@ -31,7 +31,7 @@ public class CriticalTipperEvent implements ModifyCriticalStatusEvent {
 	}
 
 	private static boolean forceCritical(Player attacker, Entity target, float attackCooldownProgress) {
-		if (EnchantmentHelper.has(attacker.getMainHandItem(), ModEnchantmentEffectComponentTypes.CRITICAL_TIPPER) && attackCooldownProgress > 0.9F) {
+		if (EnchantmentHelper.has(attacker.getMainHandItem(), EnchancementEnchantmentEffectComponentTypes.CRITICAL_TIPPER) && attackCooldownProgress > 0.9F) {
 			float distanceLeniency = CriticalTipperEffect.getDistanceLeniency(attacker.getMainHandItem(), attacker.getRandom());
 			return attacker.distanceTo(target) > attacker.getAttributeValue(Attributes.ENTITY_INTERACTION_RANGE) - distanceLeniency;
 		}

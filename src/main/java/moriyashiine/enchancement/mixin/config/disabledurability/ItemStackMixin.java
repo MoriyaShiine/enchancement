@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.config.disabledurability;
 
 import moriyashiine.enchancement.common.util.EnchancementUtil;
-import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;

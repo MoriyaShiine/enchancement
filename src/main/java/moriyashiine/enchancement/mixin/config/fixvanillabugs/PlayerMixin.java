@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.config.fixvanillabugs;
 
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,7 +24,7 @@ public abstract class PlayerMixin extends LivingEntity {
 
 	@Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;postPiercingAttack()V"))
 	private void enchancement$fixVanillaBugs(Entity entity, CallbackInfo ci) {
-		if (ModConfig.fixVanillaBugs && level().isClientSide() && getWeaponItem().getItem() instanceof MaceItem mace && entity instanceof LivingEntity victim) {
+		if (EnchancementConfig.fixVanillaBugs && level().isClientSide() && getWeaponItem().getItem() instanceof MaceItem mace && entity instanceof LivingEntity victim) {
 			mace.postHurtEnemy(getWeaponItem(), victim, this);
 		}
 	}

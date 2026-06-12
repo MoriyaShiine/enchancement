@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.client.resources.sound;
 
-import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.enchancement.common.init.EnchancementSoundEvents;
 import moriyashiine.enchancement.common.world.entity.projectile.arrow.Brimstone;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
@@ -18,7 +18,7 @@ public class BrimstoneTravelSoundInstance extends AbstractTickableSoundInstance 
 	private float pitchModifier = 0;
 
 	public BrimstoneTravelSoundInstance(Brimstone entity) {
-		super(ModSoundEvents.BRIMSTONE_TRAVEL, entity.getSoundSource(), entity.getRandom());
+		super(EnchancementSoundEvents.BRIMSTONE_TRAVEL, entity.getSoundSource(), entity.getRandom());
 		this.entity = entity;
 		x = entity.getX();
 		y = entity.getY();

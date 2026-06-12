@@ -6,8 +6,8 @@ package moriyashiine.enchancement.common.world.level.storage.loot.predicates;
 
 import com.mojang.serialization.MapCodec;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.ExtendedWaterTimeComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.init.ModLootConditionTypes;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementLootConditionTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -22,7 +22,7 @@ public class HasExtendedWaterTimeCondition implements LootItemCondition {
 
 	@Override
 	public MapCodec<HasExtendedWaterTimeCondition> codec() {
-		return ModLootConditionTypes.HAS_EXTENDED_WATER_TIME;
+		return EnchancementLootConditionTypes.HAS_EXTENDED_WATER_TIME;
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class HasExtendedWaterTimeCondition implements LootItemCondition {
 		if (entity == null) {
 			return false;
 		}
-		ExtendedWaterTimeComponent extendedWaterTimeComponent = ModEntityComponents.EXTENDED_WATER_TIME.getNullable(entity);
-		return extendedWaterTimeComponent != null && extendedWaterTimeComponent.getTicksWet() > 0;
+		ExtendedWaterTimeComponent extendedWaterTime = EnchancementEntityComponents.EXTENDED_WATER_TIME.getNullable(entity);
+		return extendedWaterTime != null && extendedWaterTime.getTicksWet() > 0;
 	}
 }

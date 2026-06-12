@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.config.rebalanceequipment;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
@@ -21,7 +21,7 @@ import java.util.Map;
 public class ArmorMaterialMixin {
 	@ModifyVariable(method = "<init>", at = @At("HEAD"), argsOnly = true)
 	private static Map<ArmorType, Integer> enchancement$rebalanceEquipment(Map<ArmorType, Integer> defense, @Local(argsOnly = true) ResourceKey<EquipmentAsset> assetId) {
-		if (ModConfig.rebalanceEquipment) {
+		if (EnchancementConfig.rebalanceEquipment) {
 			if (assetId.equals(EquipmentAssets.IRON)) {
 				defense.put(ArmorType.BOOTS, defense.get(ArmorType.BOOTS) + 1);
 			}
@@ -35,7 +35,7 @@ public class ArmorMaterialMixin {
 
 	@ModifyVariable(method = "<init>", at = @At("HEAD"), argsOnly = true, ordinal = 0)
 	private static float enchancement$rebalanceEquipment(float toughness, @Local(argsOnly = true) ResourceKey<EquipmentAsset> assetId) {
-		if (ModConfig.rebalanceEquipment && assetId.equals(EquipmentAssets.IRON)) {
+		if (EnchancementConfig.rebalanceEquipment && assetId.equals(EquipmentAssets.IRON)) {
 			return toughness + 1;
 		}
 		return toughness;

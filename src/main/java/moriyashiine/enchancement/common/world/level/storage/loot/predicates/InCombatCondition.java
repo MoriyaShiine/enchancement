@@ -6,7 +6,7 @@ package moriyashiine.enchancement.common.world.level.storage.loot.predicates;
 
 import com.mojang.serialization.MapCodec;
 import moriyashiine.enchancement.common.event.internal.InCombatEvent;
-import moriyashiine.enchancement.common.init.ModLootConditionTypes;
+import moriyashiine.enchancement.common.init.EnchancementLootConditionTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -21,7 +21,7 @@ public class InCombatCondition implements LootItemCondition {
 
 	@Override
 	public MapCodec<InCombatCondition> codec() {
-		return ModLootConditionTypes.IN_COMBAT;
+		return EnchancementLootConditionTypes.IN_COMBAT;
 	}
 
 	@Override

@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.common.payload;
 
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
@@ -32,7 +32,7 @@ public record SyncInvertedBounceStatusPayload(boolean inverted) implements Custo
 	public static class Receiver implements ServerPlayNetworking.PlayPayloadHandler<SyncInvertedBounceStatusPayload> {
 		@Override
 		public void receive(SyncInvertedBounceStatusPayload payload, ServerPlayNetworking.Context context) {
-			ModEntityComponents.BOUNCE.get(context.player()).setInvertedBounce(payload.inverted());
+			EnchancementEntityComponents.BOUNCE.get(context.player()).setInvertedBounce(payload.inverted());
 		}
 	}
 }

@@ -23,7 +23,8 @@ public record PlayBrimstoneFireSoundPayload(int entityId, UUID uuid) implements 
 	public static final StreamCodec<FriendlyByteBuf, PlayBrimstoneFireSoundPayload> CODEC = StreamCodec.composite(
 			ByteBufCodecs.VAR_INT, PlayBrimstoneFireSoundPayload::entityId,
 			UUIDUtil.STREAM_CODEC, PlayBrimstoneFireSoundPayload::uuid,
-			PlayBrimstoneFireSoundPayload::new);
+			PlayBrimstoneFireSoundPayload::new
+	);
 
 	@Override
 	public Type<PlayBrimstoneFireSoundPayload> type() {

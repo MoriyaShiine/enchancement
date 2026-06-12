@@ -5,8 +5,8 @@
 package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.BuryEntityComponent;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.world.item.effects.entity.BuryEffect;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
@@ -35,10 +35,10 @@ public class BuryEntityEvent {
 	private static class Unbury implements ServerLivingEntityEvents.AllowDamage {
 		@Override
 		public boolean allowDamage(LivingEntity entity, DamageSource source, float amount) {
-			BuryEntityComponent buryEntityComponent = ModEntityComponents.BURY_ENTITY.get(entity);
-			if (buryEntityComponent.getBuryPos() != null) {
+			BuryEntityComponent buryEntity = EnchancementEntityComponents.BURY_ENTITY.get(entity);
+			if (buryEntity.getBuryPos() != null) {
 				entity.setPos(entity.getX(), entity.getY() + 0.5, entity.getZ());
-				buryEntityComponent.unbury();
+				buryEntity.unbury();
 				return false;
 			}
 			return true;
@@ -50,9 +50,9 @@ public class BuryEntityEvent {
 		public InteractionResult interact(Player player, Level level, InteractionHand hand, Entity entity, @Nullable EntityHitResult hitResult) {
 			if (!player.isSpectator()) {
 				ItemStack stack = player.getItemInHand(hand);
-				if (!player.getCooldowns().isOnCooldown(stack) && EnchantmentHelper.has(stack, ModEnchantmentEffectComponentTypes.BURY_ENTITY) && BuryEffect.bury(level, entity, () -> {
+				if (!player.getCooldowns().isOnCooldown(stack) && EnchantmentHelper.has(stack, EnchancementEnchantmentEffectComponentTypes.BURY_ENTITY) && BuryEffect.bury(level, entity, () -> {
 					if (!level.isClientSide()) {
-						int cooldown = Mth.floor(EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.BURY_ENTITY, (ServerLevel) level, stack, 0) * 20);
+						int cooldown = Mth.floor(EnchancementUtil.getValue(EnchancementEnchantmentEffectComponentTypes.BURY_ENTITY, (ServerLevel) level, stack, 0) * 20);
 						if (cooldown > 0) {
 							player.getCooldowns().addCooldown(stack, cooldown);
 						}

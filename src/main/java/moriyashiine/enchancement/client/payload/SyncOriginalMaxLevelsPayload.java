@@ -26,7 +26,8 @@ public record SyncOriginalMaxLevelsPayload(Map<Holder<Enchantment>, Integer> map
 	public static final Type<SyncOriginalMaxLevelsPayload> TYPE = new Type<>(Enchancement.id("sync_original_max_levels"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, SyncOriginalMaxLevelsPayload> CODEC = StreamCodec.composite(
 			ByteBufCodecs.map(ConcurrentHashMap::new, ByteBufCodecs.holderRegistry(Registries.ENCHANTMENT), ByteBufCodecs.VAR_INT), SyncOriginalMaxLevelsPayload::map,
-			SyncOriginalMaxLevelsPayload::new);
+			SyncOriginalMaxLevelsPayload::new
+	);
 
 	@Override
 	public Type<SyncOriginalMaxLevelsPayload> type() {

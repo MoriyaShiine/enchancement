@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.world.entity.projectile.arrow;
 
-import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.enchancement.common.init.EnchancementSoundEvents;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceKey;
@@ -46,7 +46,7 @@ public abstract class ShardEntity extends AbstractArrow {
 
 	@Override
 	protected SoundEvent getDefaultHitGroundSoundEvent() {
-		return ModSoundEvents.SHARD_SHATTER;
+		return EnchancementSoundEvents.SHARD_SHATTER;
 	}
 
 	@Override

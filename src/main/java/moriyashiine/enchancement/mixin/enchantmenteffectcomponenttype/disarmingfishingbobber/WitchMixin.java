@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.disarmingfishingbobber;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.monster.Witch;
 import net.minecraft.world.item.alchemy.Potion;
@@ -38,6 +38,6 @@ public class WitchMixin {
 
 	@Unique
 	private boolean isDisabled(Holder<Potion> potion) {
-		return ModEntityComponents.DISARMED_WITCH.get(this).isDisabled(potion);
+		return EnchancementEntityComponents.DISARMED_WITCH.get(this).isDisabled(potion);
 	}
 }

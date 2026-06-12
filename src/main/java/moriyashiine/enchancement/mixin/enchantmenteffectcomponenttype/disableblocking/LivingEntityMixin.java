@@ -6,7 +6,7 @@ package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.disablebl
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -26,7 +26,7 @@ public abstract class LivingEntityMixin extends Entity {
 	@ModifyReturnValue(method = "getSecondsToDisableBlocking", at = @At("RETURN"))
 	private float enchancement$weaponEffectCooldownRequirement(float original, @Local(name = "weaponItem") ItemStack weaponItem) {
 		if (EnchancementUtil.shouldApplyWeaponEffect() && level() instanceof ServerLevel level) {
-			return original + EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.DISABLE_BLOCKING, level, weaponItem, 0);
+			return original + EnchancementUtil.getValue(EnchancementEnchantmentEffectComponentTypes.DISABLE_BLOCKING, level, weaponItem, 0);
 		}
 		return original;
 	}

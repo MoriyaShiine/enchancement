@@ -4,8 +4,8 @@
 
 package moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype;
 
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.world.item.effects.PhaseEffect;
 import net.minecraft.world.entity.Entity;
@@ -58,7 +58,7 @@ public class PhaseComponent implements AutoSyncedComponent, CommonTickingCompone
 	}
 
 	public void sync() {
-		ModEntityComponents.PHASE.sync(obj);
+		EnchancementEntityComponents.PHASE.sync(obj);
 	}
 
 	public int getMaxPhaseBlocks() {
@@ -91,16 +91,16 @@ public class PhaseComponent implements AutoSyncedComponent, CommonTickingCompone
 		if (entity instanceof AbstractArrow) {
 			MutableFloat maxPhaseBlocks = new MutableFloat();
 			MutableBoolean bypassShields = new MutableBoolean();
-			if (EnchantmentHelper.has(stack, ModEnchantmentEffectComponentTypes.PHASE)) {
+			if (EnchantmentHelper.has(stack, EnchancementEnchantmentEffectComponentTypes.PHASE)) {
 				PhaseEffect.setValues(user.getRandom(), maxPhaseBlocks, bypassShields, Collections.singleton(stack));
-			} else if (!(user instanceof Player) && EnchancementUtil.hasAnyEnchantmentsWith(user, ModEnchantmentEffectComponentTypes.PHASE)) {
+			} else if (!(user instanceof Player) && EnchancementUtil.hasAnyEnchantmentsWith(user, EnchancementEnchantmentEffectComponentTypes.PHASE)) {
 				PhaseEffect.setValues(user.getRandom(), maxPhaseBlocks, bypassShields, EnchancementUtil.getHeldItems(user));
 			}
 			if (maxPhaseBlocks.floatValue() != 0) {
-				PhaseComponent phaseComponent = ModEntityComponents.PHASE.get(entity);
-				phaseComponent.setMaxPhaseBlocks(maxPhaseBlocks.intValue());
-				phaseComponent.setBypassShields(bypassShields.booleanValue());
-				phaseComponent.sync();
+				PhaseComponent phase = EnchancementEntityComponents.PHASE.get(entity);
+				phase.setMaxPhaseBlocks(maxPhaseBlocks.intValue());
+				phase.setBypassShields(bypassShields.booleanValue());
+				phase.sync();
 				entity.setNoGravity(true);
 			}
 		}

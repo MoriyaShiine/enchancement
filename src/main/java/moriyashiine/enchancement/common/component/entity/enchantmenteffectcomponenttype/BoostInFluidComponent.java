@@ -5,10 +5,10 @@
 package moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype;
 
 import moriyashiine.enchancement.client.EnchancementClient;
-import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.enchancement.common.EnchancementConfig;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementSoundEvents;
 import moriyashiine.enchancement.common.payload.BoostInFluidC2SPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
@@ -63,7 +63,7 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 
 	@Override
 	public void tick() {
-		float boostStrength = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.BOOST_IN_FLUID, obj, 0);
+		float boostStrength = EnchancementUtil.getValue(EnchancementEnchantmentEffectComponentTypes.BOOST_IN_FLUID, obj, 0);
 		hasBoost = boostStrength > 0;
 		currentSubmersion = null;
 		if (hasBoost()) {
@@ -73,7 +73,7 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 			if (obj.hurtTime != 0 && (obj.getLastDamageSource() == null || !obj.getLastDamageSource().is(DamageTypeTags.NO_IMPACT))) {
 				damageTicks = 10;
 			}
-			if (ModConfig.enhanceMobs && !obj.is(EntityTypeTags.AQUATIC) && !obj.slib$isPlayer() && !obj.hasControllingPassenger()) {
+			if (EnchancementConfig.enhanceMobs && !obj.is(EntityTypeTags.AQUATIC) && !obj.slib$isPlayer() && !obj.hasControllingPassenger()) {
 				shouldBoost = !obj.level().getBlockState(BlockPos.containing(obj.getEyePosition())).isAir() && SLibUtils.isSubmerged(obj, SubmersionGate.ALL);
 			}
 			boolean cannotUse = obj instanceof AbstractNautilus nautilus && nautilus.getJumpCooldown() > 0;
@@ -83,7 +83,7 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 					boolean submerged = SLibUtils.isSubmerged(obj, SubmersionGate.ALL);
 					if (!submerged) {
 						boostStrength /= 2;
-						ModEntityComponents.EXTENDED_WATER_TIME.get(obj).decrement(obj.level().getGameTime() % 2 == 0 ? 1 : 2);
+						EnchancementEntityComponents.EXTENDED_WATER_TIME.get(obj).decrement(obj.level().getGameTime() % 2 == 0 ? 1 : 2);
 					}
 					float targetBoost = submerged ? boostStrength : boostStrength / 4;
 					if (boost <= targetBoost) {
@@ -102,13 +102,13 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 					obj.gameEvent(GameEvent.ENTITY_ACTION);
 					EnchancementUtil.resetFallDistance(obj);
 					if ((obj.tickCount + obj.getId()) % 3 == 0) {
-						SoundEvent sound = ModSoundEvents.GENERIC_BOOST_DEFAULT;
+						SoundEvent sound = EnchancementSoundEvents.GENERIC_BOOST_DEFAULT;
 						if (currentSubmersion == SubmersionGate.WATER_ONLY) {
-							sound = ModSoundEvents.GENERIC_BOOST_WATER;
+							sound = EnchancementSoundEvents.GENERIC_BOOST_WATER;
 						} else if (currentSubmersion == SubmersionGate.LAVA_ONLY) {
-							sound = ModSoundEvents.GENERIC_BOOST_LAVA;
+							sound = EnchancementSoundEvents.GENERIC_BOOST_LAVA;
 						} else if (currentSubmersion == SubmersionGate.POWDER_SNOW_ONLY) {
-							sound = ModSoundEvents.GENERIC_BOOST_POWDER_SNOW;
+							sound = EnchancementSoundEvents.GENERIC_BOOST_POWDER_SNOW;
 						}
 						SLibUtils.playSound(obj, sound, 1, Mth.nextFloat(obj.getRandom(), 0.9F, 1.1F));
 					}
@@ -178,13 +178,13 @@ public class BoostInFluidComponent implements AutoSyncedComponent, CommonTicking
 	}
 
 	public boolean canUse(boolean ignoreBoost) {
-		SlamComponent slamComponent = ModEntityComponents.SLAM.getNullable(obj);
-		if (slamComponent != null && slamComponent.isSlamming()) {
+		SlamComponent slam = EnchancementEntityComponents.SLAM.getNullable(obj);
+		if (slam != null && slam.isSlamming()) {
 			return false;
 		}
 		if (ignoreBoost || !shouldBoost) {
-			if (SLibUtils.isGroundedOrAirborne(obj, true)) {
-				return SLibUtils.isSubmerged(obj, SubmersionGate.ALL) || ModEntityComponents.EXTENDED_WATER_TIME.get(obj).getTicksWet() > 0;
+			if (SLibUtils.hasNormalMovement(obj, true)) {
+				return SLibUtils.isSubmerged(obj, SubmersionGate.ALL) || EnchancementEntityComponents.EXTENDED_WATER_TIME.get(obj).getTicksWet() > 0;
 			}
 		}
 		return false;

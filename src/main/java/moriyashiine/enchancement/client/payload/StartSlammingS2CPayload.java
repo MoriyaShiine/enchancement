@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.client.payload;
 
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
@@ -19,7 +19,8 @@ public record StartSlammingS2CPayload(int entityId) implements CustomPacketPaylo
 	public static final Type<StartSlammingS2CPayload> TYPE = new Type<>(Enchancement.id("start_slamming_s2c"));
 	public static final StreamCodec<FriendlyByteBuf, StartSlammingS2CPayload> CODEC = StreamCodec.composite(
 			ByteBufCodecs.VAR_INT, StartSlammingS2CPayload::entityId,
-			StartSlammingS2CPayload::new);
+			StartSlammingS2CPayload::new
+	);
 
 	@Override
 	public Type<StartSlammingS2CPayload> type() {
@@ -34,7 +35,7 @@ public record StartSlammingS2CPayload(int entityId) implements CustomPacketPaylo
 		@Override
 		public void receive(StartSlammingS2CPayload payload, ClientPlayNetworking.Context context) {
 			Entity entity = context.player().level().getEntity(payload.entityId());
-			ModEntityComponents.SLAM.maybeGet(entity).ifPresent(slamComponent -> slamComponent.setSlamming(true));
+			EnchancementEntityComponents.SLAM.maybeGet(entity).ifPresent(slam -> slam.setSlamming(true));
 		}
 	}
 }

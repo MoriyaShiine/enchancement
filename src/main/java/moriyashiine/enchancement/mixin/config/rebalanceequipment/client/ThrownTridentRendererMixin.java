@@ -7,8 +7,8 @@ package moriyashiine.enchancement.mixin.config.rebalanceequipment.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import moriyashiine.enchancement.client.renderer.entity.state.FloatingTridentRenderState;
-import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.EnchancementConfig;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemEntityRenderer;
@@ -56,7 +56,7 @@ public class ThrownTridentRendererMixin {
 	@Inject(method = "extractRenderState(Lnet/minecraft/world/entity/projectile/arrow/ThrownTrident;Lnet/minecraft/client/renderer/entity/state/ThrownTridentRenderState;F)V", at = @At("TAIL"))
 	private void enchancement$rebalanceEquipment(ThrownTrident entity, ThrownTridentRenderState state, float partialTicks, CallbackInfo ci) {
 		FloatingTridentRenderState floatingTridentRenderState = new FloatingTridentRenderState();
-		floatingTridentRenderState.floating = ModConfig.rebalanceEquipment && entity.getEntityData().get(ThrownTrident.ID_LOYALTY) > 0 && !entity.isAcceptibleReturnOwner() && ModEntityComponents.OWNED_TRIDENT.get(entity).isOwnedByPlayer() && ModEntityComponents.LEECHING_TRIDENT.get(entity).getStuckEntity() == null;
+		floatingTridentRenderState.floating = EnchancementConfig.rebalanceEquipment && entity.getEntityData().get(ThrownTrident.ID_LOYALTY) > 0 && !entity.isAcceptibleReturnOwner() && EnchancementEntityComponents.OWNED_TRIDENT.get(entity).isOwnedByPlayer() && EnchancementEntityComponents.LEECHING_TRIDENT.get(entity).getStuckEntity() == null;
 		floatingTridentRenderState.item.extractItemGroupRenderState(entity, entity.getPickupItem(), itemModelResolver);
 		state.setData(FloatingTridentRenderState.KEY, floatingTridentRenderState);
 	}

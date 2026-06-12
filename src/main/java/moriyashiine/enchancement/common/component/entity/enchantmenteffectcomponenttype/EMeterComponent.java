@@ -7,7 +7,7 @@ package moriyashiine.enchancement.common.component.entity.enchantmenteffectcompo
 import moriyashiine.enchancement.client.EnchancementClient;
 import moriyashiine.enchancement.client.payload.PlayEMeterFloatSoundPayload;
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.enchancement.common.payload.EMeterC2SPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.world.item.effects.EMeterEffect;
@@ -120,8 +120,8 @@ public class EMeterComponent implements AutoSyncedComponent, CommonTickingCompon
 				PlayEMeterFloatSoundPayload.send(player, player, floatingUuid);
 			}
 		}
-		SLibUtils.conditionallyApplyAttributeModifier(obj, Attributes.SAFE_FALL_DISTANCE, SAFE_FALL_DISTANCE_MODIFIER, reachedMax());
-		SLibUtils.conditionallyApplyAttributeModifier(obj, Attributes.STEP_HEIGHT, STEP_HEIGHT_MODIFIER, getSpeedBonus() > 0);
+		SLibUtils.applyAttributeModifier(obj, Attributes.SAFE_FALL_DISTANCE, SAFE_FALL_DISTANCE_MODIFIER, reachedMax());
+		SLibUtils.applyAttributeModifier(obj, Attributes.STEP_HEIGHT, STEP_HEIGHT_MODIFIER, getSpeedBonus() > 0);
 	}
 
 	@Override
@@ -174,7 +174,7 @@ public class EMeterComponent implements AutoSyncedComponent, CommonTickingCompon
 	}
 
 	public boolean canFloat() {
-		return reachedMax() && shouldMeterIncrease() && SLibUtils.isGroundedOrAirborne(obj) && !ModEntityComponents.BOOST_IN_FLUID.get(obj).blocksAirEffects();
+		return reachedMax() && shouldMeterIncrease() && SLibUtils.hasNormalMovement(obj) && !EnchancementEntityComponents.BOOST_IN_FLUID.get(obj).blocksAirEffects();
 	}
 
 	public boolean isFloating() {
@@ -193,7 +193,7 @@ public class EMeterComponent implements AutoSyncedComponent, CommonTickingCompon
 		if (!obj.slib$isPlayer() && obj.getKnownMovement().horizontalDistanceSqr() > 0) {
 			return true;
 		}
-		return obj.isSprinting() || ModEntityComponents.SLIDE.get(obj).isSliding();
+		return obj.isSprinting() || EnchancementEntityComponents.SLIDE.get(obj).isSliding();
 	}
 
 	private float getMeterProgress() {

@@ -6,7 +6,7 @@ package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.teleporto
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.TeleportOnHitComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
@@ -31,8 +31,8 @@ public abstract class ThrownTridentMixin extends AbstractArrow {
 
 	@ModifyExpressionValue(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/projectile/arrow/ThrownTrident;isNoPhysics()Z"))
 	private boolean enchancement$teleportOnHit(boolean value) {
-		TeleportOnHitComponent teleportOnHitComponent = ModEntityComponents.TELEPORT_ON_HIT.get(this);
-		if (teleportOnHitComponent.teleportsOnBlockHit() || teleportOnHitComponent.teleportsOnEntityHit()) {
+		TeleportOnHitComponent teleportOnHit = EnchancementEntityComponents.TELEPORT_ON_HIT.get(this);
+		if (teleportOnHit.teleportsOnBlockHit() || teleportOnHit.teleportsOnEntityHit()) {
 			if (getOwner() instanceof LivingEntity living && living.hurtTime != 0) {
 				return true;
 			}

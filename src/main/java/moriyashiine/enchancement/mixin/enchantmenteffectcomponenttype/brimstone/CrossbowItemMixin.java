@@ -9,9 +9,9 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moriyashiine.enchancement.client.payload.PlayBrimstoneFireSoundPayload;
-import moriyashiine.enchancement.common.init.ModComponentTypes;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.enchancement.common.init.EnchancementDataComponents;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementSoundEvents;
 import moriyashiine.enchancement.common.world.item.effects.BrimstoneEffect;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.server.level.ServerPlayer;
@@ -35,11 +35,13 @@ import java.util.UUID;
 @Mixin(CrossbowItem.class)
 public abstract class CrossbowItemMixin {
 	@Shadow
-	abstract CrossbowItem.ChargingSounds getChargingSounds(ItemStack itemStack);
-
-	@Shadow
 	private static boolean tryLoadProjectiles(LivingEntity shooter, ItemStack heldItem) {
 		return false;
+	}
+
+	@Shadow
+	private static CrossbowItem.ChargingSounds getChargingSounds(ItemStack itemStack) {
+		throw new UnsupportedOperationException("Implemented via mixin");
 	}
 
 	@Shadow
@@ -47,11 +49,11 @@ public abstract class CrossbowItemMixin {
 
 	@WrapOperation(method = "releaseUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/CrossbowItem;getPowerForTime(ILnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/LivingEntity;)F"))
 	private float enchancement$brimstone(int timeHeld, ItemStack itemStack, LivingEntity holder, Operation<Float> original, ItemStack itemStack0, Level level, LivingEntity entity, int remainingTime) {
-		if (EnchantmentHelper.has(itemStack, ModEnchantmentEffectComponentTypes.BRIMSTONE)) {
-			itemStack.remove(ModComponentTypes.BRIMSTONE_UUID);
+		if (EnchantmentHelper.has(itemStack, EnchancementEnchantmentEffectComponentTypes.BRIMSTONE)) {
+			itemStack.remove(EnchancementDataComponents.BRIMSTONE_UUID);
 			int damage = BrimstoneEffect.getBrimstoneDamage(CrossbowItem.getPowerForTime(getUseDuration(itemStack, holder) - remainingTime, itemStack, holder));
 			if (damage > 0 && !CrossbowItem.isCharged(itemStack) && tryLoadProjectiles(holder, itemStack)) {
-				itemStack.set(ModComponentTypes.BRIMSTONE_DAMAGE, damage);
+				itemStack.set(EnchancementDataComponents.BRIMSTONE_DAMAGE, damage);
 				getChargingSounds(itemStack).end().ifPresent(sound -> level.playSound(null, holder.getX(), holder.getY(), holder.getZ(), sound.value(), holder.getSoundSource(), 1, 1 / (level.getRandom().nextFloat() * 0.5F + 1) + 0.2F));
 				return 1;
 			}
@@ -61,11 +63,11 @@ public abstract class CrossbowItemMixin {
 
 	@Inject(method = "onUseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/CrossbowItem;getChargingSounds(Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/item/CrossbowItem$ChargingSounds;"))
 	private void enchancement$brimstone(Level level, LivingEntity entity, ItemStack itemStack, int ticksRemaining, CallbackInfo ci) {
-		if (EnchantmentHelper.has(itemStack, ModEnchantmentEffectComponentTypes.BRIMSTONE)) {
-			UUID[] uuid = {itemStack.get(ModComponentTypes.BRIMSTONE_UUID)};
+		if (EnchantmentHelper.has(itemStack, EnchancementEnchantmentEffectComponentTypes.BRIMSTONE)) {
+			UUID[] uuid = {itemStack.get(EnchancementDataComponents.BRIMSTONE_UUID)};
 			if (uuid[0] == null) {
 				uuid[0] = UUID.randomUUID();
-				itemStack.set(ModComponentTypes.BRIMSTONE_UUID, uuid[0]);
+				itemStack.set(EnchancementDataComponents.BRIMSTONE_UUID, uuid[0]);
 			}
 			if (ticksRemaining == getUseDuration(itemStack, entity)) {
 				PlayerLookup.tracking(entity).forEach(receiver -> PlayBrimstoneFireSoundPayload.send(receiver, entity, uuid[0]));
@@ -78,7 +80,7 @@ public abstract class CrossbowItemMixin {
 
 	@ModifyExpressionValue(method = "onUseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/CrossbowItem;isCharged(Lnet/minecraft/world/item/ItemStack;)Z"))
 	private boolean enchancement$brimstone(boolean original, Level level, LivingEntity entity, ItemStack itemStack) {
-		return original || EnchantmentHelper.has(itemStack, ModEnchantmentEffectComponentTypes.BRIMSTONE);
+		return original || EnchantmentHelper.has(itemStack, EnchancementEnchantmentEffectComponentTypes.BRIMSTONE);
 	}
 
 	@ModifyReturnValue(method = "getChargeDuration", at = @At("RETURN"))
@@ -92,7 +94,7 @@ public abstract class CrossbowItemMixin {
 
 	@WrapOperation(method = "shootProjectile", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;playSound(Lnet/minecraft/world/entity/Entity;DDDLnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V"))
 	private void enchancement$brimstone(Level instance, Entity except, double x, double y, double z, SoundEvent sound, SoundSource source, float volume, float pitch, Operation<Void> original, LivingEntity livingEntity) {
-		int damage = livingEntity.getItemBySlot(livingEntity.getUsedItemHand().asEquipmentSlot()).getOrDefault(ModComponentTypes.BRIMSTONE_DAMAGE, 0);
+		int damage = livingEntity.getItemBySlot(livingEntity.getUsedItemHand().asEquipmentSlot()).getOrDefault(EnchancementDataComponents.BRIMSTONE_DAMAGE, 0);
 		if (damage > 0) {
 			sound = getFireSound(damage);
 		}
@@ -102,16 +104,16 @@ public abstract class CrossbowItemMixin {
 	@Unique
 	private static SoundEvent getFireSound(int damage) {
 		if (damage >= 12) {
-			return ModSoundEvents.CROSSBOW_BRIMSTONE_6;
+			return EnchancementSoundEvents.CROSSBOW_BRIMSTONE_6;
 		} else if (damage >= 10) {
-			return ModSoundEvents.CROSSBOW_BRIMSTONE_5;
+			return EnchancementSoundEvents.CROSSBOW_BRIMSTONE_5;
 		} else if (damage >= 8) {
-			return ModSoundEvents.CROSSBOW_BRIMSTONE_4;
+			return EnchancementSoundEvents.CROSSBOW_BRIMSTONE_4;
 		} else if (damage >= 6) {
-			return ModSoundEvents.CROSSBOW_BRIMSTONE_3;
+			return EnchancementSoundEvents.CROSSBOW_BRIMSTONE_3;
 		} else if (damage >= 4) {
-			return ModSoundEvents.CROSSBOW_BRIMSTONE_2;
+			return EnchancementSoundEvents.CROSSBOW_BRIMSTONE_2;
 		}
-		return ModSoundEvents.CROSSBOW_BRIMSTONE_1;
+		return EnchancementSoundEvents.CROSSBOW_BRIMSTONE_1;
 	}
 }

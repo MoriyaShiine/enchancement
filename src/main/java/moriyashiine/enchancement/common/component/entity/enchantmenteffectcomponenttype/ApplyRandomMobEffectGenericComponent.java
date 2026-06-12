@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype;
 
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -61,7 +61,7 @@ public class ApplyRandomMobEffectGenericComponent implements AutoSyncedComponent
 	}
 
 	public void sync() {
-		ModEntityComponents.APPLY_RANDOM_MOB_EFFECT_GENERIC.sync(obj);
+		EnchancementEntityComponents.APPLY_RANDOM_MOB_EFFECT_GENERIC.sync(obj);
 	}
 
 	public List<MobEffectInstance> getEffects() {

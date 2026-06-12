@@ -6,9 +6,9 @@ package moriyashiine.enchancement.common.component.entity.enchantmenteffectcompo
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import moriyashiine.enchancement.common.init.ModDamageTypes;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementDamageTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.world.item.effects.LeechingTridentEffect;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
@@ -86,7 +86,7 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 				if (leechingTicks % 20 == 0) {
 					int timeUntilRegen = stuckEntity.invulnerableTime;
 					stuckEntity.invulnerableTime = 0;
-					if (stuckEntity.hurtServer((ServerLevel) obj.level(), obj.level().damageSources().source(ModDamageTypes.LIFE_DRAIN, obj, obj.getOwner()), leechData.damage()) && obj.getOwner() instanceof LivingEntity living && living.slib$exists()) {
+					if (stuckEntity.hurtServer((ServerLevel) obj.level(), obj.level().damageSources().source(EnchancementDamageTypes.LIFE_DRAIN, obj, obj.getOwner()), leechData.damage()) && obj.getOwner() instanceof LivingEntity living && living.slib$exists()) {
 						living.heal(leechData.healAmount());
 					}
 					stuckEntity.invulnerableTime = timeUntilRegen;
@@ -112,7 +112,7 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 	}
 
 	public void sync() {
-		ModEntityComponents.LEECHING_TRIDENT.sync(obj);
+		EnchancementEntityComponents.LEECHING_TRIDENT.sync(obj);
 	}
 
 	public boolean hasLeech() {
@@ -147,24 +147,24 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 	public static void maybeSet(LivingEntity user, ItemStack stack, Entity entity) {
 		if (entity instanceof ThrownTrident) {
 			MutableFloat damage = new MutableFloat(), healAmount = new MutableFloat(), duration = new MutableFloat();
-			if (EnchantmentHelper.has(stack, ModEnchantmentEffectComponentTypes.LEECHING_TRIDENT)) {
+			if (EnchantmentHelper.has(stack, EnchancementEnchantmentEffectComponentTypes.LEECHING_TRIDENT)) {
 				LeechingTridentEffect.setValues(user.getRandom(), damage, healAmount, duration, Collections.singleton(stack));
-			} else if (!(user instanceof Player) && EnchancementUtil.hasAnyEnchantmentsWith(user, ModEnchantmentEffectComponentTypes.LEECHING_TRIDENT)) {
+			} else if (!(user instanceof Player) && EnchancementUtil.hasAnyEnchantmentsWith(user, EnchancementEnchantmentEffectComponentTypes.LEECHING_TRIDENT)) {
 				LeechingTridentEffect.setValues(user.getRandom(), damage, healAmount, duration, EnchancementUtil.getHeldItems(user));
 			}
 			if (damage.floatValue() != 0) {
-				LeechingTridentComponent leechingTridentComponent = ModEntityComponents.LEECHING_TRIDENT.get(entity);
-				leechingTridentComponent.leechData = new LeechData(damage.floatValue(), healAmount.floatValue(), Mth.floor(duration.floatValue() * 20));
-				leechingTridentComponent.sync();
+				LeechingTridentComponent leechingTrident = EnchancementEntityComponents.LEECHING_TRIDENT.get(entity);
+				leechingTrident.leechData = new LeechData(damage.floatValue(), healAmount.floatValue(), Mth.floor(duration.floatValue() * 20));
+				leechingTrident.sync();
 			}
 		}
 	}
 
-	public record LeechData(float damage, float healAmount, int maxTicks) {
-		public static final Codec<LeechData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-						Codec.FLOAT.fieldOf("damage").forGetter(LeechData::damage),
-						Codec.FLOAT.fieldOf("heal_amount").forGetter(LeechData::healAmount),
-						Codec.INT.fieldOf("max_ticks").forGetter(LeechData::maxTicks))
-				.apply(instance, LeechData::new));
+	private record LeechData(float damage, float healAmount, int maxTicks) {
+		private static final Codec<LeechData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+				Codec.FLOAT.fieldOf("damage").forGetter(LeechData::damage),
+				Codec.FLOAT.fieldOf("heal_amount").forGetter(LeechData::healAmount),
+				Codec.INT.fieldOf("max_ticks").forGetter(LeechData::maxTicks)
+		).apply(instance, LeechData::new));
 	}
 }

@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.common.payload;
 
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
 import moriyashiine.strawberrylib.api.objects.enums.PayloadTarget;
@@ -23,7 +23,8 @@ public record RotationBurstPayload(int entityId) implements CustomPacketPayload 
 	public static final Type<RotationBurstPayload> TYPE = new Type<>(Enchancement.id("rotation_burst"));
 	public static final StreamCodec<FriendlyByteBuf, RotationBurstPayload> CODEC = StreamCodec.composite(
 			ByteBufCodecs.VAR_INT, RotationBurstPayload::entityId,
-			RotationBurstPayload::new);
+			RotationBurstPayload::new
+	);
 
 	@Override
 	public Type<RotationBurstPayload> type() {
@@ -38,9 +39,9 @@ public record RotationBurstPayload(int entityId) implements CustomPacketPayload 
 		@Override
 		public void receive(RotationBurstPayload payload, ServerPlayNetworking.Context context) {
 			Entity entity = context.player().level().getEntity(payload.entityId());
-			ModEntityComponents.ROTATION_BURST.maybeGet(entity).ifPresent(rotationBurstComponent -> {
-				if (rotationBurstComponent.hasEffect() && rotationBurstComponent.canUse()) {
-					rotationBurstComponent.use();
+			EnchancementEntityComponents.ROTATION_BURST.maybeGet(entity).ifPresent(rotationBurst -> {
+				if (rotationBurst.hasEffect() && rotationBurst.canUse()) {
+					rotationBurst.use();
 					SLibUtils.addParticles(entity, ParticleTypes.CLOUD, 8, ParticleAnchor.BODY, PayloadTarget.OTHERS, ParticleVelocity.ZERO);
 				}
 			});

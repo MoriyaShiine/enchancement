@@ -5,16 +5,16 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.smeltminedblocks;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.mojang.datafixers.util.Pair;
 import moriyashiine.enchancement.client.payload.AddMoltenParticlesPayload;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.tag.ModBlockTags;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementSoundEvents;
+import moriyashiine.enchancement.common.tag.EnchancementBlockTags;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemInstance;
 import net.minecraft.world.item.ItemStack;
@@ -43,8 +43,8 @@ public class BlockMixin {
 			return original;
 		}
 		ItemEnchantments enchantments = tool.get(DataComponents.ENCHANTMENTS);
-		if (enchantments != null && enchantments.keySet().stream().anyMatch(enchantment -> enchantment.value().effects().has(ModEnchantmentEffectComponentTypes.SMELT_MINED_BLOCKS))) {
-			if (state.is(ModBlockTags.SMELTS_SELF)) {
+		if (enchantments != null && enchantments.keySet().stream().anyMatch(enchantment -> enchantment.value().effects().has(EnchancementEnchantmentEffectComponentTypes.SMELT_MINED_BLOCKS))) {
+			if (state.is(EnchancementBlockTags.SMELTS_SELF)) {
 				ItemStack smelted = smeltBlock(level, pos, breaker, state.getBlock().asItem().getDefaultInstance());
 				if (!smelted.isEmpty()) {
 					return List.of(smelted);
@@ -65,24 +65,24 @@ public class BlockMixin {
 
 	@Unique
 	private static ItemStack smeltBlock(ServerLevel level, BlockPos pos, @Nullable Entity entity, ItemStack stack) {
-		Tuple<ItemStack, Float> smelted = getSmeltedStack(level, stack);
+		Pair<ItemStack, Float> smelted = getSmeltedStack(level, stack);
 		if (smelted != null) {
 			PlayerLookup.tracking(level, pos).forEach(foundPlayer -> AddMoltenParticlesPayload.send(foundPlayer, pos));
-			level.playSound(null, pos, ModSoundEvents.GENERIC_SMELT, SoundSource.BLOCKS, 1, 1);
-			FurnaceBlockEntity.createExperience(level, entity != null && EnchantmentHelper.has(stack, ModEnchantmentEffectComponentTypes.MINE_ORE_VEINS) ? entity.position() : Vec3.atCenterOf(pos), 1, smelted.getB());
-			return smelted.getA();
+			level.playSound(null, pos, EnchancementSoundEvents.GENERIC_SMELT, SoundSource.BLOCKS, 1, 1);
+			FurnaceBlockEntity.createExperience(level, entity != null && EnchantmentHelper.has(stack, EnchancementEnchantmentEffectComponentTypes.MINE_ORE_VEINS) ? entity.position() : Vec3.atCenterOf(pos), 1, smelted.getSecond());
+			return smelted.getFirst();
 		}
 		return ItemStack.EMPTY;
 	}
 
 	@Unique
-	private static Tuple<ItemStack, Float> getSmeltedStack(ServerLevel level, ItemStack stack) {
+	private static Pair<ItemStack, Float> getSmeltedStack(ServerLevel level, ItemStack stack) {
 		SingleRecipeInput input = new SingleRecipeInput(stack);
 		Optional<RecipeHolder<SmeltingRecipe>> firstMatch = RecipeManager.createCheck(RecipeType.SMELTING).getRecipeFor(input, level);
 		if (firstMatch.isPresent()) {
 			SmeltingRecipe recipe = firstMatch.get().value();
 			ItemStack output = recipe.assemble(input);
-			return new Tuple<>(new ItemStack(output.getItem(), output.getCount() * stack.getCount()), recipe.experience());
+			return Pair.of(new ItemStack(output.getItem(), output.getCount() * stack.getCount()), recipe.experience());
 		}
 		return null;
 	}

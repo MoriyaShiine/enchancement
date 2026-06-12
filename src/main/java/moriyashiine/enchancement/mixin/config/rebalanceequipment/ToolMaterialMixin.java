@@ -6,7 +6,7 @@ package moriyashiine.enchancement.mixin.config.rebalanceequipment;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -33,7 +33,7 @@ public abstract class ToolMaterialMixin {
 
 	@ModifyVariable(method = "<init>", at = @At("HEAD"), argsOnly = true, ordinal = 0)
 	private static float enchancement$rebalanceEquipment(float speed, TagKey<Block> incorrectBlocksForDrops, int durability, float speed0, float attackDamageBonus, int enchantmentValue, TagKey<Item> repairItems) {
-		if (ModConfig.rebalanceEquipment) {
+		if (EnchancementConfig.rebalanceEquipment) {
 			if (repairItems == ItemTags.GOLD_TOOL_MATERIALS) {
 				return speed - 4;
 			} else if (repairItems == ItemTags.DIAMOND_TOOL_MATERIALS) {
@@ -47,7 +47,7 @@ public abstract class ToolMaterialMixin {
 
 	@ModifyReturnValue(method = "applyToolProperties", at = @At("RETURN"))
 	private Item.Properties enchancement$rebalanceEquipment(Item.Properties original, Item.Properties properties, TagKey<Block> minesEfficiently, float attackDamageBaseline, float attackSpeedBaseline) {
-		if (ModConfig.rebalanceEquipment && minesEfficiently == BlockTags.MINEABLE_WITH_HOE) {
+		if (EnchancementConfig.rebalanceEquipment && minesEfficiently == BlockTags.MINEABLE_WITH_HOE) {
 			return original.attributes(createToolAttributes(attackDamageBaseline, attackSpeedBaseline).withModifierAdded(Attributes.ENTITY_INTERACTION_RANGE, HOE_INTERACTION_RANGE_MODIFIER, EquipmentSlotGroup.MAINHAND));
 		}
 		return original;

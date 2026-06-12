@@ -6,7 +6,7 @@ package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.allowcros
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CrossbowItem;
@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public class MultiPlayerGameModeMixin {
 	@ModifyExpressionValue(method = "lambda$useItem$0", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemCooldowns;isOnCooldown(Lnet/minecraft/world/item/ItemStack;)Z"))
 	private boolean enchancement$allowCrossbowCooldownReloading(boolean value, @Local(argsOnly = true) Player player, @Local(name = "itemStack") ItemStack itemStack) {
-		if (player.getCooldowns().isOnCooldown(itemStack) && itemStack.is(Items.CROSSBOW) && EnchantmentHelper.has(itemStack, ModEnchantmentEffectComponentTypes.ALLOW_CROSSBOW_COOLDOWN_RELOADING) && !CrossbowItem.isCharged(itemStack)) {
+		if (player.getCooldowns().isOnCooldown(itemStack) && itemStack.is(Items.CROSSBOW) && EnchantmentHelper.has(itemStack, EnchancementEnchantmentEffectComponentTypes.ALLOW_CROSSBOW_COOLDOWN_RELOADING) && !CrossbowItem.isCharged(itemStack)) {
 			return false;
 		}
 		return value;

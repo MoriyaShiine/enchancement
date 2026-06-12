@@ -4,9 +4,9 @@
 
 package moriyashiine.enchancement.mixin.config.enhancemobs.directionburst;
 
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.DirectionBurstComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.enchancement.common.payload.DirectionBurstPayload;
 import moriyashiine.enchancement.common.world.item.effects.DirectionBurstEffect;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
@@ -30,10 +30,10 @@ import java.util.function.Consumer;
 public class EnchantmentHelperMixin {
 	@Inject(method = "doPostAttackEffectsWithItemSourceOnBreak", at = @At("TAIL"))
 	private static void enchancement$enhanceMobs(ServerLevel serverLevel, Entity victim, DamageSource damageSource, @Nullable ItemStack source, @Nullable Consumer<Item> attackerlessOnBreak, CallbackInfo ci) {
-		if (ModConfig.enhanceMobs) {
+		if (EnchancementConfig.enhanceMobs) {
 			if (damageSource.getEntity() instanceof Mob mob) {
-				DirectionBurstComponent directionBurstComponent = ModEntityComponents.DIRECTION_BURST.get(mob);
-				if (directionBurstComponent.hasEffect() && directionBurstComponent.canUse()) {
+				DirectionBurstComponent directionBurst = EnchancementEntityComponents.DIRECTION_BURST.get(mob);
+				if (directionBurst.hasEffect() && directionBurst.canUse()) {
 					float strength = mob.onGround() ? DirectionBurstEffect.getGroundStrength(mob) : DirectionBurstEffect.getAirStrength(mob);
 					Vec3 inputDelta = source != null && source.is(ConventionalItemTags.RANGED_WEAPON_TOOLS) ? switch (mob.getRandom().nextInt(4)) {
 						case 3 -> new Vec3(strength, 0, 0);
@@ -41,8 +41,8 @@ public class EnchantmentHelperMixin {
 						case 1 -> new Vec3(0, 0, strength);
 						default -> new Vec3(0, 0, -strength);
 					} : new Vec3(strength, 0, 0);
-					Vec3 delta = directionBurstComponent.createDelta(inputDelta);
-					DirectionBurstPayload.use(mob, delta, directionBurstComponent);
+					Vec3 delta = directionBurst.createDelta(inputDelta);
+					DirectionBurstPayload.use(mob, delta, directionBurst);
 				}
 			}
 		}

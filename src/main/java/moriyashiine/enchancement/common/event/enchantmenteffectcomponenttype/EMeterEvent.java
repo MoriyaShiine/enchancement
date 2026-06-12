@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
 import moriyashiine.enchancement.api.event.CappedMultiplyDeltaMovementEvent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
@@ -16,6 +16,6 @@ public class EMeterEvent implements CappedMultiplyDeltaMovementEvent {
 
 	@Override
 	public float multiply(Level level, LivingEntity living) {
-		return 1 + ModEntityComponents.E_METER.get(living).getSpeedBonus();
+		return 1 + EnchancementEntityComponents.E_METER.get(living).getSpeedBonus();
 	}
 }

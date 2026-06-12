@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.config.toggleablepassives;
 
-import moriyashiine.enchancement.common.init.ModComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementDataComponents;
 import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.sounds.SoundEvents;
@@ -28,8 +28,8 @@ public abstract class ItemStackMixin implements DataComponentHolder {
 
 	@Inject(method = "overrideOtherStackedOnMe", at = @At("HEAD"), cancellable = true)
 	private void enchancement$toggleablePassives(ItemStack other, Slot slot, ClickAction clickAction, Player player, SlotAccess carriedItem, CallbackInfoReturnable<Boolean> cir) {
-		if (clickAction == ClickAction.SECONDARY && has(ModComponentTypes.TOGGLEABLE_PASSIVE)) {
-			set(ModComponentTypes.TOGGLEABLE_PASSIVE, !get(ModComponentTypes.TOGGLEABLE_PASSIVE));
+		if (clickAction == ClickAction.SECONDARY && has(EnchancementDataComponents.TOGGLEABLE_PASSIVE)) {
+			set(EnchancementDataComponents.TOGGLEABLE_PASSIVE, !get(EnchancementDataComponents.TOGGLEABLE_PASSIVE));
 			if (player.level().isClientSide()) {
 				player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 1, 1);
 			}

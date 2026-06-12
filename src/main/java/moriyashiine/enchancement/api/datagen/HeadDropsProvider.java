@@ -4,58 +4,48 @@
 
 package moriyashiine.enchancement.api.datagen;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import moriyashiine.enchancement.common.reloadlistener.HeadDropsReloadListener;
+import moriyashiine.enchancement.common.util.enchantment.HeadDrop;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricCodecDataProvider;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.references.BlockItemId;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
-public abstract class HeadDropsProvider extends FabricCodecDataProvider<HeadDropsProvider.DatagenHeadDropEntry> {
+public abstract class HeadDropsProvider extends FabricCodecDataProvider<HeadDrop> {
 	public HeadDropsProvider(FabricPackOutput packOutput, CompletableFuture<HolderLookup.Provider> registriesFuture) {
-		super(packOutput, registriesFuture, PackOutput.Target.DATA_PACK, HeadDropsReloadListener.DIRECTORY, DatagenHeadDropEntry.CODEC);
+		super(packOutput, registriesFuture, PackOutput.Target.DATA_PACK, HeadDropsReloadListener.DIRECTORY, HeadDrop.CODEC);
 	}
 
 	@Override
-	protected final void configure(BiConsumer<Identifier, DatagenHeadDropEntry> provider, HolderLookup.Provider registries) {
-		configure(((typeId, drop, chance) -> provider.accept(typeId, new DatagenHeadDropEntry(drop, chance))));
+	protected final void configure(BiConsumer<Identifier, HeadDrop> provider, HolderLookup.Provider registries) {
+		configure(((type, drop, chance) -> provider.accept(type.identifier(), new HeadDrop(drop, chance))));
+	}
+
+	protected ResourceKey<EntityType<?>> entityTypeKey(String id) {
+		return ResourceKey.create(Registries.ENTITY_TYPE, Identifier.parse(id));
+	}
+
+	protected ResourceKey<Item> itemKey(String id) {
+		return ResourceKey.create(Registries.ITEM, Identifier.parse(id));
 	}
 
 	protected abstract void configure(Output output);
 
-	protected Identifier id(String id) {
-		return Identifier.parse(id);
-	}
-
 	@FunctionalInterface
 	protected interface Output {
-		void accept(Identifier typeId, Identifier dropId, float chance);
+		void accept(ResourceKey<EntityType<?>> type, ResourceKey<Item> drop, float chance);
 
-		default void accept(EntityType<?> type, Identifier dropId, float chance) {
-			accept(BuiltInRegistries.ENTITY_TYPE.getKey(type), dropId, chance);
+		default void accept(ResourceKey<EntityType<?>> type, BlockItemId drop, float chance) {
+			accept(type, drop.item(), chance);
 		}
-
-		default void accept(Identifier typeId, Item drop, float chance) {
-			accept(typeId, BuiltInRegistries.ITEM.getKey(drop), chance);
-		}
-
-		default void accept(EntityType<?> type, Item drop, float chance) {
-			accept(type, BuiltInRegistries.ITEM.getKey(drop), chance);
-		}
-	}
-
-	protected record DatagenHeadDropEntry(Identifier drop, float chance) {
-		public static final Codec<DatagenHeadDropEntry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-				Identifier.CODEC.fieldOf("drop").forGetter(DatagenHeadDropEntry::drop),
-				Codec.FLOAT.fieldOf("chance").forGetter(DatagenHeadDropEntry::chance)
-		).apply(instance, DatagenHeadDropEntry::new));
 	}
 }

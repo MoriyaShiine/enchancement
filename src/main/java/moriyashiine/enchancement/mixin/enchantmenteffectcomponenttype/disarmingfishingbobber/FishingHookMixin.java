@@ -7,8 +7,8 @@ package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.disarming
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.DisarmedWanderingTraderComponent;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.DisarmingFishingBobberComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
+import moriyashiine.enchancement.common.tag.EnchancementEntityTypeTags;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -46,9 +46,9 @@ public abstract class FishingHookMixin extends Projectile {
 
 	@Inject(method = "pullEntity", at = @At("HEAD"), cancellable = true)
 	private void enchancment$disarmingFishingBobber(Entity entity, CallbackInfo ci) {
-		if (!entity.is(ModEntityTypeTags.CANNOT_DISARM) && level() instanceof ServerLevel level && entity instanceof LivingEntity living) {
-			DisarmingFishingBobberComponent disarmingFishingBobberComponent = ModEntityComponents.DISARMING_FISHING_BOBBER.get(this);
-			if (disarmingFishingBobberComponent.isEnabled()) {
+		if (!entity.is(EnchancementEntityTypeTags.CANNOT_DISARM) && level() instanceof ServerLevel level && entity instanceof LivingEntity living) {
+			DisarmingFishingBobberComponent disarmingFishingBobber = EnchancementEntityComponents.DISARMING_FISHING_BOBBER.get(this);
+			if (disarmingFishingBobber.isEnabled()) {
 				ItemStack stack = ItemStack.EMPTY;
 				EquipmentSlot slot = EquipmentSlot.MAINHAND;
 				if (entity instanceof EnderMan enderman && enderman.getCarriedBlock() != null) {
@@ -72,10 +72,10 @@ public abstract class FishingHookMixin extends Projectile {
 				if (!stack.isEmpty()) {
 					Player owner = getPlayerOwner();
 					int disableTime = 0;
-					if (entity instanceof Player player && !disarmingFishingBobberComponent.stealsFromPlayers()) {
-						disableTime = disarmingFishingBobberComponent.getPlayerCooldown();
+					if (entity instanceof Player player && !disarmingFishingBobber.stealsFromPlayers()) {
+						disableTime = disarmingFishingBobber.getPlayerCooldown();
 						if (entity != owner) {
-							disarmingFishingBobberComponent.disableStack(player, stack, disableTime);
+							disarmingFishingBobber.disableStack(player, stack, disableTime);
 						}
 					} else if (owner != null) {
 						if (entity instanceof Mob mob) {
@@ -96,11 +96,11 @@ public abstract class FishingHookMixin extends Projectile {
 								enderman.setCarriedBlock(null);
 							}
 							if (entity instanceof WanderingTrader) {
-								DisarmedWanderingTraderComponent disarmedWanderingTraderComponent = ModEntityComponents.DISARMED_WANDERING_TRADER.get(entity);
+								DisarmedWanderingTraderComponent disarmedWanderingTrader = EnchancementEntityComponents.DISARMED_WANDERING_TRADER.get(entity);
 								if (stack.is(Items.MILK_BUCKET)) {
-									disarmedWanderingTraderComponent.disarmMilk();
+									disarmedWanderingTrader.disarmMilk();
 								} else {
-									disarmedWanderingTraderComponent.disarmPotion();
+									disarmedWanderingTrader.disarmPotion();
 								}
 							} else if (entity instanceof Merchant) {
 								stack = ItemStack.EMPTY;
@@ -108,7 +108,7 @@ public abstract class FishingHookMixin extends Projectile {
 							if (entity instanceof Witch) {
 								PotionContents potionContents = stack.get(DataComponents.POTION_CONTENTS);
 								if (potionContents != null) {
-									potionContents.potion().ifPresent(potion -> ModEntityComponents.DISARMED_WITCH.get(entity).disablePotion(potion));
+									potionContents.potion().ifPresent(potion -> EnchancementEntityComponents.DISARMED_WITCH.get(entity).disablePotion(potion));
 								}
 							}
 						}
@@ -124,9 +124,9 @@ public abstract class FishingHookMixin extends Projectile {
 						}
 					}
 					if (owner != null) {
-						disableTime = Math.max(disableTime, disarmingFishingBobberComponent.getUserCooldown());
+						disableTime = Math.max(disableTime, disarmingFishingBobber.getUserCooldown());
 						if (disableTime > 0) {
-							disarmingFishingBobberComponent.disableStack(owner, disarmingFishingBobberComponent.getStack(), disableTime);
+							disarmingFishingBobber.disableStack(owner, disarmingFishingBobber.getStack(), disableTime);
 						}
 					}
 					ci.cancel();
@@ -137,7 +137,7 @@ public abstract class FishingHookMixin extends Projectile {
 
 	@ModifyReturnValue(method = "retrieve", at = @At(value = "RETURN", ordinal = 1))
 	private int enchancment$disarmingFishingBobber(int original) {
-		if (original > 0 && ModEntityComponents.DISARMING_FISHING_BOBBER.get(this).isEnabled()) {
+		if (original > 0 && EnchancementEntityComponents.DISARMING_FISHING_BOBBER.get(this).isEnabled()) {
 			return 1;
 		}
 		return original;

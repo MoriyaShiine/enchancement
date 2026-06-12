@@ -6,7 +6,7 @@ package moriyashiine.enchancement.client.gui.hud;
 
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.EMeterComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -35,9 +35,9 @@ public class EMeterHudElement implements HudElement {
 		Minecraft client = Minecraft.getInstance();
 		Player player = client.player;
 		if (player != null && !player.isSpectator()) {
-			EMeterComponent eMeterComponent = ModEntityComponents.E_METER.get(player.getControlledVehicle() instanceof LivingEntity living ? living : player);
-			if (eMeterComponent.hasEMeter()) {
-				int filledMeters = eMeterComponent.filledMeters();
+			EMeterComponent eMeter = EnchancementEntityComponents.E_METER.get(player.getControlledVehicle() instanceof LivingEntity living ? living : player);
+			if (eMeter.hasEMeter()) {
+				int filledMeters = eMeter.filledMeters();
 				int totalWidth = 9 * 8 + 17;
 				int x = graphics.guiWidth() / 2 - totalWidth / 2 + 1, y = graphics.guiHeight() - 46 - yOffset;
 				for (int i = 0; i < 8; i++) {
@@ -49,7 +49,7 @@ public class EMeterHudElement implements HudElement {
 					graphics.blitSprite(RenderPipelines.GUI_TEXTURED, texture, x + i * 9, y, 8, 8);
 				}
 				Identifier texture = filledMeters == 9 ? MAX_FULL : MAX_EMPTY;
-				if (eMeterComponent.reachedMax()) {
+				if (eMeter.reachedMax()) {
 					texture = client.level.getGameTime() % 6 >= 3 ? MAX_FULL_ALTERNATE : MAX_FULL;
 				}
 				graphics.blitSprite(RenderPipelines.GUI_TEXTURED, texture, x + 8 * 9 - 1, y - 4, 16, 16);

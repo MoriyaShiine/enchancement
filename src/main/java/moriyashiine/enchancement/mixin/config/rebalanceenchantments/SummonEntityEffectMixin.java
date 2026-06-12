@@ -5,8 +5,8 @@
 package moriyashiine.enchancement.mixin.config.rebalanceenchantments;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.EnchancementConfig;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LightningBolt;
@@ -22,8 +22,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class SummonEntityEffectMixin {
 	@Inject(method = "apply", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantedItemInUse;owner()Lnet/minecraft/world/entity/LivingEntity;"))
 	private void enchancement$rebalanceEnchantments(ServerLevel serverLevel, int enchantmentLevel, EnchantedItemInUse item, Entity entity, Vec3 position, CallbackInfo ci, @Local(name = "lightningBolt") LightningBolt lightningBolt) {
-		if (ModConfig.rebalanceEnchantments) {
-			ModEntityComponents.SAFE_LIGHTNING.get(lightningBolt).setSafe(true);
+		if (EnchancementConfig.rebalanceEnchantments) {
+			EnchancementEntityComponents.SAFE_LIGHTNING.get(lightningBolt).setSafe(true);
 		}
 	}
 }

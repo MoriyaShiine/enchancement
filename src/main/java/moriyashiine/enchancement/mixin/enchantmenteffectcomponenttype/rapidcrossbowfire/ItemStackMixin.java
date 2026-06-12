@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.rapidcrossbowfire;
 
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -24,7 +24,7 @@ public class ItemStackMixin {
 	@Inject(method = "inventoryTick", at = @At("TAIL"))
 	private void enchancement$rapidCrossbowFire(Level level, Entity owner, EquipmentSlot slot, CallbackInfo ci) {
 		ItemStack stack = (ItemStack) (Object) this;
-		if (stack.getItem() instanceof CrossbowItem && owner instanceof LivingEntity living && living.getUseItem() != stack && EnchantmentHelper.has(stack, ModEnchantmentEffectComponentTypes.RAPID_CROSSBOW_FIRE)) {
+		if (stack.getItem() instanceof CrossbowItem && owner instanceof LivingEntity living && living.getUseItem() != stack && EnchantmentHelper.has(stack, EnchancementEnchantmentEffectComponentTypes.RAPID_CROSSBOW_FIRE)) {
 			ChargedProjectiles chargedProjectiles = stack.get(DataComponents.CHARGED_PROJECTILES);
 			if (chargedProjectiles != null && !chargedProjectiles.isEmpty()) {
 				stack.set(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.EMPTY);

@@ -6,7 +6,7 @@ package moriyashiine.enchancement.common.world.item.effects;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.util.Mth;
@@ -19,10 +19,10 @@ import org.apache.commons.lang3.mutable.MutableFloat;
 
 public record RageEffect(EnchantmentValueEffect damageDealtModifier, EnchantmentValueEffect damageTakenModifier, EnchantmentValueEffect movementSpeedModifier) {
 	public static final Codec<RageEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-					EnchantmentValueEffect.CODEC.fieldOf("damage_dealt_modifier").forGetter(RageEffect::damageDealtModifier),
-					EnchantmentValueEffect.CODEC.fieldOf("damage_taken_modifier").forGetter(RageEffect::damageTakenModifier),
-					EnchantmentValueEffect.CODEC.fieldOf("movement_speed_modifier").forGetter(RageEffect::movementSpeedModifier))
-			.apply(instance, RageEffect::new));
+			EnchantmentValueEffect.CODEC.fieldOf("damage_dealt_modifier").forGetter(RageEffect::damageDealtModifier),
+			EnchantmentValueEffect.CODEC.fieldOf("damage_taken_modifier").forGetter(RageEffect::damageTakenModifier),
+			EnchantmentValueEffect.CODEC.fieldOf("movement_speed_modifier").forGetter(RageEffect::movementSpeedModifier)
+	).apply(instance, RageEffect::new));
 
 	// damage dealt
 	private static int getFlooredPercentage(LivingEntity living, ItemStack stack) {
@@ -36,7 +36,7 @@ public record RageEffect(EnchantmentValueEffect damageDealtModifier, Enchantment
 	public static float getDamageDealtModifier(LivingEntity entity, ItemStack stack) {
 		MutableFloat value = new MutableFloat();
 		EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
-			RageEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.RAGE);
+			RageEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.RAGE);
 			if (effect != null) {
 				value.setValue(effect.damageDealtModifier().process(level, entity.getRandom(), value.floatValue()));
 			}
@@ -47,7 +47,7 @@ public record RageEffect(EnchantmentValueEffect damageDealtModifier, Enchantment
 	public static float getDamageDealtModifierMax(LivingEntity entity, ItemStack stack) {
 		MutableFloat value = new MutableFloat();
 		EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
-			RageEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.RAGE);
+			RageEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.RAGE);
 			if (effect != null) {
 				value.setValue(effect.damageDealtModifier().process(level, entity.getRandom(), value.floatValue()));
 			}
@@ -73,7 +73,7 @@ public record RageEffect(EnchantmentValueEffect damageDealtModifier, Enchantment
 		}
 		MutableFloat value = new MutableFloat();
 		EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
-			RageEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.RAGE);
+			RageEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.RAGE);
 			if (effect != null) {
 				value.setValue(effect.damageTakenModifier().process(level, entity.getRandom(), value.floatValue()));
 			}
@@ -96,7 +96,7 @@ public record RageEffect(EnchantmentValueEffect damageDealtModifier, Enchantment
 		}
 		MutableFloat value = new MutableFloat();
 		EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
-			RageEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.RAGE);
+			RageEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.RAGE);
 			if (effect != null) {
 				value.setValue(effect.movementSpeedModifier().process(level, entity.getRandom(), value.floatValue()));
 			}

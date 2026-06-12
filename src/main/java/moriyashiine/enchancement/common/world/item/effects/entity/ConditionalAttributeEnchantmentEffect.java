@@ -6,7 +6,7 @@ package moriyashiine.enchancement.common.world.item.effects.entity;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -27,9 +27,9 @@ import java.util.Optional;
 
 public record ConditionalAttributeEnchantmentEffect(EnchantmentAttributeEffect effect, LootItemCondition condition) implements EnchantmentEntityEffect {
 	public static final MapCodec<ConditionalAttributeEnchantmentEffect> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-					EnchantmentAttributeEffect.MAP_CODEC.fieldOf("attribute").forGetter(ConditionalAttributeEnchantmentEffect::effect),
-					LootItemCondition.DIRECT_CODEC.fieldOf("condition").forGetter(ConditionalAttributeEnchantmentEffect::condition))
-			.apply(instance, ConditionalAttributeEnchantmentEffect::new));
+			EnchantmentAttributeEffect.MAP_CODEC.fieldOf("attribute").forGetter(ConditionalAttributeEnchantmentEffect::effect),
+			LootItemCondition.DIRECT_CODEC.fieldOf("condition").forGetter(ConditionalAttributeEnchantmentEffect::condition)
+	).apply(instance, ConditionalAttributeEnchantmentEffect::new));
 
 	@Override
 	public MapCodec<ConditionalAttributeEnchantmentEffect> codec() {
@@ -45,7 +45,7 @@ public record ConditionalAttributeEnchantmentEffect(EnchantmentAttributeEffect e
 				@Nullable AttributeInstance attributeInstance = living.getAttribute(effect().attribute());
 				if (attributeInstance != null && !attributeInstance.hasModifier(id)) {
 					effect().onChangedBlock(serverLevel, enchantmentLevel, item, entity, position, true);
-					ModEntityComponents.CONDITIONAL_ATTRIBUTES.get(living).addAttribute(effect().attribute(), id, condition());
+					EnchancementEntityComponents.CONDITIONAL_ATTRIBUTES.get(living).addAttribute(effect().attribute(), id, condition());
 				}
 			}
 		}

@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.disarmingfishingbobber.client;
 
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import org.jspecify.annotations.Nullable;
@@ -23,21 +23,21 @@ public class MinecraftMixin {
 
 	@Inject(method = "startAttack", at = @At("HEAD"), cancellable = true)
 	private void enchancment$disarmingFishingBobber(CallbackInfoReturnable<Boolean> cir) {
-		if (player != null && ModEntityComponents.DISARMED_PLAYER.get(player).isDisabled(player.getMainHandItem())) {
+		if (player != null && EnchancementEntityComponents.DISARMED_PLAYER.get(player).isDisabled(player.getMainHandItem())) {
 			cir.setReturnValue(false);
 		}
 	}
 
 	@Inject(method = "startUseItem", at = @At("HEAD"), cancellable = true)
 	private void enchancment$disarmingFishingBobber(CallbackInfo ci) {
-		if (player != null && ModEntityComponents.DISARMED_PLAYER.get(player).isDisabled(player.getMainHandItem())) {
+		if (player != null && EnchancementEntityComponents.DISARMED_PLAYER.get(player).isDisabled(player.getMainHandItem())) {
 			ci.cancel();
 		}
 	}
 
 	@Inject(method = "continueAttack", at = @At("HEAD"), cancellable = true)
 	private void enchancment$disarmingFishingBobber(boolean down, CallbackInfo ci) {
-		if (player != null && ModEntityComponents.DISARMED_PLAYER.get(player).isDisabled(player.getMainHandItem())) {
+		if (player != null && EnchancementEntityComponents.DISARMED_PLAYER.get(player).isDisabled(player.getMainHandItem())) {
 			ci.cancel();
 		}
 	}

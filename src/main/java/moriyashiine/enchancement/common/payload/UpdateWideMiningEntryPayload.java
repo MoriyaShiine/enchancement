@@ -7,7 +7,7 @@ package moriyashiine.enchancement.common.payload;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.component.level.WideMiningComponent;
 import moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype.WideMiningEvent;
-import moriyashiine.enchancement.common.init.ModLevelComponents;
+import moriyashiine.enchancement.common.init.EnchancementLevelComponents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
@@ -20,7 +20,8 @@ public record UpdateWideMiningEntryPayload(WideMiningComponent.Entry entry, bool
 	public static final StreamCodec<FriendlyByteBuf, UpdateWideMiningEntryPayload> CODEC = StreamCodec.composite(
 			WideMiningComponent.Entry.STREAM_CODEC, UpdateWideMiningEntryPayload::entry,
 			ByteBufCodecs.BOOL, UpdateWideMiningEntryPayload::add,
-			UpdateWideMiningEntryPayload::new);
+			UpdateWideMiningEntryPayload::new
+	);
 
 	@Override
 	public Type<UpdateWideMiningEntryPayload> type() {
@@ -34,16 +35,16 @@ public record UpdateWideMiningEntryPayload(WideMiningComponent.Entry entry, bool
 	public static class Receiver implements ServerPlayNetworking.PlayPayloadHandler<UpdateWideMiningEntryPayload> {
 		@Override
 		public void receive(UpdateWideMiningEntryPayload payload, ServerPlayNetworking.Context context) {
-			WideMiningComponent wideMiningComponent = ModLevelComponents.WIDE_MINING.get(context.player().level());
+			WideMiningComponent wideMining = EnchancementLevelComponents.WIDE_MINING.get(context.player().level());
 			if (payload.add()) {
 				if (WideMiningEvent.isValid(payload.entry().blocks(), context.player().getMainHandItem())
 						&& WideMiningEvent.canActivate(context.player(), context.player().getMainHandItem(), context.player().level().getBlockState(payload.entry().origin()))) {
-					wideMiningComponent.addEntry(payload.entry());
+					wideMining.addEntry(payload.entry());
 				}
 			} else {
-				wideMiningComponent.removeEntry(payload.entry().player());
+				wideMining.removeEntry(payload.entry().player());
 			}
-			wideMiningComponent.sync();
+			wideMining.sync();
 		}
 	}
 }

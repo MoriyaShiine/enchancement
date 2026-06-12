@@ -6,10 +6,10 @@ package moriyashiine.enchancement.common.component.entity.enchantmenteffectcompo
 
 import moriyashiine.enchancement.api.event.CappedMultiplyDeltaMovementEvent;
 import moriyashiine.enchancement.client.EnchancementClient;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.init.ModParticleTypes;
-import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementParticleTypes;
+import moriyashiine.enchancement.common.init.EnchancementSoundEvents;
 import moriyashiine.enchancement.common.payload.StartSlammingC2SPayload;
 import moriyashiine.enchancement.common.payload.StopSlammingC2SPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
@@ -62,10 +62,10 @@ public class SlamComponent implements CommonTickingComponent {
 
 	@Override
 	public void tick() {
-		strength = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.SLAM, obj, 0);
+		strength = EnchancementUtil.getValue(EnchancementEnchantmentEffectComponentTypes.SLAM, obj, 0);
 		if (hasSlam()) {
 			if (isSlamming) {
-				if (obj.hurtTime != 0 || !SLibUtils.isGroundedOrAirborne(obj, true)) {
+				if (obj.hurtTime != 0 || !SLibUtils.hasNormalMovement(obj, true)) {
 					setSlamming(false);
 					return;
 				}
@@ -97,7 +97,7 @@ public class SlamComponent implements CommonTickingComponent {
 		if (hasSlam()) {
 			if (isSlamming) {
 				for (int i = 0; i < (SLibClientUtils.shouldAddParticles(obj) ? 4 : 1); i++) {
-					obj.level().addParticle(ModParticleTypes.VELOCITY_LINE, obj.getRandomX(1), obj.getRandomY(), obj.getRandomZ(1), 0, 1, 0);
+					obj.level().addParticle(EnchancementParticleTypes.VELOCITY_LINE, obj.getRandomX(1), obj.getRandomY(), obj.getRandomZ(1), 0, 1, 0);
 				}
 			}
 			if (!obj.isSpectator() && SLibClientUtils.isHost(obj)) {
@@ -152,24 +152,24 @@ public class SlamComponent implements CommonTickingComponent {
 	}
 
 	public boolean canSlam() {
-		SlideComponent slideComponent = ModEntityComponents.SLIDE.getNullable(obj);
-		if (slideComponent != null && slideComponent.isSliding()) {
+		SlideComponent slide = EnchancementEntityComponents.SLIDE.getNullable(obj);
+		if (slide != null && slide.isSliding()) {
 			return false;
 		}
-		return slamCooldown == 0 && !obj.onGround() && SLibUtils.isGroundedOrAirborne(obj);
+		return slamCooldown == 0 && !obj.onGround() && SLibUtils.hasNormalMovement(obj);
 	}
 
 	private void stopSlamming() {
 		setSlamming(false);
 		ticksLeftToJump = 5;
-		obj.playSound(ModSoundEvents.GENERIC_IMPACT, 1, 1);
+		obj.playSound(EnchancementSoundEvents.GENERIC_IMPACT, 1, 1);
 	}
 
 	public void stopSlammingServer() {
 		stopSlamming();
 		obj.level().getEntities(obj, new AABB(obj.blockPosition()).inflate(3, 1, 3), foundEntity -> foundEntity.isAlive() && foundEntity.distanceTo(obj) < 5).forEach(foundEntity -> {
 			if (foundEntity instanceof LivingEntity living && SLibUtils.shouldHurt(obj, living) && SLibUtils.hasLineOfSight(obj, foundEntity, 0)) {
-				living.knockback(1, obj.getX() - living.getX(), obj.getZ() - living.getZ());
+				living.knockback(1, obj.getX() - living.getX(), obj.getZ() - living.getZ(), obj.createDamageSource(), 0, true);
 			}
 		});
 		obj.level().gameEvent(GameEvent.STEP, obj.position(), GameEvent.Context.of(obj.getBlockStateOn()));

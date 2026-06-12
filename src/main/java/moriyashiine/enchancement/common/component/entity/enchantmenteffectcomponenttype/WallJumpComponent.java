@@ -6,11 +6,11 @@ package moriyashiine.enchancement.common.component.entity.enchantmenteffectcompo
 
 import moriyashiine.enchancement.api.event.CappedMultiplyDeltaMovementEvent;
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.enchancement.common.payload.WallJumpPayload;
 import moriyashiine.enchancement.common.payload.WallJumpSlidingPayload;
-import moriyashiine.enchancement.common.tag.ModBlockTags;
+import moriyashiine.enchancement.common.tag.EnchancementBlockTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -65,7 +65,7 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 
 	@Override
 	public void tick() {
-		jumpStrength = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.WALL_JUMP, obj, 0);
+		jumpStrength = EnchancementUtil.getValue(EnchancementEnchantmentEffectComponentTypes.WALL_JUMP, obj, 0);
 		if (jumpStrength == 0 || obj.onGround()) {
 			slidingPos = null;
 			slidingDelta = null;
@@ -114,7 +114,7 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 					if (direction.getAxis().isHorizontal()) {
 						mutable.move(direction);
 						BlockState state = obj.level().getBlockState(mutable);
-						if (!state.is(ModBlockTags.UNSTICKABLE) && !state.getCollisionShape(obj.level(), mutable, CollisionContext.of(obj)).isEmpty() && !obj.onGround() && obj.getDeltaMovement().y() < -0.1) {
+						if (!state.is(EnchancementBlockTags.UNSTICKABLE) && !state.getCollisionShape(obj.level(), mutable, CollisionContext.of(obj)).isEmpty() && !obj.onGround() && obj.getDeltaMovement().y() < -0.1) {
 							double mutableDistance = mutable.distToCenterSqr(obj.position());
 							if (targetPos != null && mutableDistance == targetPos.distToCenterSqr(obj.position())) {
 								BlockPos p1 = mutable.relative(direction.getClockWise());
@@ -171,7 +171,7 @@ public class WallJumpComponent implements AutoSyncedComponent, CommonTickingComp
 		slidingPos = null;
 		slidingDelta = null;
 		hasJumped = true;
-		ModEntityComponents.SLAM.maybeGet(obj).ifPresent(SlamComponent::startSlamStorage);
+		EnchancementEntityComponents.SLAM.maybeGet(obj).ifPresent(SlamComponent::startSlamStorage);
 	}
 
 	@Environment(EnvType.CLIENT)

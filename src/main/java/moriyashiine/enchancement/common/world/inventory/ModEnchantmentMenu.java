@@ -7,14 +7,14 @@ package moriyashiine.enchancement.common.world.inventory;
 import moriyashiine.enchancement.client.payload.SyncBookshelvesPayload;
 import moriyashiine.enchancement.client.payload.SyncEnchantingTableCostPayload;
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.init.ModMenuTypes;
-import moriyashiine.enchancement.common.tag.ModItemTags;
+import moriyashiine.enchancement.common.EnchancementConfig;
+import moriyashiine.enchancement.common.init.EnchancementMenuTypes;
+import moriyashiine.enchancement.common.tag.EnchancementItemTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.util.config.OverhaulMode;
 import moriyashiine.enchancement.common.util.enchantment.EnchantingMaterial;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
-import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -77,7 +77,7 @@ public class ModEnchantmentMenu extends AbstractContainerMenu {
 	}
 
 	public ModEnchantmentMenu(int syncId, Inventory inventory, ContainerLevelAccess access, Level level) {
-		super(ModMenuTypes.ENCHANTING_TABLE, syncId);
+		super(EnchancementMenuTypes.ENCHANTING_TABLE, syncId);
 		this.access = access;
 		this.level = level;
 		if (inventory.player instanceof ServerPlayer player) {
@@ -280,7 +280,7 @@ public class ModEnchantmentMenu extends AbstractContainerMenu {
 				stack.get(DataComponents.REPAIRABLE).items().forEach(item -> items.add(item.value() == Items.NETHERITE_INGOT ? Items.DIAMOND : item.value()));
 			}
 			if (items.isEmpty()) {
-				material = new EnchantingMaterial(Ingredient.of(level.registryAccess().lookupOrThrow(Registries.ITEM).getOrThrow(ModItemTags.DEFAULT_ENCHANTING_MATERIAL)));
+				material = new EnchantingMaterial(Ingredient.of(level.registryAccess().lookupOrThrow(Registries.ITEM).getOrThrow(EnchancementItemTags.DEFAULT_ENCHANTING_MATERIAL)));
 			} else {
 				material = new EnchantingMaterial(Ingredient.of(items.toArray(new ItemLike[0])));
 			}
@@ -296,7 +296,7 @@ public class ModEnchantmentMenu extends AbstractContainerMenu {
 				if (EnchantingTableBlock.isValidBookShelf(level, pos, offset)) {
 					if (level.getBlockEntity(pos.offset(offset)) instanceof ChiseledBookShelfBlockEntity chiseledBookshelfBlockEntity) {
 						bookshelfCount += chiseledBookshelfBlockEntity.count() / 3;
-						if (ModConfig.overhaulEnchanting == OverhaulMode.CHISELED && !player.hasInfiniteMaterials()) {
+						if (EnchancementConfig.overhaulEnchanting == OverhaulMode.CHISELED && !player.hasInfiniteMaterials()) {
 							for (ItemStack stack : chiseledBookshelfBlockEntity) {
 								chiseledEnchantments.addAll(EnchantmentHelper.getEnchantmentsForCrafting(stack).keySet());
 							}
@@ -307,7 +307,7 @@ public class ModEnchantmentMenu extends AbstractContainerMenu {
 				}
 			}
 			bookshelfCount = Math.min(15, bookshelfCount);
-			if (ModConfig.overhaulEnchanting == OverhaulMode.CHISELED && player.hasInfiniteMaterials()) {
+			if (EnchancementConfig.overhaulEnchanting == OverhaulMode.CHISELED && player.hasInfiniteMaterials()) {
 				Registry<Enchantment> enchantments = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
 				enchantments.forEach(enchantment -> chiseledEnchantments.add(enchantments.wrapAsHolder(enchantment)));
 			}
@@ -350,8 +350,8 @@ public class ModEnchantmentMenu extends AbstractContainerMenu {
 			return false;
 		}
 		if (stack.canBeEnchantedWith(enchantment, EnchantingContext.ACCEPTABLE)) {
-			if (ModConfig.overhaulEnchanting != OverhaulMode.CHISELED || chiseledEnchantments.contains(enchantment)) {
-				if (ModConfig.overhaulEnchanting.allowsTreasure() && enchantment.is(EnchantmentTags.TREASURE)) {
+			if (EnchancementConfig.overhaulEnchanting != OverhaulMode.CHISELED || chiseledEnchantments.contains(enchantment)) {
+				if (EnchancementConfig.overhaulEnchanting.allowsTreasure() && enchantment.is(EnchantmentTags.TREASURE)) {
 					return true;
 				}
 				return enchantment.is(EnchantmentTags.IN_ENCHANTING_TABLE);
@@ -369,7 +369,7 @@ public class ModEnchantmentMenu extends AbstractContainerMenu {
 		String moltenId = Enchancement.id("molten").getPath();
 		String e1Id = e1.unwrapKey().map(key -> key.identifier().getPath()).orElse("[unregistered]");
 		String e2Id = e2.unwrapKey().map(key -> key.identifier().getPath()).orElse("[unregistered]");
-		if (ModConfig.rebalanceEnchantments) {
+		if (EnchancementConfig.rebalanceEnchantments) {
 			if (e1Id.equals(Enchantments.FIRE_ASPECT.identifier().getPath())) {
 				e1Id = moltenId;
 			}

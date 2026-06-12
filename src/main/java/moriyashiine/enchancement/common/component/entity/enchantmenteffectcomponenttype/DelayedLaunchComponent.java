@@ -4,9 +4,9 @@
 
 package moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype;
 
-import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.EnchancementConfig;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.world.item.effects.DelayedLaunchEffect;
 import net.minecraft.core.component.DataComponentType;
@@ -101,7 +101,7 @@ public class DelayedLaunchComponent implements AutoSyncedComponent, CommonTickin
 				obj.needsSync = true;
 			}
 			LivingEntity mobTarget = null;
-			if (ModConfig.enhanceMobs && obj.getOwner() instanceof Mob mob && mob.getTarget() instanceof LivingEntity target) {
+			if (EnchancementConfig.enhanceMobs && obj.getOwner() instanceof Mob mob && mob.getTarget() instanceof LivingEntity target) {
 				mobTarget = target;
 				if (!mob.swinging && target.distanceTo(mob) < 6) {
 					mob.swing(InteractionHand.MAIN_HAND);
@@ -139,7 +139,7 @@ public class DelayedLaunchComponent implements AutoSyncedComponent, CommonTickin
 	}
 
 	public void sync() {
-		ModEntityComponents.DELAYED_LAUNCH.sync(obj);
+		EnchancementEntityComponents.DELAYED_LAUNCH.sync(obj);
 	}
 
 	public boolean isEnabled() {
@@ -158,23 +158,23 @@ public class DelayedLaunchComponent implements AutoSyncedComponent, CommonTickin
 		if (projectile instanceof AbstractArrow arrow) {
 			MutableFloat maxDuration = new MutableFloat(), peakDuration = new MutableFloat(), maxMultiplier = new MutableFloat();
 			MutableBoolean allowRedirect = new MutableBoolean();
-			if (EnchantmentHelper.has(weapon, ModEnchantmentEffectComponentTypes.DELAYED_LAUNCH)) {
+			if (EnchantmentHelper.has(weapon, EnchancementEnchantmentEffectComponentTypes.DELAYED_LAUNCH)) {
 				DelayedLaunchEffect.setValues(shooter.getRandom(), maxDuration, peakDuration, maxMultiplier, allowRedirect, Collections.singleton(weapon));
-			} else if (!(shooter instanceof Player) && EnchancementUtil.hasAnyEnchantmentsWith(shooter, ModEnchantmentEffectComponentTypes.DELAYED_LAUNCH)) {
+			} else if (!(shooter instanceof Player) && EnchancementUtil.hasAnyEnchantmentsWith(shooter, EnchancementEnchantmentEffectComponentTypes.DELAYED_LAUNCH)) {
 				DelayedLaunchEffect.setValues(shooter.getRandom(), maxDuration, peakDuration, maxMultiplier, allowRedirect, EnchancementUtil.getHeldItems(shooter));
 			}
 			if (maxDuration.floatValue() != 0) {
-				DelayedLaunchComponent delayedLaunchComponent = ModEntityComponents.DELAYED_LAUNCH.get(projectile);
-				delayedLaunchComponent.weapon = weapon;
-				delayedLaunchComponent.maxDuration = Mth.floor(maxDuration.floatValue() * 20);
-				delayedLaunchComponent.peakDuration = Mth.floor(peakDuration.floatValue() * 20);
-				delayedLaunchComponent.maxMultiplier = maxMultiplier.floatValue();
-				delayedLaunchComponent.allowRedirect = allowRedirect.booleanValue();
+				DelayedLaunchComponent delayedLaunch = EnchancementEntityComponents.DELAYED_LAUNCH.get(projectile);
+				delayedLaunch.weapon = weapon;
+				delayedLaunch.maxDuration = Mth.floor(maxDuration.floatValue() * 20);
+				delayedLaunch.peakDuration = Mth.floor(peakDuration.floatValue() * 20);
+				delayedLaunch.maxMultiplier = maxMultiplier.floatValue();
+				delayedLaunch.allowRedirect = allowRedirect.booleanValue();
 
-				delayedLaunchComponent.cachedPow = pow;
-				delayedLaunchComponent.cachedUncertainty = uncertainty;
+				delayedLaunch.cachedPow = pow;
+				delayedLaunch.cachedUncertainty = uncertainty;
 
-				delayedLaunchComponent.sync();
+				delayedLaunch.sync();
 				arrow.setCritArrow(true);
 			}
 		}

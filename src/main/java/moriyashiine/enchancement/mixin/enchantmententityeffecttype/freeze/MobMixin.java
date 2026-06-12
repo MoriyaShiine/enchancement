@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.enchantmententityeffecttype.freeze;
 
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Mob;
@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MobMixin {
 	@Inject(method = "interact", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Mob;mobInteract(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/InteractionResult;"), cancellable = true)
 	private void enchancement$freeze(Player player, InteractionHand hand, Vec3 location, CallbackInfoReturnable<InteractionResult> cir) {
-		if (ModEntityComponents.FROZEN.get(this).isFrozen()) {
+		if (EnchancementEntityComponents.FROZEN.get(this).isFrozen()) {
 			cir.setReturnValue(InteractionResult.PASS);
 		}
 	}

@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype;
 
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.enchancement.common.world.item.effects.entity.BuryEffect;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
@@ -45,7 +45,7 @@ public class BuryEntityComponent implements AutoSyncedComponent, ServerTickingCo
 	}
 
 	public void sync() {
-		ModEntityComponents.BURY_ENTITY.sync(obj);
+		EnchancementEntityComponents.BURY_ENTITY.sync(obj);
 	}
 
 	public BlockPos getBuryPos() {

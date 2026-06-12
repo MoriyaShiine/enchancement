@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.client.event.config;
 
 import moriyashiine.enchancement.client.EnchancementClient;
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -33,9 +33,9 @@ public class CoyoteBiteClientEvent implements ClientTickEvents.EndLevelTick {
 
 	@Override
 	public void onEndTick(ClientLevel level) {
-		if (!EnchancementClient.betterCombatLoaded && ModConfig.coyoteBiteTicks > 0 && client.crosshairPickEntity != null && canAttack()) {
+		if (!EnchancementClient.betterCombatLoaded && EnchancementConfig.coyoteBiteTicks > 0 && client.crosshairPickEntity != null && canAttack()) {
 			target = client.crosshairPickEntity;
-			ticks = ModConfig.coyoteBiteTicks;
+			ticks = EnchancementConfig.coyoteBiteTicks;
 		}
 		if (ticks > 0) {
 			ticks--;

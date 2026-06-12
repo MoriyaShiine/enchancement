@@ -7,7 +7,7 @@ package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.buryentit
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Shulker;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,7 +27,7 @@ public class ShulkerEntityGoalMixin {
 
 	@ModifyReturnValue(method = "canUse", at = @At("RETURN"))
 	private boolean enchancement$buryEntity(boolean original) {
-		if (original && cachedEntity != null && ModEntityComponents.BURY_ENTITY.get(cachedEntity).getBuryPos() != null) {
+		if (original && cachedEntity != null && EnchancementEntityComponents.BURY_ENTITY.get(cachedEntity).getBuryPos() != null) {
 			cachedEntity = null;
 			return false;
 		}

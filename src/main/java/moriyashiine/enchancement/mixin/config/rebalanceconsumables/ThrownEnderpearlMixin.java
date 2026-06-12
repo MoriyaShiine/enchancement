@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.config.rebalanceconsumables;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -18,7 +18,7 @@ public class ThrownEnderpearlMixin {
 	@SuppressWarnings("WrapWithConditionTargetsNonVoid")
 	@WrapWithCondition(method = "onHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;hurtServer(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;F)Z"))
 	private boolean enchancement$rebalanceConsumables(ServerPlayer instance, ServerLevel level, DamageSource source, float damage) {
-		if (ModConfig.rebalanceConsumables) {
+		if (EnchancementConfig.rebalanceConsumables) {
 			return false;
 		}
 		return instance.hurtServer(level, source, damage);

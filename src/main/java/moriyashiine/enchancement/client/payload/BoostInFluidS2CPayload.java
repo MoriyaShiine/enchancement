@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.client.payload;
 
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
@@ -21,7 +21,8 @@ public record BoostInFluidS2CPayload(int entityId, boolean shouldBoost) implemen
 	public static final StreamCodec<FriendlyByteBuf, BoostInFluidS2CPayload> CODEC = StreamCodec.composite(
 			ByteBufCodecs.VAR_INT, BoostInFluidS2CPayload::entityId,
 			ByteBufCodecs.BOOL, BoostInFluidS2CPayload::shouldBoost,
-			BoostInFluidS2CPayload::new);
+			BoostInFluidS2CPayload::new
+	);
 
 	@Override
 	public Type<BoostInFluidS2CPayload> type() {
@@ -37,7 +38,7 @@ public record BoostInFluidS2CPayload(int entityId, boolean shouldBoost) implemen
 		public void receive(BoostInFluidS2CPayload payload, ClientPlayNetworking.Context context) {
 			Entity entity = context.player().level().getEntity(payload.entityId());
 			if (entity instanceof LivingEntity) {
-				ModEntityComponents.BOOST_IN_FLUID.get(entity).setShouldBoost(payload.shouldBoost());
+				EnchancementEntityComponents.BOOST_IN_FLUID.get(entity).setShouldBoost(payload.shouldBoost());
 			}
 		}
 	}

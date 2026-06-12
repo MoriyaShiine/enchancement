@@ -4,8 +4,8 @@
 
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.honeytrail;
 
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.init.ModLevelComponents;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementLevelComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -29,10 +29,10 @@ public abstract class LivingEntityMixin extends Entity {
 	private void enchancement$honeyTrail(CallbackInfo ci) {
 		if (asLivingEntity().slib$exists()) {
 			LivingEntity living = (LivingEntity) (Object) this;
-			int maxAge = Mth.floor(EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.HONEY_TRAIL, living, 0) * 20);
+			int maxAge = Mth.floor(EnchancementUtil.getValue(EnchancementEnchantmentEffectComponentTypes.HONEY_TRAIL, living, 0) * 20);
 			if (maxAge > 0) {
 				if (onGround() || level().clip(new ClipContext(position(), position().add(0, -1.5, 0), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.BLOCK) {
-					ModLevelComponents.HONEY_TRAIL.get(level()).addHoneySpot(living, maxAge);
+					EnchancementLevelComponents.HONEY_TRAIL.get(level()).addHoneySpot(living, maxAge);
 				}
 			}
 		}

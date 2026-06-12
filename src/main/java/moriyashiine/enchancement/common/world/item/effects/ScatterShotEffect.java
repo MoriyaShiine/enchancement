@@ -6,7 +6,7 @@ package moriyashiine.enchancement.common.world.item.effects;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.Mth;
@@ -26,17 +26,17 @@ import java.util.Set;
 
 public record ScatterShotEffect(EnchantmentValueEffect minimum, EnchantmentValueEffect maximum, Item allowedProjectile) {
 	public static final Codec<ScatterShotEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-					EnchantmentValueEffect.CODEC.fieldOf("minimum").forGetter(ScatterShotEffect::minimum),
-					EnchantmentValueEffect.CODEC.fieldOf("maximum").forGetter(ScatterShotEffect::maximum),
-					BuiltInRegistries.ITEM.byNameCodec().fieldOf("allowed_projectile").forGetter(ScatterShotEffect::allowedProjectile))
-			.apply(instance, ScatterShotEffect::new));
+			EnchantmentValueEffect.CODEC.fieldOf("minimum").forGetter(ScatterShotEffect::minimum),
+			EnchantmentValueEffect.CODEC.fieldOf("maximum").forGetter(ScatterShotEffect::maximum),
+			BuiltInRegistries.ITEM.byNameCodec().fieldOf("allowed_projectile").forGetter(ScatterShotEffect::allowedProjectile)
+	).apply(instance, ScatterShotEffect::new));
 
 	public static boolean hasScatterShot = false;
 
 	public static int getMinimum(RandomSource random, ItemStack stack) {
 		MutableFloat minimum = new MutableFloat(0);
 		EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
-			List<ConditionalEffect<ScatterShotEffect>> effects = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.SCATTER_SHOT);
+			List<ConditionalEffect<ScatterShotEffect>> effects = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.SCATTER_SHOT);
 			if (effects != null) {
 				effects.forEach(effect -> minimum.setValue(effect.effect().minimum().process(level, random, minimum.floatValue())));
 			}
@@ -62,7 +62,7 @@ public record ScatterShotEffect(EnchantmentValueEffect minimum, EnchantmentValue
 	public static int getMaximum(RandomSource random, ItemStack stack) {
 		MutableFloat maximum = new MutableFloat(0);
 		EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
-			List<ConditionalEffect<ScatterShotEffect>> effects = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.SCATTER_SHOT);
+			List<ConditionalEffect<ScatterShotEffect>> effects = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.SCATTER_SHOT);
 			if (effects != null) {
 				effects.forEach(effect -> maximum.setValue(effect.effect().maximum().process(level, random, maximum.floatValue())));
 			}
@@ -88,7 +88,7 @@ public record ScatterShotEffect(EnchantmentValueEffect minimum, EnchantmentValue
 	public static Set<Item> getAllowedProjectiles(ItemStack stack) {
 		Set<Item> allowedProjectiles = new HashSet<>();
 		EnchantmentHelper.runIterationOnItem(stack, (enchantment, _) -> {
-			List<ConditionalEffect<ScatterShotEffect>> effects = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.SCATTER_SHOT);
+			List<ConditionalEffect<ScatterShotEffect>> effects = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.SCATTER_SHOT);
 			if (effects != null) {
 				effects.forEach(effect -> allowedProjectiles.add(effect.effect().allowedProjectile()));
 			}

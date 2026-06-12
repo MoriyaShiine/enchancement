@@ -5,11 +5,11 @@
 package moriyashiine.enchancement.common.component.entity.enchantmenteffecttype;
 
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.init.ModDamageTypes;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.tag.ModEnchantmentTags;
-import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
+import moriyashiine.enchancement.common.init.EnchancementDamageTypes;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementSoundEvents;
+import moriyashiine.enchancement.common.tag.EnchancementEnchantmentTags;
+import moriyashiine.enchancement.common.tag.EnchancementEntityTypeTags;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
@@ -110,14 +110,14 @@ public class FrozenComponent implements AutoSyncedComponent, CommonTickingCompon
 			if (!frozen) {
 				float freezePercentage = getFreezePercentage();
 				if (freezePercentage > 0) {
-					SLibUtils.conditionallyApplyAttributeModifier(obj, Attributes.MOVEMENT_SPEED, new AttributeModifier(MOVEMENT_SPEED_ID, -0.2 * freezePercentage, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), true);
+					SLibUtils.applyAttributeModifier(obj, Attributes.MOVEMENT_SPEED, new AttributeModifier(MOVEMENT_SPEED_ID, -0.2 * freezePercentage, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), true);
 				}
 			}
 		}
 	}
 
 	public void sync() {
-		ModEntityComponents.FROZEN.sync(obj);
+		EnchancementEntityComponents.FROZEN.sync(obj);
 	}
 
 	public int getFreezeTicks() {
@@ -177,14 +177,14 @@ public class FrozenComponent implements AutoSyncedComponent, CommonTickingCompon
 	}
 
 	public boolean shouldFreezeOnDeath(DamageSource source) {
-		if (!obj.level().isClientSide() && !obj.is(ModEntityTypeTags.CANNOT_FREEZE) && getLastFreezingAttacker() != null) {
+		if (!obj.level().isClientSide() && !obj.is(EnchancementEntityTypeTags.CANNOT_FREEZE) && getLastFreezingAttacker() != null) {
 			return source.is(DamageTypeTags.IS_FREEZING) || isSourceFreezeWeapon(source);
 		}
 		return false;
 	}
 
 	public void freeze() {
-		obj.playSound(ModSoundEvents.GENERIC_FREEZE, 1, 1);
+		obj.playSound(EnchancementSoundEvents.GENERIC_FREEZE, 1, 1);
 		obj.setDeltaMovement(Vec3.ZERO);
 		obj.setHealth(1);
 		obj.setSilent(true);
@@ -218,9 +218,9 @@ public class FrozenComponent implements AutoSyncedComponent, CommonTickingCompon
 	}
 
 	public static boolean isSourceFreezeWeapon(DamageSource source) {
-		if (source.is(ModDamageTypes.ICE_SHARD)) {
+		if (source.is(EnchancementDamageTypes.ICE_SHARD)) {
 			return true;
 		}
-		return source.getDirectEntity() instanceof LivingEntity living && EnchantmentHelper.hasTag(living.getMainHandItem(), ModEnchantmentTags.FREEZES_ENTITIES);
+		return source.getDirectEntity() instanceof LivingEntity living && EnchantmentHelper.hasTag(living.getMainHandItem(), EnchancementEnchantmentTags.FREEZES_ENTITIES);
 	}
 }

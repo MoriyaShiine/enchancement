@@ -19,8 +19,8 @@ accessible method net/minecraft/world/item/enchantment/EnchantmentEffectComponen
 accessible method net/minecraft/world/level/block/HoneyBlock getNewDeltaY (D)D
 accessible method net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity createExperience (Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/phys/Vec3;IF)V
 
-accessible field net/minecraft/advancements/criterion/DamagePredicate dealtDamage Lnet/minecraft/advancements/criterion/MinMaxBounds$Doubles;
-mutable field net/minecraft/advancements/criterion/DamagePredicate dealtDamage Lnet/minecraft/advancements/criterion/MinMaxBounds$Doubles;
+accessible field net/minecraft/advancements/predicates/DamagePredicate dealtDamage Lnet/minecraft/advancements/predicates/MinMaxBounds$Doubles;
+mutable field net/minecraft/advancements/predicates/DamagePredicate dealtDamage Lnet/minecraft/advancements/predicates/MinMaxBounds$Doubles;
 accessible field net/minecraft/tags/TagEntry id Lnet/minecraft/resources/Identifier;
 accessible field net/minecraft/world/entity/LivingEntity jumping Z
 accessible field net/minecraft/world/entity/projectile/arrow/AbstractArrow baseDamage D
@@ -37,9 +37,9 @@ accessible field net/minecraft/world/item/enchantment/effects/AllOf$EntityEffect
 mutable field net/minecraft/world/item/enchantment/effects/AllOf$EntityEffects effects Ljava/util/List;
 accessible field net/minecraft/world/level/storage/loot/predicates/CompositeLootItemCondition terms Ljava/util/List;
 
-accessible class net/minecraft/client/gui/Gui$HeartType
+accessible class net/minecraft/client/gui/Hud$HeartType
 
-accessible method net/minecraft/client/gui/Gui extractHearts (Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/world/entity/player/Player;IIIIFIIIZ)V
+accessible method net/minecraft/client/gui/Hud extractHearts (Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/world/entity/player/Player;IIIIFIIIZ)V
 accessible method net/minecraft/client/particle/CritParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V
 accessible method net/minecraft/client/particle/FlameParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V
 accessible method net/minecraft/client/particle/FlyTowardsPositionParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V

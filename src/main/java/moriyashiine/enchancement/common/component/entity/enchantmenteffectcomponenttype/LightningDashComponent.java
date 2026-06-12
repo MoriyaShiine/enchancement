@@ -6,8 +6,8 @@ package moriyashiine.enchancement.common.component.entity.enchantmenteffectcompo
 
 import moriyashiine.enchancement.client.payload.AddLightningDashParticlesPayload;
 import moriyashiine.enchancement.common.component.entity.internal.UsingMaceComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementSoundEvents;
 import moriyashiine.enchancement.common.particle.SparkParticleOption;
 import moriyashiine.enchancement.common.world.item.effects.LightningDashEffect;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
@@ -74,7 +74,7 @@ public class LightningDashComponent extends UsingMaceComponent implements Common
 				smashTicks = 30;
 				floatTicks = 0;
 				obj.setDeltaMovement(obj.calculateViewVector(Math.max(-15, obj.getXRot()), obj.getYRot()).scale(LightningDashEffect.getSmashStrength(obj.getRandom(), obj.getMainHandItem())));
-				obj.playSound(ModSoundEvents.GENERIC_ZAP, 2, 1);
+				obj.playSound(EnchancementSoundEvents.GENERIC_ZAP, 2, 1);
 			}
 		}
 		if (isSmashing()) {
@@ -90,7 +90,7 @@ public class LightningDashComponent extends UsingMaceComponent implements Common
 		}
 		if (hasLightningDash && ItemStack.matches(obj.getUseItem(), obj.getMainHandItem())) {
 			if (ticksUsing % 18 == 0) {
-				obj.playSound(ModSoundEvents.GENERIC_WHOOSH, 0.5F, 1);
+				obj.playSound(EnchancementSoundEvents.GENERIC_WHOOSH, 0.5F, 1);
 			}
 			ticksUsing++;
 		} else {
@@ -117,9 +117,11 @@ public class LightningDashComponent extends UsingMaceComponent implements Common
 			boolean[] hurt = {true};
 			getNearby(3).forEach(entity -> {
 				DamageSource source = obj instanceof Player player ? entity.damageSources().playerAttack(player) : entity.damageSources().mobAttack(obj);
-				float damage = EnchantmentHelper.modifyDamage(level, obj.getMainHandItem(), entity, source, base) + obj.getMainHandItem().getItem().getAttackDamageBonus(entity, base, source);
-				if (entity.hurtServer(level, source, damage * LightningDashEffect.getSmashDamageMultiplier(obj.getRandom(), obj.getMainHandItem()))) {
-					entity.knockback(1.5, obj.getX() - entity.getX(), obj.getZ() - entity.getZ());
+				float damage = (EnchantmentHelper.modifyDamage(level, obj.getMainHandItem(), entity, source, base)
+						+ obj.getMainHandItem().getItem().getAttackDamageBonus(entity, base, source))
+						* LightningDashEffect.getSmashDamageMultiplier(obj.getRandom(), obj.getMainHandItem());
+				if (entity.hurtServer(level, source, damage)) {
+					entity.knockback(1.5, obj.getX() - entity.getX(), obj.getZ() - entity.getZ(), source, damage, true);
 					hurt[0] = false;
 				}
 			});
@@ -144,7 +146,7 @@ public class LightningDashComponent extends UsingMaceComponent implements Common
 	}
 
 	public void sync() {
-		ModEntityComponents.LIGHTNING_DASH.sync(obj);
+		EnchancementEntityComponents.LIGHTNING_DASH.sync(obj);
 	}
 
 	public void setFloatTicks(int floatTicks) {

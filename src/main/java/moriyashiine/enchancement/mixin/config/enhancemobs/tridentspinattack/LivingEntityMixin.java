@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.config.enhancemobs.tridentspinattack;
 
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -31,7 +31,7 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@Inject(method = "doAutoAttackOnTouch", at = @At("HEAD"))
 	private void enchancement$enhanceMobs(LivingEntity entity, CallbackInfo ci) {
-		if (ModConfig.enhanceMobs && level() instanceof ServerLevel level) {
+		if (EnchancementConfig.enhanceMobs && level() instanceof ServerLevel level) {
 			swing(InteractionHand.MAIN_HAND);
 			doHurtTarget(level, entity);
 		}

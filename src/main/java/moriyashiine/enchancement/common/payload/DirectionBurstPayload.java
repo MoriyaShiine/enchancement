@@ -6,7 +6,7 @@ package moriyashiine.enchancement.common.payload;
 
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.DirectionBurstComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
 import moriyashiine.strawberrylib.api.objects.enums.PayloadTarget;
@@ -26,7 +26,8 @@ public record DirectionBurstPayload(int entityId, Vec3 delta) implements CustomP
 	public static final StreamCodec<FriendlyByteBuf, DirectionBurstPayload> CODEC = StreamCodec.composite(
 			ByteBufCodecs.VAR_INT, DirectionBurstPayload::entityId,
 			Vec3.STREAM_CODEC, DirectionBurstPayload::delta,
-			DirectionBurstPayload::new);
+			DirectionBurstPayload::new
+	);
 
 	@Override
 	public Type<DirectionBurstPayload> type() {
@@ -46,9 +47,9 @@ public record DirectionBurstPayload(int entityId, Vec3 delta) implements CustomP
 		@Override
 		public void receive(DirectionBurstPayload payload, ServerPlayNetworking.Context context) {
 			Entity entity = context.player().level().getEntity(payload.entityId());
-			ModEntityComponents.DIRECTION_BURST.maybeGet(entity).ifPresent(directionBurstComponent -> {
-				if (directionBurstComponent.hasEffect() && directionBurstComponent.canUse()) {
-					use(entity, payload.delta(), directionBurstComponent);
+			EnchancementEntityComponents.DIRECTION_BURST.maybeGet(entity).ifPresent(directionBurst -> {
+				if (directionBurst.hasEffect() && directionBurst.canUse()) {
+					use(entity, payload.delta(), directionBurst);
 				}
 			});
 		}

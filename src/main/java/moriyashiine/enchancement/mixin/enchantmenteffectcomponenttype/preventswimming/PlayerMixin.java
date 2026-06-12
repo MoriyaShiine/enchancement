@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.preventswimming;
 
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,7 +23,7 @@ public abstract class PlayerMixin extends LivingEntity {
 
 	@Inject(method = "updateSwimming", at = @At("HEAD"), cancellable = true)
 	private void enchancement$preventSwimming(CallbackInfo ci) {
-		if (EnchancementUtil.hasAnyEnchantmentsWith(this, ModEnchantmentEffectComponentTypes.PREVENT_SWIMMING)) {
+		if (EnchancementUtil.hasAnyEnchantmentsWith(this, EnchancementEnchantmentEffectComponentTypes.PREVENT_SWIMMING)) {
 			setSwimming(false);
 			ci.cancel();
 		}

@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.client.gui.hud;
 
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -19,10 +19,10 @@ public class BrimstoneHudElement implements HudElement {
 	public void extractRenderState(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
 		Minecraft client = Minecraft.getInstance();
 		Player player = client.player;
-		if (player != null && EnchantmentHelper.has(player.getUseItem(), ModEnchantmentEffectComponentTypes.BRIMSTONE)) {
+		if (player != null && EnchantmentHelper.has(player.getUseItem(), EnchancementEnchantmentEffectComponentTypes.BRIMSTONE)) {
 			int scaledWidth = client.getWindow().getGuiScaledWidth(), scaledHeight = client.getWindow().getGuiScaledHeight();
 			forcedHeight = (scaledHeight / 2) + 6;
-			client.gui.extractHearts(graphics, player, (scaledWidth / 2) - 25, forcedHeight, 1, -1, 12, health, health, 0, false);
+			client.gui.hud.extractHearts(graphics, player, (scaledWidth / 2) - 25, forcedHeight, 1, -1, 12, health, health, 0, false);
 			forcedHeight = -1;
 		} else {
 			health = -1;

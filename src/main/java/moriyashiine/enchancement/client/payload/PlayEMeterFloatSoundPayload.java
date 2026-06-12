@@ -6,7 +6,7 @@ package moriyashiine.enchancement.client.payload;
 
 import moriyashiine.enchancement.client.resources.sound.EMeterSoundInstance;
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.UUIDUtil;
@@ -24,7 +24,8 @@ public record PlayEMeterFloatSoundPayload(int entityId, UUID floatingUuid) imple
 	public static final StreamCodec<FriendlyByteBuf, PlayEMeterFloatSoundPayload> CODEC = StreamCodec.composite(
 			ByteBufCodecs.VAR_INT, PlayEMeterFloatSoundPayload::entityId,
 			UUIDUtil.STREAM_CODEC, PlayEMeterFloatSoundPayload::floatingUuid,
-			PlayEMeterFloatSoundPayload::new);
+			PlayEMeterFloatSoundPayload::new
+	);
 
 	@Override
 	public Type<PlayEMeterFloatSoundPayload> type() {
@@ -40,7 +41,7 @@ public record PlayEMeterFloatSoundPayload(int entityId, UUID floatingUuid) imple
 		public void receive(PlayEMeterFloatSoundPayload payload, ClientPlayNetworking.Context context) {
 			Entity entity = context.player().level().getEntity(payload.entityId());
 			if (entity != null) {
-				ModEntityComponents.E_METER.maybeGet(entity).ifPresent(eMeterComponent -> eMeterComponent.setFloatingUuid(payload.floatingUuid()));
+				EnchancementEntityComponents.E_METER.maybeGet(entity).ifPresent(eMeter -> eMeter.setFloatingUuid(payload.floatingUuid()));
 				context.client().getSoundManager().play(new EMeterSoundInstance(entity, payload.floatingUuid()));
 			}
 		}

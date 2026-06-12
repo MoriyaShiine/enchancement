@@ -6,7 +6,7 @@ package moriyashiine.enchancement.common.world.level.storage.loot.functions;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import moriyashiine.enchancement.common.init.ModLootFunctionTypes;
+import moriyashiine.enchancement.common.init.EnchancementLootFunctionTypes;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -27,11 +27,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class StoreItemEnchantmentsLootFunction extends LootItemConditionalFunction {
-	public static final MapCodec<StoreItemEnchantmentsLootFunction> CODEC = RecordCodecBuilder.mapCodec(
-			instance -> commonFields(instance)
-					.and(BuiltInRegistries.ITEM.byNameCodec().fieldOf("item").forGetter(StoreItemEnchantmentsLootFunction::getItem))
-					.apply(instance, StoreItemEnchantmentsLootFunction::new)
-	);
+	public static final MapCodec<StoreItemEnchantmentsLootFunction> CODEC = RecordCodecBuilder.mapCodec(instance -> commonFields(instance)
+			.and(BuiltInRegistries.ITEM.byNameCodec().fieldOf("item").forGetter(StoreItemEnchantmentsLootFunction::getItem)
+			).apply(instance, StoreItemEnchantmentsLootFunction::new));
 
 	private final Item item;
 
@@ -42,7 +40,7 @@ public class StoreItemEnchantmentsLootFunction extends LootItemConditionalFuncti
 
 	@Override
 	public MapCodec<StoreItemEnchantmentsLootFunction> codec() {
-		return ModLootFunctionTypes.STORE_ITEM_ENCHANTMENTS;
+		return EnchancementLootFunctionTypes.STORE_ITEM_ENCHANTMENTS;
 	}
 
 	@Override

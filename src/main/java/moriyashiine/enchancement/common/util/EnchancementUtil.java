@@ -5,14 +5,14 @@
 package moriyashiine.enchancement.common.util;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.LightningDashComponent;
 import moriyashiine.enchancement.common.event.internal.SyncDeltaMovementsEvent;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.init.ModEnchantments;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
-import moriyashiine.enchancement.common.tag.ModItemTags;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantments;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
+import moriyashiine.enchancement.common.tag.EnchancementEntityTypeTags;
+import moriyashiine.enchancement.common.tag.EnchancementItemTags;
 import moriyashiine.enchancement.common.util.config.DisableDurabilityMode;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
@@ -132,22 +132,22 @@ public class EnchancementUtil {
 	}
 
 	public static boolean isEnchantmentAllowed(Identifier identifier) {
-		if (identifier.equals(ModEnchantments.EMPTY_KEY.identifier())) {
+		if (identifier.equals(EnchancementEnchantments.EMPTY_KEY.identifier())) {
 			return false;
 		}
-		if (ModConfig.invertedList) {
-			return ModConfig.disallowedEnchantments.contains(identifier.toString());
+		if (EnchancementConfig.invertedList) {
+			return EnchancementConfig.disallowedEnchantments.contains(identifier.toString());
 		}
-		return !ModConfig.disallowedEnchantments.contains(identifier.toString());
+		return !EnchancementConfig.disallowedEnchantments.contains(identifier.toString());
 	}
 
 	// single level mode
 
 	public static boolean hasWeakEnchantments(ItemInstance item) {
-		if (item.is(ModItemTags.STRONGLY_ENCHANTED)) {
+		if (item.is(EnchancementItemTags.STRONGLY_ENCHANTED)) {
 			return false;
 		}
-		if (item.is(ModItemTags.WEAKLY_ENCHANTED)) {
+		if (item.is(EnchancementItemTags.WEAKLY_ENCHANTED)) {
 			return true;
 		}
 		int enchantmentValue = getEnchantmentValue(item);
@@ -198,7 +198,7 @@ public class EnchancementUtil {
 		ItemEnchantments defaultEnchantments = stack.getItem().components().getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
 		for (Holder<Enchantment> foundEnchantment : defaultEnchantments.keySet()) {
 			if (foundEnchantment == enchantment) {
-				int level = ModConfig.singleLevelMode ? 1 : EnchantmentHelper.getItemEnchantmentLevel(enchantment, stack);
+				int level = EnchancementConfig.singleLevelMode ? 1 : EnchantmentHelper.getItemEnchantmentLevel(enchantment, stack);
 				if (level == defaultEnchantments.getLevel(enchantment)) {
 					return true;
 				}
@@ -208,7 +208,7 @@ public class EnchancementUtil {
 	}
 
 	public static boolean exceedsLimit(ItemStack stack, int size) {
-		if (ModConfig.enchantmentLimit == 0) {
+		if (EnchancementConfig.enchantmentLimit == 0) {
 			return false;
 		}
 		for (Holder<Enchantment> enchantment : EnchantmentHelper.getEnchantmentsForCrafting(stack).keySet()) {
@@ -216,22 +216,22 @@ public class EnchancementUtil {
 				size--;
 			}
 		}
-		return size > ModConfig.enchantmentLimit;
+		return size > EnchancementConfig.enchantmentLimit;
 	}
 
 	// disable durability
 
 	public static boolean isUnbreakable(ItemStack stack) {
 		if (!stack.isEmpty()) {
-			if (stack.is(ModItemTags.BREAKABLE)) {
+			if (stack.is(EnchancementItemTags.BREAKABLE)) {
 				return false;
 			}
-			if (stack.is(ModItemTags.UNBREAKABLE)) {
+			if (stack.is(EnchancementItemTags.UNBREAKABLE)) {
 				return true;
 			}
-			if (ModConfig.disableDurability != DisableDurabilityMode.NONE) {
+			if (EnchancementConfig.disableDurability != DisableDurabilityMode.NONE) {
 				if (stack.is(Items.ANVIL) || stack.has(DataComponents.MAX_DAMAGE)) {
-					return ModConfig.disableDurability != DisableDurabilityMode.ENCHANTED || stack.isEnchanted();
+					return EnchancementConfig.disableDurability != DisableDurabilityMode.ENCHANTED || stack.isEnchanted();
 				}
 			}
 		}
@@ -241,8 +241,8 @@ public class EnchancementUtil {
 	// rebalance enchantments
 
 	public static void rebalanceIgniteForSeconds(LivingEntity entity, float numberOfSeconds) {
-		if (ModConfig.rebalanceEnchantments) {
-			ModEntityComponents.IGNITED.get(entity).markIgnited();
+		if (EnchancementConfig.rebalanceEnchantments) {
+			EnchancementEntityComponents.IGNITED.get(entity).markIgnited();
 		}
 		entity.igniteForSeconds(numberOfSeconds);
 	}
@@ -257,7 +257,7 @@ public class EnchancementUtil {
 	}
 
 	public static boolean isFastItem(ItemStack stack) {
-		if (ModConfig.rebalanceEquipment) {
+		if (EnchancementConfig.rebalanceEquipment) {
 			Item item = stack.getItem();
 			return item instanceof BowItem || item instanceof MaceItem || item instanceof TridentItem;
 		}
@@ -265,8 +265,8 @@ public class EnchancementUtil {
 	}
 
 	public static boolean insertToCorrectTridentSlot(AbstractArrow arrow, Inventory inventory, ItemStack stack) {
-		if (ModConfig.rebalanceEquipment && arrow instanceof ThrownTrident) {
-			int slot = ModEntityComponents.OWNED_TRIDENT.get(arrow).getSlot();
+		if (EnchancementConfig.rebalanceEquipment && arrow instanceof ThrownTrident) {
+			int slot = EnchancementEntityComponents.OWNED_TRIDENT.get(arrow).getSlot();
 			if (slot >= 0 && slot < inventory.getContainerSize() && inventory.getItem(slot).isEmpty()) {
 				inventory.setItem(slot, stack);
 				return true;
@@ -276,13 +276,13 @@ public class EnchancementUtil {
 	}
 
 	public static int getMaceOrTridentChargeTime(ItemStack stack) {
-		return TridentItem.THROW_THRESHOLD_TIME * (ModConfig.rebalanceEquipment && stack.getEnchantments().keySet().stream().noneMatch(enchantment -> enchantment.is(Enchantments.RIPTIDE)) ? 2 : 1);
+		return TridentItem.THROW_THRESHOLD_TIME * (EnchancementConfig.rebalanceEquipment && stack.getEnchantments().keySet().stream().noneMatch(enchantment -> enchantment.is(Enchantments.RIPTIDE)) ? 2 : 1);
 	}
 
 	// weapon effect cooldown requirement
 
 	public static boolean shouldApplyWeaponEffect() {
-		return SLibUtils.isAttackingPlayerCooldownWithinThreshold(ModConfig.weaponEffectCooldownRequirement);
+		return SLibUtils.isAttackingPlayerCooldownWithinThreshold(EnchancementConfig.weaponEffectCooldownRequirement);
 	}
 
 	// fix vanilla bugs
@@ -348,7 +348,7 @@ public class EnchancementUtil {
 
 	public static void resetFallDistance(Entity entity) {
 		entity.resetFallDistance();
-		ModEntityComponents.LIGHTNING_DASH.maybeGet(entity).ifPresent(LightningDashComponent::cancel);
+		EnchancementEntityComponents.LIGHTNING_DASH.maybeGet(entity).ifPresent(LightningDashComponent::cancel);
 	}
 
 	// enchantment
@@ -400,10 +400,10 @@ public class EnchancementUtil {
 	public static final VoxelShape FLUID_WALKING_SHAPE = Block.column(16, 0, 8);
 
 	public static boolean shouldFluidWalk(Entity entity) {
-		return !entity.is(ModEntityTypeTags.CANNOT_FLUID_WALK) && !SLibUtils.isCrouching(entity, true) && hasAnyEnchantmentsWith(entity, ModEnchantmentEffectComponentTypes.FLUID_WALKING);
+		return !entity.is(EnchancementEntityTypeTags.CANNOT_FLUID_WALK) && !SLibUtils.isCrouching(entity, true) && hasAnyEnchantmentsWith(entity, EnchancementEnchantmentEffectComponentTypes.FLUID_WALKING);
 	}
 
 	public static boolean isHovering(LivingEntity entity) {
-		return ModEntityComponents.BOOST_IN_FLUID.get(entity).blocksAirEffects() || ModEntityComponents.E_METER.get(entity).isFloating();
+		return EnchancementEntityComponents.BOOST_IN_FLUID.get(entity).blocksAirEffects() || EnchancementEntityComponents.E_METER.get(entity).isFloating();
 	}
 }

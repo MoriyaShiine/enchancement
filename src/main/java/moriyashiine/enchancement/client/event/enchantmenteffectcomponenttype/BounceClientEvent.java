@@ -4,9 +4,9 @@
 
 package moriyashiine.enchancement.client.event.enchantmenteffectcomponenttype;
 
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.BounceComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.enchancement.common.payload.SyncInvertedBounceStatusPayload;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
@@ -22,11 +22,11 @@ public class BounceClientEvent implements ClientTickEvents.EndLevelTick {
 	public void onEndTick(ClientLevel level) {
 		Player player = Minecraft.getInstance().player;
 		if (player != null && !player.isSpectator()) {
-			BounceComponent bounceComponent = ModEntityComponents.BOUNCE.get(player);
-			boolean current = bounceComponent.hasInvertedBounce();
-			if (current != ModConfig.invertedBounce) {
-				bounceComponent.setInvertedBounce(ModConfig.invertedBounce);
-				SyncInvertedBounceStatusPayload.send(ModConfig.invertedBounce);
+			BounceComponent bounce = EnchancementEntityComponents.BOUNCE.get(player);
+			boolean current = bounce.hasInvertedBounce();
+			if (current != EnchancementConfig.invertedBounce) {
+				bounce.setInvertedBounce(EnchancementConfig.invertedBounce);
+				SyncInvertedBounceStatusPayload.send(EnchancementConfig.invertedBounce);
 			}
 		}
 	}

@@ -6,8 +6,8 @@ package moriyashiine.enchancement.mixin.item.client;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.init.ModComponentTypes;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementDataComponents;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.world.item.effects.AllowLoadingProjectileEffect;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
@@ -39,7 +39,7 @@ public class ItemModelResolverMixin {
 
 	@Unique
 	private static @Nullable Identifier getChargedModel(ItemStack stack, @Nullable ItemOwner owner) {
-		if (owner != null && owner.asLivingEntity() instanceof LivingEntity user && user.isUsingItem() && user.getActiveItem() == stack && EnchantmentHelper.has(stack, ModEnchantmentEffectComponentTypes.RAPID_CROSSBOW_FIRE)) {
+		if (owner != null && owner.asLivingEntity() instanceof LivingEntity user && user.isUsingItem() && user.getActiveItem() == stack && EnchantmentHelper.has(stack, EnchancementEnchantmentEffectComponentTypes.RAPID_CROSSBOW_FIRE)) {
 			Identifier chargedModel = getChargedModel(stack, user.getProjectile(stack).getItem());
 			if (chargedModel != null) {
 				return chargedModel;
@@ -56,7 +56,7 @@ public class ItemModelResolverMixin {
 
 	@Unique
 	private static @Nullable Identifier getChargedModel(ItemStack stack, Item item) {
-		int brimstoneDamage = stack.getOrDefault(ModComponentTypes.BRIMSTONE_DAMAGE, 0);
+		int brimstoneDamage = stack.getOrDefault(EnchancementDataComponents.BRIMSTONE_DAMAGE, 0);
 		if (brimstoneDamage > 0) {
 			return Enchancement.id("crossbow_brimstone_" + (brimstoneDamage / 2 - 1));
 		}

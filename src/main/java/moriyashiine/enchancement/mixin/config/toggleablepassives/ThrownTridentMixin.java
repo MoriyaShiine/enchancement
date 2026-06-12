@@ -4,8 +4,8 @@
 
 package moriyashiine.enchancement.mixin.config.toggleablepassives;
 
-import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
+import moriyashiine.enchancement.common.EnchancementConfig;
+import moriyashiine.enchancement.common.tag.EnchancementEntityTypeTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
@@ -34,8 +34,8 @@ public abstract class ThrownTridentMixin extends AbstractArrow {
 
 	@Unique
 	private static boolean shouldDisableLoyalty(AbstractArrow arrow) {
-		if (ModConfig.toggleablePassives) {
-			if (arrow.is(ModEntityTypeTags.NO_LOYALTY)) {
+		if (EnchancementConfig.toggleablePassives) {
+			if (arrow.is(EnchancementEntityTypeTags.NO_LOYALTY)) {
 				return true;
 			}
 			return !(arrow.getOwner() instanceof Player);

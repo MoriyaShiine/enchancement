@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.component.entity.config;
 
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -46,7 +46,7 @@ public class IgnitedComponent implements AutoSyncedComponent, ServerTickingCompo
 	}
 
 	public void sync() {
-		ModEntityComponents.IGNITED.sync(obj);
+		EnchancementEntityComponents.IGNITED.sync(obj);
 	}
 
 	public boolean isIgnited() {

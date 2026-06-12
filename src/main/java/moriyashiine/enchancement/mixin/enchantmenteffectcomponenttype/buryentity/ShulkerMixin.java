@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.buryentity;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Shulker;
@@ -22,7 +22,7 @@ public abstract class ShulkerMixin extends Entity {
 
 	@ModifyReturnValue(method = "makeBoundingBox", at = @At("RETURN"))
 	private AABB enchancement$buryEntity(AABB original) {
-		if (tickCount > 0 && ModEntityComponents.BURY_ENTITY.get(this).getBuryPos() != null) {
+		if (tickCount > 0 && EnchancementEntityComponents.BURY_ENTITY.get(this).getBuryPos() != null) {
 			return original.contract(0, 0.5, 0);
 		}
 		return original;

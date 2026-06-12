@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.config.rebalanceenchantments;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -22,7 +22,7 @@ public abstract class AbstractNautilusMixin extends LivingEntity {
 
 	@ModifyExpressionValue(method = "travelInWater", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/nautilus/AbstractNautilus;getSpeed()F"))
 	private float enchancement$rebalanceEnchantments(float original) {
-		if (ModConfig.rebalanceEnchantments) {
+		if (EnchancementConfig.rebalanceEnchantments) {
 			original *= (float) (1 + getAttributeValue(Attributes.WATER_MOVEMENT_EFFICIENCY));
 		}
 		return original;

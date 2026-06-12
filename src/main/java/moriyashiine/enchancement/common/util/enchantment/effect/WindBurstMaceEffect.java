@@ -4,9 +4,9 @@
 
 package moriyashiine.enchancement.common.util.enchantment.effect;
 
-import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.enchancement.common.EnchancementConfig;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementSoundEvents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.minecraft.core.particles.ParticleTypes;
@@ -24,22 +24,22 @@ import net.minecraft.world.phys.Vec3;
 public class WindBurstMaceEffect extends MaceEffect {
 	@Override
 	public boolean canUse(RandomSource random, ItemStack stack) {
-		return ModConfig.rebalanceEnchantments && stack.getEnchantments().keySet().stream().anyMatch(entry -> entry.is(Enchantments.WIND_BURST));
+		return EnchancementConfig.rebalanceEnchantments && stack.getEnchantments().keySet().stream().anyMatch(entry -> entry.is(Enchantments.WIND_BURST));
 	}
 
 	@Override
 	public boolean isUsing(Player player) {
-		return ModEntityComponents.LAUNCH_WIND_CHARGE.get(player).isUsing();
+		return EnchancementEntityComponents.LAUNCH_WIND_CHARGE.get(player).isUsing();
 	}
 
 	@Override
 	public void setUsing(Player player, boolean using) {
-		ModEntityComponents.LAUNCH_WIND_CHARGE.get(player).setUsing(using);
+		EnchancementEntityComponents.LAUNCH_WIND_CHARGE.get(player).setUsing(using);
 	}
 
 	@Override
 	public void use(Level level, Player player, ItemStack stack) {
-		SLibUtils.playSound(player, ModSoundEvents.GENERIC_GUST, 1, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
+		SLibUtils.playSound(player, EnchancementSoundEvents.GENERIC_GUST, 1, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
 		EnchancementUtil.resetFallDistance(player);
 		Vec3 delta = player.getLookAngle().normalize();
 		int enchantmentLevel = EnchancementUtil.alterLevel(stack, level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.WIND_BURST));

@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.config.overhaulenchanting;
 
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import moriyashiine.enchancement.common.util.config.OverhaulMode;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ItemStack;
@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 public class VillagerTradeMixin {
 	@ModifyArg(method = "getOffer", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/trading/MerchantOffer;<init>(Lnet/minecraft/world/item/trading/ItemCost;Ljava/util/Optional;Lnet/minecraft/world/item/ItemStack;IIF)V"))
 	private ItemStack enchancement$overhaulEnchanting(ItemStack result) {
-		if (ModConfig.overhaulEnchanting != OverhaulMode.DISABLED) {
+		if (EnchancementConfig.overhaulEnchanting != OverhaulMode.DISABLED) {
 			result.set(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
 		}
 		return result;

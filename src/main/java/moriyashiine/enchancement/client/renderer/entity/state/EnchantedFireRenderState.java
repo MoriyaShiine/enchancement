@@ -10,10 +10,4 @@ public class EnchantedFireRenderState {
 	public static final RenderStateDataKey<EnchantedFireRenderState> KEY = RenderStateDataKey.create(() -> "enchanted fire");
 
 	public boolean renderEnchantedFire = false;
-
-	public interface Submit {
-		boolean enchancement$renderEnchantedFire();
-
-		void enchancement$setRenderEnchantedFire(boolean renderEnchantedFire);
-	}
 }

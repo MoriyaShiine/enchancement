@@ -5,13 +5,13 @@
 package moriyashiine.enchancement.common.world.entity.projectile.arrow;
 
 import moriyashiine.enchancement.client.payload.PlayBrimstoneTravelSoundPayload;
-import moriyashiine.enchancement.common.init.ModDamageTypes;
-import moriyashiine.enchancement.common.init.ModEntityTypes;
-import moriyashiine.enchancement.common.init.ModParticleTypes;
-import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
+import moriyashiine.enchancement.common.init.EnchancementDamageTypes;
+import moriyashiine.enchancement.common.init.EnchancementEntityTypes;
+import moriyashiine.enchancement.common.init.EnchancementParticleTypes;
+import moriyashiine.enchancement.common.tag.EnchancementEntityTypeTags;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
-import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -55,7 +55,7 @@ public class Brimstone extends AbstractArrow {
 	}
 
 	public Brimstone(Level level, LivingEntity mob, @Nullable ItemStack firedFromWeapon) {
-		super(ModEntityTypes.BRIMSTONE, mob, level, ItemStack.EMPTY, firedFromWeapon);
+		super(EnchancementEntityTypes.BRIMSTONE, mob, level, ItemStack.EMPTY, firedFromWeapon);
 		setPos(mob.getX(), mob.getEyeY() - 0.3, mob.getZ());
 	}
 
@@ -97,7 +97,7 @@ public class Brimstone extends AbstractArrow {
 						}
 						damage *= getDamageMultiplier(distanceTraveled);
 						damage = Math.min(50, damage);
-						entity.hurtServer(world, world.damageSources().source(ModDamageTypes.BRIMSTONE, this, owner), (float) damage);
+						entity.hurtServer(world, world.damageSources().source(EnchancementDamageTypes.BRIMSTONE, this, owner), (float) damage);
 						hitEntities.add(entity);
 						if (entity instanceof LivingEntity living && living.isDeadOrDying()) {
 							killedEntities.add(living);
@@ -112,7 +112,7 @@ public class Brimstone extends AbstractArrow {
 		if (level().isClientSide()) {
 			Vec3 particlePos = position().add(getLookAngle().scale(distanceTraveled));
 			addParticles(PARTICLE, particlePos.x(), particlePos.y(), particlePos.z());
-			addParticles(ModParticleTypes.BRIMSTONE_BUBBLE, particlePos.x(), particlePos.y(), particlePos.z());
+			addParticles(EnchancementParticleTypes.BRIMSTONE_BUBBLE, particlePos.x(), particlePos.y(), particlePos.z());
 		} else if (ticksExisted > getMaxTicks()) {
 			discard();
 		}
@@ -205,7 +205,7 @@ public class Brimstone extends AbstractArrow {
 	}
 
 	private boolean canEntityBeHit(Entity owner, Entity entity) {
-		if (entity instanceof LivingEntity || entity.is(ModEntityTypeTags.BRIMSTONE_HITTABLE)) {
+		if (entity instanceof LivingEntity || entity.is(EnchancementEntityTypeTags.BRIMSTONE_HITTABLE)) {
 			return !hitEntities.contains(entity) && entity.isAlive() && SLibUtils.shouldHurt(owner, entity);
 		}
 		return false;

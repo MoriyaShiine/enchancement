@@ -6,7 +6,7 @@ package moriyashiine.enchancement.mixin.config.disabledisallowedenchantments.int
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.serialization.Lifecycle;
-import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.EnchancementEnchantments;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.core.HolderOwner;
 import net.minecraft.core.MappedRegistry;
@@ -49,7 +49,7 @@ public abstract class MappedRegistryMixin<T> {
 	@ModifyReturnValue(method = "getId", at = @At("RETURN"))
 	private int enchancement$disableDisallowedEnchantments(int original) {
 		if (original == -1 && key.equals(Registries.ENCHANTMENT)) {
-			return getId(getValue((ResourceKey<T>) ModEnchantments.EMPTY_KEY));
+			return getId(getValue((ResourceKey<T>) EnchancementEnchantments.EMPTY_KEY));
 		}
 		return original;
 	}
@@ -58,7 +58,7 @@ public abstract class MappedRegistryMixin<T> {
 	@ModifyReturnValue(method = "getResourceKey(Ljava/lang/Object;)Ljava/util/Optional;", at = @At("RETURN"))
 	private Optional<ResourceKey<T>> enchancement$disableDisallowedEnchantments(Optional<ResourceKey<T>> original) {
 		if (original.isEmpty() && key.equals(Registries.ENCHANTMENT)) {
-			return getResourceKey(getValue((ResourceKey<T>) ModEnchantments.EMPTY_KEY));
+			return getResourceKey(getValue((ResourceKey<T>) EnchancementEnchantments.EMPTY_KEY));
 		}
 		return original;
 	}

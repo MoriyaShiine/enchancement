@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.common.payload;
 
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
@@ -38,7 +38,7 @@ public record WallJumpPayload(int entityId, Vec3 delta) implements CustomPacketP
 		public void receive(WallJumpPayload payload, ServerPlayNetworking.Context context) {
 			Entity entity = context.player().level().getEntity(payload.entityId());
 			if (entity instanceof LivingEntity) {
-				ModEntityComponents.WALL_JUMP.get(entity).use(payload.delta());
+				EnchancementEntityComponents.WALL_JUMP.get(entity).use(payload.delta());
 			}
 		}
 	}

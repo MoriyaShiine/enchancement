@@ -5,8 +5,8 @@
 package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
 import moriyashiine.enchancement.common.component.level.WideMiningComponent;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.init.ModLevelComponents;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementLevelComponents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -27,7 +27,7 @@ public class WideMiningEvent implements PlayerBlockBreakEvents.After {
 	}
 
 	public static boolean canActivate(Player player, ItemStack stack, BlockState state) {
-		return !player.isShiftKeyDown() && EnchantmentHelper.has(stack, ModEnchantmentEffectComponentTypes.WIDE_MINING) && stack.isCorrectToolForDrops(state);
+		return !player.isShiftKeyDown() && EnchantmentHelper.has(stack, EnchancementEnchantmentEffectComponentTypes.WIDE_MINING) && stack.isCorrectToolForDrops(state);
 	}
 
 	public static boolean isValid(List<BlockPos> blocks, ItemStack stack) {
@@ -41,8 +41,8 @@ public class WideMiningEvent implements PlayerBlockBreakEvents.After {
 	public void afterBlockBreak(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity) {
 		ItemStack stack = player.getMainHandItem();
 		if (canActivate(player, stack, state)) {
-			WideMiningComponent wideMiningComponent = ModLevelComponents.WIDE_MINING.get(level);
-			WideMiningComponent.Entry entry = wideMiningComponent.getEntry(player);
+			WideMiningComponent wideMining = EnchancementLevelComponents.WIDE_MINING.get(level);
+			WideMiningComponent.Entry entry = wideMining.getEntry(player);
 			if (entry != null && isValid(entry.blocks(), stack)) {
 				int numBroken = 0;
 				for (BlockPos blockPos : entry.blocks()) {
@@ -52,8 +52,8 @@ public class WideMiningEvent implements PlayerBlockBreakEvents.After {
 					}
 				}
 				stack.hurtAndBreak(numBroken, player, EquipmentSlot.MAINHAND);
-				wideMiningComponent.removeEntry(entry.player());
-				wideMiningComponent.sync();
+				wideMining.removeEntry(entry.player());
+				wideMining.sync();
 			}
 		}
 	}

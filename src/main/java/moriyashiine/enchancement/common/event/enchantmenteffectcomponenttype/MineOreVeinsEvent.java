@@ -4,10 +4,10 @@
 
 package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
-import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.tag.ModBlockTags;
+import moriyashiine.enchancement.common.EnchancementConfig;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementSoundEvents;
+import moriyashiine.enchancement.common.tag.EnchancementBlockTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.util.enchantment.BaseBlock;
 import moriyashiine.strawberrylib.api.event.ModifyDestroySpeedEvent;
@@ -42,7 +42,7 @@ public class MineOreVeinsEvent {
 	}
 
 	private static Set<BlockPos> gatherOres(Set<BlockPos> ores, Level level, BlockPos.MutableBlockPos pos, Block original) {
-		if (ores.size() < ModConfig.maxMineOreVeinsBlocks) {
+		if (ores.size() < EnchancementConfig.maxMineOreVeinsBlocks) {
 			int originalX = pos.getX(), originalY = pos.getY(), originalZ = pos.getZ();
 			for (int x = -1; x <= 1; x++) {
 				for (int y = -1; y <= 1; y++) {
@@ -62,12 +62,12 @@ public class MineOreVeinsEvent {
 	}
 
 	private static boolean canActivate(Player player, ItemStack stack, BlockState state) {
-		return !player.isShiftKeyDown() && EnchantmentHelper.has(stack, ModEnchantmentEffectComponentTypes.MINE_ORE_VEINS) && state.is(ConventionalBlockTags.ORES) && player.hasCorrectToolForDrops(state);
+		return !player.isShiftKeyDown() && EnchantmentHelper.has(stack, EnchancementEnchantmentEffectComponentTypes.MINE_ORE_VEINS) && state.is(ConventionalBlockTags.ORES) && player.hasCorrectToolForDrops(state);
 	}
 
 	private static boolean isValid(Set<BlockPos> ores, ItemStack stack) {
 		if (!stack.isDamageableItem() || stack.getDamageValue() + ores.size() <= stack.getMaxDamage()) {
-			return !ores.isEmpty() && ores.size() <= ModConfig.maxMineOreVeinsBlocks;
+			return !ores.isEmpty() && ores.size() <= EnchancementConfig.maxMineOreVeinsBlocks;
 		}
 		return false;
 	}
@@ -75,10 +75,10 @@ public class MineOreVeinsEvent {
 	private static Block getBaseBlock(BlockState state) {
 		BaseBlock baseBlock = BaseBlock.BLOCK_MAP.get(state.getBlock());
 		if (baseBlock != null) {
-			return baseBlock.base();
-		} else if (state.is(ModBlockTags.DEEPSLATE_BASE_BLOCKS)) {
+			return baseBlock.baseBlock();
+		} else if (state.is(EnchancementBlockTags.DEEPSLATE_BASE_BLOCKS)) {
 			return Blocks.DEEPSLATE;
-		} else if (state.is(ModBlockTags.NETHERRACK_BASE_BLOCKS)) {
+		} else if (state.is(EnchancementBlockTags.NETHERRACK_BASE_BLOCKS)) {
 			return Blocks.NETHERRACK;
 		}
 		return Blocks.STONE;
@@ -90,7 +90,7 @@ public class MineOreVeinsEvent {
 			if (pos != null && canActivate(player, stack, state)) {
 				Set<BlockPos> ores = gatherOres(new HashSet<>(), level, new BlockPos.MutableBlockPos().set(pos), state.getBlock());
 				if (isValid(ores, stack)) {
-					float mineOreVeinsSpeed = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.MINE_ORE_VEINS, player.getRandom(), stack, 0);
+					float mineOreVeinsSpeed = EnchancementUtil.getValue(EnchancementEnchantmentEffectComponentTypes.MINE_ORE_VEINS, player.getRandom(), stack, 0);
 					return Mth.lerp(Math.min(1, ores.size() / 12F), mineOreVeinsSpeed, mineOreVeinsSpeed * 0.1F);
 				}
 			}
@@ -114,7 +114,7 @@ public class MineOreVeinsEvent {
 						level.destroyBlock(ore, false);
 						level.setBlockAndUpdate(ore, replace);
 					});
-					level.playSound(null, pos, ModSoundEvents.ORE_EXTRACT, SoundSource.BLOCKS, 1, 1);
+					level.playSound(null, pos, EnchancementSoundEvents.ORE_EXTRACT, SoundSource.BLOCKS, 1, 1);
 					if (!drops.isEmpty()) {
 						EnchancementUtil.mergeItemEntities(drops.stream().map(drop -> new ItemEntity(level, player.getX(), player.getY() + 0.5, player.getZ(), drop)).collect(Collectors.toList())).forEach(level::addFreshEntity);
 					}

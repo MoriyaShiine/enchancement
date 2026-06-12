@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.entityxray;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,7 +19,7 @@ public class LivingEntityMixin {
 	@ModifyReturnValue(method = "getAttributeValue", at = @At("RETURN"))
 	private double enchancement$entityXray(double original, Holder<Attribute> attribute) {
 		if (attribute == Attributes.FOLLOW_RANGE) {
-			original += EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.ENTITY_XRAY, (LivingEntity) (Object) this, 0);
+			original += EnchancementUtil.getValue(EnchancementEnchantmentEffectComponentTypes.ENTITY_XRAY, (LivingEntity) (Object) this, 0);
 		}
 		return original;
 	}

@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.buryentity;
 
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.BuryEntityComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,9 +22,9 @@ public class BlockBehaviourMixin {
 	@Inject(method = "affectNeighborsAfterRemoval", at = @At("HEAD"))
 	private void enchancement$buryEntity(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston, CallbackInfo ci) {
 		level.getEntitiesOfClass(LivingEntity.class, new AABB(pos), entity -> !entity.isDeadOrDying()).forEach(foundEntity -> {
-			BuryEntityComponent buryEntityComponent = ModEntityComponents.BURY_ENTITY.get(foundEntity);
-			if (buryEntityComponent.getBuryPos() != null && buryEntityComponent.getBuryPos().equals(pos)) {
-				buryEntityComponent.unbury();
+			BuryEntityComponent buryEntity = EnchancementEntityComponents.BURY_ENTITY.get(foundEntity);
+			if (buryEntity.getBuryPos() != null && buryEntity.getBuryPos().equals(pos)) {
+				buryEntity.unbury();
 			}
 		});
 	}

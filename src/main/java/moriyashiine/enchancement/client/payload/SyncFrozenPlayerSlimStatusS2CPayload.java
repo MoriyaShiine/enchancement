@@ -21,7 +21,8 @@ public record SyncFrozenPlayerSlimStatusS2CPayload(UUID uuid) implements CustomP
 	public static final Type<SyncFrozenPlayerSlimStatusS2CPayload> TYPE = new Type<>(Enchancement.id("sync_frozen_player_slim_status_s2c"));
 	public static final StreamCodec<FriendlyByteBuf, SyncFrozenPlayerSlimStatusS2CPayload> CODEC = StreamCodec.composite(
 			UUIDUtil.STREAM_CODEC, SyncFrozenPlayerSlimStatusS2CPayload::uuid,
-			SyncFrozenPlayerSlimStatusS2CPayload::new);
+			SyncFrozenPlayerSlimStatusS2CPayload::new
+	);
 
 	@Override
 	public Type<SyncFrozenPlayerSlimStatusS2CPayload> type() {

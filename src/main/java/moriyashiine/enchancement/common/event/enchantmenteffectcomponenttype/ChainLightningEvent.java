@@ -4,8 +4,8 @@
 
 package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementSoundEvents;
 import moriyashiine.enchancement.common.particle.SparkParticleOption;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.event.AfterDamageIncludingDeathEvent;
@@ -34,9 +34,9 @@ public class ChainLightningEvent implements AfterDamageIncludingDeathEvent {
 		if (!blocked && first) {
 			float multiplier = 0;
 			if (source.getDirectEntity() instanceof LivingEntity living) {
-				multiplier = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.CHAIN_LIGHTNING, (ServerLevel) entity.level(), living.getMainHandItem(), 0);
+				multiplier = EnchancementUtil.getValue(EnchancementEnchantmentEffectComponentTypes.CHAIN_LIGHTNING, (ServerLevel) entity.level(), living.getMainHandItem(), 0);
 			} else if (source.getDirectEntity() instanceof AbstractArrow arrow) {
-				multiplier = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.CHAIN_LIGHTNING, (ServerLevel) entity.level(), arrow.getPickupItem(), 0);
+				multiplier = EnchancementUtil.getValue(EnchancementEnchantmentEffectComponentTypes.CHAIN_LIGHTNING, (ServerLevel) entity.level(), arrow.getPickupItem(), 0);
 			}
 			if (multiplier != 0) {
 				first = false;
@@ -50,7 +50,7 @@ public class ChainLightningEvent implements AfterDamageIncludingDeathEvent {
 		if (damage > 1 && !hitEntities.contains(target)) {
 			hitEntities.add(target);
 			getNearest(hitEntities, target, source.getDirectEntity()).ifPresent(nearest -> {
-				target.makeSound(ModSoundEvents.GENERIC_ZAP);
+				target.makeSound(EnchancementSoundEvents.GENERIC_ZAP);
 				level.sendParticles(new SparkParticleOption(nearest.getEyePosition()), target.getX(), target.getEyeY(), target.getZ(), 1, 0, 0, 0, 0);
 				Vec3 random = target.getEyePosition().offsetRandom(target.getRandom(), 1.5F);
 				level.sendParticles(new SparkParticleOption(target.getEyePosition()), random.x(), random.y(), random.z(), 1, 0, 0, 0, 0);

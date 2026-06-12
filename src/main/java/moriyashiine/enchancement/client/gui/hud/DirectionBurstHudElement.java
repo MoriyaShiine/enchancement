@@ -6,7 +6,7 @@ package moriyashiine.enchancement.client.gui.hud;
 
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.DirectionBurstComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -24,12 +24,12 @@ public class DirectionBurstHudElement implements HudElement {
 	public void extractRenderState(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
 		Player player = Minecraft.getInstance().player;
 		if (player != null && !player.isSpectator()) {
-			DirectionBurstComponent directionBurstComponent = ModEntityComponents.DIRECTION_BURST.get(player.getControlledVehicle() instanceof LivingEntity living ? living : player);
-			if (directionBurstComponent.hasEffect() && directionBurstComponent.getCooldown() > 0) {
+			DirectionBurstComponent directionBurst = EnchancementEntityComponents.DIRECTION_BURST.get(player.getControlledVehicle() instanceof LivingEntity living ? living : player);
+			if (directionBurst.hasEffect() && directionBurst.getCooldown() > 0) {
 				int x = graphics.guiWidth() / 2 - 5, y = graphics.guiHeight() / 2 - 14;
 				graphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_TEXTURE, x, y, 10, 4);
-				if (directionBurstComponent.getCooldown() < directionBurstComponent.getLastCooldown()) {
-					graphics.blitSprite(RenderPipelines.GUI_TEXTURED, PROGRESS_TEXTURE, 10, 4, 0, 0, x, y, (int) (11 - (directionBurstComponent.getCooldown() / (float) directionBurstComponent.getLastCooldown()) * 10), 4);
+				if (directionBurst.getCooldown() < directionBurst.getLastCooldown()) {
+					graphics.blitSprite(RenderPipelines.GUI_TEXTURED, PROGRESS_TEXTURE, 10, 4, 0, 0, x, y, (int) (11 - (directionBurst.getCooldown() / (float) directionBurst.getLastCooldown()) * 10), 4);
 				}
 			}
 		}

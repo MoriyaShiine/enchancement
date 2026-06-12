@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.common.payload;
 
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
@@ -41,7 +41,7 @@ public record WallJumpSlidingPayload(int entityId, long pos) implements CustomPa
 			Entity entity = context.player().level().getEntity(payload.entityId());
 			if (entity instanceof LivingEntity) {
 				BlockPos pos = payload.pos() == PLACEHOLDER_NULL ? null : BlockPos.of(payload.pos());
-				ModEntityComponents.WALL_JUMP.get(entity).setSlidingPos(pos);
+				EnchancementEntityComponents.WALL_JUMP.get(entity).setSlidingPos(pos);
 			}
 		}
 	}

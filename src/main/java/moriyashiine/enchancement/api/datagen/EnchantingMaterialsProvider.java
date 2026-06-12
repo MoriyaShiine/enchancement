@@ -10,10 +10,10 @@ import moriyashiine.enchancement.common.reloadlistener.EnchantingMaterialsReload
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricCodecDataProvider;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
@@ -27,42 +27,34 @@ public abstract class EnchantingMaterialsProvider extends FabricCodecDataProvide
 
 	@Override
 	protected final void configure(BiConsumer<Identifier, DatagenEnchantingMaterial> provider, HolderLookup.Provider registries) {
-		configure(((itemId, material) -> provider.accept(itemId, new DatagenEnchantingMaterial(material))));
+		configure(((item, material) -> provider.accept(item.identifier(), new DatagenEnchantingMaterial(material))));
+	}
+
+	protected ResourceKey<Item> key(String id) {
+		return ResourceKey.create(Registries.ITEM, Identifier.parse(id));
+	}
+
+	protected TagKey<Item> tagKey(String id) {
+		return TagKey.create(Registries.ITEM, Identifier.parse(id));
 	}
 
 	protected abstract void configure(Output output);
 
-	protected Identifier id(String id) {
-		return Identifier.parse(id);
-	}
-
-	protected TagKey<Item> key(String id) {
-		return TagKey.create(Registries.ITEM, Identifier.parse(id));
-	}
-
 	@FunctionalInterface
 	protected interface Output {
-		void accept(Identifier itemId, String material);
+		void accept(ResourceKey<Item> item, String material);
 
-		default void accept(Identifier itemId, Item material) {
-			accept(itemId, BuiltInRegistries.ITEM.getKey(material).toString());
+		default void accept(ResourceKey<Item> item, ResourceKey<Item> material) {
+			accept(item, material.identifier().toString());
 		}
 
-		default void accept(Identifier itemId, TagKey<Item> material) {
-			accept(itemId, "#" + material.location());
-		}
-
-		default void accept(Item item, Item material) {
-			accept(BuiltInRegistries.ITEM.getKey(item), material);
-		}
-
-		default void accept(Item item, TagKey<Item> material) {
-			accept(BuiltInRegistries.ITEM.getKey(item), material);
+		default void accept(ResourceKey<Item> item, TagKey<Item> material) {
+			accept(item, "#" + material.location());
 		}
 	}
 
 	protected record DatagenEnchantingMaterial(String ingredient) {
-		public static final Codec<DatagenEnchantingMaterial> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+		private static final Codec<DatagenEnchantingMaterial> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 				Codec.STRING.fieldOf("ingredient").forGetter(DatagenEnchantingMaterial::ingredient)
 		).apply(instance, DatagenEnchantingMaterial::new));
 	}

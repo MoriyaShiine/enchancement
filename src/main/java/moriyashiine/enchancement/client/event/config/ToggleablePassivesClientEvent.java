@@ -4,8 +4,8 @@
 
 package moriyashiine.enchancement.client.event.config;
 
-import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.init.ModComponentTypes;
+import moriyashiine.enchancement.common.EnchancementConfig;
+import moriyashiine.enchancement.common.init.EnchancementDataComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.ChatFormatting;
@@ -36,12 +36,12 @@ public class ToggleablePassivesClientEvent implements ItemTooltipCallback {
 
 	@Override
 	public void getTooltip(ItemStack stack, Item.TooltipContext tooltipContext, TooltipFlag tooltipFlag, List<Component> lines) {
-		if (ModConfig.toggleablePassives && stack.isEnchanted() && stack.has(ModComponentTypes.TOGGLEABLE_PASSIVE)) {
+		if (EnchancementConfig.toggleablePassives && stack.isEnchanted() && stack.has(EnchancementDataComponents.TOGGLEABLE_PASSIVE)) {
 			KEY_MAP.forEach((tag, key) -> {
 				if (stack.is(tag) || (tag.equals(ItemTags.CHEST_ARMOR_ENCHANTABLE) && EnchancementUtil.isAnimalArmor(stack))) {
 					MutableComponent icon = Component.literal("× ");
 					ChatFormatting formatting = ChatFormatting.DARK_RED;
-					if (stack.get(ModComponentTypes.TOGGLEABLE_PASSIVE)) {
+					if (stack.get(EnchancementDataComponents.TOGGLEABLE_PASSIVE)) {
 						icon = Component.literal("✔ ");
 						formatting = ChatFormatting.DARK_GREEN;
 					}

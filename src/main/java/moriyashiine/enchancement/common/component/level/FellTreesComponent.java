@@ -63,11 +63,11 @@ public class FellTreesComponent implements ServerTickingComponent {
 
 	public record Tree(List<BlockPos> logs, List<ItemStack> drops, BlockPos originalPos, ItemStack stack) {
 		public static final Codec<Tree> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-						BlockPos.CODEC.listOf().fieldOf("logs").forGetter(Tree::logs),
-						ItemStack.CODEC.listOf().fieldOf("drops").forGetter(Tree::drops),
-						BlockPos.CODEC.fieldOf("original_pos").forGetter(Tree::originalPos),
-						ItemStack.CODEC.fieldOf("stack").forGetter(Tree::stack))
-				.apply(instance, Tree::new));
+				BlockPos.CODEC.listOf().fieldOf("logs").forGetter(Tree::logs),
+				ItemStack.CODEC.listOf().fieldOf("drops").forGetter(Tree::drops),
+				BlockPos.CODEC.fieldOf("original_pos").forGetter(Tree::originalPos),
+				ItemStack.CODEC.fieldOf("stack").forGetter(Tree::stack)
+		).apply(instance, Tree::new));
 
 		public static Tree of(List<BlockPos> logs, BlockPos originalPos, ItemStack stack) {
 			return new Tree(logs, new ArrayList<>(), originalPos, stack.copy());

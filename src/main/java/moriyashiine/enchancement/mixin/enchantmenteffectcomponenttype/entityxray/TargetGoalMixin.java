@@ -7,7 +7,7 @@ package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.entityxra
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.target.TargetGoal;
@@ -26,6 +26,6 @@ public class TargetGoalMixin {
 	@Expression("this.mustSee")
 	@ModifyExpressionValue(method = "canContinueToUse", at = @At(value = "MIXINEXTRAS:EXPRESSION"))
 	private boolean enchancement$entityXray(boolean original) {
-		return original && !EnchancementUtil.hasAnyEnchantmentsWith(mob, ModEnchantmentEffectComponentTypes.ENTITY_XRAY);
+		return original && !EnchancementUtil.hasAnyEnchantmentsWith(mob, EnchancementEnchantmentEffectComponentTypes.ENTITY_XRAY);
 	}
 }

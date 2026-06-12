@@ -21,7 +21,8 @@ public record SyncFrozenPlayerSlimStatusC2SPayload(UUID uuid, boolean slim) impl
 	public static final StreamCodec<FriendlyByteBuf, SyncFrozenPlayerSlimStatusC2SPayload> CODEC = StreamCodec.composite(
 			UUIDUtil.STREAM_CODEC, SyncFrozenPlayerSlimStatusC2SPayload::uuid,
 			ByteBufCodecs.BOOL, SyncFrozenPlayerSlimStatusC2SPayload::slim,
-			SyncFrozenPlayerSlimStatusC2SPayload::new);
+			SyncFrozenPlayerSlimStatusC2SPayload::new
+	);
 
 	@Override
 	public Type<SyncFrozenPlayerSlimStatusC2SPayload> type() {

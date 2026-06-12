@@ -4,8 +4,8 @@
 
 package moriyashiine.enchancement.common.world.entity.projectile.arrow;
 
-import moriyashiine.enchancement.common.init.ModDamageTypes;
-import moriyashiine.enchancement.common.init.ModEntityTypes;
+import moriyashiine.enchancement.common.init.EnchancementDamageTypes;
+import moriyashiine.enchancement.common.init.EnchancementEntityTypes;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -27,7 +27,7 @@ public class AmethystShard extends ShardEntity {
 	}
 
 	public AmethystShard(Level level, LivingEntity mob, @Nullable ItemStack shotFrom) {
-		super(ModEntityTypes.AMETHYST_SHARD, mob, level, shotFrom);
+		super(EnchancementEntityTypes.AMETHYST_SHARD, mob, level, shotFrom);
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class AmethystShard extends ShardEntity {
 
 	@Override
 	protected ResourceKey<DamageType> getDamageType() {
-		return ModDamageTypes.AMETHYST_SHARD;
+		return EnchancementDamageTypes.AMETHYST_SHARD;
 	}
 
 	@Override

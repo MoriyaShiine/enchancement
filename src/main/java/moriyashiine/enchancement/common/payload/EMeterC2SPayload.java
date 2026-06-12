@@ -7,7 +7,7 @@ package moriyashiine.enchancement.common.payload;
 import moriyashiine.enchancement.client.payload.EMeterS2CPayload;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.EMeterComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -23,7 +23,8 @@ public record EMeterC2SPayload(int entityId, boolean shouldFloat) implements Cus
 	public static final StreamCodec<FriendlyByteBuf, EMeterC2SPayload> CODEC = StreamCodec.composite(
 			ByteBufCodecs.VAR_INT, EMeterC2SPayload::entityId,
 			ByteBufCodecs.BOOL, EMeterC2SPayload::shouldFloat,
-			EMeterC2SPayload::new);
+			EMeterC2SPayload::new
+	);
 
 	@Override
 	public Type<EMeterC2SPayload> type() {
@@ -39,9 +40,9 @@ public record EMeterC2SPayload(int entityId, boolean shouldFloat) implements Cus
 		public void receive(EMeterC2SPayload payload, ServerPlayNetworking.Context context) {
 			Entity entity = context.player().level().getEntity(payload.entityId());
 			if (entity instanceof LivingEntity) {
-				EMeterComponent eMeterComponent = ModEntityComponents.E_METER.get(entity);
-				if (eMeterComponent.hasEMeter() && eMeterComponent.canFloat()) {
-					eMeterComponent.setShouldFloat(payload.shouldFloat());
+				EMeterComponent eMeter = EnchancementEntityComponents.E_METER.get(entity);
+				if (eMeter.hasEMeter() && eMeter.canFloat()) {
+					eMeter.setShouldFloat(payload.shouldFloat());
 					PlayerLookup.tracking(entity).forEach(receiver -> EMeterS2CPayload.send(receiver, entity, payload.shouldFloat()));
 				}
 			}

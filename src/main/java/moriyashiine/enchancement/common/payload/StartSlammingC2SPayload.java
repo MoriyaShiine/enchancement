@@ -7,7 +7,7 @@ package moriyashiine.enchancement.common.payload;
 import moriyashiine.enchancement.client.payload.StartSlammingS2CPayload;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.SlamComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -31,9 +31,9 @@ public record StartSlammingC2SPayload() implements CustomPacketPayload {
 	public static class Receiver implements ServerPlayNetworking.PlayPayloadHandler<StartSlammingC2SPayload> {
 		@Override
 		public void receive(StartSlammingC2SPayload payload, ServerPlayNetworking.Context context) {
-			SlamComponent slamComponent = ModEntityComponents.SLAM.get(context.player());
-			if (slamComponent.hasSlam() && slamComponent.canSlam()) {
-				slamComponent.setSlamming(true);
+			SlamComponent slam = EnchancementEntityComponents.SLAM.get(context.player());
+			if (slam.hasSlam() && slam.canSlam()) {
+				slam.setSlamming(true);
 				PlayerLookup.tracking(context.player()).forEach(receiver -> StartSlammingS2CPayload.send(receiver, context.player()));
 			}
 		}

@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.config.coloredenchantmentnames.client;
 
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.enchantment.Enchantment;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 public class EnchantmentMixin {
 	@ModifyArg(method = "getFullname", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/chat/Style;withColor(Lnet/minecraft/ChatFormatting;)Lnet/minecraft/network/chat/Style;", ordinal = 1))
 	private static ChatFormatting enchancement$singleLevelMode(ChatFormatting color) {
-		if (ModConfig.coloredEnchantmentNames) {
+		if (EnchancementConfig.coloredEnchantmentNames) {
 			return ChatFormatting.GREEN;
 		}
 		return color;

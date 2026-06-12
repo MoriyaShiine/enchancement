@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.component.entity.config;
 
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.world.entity.projectile.arrow.ThrownTrident;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -32,7 +32,7 @@ public class OwnedTridentComponent implements AutoSyncedComponent {
 	}
 
 	public void sync() {
-		ModEntityComponents.OWNED_TRIDENT.get(obj);
+		EnchancementEntityComponents.OWNED_TRIDENT.get(obj);
 	}
 
 	public boolean isOwnedByPlayer() {

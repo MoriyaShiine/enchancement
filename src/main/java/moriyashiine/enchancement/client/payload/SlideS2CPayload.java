@@ -6,7 +6,7 @@ package moriyashiine.enchancement.client.payload;
 
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.SlideComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
@@ -23,7 +23,8 @@ public record SlideS2CPayload(int entityId, SlideComponent.SlideDeltaMovement de
 			SlideComponent.SlideDeltaMovement.STREAM_CODEC, SlideS2CPayload::delta,
 			SlideComponent.SlideDeltaMovement.STREAM_CODEC, SlideS2CPayload::adjustedDelta,
 			ByteBufCodecs.FLOAT, SlideS2CPayload::cachedYRot,
-			SlideS2CPayload::new);
+			SlideS2CPayload::new
+	);
 
 	@Override
 	public Type<SlideS2CPayload> type() {
@@ -38,7 +39,7 @@ public record SlideS2CPayload(int entityId, SlideComponent.SlideDeltaMovement de
 		@Override
 		public void receive(SlideS2CPayload payload, ClientPlayNetworking.Context context) {
 			Entity entity = context.player().level().getEntity(payload.entityId());
-			ModEntityComponents.SLIDE.maybeGet(entity).ifPresent(slideComponent -> slideComponent.startSliding(payload.delta(), payload.adjustedDelta(), payload.cachedYRot()));
+			EnchancementEntityComponents.SLIDE.maybeGet(entity).ifPresent(slide -> slide.startSliding(payload.delta(), payload.adjustedDelta(), payload.cachedYRot()));
 		}
 	}
 }

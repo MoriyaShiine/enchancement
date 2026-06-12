@@ -9,7 +9,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import moriyashiine.enchancement.client.renderer.entity.state.LeechingTridentRenderState;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.LeechingTridentComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -51,18 +51,18 @@ public abstract class ThrownTridentRendererMixin extends EntityRenderer<ThrownTr
 	@Inject(method = "extractRenderState(Lnet/minecraft/world/entity/projectile/arrow/ThrownTrident;Lnet/minecraft/client/renderer/entity/state/ThrownTridentRenderState;F)V", at = @At("TAIL"))
 	private void enchancement$leechingTrident(ThrownTrident entity, ThrownTridentRenderState state, float partialTicks, CallbackInfo ci) {
 		LeechingTridentRenderState leechingTridentRenderState = new LeechingTridentRenderState();
-		LeechingTridentComponent leechingTridentComponent = ModEntityComponents.LEECHING_TRIDENT.get(entity);
-		LivingEntity stuckEntity = leechingTridentComponent.getStuckEntity();
+		LeechingTridentComponent leechingTrident = EnchancementEntityComponents.LEECHING_TRIDENT.get(entity);
+		LivingEntity stuckEntity = leechingTrident.getStuckEntity();
 		if (stuckEntity == null) {
 			leechingTridentRenderState.active = false;
 			leechingTridentRenderState.offsetX = leechingTridentRenderState.offsetZ = leechingTridentRenderState.rotationY = leechingTridentRenderState.stabTicks = 0;
 		} else {
 			leechingTridentRenderState.active = true;
-			float leechingTicks = Math.max(0, (leechingTridentComponent.getLeechingTicks() + partialTicks) / 20F);
+			float leechingTicks = Math.max(0, (leechingTrident.getLeechingTicks() + partialTicks) / 20F);
 			leechingTridentRenderState.offsetX = Mth.sin(leechingTicks);
 			leechingTridentRenderState.offsetZ = Mth.cos(leechingTicks);
 			leechingTridentRenderState.rotationY = (float) -Mth.wrapDegrees((Mth.atan2(stuckEntity.getZ() - entity.getZ() + leechingTridentRenderState.offsetZ, stuckEntity.getX() - entity.getX() + leechingTridentRenderState.offsetX) * 57.2957763671875) - 90) + 90;
-			leechingTridentRenderState.stabTicks = leechingTridentComponent.getStabTicks() / 20F;
+			leechingTridentRenderState.stabTicks = leechingTrident.getStabTicks() / 20F;
 		}
 		state.setData(LeechingTridentRenderState.KEY, leechingTridentRenderState);
 	}

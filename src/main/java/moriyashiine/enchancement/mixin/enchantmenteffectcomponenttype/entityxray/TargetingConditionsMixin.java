@@ -6,7 +6,7 @@ package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.entityxra
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
@@ -17,6 +17,6 @@ import org.spongepowered.asm.mixin.injection.At;
 public class TargetingConditionsMixin {
 	@ModifyExpressionValue(method = "test", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ai/sensing/Sensing;hasLineOfSight(Lnet/minecraft/world/entity/Entity;)Z"))
 	private boolean enchancement$entityXray(boolean original, @Local(name = "mob") Mob mob) {
-		return original || EnchancementUtil.hasAnyEnchantmentsWith(mob, ModEnchantmentEffectComponentTypes.ENTITY_XRAY);
+		return original || EnchancementUtil.hasAnyEnchantmentsWith(mob, EnchancementEnchantmentEffectComponentTypes.ENTITY_XRAY);
 	}
 }

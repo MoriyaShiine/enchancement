@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.enchantment.bouncy.client;
 
 import moriyashiine.enchancement.client.EnchancementClient;
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,7 +25,7 @@ public class TranslatableContentsMixin {
 
 	@ModifyVariable(method = "<init>", at = @At("HEAD"), argsOnly = true, ordinal = 0)
 	private static String enchancement$bouncy(String key) {
-		if (ModConfig.invertedBounce && key.equals("enchantment.enchancement.bouncy.desc")) {
+		if (EnchancementConfig.invertedBounce && key.equals("enchantment.enchancement.bouncy.desc")) {
 			return key + ".inverted";
 		}
 		return key;

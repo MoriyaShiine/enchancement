@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.enchantment.HeadDrop;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 import net.minecraft.core.component.DataComponents;
@@ -39,11 +39,11 @@ public class HeadDropsEvent implements ServerEntityCombatEvents.AfterKilledOther
 					if (killedEntity.getType() == entityType) {
 						HeadDrop entry = HeadDrop.DROP_MAP.get(entityType);
 						if (killedEntity.getRandom().nextFloat() * dropChanceMultiplier < entry.chance()) {
-							ItemStack stack = new ItemStack(entry.drop());
-							if (stack.getItem() == Items.PLAYER_HEAD && killedEntity instanceof Player player) {
-								stack.set(DataComponents.PROFILE, ResolvableProfile.createResolved(player.getGameProfile()));
+							ItemStack drop = entry.dropItem().getDefaultInstance();
+							if (drop.is(Items.PLAYER_HEAD) && killedEntity instanceof Player player) {
+								drop.set(DataComponents.PROFILE, ResolvableProfile.createResolved(player.getGameProfile()));
 							}
-							Containers.dropItemStack(level, killedEntity.getX(), killedEntity.getY(), killedEntity.getZ(), stack);
+							Containers.dropItemStack(level, killedEntity.getX(), killedEntity.getY(), killedEntity.getZ(), drop);
 						}
 					}
 				}
@@ -56,7 +56,7 @@ public class HeadDropsEvent implements ServerEntityCombatEvents.AfterKilledOther
 		RandomSource random = attacker.getRandom();
 		EnchantmentHelper.runIterationOnEquipment(attacker, (enchantment, enchantmentLevel, _) -> {
 			LootContext lootContext = Enchantment.damageContext(level, enchantmentLevel, attacker, damageSource);
-			enchantment.value().getEffects(ModEnchantmentEffectComponentTypes.HEAD_DROPS).forEach(effect -> {
+			enchantment.value().getEffects(EnchancementEnchantmentEffectComponentTypes.HEAD_DROPS).forEach(effect -> {
 				if (effect.enchanted() == EnchantmentTarget.VICTIM && effect.affected() == EnchantmentTarget.VICTIM && effect.matches(lootContext)) {
 					mutableFloat.setValue(effect.effect().process(enchantmentLevel, random, mutableFloat.floatValue()));
 				}
@@ -65,7 +65,7 @@ public class HeadDropsEvent implements ServerEntityCombatEvents.AfterKilledOther
 		if (damageSource.getEntity() instanceof LivingEntity living) {
 			EnchantmentHelper.runIterationOnEquipment(living, (enchantment, enchantmentLevel, _) -> {
 				LootContext lootContext = Enchantment.damageContext(level, enchantmentLevel, attacker, damageSource);
-				enchantment.value().getEffects(ModEnchantmentEffectComponentTypes.HEAD_DROPS).forEach(effect -> {
+				enchantment.value().getEffects(EnchancementEnchantmentEffectComponentTypes.HEAD_DROPS).forEach(effect -> {
 					if (effect.enchanted() == EnchantmentTarget.ATTACKER && effect.affected() == EnchantmentTarget.VICTIM && effect.matches(lootContext)) {
 						mutableFloat.setValue(effect.effect().process(enchantmentLevel, random, mutableFloat.floatValue()));
 					}

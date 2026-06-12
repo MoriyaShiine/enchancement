@@ -7,7 +7,7 @@ package moriyashiine.enchancement.mixin.config.disabledisallowedenchantments.int
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.Dynamic2CommandExceptionType;
-import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.EnchancementEnchantments;
 import net.minecraft.commands.arguments.ResourceArgument;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -24,7 +24,7 @@ public class ResourceArgumentMixin {
 
 	@ModifyReturnValue(method = "getEnchantment", at = @At("RETURN"))
 	private static Holder.Reference<Enchantment> enchancement$disableDisallowedEnchantments(Holder.Reference<Enchantment> original) throws CommandSyntaxException {
-		if (original.is(ModEnchantments.EMPTY_KEY)) {
+		if (original.is(EnchancementEnchantments.EMPTY_KEY)) {
 			throw ERROR_UNKNOWN_RESOURCE.create(original.key().identifier(), original.key().registry());
 		}
 		return original;

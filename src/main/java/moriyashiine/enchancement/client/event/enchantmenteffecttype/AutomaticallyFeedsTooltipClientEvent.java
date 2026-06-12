@@ -5,8 +5,8 @@
 package moriyashiine.enchancement.client.event.enchantmenteffecttype;
 
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.tag.ModEnchantmentTags;
-import moriyashiine.enchancement.common.tag.ModItemTags;
+import moriyashiine.enchancement.common.tag.EnchancementEnchantmentTags;
+import moriyashiine.enchancement.common.tag.EnchancementItemTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.ChatFormatting;
@@ -26,9 +26,9 @@ public class AutomaticallyFeedsTooltipClientEvent implements ItemTooltipCallback
 
 	@Override
 	public void getTooltip(ItemStack stack, Item.TooltipContext tooltipContext, TooltipFlag tooltipFlag, List<Component> lines) {
-		if (stack.is(ModItemTags.CANNOT_AUTOMATICALLY_CONSUME)) {
+		if (stack.is(EnchancementItemTags.CANNOT_AUTOMATICALLY_CONSUME)) {
 			Player player = Minecraft.getInstance().player;
-			if (player != null && !player.isSpectator() && EnchancementUtil.hasAnyEnchantmentsIn(player, ModEnchantmentTags.AUTOMATICALLY_FEEDS)) {
+			if (player != null && !player.isSpectator() && EnchancementUtil.hasAnyEnchantmentsIn(player, EnchancementEnchantmentTags.AUTOMATICALLY_FEEDS)) {
 				lines.add(1, Component.translatable("tooltip." + Enchancement.MOD_ID + ".cannot_auto_consume").withStyle(ChatFormatting.RED));
 			}
 		}

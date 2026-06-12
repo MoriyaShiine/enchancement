@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.config.disabledisallowedenchantments.internal;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.EnchancementEnchantments;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.Identifier;
@@ -26,7 +26,7 @@ public abstract class FileToIdConverterMixin {
 	private Map<Identifier, Resource> enchancement$disableDisallowedEnchantments(Map<Identifier, Resource> original) {
 		Map<Identifier, Resource> newMap = new HashMap<>();
 		original.forEach((key, value) -> {
-			if (!key.getPath().startsWith("enchantment/") || EnchancementUtil.isEnchantmentAllowed(fileToId(key)) || fileToId(key).equals(ModEnchantments.EMPTY_KEY.identifier())) {
+			if (!key.getPath().startsWith("enchantment/") || EnchancementUtil.isEnchantmentAllowed(fileToId(key)) || fileToId(key).equals(EnchancementEnchantments.EMPTY_KEY.identifier())) {
 				newMap.put(key, value);
 			}
 		});

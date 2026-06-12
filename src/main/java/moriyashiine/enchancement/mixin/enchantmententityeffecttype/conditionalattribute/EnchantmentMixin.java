@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.enchantmententityeffecttype.conditionalattribute;
 
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.enchantment.EnchantedItemInUse;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -17,6 +17,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class EnchantmentMixin {
 	@Inject(method = "stopLocationBasedEffects", at = @At("HEAD"))
 	private void enchancement$conditionalAttribute(int enchantmentLevel, EnchantedItemInUse item, LivingEntity entity, CallbackInfo ci) {
-		ModEntityComponents.CONDITIONAL_ATTRIBUTES.get(entity).markRemoved();
+		EnchancementEntityComponents.CONDITIONAL_ATTRIBUTES.get(entity).markRemoved();
 	}
 }

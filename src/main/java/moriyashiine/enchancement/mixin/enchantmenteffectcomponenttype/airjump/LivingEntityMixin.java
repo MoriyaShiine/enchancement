@@ -6,7 +6,7 @@ package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.airjump;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.AirJumpComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,9 +15,9 @@ import org.spongepowered.asm.mixin.injection.At;
 public class LivingEntityMixin {
 	@ModifyReturnValue(method = "calculateFallPower", at = @At("RETURN"))
 	private double enchancement$airJump(double original) {
-		AirJumpComponent airJumpComponent = ModEntityComponents.AIR_JUMP.getNullable(this);
-		if (airJumpComponent != null && airJumpComponent.hasEffect()) {
-			original -= airJumpComponent.getMaxJumps() - airJumpComponent.getJumpsLeft();
+		AirJumpComponent airJump = EnchancementEntityComponents.AIR_JUMP.getNullable(this);
+		if (airJump != null && airJump.hasEffect()) {
+			original -= airJump.getMaxJumps() - airJump.getJumpsLeft();
 		}
 		return original;
 	}

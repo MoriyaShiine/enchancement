@@ -24,9 +24,9 @@ import moriyashiine.enchancement.client.renderer.entity.model.FrozenPlayerModel;
 import moriyashiine.enchancement.client.renderer.entity.model.MobSpinAttackEffectModel;
 import moriyashiine.enchancement.client.resources.sound.EMeterSoundInstance;
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.init.ModEntityTypes;
-import moriyashiine.enchancement.common.init.ModMenuTypes;
-import moriyashiine.enchancement.common.init.ModParticleTypes;
+import moriyashiine.enchancement.common.init.EnchancementEntityTypes;
+import moriyashiine.enchancement.common.init.EnchancementMenuTypes;
+import moriyashiine.enchancement.common.init.EnchancementParticleTypes;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -64,7 +64,7 @@ public class EnchancementClient implements ClientModInitializer {
 		initParticles();
 		initPayloads();
 		initEvents();
-		MenuScreens.register(ModMenuTypes.ENCHANTING_TABLE, ModEnchantmentScreen::new);
+		MenuScreens.register(EnchancementMenuTypes.ENCHANTING_TABLE, ModEnchantmentScreen::new);
 		ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloadListener(FrozenReloadListener.ID, FrozenReloadListener.INSTANCE);
 		ResourceLoader.get(PackType.CLIENT_RESOURCES).addListenerOrdering(ResourceReloaderKeys.Client.TEXTURES, FrozenReloadListener.ID);
 		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceLoader.registerBuiltinPack(Enchancement.id("alternate_air_jump"), modContainer, PackActivationType.NORMAL));
@@ -76,23 +76,23 @@ public class EnchancementClient implements ClientModInitializer {
 	private void initEntities() {
 		ModelLayerRegistry.registerModelLayer(FrozenPlayerModel.LAYER, () -> FrozenPlayerModel.createBodyLayer(false));
 		ModelLayerRegistry.registerModelLayer(FrozenPlayerModel.LAYER_SLIM, () -> FrozenPlayerModel.createBodyLayer(true));
-		EntityRenderers.register(ModEntityTypes.AMETHYST_SHARD, AmethystShardRenderer::new);
-		EntityRenderers.register(ModEntityTypes.BRIMSTONE, BrimstoneRenderer::new);
-		EntityRenderers.register(ModEntityTypes.ICE_SHARD, IceShardRenderer::new);
-		EntityRenderers.register(ModEntityTypes.TORCH, TorchRenderer::new);
+		EntityRenderers.register(EnchancementEntityTypes.AMETHYST_SHARD, AmethystShardRenderer::new);
+		EntityRenderers.register(EnchancementEntityTypes.BRIMSTONE, BrimstoneRenderer::new);
+		EntityRenderers.register(EnchancementEntityTypes.ICE_SHARD, IceShardRenderer::new);
+		EntityRenderers.register(EnchancementEntityTypes.TORCH, TorchRenderer::new);
 
 		ModelLayerRegistry.registerModelLayer(MobSpinAttackEffectModel.LAYER, MobSpinAttackEffectModel::createLayer);
 	}
 
 	private void initParticles() {
-		ParticleProviderRegistry.getInstance().register(ModParticleTypes.BRIMSTONE_BUBBLE, BubbleParticle.Provider::new);
-		ParticleProviderRegistry.getInstance().register(ModParticleTypes.CHISELED_ENCHANT, PurpleFlyTowardsPositionParticle.Provider::new);
-		ParticleProviderRegistry.getInstance().register(ModParticleTypes.CRITICAL_TIPPER, TintlessDamageParticle.Provider::new);
-		ParticleProviderRegistry.getInstance().register(ModParticleTypes.HONEY_BUBBLE, HoneyBubbleParticle.Provider::new);
-		ParticleProviderRegistry.getInstance().register(ModParticleTypes.SHORT_SMALL_FLAME, ShortFlameParticle.SmallProvider::new);
+		ParticleProviderRegistry.getInstance().register(EnchancementParticleTypes.BRIMSTONE_BUBBLE, BubbleParticle.Provider::new);
+		ParticleProviderRegistry.getInstance().register(EnchancementParticleTypes.CHISELED_ENCHANT, PurpleFlyTowardsPositionParticle.Provider::new);
+		ParticleProviderRegistry.getInstance().register(EnchancementParticleTypes.CRITICAL_TIPPER, TintlessDamageParticle.Provider::new);
+		ParticleProviderRegistry.getInstance().register(EnchancementParticleTypes.HONEY_BUBBLE, HoneyBubbleParticle.Provider::new);
+		ParticleProviderRegistry.getInstance().register(EnchancementParticleTypes.SHORT_SMALL_FLAME, ShortFlameParticle.SmallProvider::new);
 		ParticleGroupRegistry.register(SparkParticleGroup.SHEET, SparkParticleGroup::new);
-		ParticleProviderRegistry.getInstance().register(ModParticleTypes.SPARK, _ -> new SparkParticle.Provider());
-		ParticleProviderRegistry.getInstance().register(ModParticleTypes.VELOCITY_LINE, VelocityLineParticle.Provider::new);
+		ParticleProviderRegistry.getInstance().register(EnchancementParticleTypes.SPARK, _ -> new SparkParticle.Provider());
+		ParticleProviderRegistry.getInstance().register(EnchancementParticleTypes.VELOCITY_LINE, VelocityLineParticle.Provider::new);
 	}
 
 	private void initPayloads() {

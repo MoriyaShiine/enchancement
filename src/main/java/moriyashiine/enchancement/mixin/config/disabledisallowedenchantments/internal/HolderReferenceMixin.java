@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.config.disabledisallowedenchantments.internal;
 
-import moriyashiine.enchancement.common.init.ModEnchantments;
+import moriyashiine.enchancement.common.init.EnchancementEnchantments;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderOwner;
@@ -48,8 +48,8 @@ public abstract class HolderReferenceMixin<T> {
 	private void validate() {
 		if (EnchancementUtil.ENCHANTMENT_HOLDER_OWNER != null && canSerializeIn((HolderOwner<T>) EnchancementUtil.ENCHANTMENT_HOLDER_OWNER)) {
 			if (key == null || value == null) {
-				key = (ResourceKey<T>) ModEnchantments.EMPTY_KEY;
-				value = (T) ModEnchantments.EMPTY;
+				key = (ResourceKey<T>) EnchancementEnchantments.EMPTY_KEY;
+				value = (T) EnchancementEnchantments.EMPTY;
 			}
 		}
 	}

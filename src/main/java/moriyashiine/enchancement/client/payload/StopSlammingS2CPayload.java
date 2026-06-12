@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.client.payload;
 
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
@@ -20,7 +20,8 @@ public record StopSlammingS2CPayload(int entityId, double posY) implements Custo
 	public static final StreamCodec<FriendlyByteBuf, StopSlammingS2CPayload> CODEC = StreamCodec.composite(
 			ByteBufCodecs.VAR_INT, StopSlammingS2CPayload::entityId,
 			ByteBufCodecs.DOUBLE, StopSlammingS2CPayload::posY,
-			StopSlammingS2CPayload::new);
+			StopSlammingS2CPayload::new
+	);
 
 	@Override
 	public Type<StopSlammingS2CPayload> type() {
@@ -35,7 +36,7 @@ public record StopSlammingS2CPayload(int entityId, double posY) implements Custo
 		@Override
 		public void receive(StopSlammingS2CPayload payload, ClientPlayNetworking.Context context) {
 			Entity entity = context.player().level().getEntity(payload.entityId());
-			ModEntityComponents.SLAM.maybeGet(entity).ifPresent(slamComponent -> slamComponent.stopSlammingClient(payload.posY()));
+			EnchancementEntityComponents.SLAM.maybeGet(entity).ifPresent(slam -> slam.stopSlammingClient(payload.posY()));
 		}
 	}
 }

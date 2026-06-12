@@ -4,8 +4,8 @@
 
 package moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype;
 
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.world.item.effects.DisarmingFishingBobberEffect;
 import net.minecraft.util.Mth;
@@ -69,9 +69,9 @@ public class DisarmingFishingBobberComponent implements CardinalComponent {
 	}
 
 	public void disableStack(Player player, ItemStack stack, int duration) {
-		DisarmedPlayerComponent disarmedPlayerComponent = ModEntityComponents.DISARMED_PLAYER.get(player);
-		disarmedPlayerComponent.getDisarmedStacks().add(stack);
-		disarmedPlayerComponent.sync();
+		DisarmedPlayerComponent disarmedPlayer = EnchancementEntityComponents.DISARMED_PLAYER.get(player);
+		disarmedPlayer.getDisarmedStacks().add(stack);
+		disarmedPlayer.sync();
 		player.getCooldowns().addCooldown(stack, duration);
 		player.releaseUsingItem();
 	}
@@ -80,18 +80,18 @@ public class DisarmingFishingBobberComponent implements CardinalComponent {
 		if (entity instanceof FishingHook) {
 			MutableBoolean enabled = new MutableBoolean(), stealsFromPlayers = new MutableBoolean();
 			MutableFloat playerCooldown = new MutableFloat(), userCooldown = new MutableFloat();
-			if (EnchantmentHelper.has(stack, ModEnchantmentEffectComponentTypes.DISARMING_FISHING_BOBBER)) {
+			if (EnchantmentHelper.has(stack, EnchancementEnchantmentEffectComponentTypes.DISARMING_FISHING_BOBBER)) {
 				DisarmingFishingBobberEffect.setValues(user.getRandom(), enabled, stealsFromPlayers, playerCooldown, userCooldown, Collections.singleton(stack));
-			} else if (!(user instanceof Player) && EnchancementUtil.hasAnyEnchantmentsWith(user, ModEnchantmentEffectComponentTypes.DISARMING_FISHING_BOBBER)) {
+			} else if (!(user instanceof Player) && EnchancementUtil.hasAnyEnchantmentsWith(user, EnchancementEnchantmentEffectComponentTypes.DISARMING_FISHING_BOBBER)) {
 				DisarmingFishingBobberEffect.setValues(user.getRandom(), enabled, stealsFromPlayers, playerCooldown, userCooldown, EnchancementUtil.getHeldItems(user));
 			}
 			if (enabled.booleanValue()) {
-				DisarmingFishingBobberComponent disarmingFishingBobberComponent = ModEntityComponents.DISARMING_FISHING_BOBBER.get(entity);
-				disarmingFishingBobberComponent.stack = stack;
-				disarmingFishingBobberComponent.enabled = true;
-				disarmingFishingBobberComponent.stealsFromPlayers = stealsFromPlayers.booleanValue();
-				disarmingFishingBobberComponent.playerCooldown = Mth.floor(playerCooldown.floatValue() * 20);
-				disarmingFishingBobberComponent.userCooldown = Mth.floor(userCooldown.floatValue() * 20);
+				DisarmingFishingBobberComponent disarmingFishingBobber = EnchancementEntityComponents.DISARMING_FISHING_BOBBER.get(entity);
+				disarmingFishingBobber.stack = stack;
+				disarmingFishingBobber.enabled = true;
+				disarmingFishingBobber.stealsFromPlayers = stealsFromPlayers.booleanValue();
+				disarmingFishingBobber.playerCooldown = Mth.floor(playerCooldown.floatValue() * 20);
+				disarmingFishingBobber.userCooldown = Mth.floor(userCooldown.floatValue() * 20);
 			}
 		}
 	}

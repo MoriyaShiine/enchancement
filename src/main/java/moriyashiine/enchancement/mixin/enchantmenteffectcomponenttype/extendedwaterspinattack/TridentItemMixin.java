@@ -5,8 +5,8 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.extendedwaterspinattack;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -29,7 +29,7 @@ public class TridentItemMixin {
 	@Inject(method = "releaseUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;startAutoSpinAttack(IFLnet/minecraft/world/item/ItemStack;)V"))
 	private void enchancement$extendedWaterSpinAttack(ItemStack itemStack, Level level, LivingEntity entity, int remainingTime, CallbackInfoReturnable<Boolean> cir) {
 		if (!entity.isInWaterOrRain() && shouldApply(entity)) {
-			ModEntityComponents.EXTENDED_WATER_TIME.get(entity).decrement(60);
+			EnchancementEntityComponents.EXTENDED_WATER_TIME.get(entity).decrement(60);
 		}
 	}
 
@@ -40,6 +40,6 @@ public class TridentItemMixin {
 
 	@Unique
 	private static boolean shouldApply(LivingEntity user) {
-		return EnchancementUtil.hasAnyEnchantmentsWith(user, ModEnchantmentEffectComponentTypes.EXTENDED_WATER_SPIN_ATTACK) && ModEntityComponents.EXTENDED_WATER_TIME.get(user).getTicksWet() > 0;
+		return EnchancementUtil.hasAnyEnchantmentsWith(user, EnchancementEnchantmentEffectComponentTypes.EXTENDED_WATER_SPIN_ATTACK) && EnchancementEntityComponents.EXTENDED_WATER_TIME.get(user).getTicksWet() > 0;
 	}
 }

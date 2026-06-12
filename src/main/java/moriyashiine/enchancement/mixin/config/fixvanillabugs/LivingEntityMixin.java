@@ -6,7 +6,7 @@ package moriyashiine.enchancement.mixin.config.fixvanillabugs;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -31,14 +31,14 @@ public abstract class LivingEntityMixin {
 
 	@Inject(method = "onEquipItem", at = @At("TAIL"))
 	private void enchancement$fixVanillaBugs(EquipmentSlot slot, ItemStack oldStack, ItemStack stack, CallbackInfo ci) {
-		if (ModConfig.fixVanillaBugs && slot == EquipmentSlot.MAINHAND) {
+		if (EnchancementConfig.fixVanillaBugs && slot == EquipmentSlot.MAINHAND) {
 			EnchancementUtil.refreshAttributesAndCooldown((LivingEntity) (Object) this);
 		}
 	}
 
 	@ModifyReturnValue(method = "getSwimAmount", at = @At("RETURN"))
 	private float enchancement$fixVanillaBugs(float original) {
-		if (ModConfig.fixVanillaBugs && isAutoSpinAttack()) {
+		if (EnchancementConfig.fixVanillaBugs && isAutoSpinAttack()) {
 			return 0;
 		}
 		return original;
@@ -47,7 +47,7 @@ public abstract class LivingEntityMixin {
 	@SuppressWarnings("ConstantValue")
 	@ModifyExpressionValue(method = "travelInWater", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getAttributeValue(Lnet/minecraft/core/Holder;)D"))
 	private double enchancement$fixVanillaBugs(double original) {
-		if (ModConfig.fixVanillaBugs) {
+		if (EnchancementConfig.fixVanillaBugs) {
 			if (isAutoSpinAttack() || (isUsingItem() && EnchantmentHelper.getTridentSpinAttackStrength(getActiveItem(), (LivingEntity) (Object) this) > 0)) {
 				return 0;
 			}

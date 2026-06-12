@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.LightningDashComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.strawberrylib.api.event.PreventFallDamageEvent;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.world.damagesource.DamageSource;
@@ -19,8 +19,8 @@ public class LightningDashEvent implements PreventFallDamageEvent {
 
 	@Override
 	public TriState preventsFallDamage(Level level, LivingEntity entity, double fallDistance, float damageModifier, DamageSource source) {
-		LightningDashComponent lightningDashComponent = ModEntityComponents.LIGHTNING_DASH.getNullable(entity);
-		if (lightningDashComponent != null && lightningDashComponent.isSmashing()) {
+		LightningDashComponent lightningDash = EnchancementEntityComponents.LIGHTNING_DASH.getNullable(entity);
+		if (lightningDash != null && lightningDash.isSmashing()) {
 			return TriState.TRUE;
 		}
 		return TriState.DEFAULT;

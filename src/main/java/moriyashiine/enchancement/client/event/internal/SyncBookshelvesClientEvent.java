@@ -28,7 +28,7 @@ public class SyncBookshelvesClientEvent implements ClientTickEvents.EndLevelTick
 			Minecraft client = Minecraft.getInstance();
 			Player player = client.player;
 			if (player != null && player.containerMenu instanceof ModEnchantmentMenu menu) {
-				if (client.screen instanceof ModEnchantmentScreen screen) {
+				if (client.gui.screen() instanceof ModEnchantmentScreen screen) {
 					screen.receivedPacket = true;
 				}
 				menu.chiseledEnchantments.clear();

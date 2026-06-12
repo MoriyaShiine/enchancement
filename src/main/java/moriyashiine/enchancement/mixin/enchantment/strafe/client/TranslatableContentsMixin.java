@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.enchantment.strafe.client;
 
 import moriyashiine.enchancement.client.EnchancementClient;
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class TranslatableContentsMixin {
 	@ModifyVariable(method = "<init>", at = @At("HEAD"), argsOnly = true, ordinal = 0)
 	private static String enchancement$strafe(String key) {
-		if (ModConfig.doublePressDirectionBurst && key.equals("enchantment.enchancement.strafe.desc")) {
+		if (EnchancementConfig.doublePressDirectionBurst && key.equals("enchantment.enchancement.strafe.desc")) {
 			return key + ".double";
 		}
 		return key;

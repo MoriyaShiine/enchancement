@@ -16,8 +16,8 @@ import net.minecraft.world.phys.Vec3;
 
 public record HealEnchantmentEffect(LevelBasedValue amount) implements EnchantmentEntityEffect {
 	public static final MapCodec<HealEnchantmentEffect> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-					LevelBasedValue.CODEC.fieldOf("amount").forGetter(HealEnchantmentEffect::amount))
-			.apply(instance, HealEnchantmentEffect::new));
+			LevelBasedValue.CODEC.fieldOf("amount").forGetter(HealEnchantmentEffect::amount)
+	).apply(instance, HealEnchantmentEffect::new));
 
 	@Override
 	public MapCodec<HealEnchantmentEffect> codec() {

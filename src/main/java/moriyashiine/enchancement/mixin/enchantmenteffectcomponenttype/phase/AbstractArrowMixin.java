@@ -4,8 +4,8 @@
 
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.phase;
 
-import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementSoundEvents;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -41,9 +41,9 @@ public abstract class AbstractArrowMixin extends Entity {
 
 	@Inject(method = "onHitBlock", at = @At("HEAD"), cancellable = true)
 	private void enchancement$phase(BlockHitResult hitResult, CallbackInfo ci) {
-		ModEntityComponents.PHASE.maybeGet(this).ifPresent(phaseComponent -> {
-			if (phaseComponent.shouldPhase()) {
-				int maxPhaseBlocks = phaseComponent.getMaxPhaseBlocks();
+		EnchancementEntityComponents.PHASE.maybeGet(this).ifPresent(phase -> {
+			if (phase.shouldPhase()) {
+				int maxPhaseBlocks = phase.getMaxPhaseBlocks();
 				BlockState state = level().getBlockState(hitResult.getBlockPos());
 				state.onProjectileHit(level(), state, hitResult, (AbstractArrow) (Object) this);
 				double distance = 0;
@@ -64,7 +64,7 @@ public abstract class AbstractArrowMixin extends Entity {
 							onHitEntity(new EntityHitResult(entities.get(i)));
 						}
 						level().gameEvent(GameEvent.TELEPORT, hitResult.getLocation(), GameEvent.Context.of(this));
-						SLibUtils.playSound(this, ModSoundEvents.GENERIC_TELEPORT, 0.75F, 1);
+						SLibUtils.playSound(this, EnchancementSoundEvents.GENERIC_TELEPORT, 0.75F, 1);
 						setPos(end);
 					} else {
 						for (int i = 0; i < 6; i++) {
@@ -72,7 +72,7 @@ public abstract class AbstractArrowMixin extends Entity {
 							level().addParticle(ParticleTypes.REVERSE_PORTAL, end.x() + Mth.nextDouble(random, -getBbWidth() / 2, getBbWidth() / 2), end.y() + Mth.nextDouble(random, -getBbHeight() / 2, getBbHeight() / 2), end.z() + Mth.nextDouble(random, -getBbWidth() / 2, getBbWidth() / 2), 0, 0, 0);
 						}
 					}
-					phaseComponent.disable();
+					phase.disable();
 					ci.cancel();
 				}
 			}

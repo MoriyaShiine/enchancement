@@ -4,8 +4,8 @@
 
 package moriyashiine.enchancement.client.resources.sound;
 
-import moriyashiine.enchancement.common.init.ModComponentTypes;
-import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.enchancement.common.init.EnchancementDataComponents;
+import moriyashiine.enchancement.common.init.EnchancementSoundEvents;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -19,7 +19,7 @@ public class BrimstoneFireSoundInstance extends AbstractTickableSoundInstance {
 	private int age = 0;
 
 	public BrimstoneFireSoundInstance(Entity entity, UUID uuid) {
-		super(ModSoundEvents.CROSSBOW_LOADING_BRIMSTONE, entity.getSoundSource(), entity.getRandom());
+		super(EnchancementSoundEvents.CROSSBOW_LOADING_BRIMSTONE, entity.getSoundSource(), entity.getRandom());
 		this.entity = entity;
 		this.uuid = uuid;
 		x = entity.getX();
@@ -49,7 +49,7 @@ public class BrimstoneFireSoundInstance extends AbstractTickableSoundInstance {
 			if (living.isDeadOrDying()) {
 				return false;
 			}
-			return uuid.equals(living.getUseItem().get(ModComponentTypes.BRIMSTONE_UUID));
+			return uuid.equals(living.getUseItem().get(EnchancementDataComponents.BRIMSTONE_UUID));
 		}
 		return false;
 	}

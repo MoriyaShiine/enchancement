@@ -5,10 +5,10 @@
 package moriyashiine.enchancement.common.event.config;
 
 import moriyashiine.enchancement.api.event.CappedMultiplyDeltaMovementEvent;
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import moriyashiine.enchancement.common.component.entity.config.AirMobilityComponent;
-import moriyashiine.enchancement.common.init.ModComponentTypes;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementDataComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.event.ModifyDestroySpeedEvent;
 import net.minecraft.core.BlockPos;
@@ -29,10 +29,10 @@ public class ToggleablePassivesEvent {
 	private static class AirMobility implements CappedMultiplyDeltaMovementEvent {
 		@Override
 		public float multiply(Level level, LivingEntity living) {
-			if (ModConfig.toggleablePassives && !living.onGround()) {
-				AirMobilityComponent airMobilityComponent = ModEntityComponents.AIR_MOBILITY.getNullable(living);
-				if (airMobilityComponent != null) {
-					return airMobilityComponent.getModifier();
+			if (EnchancementConfig.toggleablePassives && !living.onGround()) {
+				AirMobilityComponent airMobility = EnchancementEntityComponents.AIR_MOBILITY.getNullable(living);
+				if (airMobility != null) {
+					return airMobility.getModifier();
 				}
 			}
 			return 1;
@@ -49,12 +49,12 @@ public class ToggleablePassivesEvent {
 		}
 
 		private static boolean hasEfficiency(ItemStack stack) {
-			if (ModConfig.toggleablePassives) {
-				if (stack.is(ItemTags.MINING_ENCHANTABLE) && stack.getOrDefault(ModComponentTypes.TOGGLEABLE_PASSIVE, false)) {
+			if (EnchancementConfig.toggleablePassives) {
+				if (stack.is(ItemTags.MINING_ENCHANTABLE) && stack.getOrDefault(EnchancementDataComponents.TOGGLEABLE_PASSIVE, false)) {
 					if (stack.isEnchanted()) {
 						return true;
 					}
-					stack.remove(ModComponentTypes.TOGGLEABLE_PASSIVE);
+					stack.remove(EnchancementDataComponents.TOGGLEABLE_PASSIVE);
 				}
 			}
 			return false;

@@ -5,9 +5,9 @@
 package moriyashiine.enchancement.mixin.config.rebalanceequipment;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import moriyashiine.enchancement.common.component.entity.config.OwnedTridentComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,16 +36,16 @@ public abstract class ThrownTridentMixin extends AbstractArrow {
 
 	@Inject(method = "<init>(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ItemStack;)V", at = @At("TAIL"))
 	private void enchancement$rebalanceEquipment(Level level, LivingEntity owner, ItemStack tridentItem, CallbackInfo ci) {
-		if (ModConfig.rebalanceEquipment && owner instanceof Player player) {
-			OwnedTridentComponent ownedTridentComponent = ModEntityComponents.OWNED_TRIDENT.get(this);
-			ownedTridentComponent.markPlayerOwned(player.getUsedItemHand() == InteractionHand.OFF_HAND ? Inventory.SLOT_OFFHAND : player.getInventory().getSelectedSlot());
-			ownedTridentComponent.sync();
+		if (EnchancementConfig.rebalanceEquipment && owner instanceof Player player) {
+			OwnedTridentComponent ownedTrident = EnchancementEntityComponents.OWNED_TRIDENT.get(this);
+			ownedTrident.markPlayerOwned(player.getUsedItemHand() == InteractionHand.OFF_HAND ? Inventory.SLOT_OFFHAND : player.getInventory().getSelectedSlot());
+			ownedTrident.sync();
 		}
 	}
 
 	@ModifyVariable(method = "tick", at = @At("STORE"), name = "loyalty")
 	private int enchancement$rebalanceEquipment(int loyalty) {
-		if (ModConfig.rebalanceEquipment && loyalty > 0 && !isAcceptibleReturnOwner()) {
+		if (EnchancementConfig.rebalanceEquipment && loyalty > 0 && !isAcceptibleReturnOwner()) {
 			if (getDeltaMovement().length() > 0) {
 				setDeltaMovement(getDeltaMovement().scale(0.9));
 			} else {
@@ -58,7 +58,7 @@ public abstract class ThrownTridentMixin extends AbstractArrow {
 
 	@ModifyExpressionValue(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/projectile/arrow/ThrownTrident;isNoPhysics()Z"))
 	private boolean enchancement$rebalanceEquipment(boolean value) {
-		if (ModConfig.rebalanceEquipment && getY() <= level().getMinY()) {
+		if (EnchancementConfig.rebalanceEquipment && getY() <= level().getMinY()) {
 			return true;
 		}
 		return value;
@@ -66,6 +66,6 @@ public abstract class ThrownTridentMixin extends AbstractArrow {
 
 	@ModifyVariable(method = "tickDespawn", at = @At("STORE"), name = "loyalty")
 	private int enchancement$rebalanceEquipmentPreventDespawn(int loyalty) {
-		return ModConfig.rebalanceEquipment && ModEntityComponents.OWNED_TRIDENT.get(this).isOwnedByPlayer() ? 1 : loyalty;
+		return EnchancementConfig.rebalanceEquipment && EnchancementEntityComponents.OWNED_TRIDENT.get(this).isOwnedByPlayer() ? 1 : loyalty;
 	}
 }

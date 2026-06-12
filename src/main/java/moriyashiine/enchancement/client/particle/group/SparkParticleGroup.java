@@ -22,7 +22,7 @@ import org.joml.Vector3f;
 import java.util.List;
 
 public class SparkParticleGroup extends ParticleGroup<SparkParticle> {
-	public static final ParticleRenderType SHEET = new ParticleRenderType(Enchancement.id("spark").toString());
+	public static final ParticleRenderType SHEET = new ParticleRenderType(Enchancement.id("spark").toString(), "ES");
 
 	public SparkParticleGroup(ParticleEngine engine) {
 		super(engine);
@@ -30,7 +30,7 @@ public class SparkParticleGroup extends ParticleGroup<SparkParticle> {
 
 	@Override
 	public ParticleGroupRenderState extractRenderState(Frustum frustum, Camera camera, float partialTickTime) {
-		return new Result(getAll().stream().map(particle -> particle.createState(camera)).toList());
+		return new Result(particles.stream().map(particle -> particle.createState(camera)).toList());
 	}
 
 	public record State(PoseStack poseStack, List<Vector3f> arcs) {

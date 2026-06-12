@@ -4,8 +4,8 @@
 
 package moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype;
 
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
@@ -45,7 +45,7 @@ public class ExtendedWaterTimeComponent implements AutoSyncedComponent, CommonTi
 	@Override
 	public void tick() {
 		if (ticksWet > 0) {
-			if (EnchancementUtil.hasAnyEnchantmentsWith(obj, ModEnchantmentEffectComponentTypes.EXTEND_WATER_TIME)) {
+			if (EnchancementUtil.hasAnyEnchantmentsWith(obj, EnchancementEnchantmentEffectComponentTypes.EXTEND_WATER_TIME)) {
 				if (delayTicks > 0) {
 					delayTicks--;
 				} else {
@@ -71,7 +71,7 @@ public class ExtendedWaterTimeComponent implements AutoSyncedComponent, CommonTi
 		if (ticksWet > 0 && !obj.isInvisible() && !obj.isInWaterOrRain()) {
 			for (EquipmentSlot slot : EquipmentSlot.values()) {
 				if (slot.getType() != EquipmentSlot.Type.HAND) {
-					if (EnchantmentHelper.has(obj.getItemBySlot(slot), ModEnchantmentEffectComponentTypes.EXTEND_WATER_TIME)) {
+					if (EnchantmentHelper.has(obj.getItemBySlot(slot), EnchancementEnchantmentEffectComponentTypes.EXTEND_WATER_TIME)) {
 						if (slot == EquipmentSlot.FEET) {
 							SLibClientUtils.addParticles(obj, ParticleTypes.FALLING_WATER, 1, ParticleAnchor.FEET);
 						} else {
@@ -84,7 +84,7 @@ public class ExtendedWaterTimeComponent implements AutoSyncedComponent, CommonTi
 	}
 
 	public void sync() {
-		ModEntityComponents.EXTENDED_WATER_TIME.sync(obj);
+		EnchancementEntityComponents.EXTENDED_WATER_TIME.sync(obj);
 	}
 
 	public int getTicksWet() {

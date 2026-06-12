@@ -6,7 +6,7 @@ package moriyashiine.enchancement.client.event.config;
 
 import moriyashiine.enchancement.client.gui.screens.inventory.tooltip.StoredEnchantmentsTooltipComponent;
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
@@ -73,7 +73,7 @@ public class EnchantmentDescriptionsClientEvent {
 	}
 
 	public static boolean enableDescriptions() {
-		return ModConfig.enchantmentDescriptions && !Enchancement.commonEnchantmentDescriptionsModLoaded;
+		return EnchancementConfig.enchantmentDescriptions && !Enchancement.commonEnchantmentDescriptionsModLoaded;
 	}
 
 	public static @Nullable List<Component> getDescription(Component component, Holder<Enchantment> enchantment) {

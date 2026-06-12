@@ -6,7 +6,7 @@ package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.modifycon
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.util.Mth;
@@ -42,7 +42,7 @@ public abstract class LivingEntityMixin extends Entity {
 	@Unique
 	private int modifyTimeLeft(int original) {
 		if (useItem.has(DataComponents.CONSUMABLE)) {
-			float modifiedTime = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.MODIFY_CONSUMPTION_TIME, ((LivingEntity) (Object) this), original);
+			float modifiedTime = EnchancementUtil.getValue(EnchancementEnchantmentEffectComponentTypes.MODIFY_CONSUMPTION_TIME, ((LivingEntity) (Object) this), original);
 			if (modifiedTime != original) {
 				return Math.max(1, Mth.floor(modifiedTime));
 			}

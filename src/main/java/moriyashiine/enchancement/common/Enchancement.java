@@ -63,15 +63,15 @@ public class Enchancement implements ModInitializer {
 	}
 
 	private void initRegistries() {
-		ModComponentTypes.init();
-		ModEnchantmentEffectComponentTypes.init();
-		ModEnchantmentEntityEffectTypes.init();
-		ModEntityTypes.init();
-		ModLootConditionTypes.init();
-		ModLootFunctionTypes.init();
-		ModMenuTypes.init();
-		ModParticleTypes.init();
-		ModSoundEvents.init();
+		EnchancementDataComponents.init();
+		EnchancementEnchantmentEffectComponentTypes.init();
+		EnchancementEnchantmentEntityEffectTypes.init();
+		EnchancementEntityTypes.init();
+		EnchancementLootConditionTypes.init();
+		EnchancementLootFunctionTypes.init();
+		EnchancementMenuTypes.init();
+		EnchancementParticleTypes.init();
+		EnchancementSoundEvents.init();
 
 		MaceEffect.EFFECTS.add(new EruptionMaceEffect());
 		MaceEffect.EFFECTS.add(new LightningDashMaceEffect());

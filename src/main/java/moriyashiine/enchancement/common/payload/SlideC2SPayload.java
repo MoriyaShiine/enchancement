@@ -7,7 +7,7 @@ package moriyashiine.enchancement.common.payload;
 import moriyashiine.enchancement.client.payload.SlideS2CPayload;
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.SlideComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -24,7 +24,8 @@ public record SlideC2SPayload(int entityId, SlideComponent.SlideDeltaMovement de
 			SlideComponent.SlideDeltaMovement.STREAM_CODEC, SlideC2SPayload::delta,
 			SlideComponent.SlideDeltaMovement.STREAM_CODEC, SlideC2SPayload::adjustedDelta,
 			ByteBufCodecs.FLOAT, SlideC2SPayload::cachedYRot,
-			SlideC2SPayload::new);
+			SlideC2SPayload::new
+	);
 
 	@Override
 	public Type<SlideC2SPayload> type() {
@@ -43,10 +44,10 @@ public record SlideC2SPayload(int entityId, SlideComponent.SlideDeltaMovement de
 		@Override
 		public void receive(SlideC2SPayload payload, ServerPlayNetworking.Context context) {
 			Entity entity = context.player().level().getEntity(payload.entityId());
-			ModEntityComponents.SLIDE.maybeGet(entity).ifPresent(slideComponent -> {
-				if (slideComponent.hasSlide()) {
-					if (payload.delta().equals(SlideComponent.SlideDeltaMovement.ZERO) || slideComponent.canSlide()) {
-						slideComponent.startSliding(payload.delta(), payload.adjustedDelta(), payload.cachedYRot());
+			EnchancementEntityComponents.SLIDE.maybeGet(entity).ifPresent(slide -> {
+				if (slide.hasSlide()) {
+					if (payload.delta().equals(SlideComponent.SlideDeltaMovement.ZERO) || slide.canSlide()) {
+						slide.startSliding(payload.delta(), payload.adjustedDelta(), payload.cachedYRot());
 					}
 					PlayerLookup.tracking(entity).forEach(receiver -> SlideS2CPayload.send(receiver, entity, payload.delta(), payload.adjustedDelta(), payload.cachedYRot()));
 				}

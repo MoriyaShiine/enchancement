@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.hidenamebehindwalls.client;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -24,7 +24,7 @@ public class LivingEntityRendererMixin<T extends LivingEntity> {
 	private boolean enchancement$hideNameBehindWalls(boolean original, T entity) {
 		Player player = client.player;
 		if (player != null && !player.isSpectator()) {
-			if (!entity.isCurrentlyGlowing() && EnchancementUtil.hasAnyEnchantmentsWith(entity, ModEnchantmentEffectComponentTypes.HIDE_NAME_BEHIND_WALLS) && !EnchancementUtil.hasAnyEnchantmentsWith(player, ModEnchantmentEffectComponentTypes.ENTITY_XRAY) && !player.hasLineOfSight(entity)) {
+			if (!entity.isCurrentlyGlowing() && EnchancementUtil.hasAnyEnchantmentsWith(entity, EnchancementEnchantmentEffectComponentTypes.HIDE_NAME_BEHIND_WALLS) && !EnchancementUtil.hasAnyEnchantmentsWith(player, EnchancementEnchantmentEffectComponentTypes.ENTITY_XRAY) && !player.hasLineOfSight(entity)) {
 				return false;
 			}
 		}

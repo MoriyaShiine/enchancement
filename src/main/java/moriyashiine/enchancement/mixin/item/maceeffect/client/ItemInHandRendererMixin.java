@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ItemInHandRenderer.class)
 public class ItemInHandRendererMixin {
-	@ModifyExpressionValue(method = "renderArmWithItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getUseAnimation()Lnet/minecraft/world/item/ItemUseAnimation;"))
+	@ModifyExpressionValue(method = "submitArmWithItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getUseAnimation()Lnet/minecraft/world/item/ItemUseAnimation;"))
 	private ItemUseAnimation enchancement$maceEffect(ItemUseAnimation original, AbstractClientPlayer player) {
 		for (ComponentKey<?> key : player.asComponentProvider().getComponentContainer().keys()) {
 			if (player.getComponent(key) instanceof UsingMaceComponent usingMaceComponent && usingMaceComponent.isUsing()) {

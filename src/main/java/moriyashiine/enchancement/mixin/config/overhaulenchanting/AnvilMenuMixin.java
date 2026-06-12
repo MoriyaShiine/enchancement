@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.config.overhaulenchanting;
 
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import moriyashiine.enchancement.common.util.config.OverhaulMode;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.util.StringUtil;
@@ -37,16 +37,16 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
 
 	@Inject(method = "mayPickup", at = @At("HEAD"), cancellable = true)
 	private void enchancement$overhaulEnchanting(Player player, boolean hasItem, CallbackInfoReturnable<Boolean> cir) {
-		if (ModConfig.overhaulEnchanting != OverhaulMode.DISABLED && inputSlots.getItem(1).is(Items.ENCHANTED_BOOK)) {
+		if (EnchancementConfig.overhaulEnchanting != OverhaulMode.DISABLED && inputSlots.getItem(1).is(Items.ENCHANTED_BOOK)) {
 			cir.setReturnValue(true);
 		}
 	}
 
 	@Inject(method = "createResult", at = @At("TAIL"))
 	private void enchancement$overhaulEnchanting(CallbackInfo ci) {
-		if (ModConfig.overhaulEnchanting != OverhaulMode.DISABLED) {
+		if (EnchancementConfig.overhaulEnchanting != OverhaulMode.DISABLED) {
 			if (inputSlots.getItem(1).is(Items.ENCHANTED_BOOK)) {
-				if (ModConfig.overhaulEnchanting == OverhaulMode.CHISELED && !inputSlots.getItem(0).is(Items.ENCHANTED_BOOK)) {
+				if (EnchancementConfig.overhaulEnchanting == OverhaulMode.CHISELED && !inputSlots.getItem(0).is(Items.ENCHANTED_BOOK)) {
 					resultSlots.setItem(0, ItemStack.EMPTY);
 					broadcastChanges();
 					return;

@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.client.event.enchantmenteffectcomponenttype;
 
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.ChargeJumpComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.strawberrylib.api.event.client.ReplaceContextualInfoEvent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
@@ -20,9 +20,9 @@ public class ChargeJumpClientEvent implements ReplaceContextualInfoEvent {
 
 	@Override
 	public ContextualInfo getInfo(Player player) {
-		ChargeJumpComponent chargeJumpComponent = ModEntityComponents.CHARGE_JUMP.get(player);
-		if (chargeJumpComponent.shouldRender()) {
-			return new ContextualInfo(BACKGROUND_TEXTURE, PROGRESS_TEXTURE, chargeJumpComponent.getChargeProgress());
+		ChargeJumpComponent chargeJump = EnchancementEntityComponents.CHARGE_JUMP.get(player);
+		if (chargeJump.shouldRender()) {
+			return new ContextualInfo(BACKGROUND_TEXTURE, PROGRESS_TEXTURE, chargeJump.getChargeProgress());
 		}
 		return null;
 	}

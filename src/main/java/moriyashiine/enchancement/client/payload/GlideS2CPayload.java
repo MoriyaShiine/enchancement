@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.client.payload;
 
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
@@ -20,7 +20,8 @@ public record GlideS2CPayload(int entityId, boolean gliding) implements CustomPa
 	public static final StreamCodec<FriendlyByteBuf, GlideS2CPayload> CODEC = StreamCodec.composite(
 			ByteBufCodecs.VAR_INT, GlideS2CPayload::entityId,
 			ByteBufCodecs.BOOL, GlideS2CPayload::gliding,
-			GlideS2CPayload::new);
+			GlideS2CPayload::new
+	);
 
 	@Override
 	public Type<GlideS2CPayload> type() {
@@ -35,9 +36,9 @@ public record GlideS2CPayload(int entityId, boolean gliding) implements CustomPa
 		@Override
 		public void receive(GlideS2CPayload payload, ClientPlayNetworking.Context context) {
 			Entity entity = context.player().level().getEntity(payload.entityId());
-			ModEntityComponents.GLIDE.maybeGet(entity).ifPresent(glideComponent -> {
-				if (glideComponent.canGlide()) {
-					glideComponent.setGliding(payload.gliding());
+			EnchancementEntityComponents.GLIDE.maybeGet(entity).ifPresent(glide -> {
+				if (glide.canGlide()) {
+					glide.setGliding(payload.gliding());
 				}
 			});
 		}

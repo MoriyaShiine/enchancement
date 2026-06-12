@@ -6,7 +6,7 @@ package moriyashiine.enchancement.common.component.level;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import moriyashiine.enchancement.common.init.ModLevelComponents;
+import moriyashiine.enchancement.common.init.EnchancementLevelComponents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.FriendlyByteBuf;
@@ -48,7 +48,7 @@ public class WideMiningComponent implements AutoSyncedComponent, CommonTickingCo
 	}
 
 	public void sync() {
-		ModLevelComponents.WIDE_MINING.sync(obj);
+		EnchancementLevelComponents.WIDE_MINING.sync(obj);
 	}
 
 	public List<Entry> getEntries() {
@@ -75,11 +75,11 @@ public class WideMiningComponent implements AutoSyncedComponent, CommonTickingCo
 
 	public record Entry(UUID player, BlockPos origin, List<BlockPos> blocks, float destroySpeed) {
 		public static final Codec<Entry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-						UUIDUtil.CODEC.fieldOf("player").forGetter(Entry::player),
-						BlockPos.CODEC.fieldOf("origin").forGetter(Entry::origin),
-						BlockPos.CODEC.listOf().fieldOf("blocks").forGetter(Entry::blocks),
-						Codec.FLOAT.fieldOf("destroy_speed").forGetter(Entry::destroySpeed))
-				.apply(instance, Entry::new));
+				UUIDUtil.CODEC.fieldOf("player").forGetter(Entry::player),
+				BlockPos.CODEC.fieldOf("origin").forGetter(Entry::origin),
+				BlockPos.CODEC.listOf().fieldOf("blocks").forGetter(Entry::blocks),
+				Codec.FLOAT.fieldOf("destroy_speed").forGetter(Entry::destroySpeed)
+		).apply(instance, Entry::new));
 
 		public static final StreamCodec<FriendlyByteBuf, Entry> STREAM_CODEC = new StreamCodec<>() {
 			@Override

@@ -7,7 +7,7 @@ package moriyashiine.enchancement.mixin.config.rebalanceequipment;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moriyashiine.enchancement.client.payload.SyncHookedMovementDeltaPayload;
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -22,7 +22,7 @@ import java.util.Set;
 public class FishingHookMixin {
 	@WrapOperation(method = "pullEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;setDeltaMovement(Lnet/minecraft/world/phys/Vec3;)V"))
 	private void enchancement$rebalanceEquipment(Entity instance, Vec3 deltaMovement, Operation<Void> original) {
-		if (ModConfig.rebalanceEquipment) {
+		if (EnchancementConfig.rebalanceEquipment) {
 			if (!instance.level().isClientSide()) {
 				Set<Entity> entities = SyncHookedMovementDeltaPayload.getEntities(instance);
 				entities.forEach(entity -> original.call(entity, deltaMovement));

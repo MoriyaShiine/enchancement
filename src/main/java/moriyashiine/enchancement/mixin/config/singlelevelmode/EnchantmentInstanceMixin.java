@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.config.singlelevelmode;
 
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class EnchantmentInstanceMixin {
 	@ModifyVariable(method = "<init>", at = @At(value = "HEAD"), argsOnly = true)
 	private static int enchancement$singleLevelMode(int level) {
-		if (ModConfig.singleLevelMode) {
+		if (EnchancementConfig.singleLevelMode) {
 			return 1;
 		}
 		return level;

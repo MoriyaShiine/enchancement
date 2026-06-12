@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.slide.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
@@ -24,7 +24,7 @@ public class GameRendererMixin {
 
 	@Inject(method = "bobView", at = @At("HEAD"), cancellable = true)
 	private void enchancement$slide(CameraRenderState cameraState, PoseStack poseStack, CallbackInfo ci) {
-		if (minecraft.player != null && ModEntityComponents.SLIDE.get(minecraft.player).isSliding()) {
+		if (minecraft.player != null && EnchancementEntityComponents.SLIDE.get(minecraft.player).isSliding()) {
 			ci.cancel();
 		}
 	}

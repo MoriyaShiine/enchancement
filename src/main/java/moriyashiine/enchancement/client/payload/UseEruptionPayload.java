@@ -20,7 +20,8 @@ public record UseEruptionPayload(int entityId) implements CustomPacketPayload {
 	public static final Type<UseEruptionPayload> TYPE = new Type<>(Enchancement.id("use_eruption"));
 	public static final StreamCodec<FriendlyByteBuf, UseEruptionPayload> CODEC = StreamCodec.composite(
 			ByteBufCodecs.VAR_INT, UseEruptionPayload::entityId,
-			UseEruptionPayload::new);
+			UseEruptionPayload::new
+	);
 
 	@Override
 	public Type<UseEruptionPayload> type() {

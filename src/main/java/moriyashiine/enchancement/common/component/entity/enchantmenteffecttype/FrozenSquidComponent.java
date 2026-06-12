@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.component.entity.enchantmenteffecttype;
 
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.world.entity.animal.squid.Squid;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -33,7 +33,7 @@ public class FrozenSquidComponent implements AutoSyncedComponent {
 	}
 
 	public void sync() {
-		ModEntityComponents.FROZEN_SQUID.sync(obj);
+		EnchancementEntityComponents.FROZEN_SQUID.sync(obj);
 	}
 
 	public float getForcedTentacleAngle() {

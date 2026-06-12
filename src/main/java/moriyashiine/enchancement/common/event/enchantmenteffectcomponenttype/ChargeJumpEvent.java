@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.ChargeJumpComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.strawberrylib.api.event.AfterDamageIncludingDeathEvent;
 import moriyashiine.strawberrylib.api.event.ModifyMovementEvents;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
@@ -28,10 +28,10 @@ public class ChargeJumpEvent {
 	private static class Damage implements AfterDamageIncludingDeathEvent {
 		@Override
 		public void afterDamage(LivingEntity victim, DamageSource source, float originalDamage, float modifiedDamage, boolean blocked) {
-			ChargeJumpComponent chargeJumpComponent = ModEntityComponents.CHARGE_JUMP.getNullable(victim);
-			if (chargeJumpComponent != null && chargeJumpComponent.hasChargeJump()) {
-				chargeJumpComponent.addChargeDelayed(-modifiedDamage * 1.5F);
-				chargeJumpComponent.sync();
+			ChargeJumpComponent chargeJump = EnchancementEntityComponents.CHARGE_JUMP.getNullable(victim);
+			if (chargeJump != null && chargeJump.hasChargeJump()) {
+				chargeJump.addChargeDelayed(-modifiedDamage * 1.5F);
+				chargeJump.sync();
 			}
 		}
 	}
@@ -41,10 +41,10 @@ public class ChargeJumpEvent {
 
 		@Override
 		public Vec3 modify(Vec3 delta, LivingEntity entity) {
-			ChargeJumpComponent chargeJumpComponent = ModEntityComponents.CHARGE_JUMP.getNullable(entity);
-			if (chargeJumpComponent != null && chargeJumpComponent.hasChargeJump() && chargeJumpComponent.isPressingChargeJump()) {
-				double progress = chargeJumpComponent.getChargeProgress();
-				double boost = chargeJumpComponent.getBoost();
+			ChargeJumpComponent chargeJump = EnchancementEntityComponents.CHARGE_JUMP.getNullable(entity);
+			if (chargeJump != null && chargeJump.hasChargeJump() && chargeJump.isPressingChargeJump()) {
+				double progress = chargeJump.getChargeProgress();
+				double boost = chargeJump.getBoost();
 				if (progress >= 2 / 18F && entity.level() instanceof ServerLevel level) {
 					SLibUtils.playSound(entity, SoundEvents.SLIME_BLOCK_FALL);
 					entity.gameEvent(GameEvent.ENTITY_ACTION);

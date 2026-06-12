@@ -23,7 +23,8 @@ public record SyncHookedMovementDeltaPayload(int entityId, Vec3 delta) implement
 	public static final StreamCodec<FriendlyByteBuf, SyncHookedMovementDeltaPayload> CODEC = StreamCodec.composite(
 			ByteBufCodecs.VAR_INT, SyncHookedMovementDeltaPayload::entityId,
 			Vec3.STREAM_CODEC, SyncHookedMovementDeltaPayload::delta,
-			SyncHookedMovementDeltaPayload::new);
+			SyncHookedMovementDeltaPayload::new
+	);
 
 	@Override
 	public Type<SyncHookedMovementDeltaPayload> type() {

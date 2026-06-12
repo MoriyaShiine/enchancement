@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.common.payload;
 
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
 import moriyashiine.strawberrylib.api.objects.enums.PayloadTarget;
@@ -23,7 +23,8 @@ public record AirJumpPayload(int entityId) implements CustomPacketPayload {
 	public static final Type<AirJumpPayload> TYPE = new Type<>(Enchancement.id("air_jump"));
 	public static final StreamCodec<FriendlyByteBuf, AirJumpPayload> CODEC = StreamCodec.composite(
 			ByteBufCodecs.VAR_INT, AirJumpPayload::entityId,
-			AirJumpPayload::new);
+			AirJumpPayload::new
+	);
 
 	@Override
 	public Type<AirJumpPayload> type() {
@@ -38,9 +39,9 @@ public record AirJumpPayload(int entityId) implements CustomPacketPayload {
 		@Override
 		public void receive(AirJumpPayload payload, ServerPlayNetworking.Context context) {
 			Entity entity = context.player().level().getEntity(payload.entityId());
-			ModEntityComponents.AIR_JUMP.maybeGet(entity).ifPresent(airJumpComponent -> {
-				if (airJumpComponent.hasEffect() && airJumpComponent.canUse()) {
-					airJumpComponent.use();
+			EnchancementEntityComponents.AIR_JUMP.maybeGet(entity).ifPresent(airJump -> {
+				if (airJump.hasEffect() && airJump.canUse()) {
+					airJump.use();
 					SLibUtils.addParticles(entity, ParticleTypes.CLOUD, 8, ParticleAnchor.BASE, PayloadTarget.OTHERS, ParticleVelocity.ZERO);
 				}
 			});

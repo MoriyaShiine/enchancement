@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.config.rebalanceenchantments.client;
 
 import moriyashiine.enchancement.client.renderer.entity.state.EnchantedFireRenderState;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.world.entity.Entity;
@@ -19,7 +19,7 @@ public class EntityRendererMixin<T extends Entity, S extends EntityRenderState> 
 	@Inject(method = "extractRenderState", at = @At("TAIL"))
 	private void enchancement$rebalanceEnchantments(T entity, S state, float partialTicks, CallbackInfo ci) {
 		EnchantedFireRenderState enchantedFireRenderState = new EnchantedFireRenderState();
-		ModEntityComponents.IGNITED.maybeGet(entity).ifPresent(ignitedComponent -> enchantedFireRenderState.renderEnchantedFire = ignitedComponent.isIgnited());
+		EnchancementEntityComponents.IGNITED.maybeGet(entity).ifPresent(ignited -> enchantedFireRenderState.renderEnchantedFire = ignited.isIgnited());
 		state.setData(EnchantedFireRenderState.KEY, enchantedFireRenderState);
 	}
 }

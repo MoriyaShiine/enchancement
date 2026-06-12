@@ -8,7 +8,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import moriyashiine.enchancement.client.event.enchantmenteffectcomponenttype.WideMiningClientEvent;
 import moriyashiine.enchancement.common.component.level.WideMiningComponent;
 import moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype.WideMiningEvent;
-import moriyashiine.enchancement.common.init.ModLevelComponents;
+import moriyashiine.enchancement.common.init.EnchancementLevelComponents;
 import moriyashiine.enchancement.common.payload.UpdateWideMiningEntryPayload;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
@@ -20,6 +20,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -45,7 +46,7 @@ public abstract class MultiPlayerGameModeMixin {
 	private void enchancement$wideMining(BlockPos pos, Direction direction, CallbackInfoReturnable<Boolean> cir, @Local(name = "state") BlockState state) {
 		if (minecraft.player != null && WideMiningEvent.canActivate(minecraft.player, minecraft.player.getMainHandItem(), state)) {
 			WideMiningComponent.Entry entry = WideMiningClientEvent.createEntry(minecraft.player, direction, minecraft.player.getMainHandItem(), minecraft.level, pos);
-			if (WideMiningEvent.isValid(entry.blocks(), minecraft.player.getMainHandItem()) && ModLevelComponents.WIDE_MINING.get(minecraft.level).addEntry(entry)) {
+			if (WideMiningEvent.isValid(entry.blocks(), minecraft.player.getMainHandItem()) && EnchancementLevelComponents.WIDE_MINING.get(minecraft.level).addEntry(entry)) {
 				UpdateWideMiningEntryPayload.send(entry, true);
 			}
 		}
@@ -53,9 +54,9 @@ public abstract class MultiPlayerGameModeMixin {
 
 	@Inject(method = "stopDestroyBlock", at = @At("TAIL"))
 	private void enchancement$wideMining(CallbackInfo ci) {
-		WideMiningComponent wideMiningComponent = ModLevelComponents.WIDE_MINING.get(minecraft.level);
-		WideMiningComponent.Entry entry = wideMiningComponent.getEntry(minecraft.player);
-		if (entry != null && wideMiningComponent.removeEntry(entry.player())) {
+		WideMiningComponent wideMining = EnchancementLevelComponents.WIDE_MINING.get(minecraft.level);
+		WideMiningComponent.Entry entry = wideMining.getEntry(minecraft.player);
+		if (entry != null && wideMining.removeEntry(entry.player())) {
 			UpdateWideMiningEntryPayload.send(entry, false);
 		}
 	}
@@ -68,7 +69,7 @@ public abstract class MultiPlayerGameModeMixin {
 				callingAgain = true;
 				WideMiningComponent.Entry entry = WideMiningClientEvent.createEntry(player, blockHit.getDirection(), player.getMainHandItem(), player.level(), blockHit.getBlockPos());
 				if (WideMiningEvent.isValid(entry.blocks(), stack)) {
-					entry.blocks().forEach(pos -> useItemOn(player, hand, new BlockHitResult(pos.getCenter(), blockHit.getDirection(), pos, blockHit.isInside(), blockHit.isWorldBorderHit())));
+					entry.blocks().forEach(pos -> useItemOn(player, hand, new BlockHitResult(Vec3.atCenterOf(pos), blockHit.getDirection(), pos, blockHit.isInside(), blockHit.isWorldBorderHit())));
 				}
 				callingAgain = false;
 			}

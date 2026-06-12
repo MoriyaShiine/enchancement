@@ -109,12 +109,12 @@ public class HoneyTrailComponent implements AutoSyncedComponent, CommonTickingCo
 
 	public static class HoneySpot {
 		public static final Codec<HoneySpot> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-						UUIDUtil.AUTHLIB_CODEC.fieldOf("owner_id").forGetter(HoneySpot::getOwnerId),
-						Vec3.CODEC.fieldOf("pos").forGetter(HoneySpot::getPos),
-						BlockPos.CODEC.fieldOf("block_pos").forGetter(HoneySpot::getBlockPos),
-						Codec.INT.fieldOf("age").forGetter(HoneySpot::getAge),
-						Codec.INT.fieldOf("max_age").forGetter(HoneySpot::getMaxAge))
-				.apply(instance, HoneySpot::new));
+				UUIDUtil.AUTHLIB_CODEC.fieldOf("owner_id").forGetter(HoneySpot::getOwnerId),
+				Vec3.CODEC.fieldOf("pos").forGetter(HoneySpot::getPos),
+				BlockPos.CODEC.fieldOf("block_pos").forGetter(HoneySpot::getBlockPos),
+				Codec.INT.fieldOf("age").forGetter(HoneySpot::getAge),
+				Codec.INT.fieldOf("max_age").forGetter(HoneySpot::getMaxAge)
+		).apply(instance, HoneySpot::new));
 
 		private final UUID ownerId;
 		private final Vec3 pos;

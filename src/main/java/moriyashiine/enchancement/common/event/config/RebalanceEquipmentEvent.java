@@ -4,10 +4,10 @@
 
 package moriyashiine.enchancement.common.event.config;
 
-import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.tag.ModDamageTypeTags;
-import moriyashiine.enchancement.common.tag.ModEnchantmentTags;
+import moriyashiine.enchancement.common.EnchancementConfig;
+import moriyashiine.enchancement.common.init.EnchancementSoundEvents;
+import moriyashiine.enchancement.common.tag.EnchancementDamageTypeTags;
+import moriyashiine.enchancement.common.tag.EnchancementEnchantmentTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.util.enchantment.effect.MaceEffect;
 import moriyashiine.strawberrylib.api.event.TickEntityEvent;
@@ -43,7 +43,7 @@ public class RebalanceEquipmentEvent {
 	private static class AllowComponent implements DefaultItemComponentEvents.ModifyCallback {
 		@Override
 		public void modify(DefaultItemComponentEvents.ModifyContext context) {
-			if (ModConfig.rebalanceEquipment) {
+			if (EnchancementConfig.rebalanceEquipment) {
 				context.modify(item -> EnchancementUtil.isAnimalArmor(item.getDefaultInstance()) || item == Items.SADDLE, (builder, _) -> builder.set(DataComponents.ENCHANTABLE, new Enchantable(1)));
 			}
 		}
@@ -52,11 +52,11 @@ public class RebalanceEquipmentEvent {
 	private static class AllowEnchanting implements EnchantmentEvents.AllowEnchanting {
 		@Override
 		public TriState allowEnchanting(Holder<Enchantment> enchantment, ItemStack target, EnchantingContext enchantingContext) {
-			if (ModConfig.rebalanceEquipment) {
-				if (EnchancementUtil.isAnimalArmor(target) && enchantment.is(ModEnchantmentTags.ANIMAL_ARMOR_ENCHANTMENTS)) {
+			if (EnchancementConfig.rebalanceEquipment) {
+				if (EnchancementUtil.isAnimalArmor(target) && enchantment.is(EnchancementEnchantmentTags.ANIMAL_ARMOR_ENCHANTMENTS)) {
 					return TriState.TRUE;
 				}
-				if (target.is(Items.SADDLE) && enchantment.is(ModEnchantmentTags.SADDLE_ENCHANTMENTS)) {
+				if (target.is(Items.SADDLE) && enchantment.is(EnchancementEnchantmentTags.SADDLE_ENCHANTMENTS)) {
 					return TriState.TRUE;
 				}
 			}
@@ -67,7 +67,7 @@ public class RebalanceEquipmentEvent {
 	private static class Interrupt implements ServerLivingEntityEvents.AfterDamage {
 		@Override
 		public void afterDamage(LivingEntity entity, DamageSource source, float baseDamageTaken, float damageTaken, boolean blocked) {
-			if (ModConfig.rebalanceEquipment && source.getEntity() != null && !source.is(ModDamageTypeTags.DOES_NOT_INTERRUPT) && entity instanceof Player player) {
+			if (EnchancementConfig.rebalanceEquipment && source.getEntity() != null && !source.is(EnchancementDamageTypeTags.DOES_NOT_INTERRUPT) && entity instanceof Player player) {
 				if (isMaceOrTrident(player)) {
 					player.getCooldowns().addCooldown(entity.getUseItem(), 20);
 					entity.releaseUsingItem();
@@ -84,13 +84,13 @@ public class RebalanceEquipmentEvent {
 	private static class Tick implements TickEntityEvent {
 		@Override
 		public void tick(Level level, Entity entity) {
-			if (ModConfig.rebalanceEquipment && entity instanceof Player player) {
+			if (EnchancementConfig.rebalanceEquipment && entity instanceof Player player) {
 				ItemStack useItem = player.getUseItem();
 				if (player.getTicksUsingItem() == BowItem.MAX_DRAW_DURATION && useItem.is(ItemTags.BOW_ENCHANTABLE)) {
-					SLibUtils.playSound(entity, ModSoundEvents.BOW_READY);
+					SLibUtils.playSound(entity, EnchancementSoundEvents.BOW_READY);
 				}
 				if (player.getTicksUsingItem() == EnchancementUtil.getMaceOrTridentChargeTime(useItem) && isMaceOrTrident(player)) {
-					SLibUtils.playSound(entity, useItem.is(ItemTags.MACE_ENCHANTABLE) ? ModSoundEvents.MACE_READY : ModSoundEvents.TRIDENT_READY);
+					SLibUtils.playSound(entity, useItem.is(ItemTags.MACE_ENCHANTABLE) ? EnchancementSoundEvents.MACE_READY : EnchancementSoundEvents.TRIDENT_READY);
 				}
 			}
 		}

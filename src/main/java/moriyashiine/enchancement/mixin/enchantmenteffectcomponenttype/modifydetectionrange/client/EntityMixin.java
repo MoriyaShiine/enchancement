@@ -7,7 +7,7 @@ package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.modifydet
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import moriyashiine.enchancement.client.event.enchantmenteffectcomponenttype.EntityXrayClientEvent;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,7 +26,7 @@ public class EntityMixin {
 	@Inject(method = "baseTick", at = @At("TAIL"))
 	private void enchancement$modifyDetectionRange(CallbackInfo ci) {
 		if ((Object) this instanceof LivingEntity living && !living.slib$isPlayer()) {
-			detectionRangeModifier = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.MODIFY_DETECTION_RANGE, living, (float) 1);
+			detectionRangeModifier = EnchancementUtil.getValue(EnchancementEnchantmentEffectComponentTypes.MODIFY_DETECTION_RANGE, living, (float) 1);
 		}
 	}
 

@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.bounce;
 
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -24,7 +24,7 @@ public class LivingEntityMixin {
 	@SuppressWarnings("unchecked")
 	@ModifyArg(method = "checkFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;sendParticles(Lnet/minecraft/core/particles/ParticleOptions;DDDIDDDD)I"))
 	private <T extends ParticleOptions> T enchancement$bounce(T value) {
-		if (EnchancementUtil.hasAnyEnchantmentsWith((LivingEntity) (Object) this, ModEnchantmentEffectComponentTypes.BOUNCE)) {
+		if (EnchancementUtil.hasAnyEnchantmentsWith((LivingEntity) (Object) this, EnchancementEnchantmentEffectComponentTypes.BOUNCE)) {
 			return (T) SLIME_PARTICLE;
 		}
 		return value;

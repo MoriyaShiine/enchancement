@@ -4,8 +4,8 @@
 
 package moriyashiine.enchancement.common.component.entity.config;
 
-import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.init.ModComponentTypes;
+import moriyashiine.enchancement.common.EnchancementConfig;
+import moriyashiine.enchancement.common.init.EnchancementDataComponents;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffects;
@@ -43,9 +43,9 @@ public class AirMobilityComponent implements CommonTickingComponent {
 		if (stack.isEmpty()) {
 			stack = obj.getItemBySlot(EquipmentSlot.BODY);
 		}
-		if (ModConfig.toggleablePassives && stack.getOrDefault(ModComponentTypes.TOGGLEABLE_PASSIVE, false)) {
+		if (EnchancementConfig.toggleablePassives && stack.getOrDefault(EnchancementDataComponents.TOGGLEABLE_PASSIVE, false)) {
 			if (!stack.isEnchanted()) {
-				stack.remove(ModComponentTypes.TOGGLEABLE_PASSIVE);
+				stack.remove(EnchancementDataComponents.TOGGLEABLE_PASSIVE);
 				return;
 			}
 			if (resetBypassTicks > 0) {
@@ -55,7 +55,7 @@ public class AirMobilityComponent implements CommonTickingComponent {
 				if (resetBypassTicks == 0) {
 					airTicks = 0;
 				}
-			} else if (SLibUtils.isGroundedOrAirborne(obj) && SLibUtils.isSufficientlyHigh(obj, 1)) {
+			} else if (SLibUtils.hasNormalMovement(obj) && SLibUtils.isSufficientlyHigh(obj, 1)) {
 				airTicks++;
 			}
 		} else {

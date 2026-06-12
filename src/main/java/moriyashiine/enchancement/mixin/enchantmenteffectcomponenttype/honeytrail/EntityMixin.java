@@ -6,7 +6,7 @@ package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.honeytrai
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import moriyashiine.enchancement.common.component.level.HoneyTrailComponent;
-import moriyashiine.enchancement.common.init.ModLevelComponents;
+import moriyashiine.enchancement.common.init.EnchancementLevelComponents;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -43,8 +43,8 @@ public abstract class EntityMixin {
 	@SuppressWarnings("ConstantValue")
 	@Unique
 	private boolean inHoneySpot() {
-		HoneyTrailComponent honeyTrailComponent = ModLevelComponents.HONEY_TRAIL.get(level());
-		for (HoneyTrailComponent.HoneySpot spot : honeyTrailComponent.getHoneySpots()) {
+		HoneyTrailComponent honeyTrail = EnchancementLevelComponents.HONEY_TRAIL.get(level());
+		for (HoneyTrailComponent.HoneySpot spot : honeyTrail.getHoneySpots()) {
 			if (spot.getBox().contains(position()) && SLibUtils.shouldHurt(level().getEntity(spot.getOwnerId()), (Entity) (Object) this)) {
 				return true;
 			}

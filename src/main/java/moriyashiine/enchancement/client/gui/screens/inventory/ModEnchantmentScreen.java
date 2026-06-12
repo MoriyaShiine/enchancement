@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.client.gui.screens.inventory;
 
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.util.config.OverhaulMode;
 import moriyashiine.enchancement.common.world.inventory.ModEnchantmentMenu;
@@ -292,7 +292,7 @@ public class ModEnchantmentScreen extends AbstractContainerScreen<ModEnchantment
 	}
 
 	private void extractChiseledModeWarning(GuiGraphicsExtractor graphics, int mouseX, int mouseY, int left, int top) {
-		if (ModConfig.overhaulEnchanting == OverhaulMode.CHISELED && receivedPacket && menu.chiseledEnchantments.isEmpty()) {
+		if (EnchancementConfig.overhaulEnchanting == OverhaulMode.CHISELED && receivedPacket && menu.chiseledEnchantments.isEmpty()) {
 			if (isInChiseledWarningBounds(left, top, mouseX, mouseY)) {
 				graphics.setTooltipForNextFrame(font, Component.translatable("tooltip.enchancement.no_chiseled_enchantments").withStyle(ChatFormatting.RED), mouseX, mouseY);
 			}

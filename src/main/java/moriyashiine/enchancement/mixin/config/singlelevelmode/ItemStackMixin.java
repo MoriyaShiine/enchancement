@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.config.singlelevelmode;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
@@ -21,7 +21,7 @@ public abstract class ItemStackMixin {
 	@SuppressWarnings("ConstantValue")
 	@ModifyReturnValue(method = "getRarity", at = @At("RETURN"))
 	private Rarity enchancement$singleLevelMode(Rarity original) {
-		if (ModConfig.singleLevelMode && isEnchanted() && !EnchancementUtil.hasWeakEnchantments((ItemStack) (Object) this)) {
+		if (EnchancementConfig.singleLevelMode && isEnchanted() && !EnchancementUtil.hasWeakEnchantments((ItemStack) (Object) this)) {
 			return Rarity.values()[Math.min(original.ordinal() + 1, Rarity.values().length - 1)];
 		}
 		return original;

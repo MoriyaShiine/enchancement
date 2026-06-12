@@ -6,11 +6,11 @@ package moriyashiine.enchancement.common.component.entity.enchantmenteffectcompo
 
 import moriyashiine.enchancement.api.event.CappedMultiplyDeltaMovementEvent;
 import moriyashiine.enchancement.client.EnchancementClient;
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.util.PushComponent;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementSoundEvents;
 import moriyashiine.enchancement.common.payload.DirectionBurstPayload;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.world.item.effects.DirectionBurstEffect;
@@ -71,7 +71,7 @@ public class DirectionBurstComponent extends PushComponent {
 					ticksLeftToPressActivationKey--;
 				}
 				if (pressingKey && !wasPressingKey && canUse()) {
-					if (!ModConfig.doublePressDirectionBurst || ticksLeftToPressActivationKey > 0) {
+					if (!EnchancementConfig.doublePressDirectionBurst || ticksLeftToPressActivationKey > 0) {
 						ticksLeftToPressActivationKey = 0;
 						Vec3 inputDelta = getDeltaMovementFromInput();
 						if (inputDelta != Vec3.ZERO) {
@@ -91,12 +91,12 @@ public class DirectionBurstComponent extends PushComponent {
 
 	@Override
 	public void sync() {
-		ModEntityComponents.DIRECTION_BURST.sync(obj);
+		EnchancementEntityComponents.DIRECTION_BURST.sync(obj);
 	}
 
 	@Override
 	public DataComponentType<?> getEffectType() {
-		return ModEnchantmentEffectComponentTypes.DIRECTION_BURST;
+		return EnchancementEnchantmentEffectComponentTypes.DIRECTION_BURST;
 	}
 
 	@Override
@@ -118,7 +118,7 @@ public class DirectionBurstComponent extends PushComponent {
 	}
 
 	public boolean canUse() {
-		return cooldown == 0 && SLibUtils.isGroundedOrAirborne(obj, obj.is(EntityTypeTags.AQUATIC));
+		return cooldown == 0 && SLibUtils.hasNormalMovement(obj, obj.is(EntityTypeTags.AQUATIC));
 	}
 
 	public boolean preventFalling() {
@@ -133,10 +133,10 @@ public class DirectionBurstComponent extends PushComponent {
 		if (obj.canSimulateMovement()) {
 			obj.setDeltaMovement(delta.x(), 0, delta.z());
 		}
-		obj.playSound(ModSoundEvents.GENERIC_STRAFE, 1, 1);
+		obj.playSound(EnchancementSoundEvents.GENERIC_STRAFE, 1, 1);
 		obj.gameEvent(GameEvent.ENTITY_ACTION);
 		EnchancementUtil.resetFallDistance(obj);
-		ModEntityComponents.AIR_MOBILITY.get(obj).resetTicksInAir();
+		EnchancementEntityComponents.AIR_MOBILITY.get(obj).resetTicksInAir();
 	}
 
 	public Vec3 createDelta(Vec3 inputDelta) {
@@ -161,7 +161,7 @@ public class DirectionBurstComponent extends PushComponent {
 		if (options.keyRight.isDown()) {
 			delta = new Vec3(0, 0, strength);
 		}
-		if (ModConfig.inputlessDirectionBurst && !obj.onGround() && delta.equals(Vec3.ZERO)) {
+		if (EnchancementConfig.inputlessDirectionBurst && !obj.onGround() && delta.equals(Vec3.ZERO)) {
 			delta = new Vec3(strength, 0, 0);
 		}
 		return delta;

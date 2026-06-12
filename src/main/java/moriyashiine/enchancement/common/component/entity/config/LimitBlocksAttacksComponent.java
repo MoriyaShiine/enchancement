@@ -8,7 +8,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
@@ -74,7 +74,7 @@ public class LimitBlocksAttacksComponent implements AutoSyncedComponent, CommonT
 	}
 
 	public void sync() {
-		ModEntityComponents.LIMIT_BLOCKS_ATTACKS.sync(obj);
+		EnchancementEntityComponents.LIMIT_BLOCKS_ATTACKS.sync(obj);
 	}
 
 	public int getBarWidth(ItemStack stack) {
@@ -96,8 +96,8 @@ public class LimitBlocksAttacksComponent implements AutoSyncedComponent, CommonT
 
 	private record Charge(Holder<Item> item, int charge) {
 		private static final Codec<Charge> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-						Item.CODEC.fieldOf("drops").forGetter(Charge::item),
-						Codec.INT.fieldOf("charge").forGetter(Charge::charge))
-				.apply(instance, Charge::new));
+				Item.CODEC.fieldOf("drops").forGetter(Charge::item),
+				Codec.INT.fieldOf("charge").forGetter(Charge::charge)
+		).apply(instance, Charge::new));
 	}
 }

@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.client.payload;
 
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.init.ModParticleTypes;
+import moriyashiine.enchancement.common.init.EnchancementParticleTypes;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -20,7 +20,8 @@ public record AddMoltenParticlesPayload(BlockPos pos) implements CustomPacketPay
 	public static final Type<AddMoltenParticlesPayload> TYPE = new Type<>(Enchancement.id("add_molten_particles"));
 	public static final StreamCodec<FriendlyByteBuf, AddMoltenParticlesPayload> CODEC = StreamCodec.composite(
 			BlockPos.STREAM_CODEC, AddMoltenParticlesPayload::pos,
-			AddMoltenParticlesPayload::new);
+			AddMoltenParticlesPayload::new
+	);
 
 	@Override
 	public Type<AddMoltenParticlesPayload> type() {
@@ -37,7 +38,7 @@ public record AddMoltenParticlesPayload(BlockPos pos) implements CustomPacketPay
 			ClientLevel level = context.client().level;
 			if (level != null) {
 				for (int i = 0; i < 8; i++) {
-					level.addParticle(ModParticleTypes.SHORT_SMALL_FLAME, payload.pos().getX() + 0.5 + Mth.nextDouble(level.getRandom(), -0.5, 0.5F), payload.pos().getY() + 0.5 + Mth.nextDouble(level.getRandom(), -0.5, 0.5F), payload.pos().getZ() + 0.5 + Mth.nextDouble(level.getRandom(), -0.5, 0.5F), 0, 0, 0);
+					level.addParticle(EnchancementParticleTypes.SHORT_SMALL_FLAME, payload.pos().getX() + 0.5 + Mth.nextDouble(level.getRandom(), -0.5, 0.5F), payload.pos().getY() + 0.5 + Mth.nextDouble(level.getRandom(), -0.5, 0.5F), payload.pos().getZ() + 0.5 + Mth.nextDouble(level.getRandom(), -0.5, 0.5F), 0, 0, 0);
 				}
 			}
 		}

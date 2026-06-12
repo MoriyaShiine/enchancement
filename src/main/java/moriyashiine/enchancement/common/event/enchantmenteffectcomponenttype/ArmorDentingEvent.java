@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.event.ModifyStackDamageEvent;
 import net.minecraft.server.level.ServerLevel;
@@ -21,7 +21,7 @@ public class ArmorDentingEvent implements ModifyStackDamageEvent {
 	@Override
 	public float modify(ServerLevel level, ItemStack stack, Entity victim, DamageSource source, float damage) {
 		if (EnchancementUtil.shouldApplyWeaponEffect() && victim instanceof LivingEntity living) {
-			float modifier = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.ARMOR_DENTING, level, stack, 0);
+			float modifier = EnchancementUtil.getValue(EnchancementEnchantmentEffectComponentTypes.ARMOR_DENTING, level, stack, 0);
 			if (modifier != 0) {
 				return living.getArmorValue() * modifier;
 			}

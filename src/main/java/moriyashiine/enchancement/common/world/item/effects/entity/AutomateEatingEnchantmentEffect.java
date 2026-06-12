@@ -6,8 +6,8 @@ package moriyashiine.enchancement.common.world.item.effects.entity;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import moriyashiine.enchancement.common.tag.ModItemTags;
-import net.minecraft.advancements.criterion.MinMaxBounds;
+import moriyashiine.enchancement.common.tag.EnchancementItemTags;
+import net.minecraft.advancements.predicates.MinMaxBounds;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -20,8 +20,8 @@ import net.minecraft.world.phys.Vec3;
 
 public record AutomateEatingEnchantmentEffect(MinMaxBounds.Ints hungerRange) implements EnchantmentEntityEffect {
 	public static final MapCodec<AutomateEatingEnchantmentEffect> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-					MinMaxBounds.Ints.CODEC.fieldOf("hunger_range").forGetter(AutomateEatingEnchantmentEffect::hungerRange))
-			.apply(instance, AutomateEatingEnchantmentEffect::new));
+			MinMaxBounds.Ints.CODEC.fieldOf("hunger_range").forGetter(AutomateEatingEnchantmentEffect::hungerRange)
+	).apply(instance, AutomateEatingEnchantmentEffect::new));
 
 	@Override
 	public MapCodec<AutomateEatingEnchantmentEffect> codec() {
@@ -79,6 +79,6 @@ public record AutomateEatingEnchantmentEffect(MinMaxBounds.Ints hungerRange) imp
 //				}
 //			}
 //		}
-		return !stack.is(ModItemTags.CANNOT_AUTOMATICALLY_CONSUME);
+		return !stack.is(EnchancementItemTags.CANNOT_AUTOMATICALLY_CONSUME);
 	}
 }

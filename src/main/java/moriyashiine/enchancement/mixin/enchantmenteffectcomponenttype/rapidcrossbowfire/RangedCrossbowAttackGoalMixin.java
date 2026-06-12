@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.rapidcrossbowfire;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
 import net.minecraft.world.entity.ai.goal.RangedCrossbowAttackGoal;
 import net.minecraft.world.entity.monster.CrossbowAttackMob;
 import net.minecraft.world.entity.monster.Monster;
@@ -29,7 +29,7 @@ public class RangedCrossbowAttackGoalMixin<T extends Monster & CrossbowAttackMob
 	@Inject(method = "stop", at = @At("TAIL"))
 	private void enchancement$rapidCrossbowFire(CallbackInfo ci) {
 		ItemStack stack = mob.getItemInHand(ProjectileUtil.getWeaponHoldingHand(mob, Items.CROSSBOW));
-		if (EnchantmentHelper.has(stack, ModEnchantmentEffectComponentTypes.RAPID_CROSSBOW_FIRE)) {
+		if (EnchantmentHelper.has(stack, EnchancementEnchantmentEffectComponentTypes.RAPID_CROSSBOW_FIRE)) {
 			stack.releaseUsing(mob.level(), mob, mob.getUseItemRemainingTicks());
 		}
 	}
@@ -37,7 +37,7 @@ public class RangedCrossbowAttackGoalMixin<T extends Monster & CrossbowAttackMob
 	@Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ai/control/LookControl;setLookAt(Lnet/minecraft/world/entity/Entity;FF)V", shift = At.Shift.AFTER), cancellable = true)
 	private void enchancement$rapidCrossbowFire(CallbackInfo ci, @Local(name = "hasLineOfSight") boolean hasLineOfSight) {
 		ItemStack stack = mob.getItemInHand(ProjectileUtil.getWeaponHoldingHand(mob, Items.CROSSBOW));
-		if (EnchantmentHelper.has(stack, ModEnchantmentEffectComponentTypes.RAPID_CROSSBOW_FIRE)) {
+		if (EnchantmentHelper.has(stack, EnchancementEnchantmentEffectComponentTypes.RAPID_CROSSBOW_FIRE)) {
 			if (hasLineOfSight) {
 				mob.startUsingItem(ProjectileUtil.getWeaponHoldingHand(mob, Items.CROSSBOW));
 			}

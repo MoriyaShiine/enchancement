@@ -6,7 +6,7 @@ package moriyashiine.enchancement.client.gui.hud;
 
 import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.AirJumpComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -29,16 +29,16 @@ public class AirJumpHudElement implements HudElement {
 	public void extractRenderState(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
 		Player player = Minecraft.getInstance().player;
 		if (player != null && !player.isSpectator()) {
-			AirJumpComponent airJumpComponent = ModEntityComponents.AIR_JUMP.get(player.getControlledVehicle() instanceof LivingEntity living ? living : player);
-			if (airJumpComponent.hasEffect()) {
-				int jumpsLeft = airJumpComponent.getJumpsLeft();
-				if (jumpsLeft < airJumpComponent.getMaxJumps()) {
+			AirJumpComponent airJump = EnchancementEntityComponents.AIR_JUMP.get(player.getControlledVehicle() instanceof LivingEntity living ? living : player);
+			if (airJump.hasEffect()) {
+				int jumpsLeft = airJump.getJumpsLeft();
+				if (jumpsLeft < airJump.getMaxJumps()) {
 					Identifier first = getTexture(jumpsLeft + 1);
 					Identifier second = getTexture(jumpsLeft);
 					int x = graphics.guiWidth() / 2 - 5, y = graphics.guiHeight() / 2 + 27;
-					if (airJumpComponent.getCooldown() < airJumpComponent.getLastCooldown()) {
+					if (airJump.getCooldown() < airJump.getLastCooldown()) {
 						graphics.blitSprite(RenderPipelines.GUI_TEXTURED, first, x, y, 9, 9);
-						graphics.blitSprite(RenderPipelines.GUI_TEXTURED, second, 9, 9, 0, 0, x, y, 9, (int) ((airJumpComponent.getCooldown() / (float) airJumpComponent.getLastCooldown()) * 9));
+						graphics.blitSprite(RenderPipelines.GUI_TEXTURED, second, 9, 9, 0, 0, x, y, 9, (int) ((airJump.getCooldown() / (float) airJump.getLastCooldown()) * 9));
 					} else {
 						graphics.blitSprite(RenderPipelines.GUI_TEXTURED, second, x, y, 9, 9);
 					}

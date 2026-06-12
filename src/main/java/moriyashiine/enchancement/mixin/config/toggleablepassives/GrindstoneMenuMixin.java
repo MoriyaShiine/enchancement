@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.config.toggleablepassives;
 
-import moriyashiine.enchancement.common.init.ModComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementDataComponents;
 import net.minecraft.world.inventory.GrindstoneMenu;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,8 +16,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class GrindstoneMenuMixin {
 	@Inject(method = "removeNonCursesFrom", at = @At("TAIL"))
 	private void enchancement$toggleablePassives(ItemStack item, CallbackInfoReturnable<ItemStack> cir) {
-		if (!item.isEnchanted() && item.has(ModComponentTypes.TOGGLEABLE_PASSIVE)) {
-			item.remove(ModComponentTypes.TOGGLEABLE_PASSIVE);
+		if (!item.isEnchanted() && item.has(EnchancementDataComponents.TOGGLEABLE_PASSIVE)) {
+			item.remove(EnchancementDataComponents.TOGGLEABLE_PASSIVE);
 		}
 	}
 }

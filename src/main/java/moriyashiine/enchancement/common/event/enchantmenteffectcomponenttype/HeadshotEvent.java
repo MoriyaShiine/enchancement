@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.event.ModifyStackDamageEvent;
 import net.minecraft.server.level.ServerLevel;
@@ -22,7 +22,7 @@ public class HeadshotEvent implements ModifyStackDamageEvent {
 	@Override
 	public float modify(ServerLevel level, ItemStack stack, Entity victim, DamageSource source, float damage) {
 		if (EnchancementUtil.shouldApplyWeaponEffect() && source.getDirectEntity() instanceof LivingEntity attacker && isHeadshot(attacker, victim)) {
-			return EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.HEADSHOT, level, stack, 0);
+			return EnchancementUtil.getValue(EnchancementEnchantmentEffectComponentTypes.HEADSHOT, level, stack, 0);
 		}
 		return 0;
 	}

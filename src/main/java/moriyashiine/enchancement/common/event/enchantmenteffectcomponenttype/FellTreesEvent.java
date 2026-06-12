@@ -4,11 +4,11 @@
 
 package moriyashiine.enchancement.common.event.enchantmenteffectcomponenttype;
 
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import moriyashiine.enchancement.common.component.level.FellTreesComponent;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import moriyashiine.enchancement.common.init.ModLevelComponents;
-import moriyashiine.enchancement.common.tag.ModBlockTags;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementLevelComponents;
+import moriyashiine.enchancement.common.tag.EnchancementBlockTags;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.event.ModifyDestroySpeedEvent;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
@@ -39,7 +39,7 @@ public class FellTreesEvent {
 	public static final List<Entry> ENTRIES = new ArrayList<>();
 
 	private static List<BlockPos> gatherTree(List<BlockPos> tree, BlockGetter level, BlockPos.MutableBlockPos pos, Block original) {
-		if (tree.size() < ModConfig.maxFellTreesBlocks) {
+		if (tree.size() < EnchancementConfig.maxFellTreesBlocks) {
 			int originalX = pos.getX(), originalY = pos.getY(), originalZ = pos.getZ();
 			for (int x = -1; x <= 1; x++) {
 				for (int y = -1; y <= 1; y++) {
@@ -47,7 +47,7 @@ public class FellTreesEvent {
 						pos.set(originalX + x, originalY + y, originalZ + z);
 						if (!(level instanceof Level borderLevel) || borderLevel.getWorldBorder().isWithinBounds(pos)) {
 							BlockState state = level.getBlockState(pos);
-							if (state.is(ModBlockTags.FELLABLE) && !tree.contains(pos) && state.getBlock() == original) {
+							if (state.is(EnchancementBlockTags.FELLABLE) && !tree.contains(pos) && state.getBlock() == original) {
 								tree.add(pos.immutable());
 								gatherTree(tree, level, pos, original);
 							}
@@ -78,16 +78,16 @@ public class FellTreesEvent {
 		if (minX == null) {
 			return false;
 		}
-		return Math.abs(maxX - minX) < ModConfig.maxFellTreesHorizontalLength && Math.abs(maxZ - minZ) < ModConfig.maxFellTreesHorizontalLength;
+		return Math.abs(maxX - minX) < EnchancementConfig.maxFellTreesHorizontalLength && Math.abs(maxZ - minZ) < EnchancementConfig.maxFellTreesHorizontalLength;
 	}
 
 	private static boolean canActivate(Player player, ItemStack stack, BlockState state) {
-		return !player.isShiftKeyDown() && EnchantmentHelper.has(stack, ModEnchantmentEffectComponentTypes.FELL_TREES) && state.is(ModBlockTags.FELLABLE) && player.hasCorrectToolForDrops(state);
+		return !player.isShiftKeyDown() && EnchantmentHelper.has(stack, EnchancementEnchantmentEffectComponentTypes.FELL_TREES) && state.is(EnchancementBlockTags.FELLABLE) && player.hasCorrectToolForDrops(state);
 	}
 
 	private static boolean isValid(List<BlockPos> tree, ItemStack stack) {
 		if (!stack.isDamageableItem() || stack.getDamageValue() + tree.size() <= stack.getMaxDamage()) {
-			return tree.size() > 1 && tree.size() <= ModConfig.maxFellTreesBlocks && isWithinHorizontalBounds(tree);
+			return tree.size() > 1 && tree.size() <= EnchancementConfig.maxFellTreesBlocks && isWithinHorizontalBounds(tree);
 		}
 		return false;
 	}
@@ -102,7 +102,7 @@ public class FellTreesEvent {
 					ENTRIES.add(entry);
 				}
 				if (isValid(entry.tree(), stack)) {
-					float fellTreesSpeed = EnchancementUtil.getValue(ModEnchantmentEffectComponentTypes.FELL_TREES, player.getRandom(), stack, 0);
+					float fellTreesSpeed = EnchancementUtil.getValue(EnchancementEnchantmentEffectComponentTypes.FELL_TREES, player.getRandom(), stack, 0);
 					return Mth.lerp(Math.min(1, entry.tree().size() / 32F), fellTreesSpeed, fellTreesSpeed * 0.05F);
 				}
 			}
@@ -118,7 +118,7 @@ public class FellTreesEvent {
 				Entry entry = Entry.get(player);
 				if (entry != null && isValid(entry.tree(), stack)) {
 					entry.tree().sort(Comparator.comparingInt(Vec3i::getY).reversed());
-					ModLevelComponents.FELL_TREES.get(level).addTree(FellTreesComponent.Tree.of(entry.tree(), pos, stack));
+					EnchancementLevelComponents.FELL_TREES.get(level).addTree(FellTreesComponent.Tree.of(entry.tree(), pos, stack));
 					ENTRIES.remove(entry);
 					stack.hurtAndBreak(entry.tree().size(), player, EquipmentSlot.MAINHAND);
 					return false;

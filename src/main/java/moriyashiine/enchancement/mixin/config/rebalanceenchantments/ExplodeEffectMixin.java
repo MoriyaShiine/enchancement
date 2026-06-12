@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.config.rebalanceenchantments;
 
-import moriyashiine.enchancement.common.ModConfig;
+import moriyashiine.enchancement.common.EnchancementConfig;
 import net.minecraft.world.item.enchantment.effects.ExplodeEffect;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,7 +16,7 @@ import java.util.Optional;
 public class ExplodeEffectMixin {
 	@ModifyArg(method = "apply", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/SimpleExplosionDamageCalculator;<init>(ZZLjava/util/Optional;Ljava/util/Optional;)V"), index = 2)
 	private Optional<Float> enchancement$rebalanceEnchantments(Optional<Float> knockbackMultiplier) {
-		if (ModConfig.rebalanceEnchantments) {
+		if (EnchancementConfig.rebalanceEnchantments) {
 			return knockbackMultiplier.map(knockback -> knockback * 2 / 3F);
 		}
 		return knockbackMultiplier;

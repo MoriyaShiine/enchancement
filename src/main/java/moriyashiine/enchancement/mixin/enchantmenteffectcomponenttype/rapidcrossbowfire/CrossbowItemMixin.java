@@ -4,8 +4,8 @@
 
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.rapidcrossbowfire;
 
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
-import net.minecraft.advancements.CriteriaTriggers;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -30,7 +30,9 @@ import java.util.List;
 @Mixin(CrossbowItem.class)
 public abstract class CrossbowItemMixin extends ProjectileWeaponItem {
 	@Shadow
-	abstract CrossbowItem.ChargingSounds getChargingSounds(ItemStack itemStack);
+	private static CrossbowItem.ChargingSounds getChargingSounds(ItemStack itemStack) {
+		throw new UnsupportedOperationException("Implemented via mixin");
+	}
 
 	@Shadow
 	private static float getShootingPower(ChargedProjectiles projectiles) {
@@ -43,7 +45,7 @@ public abstract class CrossbowItemMixin extends ProjectileWeaponItem {
 
 	@Inject(method = "onUseTick", at = @At("HEAD"), cancellable = true)
 	private void enchancement$rapidCrossbowFire(Level level, LivingEntity entity, ItemStack itemStack, int ticksRemaining, CallbackInfo ci) {
-		if (EnchantmentHelper.has(itemStack, ModEnchantmentEffectComponentTypes.RAPID_CROSSBOW_FIRE)) {
+		if (EnchantmentHelper.has(itemStack, EnchancementEnchantmentEffectComponentTypes.RAPID_CROSSBOW_FIRE)) {
 			if (entity.isAlive()) {
 				ItemStack projectile = entity.getProjectile(itemStack);
 				if (projectile.isEmpty()) {
@@ -71,7 +73,7 @@ public abstract class CrossbowItemMixin extends ProjectileWeaponItem {
 
 	@Inject(method = "releaseUsing", at = @At("HEAD"), cancellable = true)
 	private void enchancement$rapidCrossbowFire(ItemStack itemStack, Level level, LivingEntity entity, int remainingTime, CallbackInfoReturnable<Boolean> cir) {
-		if (EnchantmentHelper.has(itemStack, ModEnchantmentEffectComponentTypes.RAPID_CROSSBOW_FIRE)) {
+		if (EnchantmentHelper.has(itemStack, EnchancementEnchantmentEffectComponentTypes.RAPID_CROSSBOW_FIRE)) {
 			itemStack.set(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.EMPTY);
 			entity.stopUsingItem();
 			cir.setReturnValue(false);

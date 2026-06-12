@@ -69,11 +69,11 @@ public class ConditionalAttributesComponent implements ServerTickingComponent {
 		removeAll = true;
 	}
 
-	public record ConditionalAttribute(Holder<Attribute> attribute, Identifier id, LootItemCondition condition) {
-		static final Codec<ConditionalAttribute> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-						Attribute.CODEC.fieldOf("attribute").forGetter(ConditionalAttribute::attribute),
-						Identifier.CODEC.fieldOf("id").forGetter(ConditionalAttribute::id),
-						LootItemCondition.DIRECT_CODEC.fieldOf("condition").forGetter(ConditionalAttribute::condition))
-				.apply(instance, ConditionalAttribute::new));
+	private record ConditionalAttribute(Holder<Attribute> attribute, Identifier id, LootItemCondition condition) {
+		private static final Codec<ConditionalAttribute> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+				Attribute.CODEC.fieldOf("attribute").forGetter(ConditionalAttribute::attribute),
+				Identifier.CODEC.fieldOf("id").forGetter(ConditionalAttribute::id),
+				LootItemCondition.DIRECT_CODEC.fieldOf("condition").forGetter(ConditionalAttribute::condition)
+		).apply(instance, ConditionalAttribute::new));
 	}
 }

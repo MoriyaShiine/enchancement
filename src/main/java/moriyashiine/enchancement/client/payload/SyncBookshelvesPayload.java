@@ -26,7 +26,8 @@ public record SyncBookshelvesPayload(Set<Holder<Enchantment>> chiseledEnchantmen
 	public static final StreamCodec<RegistryFriendlyByteBuf, SyncBookshelvesPayload> CODEC = StreamCodec.composite(
 			ByteBufCodecs.collection(HashSet::new, ByteBufCodecs.holderRegistry(Registries.ENCHANTMENT)), SyncBookshelvesPayload::chiseledEnchantments,
 			ByteBufCodecs.VAR_INT, SyncBookshelvesPayload::bookshelfCount,
-			SyncBookshelvesPayload::new);
+			SyncBookshelvesPayload::new
+	);
 
 	@Override
 	public Type<SyncBookshelvesPayload> type() {

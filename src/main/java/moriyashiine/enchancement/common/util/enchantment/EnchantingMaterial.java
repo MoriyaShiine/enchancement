@@ -43,7 +43,7 @@ public record EnchantingMaterial(Ingredient ingredient) {
 	}
 
 	public boolean test(ItemStack stack) {
-		if (ingredient() == null) {
+		if (isEmpty()) {
 			return false;
 		}
 		return ingredient().test(stack);

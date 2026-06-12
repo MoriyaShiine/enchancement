@@ -6,7 +6,7 @@ package moriyashiine.enchancement.common.world.item.effects;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -16,15 +16,15 @@ import org.apache.commons.lang3.mutable.MutableFloat;
 
 public record EMeterEffect(EnchantmentValueEffect speedMultiplier, EnchantmentValueEffect floatStrength) {
 	public static final Codec<EMeterEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-					EnchantmentValueEffect.CODEC.fieldOf("speed_multiplier").forGetter(EMeterEffect::speedMultiplier),
-					EnchantmentValueEffect.CODEC.fieldOf("float_strength").forGetter(EMeterEffect::floatStrength))
-			.apply(instance, EMeterEffect::new));
+			EnchantmentValueEffect.CODEC.fieldOf("speed_multiplier").forGetter(EMeterEffect::speedMultiplier),
+			EnchantmentValueEffect.CODEC.fieldOf("float_strength").forGetter(EMeterEffect::floatStrength)
+	).apply(instance, EMeterEffect::new));
 
 	public static float getSpeedMultiplier(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat();
 		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
 			EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
-				EMeterEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.E_METER);
+				EMeterEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.E_METER);
 				if (effect != null) {
 					mutableFloat.setValue(effect.speedMultiplier().process(level, entity.getRandom(), mutableFloat.floatValue()));
 				}
@@ -37,7 +37,7 @@ public record EMeterEffect(EnchantmentValueEffect speedMultiplier, EnchantmentVa
 		MutableFloat mutableFloat = new MutableFloat();
 		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
 			EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
-				EMeterEffect effect = enchantment.value().effects().get(ModEnchantmentEffectComponentTypes.E_METER);
+				EMeterEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.E_METER);
 				if (effect != null) {
 					mutableFloat.setValue(effect.floatStrength().process(level, entity.getRandom(), mutableFloat.floatValue()));
 				}

@@ -4,14 +4,14 @@
 
 package moriyashiine.enchancement.common.event.config;
 
-import moriyashiine.enchancement.common.ModConfig;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.EnchancementConfig;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.fabricmc.fabric.api.item.v1.EnchantmentEvents;
 import net.fabricmc.fabric.api.util.TriState;
-import net.minecraft.advancements.criterion.DamageSourcePredicate;
+import net.minecraft.advancements.predicates.DamageSourcePredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.TypedDataComponent;
@@ -45,7 +45,7 @@ public class RebalanceEnchantmentsEvent {
 	private static class AllowEnchanting implements EnchantmentEvents.AllowEnchanting {
 		@Override
 		public TriState allowEnchanting(Holder<Enchantment> enchantment, ItemStack target, EnchantingContext enchantingContext) {
-			if (ModConfig.rebalanceEnchantments && enchantment.is(Enchantments.FIRE_ASPECT)) {
+			if (EnchancementConfig.rebalanceEnchantments && enchantment.is(Enchantments.FIRE_ASPECT)) {
 				if (target.is(ItemTags.MACE_ENCHANTABLE)) {
 					return TriState.FALSE;
 				} else if (target.is(ItemTags.MINING_ENCHANTABLE)) {
@@ -60,7 +60,7 @@ public class RebalanceEnchantmentsEvent {
 		@SuppressWarnings("unchecked")
 		@Override
 		public void onServerStarted(MinecraftServer server) {
-			if (ModConfig.rebalanceEnchantments) {
+			if (EnchancementConfig.rebalanceEnchantments) {
 				{
 					Enchantment channeling = server.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getValue(Enchantments.CHANNELING);
 					if (channeling != null) {
@@ -97,7 +97,7 @@ public class RebalanceEnchantmentsEvent {
 							addEffect(component, builder);
 						}
 						builder.set(
-								ModEnchantmentEffectComponentTypes.CHAIN_LIGHTNING,
+								EnchancementEnchantmentEffectComponentTypes.CHAIN_LIGHTNING,
 								List.of(new ConditionalEffect<>(new AddValue(LevelBasedValue.perLevel(0.35F)), Optional.empty()))
 						);
 						channeling.effects = builder.build();
@@ -108,7 +108,7 @@ public class RebalanceEnchantmentsEvent {
 					if (fireAspect != null) {
 						DataComponentMap.Builder builder = DataComponentMap.builder().addAll(fireAspect.effects());
 						builder.set(
-								ModEnchantmentEffectComponentTypes.SMELT_MINED_BLOCKS,
+								EnchancementEnchantmentEffectComponentTypes.SMELT_MINED_BLOCKS,
 								Unit.INSTANCE
 						);
 						fireAspect.effects = builder.build();
@@ -152,7 +152,7 @@ public class RebalanceEnchantmentsEvent {
 	private static class UseBlock implements UseBlockCallback {
 		@Override
 		public InteractionResult interact(Player player, Level level, InteractionHand hand, BlockHitResult hitResult) {
-			if (ModConfig.rebalanceEnchantments && player.isShiftKeyDown() && hasIgnite(player.getItemInHand(hand))) {
+			if (EnchancementConfig.rebalanceEnchantments && player.isShiftKeyDown() && hasIgnite(player.getItemInHand(hand))) {
 				InteractionResult result = Items.FLINT_AND_STEEL.useOn(new UseOnContext(player, hand, hitResult));
 				if (result != InteractionResult.FAIL) {
 					return result;

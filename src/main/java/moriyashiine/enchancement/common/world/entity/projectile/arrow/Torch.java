@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.world.entity.projectile.arrow;
 
-import moriyashiine.enchancement.common.init.ModEntityTypes;
+import moriyashiine.enchancement.common.init.EnchancementEntityTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -14,6 +14,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragonPart;
 import net.minecraft.world.entity.player.Player;
@@ -40,7 +41,7 @@ public class Torch extends AbstractArrow {
 	}
 
 	public Torch(Level level, LivingEntity mob, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon) {
-		super(ModEntityTypes.TORCH, mob, level, pickupItemStack, firedFromWeapon);
+		super(EnchancementEntityTypes.TORCH, mob, level, pickupItemStack, firedFromWeapon);
 		if (pickup != Pickup.ALLOWED && !(mob instanceof Player player && player.isCreative())) {
 			canFunction = false;
 		}
@@ -93,7 +94,7 @@ public class Torch extends AbstractArrow {
 		if (entity instanceof EnderDragonPart part) {
 			entity = part.parentMob;
 		}
-		if (entity instanceof LivingEntity living && entity.getType() != EntityType.ENDERMAN) {
+		if (entity instanceof LivingEntity living && entity.getType() != EntityTypes.ENDERMAN) {
 			playSound(SoundEvents.FIRE_EXTINGUISH, 1, 1);
 			if (!level().isClientSide()) {
 				EnchancementUtil.rebalanceIgniteForSeconds(living, Math.min(16, Mth.ceil(living.getRemainingFireTicks() / 20F) + ignitionTime));

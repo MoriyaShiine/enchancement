@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.slide.client;
 
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.SlideComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.ClientInput;
 import net.minecraft.client.player.KeyboardInput;
@@ -21,13 +21,13 @@ public class KeyboardInputMixin extends ClientInput {
 	private void enchancement$slide(Args args) {
 		Player player = Minecraft.getInstance().player;
 		if (player != null) {
-			SlideComponent slideComponent = ModEntityComponents.SLIDE.get(player);
-			if (slideComponent.isSliding()) {
-				if (slideComponent.getDelta().x() != 0) {
+			SlideComponent slide = EnchancementEntityComponents.SLIDE.get(player);
+			if (slide.isSliding()) {
+				if (slide.getDelta().x() != 0) {
 					args.set(0, false);
 					args.set(1, false);
 				}
-				if (slideComponent.getDelta().z() != 0) {
+				if (slide.getDelta().z() != 0) {
 					args.set(2, false);
 					args.set(3, false);
 				}

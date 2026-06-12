@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.brimstone;
 
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.monster.Monster;
@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class BrimstoneCrossbowMixin {
 	@Inject(method = "getProjectile", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ProjectileWeaponItem;getSupportedHeldProjectiles()Ljava/util/function/Predicate;"), cancellable = true)
 	private void enchancement$brimstone(ItemStack heldWeapon, CallbackInfoReturnable<ItemStack> cir) {
-		if (EnchantmentHelper.has(heldWeapon, ModEnchantmentEffectComponentTypes.BRIMSTONE)) {
+		if (EnchantmentHelper.has(heldWeapon, EnchancementEnchantmentEffectComponentTypes.BRIMSTONE)) {
 			ItemStack projectile = Items.ARROW.getDefaultInstance();
 			projectile.set(DataComponents.ITEM_NAME, Component.translatable("enchantment.enchancement.brimstone"));
 			cir.setReturnValue(projectile);

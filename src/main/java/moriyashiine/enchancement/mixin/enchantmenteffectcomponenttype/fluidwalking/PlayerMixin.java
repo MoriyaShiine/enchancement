@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.fluidwalking;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import moriyashiine.strawberrylib.api.objects.enums.SubmersionGate;
@@ -25,7 +25,7 @@ public abstract class PlayerMixin extends LivingEntity {
 
 	@ModifyReturnValue(method = "wantsToStopRiding", at = @At("RETURN"))
 	private boolean enchancement$fluidWalking(boolean original) {
-		if (original && getVehicle() instanceof LivingEntity living && EnchancementUtil.hasAnyEnchantmentsWith(living, ModEnchantmentEffectComponentTypes.FLUID_WALKING) && level().getBlockState(BlockPos.containing(living.getEyePosition())).isAir() && SLibUtils.isSubmerged(living, SubmersionGate.ALL)) {
+		if (original && getVehicle() instanceof LivingEntity living && EnchancementUtil.hasAnyEnchantmentsWith(living, EnchancementEnchantmentEffectComponentTypes.FLUID_WALKING) && level().getBlockState(BlockPos.containing(living.getEyePosition())).isAir() && SLibUtils.isSubmerged(living, SubmersionGate.ALL)) {
 			return false;
 		}
 		return original;

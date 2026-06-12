@@ -25,7 +25,8 @@ public record AddLightningDashParticlesPayload(int entityId) implements CustomPa
 	public static final Type<AddLightningDashParticlesPayload> TYPE = new Type<>(Enchancement.id("add_lightning_dash_particles"));
 	public static final StreamCodec<FriendlyByteBuf, AddLightningDashParticlesPayload> CODEC = StreamCodec.composite(
 			ByteBufCodecs.VAR_INT, AddLightningDashParticlesPayload::entityId,
-			AddLightningDashParticlesPayload::new);
+			AddLightningDashParticlesPayload::new
+	);
 
 	@Override
 	public Type<AddLightningDashParticlesPayload> type() {

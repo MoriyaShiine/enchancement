@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype;
 
-import moriyashiine.enchancement.common.init.ModEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.world.item.effects.ApplyRandomMobEffectEffect;
 import net.minecraft.core.component.DataComponents;
@@ -58,9 +58,9 @@ public class ApplyRandomMobEffectComponent implements CardinalComponent {
 	public static void maybeSet(LivingEntity user, ItemStack projectile, double durationMultiplier, @Nullable ItemStack weapon, Consumer<List<MobEffectInstance>> consumer) {
 		MutableFloat duration = new MutableFloat();
 		AtomicReference<TagKey<MobEffect>> disallowedTag = new AtomicReference<>();
-		if (weapon != null && EnchantmentHelper.has(weapon, ModEnchantmentEffectComponentTypes.APPLY_RANDOM_MOB_EFFECT)) {
+		if (weapon != null && EnchantmentHelper.has(weapon, EnchancementEnchantmentEffectComponentTypes.APPLY_RANDOM_MOB_EFFECT)) {
 			ApplyRandomMobEffectEffect.setValues(user.getRandom(), duration, disallowedTag, Collections.singleton(weapon));
-		} else if (!(user instanceof Player) && EnchancementUtil.hasAnyEnchantmentsWith(user, ModEnchantmentEffectComponentTypes.APPLY_RANDOM_MOB_EFFECT)) {
+		} else if (!(user instanceof Player) && EnchancementUtil.hasAnyEnchantmentsWith(user, EnchancementEnchantmentEffectComponentTypes.APPLY_RANDOM_MOB_EFFECT)) {
 			ApplyRandomMobEffectEffect.setValues(user.getRandom(), duration, disallowedTag, EnchancementUtil.getHeldItems(user));
 		}
 		if (duration.floatValue() != 0) {
@@ -76,7 +76,7 @@ public class ApplyRandomMobEffectComponent implements CardinalComponent {
 			}
 			while (attempts < 128) {
 				MobEffect effect = BuiltInRegistries.MOB_EFFECT.byId(user.getRandom().nextInt(BuiltInRegistries.MOB_EFFECT.size()));
-				if (effect != null && !disallowed.contains(effect) && !effect.isInstantenous()) {
+				if (effect != null && !disallowed.contains(effect) && !effect.isInstantaneous()) {
 					Optional<ResourceKey<MobEffect>> key = BuiltInRegistries.MOB_EFFECT.getResourceKey(effect);
 					if (key.isPresent() && effect.getCategory() == category && !BuiltInRegistries.MOB_EFFECT.getOrThrow(key.get()).is(disallowedTag.get())) {
 						List<MobEffectInstance> effects = new ArrayList<>();

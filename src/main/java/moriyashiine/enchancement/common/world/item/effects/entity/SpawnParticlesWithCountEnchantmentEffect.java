@@ -17,9 +17,9 @@ import net.minecraft.world.phys.Vec3;
 
 public record SpawnParticlesWithCountEnchantmentEffect(SpawnParticlesEffect effect, LevelBasedValue count) implements EnchantmentEntityEffect {
 	public static final MapCodec<SpawnParticlesWithCountEnchantmentEffect> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-					SpawnParticlesEffect.CODEC.fieldOf("effect").forGetter(SpawnParticlesWithCountEnchantmentEffect::effect),
-					LevelBasedValue.CODEC.fieldOf("count").forGetter(SpawnParticlesWithCountEnchantmentEffect::count))
-			.apply(instance, SpawnParticlesWithCountEnchantmentEffect::new));
+			SpawnParticlesEffect.CODEC.fieldOf("effect").forGetter(SpawnParticlesWithCountEnchantmentEffect::effect),
+			LevelBasedValue.CODEC.fieldOf("count").forGetter(SpawnParticlesWithCountEnchantmentEffect::count)
+	).apply(instance, SpawnParticlesWithCountEnchantmentEffect::new));
 
 	public static int countOverride = -1;
 

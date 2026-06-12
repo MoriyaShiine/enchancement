@@ -8,7 +8,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import moriyashiine.enchancement.client.reloadlistener.FrozenReloadListener;
 import moriyashiine.enchancement.client.renderer.entity.state.FrozenRenderState;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffecttype.FrozenComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -39,18 +39,18 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, S extend
 	@Inject(method = "extractRenderState(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;F)V", at = @At("TAIL"))
 	private void enchancement$freeze(T entity, S state, float partialTicks, CallbackInfo ci) {
 		FrozenRenderState frozenRenderState = new FrozenRenderState();
-		FrozenComponent frozenComponent = ModEntityComponents.FROZEN.get(entity);
-		if (frozenComponent.isFrozen()) {
+		FrozenComponent frozen = EnchancementEntityComponents.FROZEN.get(entity);
+		if (frozen.isFrozen()) {
 			frozenRenderState.frozen = true;
 			state.isFullyFrozen = false;
-			state.pose = frozenComponent.getForcedPose();
-			state.yRot = frozenComponent.getForcedYHeadRot();
-			state.bodyRot = frozenComponent.getForcedVisualRotationYInDegrees();
-			state.xRot = frozenComponent.getForcedXRot();
-			state.walkAnimationPos = frozenComponent.getForcedWalkAnimationPos();
-			state.walkAnimationSpeed = frozenComponent.getForcedWalkAnimationSpeed();
-			state.ageInTicks = frozenComponent.getForcedClientTickCount();
-		} else if (frozenComponent.isFreezing()) {
+			state.pose = frozen.getForcedPose();
+			state.yRot = frozen.getForcedYHeadRot();
+			state.bodyRot = frozen.getForcedVisualRotationYInDegrees();
+			state.xRot = frozen.getForcedXRot();
+			state.walkAnimationPos = frozen.getForcedWalkAnimationPos();
+			state.walkAnimationSpeed = frozen.getForcedWalkAnimationSpeed();
+			state.ageInTicks = frozen.getForcedClientTickCount();
+		} else if (frozen.isFreezing()) {
 			state.isFullyFrozen = true;
 		}
 		state.setData(FrozenRenderState.KEY, frozenRenderState);

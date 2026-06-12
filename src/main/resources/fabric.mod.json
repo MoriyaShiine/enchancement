@@ -22,7 +22,7 @@
   "environment": "*",
   "entrypoints": {
 	"fabric-datagen": [
-	  "moriyashiine.enchancement.datagen.ModDataGenerator"
+	  "moriyashiine.enchancement.datagen.EnchancementDataGenerator"
 	],
 	"main": [
 	  "moriyashiine.enchancement.common.Enchancement"
@@ -31,13 +31,13 @@
 	  "moriyashiine.enchancement.client.EnchancementClient"
 	],
 	"cardinal-components-block": [
-	  "moriyashiine.enchancement.common.init.ModBlockComponents"
+	  "moriyashiine.enchancement.common.init.EnchancementBlockComponents"
 	],
 	"cardinal-components-entity": [
-	  "moriyashiine.enchancement.common.init.ModEntityComponents"
+	  "moriyashiine.enchancement.common.init.EnchancementEntityComponents"
 	],
 	"cardinal-components-level": [
-	  "moriyashiine.enchancement.common.init.ModLevelComponents"
+	  "moriyashiine.enchancement.common.init.EnchancementLevelComponents"
 	],
 	"appleskin": [
 	  "moriyashiine.enchancement.client.integration.appleskin.ModAppleskinIntegration"
@@ -49,7 +49,7 @@
   "accessWidener": "enchancement.classtweaker",
   "depends": {
 	"fabricloader": "*",
-	"minecraft": "~26.1",
+	"minecraft": "~26.2",
 	"java": ">=25",
 	"fabric-api": "*",
 	"strawberrylib": "*"

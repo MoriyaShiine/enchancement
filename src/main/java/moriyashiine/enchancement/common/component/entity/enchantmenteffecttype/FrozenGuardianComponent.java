@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.common.component.entity.enchantmenteffecttype;
 
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.minecraft.world.entity.monster.Guardian;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -31,7 +31,7 @@ public class FrozenGuardianComponent implements AutoSyncedComponent {
 	}
 
 	public void sync() {
-		ModEntityComponents.FROZEN_GUARDIAN.sync(obj);
+		EnchancementEntityComponents.FROZEN_GUARDIAN.sync(obj);
 	}
 
 	public float getForcedTailAnimation() {

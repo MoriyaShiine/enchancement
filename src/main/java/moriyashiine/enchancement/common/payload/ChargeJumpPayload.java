@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.common.payload;
 
 import moriyashiine.enchancement.common.Enchancement;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
@@ -17,7 +17,8 @@ public record ChargeJumpPayload(boolean pressingChargeJump) implements CustomPac
 	public static final Type<ChargeJumpPayload> TYPE = new Type<>(Enchancement.id("charge_jump"));
 	public static final StreamCodec<FriendlyByteBuf, ChargeJumpPayload> CODEC = StreamCodec.composite(
 			ByteBufCodecs.BOOL, ChargeJumpPayload::pressingChargeJump,
-			ChargeJumpPayload::new);
+			ChargeJumpPayload::new
+	);
 
 	@Override
 	public Type<ChargeJumpPayload> type() {
@@ -31,7 +32,7 @@ public record ChargeJumpPayload(boolean pressingChargeJump) implements CustomPac
 	public static class Receiver implements ServerPlayNetworking.PlayPayloadHandler<ChargeJumpPayload> {
 		@Override
 		public void receive(ChargeJumpPayload payload, ServerPlayNetworking.Context context) {
-			ModEntityComponents.CHARGE_JUMP.get(context.player()).setPressingChargeJump(payload.pressingChargeJump());
+			EnchancementEntityComponents.CHARGE_JUMP.get(context.player()).setPressingChargeJump(payload.pressingChargeJump());
 		}
 	}
 }

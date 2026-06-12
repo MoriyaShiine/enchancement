@@ -6,7 +6,7 @@ package moriyashiine.enchancement.common.world.level.storage.loot.predicates;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.MapCodec;
-import moriyashiine.enchancement.common.init.ModLootConditionTypes;
+import moriyashiine.enchancement.common.init.EnchancementLootConditionTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.entity.Entity;
@@ -27,7 +27,7 @@ public class AttackerBehindCondition implements LootItemCondition {
 
 	@Override
 	public MapCodec<AttackerBehindCondition> codec() {
-		return ModLootConditionTypes.ATTACKER_BEHIND;
+		return EnchancementLootConditionTypes.ATTACKER_BEHIND;
 	}
 
 	@Override

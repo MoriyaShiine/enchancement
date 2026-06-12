@@ -6,10 +6,10 @@ package moriyashiine.enchancement.common.world.item.effects.entity;
 
 import com.mojang.serialization.MapCodec;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.BuryEntityComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.init.ModSoundEvents;
-import moriyashiine.enchancement.common.tag.ModBlockTags;
-import moriyashiine.enchancement.common.tag.ModEntityTypeTags;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementSoundEvents;
+import moriyashiine.enchancement.common.tag.EnchancementBlockTags;
+import moriyashiine.enchancement.common.tag.EnchancementEntityTypeTags;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
 import moriyashiine.strawberrylib.api.objects.records.ParticleVelocity;
@@ -48,17 +48,17 @@ public class BuryEffect implements EnchantmentEntityEffect {
 		if (cannotBeBuried(entity)) {
 			return false;
 		}
-		BuryEntityComponent buryEntityComponent = ModEntityComponents.BURY_ENTITY.getNullable(entity);
-		if (buryEntityComponent != null && buryEntityComponent.getBuryPos() == null) {
+		BuryEntityComponent buryEntity = EnchancementEntityComponents.BURY_ENTITY.getNullable(entity);
+		if (buryEntity != null && buryEntity.getBuryPos() == null) {
 			for (int i = 0; i <= 1; i++) {
 				BlockPos pos = entity.blockPosition().below(i);
 				BlockState state = level.getBlockState(pos);
-				if (state.is(ModBlockTags.BURIABLE)) {
+				if (state.is(EnchancementBlockTags.BURIABLE)) {
 					if (!level.isClientSide()) {
-						level.playSound(null, entity, ModSoundEvents.GENERIC_BURY, entity.getSoundSource(), 1, 1);
+						level.playSound(null, entity, EnchancementSoundEvents.GENERIC_BURY, entity.getSoundSource(), 1, 1);
 						entity.gameEvent(GameEvent.ENTITY_INTERACT);
-						buryEntityComponent.setBuryPos(pos);
-						buryEntityComponent.sync();
+						buryEntity.setBuryPos(pos);
+						buryEntity.sync();
 					} else {
 						SLibClientUtils.addParticleOptions(entity, new BlockParticleOption(ParticleTypes.BLOCK, state), 24, ParticleAnchor.BODY, ParticleVelocity.ZERO);
 					}
@@ -71,6 +71,6 @@ public class BuryEffect implements EnchantmentEntityEffect {
 	}
 
 	public static boolean cannotBeBuried(Entity entity) {
-		return entity.is(ModEntityTypeTags.CANNOT_BURY) || (entity instanceof LivingEntity living && !living.slib$isSurvival());
+		return entity.is(EnchancementEntityTypeTags.CANNOT_BURY) || (entity instanceof LivingEntity living && !living.slib$isSurvival());
 	}
 }

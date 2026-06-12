@@ -6,8 +6,8 @@ package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.teleporto
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.TeleportOnHitComponent;
-import moriyashiine.enchancement.common.init.ModEntityComponents;
-import moriyashiine.enchancement.common.init.ModSoundEvents;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementSoundEvents;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -48,10 +48,10 @@ public abstract class ProjectileMixin extends Entity {
 	@Inject(method = "onHitBlock", at = @At("TAIL"))
 	private void enchancement$teleportOnHit(BlockHitResult hitResult, CallbackInfo ci) {
 		if (getOwner() instanceof LivingEntity living && level() instanceof ServerLevel level) {
-			TeleportOnHitComponent teleportOnHitComponent = ModEntityComponents.TELEPORT_ON_HIT.getNullable(this);
-			if (teleportOnHitComponent != null && teleportOnHitComponent.teleportsOnBlockHit()) {
+			TeleportOnHitComponent teleportOnHit = EnchancementEntityComponents.TELEPORT_ON_HIT.getNullable(this);
+			if (teleportOnHit != null && teleportOnHit.teleportsOnBlockHit()) {
 				BlockPos pos = hitResult.getBlockPos().relative(hitResult.getDirection());
-				teleport(living, level, new Vec3(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5), teleportOnHitComponent);
+				teleport(living, level, new Vec3(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5), teleportOnHit);
 			}
 		}
 	}
@@ -59,20 +59,20 @@ public abstract class ProjectileMixin extends Entity {
 	@Inject(method = "onHitEntity", at = @At("TAIL"))
 	private void enchancement$teleportOnHit(EntityHitResult hitResult, CallbackInfo ci) {
 		if (getOwner() instanceof LivingEntity living && level() instanceof ServerLevel level) {
-			TeleportOnHitComponent teleportOnHitComponent = ModEntityComponents.TELEPORT_ON_HIT.getNullable(this);
-			if (teleportOnHitComponent != null && teleportOnHitComponent.teleportsOnEntityHit()) {
+			TeleportOnHitComponent teleportOnHit = EnchancementEntityComponents.TELEPORT_ON_HIT.getNullable(this);
+			if (teleportOnHit != null && teleportOnHit.teleportsOnEntityHit()) {
 				Vec3 pos = hitResult.getLocation();
-				teleport(living, level, pos.add(0, 0.5, 0), teleportOnHitComponent);
+				teleport(living, level, pos.add(0, 0.5, 0), teleportOnHit);
 			}
 		}
 	}
 
 	@Unique
 	private void teleport(LivingEntity living, ServerLevel targetWorld, Vec3 targetPos, TeleportOnHitComponent teleportOnHitComponent) {
-		SLibUtils.playSound(living, ModSoundEvents.GENERIC_TELEPORT);
+		SLibUtils.playSound(living, EnchancementSoundEvents.GENERIC_TELEPORT);
 		living.level().gameEvent(GameEvent.TELEPORT, living.position(), GameEvent.Context.of(living, living.getBlockStateOn()));
 		living.teleport(new TeleportTransition(targetWorld, targetPos, Vec3.ZERO, living.getYHeadRot(), living.getXRot(), TeleportTransition.DO_NOTHING));
-		SLibUtils.playSound(living, ModSoundEvents.GENERIC_TELEPORT);
+		SLibUtils.playSound(living, EnchancementSoundEvents.GENERIC_TELEPORT);
 		targetWorld.broadcastEntityEvent(living, EntityEvent.TELEPORT);
 		if (living instanceof PathfinderMob mob) {
 			mob.getNavigation().stop();
