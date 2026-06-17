@@ -32,7 +32,7 @@ public class FreezeEvent {
 		ServerLivingEntityEvents.AFTER_DEATH.register(new Death());
 	}
 
-	public static class Damage implements ServerLivingEntityEvents.AllowDamage {
+	private static class Damage implements ServerLivingEntityEvents.AllowDamage {
 		@Override
 		public boolean allowDamage(LivingEntity entity, DamageSource source, float amount) {
 			FrozenComponent frozen = EnchancementEntityComponents.FROZEN.get(entity);
@@ -68,7 +68,7 @@ public class FreezeEvent {
 		}
 	}
 
-	public static class Death implements ServerLivingEntityEvents.AfterDeath {
+	private static class Death implements ServerLivingEntityEvents.AfterDeath {
 		@Override
 		public void afterDeath(LivingEntity entity, DamageSource damageSource) {
 			FrozenComponent frozen = EnchancementEntityComponents.FROZEN.get(entity);

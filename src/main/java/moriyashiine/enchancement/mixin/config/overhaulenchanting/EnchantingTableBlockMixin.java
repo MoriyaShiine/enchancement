@@ -12,7 +12,7 @@ import moriyashiine.enchancement.common.EnchancementConfig;
 import moriyashiine.enchancement.common.init.EnchancementBlockComponents;
 import moriyashiine.enchancement.common.init.EnchancementParticleTypes;
 import moriyashiine.enchancement.common.util.config.OverhaulMode;
-import moriyashiine.enchancement.common.world.inventory.ModEnchantmentMenu;
+import moriyashiine.enchancement.common.world.inventory.OverhauledEnchantmentMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.chat.Component;
@@ -33,7 +33,7 @@ public class EnchantingTableBlockMixin {
 	@Inject(method = "getMenuProvider", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/SimpleMenuProvider;<init>(Lnet/minecraft/world/inventory/MenuConstructor;Lnet/minecraft/network/chat/Component;)V"), cancellable = true)
 	private void enchancement$overhaulEnchanting(BlockState state, Level level, BlockPos pos, CallbackInfoReturnable<MenuProvider> cir, @Local(name = "title") Component title) {
 		if (EnchancementConfig.overhaulEnchanting != OverhaulMode.DISABLED) {
-			cir.setReturnValue(new SimpleMenuProvider((syncId, inventory, _) -> new ModEnchantmentMenu(syncId, inventory, ContainerLevelAccess.create(level, pos), level), title));
+			cir.setReturnValue(new SimpleMenuProvider((syncId, inventory, _) -> new OverhauledEnchantmentMenu(syncId, inventory, ContainerLevelAccess.create(level, pos), level), title));
 		}
 	}
 

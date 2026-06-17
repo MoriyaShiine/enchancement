@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.client.payload;
 
 import moriyashiine.enchancement.client.event.internal.SyncBookshelvesClientEvent;
-import moriyashiine.enchancement.client.gui.screens.inventory.ModEnchantmentScreen;
+import moriyashiine.enchancement.client.gui.screens.inventory.OverhauledEnchantmentScreen;
 import moriyashiine.enchancement.common.Enchancement;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -42,7 +42,7 @@ public record SyncBookshelvesPayload(Set<Holder<Enchantment>> chiseledEnchantmen
 		@Override
 		public void receive(SyncBookshelvesPayload payload, ClientPlayNetworking.Context context) {
 			SyncBookshelvesClientEvent.CHISELED_ENCHANTMENTS = payload.chiseledEnchantments();
-			ModEnchantmentScreen.bookshelfCount = payload.bookshelfCount();
+			OverhauledEnchantmentScreen.bookshelfCount = payload.bookshelfCount();
 		}
 	}
 }

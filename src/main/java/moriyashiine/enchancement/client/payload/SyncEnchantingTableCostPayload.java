@@ -4,7 +4,7 @@
 
 package moriyashiine.enchancement.client.payload;
 
-import moriyashiine.enchancement.client.gui.screens.inventory.ModEnchantmentScreen;
+import moriyashiine.enchancement.client.gui.screens.inventory.OverhauledEnchantmentScreen;
 import moriyashiine.enchancement.common.Enchancement;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -33,8 +33,8 @@ public record SyncEnchantingTableCostPayload(int cost) implements CustomPacketPa
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<SyncEnchantingTableCostPayload> {
 		@Override
 		public void receive(SyncEnchantingTableCostPayload payload, ClientPlayNetworking.Context context) {
-			if (context.client().gui.screen() instanceof ModEnchantmentScreen modEnchantmentScreen) {
-				modEnchantmentScreen.getMenu().setCost(payload.cost());
+			if (context.client().gui.screen() instanceof OverhauledEnchantmentScreen screen) {
+				screen.getMenu().setCost(payload.cost());
 			}
 		}
 	}

@@ -11,7 +11,7 @@ import moriyashiine.enchancement.client.event.enchantmenteffecttype.Automaticall
 import moriyashiine.enchancement.client.event.internal.SyncBookshelvesClientEvent;
 import moriyashiine.enchancement.client.event.internal.SyncDeltaMovementsClientEvent;
 import moriyashiine.enchancement.client.gui.hud.*;
-import moriyashiine.enchancement.client.gui.screens.inventory.ModEnchantmentScreen;
+import moriyashiine.enchancement.client.gui.screens.inventory.OverhauledEnchantmentScreen;
 import moriyashiine.enchancement.client.particle.*;
 import moriyashiine.enchancement.client.particle.group.SparkParticleGroup;
 import moriyashiine.enchancement.client.payload.*;
@@ -64,7 +64,7 @@ public class EnchancementClient implements ClientModInitializer {
 		initParticles();
 		initPayloads();
 		initEvents();
-		MenuScreens.register(EnchancementMenuTypes.ENCHANTING_TABLE, ModEnchantmentScreen::new);
+		MenuScreens.register(EnchancementMenuTypes.OVERHAULED_ENCHANTING_TABLE, OverhauledEnchantmentScreen::new);
 		ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloadListener(FrozenReloadListener.ID, FrozenReloadListener.INSTANCE);
 		ResourceLoader.get(PackType.CLIENT_RESOURCES).addListenerOrdering(ResourceReloaderKeys.Client.TEXTURES, FrozenReloadListener.ID);
 		FabricLoader.getInstance().getModContainer(Enchancement.MOD_ID).ifPresent(modContainer -> ResourceLoader.registerBuiltinPack(Enchancement.id("alternate_air_jump"), modContainer, PackActivationType.NORMAL));

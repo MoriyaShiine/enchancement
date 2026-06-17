@@ -4,8 +4,8 @@
 
 package moriyashiine.enchancement.client.event.internal;
 
-import moriyashiine.enchancement.client.gui.screens.inventory.ModEnchantmentScreen;
-import moriyashiine.enchancement.common.world.inventory.ModEnchantmentMenu;
+import moriyashiine.enchancement.client.gui.screens.inventory.OverhauledEnchantmentScreen;
+import moriyashiine.enchancement.common.world.inventory.OverhauledEnchantmentMenu;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -27,8 +27,8 @@ public class SyncBookshelvesClientEvent implements ClientTickEvents.EndLevelTick
 		if (CHISELED_ENCHANTMENTS != null) {
 			Minecraft client = Minecraft.getInstance();
 			Player player = client.player;
-			if (player != null && player.containerMenu instanceof ModEnchantmentMenu menu) {
-				if (client.gui.screen() instanceof ModEnchantmentScreen screen) {
+			if (player != null && player.containerMenu instanceof OverhauledEnchantmentMenu menu) {
+				if (client.gui.screen() instanceof OverhauledEnchantmentScreen screen) {
 					screen.receivedPacket = true;
 				}
 				menu.chiseledEnchantments.clear();

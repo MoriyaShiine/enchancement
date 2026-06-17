@@ -51,7 +51,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ModEnchantmentMenu extends AbstractContainerMenu {
+public class OverhauledEnchantmentMenu extends AbstractContainerMenu {
 	public static final int PAGE_SIZE = 4;
 
 	public final List<Holder<Enchantment>> validEnchantments = new ArrayList<>(), selectedEnchantments = new ArrayList<>();
@@ -72,12 +72,12 @@ public class ModEnchantmentMenu extends AbstractContainerMenu {
 	private final ContainerLevelAccess access;
 	private final Level level;
 
-	public ModEnchantmentMenu(int syncId, Inventory inventory) {
+	public OverhauledEnchantmentMenu(int syncId, Inventory inventory) {
 		this(syncId, inventory, ContainerLevelAccess.NULL, inventory.player.level());
 	}
 
-	public ModEnchantmentMenu(int syncId, Inventory inventory, ContainerLevelAccess access, Level level) {
-		super(EnchancementMenuTypes.ENCHANTING_TABLE, syncId);
+	public OverhauledEnchantmentMenu(int syncId, Inventory inventory, ContainerLevelAccess access, Level level) {
+		super(EnchancementMenuTypes.OVERHAULED_ENCHANTING_TABLE, syncId);
 		this.access = access;
 		this.level = level;
 		if (inventory.player instanceof ServerPlayer player) {
@@ -234,7 +234,7 @@ public class ModEnchantmentMenu extends AbstractContainerMenu {
 						validEnchantments.add(enchantment);
 					}
 				}
-				validEnchantments.sort(ModEnchantmentMenu::compareEnchantments);
+				validEnchantments.sort(OverhauledEnchantmentMenu::compareEnchantments);
 				super.slotsChanged(container);
 			}
 		}

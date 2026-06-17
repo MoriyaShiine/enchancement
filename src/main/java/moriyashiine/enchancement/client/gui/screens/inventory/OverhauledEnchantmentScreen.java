@@ -8,7 +8,7 @@ import moriyashiine.enchancement.common.Enchancement;
 import moriyashiine.enchancement.common.EnchancementConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.util.config.OverhaulMode;
-import moriyashiine.enchancement.common.world.inventory.ModEnchantmentMenu;
+import moriyashiine.enchancement.common.world.inventory.OverhauledEnchantmentMenu;
 import moriyashiine.strawberrylib.api.module.SLibClientUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -34,9 +34,9 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-import static moriyashiine.enchancement.common.world.inventory.ModEnchantmentMenu.PAGE_SIZE;
+import static moriyashiine.enchancement.common.world.inventory.OverhauledEnchantmentMenu.PAGE_SIZE;
 
-public class ModEnchantmentScreen extends AbstractContainerScreen<ModEnchantmentMenu> {
+public class OverhauledEnchantmentScreen extends AbstractContainerScreen<OverhauledEnchantmentMenu> {
 	public static int bookshelfCount = 0;
 
 	private static final Identifier ENCHANTING_TABLE_LOCATION = Enchancement.id("textures/gui/container/enchanting_table.png");
@@ -73,7 +73,7 @@ public class ModEnchantmentScreen extends AbstractContainerScreen<ModEnchantment
 
 	public boolean receivedPacket = false;
 
-	public ModEnchantmentScreen(ModEnchantmentMenu menu, Inventory inventory, Component title) {
+	public OverhauledEnchantmentScreen(OverhauledEnchantmentMenu menu, Inventory inventory, Component title) {
 		super(menu, inventory, title, 176, 182);
 		titleLabelY -= 16;
 		inventoryLabelY -= 16;
@@ -178,7 +178,7 @@ public class ModEnchantmentScreen extends AbstractContainerScreen<ModEnchantment
 		}
 		oFlip = flip;
 		oOpen = open;
-		if (ModEnchantmentMenu.isEnchantable(menu.getSlot(0).getItem())) {
+		if (OverhauledEnchantmentMenu.isEnchantable(menu.getSlot(0).getItem())) {
 			open += 0.2F;
 		} else {
 			open -= 0.2F;
