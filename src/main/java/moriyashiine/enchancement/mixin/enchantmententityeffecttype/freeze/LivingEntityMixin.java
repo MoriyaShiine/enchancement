@@ -9,6 +9,7 @@ import moriyashiine.enchancement.common.init.EnchancementDamageTypes;
 import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.enchancement.common.world.item.effects.entity.FreezeEnchantmentEffect;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -24,6 +26,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = LivingEntity.class, priority = 500)
 public abstract class LivingEntityMixin extends Entity {
+	@Shadow
+	protected boolean dead;
+
 	public LivingEntityMixin(EntityType<?> type, Level level) {
 		super(type, level);
 	}
@@ -45,6 +50,8 @@ public abstract class LivingEntityMixin extends Entity {
 	@Inject(method = "die", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;broadcastEntityEvent(Lnet/minecraft/world/entity/Entity;B)V"), cancellable = true)
 	private void enchancement$freeze(DamageSource source, CallbackInfo ci) {
 		if (EnchancementEntityComponents.FROZEN.get(this).shouldFreezeOnDeath(source)) {
+			ServerLivingEntityEvents.AFTER_DEATH.invoker().afterDeath((LivingEntity) (Object) this, source);
+			dead = false;
 			ci.cancel();
 		}
 	}

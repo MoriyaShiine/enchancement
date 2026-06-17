@@ -177,7 +177,7 @@ public class FrozenComponent implements AutoSyncedComponent, CommonTickingCompon
 	}
 
 	public boolean shouldFreezeOnDeath(DamageSource source) {
-		if (!obj.level().isClientSide() && !obj.is(EnchancementEntityTypeTags.CANNOT_FREEZE) && getLastFreezingAttacker() != null) {
+		if (!obj.is(EnchancementEntityTypeTags.CANNOT_FREEZE) && getLastFreezingAttacker() != null) {
 			return source.is(DamageTypeTags.IS_FREEZING) || isSourceFreezeWeapon(source);
 		}
 		return false;
