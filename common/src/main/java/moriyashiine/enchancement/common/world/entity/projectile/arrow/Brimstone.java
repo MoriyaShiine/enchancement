@@ -85,15 +85,15 @@ public class Brimstone extends AbstractArrow {
 				break;
 			} else {
 				Entity owner = getOwner();
-				level().getEntities(owner, AABB.unitCubeFromLowerCorner(hitResult.getLocation()).inflate(0.5), EntitySelector.NO_SPECTATORS.and(entity -> canEntityBeHit(owner, entity))).forEach(entity -> {
-					if (level() instanceof ServerLevel world) {
+				level().getEntities(owner, new AABB(hitResult.getLocation().subtract(0.5), hitResult.getLocation().add(0.5)), EntitySelector.NO_SPECTATORS.and(entity -> canEntityBeHit(owner, entity))).forEach(entity -> {
+					if (level() instanceof ServerLevel level) {
 						double damage = getDamage();
 						if (entity instanceof LivingEntity living) {
 							damage *= living.getMaxHealth() / 20F;
 						}
 						damage *= getDamageMultiplier(distanceTraveled);
 						damage = Math.min(50, damage);
-						entity.hurtServer(world, world.damageSources().source(EnchancementDamageTypes.BRIMSTONE, this, owner), (float) damage);
+						entity.hurtServer(level, level.damageSources().source(EnchancementDamageTypes.BRIMSTONE, this, owner), (float) damage);
 						hitEntities.add(entity);
 						if (entity instanceof LivingEntity living && living.isDeadOrDying()) {
 							killedEntities.add(living);
