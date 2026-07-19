@@ -51,6 +51,14 @@ public abstract class EnchantingMaterialsProvider extends FabricCodecDataProvide
 		default void accept(ResourceKey<Item> item, TagKey<Item> material) {
 			accept(item, "#" + material.location());
 		}
+
+		default void accept(Item item, Item material) {
+			accept(item.builtInRegistryHolder().key(), material.builtInRegistryHolder().key());
+		}
+
+		default void accept(Item item, TagKey<Item> material) {
+			accept(item.builtInRegistryHolder().key(), material);
+		}
 	}
 
 	protected record DatagenEnchantingMaterial(String ingredient) {

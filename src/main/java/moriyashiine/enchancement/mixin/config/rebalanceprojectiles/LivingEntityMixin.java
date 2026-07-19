@@ -68,7 +68,7 @@ public abstract class LivingEntityMixin extends Entity {
 		return value;
 	}
 
-	@Inject(method = "hurtServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;dealDefaultKnockback(Lnet/minecraft/world/damagesource/DamageSource;FZ)V"))
+	@Inject(method = "hurtServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;indicateDamage(DD)V"))
 	private void enchancement$rebalanceProjectiles(ServerLevel level, DamageSource source, float damage, CallbackInfoReturnable<Boolean> cir) {
 		if (EnchancementConfig.rebalanceProjectiles && source.getDirectEntity() instanceof Projectile) {
 			setDeltaMovement(0, Math.min(0, getDeltaMovement().y()), 0);

@@ -8,9 +8,8 @@ import moriyashiine.enchancement.api.datagen.EnchantingMaterialsProvider;
 import moriyashiine.enchancement.common.Enchancement;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.references.BlockItemIds;
-import net.minecraft.references.ItemIds;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Items;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -21,28 +20,28 @@ public class EnchancementEnchantingMaterialsProvider extends EnchantingMaterials
 
 	@Override
 	protected void configure(Output output) {
-		output.accept(ItemIds.BOW, BlockItemIds.TRIPWIRE.item());
-		output.accept(ItemIds.BRUSH, ItemTags.COPPER_TOOL_MATERIALS);
-		output.accept(ItemIds.CARROT_ON_A_STICK, BlockItemIds.TRIPWIRE.item());
-		output.accept(ItemIds.COPPER_HORSE_ARMOR, ItemTags.REPAIRS_COPPER_ARMOR);
-		output.accept(ItemIds.COPPER_NAUTILUS_ARMOR, ItemTags.REPAIRS_COPPER_ARMOR);
-		output.accept(ItemIds.CROSSBOW, BlockItemIds.TRIPWIRE.item());
-		output.accept(ItemIds.DIAMOND_HORSE_ARMOR, ItemTags.REPAIRS_DIAMOND_ARMOR);
-		output.accept(ItemIds.DIAMOND_NAUTILUS_ARMOR, ItemTags.REPAIRS_DIAMOND_ARMOR);
-		output.accept(ItemIds.FISHING_ROD, BlockItemIds.TRIPWIRE.item());
-		output.accept(ItemIds.FLINT_AND_STEEL, ItemTags.IRON_TOOL_MATERIALS);
-		output.accept(ItemIds.GOLDEN_HORSE_ARMOR, ItemTags.REPAIRS_GOLD_ARMOR);
-		output.accept(ItemIds.GOLDEN_NAUTILUS_ARMOR, ItemTags.REPAIRS_GOLD_ARMOR);
-		output.accept(ItemIds.IRON_HORSE_ARMOR, ItemTags.REPAIRS_IRON_ARMOR);
-		output.accept(ItemIds.IRON_NAUTILUS_ARMOR, ItemTags.REPAIRS_IRON_ARMOR);
-		output.accept(ItemIds.LEATHER_HORSE_ARMOR, ItemTags.REPAIRS_LEATHER_ARMOR);
-		output.accept(ItemIds.NETHERITE_HORSE_ARMOR, ItemTags.REPAIRS_DIAMOND_ARMOR);
-		output.accept(ItemIds.NETHERITE_NAUTILUS_ARMOR, ItemTags.REPAIRS_DIAMOND_ARMOR);
-		output.accept(ItemIds.SADDLE, ItemTags.IRON_TOOL_MATERIALS);
-		output.accept(ItemIds.SHEARS, ItemTags.IRON_TOOL_MATERIALS);
-		output.accept(ItemIds.SHIELD, ItemTags.IRON_TOOL_MATERIALS);
-		output.accept(ItemIds.TRIDENT, ItemIds.PRISMARINE_SHARD);
-		output.accept(ItemIds.WARPED_FUNGUS_ON_A_STICK, BlockItemIds.TRIPWIRE.item());
+		output.accept(Items.BOW, Items.STRING);
+		output.accept(Items.BRUSH, ItemTags.COPPER_TOOL_MATERIALS);
+		output.accept(Items.CARROT_ON_A_STICK, Items.STRING);
+		output.accept(Items.COPPER_HORSE_ARMOR, ItemTags.REPAIRS_COPPER_ARMOR);
+		output.accept(Items.COPPER_NAUTILUS_ARMOR, ItemTags.REPAIRS_COPPER_ARMOR);
+		output.accept(Items.CROSSBOW, Items.STRING);
+		output.accept(Items.DIAMOND_HORSE_ARMOR, ItemTags.REPAIRS_DIAMOND_ARMOR);
+		output.accept(Items.DIAMOND_NAUTILUS_ARMOR, ItemTags.REPAIRS_DIAMOND_ARMOR);
+		output.accept(Items.FISHING_ROD, Items.STRING);
+		output.accept(Items.FLINT_AND_STEEL, ItemTags.IRON_TOOL_MATERIALS);
+		output.accept(Items.GOLDEN_HORSE_ARMOR, ItemTags.REPAIRS_GOLD_ARMOR);
+		output.accept(Items.GOLDEN_NAUTILUS_ARMOR, ItemTags.REPAIRS_GOLD_ARMOR);
+		output.accept(Items.IRON_HORSE_ARMOR, ItemTags.REPAIRS_IRON_ARMOR);
+		output.accept(Items.IRON_NAUTILUS_ARMOR, ItemTags.REPAIRS_IRON_ARMOR);
+		output.accept(Items.LEATHER_HORSE_ARMOR, ItemTags.REPAIRS_LEATHER_ARMOR);
+		output.accept(Items.NETHERITE_HORSE_ARMOR, ItemTags.REPAIRS_DIAMOND_ARMOR);
+		output.accept(Items.NETHERITE_NAUTILUS_ARMOR, ItemTags.REPAIRS_DIAMOND_ARMOR);
+		output.accept(Items.SADDLE, ItemTags.IRON_TOOL_MATERIALS);
+		output.accept(Items.SHEARS, ItemTags.IRON_TOOL_MATERIALS);
+		output.accept(Items.SHIELD, ItemTags.IRON_TOOL_MATERIALS);
+		output.accept(Items.TRIDENT, Items.PRISMARINE_SHARD);
+		output.accept(Items.WARPED_FUNGUS_ON_A_STICK, Items.STRING);
 
 		output.accept(key("enderscape:dagger"), tagKey("c:ingots/shadoline"));
 		output.accept(key("enderscape:magnia_attractor"), tagKey("c:ingots/shadoline"));

@@ -9,7 +9,7 @@ import moriyashiine.enchancement.common.init.EnchancementBlockComponents;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudStatusBarHeightRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
-import net.fabricmc.fabric.mixin.client.rendering.HudAccessor;
+import net.fabricmc.fabric.mixin.client.rendering.GuiAccessor;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -29,12 +29,12 @@ public class ChiseledBookshelfPeekingHudElement implements HudElement {
 	public void extractRenderState(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
 		if (EnchancementConfig.chiseledBookshelfPeeking) {
 			Minecraft client = Minecraft.getInstance();
-			if (((HudAccessor) client.gui.hud).fabric$callGetCameraPlayer() != null) {
+			if (((GuiAccessor) client.gui).fabric$callGetCameraPlayer() != null) {
 				windowHeightOffset = HudStatusBarHeightRegistry.getHeight(VanillaHudElements.AIR_BAR);
 			}
 			int width = graphics.guiWidth() / 2;
 			int height = graphics.guiHeight() / 2;
-			if (!client.gameRenderer.mainCamera().isDetached() && client.hitResult instanceof BlockHitResult result && client.level.getBlockEntity(result.getBlockPos()) instanceof ChiseledBookShelfBlockEntity chiseledBookShelfBlockEntity) {
+			if (!client.gameRenderer.getMainCamera().isDetached() && client.hitResult instanceof BlockHitResult result && client.level.getBlockEntity(result.getBlockPos()) instanceof ChiseledBookShelfBlockEntity chiseledBookShelfBlockEntity) {
 				((ChiseledBookShelfBlock) Blocks.CHISELED_BOOKSHELF).getHitSlot(result, chiseledBookShelfBlockEntity.getBlockState().getValue(ChiseledBookShelfBlock.FACING)).ifPresent(slot -> {
 					List<ItemStack> stacks = EnchancementBlockComponents.CHISELED_BOOKSHELF.get(chiseledBookShelfBlockEntity).getStacks();
 					if (!stacks.isEmpty()) {

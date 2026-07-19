@@ -19,7 +19,7 @@
 		  "condition": "minecraft:entity_properties",
 		  "entity": "attacker",
 		  "predicate": {
-			"minecraft:entity_type": "minecraft:player"
+			"type": "minecraft:player"
 		  }
 		}
 	  }

@@ -78,10 +78,10 @@
 		  "condition": "minecraft:entity_properties",
 		  "entity": "direct_attacker",
 		  "predicate": {
-			"minecraft:flags": {
+			"flags": {
 			  "is_flying": false
 			},
-			"minecraft:movement": {
+			"movement": {
 			  "fall_distance": {
 				"min": 1.5
 			  }

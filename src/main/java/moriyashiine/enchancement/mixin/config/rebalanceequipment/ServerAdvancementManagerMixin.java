@@ -6,11 +6,11 @@ package moriyashiine.enchancement.mixin.config.rebalanceequipment;
 
 import moriyashiine.enchancement.common.EnchancementConfig;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.predicates.DamagePredicate;
-import net.minecraft.advancements.predicates.MinMaxBounds;
-import net.minecraft.advancements.triggers.CriteriaTriggers;
-import net.minecraft.advancements.triggers.Criterion;
-import net.minecraft.advancements.triggers.PlayerHurtEntityTrigger;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.Criterion;
+import net.minecraft.advancements.criterion.DamagePredicate;
+import net.minecraft.advancements.criterion.MinMaxBounds;
+import net.minecraft.advancements.criterion.PlayerHurtEntityTrigger;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.ServerAdvancementManager;
 import org.spongepowered.asm.mixin.Mixin;

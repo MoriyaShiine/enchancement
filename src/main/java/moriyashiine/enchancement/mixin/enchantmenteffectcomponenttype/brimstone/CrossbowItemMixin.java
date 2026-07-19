@@ -40,9 +40,7 @@ public abstract class CrossbowItemMixin {
 	}
 
 	@Shadow
-	private static CrossbowItem.ChargingSounds getChargingSounds(ItemStack itemStack) {
-		throw new UnsupportedOperationException("Implemented via mixin");
-	}
+	abstract CrossbowItem.ChargingSounds getChargingSounds(ItemStack itemStack);
 
 	@Shadow
 	public abstract int getUseDuration(ItemStack itemStack, LivingEntity user);

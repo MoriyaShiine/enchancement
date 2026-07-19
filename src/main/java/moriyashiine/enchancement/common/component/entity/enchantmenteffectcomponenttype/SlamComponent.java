@@ -169,7 +169,7 @@ public class SlamComponent implements CommonTickingComponent {
 		stopSlamming();
 		obj.level().getEntities(obj, new AABB(obj.blockPosition()).inflate(3, 1, 3), foundEntity -> foundEntity.isAlive() && foundEntity.distanceTo(obj) < 5).forEach(foundEntity -> {
 			if (foundEntity instanceof LivingEntity living && SLibUtils.shouldHurt(obj, living) && SLibUtils.hasLineOfSight(obj, foundEntity, 0)) {
-				living.knockback(1, obj.getX() - living.getX(), obj.getZ() - living.getZ(), obj.createDamageSource(), 0, true);
+				living.knockback(1, obj.getX() - living.getX(), obj.getZ() - living.getZ());
 			}
 		});
 		obj.level().gameEvent(GameEvent.STEP, obj.position(), GameEvent.Context.of(obj.getBlockStateOn()));

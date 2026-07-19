@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.rapidcrossbowfire;
 
 import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
-import net.minecraft.advancements.triggers.CriteriaTriggers;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -30,9 +30,7 @@ import java.util.List;
 @Mixin(CrossbowItem.class)
 public abstract class CrossbowItemMixin extends ProjectileWeaponItem {
 	@Shadow
-	private static CrossbowItem.ChargingSounds getChargingSounds(ItemStack itemStack) {
-		throw new UnsupportedOperationException("Implemented via mixin");
-	}
+	abstract CrossbowItem.ChargingSounds getChargingSounds(ItemStack itemStack);
 
 	@Shadow
 	private static float getShootingPower(ChargedProjectiles projectiles) {

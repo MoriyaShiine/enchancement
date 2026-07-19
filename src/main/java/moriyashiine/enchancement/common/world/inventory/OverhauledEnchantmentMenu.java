@@ -14,7 +14,7 @@ import moriyashiine.enchancement.common.util.EnchancementUtil;
 import moriyashiine.enchancement.common.util.config.OverhaulMode;
 import moriyashiine.enchancement.common.util.enchantment.EnchantingMaterial;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
-import net.minecraft.advancements.triggers.CriteriaTriggers;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;

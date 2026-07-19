@@ -6,12 +6,12 @@ package moriyashiine.enchancement.api.datagen;
 
 import moriyashiine.enchancement.common.reloadlistener.BaseBlocksReloadListener;
 import moriyashiine.enchancement.common.util.enchantment.BaseBlock;
+import moriyashiine.strawberrylib.api.objects.records.BlockItemId;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricCodecDataProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.references.BlockItemId;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
@@ -49,6 +49,10 @@ public abstract class BaseBlocksProvider extends FabricCodecDataProvider<BaseBlo
 
 		default void accept(BlockItemId block, BlockItemId base) {
 			accept(block.block(), base.block());
+		}
+
+		default void accept(ResourceKey<Block> block, Block base) {
+			accept(block, base.builtInRegistryHolder().key());
 		}
 	}
 }

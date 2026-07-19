@@ -5,7 +5,7 @@
 package moriyashiine.enchancement.mixin.config.rebalanceenchantments;
 
 import moriyashiine.enchancement.common.EnchancementConfig;
-import net.minecraft.advancements.predicates.entity.MovementPredicate;
+import net.minecraft.advancements.criterion.MovementPredicate;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;

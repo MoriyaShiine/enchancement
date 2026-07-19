@@ -22,7 +22,7 @@ public class BrimstoneHudElement implements HudElement {
 		if (player != null && EnchantmentHelper.has(player.getUseItem(), EnchancementEnchantmentEffectComponentTypes.BRIMSTONE)) {
 			int scaledWidth = client.getWindow().getGuiScaledWidth(), scaledHeight = client.getWindow().getGuiScaledHeight();
 			forcedHeight = (scaledHeight / 2) + 6;
-			client.gui.hud.extractHearts(graphics, player, (scaledWidth / 2) - 25, forcedHeight, 1, -1, 12, health, health, 0, false);
+			client.gui.extractHearts(graphics, player, (scaledWidth / 2) - 25, forcedHeight, 1, -1, 12, health, health, 0, false);
 			forcedHeight = -1;
 		} else {
 			health = -1;

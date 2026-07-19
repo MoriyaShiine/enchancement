@@ -18,13 +18,7 @@ import moriyashiine.enchancement.common.world.level.storage.loot.predicates.WetC
 import moriyashiine.enchancement.datagen.provider.EnchancementEnchantmentTagsProvider;
 import moriyashiine.strawberrylib.api.objects.enums.SubmersionGate;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.advancements.predicates.DamageSourcePredicate;
-import net.minecraft.advancements.predicates.MinMaxBounds;
-import net.minecraft.advancements.predicates.TagPredicate;
-import net.minecraft.advancements.predicates.entity.EntityFlagsPredicate;
-import net.minecraft.advancements.predicates.entity.EntityPredicate;
-import net.minecraft.advancements.predicates.entity.EntityTypePredicate;
-import net.minecraft.advancements.predicates.entity.MovementPredicate;
+import net.minecraft.advancements.criterion.*;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
@@ -42,7 +36,6 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -674,7 +667,7 @@ public class EnchancementEnchantments {
 							EnchantmentTarget.ATTACKER,
 							EnchantmentTarget.VICTIM,
 							new AddValue(LevelBasedValue.perLevel(0.5F)),
-							LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.ATTACKER, EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypes, EntityTypes.PLAYER))));
+							LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.ATTACKER, EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypes, EntityType.PLAYER))));
 					builder.withEffect(
 							EnchancementEnchantmentEffectComponentTypes.HEADSHOT,
 							new AddValue(LevelBasedValue.perLevel(1.5F)));
@@ -709,7 +702,7 @@ public class EnchancementEnchantments {
 							EnchantmentTarget.ATTACKER,
 							EnchantmentTarget.VICTIM,
 							new AddValue(LevelBasedValue.perLevel(0.02F)),
-							LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.ATTACKER, EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypes, EntityTypes.PLAYER))));
+							LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.ATTACKER, EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypes, EntityType.PLAYER))));
 				}));
 		// hoe
 		registry.register(APEX, create(APEX.identifier(),

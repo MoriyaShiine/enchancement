@@ -22,7 +22,7 @@ import org.joml.Vector3f;
 import java.util.List;
 
 public class SparkParticleGroup extends ParticleGroup<SparkParticle> {
-	public static final ParticleRenderType SHEET = new ParticleRenderType(Enchancement.id("spark").toString(), "ES");
+	public static final ParticleRenderType SHEET = new ParticleRenderType(Enchancement.id("spark").toString());
 
 	public SparkParticleGroup(ParticleEngine engine) {
 		super(engine);

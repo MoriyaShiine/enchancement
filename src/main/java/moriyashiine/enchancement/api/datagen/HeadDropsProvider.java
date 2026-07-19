@@ -6,12 +6,12 @@ package moriyashiine.enchancement.api.datagen;
 
 import moriyashiine.enchancement.common.reloadlistener.HeadDropsReloadListener;
 import moriyashiine.enchancement.common.util.enchantment.HeadDrop;
+import moriyashiine.strawberrylib.api.objects.records.BlockItemId;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricCodecDataProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.references.BlockItemId;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
@@ -46,6 +46,10 @@ public abstract class HeadDropsProvider extends FabricCodecDataProvider<HeadDrop
 
 		default void accept(ResourceKey<EntityType<?>> type, BlockItemId drop, float chance) {
 			accept(type, drop.item(), chance);
+		}
+
+		default void accept(EntityType<?> type, Item drop, float chance) {
+			accept(type.builtInRegistryHolder().key(), drop.builtInRegistryHolder().key(), chance);
 		}
 	}
 }

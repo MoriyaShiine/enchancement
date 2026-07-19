@@ -7,7 +7,7 @@ package moriyashiine.enchancement.common.world.item.effects.entity;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import moriyashiine.enchancement.common.tag.EnchancementItemTags;
-import net.minecraft.advancements.predicates.MinMaxBounds;
+import net.minecraft.advancements.criterion.MinMaxBounds;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;

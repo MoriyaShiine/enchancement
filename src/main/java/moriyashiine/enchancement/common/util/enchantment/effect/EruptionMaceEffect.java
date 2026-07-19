@@ -96,7 +96,7 @@ public class EruptionMaceEffect extends MaceEffect {
 			float damage = EnchantmentHelper.modifyDamage(level, player.getMainHandItem(), entity, source, base) + player.getMainHandItem().getItem().getAttackDamageBonus(entity, base, source);
 			EnchancementUtil.rebalanceIgniteForSeconds(entity, fireDuration);
 			if (entity.hurtServer(level, source, damage)) {
-				entity.knockback(1, player.getX() - entity.getX(), player.getZ() - entity.getZ(), source, damage, true);
+				entity.knockback(1, player.getX() - entity.getX(), player.getZ() - entity.getZ());
 			}
 		});
 	}

@@ -11,7 +11,7 @@ import moriyashiine.enchancement.common.init.EnchancementParticleTypes;
 import moriyashiine.enchancement.common.tag.EnchancementEntityTypeTags;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
-import net.minecraft.advancements.triggers.CriteriaTriggers;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.syncher.EntityDataAccessor;

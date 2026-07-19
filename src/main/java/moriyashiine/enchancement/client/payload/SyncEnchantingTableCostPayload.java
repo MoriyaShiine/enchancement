@@ -33,7 +33,7 @@ public record SyncEnchantingTableCostPayload(int cost) implements CustomPacketPa
 	public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<SyncEnchantingTableCostPayload> {
 		@Override
 		public void receive(SyncEnchantingTableCostPayload payload, ClientPlayNetworking.Context context) {
-			if (context.client().gui.screen() instanceof OverhauledEnchantmentScreen screen) {
+			if (context.client().screen instanceof OverhauledEnchantmentScreen screen) {
 				screen.getMenu().setCost(payload.cost());
 			}
 		}

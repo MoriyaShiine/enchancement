@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(HealOrHarmMobEffect.class)
 public class HealOrHarmMobEffectMixin {
-	@ModifyArg(method = "applyInstantaneousEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;heal(F)V"))
+	@ModifyArg(method = "applyInstantenousEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;heal(F)V"))
 	private float enchancement$rebalanceEffectsInstantHealth(float heal) {
 		if (EnchancementConfig.rebalanceEffects) {
 			return heal * 3 / 4F;
@@ -20,7 +20,7 @@ public class HealOrHarmMobEffectMixin {
 		return heal;
 	}
 
-	@ModifyArg(method = "applyInstantaneousEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;hurtServer(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;F)Z"))
+	@ModifyArg(method = "applyInstantenousEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;hurtServer(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;F)Z"))
 	private float enchancement$rebalanceEffectsInstantDamage(float damage) {
 		if (EnchancementConfig.rebalanceEffects) {
 			return damage / 2F;

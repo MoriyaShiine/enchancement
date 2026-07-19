@@ -121,7 +121,7 @@ public class LightningDashComponent extends UsingMaceComponent implements Common
 						+ obj.getMainHandItem().getItem().getAttackDamageBonus(entity, base, source))
 						* LightningDashEffect.getSmashDamageMultiplier(obj.getRandom(), obj.getMainHandItem());
 				if (entity.hurtServer(level, source, damage)) {
-					entity.knockback(1.5, obj.getX() - entity.getX(), obj.getZ() - entity.getZ(), source, damage, true);
+					entity.knockback(1.5, obj.getX() - entity.getX(), obj.getZ() - entity.getZ());
 					hurt[0] = false;
 				}
 			});

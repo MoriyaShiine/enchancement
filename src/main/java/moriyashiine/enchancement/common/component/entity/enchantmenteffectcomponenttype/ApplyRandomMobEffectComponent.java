@@ -76,7 +76,7 @@ public class ApplyRandomMobEffectComponent implements CardinalComponent {
 			}
 			while (attempts < 128) {
 				MobEffect effect = BuiltInRegistries.MOB_EFFECT.byId(user.getRandom().nextInt(BuiltInRegistries.MOB_EFFECT.size()));
-				if (effect != null && !disallowed.contains(effect) && !effect.isInstantaneous()) {
+				if (effect != null && !disallowed.contains(effect) && !effect.isInstantenous()) {
 					Optional<ResourceKey<MobEffect>> key = BuiltInRegistries.MOB_EFFECT.getResourceKey(effect);
 					if (key.isPresent() && effect.getCategory() == category && !BuiltInRegistries.MOB_EFFECT.getOrThrow(key.get()).is(disallowedTag.get())) {
 						List<MobEffectInstance> effects = new ArrayList<>();

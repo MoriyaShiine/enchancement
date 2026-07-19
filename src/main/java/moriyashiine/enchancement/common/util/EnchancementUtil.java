@@ -14,7 +14,6 @@ import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.enchancement.common.tag.EnchancementEntityTypeTags;
 import moriyashiine.enchancement.common.tag.EnchancementItemTags;
 import moriyashiine.enchancement.common.util.config.DisableDurabilityMode;
-import moriyashiine.enchancement.mixin.api.event.LivingEntityMixin;
 import moriyashiine.strawberrylib.api.module.SLibUtils;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.minecraft.core.Holder;

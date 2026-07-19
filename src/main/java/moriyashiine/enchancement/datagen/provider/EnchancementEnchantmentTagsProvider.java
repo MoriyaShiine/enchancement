@@ -32,9 +32,9 @@ public class EnchancementEnchantmentTagsProvider extends FabricTagsProvider<Ench
 
 	@Override
 	protected void addTags(HolderLookup.Provider registries) {
-		TagAppender<Enchantment> nonTreasure = builder(EnchantmentTags.NON_TREASURE);
-		TagAppender<Enchantment> treasure = builder(EnchantmentTags.TREASURE);
-		TagAppender<Enchantment> tooltipOrder = builder(EnchantmentTags.TOOLTIP_ORDER);
+		TagAppender<ResourceKey<Enchantment>, Enchantment> nonTreasure = builder(EnchantmentTags.NON_TREASURE);
+		TagAppender<ResourceKey<Enchantment>, Enchantment> treasure = builder(EnchantmentTags.TREASURE);
+		TagAppender<ResourceKey<Enchantment>, Enchantment> tooltipOrder = builder(EnchantmentTags.TOOLTIP_ORDER);
 		NON_TREASURE_ENCHANTMENTS.forEach(id -> nonTreasure.add(ResourceKey.create(Registries.ENCHANTMENT, id)));
 		TREASURE_ENCHANTMENTS.forEach(id -> treasure.add(ResourceKey.create(Registries.ENCHANTMENT, id)));
 		NON_TREASURE_ENCHANTMENTS.forEach(id -> tooltipOrder.add(ResourceKey.create(Registries.ENCHANTMENT, id)));

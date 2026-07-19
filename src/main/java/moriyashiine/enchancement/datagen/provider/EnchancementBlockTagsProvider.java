@@ -10,11 +10,11 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.references.BlockItemIds;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -25,31 +25,32 @@ public class EnchancementBlockTagsProvider extends FabricTagsProvider.BlockTagsP
 
 	@Override
 	protected void addTags(HolderLookup.Provider registries) {
-		builder(EnchancementBlockTags.BURIABLE)
+		valueLookupBuilder(EnchancementBlockTags.BURIABLE)
 				.forceAddTag(BlockTags.MINEABLE_WITH_HOE)
 				.forceAddTag(BlockTags.MINEABLE_WITH_SHOVEL)
 				.forceAddTag(BlockTags.NYLIUM)
 				.forceAddTag(BlockTags.SNOW)
-				.add(BlockItemIds.COBWEB.block())
-				.add(BlockItemIds.NETHERRACK.block());
-		builder(EnchancementBlockTags.FELLABLE)
+				.add(Blocks.COBWEB)
+				.add(Blocks.NETHERRACK);
+		valueLookupBuilder(EnchancementBlockTags.FELLABLE)
 				.forceAddTag(BlockTags.LOGS)
-				.add(BlockItemIds.MANGROVE_ROOTS.block());
-		builder(EnchancementBlockTags.SMELTS_SELF)
+				.add(Blocks.MANGROVE_ROOTS);
+		valueLookupBuilder(EnchancementBlockTags.SMELTS_SELF)
 				.forceAddTag(BlockTags.LEAVES)
-				.add(BlockItemIds.NETHER_GOLD_ORE.block())
+				.add(Blocks.NETHER_GOLD_ORE);
+		builder(EnchancementBlockTags.SMELTS_SELF)
 				.addOptional(key("enderscape:mirestone_nebulite_ore"))
 				.addOptional(key("enderscape:nebulite_ore"))
 				.addOptional(key("universal_ores:basalt_gold_ore"))
 				.addOptional(key("universal_ores:blackstone_gold_ore"));
-		builder(EnchancementBlockTags.UNSTICKABLE)
+		valueLookupBuilder(EnchancementBlockTags.UNSTICKABLE)
 				.forceAddTag(BlockTags.ICE);
 
-		builder(EnchancementBlockTags.DEEPSLATE_BASE_BLOCKS)
+		valueLookupBuilder(EnchancementBlockTags.DEEPSLATE_BASE_BLOCKS)
 				.forceAddTag(ConventionalBlockTags.ORES_IN_GROUND_DEEPSLATE);
-		builder(EnchancementBlockTags.NETHERRACK_BASE_BLOCKS)
+		valueLookupBuilder(EnchancementBlockTags.NETHERRACK_BASE_BLOCKS)
 				.forceAddTag(ConventionalBlockTags.ORES_IN_GROUND_NETHERRACK)
-				.add(BlockItemIds.ANCIENT_DEBRIS.block());
+				.add(Blocks.ANCIENT_DEBRIS);
 	}
 
 	private static ResourceKey<Block> key(String id) {
