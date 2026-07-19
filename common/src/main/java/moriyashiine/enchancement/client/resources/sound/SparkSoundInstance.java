@@ -1,0 +1,41 @@
+package moriyashiine.enchancement.client.resources.sound;
+
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.LightningDashComponent;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
+import moriyashiine.enchancement.common.init.EnchancementSoundEvents;
+import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
+import net.minecraft.world.entity.Entity;
+
+public class SparkSoundInstance extends AbstractTickableSoundInstance {
+	private final Entity entity;
+
+	public SparkSoundInstance(Entity entity) {
+		super(EnchancementSoundEvents.GENERIC_SPARK, entity.getSoundSource(), entity.getRandom());
+		this.entity = entity;
+		x = entity.getX();
+		y = entity.getY();
+		z = entity.getZ();
+		looping = true;
+	}
+
+	@Override
+	public void tick() {
+		boolean done = entity == null || !entity.isAlive();
+		if (!done) {
+			LightningDashComponent lightningDash = EnchancementEntityComponents.LIGHTNING_DASH.getNullable(entity);
+			if (lightningDash == null || !lightningDash.isFloating()) {
+				done = true;
+			}
+		}
+		if (done) {
+			volume -= 0.1F;
+			if (volume < 0) {
+				stop();
+			}
+			return;
+		}
+		x = entity.getX();
+		y = entity.getY();
+		z = entity.getZ();
+	}
+}

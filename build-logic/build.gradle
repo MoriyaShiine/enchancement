@@ -1,0 +1,17 @@
+plugins {
+	id("groovy-gradle-plugin")
+}
+
+repositories {
+	gradlePluginPortal()
+	mavenCentral()
+	maven {
+		name = "FabricMC"
+		url = "https://maven.fabricmc.net"
+	}
+}
+
+dependencies {
+	compileOnly(gradleApi())
+	implementation("io.github.ladysnake.chenille:io.github.ladysnake.chenille.gradle.plugin:0.21.1")
+}

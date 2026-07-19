@@ -1,0 +1,98 @@
+package moriyashiine.enchancement.common.event.config;
+
+import moriyashiine.enchancement.common.EnchancementConfig;
+import moriyashiine.enchancement.common.init.EnchancementSoundEvents;
+import moriyashiine.enchancement.common.tag.EnchancementDamageTypeTags;
+import moriyashiine.enchancement.common.tag.EnchancementEnchantmentTags;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.enchancement.common.util.enchantment.effect.MaceEffect;
+import moriyashiine.strawberrylib.api.event.TickEntityEvent;
+import moriyashiine.strawberrylib.api.module.SLibUtils;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.item.v1.DefaultItemComponentEvents;
+import net.fabricmc.fabric.api.item.v1.EnchantingContext;
+import net.fabricmc.fabric.api.item.v1.EnchantmentEvents;
+import net.fabricmc.fabric.api.util.TriState;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.TridentItem;
+import net.minecraft.world.item.enchantment.Enchantable;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.Level;
+
+public class RebalanceEquipmentEvent {
+	public static void init() {
+		DefaultItemComponentEvents.MODIFY.register(new AllowComponent());
+		EnchantmentEvents.ALLOW_ENCHANTING.register(new AllowEnchanting());
+		ServerLivingEntityEvents.AFTER_DAMAGE.register(new Interrupt());
+		TickEntityEvent.EVENT.register(new Tick());
+	}
+
+	private static class AllowComponent implements DefaultItemComponentEvents.ModifyCallback {
+		@Override
+		public void modify(DefaultItemComponentEvents.ModifyContext context) {
+			if (EnchancementConfig.rebalanceEquipment) {
+				context.modify(item -> EnchancementUtil.isAnimalArmor(item.getDefaultInstance()) || item == Items.SADDLE, (builder, _) -> builder.set(DataComponents.ENCHANTABLE, new Enchantable(1)));
+			}
+		}
+	}
+
+	private static class AllowEnchanting implements EnchantmentEvents.AllowEnchanting {
+		@Override
+		public TriState allowEnchanting(Holder<Enchantment> enchantment, ItemStack target, EnchantingContext enchantingContext) {
+			if (EnchancementConfig.rebalanceEquipment) {
+				if (EnchancementUtil.isAnimalArmor(target) && enchantment.is(EnchancementEnchantmentTags.ANIMAL_ARMOR_ENCHANTMENTS)) {
+					return TriState.TRUE;
+				}
+				if (target.is(Items.SADDLE) && enchantment.is(EnchancementEnchantmentTags.SADDLE_ENCHANTMENTS)) {
+					return TriState.TRUE;
+				}
+			}
+			return TriState.DEFAULT;
+		}
+	}
+
+	private static class Interrupt implements ServerLivingEntityEvents.AfterDamage {
+		@Override
+		public void afterDamage(LivingEntity entity, DamageSource source, float baseDamageTaken, float damageTaken, boolean blocked) {
+			if (EnchancementConfig.rebalanceEquipment && source.getEntity() != null && !source.is(EnchancementDamageTypeTags.DOES_NOT_INTERRUPT) && entity instanceof Player player) {
+				if (isMaceOrTrident(player)) {
+					player.getCooldowns().addCooldown(entity.getUseItem(), 20);
+					entity.releaseUsingItem();
+				}
+				for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
+					if (stack.has(DataComponents.GLIDER)) {
+						player.getCooldowns().addCooldown(stack, 60);
+					}
+				}
+			}
+		}
+	}
+
+	private static class Tick implements TickEntityEvent {
+		@Override
+		public void tick(Level level, Entity entity) {
+			if (EnchancementConfig.rebalanceEquipment && entity instanceof Player player) {
+				ItemStack useItem = player.getUseItem();
+				if (player.getTicksUsingItem() == BowItem.MAX_DRAW_DURATION && useItem.is(ItemTags.BOW_ENCHANTABLE)) {
+					SLibUtils.playSound(entity, EnchancementSoundEvents.BOW_READY);
+				}
+				if (player.getTicksUsingItem() == EnchancementUtil.getMaceOrTridentChargeTime(useItem) && isMaceOrTrident(player)) {
+					SLibUtils.playSound(entity, useItem.is(ItemTags.MACE_ENCHANTABLE) ? EnchancementSoundEvents.MACE_READY : EnchancementSoundEvents.TRIDENT_READY);
+				}
+			}
+		}
+	}
+
+	private static boolean isMaceOrTrident(Player player) {
+		return player.getUseItem().getItem() instanceof TridentItem || MaceEffect.EFFECTS.stream().anyMatch(effect -> effect.isUsing(player));
+	}
+}

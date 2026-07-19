@@ -1,0 +1,39 @@
+plugins {
+	id("multiloader-common")
+}
+
+configurations {
+	def commonJavaDep = dependencyScope("commonJavaDep")
+	resolvable("commonJava") {
+		extendsFrom(commonJavaDep)
+	}
+
+	def commonResourcesDep = dependencyScope("commonResourcesDep")
+	resolvable("commonResources") {
+		extendsFrom(commonResourcesDep)
+	}
+}
+
+dependencies {
+	compileOnly(project(":${rootProject.name}-common")) {
+		attributes { attribute(Attribute.of("io.github.mcgradleconventions.loader", String), "common") }
+	}
+
+	commonJavaDep(project(path: ":${rootProject.name}-common", configuration: "commonJava"))
+	commonResourcesDep(project(path: ":${rootProject.name}-common", configuration: "commonResources"))
+
+	annotationProcessor(compileOnly("com.google.auto.service:auto-service:1.1.1"))
+}
+
+tasks.named("compileJava", JavaCompile).configure {
+	dependsOn(configurations.commonJava)
+	source(configurations.commonJava)
+}
+tasks.named("processResources", ProcessResources).configure {
+	dependsOn(configurations.commonResources)
+	from(configurations.commonResources)
+}
+tasks.named("sourcesJar", Jar).configure {
+	dependsOn(configurations.commonJava, configurations.commonResources)
+	from(configurations.commonJava, configurations.commonResources)
+}

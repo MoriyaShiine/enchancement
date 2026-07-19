@@ -1,0 +1,23 @@
+{
+  "required": true,
+  "package": "moriyashiine.enchancement.neoforge.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "mixins": [
+	"config.disabledisallowedenchantments.EventHooksMixin",
+	"config.disabledurability.AnvilMenuMixin",
+	"config.enchantmentlimit.EnchantmentHelperMixin",
+	"config.rebalanceequipment.PlayerMixin",
+	"enchantmenteffectcomponenttype.allowloadingprojectile.CrossbowMixin",
+	"enchantmenteffectcomponenttype.brimstone.BrimstoneCrossbowMixin"
+  ],
+  "client": [
+	"config.enchantmentdescriptions.client.GuiGraphicsExtractorMixin",
+	"enchantmenteffectcomponenttype.emeter.client.GuiMixin"
+  ],
+  "injectors": {
+	"defaultRequire": 1
+  },
+  "overwrites": {
+	"requireAnnotations": true
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${version}",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
+  "authors": [
+	"MoriyaShiine"
+  ],
+  "contributors": [
+	"cybercat5555",
+	"doctor4t",
+	"UpcraftLP"
+  ],
+  "contact": {
+	"homepage": "https://modrinth.com/mod/${project_name}",
+	"sources": "https://github.com/MoriyaShiine/${project_name}",
+	"issues": "https://github.com/MoriyaShiine/${project_name}/issues"
+  },
+  "license": "All Rights Reserved",
+  "icon": "assets/${mod_id}/icon.png",
+  "environment": "*",
+  "entrypoints": {
+	"fabric-datagen": [
+	  "moriyashiine.enchancement.datagen.EnchancementDataGenerator"
+	],
+	"main": [
+	  "moriyashiine.enchancement.common.Enchancement"
+	],
+	"client": [
+	  "moriyashiine.enchancement.client.EnchancementClient"
+	],
+	"cardinal-components-block": [
+	  "moriyashiine.enchancement.common.init.EnchancementBlockComponents"
+	],
+	"cardinal-components-entity": [
+	  "moriyashiine.enchancement.common.init.EnchancementEntityComponents"
+	],
+	"cardinal-components-level": [
+	  "moriyashiine.enchancement.common.init.EnchancementLevelComponents"
+	]
+  },
+  "mixins": [
+	"${mod_id}.mixins.json",
+	"${mod_id}_fabric.mixins.json"
+  ],
+  "accessWidener": "${mod_id}.classtweaker",
+  "depends": {
+	"fabricloader": "*",
+	"minecraft": "~26.1",
+	"java": ">=25",
+	"fabric-api": "*",
+	"strawberrylib": "*"
+  },
+  "custom": {
+	"launchpad:compatible": true,
+	"launchpad:overrides": {
+	  "mixins": [
+		"${mod_id}.mixins.json",
+		"${mod_id}_neoforge.mixins.json"
+	  ]
+	},
+	"cardinal-components": [
+	  "${mod_id}:chiseled_bookshelf",
+	  "${mod_id}:air_mobility",
+	  "${mod_id}:ignited",
+	  "${mod_id}:limit_blocks_attacks",
+	  "${mod_id}:owned_trident",
+	  "${mod_id}:projectile_timer",
+	  "${mod_id}:safe_lightning",
+	  "${mod_id}:air_jump",
+	  "${mod_id}:apply_random_mob_effect",
+	  "${mod_id}:apply_random_mob_effect_generic",
+	  "${mod_id}:boost_in_fluid",
+	  "${mod_id}:bounce",
+	  "${mod_id}:bury_entity",
+	  "${mod_id}:charge_jump",
+	  "${mod_id}:delayed_launch",
+	  "${mod_id}:direction_burst",
+	  "${mod_id}:disarming_fishing_bobber",
+	  "${mod_id}:disarmed_player",
+	  "${mod_id}:disarmed_wandering_trader",
+	  "${mod_id}:disarmed_witch",
+	  "${mod_id}:e_meter",
+	  "${mod_id}:extended_water_time",
+	  "${mod_id}:glide",
+	  "${mod_id}:leeching_trident",
+	  "${mod_id}:lightning_dash",
+	  "${mod_id}:phase",
+	  "${mod_id}:rotation_burst",
+	  "${mod_id}:slam",
+	  "${mod_id}:slide",
+	  "${mod_id}:teleport_on_hit",
+	  "${mod_id}:wall_jump",
+	  "${mod_id}:conditional_attributes",
+	  "${mod_id}:frozen",
+	  "${mod_id}:frozen_guardian",
+	  "${mod_id}:frozen_squid",
+	  "${mod_id}:eruption",
+	  "${mod_id}:grounded_cooldown",
+	  "${mod_id}:launch_wind_charge",
+	  "${mod_id}:fell_trees",
+	  "${mod_id}:honey_trail",
+	  "${mod_id}:wide_mining"
+	],
+	"lithium:options": {
+	  "mixin.shapes.lazy_shape_context": false
+	}
+  }
+}

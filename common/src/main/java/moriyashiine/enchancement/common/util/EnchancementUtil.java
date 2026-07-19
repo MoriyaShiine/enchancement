@@ -1,0 +1,408 @@
+package moriyashiine.enchancement.common.util;
+
+import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
+import moriyashiine.enchancement.common.EnchancementConfig;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.LightningDashComponent;
+import moriyashiine.enchancement.common.event.internal.SyncDeltaMovementsEvent;
+import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectComponentTypes;
+import moriyashiine.enchancement.common.init.EnchancementEnchantments;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
+import moriyashiine.enchancement.common.tag.EnchancementEntityTypeTags;
+import moriyashiine.enchancement.common.tag.EnchancementItemTags;
+import moriyashiine.enchancement.common.util.config.DisableDurabilityMode;
+import moriyashiine.strawberrylib.api.module.SLibUtils;
+import net.fabricmc.fabric.api.item.v1.EnchantingContext;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderOwner;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.util.TriState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.ThrownTrident;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.enchantment.*;
+import net.minecraft.world.item.enchantment.effects.EnchantmentValueEffect;
+import net.minecraft.world.item.equipment.ArmorMaterials;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import org.apache.commons.lang3.mutable.MutableFloat;
+import org.jspecify.annotations.Nullable;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
+public class EnchancementUtil {
+	public static HolderOwner<?> ENCHANTMENT_HOLDER_OWNER = null;
+	public static final List<Holder.Reference<Enchantment>> ENCHANTMENTS = new ArrayList<>();
+	public static RandomSource SERVER_RANDOM = null;
+
+	public static final Map<ResourceKey<Enchantment>, Integer> ORIGINAL_MAX_LEVELS = new ConcurrentHashMap<>();
+	public static final Map<TagKey<Item>, TriState> VANILLA_ENCHANTMENT_STRENGTH_TAGS = new Object2ObjectArrayMap<>();
+
+	static {
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.REPAIRS_LEATHER_ARMOR, TriState.TRUE);
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.REPAIRS_COPPER_ARMOR, TriState.TRUE);
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.REPAIRS_CHAIN_ARMOR, TriState.FALSE);
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.REPAIRS_IRON_ARMOR, TriState.TRUE);
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.REPAIRS_GOLD_ARMOR, TriState.FALSE);
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.REPAIRS_DIAMOND_ARMOR, TriState.FALSE);
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.REPAIRS_NETHERITE_ARMOR, TriState.FALSE);
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.REPAIRS_TURTLE_HELMET, TriState.FALSE);
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.REPAIRS_WOLF_ARMOR, TriState.FALSE);
+
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.WOODEN_TOOL_MATERIALS, TriState.TRUE);
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.STONE_TOOL_MATERIALS, TriState.TRUE);
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.COPPER_TOOL_MATERIALS, TriState.TRUE);
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.IRON_TOOL_MATERIALS, TriState.TRUE);
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.GOLD_TOOL_MATERIALS, TriState.FALSE);
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.DIAMOND_TOOL_MATERIALS, TriState.FALSE);
+		VANILLA_ENCHANTMENT_STRENGTH_TAGS.put(ItemTags.NETHERITE_TOOL_MATERIALS, TriState.FALSE);
+	}
+
+	public static ItemStack cachedApplyStack = null;
+
+	public static List<ItemEntity> mergeItemEntities(List<ItemEntity> drops) {
+		for (int i = drops.size() - 1; i >= 0; i--) {
+			if (i < drops.size() - 1) {
+				ItemEntity itemEntity = drops.get(i);
+				ItemEntity other = drops.get(i + 1);
+				itemEntity.tryToMerge(other);
+				if (itemEntity.getItem().isEmpty()) {
+					drops.remove(i);
+				}
+				if (other.getItem().isEmpty()) {
+					drops.remove(i + 1);
+				}
+			}
+		}
+		return drops;
+	}
+
+	public static String getTranslationKey(Holder<Enchantment> enchantment) {
+		if (enchantment.value().description().getContents() instanceof TranslatableContents translatable) {
+			return translatable.getKey();
+		}
+		return enchantment.value().description().getString();
+	}
+
+	// disable disallowed enchantments
+
+	public static @Nullable Holder<Enchantment> getRandomEnchantment(ItemStack stack, TagKey<Enchantment> checkedTag, @Nullable RandomSource random) {
+		List<Holder<Enchantment>> enchantments = new ArrayList<>();
+		for (Holder<Enchantment> enchantment : ENCHANTMENTS) {
+			if (enchantment.is(checkedTag)) {
+				if (stack.is(Items.BOOK) || stack.is(Items.ENCHANTED_BOOK) || stack.canBeEnchantedWith(enchantment, EnchantingContext.ACCEPTABLE)) {
+					enchantments.add(enchantment);
+				}
+			}
+		}
+		if (!enchantments.isEmpty()) {
+			if (random == null) {
+				random = SERVER_RANDOM;
+			}
+			return enchantments.get(random.nextInt(enchantments.size()));
+		}
+		return null;
+	}
+
+	public static boolean isEnchantmentAllowed(@Nullable Holder<Enchantment> enchantment) {
+		if (enchantment != null && enchantment.unwrapKey().isPresent()) {
+			return isEnchantmentAllowed(enchantment.unwrapKey().get().identifier());
+		}
+		return false;
+	}
+
+	public static boolean isEnchantmentAllowed(Identifier identifier) {
+		if (identifier.equals(EnchancementEnchantments.EMPTY_KEY.identifier())) {
+			return false;
+		}
+		if (EnchancementConfig.invertedList) {
+			return EnchancementConfig.disallowedEnchantments.contains(identifier.toString());
+		}
+		return !EnchancementConfig.disallowedEnchantments.contains(identifier.toString());
+	}
+
+	// single level mode
+
+	public static boolean hasWeakEnchantments(ItemInstance item) {
+		if (item.is(EnchancementItemTags.STRONGLY_ENCHANTED)) {
+			return false;
+		}
+		if (item.is(EnchancementItemTags.WEAKLY_ENCHANTED)) {
+			return true;
+		}
+		int enchantmentValue = getEnchantmentValue(item);
+		if (enchantmentValue > 0) {
+			Repairable repairable = item.get(DataComponents.REPAIRABLE);
+			TagKey<Item> repairTag = repairable != null ? repairable.items().unwrapKey().orElse(null) : null;
+			if (repairTag != null) {
+				TriState triState = VANILLA_ENCHANTMENT_STRENGTH_TAGS.getOrDefault(repairTag, TriState.DEFAULT);
+				if (triState != TriState.DEFAULT) {
+					return triState.toBoolean(false);
+				}
+			}
+			return enchantmentValue <= (item.is(ItemTags.ARMOR_ENCHANTABLE) ? ArmorMaterials.IRON.enchantmentValue() : ToolMaterial.IRON.enchantmentValue());
+		}
+		return false;
+	}
+
+	public static int alterLevel(ItemInstance item, Holder<Enchantment> enchantment) {
+		return getModifiedMaxLevel(item, getOriginalMaxLevel(enchantment));
+	}
+
+	public static int getEnchantmentValue(ItemInstance item) {
+		Enchantable enchantable = item.get(DataComponents.ENCHANTABLE);
+		if (enchantable != null) {
+			int value = enchantable.value();
+			if (value == 1) {
+				value = (item.is(ItemTags.ARMOR_ENCHANTABLE) ? ArmorMaterials.IRON.enchantmentValue() : ToolMaterial.IRON.enchantmentValue()) + 1;
+			}
+			return value;
+		}
+		return 0;
+	}
+
+	public static int getModifiedMaxLevel(ItemInstance item, int maxLevel) {
+		if (hasWeakEnchantments(item)) {
+			return Mth.ceil(maxLevel / 2F);
+		}
+		return maxLevel;
+	}
+
+	public static int getOriginalMaxLevel(Holder<Enchantment> enchantment) {
+		return ORIGINAL_MAX_LEVELS.getOrDefault(enchantment.unwrapKey().orElseThrow(), enchantment.value().getMaxLevel());
+	}
+
+	// enchantment limit
+
+	public static boolean isDefaultEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
+		ItemEnchantments defaultEnchantments = stack.getItem().components().getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
+		for (Holder<Enchantment> foundEnchantment : defaultEnchantments.keySet()) {
+			if (foundEnchantment == enchantment) {
+				int level = EnchancementConfig.singleLevelMode ? 1 : EnchantmentHelper.getItemEnchantmentLevel(enchantment, stack);
+				if (level == defaultEnchantments.getLevel(enchantment)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public static boolean exceedsLimit(ItemStack stack, int size) {
+		if (EnchancementConfig.enchantmentLimit == 0) {
+			return false;
+		}
+		for (Holder<Enchantment> enchantment : EnchantmentHelper.getEnchantmentsForCrafting(stack).keySet()) {
+			if (isDefaultEnchantment(stack, enchantment)) {
+				size--;
+			}
+		}
+		return size > EnchancementConfig.enchantmentLimit;
+	}
+
+	// disable durability
+
+	public static boolean isUnbreakable(ItemStack stack) {
+		if (!stack.isEmpty()) {
+			if (stack.is(EnchancementItemTags.BREAKABLE)) {
+				return false;
+			}
+			if (stack.is(EnchancementItemTags.UNBREAKABLE)) {
+				return true;
+			}
+			if (EnchancementConfig.disableDurability != DisableDurabilityMode.NONE) {
+				if (stack.is(Items.ANVIL) || stack.has(DataComponents.MAX_DAMAGE)) {
+					return EnchancementConfig.disableDurability != DisableDurabilityMode.ENCHANTED || stack.isEnchanted();
+				}
+			}
+		}
+		return false;
+	}
+
+	// rebalance enchantments
+
+	public static void rebalanceIgniteForSeconds(LivingEntity entity, float numberOfSeconds) {
+		if (EnchancementConfig.rebalanceEnchantments) {
+			EnchancementEntityComponents.IGNITED.get(entity).markIgnited();
+		}
+		entity.igniteForSeconds(numberOfSeconds);
+	}
+
+	// rebalance equipment
+
+	public static float getItemUseSpeedMultiplier(ItemStack stack, float original) {
+		if (isFastItem(stack)) {
+			return Math.min(1, original * 3);
+		}
+		return original;
+	}
+
+	public static boolean isFastItem(ItemStack stack) {
+		if (EnchancementConfig.rebalanceEquipment) {
+			Item item = stack.getItem();
+			return item instanceof BowItem || item instanceof MaceItem || item instanceof TridentItem;
+		}
+		return false;
+	}
+
+	public static boolean insertToCorrectTridentSlot(AbstractArrow arrow, Inventory inventory, ItemStack stack) {
+		if (EnchancementConfig.rebalanceEquipment && arrow instanceof ThrownTrident) {
+			int slot = EnchancementEntityComponents.OWNED_TRIDENT.get(arrow).getSlot();
+			if (slot >= 0 && slot < inventory.getContainerSize() && inventory.getItem(slot).isEmpty()) {
+				inventory.setItem(slot, stack);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static int getMaceOrTridentChargeTime(ItemStack stack) {
+		return TridentItem.THROW_THRESHOLD_TIME * (EnchancementConfig.rebalanceEquipment && stack.getEnchantments().keySet().stream().noneMatch(enchantment -> enchantment.is(Enchantments.RIPTIDE)) ? 2 : 1);
+	}
+
+	// weapon effect cooldown requirement
+
+	public static boolean shouldApplyWeaponEffect() {
+		return SLibUtils.isAttackingPlayerCooldownWithinThreshold(EnchancementConfig.weaponEffectCooldownRequirement);
+	}
+
+	// fix vanilla bugs
+
+	public static void refreshAttributesAndCooldown(LivingEntity entity) {
+		if (!entity.level().isClientSide()) {
+			entity.detectEquipmentUpdates();
+		}
+		if (entity instanceof Player player) {
+			player.resetAttackStrengthTicker();
+		}
+	}
+
+	// misc
+
+	public static Set<ItemStack> getArmorItems(LivingEntity entity) {
+		Set<ItemStack> stacks = new HashSet<>();
+		for (EquipmentSlot slot : EquipmentSlot.values()) {
+			if (slot.getType() != EquipmentSlot.Type.HAND) {
+				stacks.add(entity.getItemBySlot(slot));
+			}
+		}
+		return stacks;
+	}
+
+	public static Set<ItemStack> getHeldItems(LivingEntity entity) {
+		Set<ItemStack> stacks = new HashSet<>();
+		for (EquipmentSlot slot : EquipmentSlot.values()) {
+			if (slot.getType() == EquipmentSlot.Type.HAND) {
+				stacks.add(entity.getItemBySlot(slot));
+			}
+		}
+		return stacks;
+	}
+
+	public static Vec3 getSyncedDeltaMovement(Entity entity) {
+		return SyncDeltaMovementsEvent.DELTAS.getOrDefault(entity.getUUID(), entity.getDeltaMovement());
+	}
+
+	public static Vec3 modifyDeltaWithCurrent(Entity entity, Vec3 delta, double currentScalar) {
+		Vec3 current = entity.getDeltaMovement().scale(currentScalar);
+		double x = delta.x(), z = delta.z();
+		if (Double.compare(x, current.x()) * Math.signum(current.x()) > 0) {
+			x += current.x();
+		}
+		if (Double.compare(z, current.z()) * Math.signum(current.z()) > 0) {
+			z += current.z();
+		}
+		return new Vec3(x, delta.y(), z);
+	}
+
+	public static boolean isAnimalArmor(ItemStack stack) {
+		return stack.has(DataComponents.EQUIPPABLE) && stack.get(DataComponents.EQUIPPABLE).slot().getType() == EquipmentSlot.Type.ANIMAL_ARMOR;
+	}
+
+	public static double altLog(double base, double value, double multiplier) {
+		return Math.log(value + 1) / Math.log(base) * multiplier;
+	}
+
+	public static double logistic(double asymptote, double value) {
+		return asymptote * 2 / (1 + Math.pow(Math.E, -value / (asymptote / 2))) - asymptote;
+	}
+
+	public static void resetFallDistance(Entity entity) {
+		entity.resetFallDistance();
+		if (entity instanceof LivingEntity living) {
+			living.resetCurrentImpulseContext();
+		}
+		EnchancementEntityComponents.LIGHTNING_DASH.maybeGet(entity).ifPresent(LightningDashComponent::cancel);
+	}
+
+	// enchantment
+
+	public static boolean hasAnyEnchantmentsIn(Entity entity, TagKey<Enchantment> tagKey) {
+		if (entity instanceof LivingEntity living) {
+			for (ItemStack stack : getArmorItems(living)) {
+				if (EnchantmentHelper.hasTag(stack, tagKey)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public static boolean hasAnyEnchantmentsWith(Entity entity, DataComponentType<?> componentType) {
+		if (entity instanceof LivingEntity living) {
+			for (ItemStack stack : getArmorItems(living)) {
+				if (EnchantmentHelper.has(stack, componentType)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public static float getValue(DataComponentType<EnchantmentValueEffect> component, RandomSource random, ItemStack stack, float base) {
+		MutableFloat mutableFloat = new MutableFloat(base);
+		EnchantmentHelper.runIterationOnItem(stack, (enchantment, enchantmentLevel) -> enchantment.value().modifyUnfilteredValue(component, random, enchantmentLevel, mutableFloat));
+		return mutableFloat.floatValue();
+	}
+
+	public static float getValue(DataComponentType<EnchantmentValueEffect> component, LivingEntity entity, float base) {
+		MutableFloat mutableFloat = new MutableFloat(base);
+		for (ItemStack stack : getArmorItems(entity)) {
+			EnchantmentHelper.runIterationOnItem(stack, (enchantment, enchantmentLevel) -> enchantment.value().modifyUnfilteredValue(component, entity.getRandom(), enchantmentLevel, mutableFloat));
+		}
+		return mutableFloat.floatValue();
+	}
+
+	public static float getValue(DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>> component, ServerLevel level, ItemStack stack, float base) {
+		MutableFloat mutableFloat = new MutableFloat(base);
+		EnchantmentHelper.runIterationOnItem(stack, (enchantment, enchantmentLevel) -> enchantment.value().modifyItemFilteredCount(component, level, enchantmentLevel, stack, mutableFloat));
+		return mutableFloat.floatValue();
+	}
+
+	// specific
+
+	public static final VoxelShape FLUID_WALKING_SHAPE = Block.column(16, 0, 8);
+
+	public static boolean shouldFluidWalk(Entity entity) {
+		return !entity.is(EnchancementEntityTypeTags.CANNOT_FLUID_WALK) && !SLibUtils.isCrouching(entity, true) && hasAnyEnchantmentsWith(entity, EnchancementEnchantmentEffectComponentTypes.FLUID_WALKING);
+	}
+
+	public static boolean isHovering(LivingEntity entity) {
+		return EnchancementEntityComponents.BOOST_IN_FLUID.get(entity).blocksAirEffects() || EnchancementEntityComponents.E_METER.get(entity).isFloating();
+	}
+}

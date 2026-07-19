@@ -1,0 +1,16 @@
+license = "All Rights Reserved"
+[[mods]]
+modId = "${mod_id}"
+version = "${version}"
+displayName = "${mod_name}"
+description = '''
+${mod_description}
+'''
+[[dependencies.${ mod_id }]]
+modId = "launchpad"
+type = "required"
+versionRange = "[0,)"
+ordering = "NONE"
+side = "BOTH"
+[properties]
+"launchpad:placeholder" = true

@@ -1,0 +1,79 @@
+plugins {
+	id("org.relativitymc.neo-loom")
+	id("multiloader-loader")
+}
+
+chenille {
+	github = new URL("https://github.com/MoriyaShiine/${rootProject.name}")
+	changelogFile = rootProject.file("changelog.md")
+	javaVersion = 25
+	configurePublishing {
+		withLadysnakeMaven()
+		withGithubRelease()
+		withModrinthRelease()
+		withCurseforgeRelease()
+		fabricCompatible = true
+		neoforgeCompatible = quiltCompatible = false
+	}
+}
+
+loom {
+	def classTweaker = project(":${rootProject.name}-common").file("src/main/resources/${mod_id}.classtweaker")
+	if (classTweaker.exists()) {
+		accessWidenerPath = classTweaker
+	}
+	mods {
+		register(rootProject.name) {
+			sourceSet("main")
+			sourceSet(project(":${rootProject.name}-common").sourceSets.main)
+		}
+	}
+
+	runs {
+		fabricApi.configureDataGeneration {
+			outputDirectory = project(":${rootProject.name}-common").file("src/main/generated")
+			modId = rootProject.name
+			client = true
+			addToResources = false
+		}
+		named("client") {
+			configName = "Fabric Client"
+		}
+		named("server") {
+			configName = "Fabric Server"
+		}
+		named("datagen") {
+			configName = "Fabric Datagen"
+		}
+
+		configureEach {
+			ideConfigGenerated = true
+			property("mixin.debug.export", "true")
+		}
+	}
+}
+
+repositories {
+	maven {
+		name = "TerraformersMC"
+		url = "https://maven.gnomecraft.net/releases"
+	}
+}
+
+dependencies {
+	minecraft("com.mojang:minecraft:${minecraft_version}")
+	implementation("net.fabricmc:fabric-loader:${loader_version}")
+
+	includeApi("org.ladysnake.cardinal-components-api:cardinal-components-block:${cardinal_components_version}")
+	includeApi("org.ladysnake.cardinal-components-api:cardinal-components-level:${cardinal_components_version}")
+	includeApi("maven.modrinth:midnightlib:${midnightlib_version}")
+
+	implementation("net.fabricmc.fabric-api:fabric-api:${fabric_api_version}")
+	implementation("moriyashiine.strawberrylib:strawberrylib-fabric:${strawberrylib_version}")
+
+	compileOnly("squeek.appleskin:appleskin-fabric:${appleskin_version}") {
+		transitive = false
+	}
+
+	localRuntime("com.terraformersmc:modmenu:${mod_menu_version}")
+}

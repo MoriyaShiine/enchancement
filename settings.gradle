@@ -1,13 +1,22 @@
 pluginManagement {
 	repositories {
-		maven {
-			name = 'Fabric'
-			url = 'https://maven.fabricmc.net/'
-		}
-		mavenCentral()
 		gradlePluginPortal()
+		mavenCentral()
+		maven {
+			name = "FabricMC"
+			url = "https://maven.fabricmc.net"
+		}
+		maven {
+			name = "RelativityMC"
+			url = "https://repo.codemc.io/repository/relativitymc"
+		}
 	}
 }
 
-// Should match your modid
-rootProject.name = 'enchancement'
+includeBuild("build-logic")
+["common", "fabric", "neoforge"]
+//["common", "fabric"]
+		.each {
+			include(it)
+			project(":$it").name = "${rootProject.name}-$it"
+		}

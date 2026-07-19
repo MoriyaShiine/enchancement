@@ -1,0 +1,74 @@
+plugins {
+	id("java-library")
+	id("maven-publish")
+	id("io.github.ladysnake.chenille")
+}
+
+version = rootProject.version
+
+repositories {
+	maven {
+		name = "FabricMC"
+		url = "https://maven.fabricmc.net"
+	}
+	maven {
+		name = "RelativityMC"
+		url = "https://repo.codemc.io/repository/relativitymc"
+	}
+	chenille.repositories.ladysnake()
+	chenille.repositories.up()
+	chenille.repositories.modrinth()
+	maven {
+		name "AppleSkin"
+		url "https://maven.ryanliptak.com"
+	}
+	mavenLocal()
+}
+
+processResources {
+	filteringCharset = "UTF-8"
+	def props = [
+			"project_name"   : rootProject.name,
+			"mod_id"         : mod_id,
+			"mod_name"       : mod_name,
+			"mod_description": mod_description,
+			"version"        : version,
+	]
+	inputs.properties(props)
+	filesMatching(["fabric.mod.json", "META-INF/neoforge.mods.toml"]) {
+		expand(props)
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 25
+}
+
+java {
+	withSourcesJar()
+	sourceCompatibility = JavaVersion.VERSION_25
+	targetCompatibility = JavaVersion.VERSION_25
+}
+
+jar {
+	exclude(".cache/")
+	from(rootProject.file("LICENSE")) {
+		rename("LICENSE", "LICENSE_${mod_id}")
+	}
+}
+
+// Declare capabilities on the outgoing configurations.
+// Read more about capabilities here: https://docs.gradle.org/current/userguide/component_capabilities.html#sec:declaring-additional-capabilities-for-a-local-component
+["apiElements", "runtimeElements", "sourcesElements"].forEach { variant ->
+	configurations.named(variant).configure {
+		outgoing {
+			capability("$group:${project.name}:$version")
+			capability("$group:${rootProject.name}:$version")
+		}
+	}
+	publishing {
+		publications.withType(MavenPublication).configureEach {
+			suppressPomMetadataWarningsFor(variant)
+		}
+	}
+}

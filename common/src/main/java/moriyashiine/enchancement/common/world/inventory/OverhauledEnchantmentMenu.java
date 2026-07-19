@@ -1,0 +1,378 @@
+package moriyashiine.enchancement.common.world.inventory;
+
+import moriyashiine.enchancement.client.payload.SyncBookshelvesPayload;
+import moriyashiine.enchancement.client.payload.SyncEnchantingTableCostPayload;
+import moriyashiine.enchancement.common.Enchancement;
+import moriyashiine.enchancement.common.EnchancementConfig;
+import moriyashiine.enchancement.common.init.EnchancementMenuTypes;
+import moriyashiine.enchancement.common.tag.EnchancementItemTags;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
+import moriyashiine.enchancement.common.util.config.OverhaulMode;
+import moriyashiine.enchancement.common.util.enchantment.EnchantingMaterial;
+import net.fabricmc.fabric.api.item.v1.EnchantingContext;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
+import net.minecraft.tags.EnchantmentTags;
+import net.minecraft.util.Mth;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EnchantingTableBlock;
+import net.minecraft.world.level.block.entity.ChiseledBookShelfBlockEntity;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+public class OverhauledEnchantmentMenu extends AbstractContainerMenu {
+	public static final int PAGE_SIZE = 4;
+
+	public final List<Holder<Enchantment>> validEnchantments = new ArrayList<>(), selectedEnchantments = new ArrayList<>();
+	public final Set<Holder<Enchantment>> chiseledEnchantments = new HashSet<>();
+	public int viewIndex = 0;
+
+	private ItemStack enchantingStack = ItemStack.EMPTY;
+	private EnchantingMaterial enchantingMaterial = EnchantingMaterial.EMPTY;
+	private int bookshelfCount = 0, cost = 0;
+
+	private final Container enchantSlots = new SimpleContainer(3) {
+		@Override
+		public void setChanged() {
+			super.setChanged();
+			slotsChanged(this);
+		}
+	};
+	private final ContainerLevelAccess access;
+	private final Level level;
+
+	public OverhauledEnchantmentMenu(int syncId, Inventory inventory) {
+		this(syncId, inventory, ContainerLevelAccess.NULL, inventory.player.level());
+	}
+
+	public OverhauledEnchantmentMenu(int syncId, Inventory inventory, ContainerLevelAccess access, Level level) {
+		super(EnchancementMenuTypes.OVERHAULED_ENCHANTING_TABLE, syncId);
+		this.access = access;
+		this.level = level;
+		if (inventory.player instanceof ServerPlayer player) {
+			collectBookshelves(player);
+		}
+		addSlot(new Slot(enchantSlots, 0, 15, 31) {
+			@Override
+			public boolean mayPlace(ItemStack itemStack) {
+				if (isEnchantable(itemStack)) {
+					for (Holder<Enchantment> enchantment : getAllEnchantments()) {
+						if (isEnchantmentAllowed(enchantment, itemStack)) {
+							return true;
+						}
+					}
+				}
+				return false;
+			}
+
+			@Override
+			public int getMaxStackSize() {
+				return 1;
+			}
+
+			@Override
+			public void setByPlayer(ItemStack itemStack, ItemStack previous) {
+				super.setByPlayer(itemStack, previous);
+				inventory.placeItemBackInInventory(getSlot(2).getItem().copyAndClear());
+			}
+		});
+		addSlot(new Slot(enchantSlots, 1, 35, 31) {
+			@Override
+			public boolean mayPlace(ItemStack itemStack) {
+				return itemStack.is(Items.LAPIS_LAZULI);
+			}
+		});
+		addSlot(new Slot(enchantSlots, 2, 25, 51) {
+			@Override
+			public boolean mayPlace(ItemStack itemStack) {
+				return getEnchantingMaterial(slots.getFirst().getItem()).test(itemStack);
+			}
+		});
+		addStandardInventorySlots(inventory, 8, 84);
+	}
+
+	@Override
+	public boolean stillValid(Player player) {
+		return stillValid(access, player, Blocks.ENCHANTING_TABLE);
+	}
+
+	@Override
+	public ItemStack quickMoveStack(Player player, int slotIndex) {
+		ItemStack clicked = ItemStack.EMPTY;
+		Slot slot = getSlot(slotIndex);
+		if (slot.hasItem()) {
+			ItemStack slotStack = slot.getItem();
+			clicked = slotStack.copy();
+			if (slotIndex == 0 || slotIndex == 1 || slotIndex == 2) {
+				if (!moveItemStackTo(slotStack, 3, 38, false)) {
+					return ItemStack.EMPTY;
+				}
+			} else if (getEnchantingMaterial().test(slotStack)) {
+				if (!moveItemStackTo(slotStack, 2, 3, false)) {
+					return ItemStack.EMPTY;
+				}
+			} else if (slotStack.is(Items.LAPIS_LAZULI)) {
+				if (!moveItemStackTo(slotStack, 1, 2, false)) {
+					return ItemStack.EMPTY;
+				}
+			} else if (!slots.getFirst().hasItem() && slots.getFirst().mayPlace(slotStack)) {
+				slots.getFirst().setByPlayer(slotStack.split(1));
+			} else {
+				return ItemStack.EMPTY;
+			}
+			if (slotStack.isEmpty()) {
+				slot.setByPlayer(ItemStack.EMPTY);
+			} else {
+				slot.setChanged();
+			}
+			if (slotStack.getCount() == clicked.getCount()) {
+				return ItemStack.EMPTY;
+			}
+			slot.onTake(player, slotStack);
+		}
+		return clicked;
+	}
+
+	@Override
+	public void removed(Player player) {
+		super.removed(player);
+		access.execute((_, _) -> clearContainer(player, enchantSlots));
+	}
+
+	@Override
+	public boolean clickMenuButton(Player player, int buttonId) {
+		if (buttonId == 0) {
+			if (canEnchant(player, player.hasInfiniteMaterials())) {
+				access.execute((level, pos) -> {
+					ItemStack stack = slots.getFirst().getItem();
+					for (Holder<Enchantment> enchantment : selectedEnchantments) {
+						stack.enchant(enchantment, EnchancementUtil.alterLevel(stack, enchantment));
+					}
+					if (!player.hasInfiniteMaterials() && cost > 0) {
+						player.onEnchantmentPerformed(stack, cost);
+					}
+					player.awardStat(Stats.ENCHANT_ITEM);
+					CriteriaTriggers.ENCHANTED_ITEM.trigger((ServerPlayer) player, stack, cost);
+					level.playSound(null, pos, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1, level.getRandom().nextFloat() * 0.1F + 0.9F);
+					if (!player.hasInfiniteMaterials() && cost > 0) {
+						getSlot(1).getItem().shrink(cost);
+						if (!getEnchantingMaterial(slots.getFirst().getItem()).isEmpty()) {
+							getSlot(2).getItem().shrink(cost);
+						}
+					}
+					enchantSlots.setChanged();
+					slotsChanged(enchantSlots);
+				});
+				return true;
+			}
+		} else if (buttonId == 1) {
+			updateViewIndex(true);
+			return true;
+		} else if (buttonId == 2) {
+			updateViewIndex(false);
+			return true;
+		} else if (buttonId > 2 && buttonId < 8) {
+			Holder<Enchantment> enchantment = getEnchantmentFromViewIndex(buttonId - PAGE_SIZE);
+			if (selectedEnchantments.contains(enchantment)) {
+				selectedEnchantments.remove(enchantment);
+			} else {
+				selectedEnchantments.add(enchantment);
+			}
+			cost = getCost(slots.getFirst().getItem());
+			if (player instanceof ServerPlayer serverPlayer) {
+				SyncEnchantingTableCostPayload.send(serverPlayer, cost);
+			}
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void slotsChanged(Container container) {
+		if (container == enchantSlots) {
+			ItemStack stack = slots.getFirst().getItem();
+			if (stack != enchantingStack) {
+				validEnchantments.clear();
+				selectedEnchantments.clear();
+				viewIndex = 0;
+				enchantingStack = stack;
+				enchantingMaterial = getEnchantingMaterial(stack);
+				cost = 0;
+				for (Holder<Enchantment> enchantment : getAllEnchantments()) {
+					if (isEnchantmentAllowed(enchantment, stack) && !EnchancementUtil.isDefaultEnchantment(stack, enchantment)) {
+						validEnchantments.add(enchantment);
+					}
+				}
+				validEnchantments.sort(OverhauledEnchantmentMenu::compareEnchantments);
+				super.slotsChanged(container);
+			}
+		}
+	}
+
+	public Holder<Enchantment> getEnchantmentFromViewIndex(int index) {
+		if (validEnchantments.size() <= PAGE_SIZE) {
+			return validEnchantments.get(index);
+		}
+		return validEnchantments.get((index + viewIndex) % validEnchantments.size());
+	}
+
+	public boolean canEnchant(Player player, boolean simulate) {
+		if (slots.getFirst().hasItem()) {
+			if (!isEnchantable(slots.getFirst().getItem())) {
+				return false;
+			}
+			if (simulate) {
+				return true;
+			}
+			if (player.experienceLevel >= cost && getSlot(1).getItem().getCount() >= cost) {
+				if (!getEnchantingMaterial(slots.getFirst().getItem()).isEmpty()) {
+					return getSlot(2).getItem().getCount() >= cost;
+				}
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public EnchantingMaterial getEnchantingMaterial() {
+		return enchantingMaterial;
+	}
+
+	private EnchantingMaterial getEnchantingMaterial(ItemStack stack) {
+		if (stack.isEmpty()) {
+			return EnchantingMaterial.EMPTY;
+		}
+		EnchantingMaterial material = EnchantingMaterial.MATERIAL_MAP.getOrDefault(stack.getItem(), EnchantingMaterial.EMPTY);
+		if (material.isEmpty()) {
+			Set<ItemLike> items = new HashSet<>();
+			if (stack.has(DataComponents.REPAIRABLE)) {
+				stack.get(DataComponents.REPAIRABLE).items().forEach(item -> items.add(item.value() == Items.NETHERITE_INGOT ? Items.DIAMOND : item.value()));
+			}
+			if (items.isEmpty()) {
+				material = new EnchantingMaterial(Ingredient.of(level.registryAccess().lookupOrThrow(Registries.ITEM).getOrThrow(EnchancementItemTags.DEFAULT_ENCHANTING_MATERIAL)));
+			} else {
+				material = new EnchantingMaterial(Ingredient.of(items.toArray(new ItemLike[0])));
+			}
+		}
+		return material;
+	}
+
+	private void collectBookshelves(ServerPlayer player) {
+		access.execute((level, pos) -> {
+			chiseledEnchantments.clear();
+			bookshelfCount = 0;
+			for (BlockPos offset : EnchantingTableBlock.BOOKSHELF_OFFSETS) {
+				if (EnchantingTableBlock.isValidBookShelf(level, pos, offset)) {
+					if (level.getBlockEntity(pos.offset(offset)) instanceof ChiseledBookShelfBlockEntity chiseledBookshelfBlockEntity) {
+						bookshelfCount += chiseledBookshelfBlockEntity.count() / 3;
+						if (EnchancementConfig.overhaulEnchanting == OverhaulMode.CHISELED && !player.hasInfiniteMaterials()) {
+							for (ItemStack stack : chiseledBookshelfBlockEntity) {
+								chiseledEnchantments.addAll(EnchantmentHelper.getEnchantmentsForCrafting(stack).keySet());
+							}
+						}
+					} else {
+						bookshelfCount++;
+					}
+				}
+			}
+			bookshelfCount = Math.min(15, bookshelfCount);
+			if (EnchancementConfig.overhaulEnchanting == OverhaulMode.CHISELED && player.hasInfiniteMaterials()) {
+				Registry<Enchantment> enchantments = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+				enchantments.forEach(enchantment -> chiseledEnchantments.add(enchantments.wrapAsHolder(enchantment)));
+			}
+			SyncBookshelvesPayload.send(player, chiseledEnchantments, bookshelfCount);
+		});
+	}
+
+	public int getCost() {
+		return cost;
+	}
+
+	private int getCost(ItemStack stack) {
+		double cost = 60F / (Math.max(1, EnchancementUtil.getEnchantmentValue(stack) + bookshelfCount));
+		if (bookshelfCount == 15) {
+			cost = Mth.floor(cost);
+		} else {
+			cost = Mth.ceil(cost);
+		}
+		return (int) (cost * selectedEnchantments.size());
+	}
+
+	public void updateViewIndex(boolean up) {
+		viewIndex = (viewIndex + (up ? -1 : 1)) % validEnchantments.size();
+		if (viewIndex < 0) {
+			viewIndex += validEnchantments.size();
+		}
+	}
+
+	// client
+	public void setCost(int cost) {
+		this.cost = cost;
+	}
+
+	private List<Holder.Reference<Enchantment>> getAllEnchantments() {
+		return level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).listElements().toList();
+	}
+
+	private boolean isEnchantmentAllowed(Holder<Enchantment> enchantment, ItemStack stack) {
+		if (stack.isEmpty()) {
+			return false;
+		}
+		if (stack.canBeEnchantedWith(enchantment, EnchantingContext.ACCEPTABLE)) {
+			if (EnchancementConfig.overhaulEnchanting != OverhaulMode.CHISELED || chiseledEnchantments.contains(enchantment)) {
+				if (EnchancementConfig.overhaulEnchanting.allowsTreasure() && enchantment.is(EnchantmentTags.TREASURE)) {
+					return true;
+				}
+				return enchantment.is(EnchantmentTags.IN_ENCHANTING_TABLE);
+			}
+		}
+		return false;
+	}
+
+	public static boolean isEnchantable(ItemStack stack) {
+		ItemEnchantments enchantments = stack.get(DataComponents.ENCHANTMENTS);
+		return enchantments != null && enchantments.isEmpty();
+	}
+
+	private static int compareEnchantments(Holder<Enchantment> e1, Holder<Enchantment> e2) {
+		String moltenId = Enchancement.id("molten").getPath();
+		String e1Id = e1.unwrapKey().map(key -> key.identifier().getPath()).orElse("[unregistered]");
+		String e2Id = e2.unwrapKey().map(key -> key.identifier().getPath()).orElse("[unregistered]");
+		if (EnchancementConfig.rebalanceEnchantments) {
+			if (e1Id.equals(Enchantments.FIRE_ASPECT.identifier().getPath())) {
+				e1Id = moltenId;
+			}
+			if (e2Id.equals(Enchantments.FIRE_ASPECT.identifier().getPath())) {
+				e2Id = moltenId;
+			}
+		}
+		return e1Id.compareTo(e2Id);
+	}
+}

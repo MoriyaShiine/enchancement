@@ -1,0 +1,69 @@
+plugins {
+	id("org.relativitymc.neo-loom")
+	id("multiloader-loader")
+}
+
+chenille {
+	github = new URL("https://github.com/MoriyaShiine/${rootProject.name}")
+	changelogFile = rootProject.file("changelog.md")
+	javaVersion = 25
+	configurePublishing {
+		withLadysnakeMaven()
+		withGithubRelease()
+		withModrinthRelease()
+		withCurseforgeRelease()
+		neoforgeCompatible = true
+		fabricCompatible = quiltCompatible = false
+	}
+}
+
+loom {
+	def classTweaker = project(":${rootProject.name}-common").file("src/main/resources/${mod_id}.classtweaker")
+	if (classTweaker.exists()) {
+		accessWidenerPath = classTweaker
+	}
+	mods {
+		register(rootProject.name) {
+			sourceSet("main")
+			sourceSet(project(":${rootProject.name}-common").sourceSets.main)
+		}
+	}
+
+	runs {
+		named("client") {
+			configName = "NeoForge Client"
+		}
+		named("server") {
+			configName = "NeoForge Server"
+		}
+
+		configureEach {
+			ideConfigGenerated = true
+			property("mixin.debug.export", "true")
+		}
+	}
+}
+
+repositories {
+	maven {
+		name = "Sintrya"
+		url = "https://maven.sinytra.org"
+	}
+}
+
+dependencies {
+	minecraft("com.mojang:minecraft:${minecraft_version}")
+	forgeUserdev("net.neoforged:neoforge:${neoforge_version}:userdev")
+	implementation("org.sinytra.launchpad:launchpad:${launchpad_version}")
+
+	includeApi("org.ladysnake.cardinal-components-api:cardinal-components-block:${cardinal_components_version}")
+	includeApi("org.ladysnake.cardinal-components-api:cardinal-components-level:${cardinal_components_version}")
+	includeApi("maven.modrinth:midnightlib:${midnightlib_version}")
+
+	neoForgeAccessTransformers(neoForgeInterfaceInjections(implementation("org.sinytra.forgified-fabric-api:forgified-fabric-api:${forgified_fabric_api_version}")))
+	implementation("moriyashiine.strawberrylib:strawberrylib-neoforge:${strawberrylib_version}")
+
+	compileOnly("squeek.appleskin:appleskin-neoforge:${appleskin_version}") {
+		transitive = false
+	}
+}
