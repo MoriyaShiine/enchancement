@@ -13,6 +13,7 @@ import moriyashiine.strawberrylib.api.objects.enums.ParticleAnchor;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -81,7 +82,7 @@ public class EMeterComponent implements AutoSyncedComponent, CommonTickingCompon
 				}
 			} else if (meterTicks > 0) {
 				int decrease = floating || obj.onGround() ? 2 : 1;
-				if (obj.getKnownMovement().horizontalDistanceSqr() == 0) {
+				if (obj.getKnownSpeed().horizontalDistanceSqr() == 0) {
 					decrease *= 2;
 				}
 				meterTicks = Math.max(0, meterTicks - decrease);
@@ -186,7 +187,7 @@ public class EMeterComponent implements AutoSyncedComponent, CommonTickingCompon
 	}
 
 	private boolean shouldMeterIncrease() {
-		if (!obj.slib$isPlayer() && obj.getKnownMovement().horizontalDistanceSqr() > 0) {
+		if (!obj.slib$isPlayer() && obj.getKnownSpeed().horizontalDistanceSqr() > 0) {
 			return true;
 		}
 		return obj.isSprinting() || EnchancementEntityComponents.SLIDE.get(obj).isSliding();
