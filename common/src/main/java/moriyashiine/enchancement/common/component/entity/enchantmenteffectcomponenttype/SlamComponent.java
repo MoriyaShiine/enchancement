@@ -136,7 +136,11 @@ public class SlamComponent implements CommonTickingComponent {
 
 	public float getJumpBoostStrength() {
 		if (ticksLeftToJump > 0) {
-			float boost = CappedMultiplyDeltaMovementEvent.getJumpStrength(obj, (1 + strength + (slamStorageTicks / 20F)) / obj.getJumpPower());
+			float extraStrength = strength;
+			if (EnchancementEntityComponents.AIR_MOBILITY.get(obj).hasResetBypass()) {
+				extraStrength = 0;
+			}
+			float boost = CappedMultiplyDeltaMovementEvent.getJumpStrength(obj, (1 + extraStrength + (slamStorageTicks / 20F)) / obj.getJumpPower());
 			ticksLeftToJump = slamStorageTicks = 0;
 			return boost;
 		}
