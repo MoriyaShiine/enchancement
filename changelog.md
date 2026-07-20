@@ -1,5 +1,5 @@
 ------------------------------------------------------
-Version 26.1-r18
+Version 26.1-r19
 ------------------------------------------------------
 - merge https://github.com/MoriyaShiine/enchancement/pull/311
 - merge https://github.com/MoriyaShiine/enchancement/pull/312
