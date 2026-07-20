@@ -1,4 +1,17 @@
 ------------------------------------------------------
+Version 26.1-r18
+------------------------------------------------------
+- merge https://github.com/MoriyaShiine/enchancement/pull/311
+- merge https://github.com/MoriyaShiine/enchancement/pull/312
+- fix https://github.com/MoriyaShiine/enchancement/issues/314
+- fix https://github.com/MoriyaShiine/enchancement/issues/315
+- fix https://github.com/MoriyaShiine/enchancement/issues/316
+- fix infinite height interaction with slide and bouncy
+- fix e-speed desync on horses in multiplayer
+- make brimstone's hitbox more consistent
+- update item tag translations
+
+------------------------------------------------------
 Version 26.2-r2
 ------------------------------------------------------
 - fix frostbite not creating ice statues
