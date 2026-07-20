@@ -349,6 +349,8 @@ public class EnchancementUtil {
 	public static void resetFallDistance(Entity entity) {
 		entity.resetFallDistance();
 		EnchancementEntityComponents.LIGHTNING_DASH.maybeGet(entity).ifPresent(LightningDashComponent::cancel);
+		if (entity instanceof LivingEntity living)
+			living.resetCurrentImpulseContext();
 	}
 
 	// enchantment
