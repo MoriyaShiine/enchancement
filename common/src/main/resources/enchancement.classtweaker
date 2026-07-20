@@ -37,6 +37,10 @@ accessible field net/minecraft/world/item/enchantment/effects/AllOf$EntityEffect
 mutable field net/minecraft/world/item/enchantment/effects/AllOf$EntityEffects effects Ljava/util/List;
 accessible field net/minecraft/world/level/storage/loot/predicates/CompositeLootItemCondition terms Ljava/util/List;
 
+accessible method net/minecraft/world/level/storage/loot/functions/SetEnchantmentsFunction <init> (Ljava/util/List;Ljava/util/Map;Z)V
+accessible field net/minecraft/world/level/storage/loot/functions/SetEnchantmentsFunction enchantments Ljava/util/Map;
+accessible field net/minecraft/world/level/storage/loot/functions/SetEnchantmentsFunction add Z
+
 accessible class net/minecraft/client/gui/Gui$HeartType
 
 accessible method net/minecraft/client/gui/Gui extractHearts (Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/world/entity/player/Player;IIIIFIIIZ)V
