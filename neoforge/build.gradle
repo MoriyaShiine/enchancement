@@ -58,7 +58,7 @@ dependencies {
 
 	includeApi("org.ladysnake.cardinal-components-api:cardinal-components-block:${cardinal_components_version}")
 	includeApi("org.ladysnake.cardinal-components-api:cardinal-components-level:${cardinal_components_version}")
-	includeApi("maven.modrinth:midnightlib:${midnightlib_version}")
+	includeApi("maven.modrinth:midnightlib:${midnightlib_version}-neoforge")
 
 	neoForgeAccessTransformers(neoForgeInterfaceInjections(implementation("org.sinytra.forgified-fabric-api:forgified-fabric-api:${forgified_fabric_api_version}")))
 	implementation("moriyashiine.strawberrylib:strawberrylib-neoforge:${strawberrylib_version}")

@@ -16,7 +16,7 @@ dependencies {
 
 	compileOnlyApi("org.ladysnake.cardinal-components-api:cardinal-components-block:${cardinal_components_version}")
 	compileOnlyApi("org.ladysnake.cardinal-components-api:cardinal-components-level:${cardinal_components_version}")
-	compileOnlyApi("maven.modrinth:midnightlib:${midnightlib_version}")
+	compileOnlyApi("maven.modrinth:midnightlib:${midnightlib_version}-fabric")
 
 	localImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_api_version}")
 	localImplementation("moriyashiine.strawberrylib:strawberrylib-fabric:${strawberrylib_version}")
