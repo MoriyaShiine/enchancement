@@ -1,7 +1,7 @@
 {
   "values": [
-	"#minecraft:leaves",
 	"minecraft:nether_gold_ore",
+	"#minecraft:leaves",
 	{
 	  "id": "enderscape:mirestone_nebulite_ore",
 	  "required": false

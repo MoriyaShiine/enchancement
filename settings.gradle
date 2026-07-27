@@ -14,8 +14,8 @@ pluginManagement {
 }
 
 includeBuild("build-logic")
-["common", "fabric", "neoforge"]
-//["common", "fabric"]
+//["common", "fabric", "neoforge"]
+["common", "fabric"]
 		.each {
 			include(it)
 			project(":$it").name = "${rootProject.name}-$it"

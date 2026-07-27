@@ -38,7 +38,7 @@ public class EnchancementMobEffectTagsProvider extends FabricTagsProvider<MobEff
 
 	@SafeVarargs
 	private void add(TagKey<MobEffect> tagKey, Holder<MobEffect>... effects) {
-		TagAppender<ResourceKey<MobEffect>, MobEffect> builder = builder(tagKey);
+		TagAppender<MobEffect> builder = builder(tagKey);
 		for (Holder<MobEffect> effect : effects) {
 			builder.add(effect.unwrapKey().orElseThrow());
 		}

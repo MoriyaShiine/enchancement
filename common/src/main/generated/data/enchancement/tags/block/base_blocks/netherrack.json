@@ -1,6 +1,6 @@
 {
   "values": [
-	"#c:ores_in_ground/netherrack",
-	"minecraft:ancient_debris"
+	"minecraft:ancient_debris",
+	"#c:ores_in_ground/netherrack"
   ]
 }

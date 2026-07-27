@@ -1,10 +1,10 @@
 {
   "values": [
+	"minecraft:cobweb",
+	"minecraft:netherrack",
 	"#minecraft:mineable/hoe",
 	"#minecraft:mineable/shovel",
 	"#minecraft:nylium",
-	"#minecraft:snow",
-	"minecraft:cobweb",
-	"minecraft:netherrack"
+	"#minecraft:snow"
   ]
 }
