@@ -13,5 +13,5 @@ repositories {
 
 dependencies {
 	compileOnly(gradleApi())
-	implementation("io.github.ladysnake.chenille:io.github.ladysnake.chenille.gradle.plugin:0.21.1")
+	implementation("io.github.ladysnake.chenille:io.github.ladysnake.chenille.gradle.plugin:0.22.1")
 }
