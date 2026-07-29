@@ -22,7 +22,6 @@ repositories {
 		name "AppleSkin"
 		url "https://maven.ryanliptak.com"
 	}
-	mavenLocal()
 }
 
 processResources {
