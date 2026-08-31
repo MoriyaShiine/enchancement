@@ -18,10 +18,6 @@ repositories {
 	chenille.repositories.ladysnake()
 	chenille.repositories.up()
 	chenille.repositories.modrinth()
-	maven {
-		name "AppleSkin"
-		url "https://maven.ryanliptak.com"
-	}
 }
 
 processResources {

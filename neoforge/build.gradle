@@ -62,8 +62,4 @@ dependencies {
 
 	neoForgeAccessTransformers(neoForgeInterfaceInjections(implementation("org.sinytra.forgified-fabric-api:forgified-fabric-api:${forgified_fabric_api_version}")))
 	implementation("moriyashiine.strawberrylib:strawberrylib-neoforge:${strawberrylib_version}")
-
-	compileOnly("squeek.appleskin:appleskin-neoforge:${appleskin_version}") {
-		transitive = false
-	}
 }

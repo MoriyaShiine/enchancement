@@ -55,6 +55,10 @@ loom {
 
 repositories {
 	maven {
+		name "AppleSkin"
+		url "https://maven.ryanliptak.com"
+	}
+	maven {
 		name = "TerraformersMC"
 		url = "https://maven.gnomecraft.net/releases"
 	}
