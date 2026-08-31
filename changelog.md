@@ -1,4 +1,10 @@
 ------------------------------------------------------
+Version 26.1-r20
+------------------------------------------------------
+- fix grapple crashing on neoforge
+- enchanting table chiseled bookshelf warning now wraps text
+
+------------------------------------------------------
 Version 26.1-r19
 ------------------------------------------------------
 - merge https://github.com/MoriyaShiine/enchancement/pull/311
