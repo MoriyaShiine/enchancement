@@ -290,7 +290,7 @@ public class OverhauledEnchantmentScreen extends AbstractContainerScreen<Overhau
 	private void extractChiseledModeWarning(GuiGraphicsExtractor graphics, int mouseX, int mouseY, int left, int top) {
 		if (EnchancementConfig.overhaulEnchanting == OverhaulMode.CHISELED && receivedPacket && menu.chiseledEnchantments.isEmpty()) {
 			if (isInChiseledWarningBounds(left, top, mouseX, mouseY)) {
-				graphics.setTooltipForNextFrame(font, Component.translatable("tooltip.enchancement.no_chiseled_enchantments").withStyle(ChatFormatting.RED), mouseX, mouseY);
+				graphics.setComponentTooltipForNextFrame(font, SLibClientUtils.wrapText(Component.translatable("tooltip.enchancement.no_chiseled_enchantments").withStyle(ChatFormatting.RED)), mouseX, mouseY);
 			}
 			float scale = 1 + Mth.sin(chiseledTicks / 8F) / 4;
 			graphics.pose().pushMatrix();
