@@ -1,13 +1,11 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.grapplingfishingbobber;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.GrapplingFishingBobberComponent;
+import moriyashiine.enchancement.common.init.EnchancementEntityComponents;
 import moriyashiine.enchancement.common.init.EnchancementSoundEvents;
-import moriyashiine.enchancement.common.world.entity.projectile.arrow.StrengthHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
@@ -16,7 +14,6 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ClipBlockStateContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -31,17 +28,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(FishingHook.class)
-public abstract class FishingHookMixin extends Projectile implements StrengthHolder {
-	@Unique
-	private static final EntityDataAccessor<Float> STRENGTH = SynchedEntityData.defineId(FishingHookMixin.class, EntityDataSerializers.FLOAT);
-
-	@Unique
-	private Vec3 grapplePos = null;
-	@Unique
-	private BlockPos grappleBlockPos = null;
-	@Unique
-	private BlockState grappleState = null;
-
+public abstract class FishingHookMixin extends Projectile {
 	@Shadow
 	public abstract @Nullable Player getPlayerOwner();
 
@@ -49,31 +36,17 @@ public abstract class FishingHookMixin extends Projectile implements StrengthHol
 		super(type, level);
 	}
 
-	@Override
-	public void enchancement$setStrength(float strength) {
-		entityData.set(STRENGTH, strength);
-	}
-
-	@Unique
-	private float getStrength() {
-		return entityData.get(STRENGTH);
-	}
-
-	@Inject(method = "defineSynchedData", at = @At("TAIL"))
-	private void enchancement$grapplingFishingBobber(SynchedEntityData.Builder entityData, CallbackInfo ci) {
-		entityData.define(STRENGTH, 0F);
-	}
-
 	@Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/projectile/FishingHook;checkCollision()V"), cancellable = true)
 	private void enchancement$grapplingFishingBobber(CallbackInfo ci) {
-		if (getStrength() != 0) {
-			if (grappleState != null) {
-				setPos(grapplePos);
+		GrapplingFishingBobberComponent grapplingFishingBobber = EnchancementEntityComponents.GRAPPLING_FISHING_BOBBER.get(this);
+		if (grapplingFishingBobber.getStrength() != 0) {
+			if (grapplingFishingBobber.getGrappleState() != null) {
+				setPos(grapplingFishingBobber.getGrapplePos());
 				setDeltaMovement(Vec3.ZERO);
-				if (tickCount % 10 == 0 && level().getBlockState(grappleBlockPos) != grappleState) {
-					grapplePos = null;
-					grappleBlockPos = null;
-					grappleState = null;
+				if (tickCount % 10 == 0 && level().getBlockState(grapplingFishingBobber.getGrappleBlockPos()) != grapplingFishingBobber.getGrappleState()) {
+					grapplingFishingBobber.setGrapplePos(null);
+					grapplingFishingBobber.setGrappleBlockPos(null);
+					grapplingFishingBobber.setGrappleState(null);
 				}
 				ci.cancel();
 			} else {
@@ -93,7 +66,8 @@ public abstract class FishingHookMixin extends Projectile implements StrengthHol
 
 	@Inject(method = "shouldStopFishing", at = @At("HEAD"), cancellable = true)
 	private void enchancement$grapplingFishingBobber(Player owner, CallbackInfoReturnable<Boolean> cir) {
-		if (getStrength() != 0) {
+		GrapplingFishingBobberComponent grapplingFishingBobber = EnchancementEntityComponents.GRAPPLING_FISHING_BOBBER.get(this);
+		if (grapplingFishingBobber.getStrength() != 0) {
 			if (owner.isRemoved() || !owner.isAlive() || !owner.getMainHandItem().is(Items.FISHING_ROD) && !owner.getOffhandItem().is(Items.FISHING_ROD) || distanceToSqr(owner) > 4096) {
 				discard();
 				cir.setReturnValue(true);
@@ -104,11 +78,14 @@ public abstract class FishingHookMixin extends Projectile implements StrengthHol
 
 	@Inject(method = "onHitBlock", at = @At("TAIL"))
 	private void enchancement$grapplingFishingBobber(BlockHitResult hitResult, CallbackInfo ci) {
-		if (getStrength() != 0 && getPlayerOwner() instanceof Player player) {
-			grapplePos = hitResult.getLocation().relative(hitResult.getDirection(), 0.01);
-			grappleBlockPos = hitResult.getBlockPos();
-			grappleState = level().getBlockState(grappleBlockPos);
-			setPos(grapplePos);
+		GrapplingFishingBobberComponent grapplingFishingBobber = EnchancementEntityComponents.GRAPPLING_FISHING_BOBBER.get(this);
+		if (grapplingFishingBobber.getStrength() != 0 && getPlayerOwner() instanceof Player player) {
+			Vec3 hitPos = hitResult.getLocation().relative(hitResult.getDirection(), 0.01);
+			BlockPos hitBlockPos = hitResult.getBlockPos();
+			grapplingFishingBobber.setGrapplePos(hitPos);
+			grapplingFishingBobber.setGrappleBlockPos(hitBlockPos);
+			grapplingFishingBobber.setGrappleState(level().getBlockState(hitBlockPos));
+			setPos(hitPos);
 			setDeltaMovement(Vec3.ZERO);
 			if (level().isClientSide()) {
 				player.playSound(EnchancementSoundEvents.FISHING_BOBBER_GRAPPLE, 1, 1);
@@ -118,7 +95,8 @@ public abstract class FishingHookMixin extends Projectile implements StrengthHol
 
 	@Inject(method = "onHitEntity", at = @At("TAIL"))
 	private void enchancement$grapplingFishingBobber(EntityHitResult hitResult, CallbackInfo ci) {
-		if (getStrength() != 0 && level().isClientSide()) {
+		GrapplingFishingBobberComponent grapplingFishingBobber = EnchancementEntityComponents.GRAPPLING_FISHING_BOBBER.get(this);
+		if (grapplingFishingBobber.getStrength() != 0 && level().isClientSide()) {
 			Player player = getPlayerOwner();
 			if (player != null) {
 				player.playSound(EnchancementSoundEvents.FISHING_BOBBER_GRAPPLE, 1, 1);
@@ -128,16 +106,18 @@ public abstract class FishingHookMixin extends Projectile implements StrengthHol
 
 	@ModifyArg(method = "pullEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;scale(D)Lnet/minecraft/world/phys/Vec3;"))
 	private double enchancement$grapplingFishingBobber(double value) {
-		if (getStrength() != 0) {
-			return value * getStrength();
+		GrapplingFishingBobberComponent grapplingFishingBobber = EnchancementEntityComponents.GRAPPLING_FISHING_BOBBER.get(this);
+		if (grapplingFishingBobber.getStrength() != 0) {
+			return value * grapplingFishingBobber.getStrength();
 		}
 		return value;
 	}
 
 	@ModifyReturnValue(method = "retrieve", at = @At("RETURN"))
 	private int enchancement$grapplingFishingBobber(int original) {
-		if (getStrength() != 0) {
-			if (grappleState != null) {
+		GrapplingFishingBobberComponent grapplingFishingBobber = EnchancementEntityComponents.GRAPPLING_FISHING_BOBBER.get(this);
+		if (grapplingFishingBobber.getStrength() != 0) {
+			if (grapplingFishingBobber.getGrappleState() != null) {
 				Player player = getPlayerOwner();
 				if (player != null) {
 					if (!level().isClientSide()) {
@@ -156,7 +136,8 @@ public abstract class FishingHookMixin extends Projectile implements StrengthHol
 
 	@Unique
 	private double clamp(double value) {
-		float cap = getStrength() * 4;
+		GrapplingFishingBobberComponent grapplingFishingBobber = EnchancementEntityComponents.GRAPPLING_FISHING_BOBBER.get(this);
+		float cap = grapplingFishingBobber.getStrength() * 4;
 		return Mth.clamp(value, -cap, cap);
 	}
 }
