@@ -50,6 +50,7 @@ public class EnchancementEntityComponents implements EntityComponentInitializer 
 	public static final ComponentKey<EMeterComponent> E_METER = ComponentRegistry.getOrCreate(Enchancement.id("e_meter"), EMeterComponent.class);
 	public static final ComponentKey<ExtendedWaterTimeComponent> EXTENDED_WATER_TIME = ComponentRegistry.getOrCreate(Enchancement.id("extended_water_time"), ExtendedWaterTimeComponent.class);
 	public static final ComponentKey<GlideComponent> GLIDE = ComponentRegistry.getOrCreate(Enchancement.id("glide"), GlideComponent.class);
+	public static final ComponentKey<GrapplingFishingBobberComponent> GRAPPLING_FISHING_BOBBER = ComponentRegistry.getOrCreate(Enchancement.id("grappling_fishing_bobber"), GrapplingFishingBobberComponent.class);
 	public static final ComponentKey<LeechingTridentComponent> LEECHING_TRIDENT = ComponentRegistry.getOrCreate(Enchancement.id("leeching_trident"), LeechingTridentComponent.class);
 	public static final ComponentKey<LightningDashComponent> LIGHTNING_DASH = ComponentRegistry.getOrCreate(Enchancement.id("lightning_dash"), LightningDashComponent.class);
 	public static final ComponentKey<PhaseComponent> PHASE = ComponentRegistry.getOrCreate(Enchancement.id("phase"), PhaseComponent.class);
@@ -94,6 +95,7 @@ public class EnchancementEntityComponents implements EntityComponentInitializer 
 		registry.registerFor(LivingEntity.class, E_METER, EMeterComponent::new);
 		registry.registerFor(LivingEntity.class, EXTENDED_WATER_TIME, ExtendedWaterTimeComponent::new);
 		registry.registerFor(LivingEntity.class, GLIDE, GlideComponent::new);
+		registry.registerFor(FishingHook.class, GRAPPLING_FISHING_BOBBER, GrapplingFishingBobberComponent::new);
 		registry.registerFor(ThrownTrident.class, LEECHING_TRIDENT, LeechingTridentComponent::new);
 		registry.registerForPlayers(LIGHTNING_DASH, LightningDashComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
 		registry.registerFor(AbstractArrow.class, PHASE, PhaseComponent::new);

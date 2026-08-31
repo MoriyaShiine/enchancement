@@ -84,6 +84,7 @@
 	  "${mod_id}:e_meter",
 	  "${mod_id}:extended_water_time",
 	  "${mod_id}:glide",
+	  "${mod_id}:grappling_fishing_bobber",
 	  "${mod_id}:leeching_trident",
 	  "${mod_id}:lightning_dash",
 	  "${mod_id}:phase",
