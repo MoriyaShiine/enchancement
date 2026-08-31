@@ -1,4 +1,9 @@
 ------------------------------------------------------
+Version 26.2-r4
+------------------------------------------------------
+- enchanting table chiseled bookshelf warning now wraps text
+
+------------------------------------------------------
 Version 26.2-r3
 ------------------------------------------------------
 - merge https://github.com/MoriyaShiine/enchancement/pull/311
