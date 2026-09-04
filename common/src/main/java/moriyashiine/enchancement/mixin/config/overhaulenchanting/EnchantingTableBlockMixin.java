@@ -1,6 +1,5 @@
 package moriyashiine.enchancement.mixin.config.overhaulenchanting;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -31,11 +30,6 @@ public class EnchantingTableBlockMixin {
 		if (EnchancementConfig.overhaulEnchanting != OverhaulMode.DISABLED) {
 			cir.setReturnValue(new SimpleMenuProvider((syncId, inventory, _) -> new OverhauledEnchantmentMenu(syncId, inventory, ContainerLevelAccess.create(level, pos), level), title));
 		}
-	}
-
-	@ModifyExpressionValue(method = "isValidBookShelf", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/tags/TagKey;)Z", ordinal = 0))
-	private static boolean enchancement$overhaulEnchanting(boolean original, Level level, BlockPos pos, BlockPos offset) {
-		return original || (EnchancementConfig.overhaulEnchanting != OverhaulMode.DISABLED && level.getBlockEntity(pos.offset(offset)) instanceof ChiseledBookShelfBlockEntity);
 	}
 
 	@WrapOperation(method = "animateTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
