@@ -1,4 +1,10 @@
 ------------------------------------------------------
+Version 26.2-r5
+------------------------------------------------------
+- fix swapping between two of the same item resetting attack cooldown
+- change log level of empty enchantment add/set attempt to debug instead of warn
+
+------------------------------------------------------
 Version 26.2-r4
 ------------------------------------------------------
 - enchanting table chiseled bookshelf warning now wraps text
