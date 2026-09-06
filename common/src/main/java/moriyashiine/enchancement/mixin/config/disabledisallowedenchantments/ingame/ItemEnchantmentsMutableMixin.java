@@ -34,7 +34,7 @@ public abstract class ItemEnchantmentsMutableMixin {
 					return;
 				}
 			}
-			Enchancement.LOGGER.warn("Attempted to set a disabled enchantment {}", EnchancementUtil.getTranslationKey(enchantment), new Throwable("stacktrace"));
+			Enchancement.LOGGER.debug("Attempted to set a disabled enchantment {}", EnchancementUtil.getTranslationKey(enchantment), new Throwable("stacktrace"));
 			ci.cancel();
 		}
 	}
@@ -53,7 +53,7 @@ public abstract class ItemEnchantmentsMutableMixin {
 					return;
 				}
 			}
-			Enchancement.LOGGER.warn("Attempted to add a disabled enchantment {}", EnchancementUtil.getTranslationKey(enchantment), new Throwable("stacktrace"));
+			Enchancement.LOGGER.debug("Attempted to add a disabled enchantment {}", EnchancementUtil.getTranslationKey(enchantment), new Throwable("stacktrace"));
 			ci.cancel();
 		}
 	}
