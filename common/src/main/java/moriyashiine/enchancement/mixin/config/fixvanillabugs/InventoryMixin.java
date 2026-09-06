@@ -4,6 +4,7 @@ import moriyashiine.enchancement.common.EnchancementConfig;
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -24,6 +25,9 @@ public abstract class InventoryMixin {
 	@Shadow
 	public abstract int getSelectedSlot();
 
+	@Shadow
+	public abstract ItemStack getItem(int slot);
+
 	@Inject(method = "setSelectedSlot", at = @At("HEAD"))
 	private void enchancement$fixVanillaBugs(CallbackInfo ci) {
 		lastSelected = getSelectedSlot();
@@ -31,7 +35,7 @@ public abstract class InventoryMixin {
 
 	@Inject(method = "setSelectedSlot", at = @At("TAIL"))
 	private void enchancement$fixVanillaBugs(int selected, CallbackInfo ci) {
-		if (EnchancementConfig.fixVanillaBugs && selected != lastSelected) {
+		if (EnchancementConfig.fixVanillaBugs && !ItemStack.matches(getItem(selected), getItem(lastSelected))) {
 			EnchancementUtil.refreshAttributesAndCooldown(player);
 		}
 	}

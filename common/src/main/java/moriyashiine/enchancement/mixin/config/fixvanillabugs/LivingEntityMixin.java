@@ -27,7 +27,7 @@ public abstract class LivingEntityMixin {
 
 	@Inject(method = "onEquipItem", at = @At("TAIL"))
 	private void enchancement$fixVanillaBugs(EquipmentSlot slot, ItemStack oldStack, ItemStack stack, CallbackInfo ci) {
-		if (EnchancementConfig.fixVanillaBugs && slot == EquipmentSlot.MAINHAND) {
+		if (EnchancementConfig.fixVanillaBugs && slot == EquipmentSlot.MAINHAND && !ItemStack.matches(stack, oldStack)) {
 			EnchancementUtil.refreshAttributesAndCooldown((LivingEntity) (Object) this);
 		}
 	}
