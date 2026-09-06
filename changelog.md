@@ -1,4 +1,10 @@
 ------------------------------------------------------
+Version 26.1-r22
+------------------------------------------------------
+- fix swapping between two of the same item resetting attack cooldown
+- change log level of empty enchantment add/set attempt to debug instead of warn
+
+------------------------------------------------------
 Version 26.1-r21
 ------------------------------------------------------
 - fix chiseled mode not working on neoforge
