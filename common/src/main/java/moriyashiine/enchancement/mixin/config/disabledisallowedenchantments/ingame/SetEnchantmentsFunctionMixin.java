@@ -25,7 +25,7 @@ public class SetEnchantmentsFunctionMixin {
 	@Shadow
 	@Final
 	@Mutable
-	private Map<Holder<Enchantment>, NumberProvider> enchantments;
+	public Map<Holder<Enchantment>, NumberProvider> enchantments;
 
 	@Inject(method = "run", at = @At("HEAD"))
 	private void enchancement$disableDisallowedEnchantments(ItemStack itemStack, LootContext context, CallbackInfoReturnable<ItemStack> cir) {
