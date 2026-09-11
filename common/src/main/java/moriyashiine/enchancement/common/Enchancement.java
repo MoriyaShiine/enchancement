@@ -162,6 +162,7 @@ public class Enchancement implements ModInitializer {
 		EquipmentResetEvent.init();
 		FellTreesEvent.init();
 		FluidWalkingEvent.init();
+		GlideEvent.init();
 		HeadDropsEvent.init();
 		HeadshotEvent.init();
 		LeechingTridentEvent.init();
