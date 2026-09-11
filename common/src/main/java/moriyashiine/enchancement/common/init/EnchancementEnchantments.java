@@ -374,7 +374,7 @@ public class EnchancementEnchantments {
 					builder.withSpecialEffect(
 							EnchancementEnchantmentEffectComponentTypes.MODIFY_SUBMERGED_MOVEMENT_SPEED,
 							new ModifySubmergedMovementSpeedEffect(
-									new AddValue(LevelBasedValue.perLevel(0.2F)),
+									new AddValue(LevelBasedValue.perLevel(0.3F)),
 									SubmersionGate.WATER_ONLY));
 					builder.withEffect(
 							EnchantmentEffectComponents.TICK,
