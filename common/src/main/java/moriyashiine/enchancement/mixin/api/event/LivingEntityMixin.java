@@ -17,6 +17,6 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@ModifyArg(method = "handleRelativeFrictionAndCalculateMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;moveRelative(FLnet/minecraft/world/phys/Vec3;)V"))
 	private float enchancement$cappedMultiplyDeltaMovement(float speed) {
-		return speed * CappedMultiplyDeltaMovementEvent.getMovementMultiplier((LivingEntity) (Object) this, 1);
+		return speed * CappedMultiplyDeltaMovementEvent.getMovementMultiplier((LivingEntity) (Object) this, 1, true);
 	}
 }
