@@ -134,7 +134,7 @@ public class AirJumpComponent extends PushComponent {
 			obj.setDeltaMovement(obj.getDeltaMovement().x(), CappedMultiplyDeltaMovementEvent.getJumpStrength(obj, AirJumpEffect.getAirJumpStrength(obj)), obj.getDeltaMovement().z());
 			if (obj.isSprinting()) {
 				float rad = (float) Math.toRadians(obj.getYRot());
-				obj.addDeltaMovement(new Vec3(-Mth.sin(rad) * 0.2, 0, Mth.cos(rad) * 0.2));
+				obj.addDeltaMovement(new Vec3(-Mth.sin(rad) * 0.3, 0, Mth.cos(rad) * 0.3));
 			}
 		}
 		obj.playSound(EnchancementSoundEvents.GENERIC_AIR_JUMP, 1, 1);
