@@ -11,7 +11,7 @@ import net.minecraft.world.item.component.UseEffects;
 import net.minecraft.world.level.Level;
 
 public interface CappedMultiplyDeltaMovementEvent {
-	int MAXIMUM_MOVEMENT_MULTIPLIER = 2;
+	int MAXIMUM_MOVEMENT_MULTIPLIER = 3;
 
 	Event<CappedMultiplyDeltaMovementEvent> EVENT = EventFactory.createArrayBacked(CappedMultiplyDeltaMovementEvent.class, events -> (level, living) -> {
 		float multiplier = 1;
