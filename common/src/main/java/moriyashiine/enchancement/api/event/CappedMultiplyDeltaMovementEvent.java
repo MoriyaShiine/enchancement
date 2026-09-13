@@ -29,13 +29,25 @@ public interface CappedMultiplyDeltaMovementEvent {
 		return multiplier * (float) (Mth.clamp(jumpRatio * Math.min(1, speedRatio), 2 / 3F, 1.2F) * Math.min(0.5F, entity.getJumpPower()));
 	}
 
-	static float getMovementMultiplier(LivingEntity entity, float eventMultiplier) {
+	static float getMovementMultiplier(LivingEntity entity, float eventMultiplier, boolean baseMovement) {
 		float rawMultiplier = EVENT.invoker().multiply(entity.level(), entity);
 		if (eventMultiplier != 1 && entity.isUsingItem() && !entity.isPassenger()) {
 			rawMultiplier *= EnchancementUtil.getItemUseSpeedMultiplier(entity.getUseItem(), entity.getUseItem().getOrDefault(DataComponents.USE_EFFECTS, UseEffects.DEFAULT).speedMultiplier());
 		}
 		float multiplier = 1 + (Math.min(MAXIMUM_MOVEMENT_MULTIPLIER, rawMultiplier) - 1) * eventMultiplier;
-		double speedRatio = entity.getAttributeValue(Attributes.MOVEMENT_SPEED) / entity.getAttributeBaseValue(Attributes.MOVEMENT_SPEED);
+		if (baseMovement) {
+			return multiplier;
+		}
+		double speed = entity.getAttributeValue(Attributes.MOVEMENT_SPEED);
+		if (entity.isSprinting()) {
+			speed /= 1.3;
+			multiplier *= 1.2F;
+		}
+		double speedRatio = speed / entity.getAttributeBaseValue(Attributes.MOVEMENT_SPEED);
 		return multiplier * (float) (Mth.clamp(speedRatio, 2 / 3F, 1.2F));
+	}
+
+	static float getMovementMultiplier(LivingEntity entity, float eventMultiplier) {
+		return getMovementMultiplier(entity, eventMultiplier, false);
 	}
 }
