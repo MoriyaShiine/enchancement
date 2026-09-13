@@ -7,7 +7,7 @@
 	"enchancement:air_jump": {
 	  "air_jump_strength": {
 		"type": "minecraft:add",
-		"value": 1.45
+		"value": 1.5
 	  },
 	  "air_jumps": {
 		"type": "minecraft:add",

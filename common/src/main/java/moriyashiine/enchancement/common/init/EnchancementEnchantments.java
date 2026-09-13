@@ -313,7 +313,7 @@ public class EnchancementEnchantments {
 							EnchancementEnchantmentEffectComponentTypes.AIR_JUMP,
 							new AirJumpEffect(
 									new AddValue(LevelBasedValue.perLevel(1)),
-									new AddValue(LevelBasedValue.constant(1.45F)),
+									new AddValue(LevelBasedValue.constant(1.5F)),
 									new AddValue(LevelBasedValue.constant(0.5F)),
 									new AddValue(LevelBasedValue.constant(0.5F))));
 					builder.withSpecialEffect(
