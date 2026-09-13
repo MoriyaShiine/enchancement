@@ -287,22 +287,22 @@ public class OverhauledEnchantmentMenu extends AbstractContainerMenu {
 	private void collectBookshelves(ServerPlayer player) {
 		access.execute((level, pos) -> {
 			chiseledEnchantments.clear();
-			bookshelfCount = 0;
+			float power = 0;
 			for (BlockPos offset : EnchantingTableBlock.BOOKSHELF_OFFSETS) {
 				if (EnchantingTableBlock.isValidBookShelf(level, pos, offset)) {
 					if (level.getBlockEntity(pos.offset(offset)) instanceof ChiseledBookShelfBlockEntity chiseledBookshelfBlockEntity) {
-						bookshelfCount += chiseledBookshelfBlockEntity.count() / 3;
+						power += chiseledBookshelfBlockEntity.count() / 3F;
 						if (EnchancementConfig.overhaulEnchanting == OverhaulMode.CHISELED && !player.hasInfiniteMaterials()) {
 							for (ItemStack stack : chiseledBookshelfBlockEntity) {
 								chiseledEnchantments.addAll(EnchantmentHelper.getEnchantmentsForCrafting(stack).keySet());
 							}
 						}
 					} else {
-						bookshelfCount++;
+						power++;
 					}
 				}
 			}
-			bookshelfCount = Math.min(15, bookshelfCount);
+			bookshelfCount = Mth.clamp(Mth.floor(power), 0, 15);
 			if (EnchancementConfig.overhaulEnchanting == OverhaulMode.CHISELED && player.hasInfiniteMaterials()) {
 				Registry<Enchantment> enchantments = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
 				enchantments.forEach(enchantment -> chiseledEnchantments.add(enchantments.wrapAsHolder(enchantment)));
