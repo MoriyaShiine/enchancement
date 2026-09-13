@@ -405,7 +405,7 @@ public class EnchancementEnchantments {
 				builder -> builder.withSpecialEffect(
 						EnchancementEnchantmentEffectComponentTypes.E_METER,
 						new EMeterEffect(
-								new AddValue(LevelBasedValue.perLevel(0.7F, 0.3F)),
+								new AddValue(LevelBasedValue.perLevel(0.6F)),
 								new AddValue(LevelBasedValue.perLevel(0.275F, 0.125F)))
 				)));
 		registry.register(STICKY, create(STICKY.identifier(),
