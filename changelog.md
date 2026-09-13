@@ -1,4 +1,14 @@
 ------------------------------------------------------
+Version 26.2-r7
+------------------------------------------------------
+- fix sprinting being 20% faster than in vanilla
+  - adjust buoy speed to account for sprint fix
+  - adjust e-speed speed to account for sprint fix
+- gale now has slightly stronger jumps
+- gale's glide is now faster
+- increase maximum modifier for movement events
+
+------------------------------------------------------
 Version 26.2-r6
 ------------------------------------------------------
 - use new fabric enchantment power api
