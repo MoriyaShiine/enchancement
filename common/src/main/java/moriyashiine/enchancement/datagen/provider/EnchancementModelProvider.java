@@ -1,6 +1,3 @@
-/*
- * Copyright (c) MoriyaShiine. All Rights Reserved.
- */
 package moriyashiine.enchancement.datagen.provider;
 
 import moriyashiine.enchancement.common.Enchancement;

@@ -1,6 +1,3 @@
-/*
- * Copyright (c) MoriyaShiine. All Rights Reserved.
- */
 package moriyashiine.enchancement.client;
 
 import moriyashiine.enchancement.client.event.config.CoyoteBiteClientEvent;
