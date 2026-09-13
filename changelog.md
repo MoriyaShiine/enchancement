@@ -1,4 +1,15 @@
 ------------------------------------------------------
+Version 26.1-r23
+------------------------------------------------------
+- fix sprinting being 20% faster than in vanilla
+    - adjust buoy speed to account for sprint fix
+    - adjust e-speed speed to account for sprint fix
+- gale now has slightly stronger jumps
+- gale's glide is now faster
+- increase maximum modifier for movement events
+- chiseled bookshelves now count the total collected books for enchantment power instead of per individual block
+
+------------------------------------------------------
 Version 26.1-r22
 ------------------------------------------------------
 - fix swapping between two of the same item resetting attack cooldown
