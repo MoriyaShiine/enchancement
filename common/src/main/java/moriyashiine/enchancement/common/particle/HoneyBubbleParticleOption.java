@@ -15,7 +15,7 @@ public record HoneyBubbleParticleOption(UUID ownerId) implements ParticleOptions
 	public static final MapCodec<HoneyBubbleParticleOption> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			UUIDUtil.AUTHLIB_CODEC.fieldOf("owner_id").forGetter(HoneyBubbleParticleOption::ownerId)
 	).apply(instance, HoneyBubbleParticleOption::new));
-	public static final StreamCodec<RegistryFriendlyByteBuf, HoneyBubbleParticleOption> PACKET_CODEC = StreamCodec.composite(
+	public static final StreamCodec<RegistryFriendlyByteBuf, HoneyBubbleParticleOption> STREAM_CODEC = StreamCodec.composite(
 			UUIDUtil.STREAM_CODEC, HoneyBubbleParticleOption::ownerId,
 			HoneyBubbleParticleOption::new
 	);
