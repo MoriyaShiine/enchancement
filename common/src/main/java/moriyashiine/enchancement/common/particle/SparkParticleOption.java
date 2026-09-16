@@ -13,7 +13,7 @@ public record SparkParticleOption(Vec3 destination) implements ParticleOptions {
 	public static final MapCodec<SparkParticleOption> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			Vec3.CODEC.fieldOf("destination").forGetter(SparkParticleOption::destination)
 	).apply(instance, SparkParticleOption::new));
-	public static final StreamCodec<RegistryFriendlyByteBuf, SparkParticleOption> PACKET_CODEC = StreamCodec.composite(
+	public static final StreamCodec<RegistryFriendlyByteBuf, SparkParticleOption> STREAM_CODEC = StreamCodec.composite(
 			Vec3.STREAM_CODEC, SparkParticleOption::destination,
 			SparkParticleOption::new
 	);
