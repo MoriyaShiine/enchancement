@@ -2,6 +2,19 @@ plugins {
 	id("multiloader-common")
 }
 
+ext.configureRuns = { runs ->
+	def mixinsJar = configurations.named("runtimeClasspath").map {
+		it.resolvedConfiguration.resolvedArtifacts.find {
+			it.moduleVersion.id.group == "net.fabricmc" && it.moduleVersion.id.name == "sponge-mixin"
+		}.getFile()
+	}
+	runs.configureEach { config ->
+		config.generateRunConfig = config.preferGradleTask = true
+		config.systemProperties.put("mixin.debug.export", "true")
+		config.jvmArguments.add(mixinsJar.map { "-javaagent:${it.absolutePath}" })
+	}
+}
+
 configurations {
 	def commonJavaDep = dependencyScope("commonJavaDep")
 	resolvable("commonJava") {
