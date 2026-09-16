@@ -31,16 +31,13 @@ loom {
 
 	runs {
 		named("client") {
-			configName = "NeoForge Client"
+			displayName = "NeoForge Client"
 		}
 		named("server") {
-			configName = "NeoForge Server"
+			displayName = "NeoForge Server"
 		}
 
-		configureEach {
-			ideConfigGenerated = true
-			property("mixin.debug.export", "true")
-		}
+		configureRuns(it)
 	}
 }
 

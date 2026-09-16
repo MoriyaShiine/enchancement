@@ -37,19 +37,16 @@ loom {
 			addToResources = false
 		}
 		named("client") {
-			configName = "Fabric Client"
+			displayName = "Fabric Client"
 		}
 		named("server") {
-			configName = "Fabric Server"
+			displayName = "Fabric Server"
 		}
 		named("datagen") {
-			configName = "Fabric Datagen"
+			displayName = "Fabric Datagen"
 		}
 
-		configureEach {
-			ideConfigGenerated = true
-			property("mixin.debug.export", "true")
-		}
+		configureRuns(it)
 	}
 }
 
