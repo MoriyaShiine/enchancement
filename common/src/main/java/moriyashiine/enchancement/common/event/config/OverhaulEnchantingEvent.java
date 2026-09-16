@@ -20,9 +20,8 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.EnchantRandomlyFunction;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +85,7 @@ public class OverhaulEnchantingEvent implements LootTableEvents.Modify {
 		}
 	}
 
-	private static void addEnchantedBook(LootTable.Builder builder, NumberProvider rolls, Item item) {
+	private static void addEnchantedBook(LootTable.Builder builder, Holder<ContextIntProvider> rolls, Item item) {
 		builder.withPool(LootPool.lootPool()
 				.setRolls(rolls)
 				.add(
@@ -97,11 +96,11 @@ public class OverhaulEnchantingEvent implements LootTableEvents.Modify {
 	}
 
 	private static void addChanceBook(LootTable.Builder builder, Item item) {
-		addEnchantedBook(builder, UniformGenerator.between(0, 1), item);
+		addEnchantedBook(builder, ContextIntProviders.between(0, 1), item);
 	}
 
 	private static void addGuaranteedBook(LootTable.Builder builder, Item item) {
-		addEnchantedBook(builder, ConstantValue.exactly(1), item);
+		addEnchantedBook(builder, ContextIntProviders.exactly(1), item);
 	}
 
 	@SafeVarargs
@@ -115,7 +114,7 @@ public class OverhaulEnchantingEvent implements LootTableEvents.Modify {
 			}
 		}));
 		builder.withPool(LootPool.lootPool()
-				.setRolls(ConstantValue.exactly(1))
+				.setRolls(ContextIntProviders.exactly(1))
 				.add(
 						LootItem.lootTableItem(Items.BOOK)
 								.setWeight(1)

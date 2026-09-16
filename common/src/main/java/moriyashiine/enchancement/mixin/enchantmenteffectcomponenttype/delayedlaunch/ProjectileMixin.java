@@ -1,24 +1,31 @@
 package moriyashiine.enchancement.mixin.enchantmenteffectcomponenttype.delayedlaunch;
 
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import moriyashiine.enchancement.common.component.entity.enchantmenteffectcomponenttype.DelayedLaunchComponent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.level.Level;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(Projectile.class)
-public class ProjectileMixin {
-	@ModifyReturnValue(method = {
-			"spawnProjectileFromRotation",
-			"spawnProjectileUsingShoot(Lnet/minecraft/world/entity/projectile/Projectile;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/item/ItemStack;DDDFF)Lnet/minecraft/world/entity/projectile/Projectile;",
-			"spawnProjectileUsingShoot(Lnet/minecraft/world/entity/projectile/Projectile$ProjectileFactory;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/LivingEntity;DDDFF)Lnet/minecraft/world/entity/projectile/Projectile;"},
-			at = @At("RETURN"))
-	private static <T extends Projectile> T enchancement$delayedLaunch(T original, @Local(name = "pow") float pow, @Local(name = "uncertainty") float uncertainty) {
-		if (original.getOwner() instanceof LivingEntity owner) {
-			DelayedLaunchComponent.maybeSet(owner, owner.getActiveItem(), original, pow, uncertainty);
+public abstract class ProjectileMixin extends Entity {
+	@Shadow
+	public abstract @Nullable Entity getOwner();
+
+	public ProjectileMixin(EntityType<?> type, Level level) {
+		super(type, level);
+	}
+
+	@WrapMethod(method = "shoot")
+	private void enchancement$delayedLaunch(double xd, double yd, double zd, float pow, float uncertainty, Operation<Void> original) {
+		if (getOwner() instanceof LivingEntity owner) {
+			DelayedLaunchComponent.maybeSet(owner, owner.getActiveItem(), this, pow, uncertainty);
 		}
-		return original;
+		original.call(xd, yd, zd, pow, uncertainty);
 	}
 }

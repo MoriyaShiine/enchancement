@@ -99,11 +99,11 @@ public class DelayedLaunchComponent implements AutoSyncedComponent, CommonTickin
 			LivingEntity mobTarget = null;
 			if (EnchancementConfig.enhanceMobs && obj.getOwner() instanceof Mob mob && mob.getTarget() instanceof LivingEntity target) {
 				mobTarget = target;
-				if (!mob.swinging && target.distanceTo(mob) < 6) {
-					mob.swing(InteractionHand.MAIN_HAND);
+				if (!mob.isSwinging() && target.distanceTo(mob) < 6) {
+					mob.swingForAttack(InteractionHand.MAIN_HAND);
 				}
 			}
-			boolean punching = obj.getOwner() instanceof LivingEntity living && living.swinging && (living.isHolding(stack -> ItemStack.matchesIgnoringComponents(stack, weapon, DataComponentType::ignoreSwapAnimation)));
+			boolean punching = obj.getOwner() instanceof LivingEntity living && living.isSwinging() && (living.isHolding(stack -> ItemStack.matchesIgnoringComponents(stack, weapon, DataComponentType::ignoreSwapAnimation)));
 			if (ticksFloating > maxDuration || punching) {
 				if (allowRedirect && obj.getOwner() instanceof LivingEntity living) {
 					if ((punching && living.isShiftKeyDown()) || mobTarget != null) {

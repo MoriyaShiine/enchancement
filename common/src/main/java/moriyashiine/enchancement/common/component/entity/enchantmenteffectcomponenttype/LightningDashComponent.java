@@ -12,6 +12,7 @@ import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -65,11 +66,11 @@ public class LightningDashComponent extends UsingMaceComponent implements Common
 			obj.resetFallDistance();
 			obj.setDeltaMovement(obj.getDeltaMovement().scale(0.9));
 			obj.gameEvent(GameEvent.ENTITY_ACTION);
-			if (obj.swinging) {
+			if (obj.isSwinging()) {
 				cachedHeight = obj.getY();
 				smashTicks = 30;
 				floatTicks = 0;
-				obj.setDeltaMovement(obj.calculateViewVector(Math.max(-15, obj.getXRot()), obj.getYRot()).scale(LightningDashEffect.getSmashStrength(obj.getRandom(), obj.getMainHandItem())));
+				obj.setDeltaMovement(Entity.calculateViewVector(Math.max(-15, obj.getXRot()), obj.getYRot()).scale(LightningDashEffect.getSmashStrength(obj.getRandom(), obj.getMainHandItem())));
 				obj.playSound(EnchancementSoundEvents.GENERIC_ZAP, 2, 1);
 			}
 		}

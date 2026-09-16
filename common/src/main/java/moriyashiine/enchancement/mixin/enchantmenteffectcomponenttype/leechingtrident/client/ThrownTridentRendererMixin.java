@@ -15,7 +15,6 @@ import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.arrow.ThrownTrident;
-import org.joml.Quaternionfc;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -27,19 +26,19 @@ public abstract class ThrownTridentRendererMixin extends EntityRenderer<ThrownTr
 		super(context);
 	}
 
-	@WrapWithCondition(method = "submit(Lnet/minecraft/client/renderer/entity/state/ThrownTridentRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/level/CameraRenderState;)V", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;mulPose(Lorg/joml/Quaternionfc;)V"))
-	private boolean enchancement$leechingTrident(PoseStack instance, Quaternionfc by, ThrownTridentRenderState state) {
+	@WrapWithCondition(method = "submit(Lnet/minecraft/client/renderer/entity/state/ThrownTridentRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/level/CameraRenderState;)V", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;rotateDegrees(Lcom/mojang/math/Axis;F)V"))
+	private boolean enchancement$leechingTrident(PoseStack instance, Axis axis, float angle, ThrownTridentRenderState state) {
 		LeechingTridentRenderState leechingTridentRenderState = state.getData(LeechingTridentRenderState.KEY);
 		return leechingTridentRenderState == null || !leechingTridentRenderState.active;
 	}
 
-	@Inject(method = "submit(Lnet/minecraft/client/renderer/entity/state/ThrownTridentRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/level/CameraRenderState;)V", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;mulPose(Lorg/joml/Quaternionfc;)V", ordinal = 0))
+	@Inject(method = "submit(Lnet/minecraft/client/renderer/entity/state/ThrownTridentRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/level/CameraRenderState;)V", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;rotateDegrees(Lcom/mojang/math/Axis;F)V", ordinal = 0))
 	private void enchancement$leechingTrident(ThrownTridentRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera, CallbackInfo ci) {
 		LeechingTridentRenderState leechingTridentRenderState = state.getData(LeechingTridentRenderState.KEY);
 		if (leechingTridentRenderState != null && leechingTridentRenderState.active) {
 			poseStack.translate(leechingTridentRenderState.offsetX, 0, leechingTridentRenderState.offsetZ);
-			poseStack.mulPose(Axis.YP.rotationDegrees(leechingTridentRenderState.rotationY));
-			poseStack.mulPose(Axis.ZP.rotationDegrees(60));
+			poseStack.rotateDegrees(Axis.YP, leechingTridentRenderState.rotationY);
+			poseStack.rotateDegrees(Axis.ZP, 60);
 			poseStack.translate(0, -leechingTridentRenderState.stabTicks, 0);
 		}
 	}

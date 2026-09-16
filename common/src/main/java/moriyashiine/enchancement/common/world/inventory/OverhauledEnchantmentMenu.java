@@ -22,6 +22,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -100,7 +101,7 @@ public class OverhauledEnchantmentMenu extends AbstractContainerMenu {
 			@Override
 			public void setByPlayer(ItemStack itemStack, ItemStack previous) {
 				super.setByPlayer(itemStack, previous);
-				inventory.placeItemBackInInventory(getSlot(2).getItem().copyAndClear());
+				inventory.placeItemBackInInventory(getSlot(2).getItem().copyAndClear(), Prediction.SERVER_ONLY);
 			}
 		});
 		addSlot(new Slot(enchantSlots, 1, 35, 31) {

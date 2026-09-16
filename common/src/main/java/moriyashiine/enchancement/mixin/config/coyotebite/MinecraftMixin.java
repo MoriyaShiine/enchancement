@@ -4,6 +4,7 @@ import moriyashiine.enchancement.client.event.config.CoyoteBiteClientEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.protocol.game.ServerboundPunchPacket;
 import net.minecraft.world.InteractionHand;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,8 +27,9 @@ public class MinecraftMixin {
 	private void enchancement$coyoteBite(CallbackInfoReturnable<Boolean> cir) {
 		if (CoyoteBiteClientEvent.target != null) {
 			gameMode.attack(player, CoyoteBiteClientEvent.target);
-			player.swing(InteractionHand.MAIN_HAND);
-			cir.setReturnValue(true);
+			player.swing(InteractionHand.MAIN_HAND, player.getMainHandItem().getAttackAnimation(), false);
+			player.connection.send(ServerboundPunchPacket.INSTANCE);
+			cir.setReturnValue(false);
 		}
 	}
 }

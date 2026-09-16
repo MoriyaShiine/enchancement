@@ -24,7 +24,10 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.*;
 import net.minecraft.world.item.enchantment.effects.*;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.storage.loot.predicates.*;
+import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
+import net.minecraft.world.level.storage.loot.predicates.AnyOfCondition;
+import net.minecraft.world.level.storage.loot.predicates.DamageSourceCondition;
+import net.minecraft.world.level.storage.loot.predicates.WeatherCheck;
 import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.ArrayList;
@@ -65,17 +68,21 @@ public class RebalanceEnchantmentsEvent {
 							if (component.type() == EnchantmentEffectComponents.POST_ATTACK) {
 								List<TargetedConditionalEffect<EnchantmentEntityEffect>> list = new ArrayList<>((List<TargetedConditionalEffect<EnchantmentEntityEffect>>) component.value());
 								for (TargetedConditionalEffect<?> effect : list) {
-									if (effect.requirements().isPresent() && effect.requirements().get() instanceof AllOfCondition allOf) {
-										List<LootItemCondition> conditions = new ArrayList<>(allOf.terms);
-										conditions.removeIf(term -> term.codec() == WeatherCheck.MAP_CODEC);
-										effect.requirements = Optional.of(AllOfCondition.allOf(conditions));
+									if (effect.requirements().isPresent() && effect.requirements().get().value() instanceof AllOfCondition allOf) {
+										AllOfCondition.Builder conditions = new AllOfCondition.Builder();
+										allOf.terms.forEach(holder -> {
+											if (holder.value().codec() != WeatherCheck.MAP_CODEC) {
+												conditions.addTerm(holder);
+											}
+										});
+										effect.requirements = Optional.of(Holder.direct(conditions.build()));
 									}
 								}
 								list.add(new TargetedConditionalEffect<>(
 										EnchantmentTarget.ATTACKER,
 										EnchantmentTarget.VICTIM,
 										new Ignite(LevelBasedValue.perLevel(4.0F)),
-										Optional.of(DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().isDirect(true)).build())
+										Optional.of(Holder.direct(DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().isDirect(true)).build()))
 								));
 								builder.set(EnchantmentEffectComponents.POST_ATTACK, list);
 								continue;
@@ -83,10 +90,14 @@ public class RebalanceEnchantmentsEvent {
 							if (component.type() == EnchantmentEffectComponents.HIT_BLOCK) {
 								List<ConditionalEffect<EnchantmentEntityEffect>> list = (List<ConditionalEffect<EnchantmentEntityEffect>>) component.value();
 								for (ConditionalEffect<?> effect : list) {
-									if (effect.requirements().isPresent() && effect.requirements().get() instanceof AllOfCondition allOf) {
-										List<LootItemCondition> conditions = new ArrayList<>(allOf.terms);
-										conditions.removeIf(condition -> condition.codec() == WeatherCheck.MAP_CODEC);
-										effect.requirements = Optional.of(AllOfCondition.allOf(conditions));
+									if (effect.requirements().isPresent() && effect.requirements().get().value() instanceof AllOfCondition allOf) {
+										AllOfCondition.Builder conditions = new AllOfCondition.Builder();
+										allOf.terms.forEach(holder -> {
+											if (holder.value().codec() != WeatherCheck.MAP_CODEC) {
+												conditions.addTerm(holder);
+											}
+										});
+										effect.requirements = Optional.of(Holder.direct(conditions.build()));
 									}
 								}
 							}
@@ -123,10 +134,14 @@ public class RebalanceEnchantmentsEvent {
 										effects.removeIf(e -> e.codec() == ApplyExhaustion.CODEC);
 										allOf.effects = effects;
 									}
-									if (effect.requirements().isPresent() && effect.requirements().get() instanceof AllOfCondition allOf) {
-										List<LootItemCondition> conditions = new ArrayList<>(allOf.terms);
-										conditions.removeIf(condition -> condition.codec() == AnyOfCondition.MAP_CODEC);
-										effect.requirements = Optional.of(AllOfCondition.allOf(conditions));
+									if (effect.requirements().isPresent() && effect.requirements().get().value() instanceof AllOfCondition allOf) {
+										AllOfCondition.Builder conditions = new AllOfCondition.Builder();
+										allOf.terms.forEach(holder -> {
+											if (holder.value().codec() != AnyOfCondition.MAP_CODEC) {
+												conditions.addTerm(holder);
+											}
+										});
+										effect.requirements = Optional.of(Holder.direct(conditions.build()));
 									}
 								}
 								builder.set(EnchantmentEffectComponents.POST_PIERCING_ATTACK, list);

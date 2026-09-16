@@ -68,7 +68,7 @@
 	"config.rebalanceequipment.CombatRulesMixin",
 	"config.rebalanceequipment.FishingHookMixin",
 	"config.rebalanceequipment.FishingRodItemMixin",
-	"config.rebalanceequipment.HoeItemMixin",
+	"config.rebalanceequipment.ItemPropertiesMixin",
 	"config.rebalanceequipment.ItemsMixin",
 	"config.rebalanceequipment.KineticWeaponMixin",
 	"config.rebalanceequipment.LivingEntityMixin",
@@ -194,7 +194,7 @@
 	"config.rebalanceenchantments.client.EntityRendererMixin",
 	"config.rebalanceenchantments.client.FlameFeatureRendererMixin",
 	"config.rebalanceenchantments.client.ScreenEffectRendererMixin",
-	"config.rebalanceequipment.client.ItemInHandRendererMixin",
+	"config.rebalanceequipment.client.FirstPersonHandsAndItemsRendererMixin",
 	"config.rebalanceequipment.client.ItemStackMixin",
 	"config.rebalanceequipment.client.LocalPlayerMixin",
 	"config.rebalanceequipment.client.ThrownTridentRendererMixin",
@@ -214,9 +214,9 @@
 	"enchantmenteffectcomponenttype.fluidwalking.client.LocalPlayerMixin",
 	"enchantmenteffectcomponenttype.hidenamebehindwalls.client.LivingEntityRendererMixin",
 	"enchantmenteffectcomponenttype.leechingtrident.client.ThrownTridentRendererMixin",
-	"enchantmenteffectcomponenttype.lightningdash.client.EntityRendererMixin",
+	"enchantmenteffectcomponenttype.lightningdash.client.AvatarRendererMixin",
+	"enchantmenteffectcomponenttype.lightningdash.client.FirstPersonHandsAndItemsRendererMixin",
 	"enchantmenteffectcomponenttype.lightningdash.client.ItemInHandLayerMixin",
-	"enchantmenteffectcomponenttype.lightningdash.client.ItemInHandRendererMixin",
 	"enchantmenteffectcomponenttype.modifydetectionrange.client.EntityMixin",
 	"enchantmenteffectcomponenttype.rage.client.CuboidItemModelWrapperMixin",
 	"enchantmenteffectcomponenttype.slam.client.AvatarRendererMixin",
@@ -233,7 +233,7 @@
 	"entity.frozenplayer.client.EntityRenderDispatcherMixin",
 	"item.client.ItemModelResolverMixin",
 	"item.maceeffect.client.AvatarRendererMixin",
-	"item.maceeffect.client.ItemInHandRendererMixin"
+	"item.maceeffect.client.FirstPersonHandsAndItemsRendererMixin"
   ],
   "injectors": {
 	"defaultRequire": 1

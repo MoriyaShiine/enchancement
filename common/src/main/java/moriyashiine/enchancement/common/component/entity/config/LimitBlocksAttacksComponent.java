@@ -65,7 +65,7 @@ public class LimitBlocksAttacksComponent implements AutoSyncedComponent, CommonT
 			if (blocksAttacks != null) {
 				blocksAttacks.disable((ServerLevel) obj.level(), obj, SECONDS_TO_RECHARGE, itemBlockingWith);
 			}
-			obj.invulnerableTime = 0;
+			obj.setInvulnerableTime(0);
 		}
 	}
 
@@ -81,7 +81,7 @@ public class LimitBlocksAttacksComponent implements AutoSyncedComponent, CommonT
 	public void damage(ItemStack stack, float damage, boolean player) {
 		addCharge(stack, Mth.floor(damage * SECONDS_TO_RECHARGE));
 		if (!player) {
-			obj.invulnerableTime = 20;
+			obj.setInvulnerableTime(20);
 			obj.hurtTime = obj.hurtDuration = 10;
 		}
 	}

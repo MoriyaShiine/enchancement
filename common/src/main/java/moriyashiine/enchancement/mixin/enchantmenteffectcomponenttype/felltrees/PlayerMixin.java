@@ -18,7 +18,7 @@ public abstract class PlayerMixin extends LivingEntity {
 
 	@Inject(method = "tick", at = @At("TAIL"))
 	private void enchancement$fellTrees(CallbackInfo ci) {
-		if (!swinging) {
+		if (!isSwinging()) {
 			FellTreesEvent.ENTRIES.removeIf(entry -> entry.player() == (Object) this);
 		}
 	}

@@ -7,6 +7,8 @@ import net.minecraft.advancements.predicates.MinMaxBounds;
 import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.advancements.triggers.Criterion;
 import net.minecraft.advancements.triggers.PlayerHurtEntityTrigger;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.ServerAdvancementManager;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,9 +23,9 @@ public class ServerAdvancementManagerMixin {
 	private static final Identifier OVEROVERKILL = Identifier.withDefaultNamespace("adventure/overoverkill");
 
 	@Inject(method = "validate", at = @At("HEAD"))
-	private void enchancement$rebalanceEquipment(Identifier id, Advancement advancement, CallbackInfo ci) {
-		if (EnchancementConfig.rebalanceEquipment && id.equals(OVEROVERKILL)) {
-			for (Criterion<?> criterion : advancement.criteria().values()) {
+	private static void enchancement$rebalanceEquipment(HolderLookup.Provider registries, Holder.Reference<Advancement> advancement, CallbackInfo ci) {
+		if (EnchancementConfig.rebalanceEquipment && advancement.key().identifier().equals(OVEROVERKILL)) {
+			for (Criterion<?> criterion : advancement.value().criteria().values()) {
 				if (criterion.trigger() == CriteriaTriggers.PLAYER_HURT_ENTITY) {
 					PlayerHurtEntityTrigger.TriggerInstance triggerInstance = ((PlayerHurtEntityTrigger.TriggerInstance) criterion.triggerInstance());
 					DamagePredicate damagePredicate = triggerInstance.damage().orElse(null);

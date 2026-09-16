@@ -7,8 +7,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.functions.SetEnchantmentsFunction;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -25,7 +25,7 @@ public class SetEnchantmentsFunctionMixin {
 	@Shadow
 	@Final
 	@Mutable
-	private Map<Holder<Enchantment>, NumberProvider> enchantments;
+	private Map<Holder<Enchantment>, Holder<ContextIntProvider>> enchantments;
 
 	@Inject(method = "run", at = @At("HEAD"))
 	private void enchancement$disableDisallowedEnchantments(ItemStack itemStack, LootContext context, CallbackInfoReturnable<ItemStack> cir) {
@@ -36,10 +36,10 @@ public class SetEnchantmentsFunctionMixin {
 			}
 		});
 		if (anyDisallowed[0]) {
-			Map<Holder<Enchantment>, NumberProvider> newEnchantments = new HashMap<>();
+			Map<Holder<Enchantment>, Holder<ContextIntProvider>> newEnchantments = new HashMap<>();
 			enchantments.forEach((enchantment, _) -> {
 				if (!EnchancementUtil.isEnchantmentAllowed(enchantment)) {
-					newEnchantments.put(EnchancementUtil.getRandomEnchantment(itemStack, EnchantmentTags.ON_RANDOM_LOOT, context.getRandom()), ConstantValue.exactly(1));
+					newEnchantments.put(EnchancementUtil.getRandomEnchantment(itemStack, EnchantmentTags.ON_RANDOM_LOOT, context.getRandom()), ContextIntProviders.exactly(1));
 				}
 			});
 			enchantments = newEnchantments;

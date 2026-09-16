@@ -125,7 +125,7 @@ public abstract class FishingHookMixin extends Projectile {
 							player.setDeltaMovement(player.getDeltaMovement().horizontal());
 						}
 						player.setDeltaMovement(player.getDeltaMovement().add(new Vec3(clamp(getX() - player.getX()), clamp(getY() - player.getY()), clamp(getZ() - player.getZ())).scale(0.2)));
-						player.hurtMarked = true;
+						player.syncVelocity = true;
 					}
 				}
 			}

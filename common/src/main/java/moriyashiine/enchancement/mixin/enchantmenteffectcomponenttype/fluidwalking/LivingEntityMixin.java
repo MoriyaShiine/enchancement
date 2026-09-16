@@ -45,7 +45,7 @@ public abstract class LivingEntityMixin extends Entity {
 		return original || EnchancementUtil.shouldFluidWalk(this);
 	}
 
-	@Inject(method = "floatInWaterWhileRidden", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "floatInLiquidWhileRidden", at = @At("HEAD"), cancellable = true)
 	private void enchancement$fluidWalking(CallbackInfo ci) {
 		if (EnchancementUtil.hasAnyEnchantmentsWith(this, EnchancementEnchantmentEffectComponentTypes.FLUID_WALKING)) {
 			ci.cancel();

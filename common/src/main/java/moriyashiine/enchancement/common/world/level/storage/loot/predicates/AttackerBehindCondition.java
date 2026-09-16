@@ -28,8 +28,8 @@ public class AttackerBehindCondition implements LootItemCondition {
 
 	@Override
 	public boolean test(LootContext context) {
-		Entity entity = context.getOptionalParameter(LootContextParams.THIS_ENTITY);
-		Entity attackingEntity = context.getOptionalParameter(LootContextParams.ATTACKING_ENTITY);
+		Entity entity = context.getOptional(LootContextParams.THIS_ENTITY);
+		Entity attackingEntity = context.getOptional(LootContextParams.ATTACKING_ENTITY);
 		if (entity == null || attackingEntity == null) {
 			return false;
 		}

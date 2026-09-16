@@ -272,7 +272,7 @@ public class EnchancementEnchantments {
 							EnchantmentEffectComponents.DAMAGE_PROTECTION,
 							new AddValue(LevelBasedValue.perLevel(8)),
 							AllOfCondition.allOf(
-									DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().tag(TagPredicate.isNot(EnchancementDamageTypeTags.BYPASSES_WARDENSPINE))),
+									DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().tag(TagPredicate.isNot(damageTypes, EnchancementDamageTypeTags.BYPASSES_WARDENSPINE))),
 									() -> AttackerBehindCondition.INSTANCE));
 					builder.withEffect(
 							EnchantmentEffectComponents.POST_ATTACK,
@@ -295,7 +295,7 @@ public class EnchancementEnchantments {
 											ConstantFloat.of(1),
 											ConstantFloat.of(1))),
 							AllOfCondition.allOf(
-									DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().tag(TagPredicate.isNot(EnchancementDamageTypeTags.BYPASSES_WARDENSPINE))),
+									DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().tag(TagPredicate.isNot(damageTypes, EnchancementDamageTypeTags.BYPASSES_WARDENSPINE))),
 									() -> AttackerBehindCondition.INSTANCE));
 				}));
 		// leggings
@@ -402,8 +402,8 @@ public class EnchancementEnchantments {
 							DamageImmunity.INSTANCE,
 							DamageSourceCondition.hasDamageSource(
 									DamageSourcePredicate.Builder.damageType()
-											.tag(TagPredicate.is(DamageTypeTags.BURN_FROM_STEPPING))
-											.tag(TagPredicate.isNot(DamageTypeTags.BYPASSES_INVULNERABILITY))));
+											.tag(TagPredicate.is(damageTypes, DamageTypeTags.BURN_FROM_STEPPING))
+											.tag(TagPredicate.isNot(damageTypes, DamageTypeTags.BYPASSES_INVULNERABILITY))));
 				}));
 		registry.register(E_SPEED, create(E_SPEED.identifier(),
 				items.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),

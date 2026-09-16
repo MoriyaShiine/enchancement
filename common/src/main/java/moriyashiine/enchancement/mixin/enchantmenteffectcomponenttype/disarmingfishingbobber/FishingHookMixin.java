@@ -11,7 +11,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.village.ReputationEventType;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.monster.Witch;
 import net.minecraft.world.entity.monster.piglin.Piglin;
 import net.minecraft.world.entity.monster.piglin.PiglinAi;
@@ -47,7 +47,7 @@ public abstract class FishingHookMixin extends Projectile {
 			if (disarmingFishingBobber.isEnabled()) {
 				ItemStack stack = ItemStack.EMPTY;
 				EquipmentSlot slot = EquipmentSlot.MAINHAND;
-				if (entity instanceof EnderMan enderman && enderman.getCarriedBlock() != null) {
+				if (entity instanceof Enderman enderman && enderman.getCarriedBlock() != null) {
 					stack = new ItemStack(enderman.getCarriedBlock().getBlock());
 				} else {
 					for (InteractionHand hand : InteractionHand.values()) {
@@ -88,7 +88,7 @@ public abstract class FishingHookMixin extends Projectile {
 									PiglinAi.wasHurtBy(level, piglin, owner);
 								}
 							}
-							if (entity instanceof EnderMan enderman) {
+							if (entity instanceof Enderman enderman) {
 								enderman.setCarriedBlock(null);
 							}
 							if (entity instanceof WanderingTrader) {

@@ -42,7 +42,7 @@ public class ThrownTridentRendererMixin {
 		if (floatingTridentRenderState != null && floatingTridentRenderState.floating) {
 			poseStack.pushPose();
 			poseStack.translate(0.0F, Mth.sin(state.ageInTicks / 10) * 0.1F + 0.1F + 0.25F, 0);
-			poseStack.mulPose(Axis.YP.rotation(ItemEntity.getSpin(state.ageInTicks, 0)));
+			poseStack.rotate(Axis.YP, ItemEntity.getSpin(state.ageInTicks, 0));
 			ItemEntityRenderer.submitMultipleFromCount(poseStack, submitNodeCollector, state.lightCoords, floatingTridentRenderState.item, random);
 			poseStack.popPose();
 			ci.cancel();

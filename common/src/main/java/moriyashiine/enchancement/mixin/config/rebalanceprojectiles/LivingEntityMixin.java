@@ -68,7 +68,7 @@ public abstract class LivingEntityMixin extends Entity {
 	private void enchancement$rebalanceProjectiles(ServerLevel level, DamageSource source, float damage, CallbackInfoReturnable<Boolean> cir) {
 		if (EnchancementConfig.rebalanceProjectiles && source.getDirectEntity() instanceof Projectile) {
 			setDeltaMovement(0, Math.min(0, getDeltaMovement().y()), 0);
-			hurtMarked = true;
+			syncVelocity = true;
 		}
 	}
 }

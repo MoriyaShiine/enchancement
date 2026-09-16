@@ -23,6 +23,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -197,7 +198,7 @@ public class SlideComponent implements CommonTickingComponent {
 	private boolean updateCrawl() {
 		int height = Mth.floor(obj.getBbHeight());
 		if (height > 0) {
-			Vec3 frontPos = obj.position().add(0, height, 0).add(obj.calculateViewVector(0, cachedYRot));
+			Vec3 frontPos = obj.position().add(0, height, 0).add(Entity.calculateViewVector(0, cachedYRot));
 			BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(frontPos.x(), frontPos.y(), frontPos.z());
 			int y = pos.getY();
 			boolean hitsBelow = hitsBlock(pos.setY(y - 1));

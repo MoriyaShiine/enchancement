@@ -22,6 +22,6 @@ public record SmashEffect(LevelBasedValue strength) implements EnchantmentEntity
 	@Override
 	public void apply(ServerLevel serverLevel, int enchantmentLevel, EnchantedItemInUse item, Entity entity, Vec3 position) {
 		entity.push(0, -strength().calculate(enchantmentLevel), 0);
-		entity.hurtMarked = true;
+		entity.syncVelocity = true;
 	}
 }

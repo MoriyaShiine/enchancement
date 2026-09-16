@@ -22,7 +22,7 @@ public class InCombatCondition implements LootItemCondition {
 
 	@Override
 	public boolean test(LootContext context) {
-		Entity entity = context.getOptionalParameter(LootContextParams.THIS_ENTITY);
+		Entity entity = context.getOptional(LootContextParams.THIS_ENTITY);
 		if (entity == null) {
 			return false;
 		}

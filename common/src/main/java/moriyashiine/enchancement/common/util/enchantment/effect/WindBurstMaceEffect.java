@@ -43,7 +43,7 @@ public class WindBurstMaceEffect extends MaceEffect {
 			serverLevel.sendParticles(ParticleTypes.GUST, player.getX() + delta.x(), player.getEyeY() + delta.y(), player.getZ() + delta.z(), 0, 0, 0, 0, 0);
 			for (Entity entity : level.getEntities(player, AABB.unitCubeFromLowerCorner(player.position().add(delta)).move(-0.5F, -0.5F, -0.5F).inflate(3), foundEntity -> SLibUtils.shouldHurt(player, foundEntity))) {
 				entity.addDeltaMovement(delta.scale(1 + enchantmentLevel / 3F));
-				entity.hurtMarked = true;
+				entity.syncVelocity = true;
 			}
 		}
 		delta = delta.scale(-0.6 - enchantmentLevel / 6F);

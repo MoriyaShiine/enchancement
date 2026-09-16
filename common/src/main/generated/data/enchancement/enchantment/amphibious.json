@@ -55,7 +55,7 @@
 		  "type": "enchancement:extinguish"
 		},
 		"requirements": {
-		  "condition": "enchancement:has_extended_water_time"
+		  "type": "enchancement:has_extended_water_time"
 		}
 	  },
 	  {
@@ -68,7 +68,7 @@
 		  }
 		},
 		"requirements": {
-		  "condition": "enchancement:wet"
+		  "type": "enchancement:wet"
 		}
 	  }
 	]

@@ -39,7 +39,7 @@
 		},
 		"enchanted": "attacker",
 		"requirements": {
-		  "condition": "minecraft:damage_source_properties",
+		  "type": "minecraft:damage_source_properties",
 		  "predicate": {
 			"is_direct": true
 		  }
@@ -65,7 +65,7 @@
 		},
 		"enchanted": "attacker",
 		"requirements": {
-		  "condition": "minecraft:damage_source_properties",
+		  "type": "minecraft:damage_source_properties",
 		  "predicate": {
 			"is_direct": true
 		  }

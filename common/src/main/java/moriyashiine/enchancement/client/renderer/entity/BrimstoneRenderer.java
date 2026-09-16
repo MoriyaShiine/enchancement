@@ -59,9 +59,9 @@ public class BrimstoneRenderer extends ArrowRenderer<Brimstone, BrimstoneEntityR
 		float v = (Math.floorMod(state.ticksExisted, 40) + state.ageInTicks) / 4F;
 		float u = v + 4 * -0.5F / scale;
 		poseStack.pushPose();
-		poseStack.mulPose(Axis.YP.rotationDegrees(-state.yRot + 90));
-		poseStack.mulPose(Axis.ZP.rotationDegrees(state.xRot + 90));
-		poseStack.mulPose(Axis.YP.rotationDegrees(state.ticksExisted + state.ageInTicks * 12));
+		poseStack.rotateDegrees(Axis.YP, -state.yRot + 90);
+		poseStack.rotateDegrees(Axis.ZP, state.xRot + 90);
+		poseStack.rotateDegrees(Axis.YP, state.ticksExisted + state.ageInTicks * 12);
 		poseStack.scale(scale, 1, scale);
 		poseStack.translate(0, state.ageInTicks, 0);
 		for (int i = state.ticksExisted; i < state.distanceTraveled; i++) {
@@ -88,7 +88,7 @@ public class BrimstoneRenderer extends ArrowRenderer<Brimstone, BrimstoneEntityR
 		poseStack.scale(state.damageMultiplier, 1, state.damageMultiplier);
 		for (int i = 0; i < 360; i += 15) {
 			submitNodeCollector.submitCustomGeometry(poseStack, BRIMSTONE_TYPE.apply(TEXTURE), (pose, consumer) -> extractPlane(pose, consumer, u, v));
-			poseStack.mulPose(Axis.YP.rotationDegrees(i));
+			poseStack.rotateDegrees(Axis.YP, i);
 		}
 		poseStack.scale(1 / state.damageMultiplier, 1, 1 / state.damageMultiplier);
 		poseStack.translate(0, 1, 0);

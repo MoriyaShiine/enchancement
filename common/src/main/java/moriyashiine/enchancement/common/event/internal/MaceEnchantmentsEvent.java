@@ -13,7 +13,7 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetEnchantmentsFunction;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 public class MaceEnchantmentsEvent implements LootTableEvents.Modify {
 	public static void init() {
@@ -36,7 +36,7 @@ public class MaceEnchantmentsEvent implements LootTableEvents.Modify {
 			if (!enchantment.is(EnchancementEnchantments.EMPTY_KEY)) {
 				builder.add(LootItem.lootTableItem(Items.BOOK)
 						.setWeight(2)
-						.apply(new SetEnchantmentsFunction.Builder().withEnchantment(enchantment, ConstantValue.exactly(1))));
+						.apply(new SetEnchantmentsFunction.Builder().withEnchantment(enchantment, ContextIntProviders.exactly(1))));
 			}
 		});
 	}

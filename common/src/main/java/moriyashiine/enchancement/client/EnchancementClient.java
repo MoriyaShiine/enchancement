@@ -1,5 +1,6 @@
 package moriyashiine.enchancement.client;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import moriyashiine.enchancement.client.event.config.CoyoteBiteClientEvent;
 import moriyashiine.enchancement.client.event.config.EnchantmentDescriptionsClientEvent;
 import moriyashiine.enchancement.client.event.config.ToggleablePassivesClientEvent;
@@ -42,17 +43,16 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.particle.BubbleParticle;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.server.packs.PackType;
-import org.lwjgl.glfw.GLFW;
 
 public class EnchancementClient implements ClientModInitializer {
 	private static final KeyMapping.Category KEYMAPPING_CATEGORY = KeyMapping.Category.register(Enchancement.id(Enchancement.MOD_ID));
-	public static final KeyMapping BOOST_IN_FLUID_HOVER_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".boostInFluidHover", GLFW.GLFW_KEY_SPACE, KEYMAPPING_CATEGORY));
-	public static final KeyMapping CHARGE_JUMP_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".chargeJump", GLFW.GLFW_KEY_LEFT_SHIFT, KEYMAPPING_CATEGORY));
-	public static final KeyMapping DIRECTION_BURST_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".directionBurst", GLFW.GLFW_KEY_LEFT_SHIFT, KEYMAPPING_CATEGORY));
-	public static final KeyMapping E_METER_HOVER_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".eMeterHover", GLFW.GLFW_KEY_SPACE, KEYMAPPING_CATEGORY));
-	public static final KeyMapping ROTATION_BURST_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".rotationBurst", GLFW.GLFW_KEY_LEFT_CONTROL, KEYMAPPING_CATEGORY));
-	public static final KeyMapping SLAM_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".slam", GLFW.GLFW_KEY_LEFT_CONTROL, KEYMAPPING_CATEGORY));
-	public static final KeyMapping SLIDE_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".slide", GLFW.GLFW_KEY_LEFT_CONTROL, KEYMAPPING_CATEGORY));
+	public static final KeyMapping BOOST_IN_FLUID_HOVER_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".boostInFluidHover", InputConstants.KEY_SPACE, KEYMAPPING_CATEGORY));
+	public static final KeyMapping CHARGE_JUMP_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".chargeJump", InputConstants.KEY_LSHIFT, KEYMAPPING_CATEGORY));
+	public static final KeyMapping DIRECTION_BURST_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".directionBurst", InputConstants.KEY_LSHIFT, KEYMAPPING_CATEGORY));
+	public static final KeyMapping E_METER_HOVER_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".eMeterHover", InputConstants.KEY_SPACE, KEYMAPPING_CATEGORY));
+	public static final KeyMapping ROTATION_BURST_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".rotationBurst", InputConstants.KEY_LCONTROL, KEYMAPPING_CATEGORY));
+	public static final KeyMapping SLAM_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".slam", InputConstants.KEY_LCONTROL, KEYMAPPING_CATEGORY));
+	public static final KeyMapping SLIDE_KEYMAPPING = KeyMappingHelper.registerKeyMapping(new KeyMapping("key." + Enchancement.MOD_ID + ".slide", InputConstants.KEY_LCONTROL, KEYMAPPING_CATEGORY));
 
 	public static boolean betterCombatLoaded = false;
 

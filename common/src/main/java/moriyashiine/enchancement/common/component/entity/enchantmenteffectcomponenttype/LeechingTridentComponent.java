@@ -80,12 +80,12 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 			LivingEntity stuckEntity = getStuckEntity();
 			if (stuckEntity != null && stuckEntity.slib$exists()) {
 				if (leechingTicks % 20 == 0) {
-					int timeUntilRegen = stuckEntity.invulnerableTime;
-					stuckEntity.invulnerableTime = 0;
+					int invulnerableTime = stuckEntity.getInvulnerableTime();
+					stuckEntity.setInvulnerableTime(0);
 					if (stuckEntity.hurtServer((ServerLevel) obj.level(), obj.level().damageSources().source(EnchancementDamageTypes.LIFE_DRAIN, obj, obj.getOwner()), leechData.damage()) && obj.getOwner() instanceof LivingEntity living && living.slib$exists()) {
 						living.heal(leechData.healAmount());
 					}
-					stuckEntity.invulnerableTime = timeUntilRegen;
+					stuckEntity.setInvulnerableTime(invulnerableTime);
 					stabTicks = 20;
 					sync();
 				}

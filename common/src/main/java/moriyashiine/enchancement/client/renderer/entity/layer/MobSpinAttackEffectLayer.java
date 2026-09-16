@@ -22,7 +22,7 @@ public class MobSpinAttackEffectLayer<T extends LivingEntityRenderState> extends
 	@Override
 	public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, T state, float yRot, float xRot) {
 		if (state.isAutoSpinAttack) {
-			submitNodeCollector.submitModel(model, state, poseStack, SpinAttackEffectLayer.TEXTURE, lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
+			submitNodeCollector.submitModel(model, state, poseStack, SpinAttackEffectLayer.TEXTURE, lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor);
 		}
 	}
 }

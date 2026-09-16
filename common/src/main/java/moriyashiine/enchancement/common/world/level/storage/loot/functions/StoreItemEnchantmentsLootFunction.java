@@ -29,8 +29,8 @@ public class StoreItemEnchantmentsLootFunction extends LootItemConditionalFuncti
 
 	private final Item item;
 
-	public StoreItemEnchantmentsLootFunction(List<LootItemCondition> conditions, Item item) {
-		super(conditions);
+	public StoreItemEnchantmentsLootFunction(Optional<Holder<LootItemCondition>> condition, Item item) {
+		super(condition);
 		this.item = item;
 	}
 
@@ -45,11 +45,11 @@ public class StoreItemEnchantmentsLootFunction extends LootItemConditionalFuncti
 		List<Holder<Enchantment>> enchantments = new ArrayList<>();
 		Registry<Enchantment> enchantmentRegistry = context.getLevel().registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
 		enchantmentRegistry.forEach(enchantment -> {
-			Holder<Enchantment> entry = enchantmentRegistry.wrapAsHolder(enchantment);
-			if (checkedStack.canBeEnchantedWith(entry, EnchantingContext.ACCEPTABLE)) {
+			Holder<Enchantment> holder = enchantmentRegistry.wrapAsHolder(enchantment);
+			if (checkedStack.canBeEnchantedWith(holder, EnchantingContext.ACCEPTABLE)) {
 				Optional<TagKey<Item>> tagKey = enchantment.getSupportedItems().unwrapKey();
 				if (!(tagKey.isPresent() && (tagKey.get() == ItemTags.MINING_ENCHANTABLE || tagKey.get() == ItemTags.MINING_LOOT_ENCHANTABLE))) {
-					enchantments.add(entry);
+					enchantments.add(holder);
 				}
 			}
 		});

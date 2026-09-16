@@ -18,8 +18,8 @@ import java.util.function.Consumer;
 
 @Mixin(ItemStack.class)
 public class ItemStackMixin {
-	@Inject(method = "addToTooltip", at = @At("HEAD"), cancellable = true)
-	private <T extends TooltipProvider> void enchancement$enchantmentDescriptions(DataComponentType<T> type, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> consumer, TooltipFlag flag, CallbackInfo ci) {
+	@Inject(method = "addToTooltip(Lnet/minecraft/core/component/DataComponentType;Lnet/minecraft/world/item/component/TooltipProvider$Getter;Lnet/minecraft/world/item/Item$TooltipContext;Lnet/minecraft/world/item/component/TooltipDisplay;Ljava/util/function/Consumer;Lnet/minecraft/world/item/TooltipFlag;)V", at = @At("HEAD"), cancellable = true)
+	private <T extends TooltipProvider> void enchancement$enchantmentDescriptions(DataComponentType<T> type, TooltipProvider.Getter<T> tooltipGetter, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> consumer, TooltipFlag flag, CallbackInfo ci) {
 		if (type == DataComponents.STORED_ENCHANTMENTS && EnchantmentDescriptionsClientEvent.enableDescriptions()) {
 			ci.cancel();
 		}

@@ -28,7 +28,7 @@ public class BundleItemMixin {
 	private Object enchancement$rebalanceEquipment(ItemStack instance, DataComponentType<BundleContents> componentType, Operation<Object> original) {
 		Object component = original.call(instance, componentType);
 		if (EnchancementConfig.rebalanceEquipment && component instanceof BundleContents bundleContentsComponent) {
-			BundleContents.Mutable mutable = new BundleContents.Mutable(bundleContentsComponent);
+			BundleContents.Mutable mutable = bundleContentsComponent.asMutable();
 			for (int i = 0; i < bundleContentsComponent.size(); i++) {
 				ItemStackTemplate template = bundleContentsComponent.items().get(i);
 				if (template.is(Items.ENCHANTED_BOOK)) {
