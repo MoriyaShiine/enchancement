@@ -18,7 +18,7 @@ public record RotationBurstEffect(EnchantmentValueEffect cooldown, EnchantmentVa
 	).apply(instance, RotationBurstEffect::new));
 
 	public static int getCooldown(LivingEntity entity) {
-		MutableFloat mutableFloat = new MutableFloat(0);
+		MutableFloat mutableFloat = new MutableFloat();
 		EnchancementUtil.runIterationOnArmorItems(entity, (enchantment, level) -> {
 			RotationBurstEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.ROTATION_BURST);
 			if (effect != null) {
@@ -29,7 +29,7 @@ public record RotationBurstEffect(EnchantmentValueEffect cooldown, EnchantmentVa
 	}
 
 	public static float getStrength(LivingEntity entity) {
-		MutableFloat mutableFloat = new MutableFloat(0);
+		MutableFloat mutableFloat = new MutableFloat();
 		EnchancementUtil.runIterationOnArmorItems(entity, (enchantment, level) -> {
 			RotationBurstEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.ROTATION_BURST);
 			if (effect != null) {
@@ -40,7 +40,7 @@ public record RotationBurstEffect(EnchantmentValueEffect cooldown, EnchantmentVa
 	}
 
 	public static int getWavedashTicks(LivingEntity entity) {
-		MutableFloat mutableFloat = new MutableFloat(0);
+		MutableFloat mutableFloat = new MutableFloat();
 		EnchancementUtil.runIterationOnArmorItems(entity, (enchantment, level) -> {
 			RotationBurstEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.ROTATION_BURST);
 			if (effect != null) {
@@ -51,7 +51,7 @@ public record RotationBurstEffect(EnchantmentValueEffect cooldown, EnchantmentVa
 	}
 
 	public static float getWavedashStrength(LivingEntity entity) {
-		MutableFloat mutableFloat = new MutableFloat(0);
+		MutableFloat mutableFloat = new MutableFloat();
 		EnchancementUtil.runIterationOnArmorItems(entity, (enchantment, level) -> {
 			RotationBurstEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.ROTATION_BURST);
 			if (effect != null) {

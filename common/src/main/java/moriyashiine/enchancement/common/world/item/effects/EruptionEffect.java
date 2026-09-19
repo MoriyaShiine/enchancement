@@ -16,7 +16,7 @@ public record EruptionEffect(EnchantmentValueEffect jumpStrength, EnchantmentVal
 	).apply(instance, EruptionEffect::new));
 
 	public static float getJumpStrength(RandomSource random, ItemStack stack) {
-		MutableFloat mutableFloat = new MutableFloat(0);
+		MutableFloat mutableFloat = new MutableFloat();
 		EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
 			EruptionEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.ERUPTION);
 			if (effect != null) {
@@ -27,7 +27,7 @@ public record EruptionEffect(EnchantmentValueEffect jumpStrength, EnchantmentVal
 	}
 
 	public static float getFireDuration(RandomSource random, ItemStack stack) {
-		MutableFloat mutableFloat = new MutableFloat(0);
+		MutableFloat mutableFloat = new MutableFloat();
 		EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
 			EruptionEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.ERUPTION);
 			if (effect != null) {

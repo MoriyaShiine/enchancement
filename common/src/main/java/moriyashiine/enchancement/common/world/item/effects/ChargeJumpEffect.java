@@ -17,7 +17,7 @@ public record ChargeJumpEffect(EnchantmentValueEffect maximumCharge, Enchantment
 	).apply(instance, ChargeJumpEffect::new));
 
 	public static int getMaximumCharge(LivingEntity entity) {
-		MutableFloat mutableFloat = new MutableFloat(0);
+		MutableFloat mutableFloat = new MutableFloat();
 		EnchancementUtil.runIterationOnArmorItems(entity, (enchantment, level) -> {
 			ChargeJumpEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.CHARGE_JUMP);
 			if (effect != null) {
