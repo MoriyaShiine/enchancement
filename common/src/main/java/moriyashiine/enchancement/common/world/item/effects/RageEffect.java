@@ -78,11 +78,9 @@ public record RageEffect(EnchantmentValueEffect damageDealtModifier, Enchantment
 	}
 
 	public static float getDamageTakenModifier(LivingEntity entity) {
-		float value = 1;
-		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
-			value *= getDamageTakenModifier(entity, stack);
-		}
-		return Math.max(0, value);
+		MutableFloat mutableFloat = new MutableFloat(1);
+		EnchancementUtil.forEachArmorItem(entity, stack -> mutableFloat.setValue(mutableFloat.floatValue() * getDamageTakenModifier(entity, stack)));
+		return Math.max(0, mutableFloat.floatValue());
 	}
 
 	// movement speed
@@ -101,10 +99,8 @@ public record RageEffect(EnchantmentValueEffect damageDealtModifier, Enchantment
 	}
 
 	public static float getMovementSpeedModifier(LivingEntity entity) {
-		float value = 1;
-		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
-			value += getMovementSpeedModifier(entity, stack);
-		}
-		return value;
+		MutableFloat mutableFloat = new MutableFloat(1);
+		EnchancementUtil.forEachArmorItem(entity, stack -> mutableFloat.add(getMovementSpeedModifier(entity, stack)));
+		return mutableFloat.floatValue();
 	}
 }

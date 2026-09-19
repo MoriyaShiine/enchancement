@@ -6,8 +6,6 @@ import moriyashiine.enchancement.common.init.EnchancementEnchantmentEffectCompon
 import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.effects.EnchantmentValueEffect;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
@@ -20,40 +18,34 @@ public record DirectionBurstEffect(EnchantmentValueEffect cooldown, EnchantmentV
 
 	public static int getCooldown(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
-			EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
-				DirectionBurstEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.DIRECTION_BURST);
-				if (effect != null) {
-					mutableFloat.setValue(effect.cooldown().process(level, entity.getRandom(), mutableFloat.floatValue()));
-				}
-			});
-		}
+		EnchancementUtil.runIterationOnArmorItems(entity, (enchantment, level) -> {
+			DirectionBurstEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.DIRECTION_BURST);
+			if (effect != null) {
+				mutableFloat.setValue(effect.cooldown().process(level, entity.getRandom(), mutableFloat.floatValue()));
+			}
+		});
 		return Mth.floor(mutableFloat.floatValue() * 20);
 	}
 
 	public static float getGroundStrength(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
-			EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
-				DirectionBurstEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.DIRECTION_BURST);
-				if (effect != null) {
-					mutableFloat.setValue(effect.groundStrength().process(level, entity.getRandom(), mutableFloat.floatValue()));
-				}
-			});
-		}
+		EnchancementUtil.runIterationOnArmorItems(entity, (enchantment, level) -> {
+			DirectionBurstEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.DIRECTION_BURST);
+			if (effect != null) {
+				mutableFloat.setValue(effect.groundStrength().process(level, entity.getRandom(), mutableFloat.floatValue()));
+			}
+		});
 		return mutableFloat.floatValue();
 	}
 
 	public static float getAirStrength(LivingEntity entity) {
 		MutableFloat mutableFloat = new MutableFloat(0);
-		for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
-			EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
-				DirectionBurstEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.DIRECTION_BURST);
-				if (effect != null) {
-					mutableFloat.setValue(effect.airStrength().process(level, entity.getRandom(), mutableFloat.floatValue()));
-				}
-			});
-		}
+		EnchancementUtil.runIterationOnArmorItems(entity, (enchantment, level) -> {
+			DirectionBurstEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.DIRECTION_BURST);
+			if (effect != null) {
+				mutableFloat.setValue(effect.airStrength().process(level, entity.getRandom(), mutableFloat.floatValue()));
+			}
+		});
 		return mutableFloat.floatValue();
 	}
 }

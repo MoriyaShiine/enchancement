@@ -17,8 +17,6 @@ import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableFloat;
 import org.ladysnake.cca.api.v8.component.CardinalComponent;
 
-import java.util.Collections;
-
 public class DisarmingFishingBobberComponent implements CardinalComponent {
 	private ItemStack stack = ItemStack.EMPTY;
 	private boolean enabled = false, stealsFromPlayers = false;
@@ -77,9 +75,9 @@ public class DisarmingFishingBobberComponent implements CardinalComponent {
 			MutableBoolean enabled = new MutableBoolean(), stealsFromPlayers = new MutableBoolean();
 			MutableFloat playerCooldown = new MutableFloat(), userCooldown = new MutableFloat();
 			if (EnchantmentHelper.has(stack, EnchancementEnchantmentEffectComponentTypes.DISARMING_FISHING_BOBBER)) {
-				DisarmingFishingBobberEffect.setValues(user.getRandom(), enabled, stealsFromPlayers, playerCooldown, userCooldown, Collections.singleton(stack));
+				DisarmingFishingBobberEffect.setValues(user.getRandom(), enabled, stealsFromPlayers, playerCooldown, userCooldown, stack);
 			} else if (!(user instanceof Player) && EnchancementUtil.hasAnyEnchantmentsWith(user, EnchancementEnchantmentEffectComponentTypes.DISARMING_FISHING_BOBBER)) {
-				DisarmingFishingBobberEffect.setValues(user.getRandom(), enabled, stealsFromPlayers, playerCooldown, userCooldown, EnchancementUtil.getHeldItems(user));
+				EnchancementUtil.forEachHeldItem(user, heldItem -> DisarmingFishingBobberEffect.setValues(user.getRandom(), enabled, stealsFromPlayers, playerCooldown, userCooldown, heldItem));
 			}
 			if (enabled.booleanValue()) {
 				DisarmingFishingBobberComponent disarmingFishingBobber = EnchancementEntityComponents.DISARMING_FISHING_BOBBER.get(entity);

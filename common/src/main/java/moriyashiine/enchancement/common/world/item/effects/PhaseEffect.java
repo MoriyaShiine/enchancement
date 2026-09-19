@@ -19,17 +19,15 @@ public record PhaseEffect(EnchantmentValueEffect maxPhaseBlocks, boolean bypassS
 			Codec.BOOL.fieldOf("bypass_shields").forGetter(PhaseEffect::bypassShields)
 	).apply(instance, PhaseEffect::new));
 
-	public static void setValues(RandomSource random, MutableFloat maxPhaseBlocks, MutableBoolean bypassShields, Iterable<ItemStack> stacks) {
-		for (ItemStack stack : stacks) {
-			EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
-				List<ConditionalEffect<PhaseEffect>> effects = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.PHASE);
-				if (effects != null) {
-					effects.forEach(effect -> {
-						maxPhaseBlocks.setValue(effect.effect().maxPhaseBlocks().process(level, random, maxPhaseBlocks.floatValue()));
-						bypassShields.setValue(bypassShields.booleanValue() | effect.effect().bypassShields());
-					});
-				}
-			});
-		}
+	public static void setValues(RandomSource random, MutableFloat maxPhaseBlocks, MutableBoolean bypassShields, ItemStack stack) {
+		EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
+			List<ConditionalEffect<PhaseEffect>> effects = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.PHASE);
+			if (effects != null) {
+				effects.forEach(effect -> {
+					maxPhaseBlocks.setValue(effect.effect().maxPhaseBlocks().process(level, random, maxPhaseBlocks.floatValue()));
+					bypassShields.setValue(bypassShields.booleanValue() | effect.effect().bypassShields());
+				});
+			}
+		});
 	}
 }

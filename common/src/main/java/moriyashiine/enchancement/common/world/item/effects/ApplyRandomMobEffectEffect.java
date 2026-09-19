@@ -22,17 +22,15 @@ public record ApplyRandomMobEffectEffect(EnchantmentValueEffect duration, TagKey
 			TagKey.hashedCodec(Registries.MOB_EFFECT).fieldOf("disallowed_tag").forGetter(ApplyRandomMobEffectEffect::disallowedTag)
 	).apply(instance, ApplyRandomMobEffectEffect::new));
 
-	public static void setValues(RandomSource random, MutableFloat duration, AtomicReference<TagKey<MobEffect>> disallowedTag, Iterable<ItemStack> stacks) {
-		for (ItemStack stack : stacks) {
-			EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
-				List<ConditionalEffect<ApplyRandomMobEffectEffect>> effects = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.APPLY_RANDOM_MOB_EFFECT);
-				if (effects != null) {
-					effects.forEach(effect -> {
-						duration.setValue(effect.effect().duration().process(level, random, duration.floatValue()));
-						disallowedTag.set(effect.effect().disallowedTag());
-					});
-				}
-			});
-		}
+	public static void setValues(RandomSource random, MutableFloat duration, AtomicReference<TagKey<MobEffect>> disallowedTag, ItemStack stack) {
+		EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
+			List<ConditionalEffect<ApplyRandomMobEffectEffect>> effects = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.APPLY_RANDOM_MOB_EFFECT);
+			if (effects != null) {
+				effects.forEach(effect -> {
+					duration.setValue(effect.effect().duration().process(level, random, duration.floatValue()));
+					disallowedTag.set(effect.effect().disallowedTag());
+				});
+			}
+		});
 	}
 }

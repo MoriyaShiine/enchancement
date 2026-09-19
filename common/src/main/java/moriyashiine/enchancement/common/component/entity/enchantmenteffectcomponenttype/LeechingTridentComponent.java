@@ -27,8 +27,6 @@ import org.jspecify.annotations.Nullable;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
-import java.util.Collections;
-
 public class LeechingTridentComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private final ThrownTrident obj;
 	private LeechData leechData = null;
@@ -144,9 +142,9 @@ public class LeechingTridentComponent implements AutoSyncedComponent, CommonTick
 		if (entity instanceof ThrownTrident) {
 			MutableFloat damage = new MutableFloat(), healAmount = new MutableFloat(), duration = new MutableFloat();
 			if (EnchantmentHelper.has(stack, EnchancementEnchantmentEffectComponentTypes.LEECHING_TRIDENT)) {
-				LeechingTridentEffect.setValues(user.getRandom(), damage, healAmount, duration, Collections.singleton(stack));
+				LeechingTridentEffect.setValues(user.getRandom(), damage, healAmount, duration, stack);
 			} else if (!(user instanceof Player) && EnchancementUtil.hasAnyEnchantmentsWith(user, EnchancementEnchantmentEffectComponentTypes.LEECHING_TRIDENT)) {
-				LeechingTridentEffect.setValues(user.getRandom(), damage, healAmount, duration, EnchancementUtil.getHeldItems(user));
+				EnchancementUtil.forEachHeldItem(user, heldItem -> LeechingTridentEffect.setValues(user.getRandom(), damage, healAmount, duration, heldItem));
 			}
 			if (damage.floatValue() != 0) {
 				LeechingTridentComponent leechingTrident = EnchancementEntityComponents.LEECHING_TRIDENT.get(entity);

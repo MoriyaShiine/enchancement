@@ -21,19 +21,17 @@ public record DelayedLaunchEffect(EnchantmentValueEffect maxDuration, Enchantmen
 			Codec.BOOL.fieldOf("allow_redirect").forGetter(DelayedLaunchEffect::allowRedirect)
 	).apply(instance, DelayedLaunchEffect::new));
 
-	public static void setValues(RandomSource random, MutableFloat maxDuration, MutableFloat peakDuration, MutableFloat maxMultiplier, MutableBoolean allowRedirect, Iterable<ItemStack> stacks) {
-		for (ItemStack stack : stacks) {
-			EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
-				List<ConditionalEffect<DelayedLaunchEffect>> effects = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.DELAYED_LAUNCH);
-				if (effects != null) {
-					effects.forEach(effect -> {
-						maxDuration.setValue(effect.effect().maxDuration().process(level, random, maxDuration.floatValue()));
-						peakDuration.setValue(effect.effect().peakDuration().process(level, random, peakDuration.floatValue()));
-						maxMultiplier.setValue(effect.effect().maxMultiplier().process(level, random, maxMultiplier.floatValue()));
-						allowRedirect.setValue(allowRedirect.booleanValue() || effect.effect().allowRedirect());
-					});
-				}
-			});
-		}
+	public static void setValues(RandomSource random, MutableFloat maxDuration, MutableFloat peakDuration, MutableFloat maxMultiplier, MutableBoolean allowRedirect, ItemStack stack) {
+		EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
+			List<ConditionalEffect<DelayedLaunchEffect>> effects = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.DELAYED_LAUNCH);
+			if (effects != null) {
+				effects.forEach(effect -> {
+					maxDuration.setValue(effect.effect().maxDuration().process(level, random, maxDuration.floatValue()));
+					peakDuration.setValue(effect.effect().peakDuration().process(level, random, peakDuration.floatValue()));
+					maxMultiplier.setValue(effect.effect().maxMultiplier().process(level, random, maxMultiplier.floatValue()));
+					allowRedirect.setValue(allowRedirect.booleanValue() || effect.effect().allowRedirect());
+				});
+			}
+		});
 	}
 }
