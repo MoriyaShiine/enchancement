@@ -21,7 +21,7 @@ public record CriticalTipperEffect(EnchantmentValueEffect distanceLeniency, Part
 	).apply(instance, CriticalTipperEffect::new));
 
 	public static float getDistanceLeniency(ItemStack stack, RandomSource random) {
-		MutableFloat mutableFloat = new MutableFloat(0);
+		MutableFloat mutableFloat = new MutableFloat();
 		EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
 			List<ConditionalEffect<CriticalTipperEffect>> effects = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.CRITICAL_TIPPER);
 			if (effects != null) {

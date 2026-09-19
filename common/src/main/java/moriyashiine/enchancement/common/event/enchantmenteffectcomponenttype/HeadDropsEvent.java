@@ -48,13 +48,12 @@ public class HeadDropsEvent implements ServerEntityCombatEvents.AfterKilledOther
 	}
 
 	private static float getDropChanceMultiplier(ServerLevel level, LivingEntity attacker, DamageSource damageSource) {
-		MutableFloat mutableFloat = new MutableFloat(0);
-		RandomSource random = attacker.getRandom();
+		MutableFloat mutableFloat = new MutableFloat();
 		EnchantmentHelper.runIterationOnEquipment(attacker, (enchantment, enchantmentLevel, _) -> {
 			LootContext lootContext = Enchantment.damageContext(level, enchantmentLevel, attacker, damageSource);
 			enchantment.value().getEffects(EnchancementEnchantmentEffectComponentTypes.HEAD_DROPS).forEach(effect -> {
 				if (effect.enchanted() == EnchantmentTarget.VICTIM && effect.affected() == EnchantmentTarget.VICTIM && effect.matches(lootContext)) {
-					mutableFloat.setValue(effect.effect().process(enchantmentLevel, random, mutableFloat.floatValue()));
+					mutableFloat.setValue(effect.effect().process(enchantmentLevel, attacker.getRandom(), mutableFloat.floatValue()));
 				}
 			});
 		});
@@ -63,7 +62,7 @@ public class HeadDropsEvent implements ServerEntityCombatEvents.AfterKilledOther
 				LootContext lootContext = Enchantment.damageContext(level, enchantmentLevel, attacker, damageSource);
 				enchantment.value().getEffects(EnchancementEnchantmentEffectComponentTypes.HEAD_DROPS).forEach(effect -> {
 					if (effect.enchanted() == EnchantmentTarget.ATTACKER && effect.affected() == EnchantmentTarget.VICTIM && effect.matches(lootContext)) {
-						mutableFloat.setValue(effect.effect().process(enchantmentLevel, random, mutableFloat.floatValue()));
+						mutableFloat.setValue(effect.effect().process(enchantmentLevel, attacker.getRandom(), mutableFloat.floatValue()));
 					}
 				});
 			});
