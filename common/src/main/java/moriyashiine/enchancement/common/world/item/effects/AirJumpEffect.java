@@ -18,7 +18,7 @@ public record AirJumpEffect(EnchantmentValueEffect airJumps, EnchantmentValueEff
 	).apply(instance, AirJumpEffect::new));
 
 	public static int getAirJumps(LivingEntity entity) {
-		MutableFloat mutableFloat = new MutableFloat(0);
+		MutableFloat mutableFloat = new MutableFloat();
 		EnchancementUtil.runIterationOnArmorItems(entity, (enchantment, level) -> {
 			AirJumpEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.AIR_JUMP);
 			if (effect != null) {
@@ -29,7 +29,7 @@ public record AirJumpEffect(EnchantmentValueEffect airJumps, EnchantmentValueEff
 	}
 
 	public static float getAirJumpStrength(LivingEntity entity) {
-		MutableFloat mutableFloat = new MutableFloat(0);
+		MutableFloat mutableFloat = new MutableFloat();
 		EnchancementUtil.runIterationOnArmorItems(entity, (enchantment, level) -> {
 			AirJumpEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.AIR_JUMP);
 			if (effect != null) {
@@ -40,7 +40,7 @@ public record AirJumpEffect(EnchantmentValueEffect airJumps, EnchantmentValueEff
 	}
 
 	public static int getChargeCooldown(LivingEntity entity) {
-		MutableFloat mutableFloat = new MutableFloat(0);
+		MutableFloat mutableFloat = new MutableFloat();
 		EnchancementUtil.runIterationOnArmorItems(entity, (enchantment, level) -> {
 			AirJumpEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.AIR_JUMP);
 			if (effect != null) {
@@ -51,7 +51,7 @@ public record AirJumpEffect(EnchantmentValueEffect airJumps, EnchantmentValueEff
 	}
 
 	public static int getJumpCooldown(LivingEntity entity) {
-		MutableFloat mutableFloat = new MutableFloat(0);
+		MutableFloat mutableFloat = new MutableFloat();
 		EnchancementUtil.runIterationOnArmorItems(entity, (enchantment, level) -> {
 			AirJumpEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.AIR_JUMP);
 			if (effect != null) {

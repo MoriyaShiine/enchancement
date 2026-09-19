@@ -17,7 +17,7 @@ public record DirectionBurstEffect(EnchantmentValueEffect cooldown, EnchantmentV
 	).apply(instance, DirectionBurstEffect::new));
 
 	public static int getCooldown(LivingEntity entity) {
-		MutableFloat mutableFloat = new MutableFloat(0);
+		MutableFloat mutableFloat = new MutableFloat();
 		EnchancementUtil.runIterationOnArmorItems(entity, (enchantment, level) -> {
 			DirectionBurstEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.DIRECTION_BURST);
 			if (effect != null) {
@@ -28,7 +28,7 @@ public record DirectionBurstEffect(EnchantmentValueEffect cooldown, EnchantmentV
 	}
 
 	public static float getGroundStrength(LivingEntity entity) {
-		MutableFloat mutableFloat = new MutableFloat(0);
+		MutableFloat mutableFloat = new MutableFloat();
 		EnchancementUtil.runIterationOnArmorItems(entity, (enchantment, level) -> {
 			DirectionBurstEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.DIRECTION_BURST);
 			if (effect != null) {
@@ -39,7 +39,7 @@ public record DirectionBurstEffect(EnchantmentValueEffect cooldown, EnchantmentV
 	}
 
 	public static float getAirStrength(LivingEntity entity) {
-		MutableFloat mutableFloat = new MutableFloat(0);
+		MutableFloat mutableFloat = new MutableFloat();
 		EnchancementUtil.runIterationOnArmorItems(entity, (enchantment, level) -> {
 			DirectionBurstEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.DIRECTION_BURST);
 			if (effect != null) {

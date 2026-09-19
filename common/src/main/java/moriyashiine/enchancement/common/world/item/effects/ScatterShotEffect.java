@@ -31,7 +31,7 @@ public record ScatterShotEffect(EnchantmentValueEffect minimum, EnchantmentValue
 	public static boolean hasScatterShot = false;
 
 	public static int getMinimum(RandomSource random, ItemStack stack) {
-		MutableFloat minimum = new MutableFloat(0);
+		MutableFloat minimum = new MutableFloat();
 		EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
 			List<ConditionalEffect<ScatterShotEffect>> effects = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.SCATTER_SHOT);
 			if (effects != null) {
@@ -55,7 +55,7 @@ public record ScatterShotEffect(EnchantmentValueEffect minimum, EnchantmentValue
 	}
 
 	public static int getMaximum(RandomSource random, ItemStack stack) {
-		MutableFloat maximum = new MutableFloat(0);
+		MutableFloat maximum = new MutableFloat();
 		EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
 			List<ConditionalEffect<ScatterShotEffect>> effects = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.SCATTER_SHOT);
 			if (effects != null) {

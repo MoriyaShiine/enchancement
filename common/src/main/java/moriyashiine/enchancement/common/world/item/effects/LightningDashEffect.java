@@ -19,7 +19,7 @@ public record LightningDashEffect(EnchantmentValueEffect floatTime, EnchantmentV
 	).apply(instance, LightningDashEffect::new));
 
 	public static int getFloatTime(RandomSource random, ItemStack stack) {
-		MutableFloat mutableFloat = new MutableFloat(0);
+		MutableFloat mutableFloat = new MutableFloat();
 		EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
 			LightningDashEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.LIGHTNING_DASH);
 			if (effect != null) {
@@ -30,7 +30,7 @@ public record LightningDashEffect(EnchantmentValueEffect floatTime, EnchantmentV
 	}
 
 	public static float getLungeStrength(RandomSource random, ItemStack stack) {
-		MutableFloat mutableFloat = new MutableFloat(0);
+		MutableFloat mutableFloat = new MutableFloat();
 		EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
 			LightningDashEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.LIGHTNING_DASH);
 			if (effect != null) {
@@ -41,7 +41,7 @@ public record LightningDashEffect(EnchantmentValueEffect floatTime, EnchantmentV
 	}
 
 	public static float getSmashStrength(RandomSource random, ItemStack stack) {
-		MutableFloat mutableFloat = new MutableFloat(0);
+		MutableFloat mutableFloat = new MutableFloat();
 		EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
 			LightningDashEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.LIGHTNING_DASH);
 			if (effect != null) {
@@ -52,7 +52,7 @@ public record LightningDashEffect(EnchantmentValueEffect floatTime, EnchantmentV
 	}
 
 	public static float getSmashDamageMultiplier(RandomSource random, ItemStack stack) {
-		MutableFloat mutableFloat = new MutableFloat(0);
+		MutableFloat mutableFloat = new MutableFloat();
 		EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
 			LightningDashEffect effect = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.LIGHTNING_DASH);
 			if (effect != null) {
