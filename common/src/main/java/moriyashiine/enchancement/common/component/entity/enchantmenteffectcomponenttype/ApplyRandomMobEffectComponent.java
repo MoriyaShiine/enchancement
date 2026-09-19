@@ -55,9 +55,9 @@ public class ApplyRandomMobEffectComponent implements CardinalComponent {
 		MutableFloat duration = new MutableFloat();
 		AtomicReference<TagKey<MobEffect>> disallowedTag = new AtomicReference<>();
 		if (weapon != null && EnchantmentHelper.has(weapon, EnchancementEnchantmentEffectComponentTypes.APPLY_RANDOM_MOB_EFFECT)) {
-			ApplyRandomMobEffectEffect.setValues(user.getRandom(), duration, disallowedTag, Collections.singleton(weapon));
+			ApplyRandomMobEffectEffect.setValues(user.getRandom(), duration, disallowedTag, weapon);
 		} else if (!(user instanceof Player) && EnchancementUtil.hasAnyEnchantmentsWith(user, EnchancementEnchantmentEffectComponentTypes.APPLY_RANDOM_MOB_EFFECT)) {
-			ApplyRandomMobEffectEffect.setValues(user.getRandom(), duration, disallowedTag, EnchancementUtil.getHeldItems(user));
+			EnchancementUtil.forEachHeldItem(user, heldItem -> ApplyRandomMobEffectEffect.setValues(user.getRandom(), duration, disallowedTag, heldItem));
 		}
 		if (duration.floatValue() != 0) {
 			int attempts = 0;

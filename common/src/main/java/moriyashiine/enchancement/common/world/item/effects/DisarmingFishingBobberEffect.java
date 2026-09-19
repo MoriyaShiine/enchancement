@@ -20,19 +20,17 @@ public record DisarmingFishingBobberEffect(boolean stealsFromPlayers, Enchantmen
 			EnchantmentValueEffect.CODEC.fieldOf("user_cooldown").forGetter(DisarmingFishingBobberEffect::userCooldown)
 	).apply(instance, DisarmingFishingBobberEffect::new));
 
-	public static void setValues(RandomSource random, MutableBoolean enabled, MutableBoolean stealsFromPlayers, MutableFloat playerCooldown, MutableFloat userCooldown, Iterable<ItemStack> stacks) {
-		for (ItemStack stack : stacks) {
-			EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
-				List<ConditionalEffect<DisarmingFishingBobberEffect>> effects = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.DISARMING_FISHING_BOBBER);
-				if (effects != null) {
-					effects.forEach(effect -> {
-						enabled.setValue(true);
-						stealsFromPlayers.setValue(stealsFromPlayers.booleanValue() || effect.effect().stealsFromPlayers());
-						playerCooldown.setValue(effect.effect().playerCooldown().process(level, random, playerCooldown.floatValue()));
-						userCooldown.setValue(effect.effect().userCooldown().process(level, random, userCooldown.floatValue()));
-					});
-				}
-			});
-		}
+	public static void setValues(RandomSource random, MutableBoolean enabled, MutableBoolean stealsFromPlayers, MutableFloat playerCooldown, MutableFloat userCooldown, ItemStack stack) {
+		EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
+			List<ConditionalEffect<DisarmingFishingBobberEffect>> effects = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.DISARMING_FISHING_BOBBER);
+			if (effects != null) {
+				effects.forEach(effect -> {
+					enabled.setValue(true);
+					stealsFromPlayers.setValue(stealsFromPlayers.booleanValue() || effect.effect().stealsFromPlayers());
+					playerCooldown.setValue(effect.effect().playerCooldown().process(level, random, playerCooldown.floatValue()));
+					userCooldown.setValue(effect.effect().userCooldown().process(level, random, userCooldown.floatValue()));
+				});
+			}
+		});
 	}
 }

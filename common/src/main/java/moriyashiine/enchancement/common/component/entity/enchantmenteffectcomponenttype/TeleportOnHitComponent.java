@@ -19,8 +19,6 @@ import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ClientTickingComponent;
 
-import java.util.Collections;
-
 public class TeleportOnHitComponent implements AutoSyncedComponent, ClientTickingComponent {
 	private final AbstractArrow obj;
 	private boolean teleportsOnBlockHit = false, teleportsOnEntityHit = false;
@@ -73,9 +71,9 @@ public class TeleportOnHitComponent implements AutoSyncedComponent, ClientTickin
 		if (entity instanceof AbstractArrow) {
 			MutableBoolean teleportsOnBlockHit = new MutableBoolean(), teleportsOnEntityHit = new MutableBoolean();
 			if (EnchantmentHelper.has(stack, EnchancementEnchantmentEffectComponentTypes.TELEPORT_ON_HIT)) {
-				TeleportOnHitEffect.setValues(teleportsOnBlockHit, teleportsOnEntityHit, Collections.singleton(stack));
+				TeleportOnHitEffect.setValues(teleportsOnBlockHit, teleportsOnEntityHit, stack);
 			} else if (!(user instanceof Player) && EnchancementUtil.hasAnyEnchantmentsWith(user, EnchancementEnchantmentEffectComponentTypes.TELEPORT_ON_HIT)) {
-				TeleportOnHitEffect.setValues(teleportsOnBlockHit, teleportsOnEntityHit, EnchancementUtil.getHeldItems(user));
+				EnchancementUtil.forEachHeldItem(user, heldItem -> TeleportOnHitEffect.setValues(teleportsOnBlockHit, teleportsOnEntityHit, heldItem));
 			}
 			if (teleportsOnBlockHit.booleanValue() || teleportsOnEntityHit.booleanValue()) {
 				TeleportOnHitComponent teleportOnHit = EnchancementEntityComponents.TELEPORT_ON_HIT.get(entity);

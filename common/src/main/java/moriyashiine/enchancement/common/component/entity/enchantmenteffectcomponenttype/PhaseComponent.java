@@ -17,8 +17,6 @@ import org.apache.commons.lang3.mutable.MutableFloat;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
-import java.util.Collections;
-
 public class PhaseComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private final AbstractArrow obj;
 	private int maxPhaseBlocks = 0;
@@ -88,9 +86,9 @@ public class PhaseComponent implements AutoSyncedComponent, CommonTickingCompone
 			MutableFloat maxPhaseBlocks = new MutableFloat();
 			MutableBoolean bypassShields = new MutableBoolean();
 			if (EnchantmentHelper.has(stack, EnchancementEnchantmentEffectComponentTypes.PHASE)) {
-				PhaseEffect.setValues(user.getRandom(), maxPhaseBlocks, bypassShields, Collections.singleton(stack));
+				PhaseEffect.setValues(user.getRandom(), maxPhaseBlocks, bypassShields, stack);
 			} else if (!(user instanceof Player) && EnchancementUtil.hasAnyEnchantmentsWith(user, EnchancementEnchantmentEffectComponentTypes.PHASE)) {
-				PhaseEffect.setValues(user.getRandom(), maxPhaseBlocks, bypassShields, EnchancementUtil.getHeldItems(user));
+				EnchancementUtil.forEachHeldItem(user, heldItem -> PhaseEffect.setValues(user.getRandom(), maxPhaseBlocks, bypassShields, heldItem));
 			}
 			if (maxPhaseBlocks.floatValue() != 0) {
 				PhaseComponent phase = EnchancementEntityComponents.PHASE.get(entity);

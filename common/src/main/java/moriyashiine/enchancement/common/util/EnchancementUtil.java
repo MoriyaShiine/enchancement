@@ -40,11 +40,15 @@ import net.minecraft.world.item.equipment.ArmorMaterials;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableFloat;
 import org.jspecify.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 public class EnchancementUtil {
 	public static HolderOwner<?> ENCHANTMENT_HOLDER_OWNER = null;
@@ -294,26 +298,6 @@ public class EnchancementUtil {
 
 	// misc
 
-	public static Set<ItemStack> getArmorItems(LivingEntity entity) {
-		Set<ItemStack> stacks = new HashSet<>();
-		for (EquipmentSlot slot : EquipmentSlot.values()) {
-			if (slot.getType() != EquipmentSlot.Type.HAND) {
-				stacks.add(entity.getItemBySlot(slot));
-			}
-		}
-		return stacks;
-	}
-
-	public static Set<ItemStack> getHeldItems(LivingEntity entity) {
-		Set<ItemStack> stacks = new HashSet<>();
-		for (EquipmentSlot slot : EquipmentSlot.values()) {
-			if (slot.getType() == EquipmentSlot.Type.HAND) {
-				stacks.add(entity.getItemBySlot(slot));
-			}
-		}
-		return stacks;
-	}
-
 	public static Vec3 getSyncedDeltaMovement(Entity entity) {
 		return SyncDeltaMovementsEvent.DELTAS.getOrDefault(entity.getUUID(), entity.getDeltaMovement());
 	}
@@ -350,26 +334,50 @@ public class EnchancementUtil {
 		EnchancementEntityComponents.LIGHTNING_DASH.maybeGet(entity).ifPresent(LightningDashComponent::cancel);
 	}
 
+	public static void runIterationOnArmorItems(LivingEntity entity, EnchantmentHelper.EnchantmentVisitor visitor) {
+		forEachArmorItem(entity, stack -> EnchantmentHelper.runIterationOnItem(stack, visitor));
+	}
+
+	public static void forEachArmorItem(LivingEntity entity, Consumer<ItemStack> consumer) {
+		for (EquipmentSlot slot : EquipmentSlot.values()) {
+			if (slot.getType() != EquipmentSlot.Type.HAND) {
+				consumer.accept(entity.getItemBySlot(slot));
+			}
+		}
+	}
+
+	public static void forEachHeldItem(LivingEntity entity, Consumer<ItemStack> consumer) {
+		for (EquipmentSlot slot : EquipmentSlot.values()) {
+			if (slot.getType() == EquipmentSlot.Type.HAND) {
+				consumer.accept(entity.getItemBySlot(slot));
+			}
+		}
+	}
+
 	// enchantment
 
 	public static boolean hasAnyEnchantmentsIn(Entity entity, TagKey<Enchantment> tagKey) {
 		if (entity instanceof LivingEntity living) {
-			for (ItemStack stack : getArmorItems(living)) {
+			MutableBoolean mutableBoolean = new MutableBoolean();
+			forEachArmorItem(living, stack -> {
 				if (EnchantmentHelper.hasTag(stack, tagKey)) {
-					return true;
+					mutableBoolean.setTrue();
 				}
-			}
+			});
+			return mutableBoolean.booleanValue();
 		}
 		return false;
 	}
 
 	public static boolean hasAnyEnchantmentsWith(Entity entity, DataComponentType<?> componentType) {
 		if (entity instanceof LivingEntity living) {
-			for (ItemStack stack : getArmorItems(living)) {
+			MutableBoolean mutableBoolean = new MutableBoolean();
+			forEachArmorItem(living, stack -> {
 				if (EnchantmentHelper.has(stack, componentType)) {
-					return true;
+					mutableBoolean.setTrue();
 				}
-			}
+			});
+			return mutableBoolean.booleanValue();
 		}
 		return false;
 	}
@@ -382,9 +390,7 @@ public class EnchancementUtil {
 
 	public static float getValue(DataComponentType<EnchantmentValueEffect> component, LivingEntity entity, float base) {
 		MutableFloat mutableFloat = new MutableFloat(base);
-		for (ItemStack stack : getArmorItems(entity)) {
-			EnchantmentHelper.runIterationOnItem(stack, (enchantment, enchantmentLevel) -> enchantment.value().modifyUnfilteredValue(component, entity.getRandom(), enchantmentLevel, mutableFloat));
-		}
+		forEachArmorItem(entity, stack -> EnchantmentHelper.runIterationOnItem(stack, (enchantment, enchantmentLevel) -> enchantment.value().modifyUnfilteredValue(component, entity.getRandom(), enchantmentLevel, mutableFloat)));
 		return mutableFloat.floatValue();
 	}
 
