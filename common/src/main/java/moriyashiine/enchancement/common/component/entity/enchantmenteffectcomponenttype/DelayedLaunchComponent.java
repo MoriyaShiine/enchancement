@@ -26,8 +26,6 @@ import org.apache.commons.lang3.mutable.MutableFloat;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
-import java.util.Collections;
-
 public class DelayedLaunchComponent implements AutoSyncedComponent, CommonTickingComponent {
 	private final AbstractArrow obj;
 	private ItemStack weapon = null;
@@ -155,9 +153,9 @@ public class DelayedLaunchComponent implements AutoSyncedComponent, CommonTickin
 			MutableFloat maxDuration = new MutableFloat(), peakDuration = new MutableFloat(), maxMultiplier = new MutableFloat();
 			MutableBoolean allowRedirect = new MutableBoolean();
 			if (EnchantmentHelper.has(weapon, EnchancementEnchantmentEffectComponentTypes.DELAYED_LAUNCH)) {
-				DelayedLaunchEffect.setValues(shooter.getRandom(), maxDuration, peakDuration, maxMultiplier, allowRedirect, Collections.singleton(weapon));
+				DelayedLaunchEffect.setValues(shooter.getRandom(), maxDuration, peakDuration, maxMultiplier, allowRedirect, weapon);
 			} else if (!(shooter instanceof Player) && EnchancementUtil.hasAnyEnchantmentsWith(shooter, EnchancementEnchantmentEffectComponentTypes.DELAYED_LAUNCH)) {
-				DelayedLaunchEffect.setValues(shooter.getRandom(), maxDuration, peakDuration, maxMultiplier, allowRedirect, EnchancementUtil.getHeldItems(shooter));
+				EnchancementUtil.forEachHeldItem(shooter, heldItem -> DelayedLaunchEffect.setValues(shooter.getRandom(), maxDuration, peakDuration, maxMultiplier, allowRedirect, heldItem));
 			}
 			if (maxDuration.floatValue() != 0) {
 				DelayedLaunchComponent delayedLaunch = EnchancementEntityComponents.DELAYED_LAUNCH.get(projectile);

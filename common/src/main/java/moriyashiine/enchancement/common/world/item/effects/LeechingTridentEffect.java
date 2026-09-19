@@ -19,18 +19,16 @@ public record LeechingTridentEffect(EnchantmentValueEffect damage, EnchantmentVa
 			EnchantmentValueEffect.CODEC.fieldOf("duration").forGetter(LeechingTridentEffect::duration)
 	).apply(instance, LeechingTridentEffect::new));
 
-	public static void setValues(RandomSource random, MutableFloat damage, MutableFloat healAmount, MutableFloat duration, Iterable<ItemStack> stacks) {
-		for (ItemStack stack : stacks) {
-			EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
-				List<ConditionalEffect<LeechingTridentEffect>> effects = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.LEECHING_TRIDENT);
-				if (effects != null) {
-					effects.forEach(effect -> {
-						damage.setValue(effect.effect().damage().process(level, random, damage.floatValue()));
-						healAmount.setValue(effect.effect().healAmount().process(level, random, healAmount.floatValue()));
-						duration.setValue(effect.effect().duration().process(level, random, duration.floatValue()));
-					});
-				}
-			});
-		}
+	public static void setValues(RandomSource random, MutableFloat damage, MutableFloat healAmount, MutableFloat duration, ItemStack stack) {
+		EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
+			List<ConditionalEffect<LeechingTridentEffect>> effects = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.LEECHING_TRIDENT);
+			if (effects != null) {
+				effects.forEach(effect -> {
+					damage.setValue(effect.effect().damage().process(level, random, damage.floatValue()));
+					healAmount.setValue(effect.effect().healAmount().process(level, random, healAmount.floatValue()));
+					duration.setValue(effect.effect().duration().process(level, random, duration.floatValue()));
+				});
+			}
+		});
 	}
 }

@@ -15,6 +15,7 @@ import net.minecraft.world.item.enchantment.ConditionalEffect;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.effects.EnchantmentValueEffect;
 import org.apache.commons.lang3.mutable.MutableFloat;
+import org.apache.commons.lang3.mutable.MutableInt;
 
 import java.util.HashSet;
 import java.util.List;
@@ -41,11 +42,9 @@ public record ScatterShotEffect(EnchantmentValueEffect minimum, EnchantmentValue
 	}
 
 	public static int getMinimum(LivingEntity entity) {
-		int count = 0;
-		for (ItemStack stack : EnchancementUtil.getHeldItems(entity)) {
-			count += getMinimum(entity.getRandom(), stack);
-		}
-		return count;
+		MutableInt mutableInt = new MutableInt();
+		EnchancementUtil.forEachHeldItem(entity, stack -> mutableInt.add(getMinimum(entity.getRandom(), stack)));
+		return mutableInt.intValue();
 	}
 
 	public static int getMinimum(LivingEntity entity, ItemStack weaponStack) {
@@ -67,11 +66,9 @@ public record ScatterShotEffect(EnchantmentValueEffect minimum, EnchantmentValue
 	}
 
 	public static int getMaximum(LivingEntity entity) {
-		int count = 0;
-		for (ItemStack stack : EnchancementUtil.getHeldItems(entity)) {
-			count += getMaximum(entity.getRandom(), stack);
-		}
-		return count;
+		MutableInt mutableInt = new MutableInt();
+		EnchancementUtil.forEachHeldItem(entity, stack -> mutableInt.add(getMaximum(entity.getRandom(), stack)));
+		return mutableInt.intValue();
 	}
 
 	public static int getMaximum(LivingEntity shooter, ItemStack weaponStack) {
@@ -94,9 +91,7 @@ public record ScatterShotEffect(EnchantmentValueEffect minimum, EnchantmentValue
 
 	public static Set<Item> getAllowedProjectiles(LivingEntity entity) {
 		Set<Item> allowedProjectiles = new HashSet<>();
-		for (ItemStack stack : EnchancementUtil.getHeldItems(entity)) {
-			allowedProjectiles.addAll(getAllowedProjectiles(stack));
-		}
+		EnchancementUtil.forEachHeldItem(entity, stack -> allowedProjectiles.addAll(getAllowedProjectiles(stack)));
 		return allowedProjectiles;
 	}
 

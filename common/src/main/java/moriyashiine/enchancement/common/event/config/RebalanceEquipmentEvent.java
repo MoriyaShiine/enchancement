@@ -68,11 +68,11 @@ public class RebalanceEquipmentEvent {
 					player.getCooldowns().addCooldown(entity.getUseItem(), 20);
 					entity.releaseUsingItem();
 				}
-				for (ItemStack stack : EnchancementUtil.getArmorItems(entity)) {
+				EnchancementUtil.forEachArmorItem(entity, stack -> {
 					if (stack.has(DataComponents.GLIDER)) {
 						player.getCooldowns().addCooldown(stack, 60);
 					}
-				}
+				});
 			}
 		}
 	}

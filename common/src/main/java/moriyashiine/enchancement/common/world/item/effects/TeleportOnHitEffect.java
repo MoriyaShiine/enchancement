@@ -16,17 +16,15 @@ public record TeleportOnHitEffect(boolean teleportsOnBlockHit, boolean teleports
 			Codec.BOOL.fieldOf("teleports_on_entity_hit").forGetter(TeleportOnHitEffect::teleportsOnEntityHit)
 	).apply(instance, TeleportOnHitEffect::new));
 
-	public static void setValues(MutableBoolean teleportsOnBlockHit, MutableBoolean teleportsOnEntityHit, Iterable<ItemStack> stacks) {
-		for (ItemStack stack : stacks) {
-			EnchantmentHelper.runIterationOnItem(stack, (enchantment, _) -> {
-				List<ConditionalEffect<TeleportOnHitEffect>> effects = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.TELEPORT_ON_HIT);
-				if (effects != null) {
-					effects.forEach(effect -> {
-						teleportsOnBlockHit.setValue(teleportsOnBlockHit.booleanValue() || effect.effect().teleportsOnBlockHit());
-						teleportsOnEntityHit.setValue(teleportsOnEntityHit.booleanValue() || effect.effect().teleportsOnEntityHit());
-					});
-				}
-			});
-		}
+	public static void setValues(MutableBoolean teleportsOnBlockHit, MutableBoolean teleportsOnEntityHit, ItemStack stack) {
+		EnchantmentHelper.runIterationOnItem(stack, (enchantment, _) -> {
+			List<ConditionalEffect<TeleportOnHitEffect>> effects = enchantment.value().effects().get(EnchancementEnchantmentEffectComponentTypes.TELEPORT_ON_HIT);
+			if (effects != null) {
+				effects.forEach(effect -> {
+					teleportsOnBlockHit.setValue(teleportsOnBlockHit.booleanValue() || effect.effect().teleportsOnBlockHit());
+					teleportsOnEntityHit.setValue(teleportsOnEntityHit.booleanValue() || effect.effect().teleportsOnEntityHit());
+				});
+			}
+		});
 	}
 }
