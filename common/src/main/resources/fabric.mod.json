@@ -103,9 +103,6 @@
 	  "${mod_id}:fell_trees",
 	  "${mod_id}:honey_trail",
 	  "${mod_id}:wide_mining"
-	],
-	"lithium:options": {
-	  "mixin.shapes.lazy_shape_context": false
-	}
+	]
   }
 }
