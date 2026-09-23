@@ -1,4 +1,10 @@
 ------------------------------------------------------
+Version 26.1-r24
+------------------------------------------------------
+- optimize enchantment access
+- lazy shape context is no longer disabled when lithium is installed
+
+------------------------------------------------------
 Version 26.1-r23
 ------------------------------------------------------
 - fix sprinting being 20% faster than in vanilla
