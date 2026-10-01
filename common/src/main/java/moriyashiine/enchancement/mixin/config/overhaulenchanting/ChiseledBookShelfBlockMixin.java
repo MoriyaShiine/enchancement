@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import java.util.List;
 
 @Mixin(ChiseledBookShelfBlock.class)
-public class ChiseledBookshelfBlockMixin implements FabricBlock {
+public class ChiseledBookShelfBlockMixin implements FabricBlock {
 	@Shadow
 	@Final
 	public static List<BooleanProperty> SLOT_OCCUPIED_PROPERTIES;

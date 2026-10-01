@@ -46,7 +46,8 @@ public class EnchancementConfig extends MidnightConfig {
 			"minecraft:swift_sneak",
 			"minecraft:thorns",
 			"minecraft:unbreaking",
-			"minecraft:vanishing_curse");
+			"minecraft:vanishing_curse"
+	);
 	@Entry
 	public static boolean invertedList = false;
 
@@ -54,7 +55,7 @@ public class EnchancementConfig extends MidnightConfig {
 	public static OverhaulMode overhaulEnchanting = OverhaulMode.CHISELED;
 
 	@Entry
-	public static boolean singleLevelMode = true;
+	public static boolean levellessEnchantments = true;
 	@Entry(min = 0)
 	public static int enchantmentLimit = 1;
 
@@ -111,7 +112,7 @@ public class EnchancementConfig extends MidnightConfig {
 		String encoding = builder.toString() +
 				invertedList +
 				overhaulEnchanting +
-				singleLevelMode + enchantmentLimit +
+				levellessEnchantments + enchantmentLimit +
 				disableDurability +
 				enhanceMobs +
 				rebalanceConsumables + rebalanceEffects + rebalanceEnchantments + rebalanceEquipment + rebalanceProjectiles +
