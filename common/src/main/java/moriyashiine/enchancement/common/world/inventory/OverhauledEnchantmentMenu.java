@@ -293,8 +293,8 @@ public class OverhauledEnchantmentMenu extends AbstractContainerMenu {
 				if (EnchantingTableBlock.isValidBookShelf(level, pos, offset)) {
 					BlockPos offsetPos = pos.offset(offset);
 					power += level.getBlockState(offsetPos).getProvidedEnchantmentPower(level, offsetPos);
-					if (EnchancementConfig.overhaulEnchanting == OverhaulMode.CHISELED && !player.hasInfiniteMaterials() && level.getBlockEntity(offsetPos) instanceof ChiseledBookShelfBlockEntity chiseledBookshelfBlockEntity) {
-						for (ItemStack stack : chiseledBookshelfBlockEntity) {
+					if (EnchancementConfig.overhaulEnchanting == OverhaulMode.CHISELED && !player.hasInfiniteMaterials() && level.getBlockEntity(offsetPos) instanceof ChiseledBookShelfBlockEntity chiseledBookShelfBlockEntity) {
+						for (ItemStack stack : chiseledBookShelfBlockEntity) {
 							chiseledEnchantments.addAll(EnchantmentHelper.getEnchantmentsForCrafting(stack).keySet());
 						}
 					}
