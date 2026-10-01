@@ -10,7 +10,6 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.boss.enderdragon.EnderDragonPart;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -59,9 +58,6 @@ public abstract class ShardEntity extends AbstractArrow {
 	protected void onHitEntity(EntityHitResult entityHitResult) {
 		if (level() instanceof ServerLevel level) {
 			Entity entity = entityHitResult.getEntity();
-			if (entity instanceof EnderDragonPart part) {
-				entity = part.parentMob;
-			}
 			Entity owner = getOwner();
 			if (SLibUtils.shouldHurt(owner, entity) && entity.hurtServer(level, level.damageSources().source(getDamageType(), this, owner), (float) baseDamage)) {
 				onTargetHit(entity);

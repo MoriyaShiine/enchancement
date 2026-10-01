@@ -11,7 +11,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.boss.enderdragon.EnderDragonPart;
+import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
@@ -86,10 +86,7 @@ public class Torch extends AbstractArrow {
 	@Override
 	protected void onHitEntity(EntityHitResult hitResult) {
 		Entity entity = hitResult.getEntity();
-		if (entity instanceof EnderDragonPart part) {
-			entity = part.parentMob;
-		}
-		if (entity instanceof LivingEntity living && entity.getType() != EntityType.ENDERMAN) {
+		if (entity instanceof LivingEntity living && !(living instanceof EnderMan)) {
 			playSound(SoundEvents.FIRE_EXTINGUISH, 1, 1);
 			if (!level().isClientSide()) {
 				EnchancementUtil.rebalanceIgniteForSeconds(living, Math.min(16, Mth.ceil(living.getRemainingFireTicks() / 20F) + ignitionTime));

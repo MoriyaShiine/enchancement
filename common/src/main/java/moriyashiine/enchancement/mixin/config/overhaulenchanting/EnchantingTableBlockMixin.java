@@ -34,7 +34,7 @@ public class EnchantingTableBlockMixin {
 
 	@WrapOperation(method = "animateTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
 	private void enchancement$overhaulEnchanting(Level instance, ParticleOptions particle, double x, double y, double z, double xd, double yd, double zd, Operation<Void> original, @Local(argsOnly = true) BlockPos pos, @Local(name = "offset") BlockPos offset) {
-		if (EnchancementConfig.overhaulEnchanting == OverhaulMode.CHISELED && instance.getBlockEntity(pos.offset(offset)) instanceof ChiseledBookShelfBlockEntity chiseledBookshelfBlockEntity && EnchancementBlockComponents.CHISELED_BOOKSHELF.get(chiseledBookshelfBlockEntity).hasEnchantments()) {
+		if (EnchancementConfig.overhaulEnchanting == OverhaulMode.CHISELED && instance.getBlockEntity(pos.offset(offset)) instanceof ChiseledBookShelfBlockEntity chiseledBookShelfBlockEntity && EnchancementBlockComponents.CHISELED_BOOKSHELF.get(chiseledBookShelfBlockEntity).hasEnchantments()) {
 			particle = EnchancementParticleTypes.CHISELED_ENCHANT;
 		}
 		original.call(instance, particle, x, y, z, xd, yd, zd);
