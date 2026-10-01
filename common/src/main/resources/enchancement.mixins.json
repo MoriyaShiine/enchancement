@@ -67,6 +67,7 @@
 	"config.rebalanceenchantments.MovementPredicateMixin",
 	"config.rebalanceenchantments.SummonEntityEffectMixin",
 	"config.rebalanceequipment.AbstractArrowMixin",
+	"config.rebalanceequipment.AnvilMenuMixin",
 	"config.rebalanceequipment.ArmorMaterialMixin",
 	"config.rebalanceequipment.BundleItemMixin",
 	"config.rebalanceequipment.CombatRulesMixin",
