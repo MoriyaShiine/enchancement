@@ -198,7 +198,7 @@ public class EnchancementUtil {
 		ItemEnchantments defaultEnchantments = stack.getItem().components().getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
 		for (Holder<Enchantment> foundEnchantment : defaultEnchantments.keySet()) {
 			if (foundEnchantment == enchantment) {
-				int level = EnchancementConfig.singleLevelMode ? 1 : EnchantmentHelper.getItemEnchantmentLevel(enchantment, stack);
+				int level = EnchancementConfig.levellessEnchantments ? 1 : EnchantmentHelper.getItemEnchantmentLevel(enchantment, stack);
 				if (level == defaultEnchantments.getLevel(enchantment)) {
 					return true;
 				}
