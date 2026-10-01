@@ -141,7 +141,7 @@ public class EnchancementUtil {
 		return !EnchancementConfig.disallowedEnchantments.contains(identifier.toString());
 	}
 
-	// single level mode
+	// levelless enchantments
 
 	public static boolean hasWeakEnchantments(ItemInstance item) {
 		if (item.is(EnchancementItemTags.STRONGLY_ENCHANTED)) {
