@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 @Mixin(Enchantment.class)
 public class EnchantmentMixin {
 	@ModifyArg(method = "getFullname", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/chat/Style;withColor(Lnet/minecraft/ChatFormatting;)Lnet/minecraft/network/chat/Style;", ordinal = 1))
-	private static ChatFormatting enchancement$singleLevelMode(ChatFormatting color) {
+	private static ChatFormatting enchancement$coloredEnchantmentNames(ChatFormatting color) {
 		if (EnchancementConfig.coloredEnchantmentNames) {
 			return ChatFormatting.GREEN;
 		}
