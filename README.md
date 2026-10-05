@@ -82,8 +82,6 @@ Everything Enchancement adds is configurable:
   * Enchanting Tables require Chiseled Bookshelves with Enchanted Books in them to access their enchantments.
   * Enchanting items has an additional material cost related to the item being enchanted (for example, Diamond equipment's material cost is Diamonds).
   * Bookshelves reduce the experience, lapis lazuli, and material cost of enchanting.
-  * Enchantments can be transferred off of enchanted items and onto books using a grindstone.
-  * Enchanted Books cannot be applied to tools in an anvil.
   * Villagers only sell unenchanted items.
   * Various types of Enchanted Books spawn much more commonly in specific structures.
     * Helmet Enchantments - Nether Fortresses
@@ -102,10 +100,13 @@ Everything Enchancement adds is configurable:
     * Shovel Enchantments - Buried Treasure Chests
     * Hoe Enchantments - Village Houses
     * Fishing Rod Enchantments - Shipwrecks
-* Single Level Mode
-  * Removes leveling from enchantments; the maximum level for all enchantments is 1.
+* Enchanted Book Grinding
+  * Enchantments can be transferred off of enchanted items and on to books using a grindstone.
+  * Enchanted Books cannot be applied to tools in an anvil.
+* Levelless Enchantments
+  * Removes levels from enchantments; the maximum level for all enchantments is 1.
     * Enchantments act as if they were their original maximum level.
-    * Enchantments on gear made from materials easier to obtain (such as Stone and Iron) are weaker.
+    * Enchantments on gear made from materials easier to obtain (such as Stone, Iron, and Leather) are weaker.
 * Enchantment Limit
   * Forces items to only allow one enchantment.
   * All enchantments are equally weighted and selectable during generation.
