@@ -4,11 +4,10 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moriyashiine.enchancement.common.EnchancementConfig;
+import moriyashiine.enchancement.common.util.EnchancementUtil;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -39,21 +38,18 @@ public class GrindstoneMenuOutputSlotMixin {
 
 	@WrapOperation(method = "onTake", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/Container;setItem(ILnet/minecraft/world/item/ItemStack;)V", ordinal = 0))
 	private void enchancement$enchantedBookGrindingEnchanted(Container instance, int i, ItemStack stack, Operation<Void> original) {
-		if (EnchancementConfig.enchantedBookGrinding && instance.getItem(1).is(Items.BOOK)) {
-			stack = instance.getItem(i);
-			EnchantmentHelper.setEnchantments(stack, ItemEnchantments.EMPTY);
+		ItemStack replacement = EnchancementUtil.replaceTopGrindstoneItem(instance.getItem(0), instance.getItem(1));
+		if (replacement != null) {
+			stack = replacement;
 		}
 		original.call(instance, i, stack);
 	}
 
 	@WrapOperation(method = "onTake", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/Container;setItem(ILnet/minecraft/world/item/ItemStack;)V", ordinal = 1))
 	private void enchancement$enchantedBookGrindingBook(Container instance, int i, ItemStack stack, Operation<Void> original) {
-		if (EnchancementConfig.enchantedBookGrinding) {
-			ItemStack book = instance.getItem(i);
-			if (book.getCount() > 1 && book.is(Items.BOOK)) {
-				book.shrink(1);
-				stack = book;
-			}
+		ItemStack replacement = EnchancementUtil.replaceBottomGrindstoneItem(instance.getItem(1));
+		if (replacement != null) {
+			stack = replacement;
 		}
 		original.call(instance, i, stack);
 	}
