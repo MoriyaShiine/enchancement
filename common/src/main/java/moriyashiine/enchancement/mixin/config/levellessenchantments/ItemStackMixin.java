@@ -1,4 +1,4 @@
-package moriyashiine.enchancement.mixin.config.singlelevelmode;
+package moriyashiine.enchancement.mixin.config.levellessenchantments;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import moriyashiine.enchancement.common.EnchancementConfig;
@@ -16,8 +16,8 @@ public abstract class ItemStackMixin {
 
 	@SuppressWarnings("ConstantValue")
 	@ModifyReturnValue(method = "getRarity", at = @At("RETURN"))
-	private Rarity enchancement$singleLevelMode(Rarity original) {
-		if (EnchancementConfig.singleLevelMode && isEnchanted() && !EnchancementUtil.hasWeakEnchantments((ItemStack) (Object) this)) {
+	private Rarity enchancement$levellessEnchantments(Rarity original) {
+		if (EnchancementConfig.levellessEnchantments && isEnchanted() && !EnchancementUtil.hasWeakEnchantments((ItemStack) (Object) this)) {
 			return Rarity.values()[Math.min(original.ordinal() + 1, Rarity.values().length - 1)];
 		}
 		return original;

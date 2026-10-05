@@ -1,4 +1,4 @@
-package moriyashiine.enchancement.mixin.config.singlelevelmode;
+package moriyashiine.enchancement.mixin.config.levellessenchantments;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -19,9 +19,9 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Mixin(value = EnchantmentHelper.class, priority = 2000)
 public class EnchantmentHelperMixin {
 	@WrapOperation(method = "updateEnchantments", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/ItemEnchantments$Mutable;toImmutable()Lnet/minecraft/world/item/enchantment/ItemEnchantments;"))
-	private static ItemEnchantments enchancement$singleLevelMode(ItemEnchantments.Mutable instance, Operation<ItemEnchantments> original) {
+	private static ItemEnchantments enchancement$levellessEnchantments(ItemEnchantments.Mutable instance, Operation<ItemEnchantments> original) {
 		ItemEnchantments enchantments = original.call(instance);
-		if (EnchancementConfig.singleLevelMode) {
+		if (EnchancementConfig.levellessEnchantments) {
 			ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
 			enchantments.keySet().forEach(enchantment -> mutable.upgrade(enchantment, 1));
 			return mutable.toImmutable();
@@ -30,8 +30,8 @@ public class EnchantmentHelperMixin {
 	}
 
 	@ModifyVariable(method = "setEnchantments", at = @At("HEAD"), argsOnly = true)
-	private static ItemEnchantments enchancement$singleLevelMode(ItemEnchantments enchantments, ItemStack itemStack) {
-		if (EnchancementConfig.singleLevelMode) {
+	private static ItemEnchantments enchancement$levellessEnchantments(ItemEnchantments enchantments, ItemStack itemStack) {
+		if (EnchancementConfig.levellessEnchantments) {
 			ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(enchantments);
 			enchantments.keySet().forEach(enchantment -> mutable.set(enchantment, 1));
 			return mutable.toImmutable();
@@ -40,24 +40,24 @@ public class EnchantmentHelperMixin {
 	}
 
 	@WrapOperation(method = "runIterationOnItem(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/enchantment/EnchantmentHelper$EnchantmentVisitor;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper$EnchantmentVisitor;accept(Lnet/minecraft/core/Holder;I)V"))
-	private static void enchancement$singleLevelMode(EnchantmentHelper.EnchantmentVisitor instance, Holder<Enchantment> enchantmentRegistryEntry, int i, Operation<Void> original, ItemStack piece) {
-		if (EnchancementConfig.singleLevelMode) {
+	private static void enchancement$levellessEnchantments(EnchantmentHelper.EnchantmentVisitor instance, Holder<Enchantment> enchantmentRegistryEntry, int i, Operation<Void> original, ItemStack piece) {
+		if (EnchancementConfig.levellessEnchantments) {
 			i = EnchancementUtil.alterLevel(piece, enchantmentRegistryEntry);
 		}
 		original.call(instance, enchantmentRegistryEntry, i);
 	}
 
 	@WrapOperation(method = "runIterationOnItem(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/EquipmentSlot;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/enchantment/EnchantmentHelper$EnchantmentInSlotVisitor;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper$EnchantmentInSlotVisitor;accept(Lnet/minecraft/core/Holder;ILnet/minecraft/world/item/enchantment/EnchantedItemInUse;)V"))
-	private static void enchancement$singleLevelMode(EnchantmentHelper.EnchantmentInSlotVisitor instance, Holder<Enchantment> enchantmentRegistryEntry, int i, EnchantedItemInUse enchantmentEffectContext, Operation<Void> original, ItemStack piece) {
-		if (EnchancementConfig.singleLevelMode) {
+	private static void enchancement$levellessEnchantments(EnchantmentHelper.EnchantmentInSlotVisitor instance, Holder<Enchantment> enchantmentRegistryEntry, int i, EnchantedItemInUse enchantmentEffectContext, Operation<Void> original, ItemStack piece) {
+		if (EnchancementConfig.levellessEnchantments) {
 			i = EnchancementUtil.alterLevel(piece, enchantmentRegistryEntry);
 		}
 		original.call(instance, enchantmentRegistryEntry, i, enchantmentEffectContext);
 	}
 
 	@ModifyReturnValue(method = "getItemEnchantmentLevel", at = @At("RETURN"))
-	private static int enchancement$singleLevelMode(int original, Holder<Enchantment> enchantment, ItemInstance piece) {
-		if (original > 0 && EnchancementConfig.singleLevelMode) {
+	private static int enchancement$levellessEnchantments(int original, Holder<Enchantment> enchantment, ItemInstance piece) {
+		if (original > 0 && EnchancementConfig.levellessEnchantments) {
 			return EnchancementUtil.alterLevel(piece, enchantment);
 		}
 		return original;
