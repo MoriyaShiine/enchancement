@@ -44,6 +44,7 @@ public class Enchancement implements ModInitializer {
 		ResourceLoader.get(PackType.SERVER_DATA).registerReloadListener(id("base_blocks"), new BaseBlocksReloadListener());
 		ResourceLoader.get(PackType.SERVER_DATA).registerReloadListener(id("enchanting_materials"), new EnchantingMaterialsReloadListener());
 		ResourceLoader.get(PackType.SERVER_DATA).registerReloadListener(id("head_drops"), new HeadDropsReloadListener());
+		EnchancementService.INSTANCE.initNeoForge();
 		isLoaded = true;
 		isApoliLoaded = FabricLoader.getInstance().isModLoaded("apoli");
 		for (String mod : new String[]{"enchdesc", "enchantedtooltips", "idwtialsimmoedm"}) {
