@@ -141,6 +141,24 @@ public class EnchancementUtil {
 		return !EnchancementConfig.disallowedEnchantments.contains(identifier.toString());
 	}
 
+	// enchanted book grinding
+
+	public static @Nullable ItemStack replaceTopGrindstoneItem(ItemStack topItem, ItemStack bottomItem) {
+		if (EnchancementConfig.enchantedBookGrinding && bottomItem.is(Items.BOOK)) {
+			EnchantmentHelper.setEnchantments(topItem, ItemEnchantments.EMPTY);
+			return topItem;
+		}
+		return null;
+	}
+
+	public static @Nullable ItemStack replaceBottomGrindstoneItem(ItemStack bottomItem) {
+		if (EnchancementConfig.enchantedBookGrinding && bottomItem.getCount() > 1 && bottomItem.is(Items.BOOK)) {
+			bottomItem.shrink(1);
+			return bottomItem;
+		}
+		return null;
+	}
+
 	// levelless enchantments
 
 	public static boolean hasWeakEnchantments(ItemInstance item) {

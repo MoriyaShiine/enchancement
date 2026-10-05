@@ -8,6 +8,10 @@ import squeek.appleskin.api.event.HUDOverlayEvent;
 @AutoService(EnchancementService.class)
 public class EnchancementFabricService implements EnchancementService {
 	@Override
+	public void initNeoForge() {
+	}
+
+	@Override
 	public void initAppleSkinIntegration() {
 		HUDOverlayEvent.HealthRestored.EVENT.register(healthRestored -> healthRestored.isCanceled = BrimstoneHudElement.forcedHeight != -1);
 	}
