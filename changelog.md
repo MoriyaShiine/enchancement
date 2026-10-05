@@ -1,4 +1,12 @@
 ------------------------------------------------------
+Version 26.2-r9
+------------------------------------------------------
+- update Turkish translation (merges https://github.com/MoriyaShiine/enchancement/pull/322)
+- rename single level mode to levelless enchantments
+- add enchanted book grinding config option
+- fix anvils consuming all enchanted books when merging instead of only 1
+
+------------------------------------------------------
 Version 26.2-r8
 ------------------------------------------------------
 - optimize enchantment access
