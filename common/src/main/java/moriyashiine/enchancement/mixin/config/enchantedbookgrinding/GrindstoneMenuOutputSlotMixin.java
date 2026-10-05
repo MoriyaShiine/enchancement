@@ -1,10 +1,9 @@
-package moriyashiine.enchancement.mixin.config.overhaulenchanting;
+package moriyashiine.enchancement.mixin.config.enchantedbookgrinding;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moriyashiine.enchancement.common.EnchancementConfig;
-import moriyashiine.enchancement.common.util.config.OverhaulMode;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -24,23 +23,23 @@ public class GrindstoneMenuOutputSlotMixin {
 	@Unique
 	private final List<ItemStack> slotStacks = new ArrayList<>();
 
+	@Inject(method = "getExperienceFromItem(Lnet/minecraft/world/item/ItemStack;)I", at = @At("HEAD"))
+	private void enchancement$enchantedBookGrinding(ItemStack item, CallbackInfoReturnable<Integer> cir) {
+		slotStacks.add(item);
+	}
+
 	@ModifyReturnValue(method = "getExperienceAmount(Lnet/minecraft/world/level/Level;)I", at = @At("RETURN"))
-	private int enchancement$overhaulEnchantingStore(int original) {
-		if (EnchancementConfig.overhaulEnchanting == OverhaulMode.CHISELED && slotStacks.get(1).is(Items.BOOK)) {
+	private int enchancement$enchantedBookGrinding(int original) {
+		if (EnchancementConfig.enchantedBookGrinding && slotStacks.get(1).is(Items.BOOK)) {
 			slotStacks.clear();
 			return 0;
 		}
 		return original;
 	}
 
-	@Inject(method = "getExperienceFromItem(Lnet/minecraft/world/item/ItemStack;)I", at = @At("HEAD"))
-	private void enchancement$overhaulEnchanting(ItemStack item, CallbackInfoReturnable<Integer> cir) {
-		slotStacks.add(item);
-	}
-
 	@WrapOperation(method = "onTake", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/Container;setItem(ILnet/minecraft/world/item/ItemStack;)V", ordinal = 0))
-	private void enchancement$overhaulEnchantingEnchanted(Container instance, int i, ItemStack stack, Operation<Void> original) {
-		if (EnchancementConfig.overhaulEnchanting == OverhaulMode.CHISELED && instance.getItem(1).is(Items.BOOK)) {
+	private void enchancement$enchantedBookGrindingEnchanted(Container instance, int i, ItemStack stack, Operation<Void> original) {
+		if (EnchancementConfig.enchantedBookGrinding && instance.getItem(1).is(Items.BOOK)) {
 			stack = instance.getItem(i);
 			EnchantmentHelper.setEnchantments(stack, ItemEnchantments.EMPTY);
 		}
@@ -48,8 +47,8 @@ public class GrindstoneMenuOutputSlotMixin {
 	}
 
 	@WrapOperation(method = "onTake", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/Container;setItem(ILnet/minecraft/world/item/ItemStack;)V", ordinal = 1))
-	private void enchancement$overhaulEnchantingBook(Container instance, int i, ItemStack stack, Operation<Void> original) {
-		if (EnchancementConfig.overhaulEnchanting == OverhaulMode.CHISELED) {
+	private void enchancement$enchantedBookGrindingBook(Container instance, int i, ItemStack stack, Operation<Void> original) {
+		if (EnchancementConfig.enchantedBookGrinding) {
 			ItemStack book = instance.getItem(i);
 			if (book.getCount() > 1 && book.is(Items.BOOK)) {
 				book.shrink(1);

@@ -53,6 +53,8 @@ public class EnchancementConfig extends MidnightConfig {
 
 	@Entry
 	public static OverhaulMode overhaulEnchanting = OverhaulMode.CHISELED;
+	@Entry
+	public static boolean enchantedBookGrinding = true;
 
 	@Entry
 	public static boolean levellessEnchantments = true;
@@ -111,7 +113,7 @@ public class EnchancementConfig extends MidnightConfig {
 		}
 		String encoding = builder.toString() +
 				invertedList +
-				overhaulEnchanting +
+				overhaulEnchanting + enchantedBookGrinding +
 				levellessEnchantments + enchantmentLimit +
 				disableDurability +
 				enhanceMobs +
