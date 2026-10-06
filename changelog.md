@@ -1,4 +1,9 @@
 ------------------------------------------------------
+Version 26.3-r4
+------------------------------------------------------
+- fix slamming not negating fall damage (fixes https://github.com/MoriyaShiine/enchancement/issues/323)
+
+------------------------------------------------------
 Version 26.3-r3
 ------------------------------------------------------
 - update Turkish translation (merges https://github.com/MoriyaShiine/enchancement/pull/322)
