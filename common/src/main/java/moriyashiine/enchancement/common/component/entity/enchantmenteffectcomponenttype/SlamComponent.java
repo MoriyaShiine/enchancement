@@ -26,7 +26,7 @@ import net.minecraft.world.phys.AABB;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class SlamComponent implements CommonTickingComponent {
-	private static final int DEFAULT_SLAM_COOLDOWN = 7;
+	private static final int DEFAULT_SLAM_COOLDOWN = 7, JUMP_BOOST_TICKS = 5;
 
 	private final Player obj;
 	private boolean isSlamming = false;
@@ -119,7 +119,7 @@ public class SlamComponent implements CommonTickingComponent {
 	}
 
 	public boolean isSlamming() {
-		return isSlamming;
+		return isSlamming || ticksLeftToJump == JUMP_BOOST_TICKS;
 	}
 
 	public void resetCooldowns() {
@@ -161,7 +161,7 @@ public class SlamComponent implements CommonTickingComponent {
 
 	private void stopSlamming() {
 		setSlamming(false);
-		ticksLeftToJump = 5;
+		ticksLeftToJump = JUMP_BOOST_TICKS;
 		obj.playSound(EnchancementSoundEvents.GENERIC_IMPACT, 1, 1);
 	}
 
