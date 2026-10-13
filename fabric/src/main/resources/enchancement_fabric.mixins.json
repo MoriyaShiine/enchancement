@@ -5,6 +5,7 @@
   "mixins": [
 	"config.disabledurability.AnvilMenuMixin",
 	"config.enchantmentlimit.EnchantmentHelperMixin",
+	"config.rebalanceequipment.LivingEntityMixin",
 	"config.rebalanceequipment.PlayerMixin",
 	"enchantmenteffectcomponenttype.allowloadingprojectiles.CrossbowMixin",
 	"enchantmenteffectcomponenttype.brimstone.BrimstoneCrossbowMixin"

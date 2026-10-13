@@ -7,13 +7,14 @@
 	"config.disabledisallowedenchantments.SetEnchantmentsFunctionMixin",
 	"config.disabledurability.AnvilMenuMixin",
 	"config.enchantmentlimit.EnchantmentHelperMixin",
+	"config.rebalanceequipment.LivingEntityMixin",
 	"config.rebalanceequipment.PlayerMixin",
 	"enchantmenteffectcomponenttype.allowloadingprojectile.CrossbowMixin",
 	"enchantmenteffectcomponenttype.brimstone.BrimstoneCrossbowMixin"
   ],
   "client": [
 	"config.enchantmentdescriptions.client.GuiGraphicsExtractorMixin",
-	"enchantmenteffectcomponenttype.emeter.client.GuiMixin"
+	"enchantmenteffectcomponenttype.emeter.client.HudMixin"
   ],
   "injectors": {
 	"defaultRequire": 1
